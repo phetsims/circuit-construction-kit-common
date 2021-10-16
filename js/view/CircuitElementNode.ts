@@ -8,21 +8,35 @@
 
 import Emitter from '../../../axon/js/Emitter.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
+import Vector2 from '../../../dot/js/Vector2.js';
 import merge from '../../../phet-core/js/merge.js';
 import KeyboardUtils from '../../../scenery/js/accessibility/KeyboardUtils.js';
+import SceneryEvent from '../../../scenery/js/input/SceneryEvent.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import Circuit from '../model/Circuit.js';
+import CircuitElement from '../model/CircuitElement.js';
 import CircuitElementEditContainerNode from './CircuitElementEditContainerNode.js';
+import CCKCScreenView from './CCKCScreenView.js';
+import CircuitLayerNode from './CircuitLayerNode.js';
+import Vertex from '../model/Vertex.js';
 
 class CircuitElementNode extends Node {
+  private readonly useHitTestForSensors: any;
+  private readonly circuit: Circuit | null;
+  readonly circuitElement: CircuitElement;
+  private readonly dragHandler: null;
+  private readonly disposeEmitterCircuitElementNode: Emitter<[]>;
+  private readonly disposeCircuitElementNode: () => void;
+  private dirty: boolean;
 
   /**
    * @param {CircuitElement} circuitElement - the CircuitElement to be rendered
    * @param {Circuit|null} circuit - the circuit which the element can be removed from or null for icons
    * @param {Object} [options]
    */
-  constructor( circuitElement, circuit, options ) {
+  constructor( circuitElement: CircuitElement, circuit: Circuit | null, options: any ) {
 
     options = merge( {
 
@@ -55,9 +69,12 @@ class CircuitElementNode extends Node {
 
     // keyboard listener so that delete or backspace deletes the element - must be disposed
     const keyListener = {
+
+      // @ts-ignore
       keydown: event => {
 
         // on delete or backspace, the focused circuit element should be deleted
+        // @ts-ignore
         if ( KeyboardUtils.isAnyKeyEvent( event.domEvent, [ KeyboardUtils.KEY_DELETE, KeyboardUtils.KEY_BACKSPACE ] ) ) {
 
           // prevent default so 'backspace' and 'delete' don't navigate back a page in Firefox, see
@@ -66,6 +83,8 @@ class CircuitElementNode extends Node {
 
           // Only permit deletion when not being dragged, see https://github.com/phetsims/circuit-construction-kit-common/issues/414
           if ( !circuitElement.startVertexProperty.value.isDragged && !circuitElement.endVertexProperty.value.isDragged ) {
+
+            // @ts-ignore
             circuit.disposeCircuitElement( circuitElement );
           }
         }
@@ -83,7 +102,8 @@ class CircuitElementNode extends Node {
      * dragging.
      * @param event - scenery event
      */
-    const startDragListener = event => this.dragListener.down( event );
+      // @ts-ignore
+    const startDragListener = ( event: SceneryEvent ) => this.dragListener.down( event );
 
     // @private {function} - for disposal
     this.disposeCircuitElementNode = () => {
@@ -95,12 +115,14 @@ class CircuitElementNode extends Node {
       this.disposeEmitterCircuitElementNode.dispose();
     };
 
+    // @ts-ignore
     circuitElement.startDragEmitter.addListener( startDragListener );
 
     // @private {boolean} - Flag to indicate when updating view is necessary, in order to avoid duplicate work when both
     // vertices move
     this.dirty = true;
 
+    // @ts-ignore
     this.disposeEmitterCircuitElementNode.addListener( () => circuitElement.startDragEmitter.removeListener( startDragListener ) );
   }
 
@@ -130,7 +152,7 @@ class CircuitElementNode extends Node {
 
     // TODO (black-box-study): Replace this with grayscale if we keep it
     // TODO (black-box-study): @jonathonolson said: I've wished for a scenery-level grayscale/etc. filter. Let me know when you get close to doing this.
-    const interactivityChanged = interactive => {
+    const interactivityChanged = ( interactive: boolean ) => {
       this.opacity = interactive ? 1 : 0.5;
     };
     this.circuitElement.interactiveProperty.link( interactivityChanged );
@@ -144,7 +166,7 @@ class CircuitElementNode extends Node {
    * @returns {boolean}
    * @public
    */
-  containsSensorPoint( globalPoint ) {
+  containsSensorPoint( globalPoint: Vector2 ) {
 
     const localPoint = this.globalToParentPoint( globalPoint );
 
@@ -169,6 +191,8 @@ class CircuitElementNode extends Node {
    */
   step() {
     if ( this.dirty ) {
+
+      // @ts-ignore
       this.updateRender();
       this.dirty = false;
     }
@@ -185,13 +209,15 @@ class CircuitElementNode extends Node {
    * @param {boolean} dragged
    * @public
    */
-  endDrag( node, vertices, screenView, circuitLayerNode, initialPoint, latestPoint, dragged ) {
+  endDrag( node: Node, vertices: Vertex[], screenView: CCKCScreenView, circuitLayerNode: CircuitLayerNode, initialPoint: Vector2, latestPoint: Vector2, dragged: boolean ) {
     const circuitElement = this.circuitElement;
 
     if ( circuitElement.interactiveProperty.get() ) {
 
       // If over the toolbox, then drop into it
       if ( screenView.canNodeDropInToolbox( this ) ) {
+
+        // @ts-ignore
         this.circuit.disposeCircuitElement( circuitElement );
       }
       else {
@@ -217,19 +243,22 @@ class CircuitElementNode extends Node {
    * @param {Vector2|null} latestPoint
    * @public
    */
-  selectCircuitElementNodeWhenNear( circuitLayerNode, startPoint, latestPoint ) {
+  selectCircuitElementNodeWhenNear( circuitLayerNode: CircuitLayerNode, startPoint: Vector2, latestPoint: Vector2 | null ) {
 
     if ( !this.circuitElement.isDisposed && latestPoint && latestPoint.distance( startPoint ) < CCKCConstants.TAP_THRESHOLD ) {
 
       circuitLayerNode.circuit.selectedCircuitElementProperty.set( this.circuitElement );
 
       // focus the element for keyboard interaction
+      // @ts-ignore
       this.focus();
 
       const disposeListener = () => phet.joist.display.removeInputListener( clickToDismissListener );
 
       // listener for 'click outside to dismiss'
       const clickToDismissListener = {
+
+        // @ts-ignore
         down: event => {
 
           // When fuzzing, don't click away from the circuit element so eagerly, so that fuzzing has more of a chance to
@@ -240,7 +269,7 @@ class CircuitElementNode extends Node {
 
           // if the target was in a CircuitElementEditContainerNode, don't dismiss the event because the user was
           // dragging the slider or pressing the trash button or another control in that panel
-          const trails = event.target.getTrails( node => {
+          const trails = event.target.getTrails( ( node: Node ) => {
 
             // If the user tapped any component in the CircuitElementContainerPanel or on the selected node
             // allow interaction to proceed normally.  Any other taps will deselect the circuit element

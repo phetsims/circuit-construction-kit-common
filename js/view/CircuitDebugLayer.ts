@@ -11,9 +11,12 @@ import Node from '../../../scenery/js/nodes/Node.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import Panel from '../../../sun/js/Panel.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CircuitLayerNode from './CircuitLayerNode.js';
 
 class CircuitDebugLayer extends Node {
-  constructor( circuitLayerNode ) {
+  private readonly circuitLayerNode: CircuitLayerNode;
+
+  constructor( circuitLayerNode: CircuitLayerNode ) {
     super();
     this.circuitLayerNode = circuitLayerNode;
     this.rebuild();

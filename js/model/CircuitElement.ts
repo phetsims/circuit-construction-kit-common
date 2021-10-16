@@ -42,8 +42,8 @@ abstract class CircuitElement extends PhetioObject {
   private readonly creationTime: number;
   readonly isFlammable: boolean;
   readonly isMetallic: boolean;
-  private readonly isSizeChangedOnViewChange: boolean;
-  private readonly canBeDroppedInToolbox: boolean;
+  readonly isSizeChangedOnViewChange: boolean;
+  readonly canBeDroppedInToolbox: boolean;
   readonly startVertexProperty: Property<Vertex>;
   readonly endVertexProperty: Property<Vertex>;
   readonly currentProperty: NumberProperty;
@@ -54,15 +54,15 @@ abstract class CircuitElement extends PhetioObject {
   readonly connectedEmitter: Emitter<[]>;
   readonly vertexSelectedEmitter: Emitter<[]>;
   readonly vertexMovedEmitter: Emitter<[]>;
-  private readonly moveToFrontEmitter: Emitter<[]>;
-  private readonly startDragEmitter: Emitter<[]>;
+  readonly moveToFrontEmitter: Emitter<[]>;
+  readonly startDragEmitter: Emitter<[]>;
   readonly disposeEmitterCircuitElement: Emitter<[]>;
   private readonly vertexMovedListener: () => void;
   private readonly linkVertexListener: ( newVertex: Vertex, oldVertex: Vertex ) => void;
   readonly voltageDifferenceProperty: NumberProperty;
   private readonly vertexVoltageListener: () => Property<any>;
   chargePathLength: number;
-  private circuitElementDisposed: boolean;
+  circuitElementDisposed: boolean;
   static CircuitElementIO: IOType;
   readonly lengthProperty: Property<number> | undefined;
 

@@ -27,8 +27,8 @@ const MAX_VOLTAGE = 120;
 type ACVoltageOptions = {} & VoltageSourceOptions;
 
 class ACVoltage extends VoltageSource {
-  private readonly maximumVoltageProperty: NumberProperty;
-  private readonly frequencyProperty: NumberProperty;
+  readonly maximumVoltageProperty: NumberProperty;
+  readonly frequencyProperty: NumberProperty;
   private readonly phaseProperty: NumberProperty;
   private time: number;
 

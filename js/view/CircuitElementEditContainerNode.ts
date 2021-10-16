@@ -7,6 +7,8 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import Property from '../../../axon/js/Property.js';
+import Bounds2 from '../../../dot/js/Bounds2.js';
 import Utils from '../../../dot/js/Utils.js';
 import merge from '../../../phet-core/js/merge.js';
 import StringUtils from '../../../phetcommon/js/util/StringUtils.js';
@@ -23,6 +25,8 @@ import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommon
 import ACVoltage from '../model/ACVoltage.js';
 import Battery from '../model/Battery.js';
 import Capacitor from '../model/Capacitor.js';
+import Circuit from '../model/Circuit.js';
+import CircuitElement from '../model/CircuitElement.js';
 import FixedCircuitElement from '../model/FixedCircuitElement.js';
 import Fuse from '../model/Fuse.js';
 import Inductor from '../model/Inductor.js';
@@ -54,7 +58,7 @@ const voltageString = circuitConstructionKitCommonStrings.voltage;
 const voltageVoltsValuePatternString = circuitConstructionKitCommonStrings.voltageVoltsValuePattern;
 
 // constants
-const GET_LAYOUT_POSITION = ( visibleBounds, centerX ) => {
+const GET_LAYOUT_POSITION = ( visibleBounds: Bounds2, centerX: number ) => {
   return {
     centerX: centerX,
     bottom: visibleBounds.bottom - CCKCConstants.HORIZONTAL_MARGIN
@@ -70,13 +74,13 @@ class CircuitElementEditContainerNode extends Node {
 
   /**
    * @param {Circuit} circuit - the circuit model
-   * @param {Property.<boolean>} visibleBoundsProperty - the visible bounds in view coordinates
+   * @param {Property.<Bounds2>} visibleBoundsProperty - the visible bounds in view coordinates
    * @param {Property.<InteractionMode>} modeProperty
    * @param {Property.<Number>} playAreaCenterXProperty
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( circuit, visibleBoundsProperty, modeProperty, playAreaCenterXProperty, tandem, options ) {
+  constructor( circuit: Circuit, visibleBoundsProperty: Property<Bounds2>, modeProperty: Property<'explore' | 'test'>, playAreaCenterXProperty: Property<number>, tandem: Tandem, options: any ) {
 
     super();
 
@@ -118,8 +122,8 @@ class CircuitElementEditContainerNode extends Node {
     };
 
     // When the selected element changes, update the displayed controls
-    let editNode = null;
-    circuit.selectedCircuitElementProperty.link( selectedCircuitElement => {
+    let editNode: Node | null = null;
+    circuit.selectedCircuitElementProperty.link( ( selectedCircuitElement: CircuitElement ) => {
       if ( editNode ) {
         this.hasChild( editNode ) && this.removeChild( editNode );
         if ( editNode !== tapInstructionTextNode && editNode !== trashButton ) {
@@ -142,6 +146,7 @@ class CircuitElementEditContainerNode extends Node {
 
         if ( isResistive && selectedCircuitElement.isResistanceEditable() ) {
 
+          // @ts-ignore
           const isHighResistance = selectedCircuitElement.resistorType === Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR ||
                                    selectedCircuitElement instanceof LightBulb && selectedCircuitElement.highResistance;
           const resistanceControl = new CircuitElementNumberControl(
@@ -161,9 +166,11 @@ class CircuitElementEditContainerNode extends Node {
 
               // For dragging the slider knob
               sliderOptions: {
-                constrainValue: value => Utils.roundToInterval( value, isHighResistance ? HIGH_SLIDER_KNOB_DELTA : NORMAL_SLIDER_KNOB_DELTA )
+                constrainValue: ( value: number ) => Utils.roundToInterval( value, isHighResistance ? HIGH_SLIDER_KNOB_DELTA : NORMAL_SLIDER_KNOB_DELTA )
               },
               numberDisplayOptions: {
+
+                // @ts-ignore
                 decimalPlaces: selectedCircuitElement.numberOfDecimalPlaces
               }
             }
@@ -199,9 +206,11 @@ class CircuitElementEditContainerNode extends Node {
 
               // For dragging the slider knob
               sliderOptions: {
-                constrainValue: value => Utils.roundToInterval( value, knobDelta )
+                constrainValue: ( value: number ) => Utils.roundToInterval( value, knobDelta )
               },
               numberDisplayOptions: {
+
+                // @ts-ignore
                 decimalPlaces: selectedCircuitElement.numberOfDecimalPlaces
               },
               phetioState: false
@@ -233,7 +242,7 @@ class CircuitElementEditContainerNode extends Node {
               delta: NORMAL_TWEAKER_DELTA,
 
               sliderOptions: {
-                constrainValue: value => Utils.roundToInterval( value, 0.5 )
+                constrainValue: ( value: number ) => Utils.roundToInterval( value, 0.5 )
               }
             }
           );
@@ -254,7 +263,7 @@ class CircuitElementEditContainerNode extends Node {
           editNode = trashButton;
         }
         else if ( isACSource ) {
-          const children = [
+          const children: Node[] = [
             new CircuitElementNumberControl(
               voltageString,
 
@@ -326,7 +335,7 @@ class CircuitElementEditContainerNode extends Node {
 
               // For dragging the slider knob
               sliderOptions: {
-                constrainValue: value => Utils.roundToInterval( value, CCKCQueryParameters.inductanceStep )
+                constrainValue: ( value: number ) => Utils.roundToInterval( value, CCKCQueryParameters.inductanceStep )
               }
             }
           );
@@ -370,7 +379,7 @@ class EditHBox extends HBox {
   /**
    * @param {Array.<Node>} children
    */
-  constructor( children ) {
+  constructor( children: Node[] ) {
     super( {
       spacing: 25,
       align: 'bottom',
@@ -383,10 +392,12 @@ class EditHBox extends HBox {
  * Panel to facilitate in visual layout of the controls.
  */
 class EditPanel extends Panel {
+  hbox: EditHBox;
+
   /**
    * @param {Array.<Node>} children
    */
-  constructor( children ) {
+  constructor( children: Node[] ) {
     const hbox = new EditHBox( children );
     super( hbox, {
       fill: '#caddfa',

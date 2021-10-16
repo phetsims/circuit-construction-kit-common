@@ -855,6 +855,7 @@ class CircuitLayerNode extends Node {
         revealing = this.model.revealingProperty.get();
       }
 
+      // @ts-ignore
       if ( revealing && circuitElementNode.containsSensorPoint( globalPoint ) ) {
         return circuitElementNode;
       }

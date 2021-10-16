@@ -109,9 +109,6 @@ class FixedCircuitElementNode extends CircuitElementNode {
     // @private {boolean} - whether an isIcon is being rendered
     this.isIcon = filledOptions.isIcon;
 
-    // @public (read-only) {CircuitElement}
-    this.circuitElement = circuitElement;
-
     // @private {CircuitLayerNode}
     this.circuitLayerNode = circuitLayerNode;
 
@@ -194,7 +191,9 @@ class FixedCircuitElementNode extends CircuitElementNode {
           }
         },
         end: ( event: SceneryEvent ) =>
-          this.endDrag( this.contentNode, [ circuitElement.endVertexProperty.get() ], screenView, circuitLayerNode,
+          this.endDrag( this.contentNode, [ circuitElement.endVertexProperty.get() ], screenView as CCKCScreenView, circuitLayerNode,
+
+            // @ts-ignore
             initialPoint, latestPoint, dragged ),
         tandem: tandem.createTandem( 'dragListener' )
       } );

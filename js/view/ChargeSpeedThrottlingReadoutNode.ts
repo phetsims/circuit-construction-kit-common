@@ -23,7 +23,7 @@ class ChargeSpeedThrottlingReadoutNode extends Text {
    * @param {Property.<boolean>} showCurrentProperty - true if currents are visible
    * @param {Property.<boolean>} isValueDepictionEnabledProperty - true if the explore screen is running
    */
-  constructor( timeScaleProperty, showCurrentProperty, isValueDepictionEnabledProperty ) {
+  constructor( timeScaleProperty: Property<number>, showCurrentProperty: Property<boolean>, isValueDepictionEnabledProperty: Property<boolean> ) {
     super( animationSpeedLimitReachedString, {
 
       // Reduce the width of the animation speed limit reached so it doesn't overlap controls
@@ -33,7 +33,7 @@ class ChargeSpeedThrottlingReadoutNode extends Text {
     } );
 
     Property.multilink( [ timeScaleProperty, showCurrentProperty, isValueDepictionEnabledProperty ],
-      ( timeScale, showCurrent, isValueDepictionEnabled ) => {
+      ( timeScale: number, showCurrent: boolean, isValueDepictionEnabled: boolean ) => {
         const percent = timeScale * 100;
         const isThrottled = percent < 99.5;
         const fixed = timeScale < 0.01 ? '< 1' : Utils.toFixed( percent, 0 );
