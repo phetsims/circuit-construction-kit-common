@@ -26,6 +26,11 @@ import CCKCUtils from '../CCKCUtils.js';
 import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import ProbeTextNode from './ProbeTextNode.js';
+import Ammeter from '../model/Ammeter.js';
+import CircuitLayerNode from './CircuitLayerNode.js';
+import Bounds2 from '../../../dot/js/Bounds2.js';
+import Property from '../../../axon/js/Property.js';
+import SceneryEvent from '../../../scenery/js/input/SceneryEvent.js';
 
 const currentString = circuitConstructionKitCommonStrings.current;
 const questionMarkString = circuitConstructionKitCommonStrings.questionMark;
@@ -41,16 +46,26 @@ const SCALE_FACTOR = 0.5;
 
 // unsigned measurements for the circles on the voltmeter body image, for where the probe wires connect
 const PROBE_CONNECTION_POINT_DY = 8;
+type AmmeterNodeOptions = {
+  isIcon: boolean,
+  visibleBoundsProperty: Property<Bounds2> | null,
+  showResultsProperty: BooleanProperty,
+  blackBoxStudy: boolean,
+  tandem: Tandem
+} & NodeOptions;
 
 class AmmeterNode extends Node {
+  probeNode: ProbeNode;
+  ammeter: Ammeter;
+  dragHandler: DragListener | null;
 
   /**
    * @param {Ammeter} ammeter
    * @param {CircuitLayerNode|null} circuitLayerNode - for getting the currents, or null if rendering an icon
    * @param {Object} [options]
    */
-  constructor( ammeter, circuitLayerNode, options ) {
-    options = merge( {
+  constructor( ammeter: Ammeter, circuitLayerNode: CircuitLayerNode | null, options?: Partial<AmmeterNodeOptions> ) {
+    const filledOptions = merge( {
 
       // true if it will be used as a toolbox icon
       isIcon: false,
@@ -65,8 +80,8 @@ class AmmeterNode extends Node {
       blackBoxStudy: false,
 
       tandem: Tandem.REQUIRED
-    }, options );
-    const tandem = options.tandem;
+    }, options ) as AmmeterNodeOptions;
+    const tandem = filledOptions.tandem;
 
     const wireBodyPositionProperty = new Vector2Property( new Vector2( 0, 0 ) );
     const wireProbePositionProperty = new Vector2Property( new Vector2( 0, 0 ) );
@@ -81,10 +96,10 @@ class AmmeterNode extends Node {
       }
     );
 
-    const currentReadoutProperty = new DerivedProperty( [ ammeter.currentProperty ], ( current => {
+    const currentReadoutProperty = new DerivedProperty( [ ammeter.currentProperty ], ( ( current: number ) => {
 
-      const max = options.blackBoxStudy ? 1E3 : 1E10;
-      const maxString = options.blackBoxStudy ? '> 10^3' : '> 10^10';
+      const max = filledOptions.blackBoxStudy ? 1E3 : 1E10;
+      const maxString = filledOptions.blackBoxStudy ? '> 10^3' : '> 10^10';
 
       // Ammeters in this sim only show positive values, not direction (which is arbitrary anyways)
       return current === null ? questionMarkString :
@@ -93,7 +108,7 @@ class AmmeterNode extends Node {
     } ) );
 
     const probeTextNode = new ProbeTextNode(
-      currentReadoutProperty, options.showResultsProperty, currentString, tandem.createTandem( 'probeTextNode' ), {
+      currentReadoutProperty, filledOptions.showResultsProperty, currentString, tandem.createTandem( 'probeTextNode' ), {
         centerX: ammeterBodyImage.width / 2,
         centerY: ammeterBodyImage.height / 2 + 7 // adjust for the top notch design
       } );
@@ -102,7 +117,7 @@ class AmmeterNode extends Node {
       scale: SCALE_FACTOR,
       cursor: 'pointer',
       children: [ probeTextNode ]
-    } );
+    } ) as unknown as Node;
 
     const probeNode = new ProbeNode( {
       cursor: 'pointer',
@@ -122,10 +137,12 @@ class AmmeterNode extends Node {
       ]
     } );
 
-    assert && assert( !options.hasOwnProperty( 'children' ), 'children will be supplied by AmmeterNode' );
-    options.children = [ bodyNode, wireNode, probeNode ];
+    assert && assert( !filledOptions.hasOwnProperty( 'children' ), 'children will be supplied by AmmeterNode' );
 
-    super( options );
+    // @ts-ignore
+    filledOptions.children = [ bodyNode, wireNode, probeNode ];
+
+    super( filledOptions );
 
     // @public (read-only) {ProbeNode}
     this.probeNode = probeNode;
@@ -136,28 +153,28 @@ class AmmeterNode extends Node {
     const alignProbeToBody = () => {
       if ( ammeter.draggingProbesWithBodyProperty.get() ) {
 
-        const constrain = pt => options.visibleBoundsProperty ?
-                                options.visibleBoundsProperty.value.eroded( CCKCConstants.DRAG_BOUNDS_EROSION ).closestPointTo( pt ) :
-                                pt;
+        const constrain = ( pt: Vector2 ) => filledOptions.visibleBoundsProperty ?
+                                             filledOptions.visibleBoundsProperty.value.eroded( CCKCConstants.DRAG_BOUNDS_EROSION ).closestPointTo( pt ) :
+                                             pt;
 
         ammeter.probePositionProperty.set( constrain( ammeter.bodyPositionProperty.value.plusXY( 40, -80 ) ) );
       }
     };
 
     // When the body position changes, update the body node and the wire
-    ammeter.bodyPositionProperty.link( bodyPosition => {
+    ammeter.bodyPositionProperty.link( ( bodyPosition: Vector2 ) => {
       bodyNode.centerTop = bodyPosition;
       wireBodyPositionProperty.value = bodyNode.centerTop.plusXY( 0, PROBE_CONNECTION_POINT_DY );
       alignProbeToBody();
     } );
 
     // When the probe position changes, update the probe node and the wire
-    ammeter.probePositionProperty.link( probePosition => {
+    ammeter.probePositionProperty.link( ( probePosition: Vector2 ) => {
       this.probeNode.centerTop = probePosition;
       wireProbePositionProperty.value = this.probeNode.centerBottom;
     } );
 
-    if ( !options.isIcon ) {
+    if ( !filledOptions.isIcon ) {
 
       // Show the ammeter in the play area when dragged from toolbox
       ammeter.visibleProperty.linkAttribute( this, 'visible' );
@@ -188,9 +205,9 @@ class AmmeterNode extends Node {
         targetNode: this
       } );
       bodyNode.addInputListener( this.dragHandler );
-      options.visibleBoundsProperty.link( visibleBounds => {
+      filledOptions.visibleBoundsProperty!.link( ( visibleBounds: Bounds2 ) => {
         const erodedDragBounds = visibleBounds.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
-        this.dragHandler.dragBounds = erodedDragBounds;
+        this.dragHandler!.dragBounds = erodedDragBounds;
         probeDragHandler.dragBounds = erodedDragBounds;
         ammeter.bodyPositionProperty.value = erodedDragBounds.closestPointTo( ammeter.bodyPositionProperty.value );
         ammeter.probePositionProperty.value = erodedDragBounds.closestPointTo( ammeter.probePositionProperty.value );
@@ -204,16 +221,19 @@ class AmmeterNode extends Node {
 
         // Skip work when ammeter is not out, to improve performance.
         if ( ammeter.visibleProperty.get() ) {
-          const current = circuitLayerNode.getCurrent( this.probeNode );
+          const current = circuitLayerNode!.getCurrent( this.probeNode );
           ammeter.currentProperty.set( current );
         }
       };
-      circuitLayerNode.circuit.circuitChangedEmitter.addListener( updateAmmeter );
+      circuitLayerNode!.circuit.circuitChangedEmitter.addListener( updateAmmeter );
       ammeter.probePositionProperty.link( updateAmmeter );
+    }
+    else {
+      this.dragHandler = null;
     }
 
     // When rendered as an icon, the touch area should span the bounds (no gaps between probes and body)
-    if ( options.isIcon ) {
+    if ( filledOptions.isIcon ) {
       this.touchArea = this.bounds.copy();
       this.mouseArea = this.bounds.copy();
       this.cursor = 'pointer';
@@ -225,8 +245,8 @@ class AmmeterNode extends Node {
    * @param {SceneryEvent} event
    * @public
    */
-  startDrag( event ) {
-    this.dragHandler.press( event );
+  startDrag( event: SceneryEvent ) {
+    this.dragHandler && this.dragHandler.press( event );
   }
 }
 

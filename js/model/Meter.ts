@@ -16,10 +16,10 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 class Meter {
   private phetioIndex: number;
-  private readonly visibleProperty: BooleanProperty;
-  private readonly bodyPositionProperty: Vector2Property;
-  private readonly draggingProbesWithBodyProperty: BooleanProperty;
-  private readonly droppedEmitter: Emitter<[]>;
+  readonly visibleProperty: BooleanProperty;
+  readonly bodyPositionProperty: Vector2Property;
+  readonly draggingProbesWithBodyProperty: BooleanProperty;
+  readonly droppedEmitter: Emitter<[Bounds2]>;
 
   /**
    * @param {Tandem} tandem
