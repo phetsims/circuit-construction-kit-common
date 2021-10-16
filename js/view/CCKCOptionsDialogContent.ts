@@ -8,24 +8,38 @@
 import Text from '../../../scenery/js/nodes/Text.js';
 import VBox from '../../../scenery/js/nodes/VBox.js';
 import VerticalAquaRadioButtonGroup from '../../../sun/js/VerticalAquaRadioButtonGroup.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
-import SchematicType from './SchematicType.js';
 import schematicTypeProperty from './schematicTypeProperty.js';
 
 class CCKCOptionsDialogContent extends VBox {
+  disposeCCKCOptionsDialogContent: () => void;
+
   /**
    * @param {Tandem} tandem
    */
-  constructor( tandem ) {
+  constructor( tandem: Tandem ) {
 
     const textOptions = {
       fontSize: 23
     };
     const verticalAquaRadioButtonGroup = new VerticalAquaRadioButtonGroup( schematicTypeProperty, [
-      { node: new Text( circuitConstructionKitCommonStrings.ieee, textOptions ), value: SchematicType.IEEE, tandemName: 'ieeeRadioButton' },
-      { node: new Text( circuitConstructionKitCommonStrings.iec, textOptions ), value: SchematicType.IEC, tandemName: 'iecRadioButton' },
-      { node: new Text( circuitConstructionKitCommonStrings.british, textOptions ), value: SchematicType.BRITISH, tandemName: 'britishRadioButton' }
+      {
+        node: new Text( circuitConstructionKitCommonStrings.ieee, textOptions ),
+        value: 'ieee',
+        tandemName: 'ieeeRadioButton'
+      },
+      {
+        node: new Text( circuitConstructionKitCommonStrings.iec, textOptions ),
+        value: 'iec',
+        tandemName: 'iecRadioButton'
+      },
+      {
+        node: new Text( circuitConstructionKitCommonStrings.british, textOptions ),
+        value: 'british',
+        tandemName: 'britishRadioButton'
+      }
     ], {
       tandem: tandem.createTandem( 'schematicTypeRadioButtonGroup' ),
       radioButtonOptions: {
@@ -42,9 +56,7 @@ class CCKCOptionsDialogContent extends VBox {
     } );
 
     // @private {function}
-    this.disposeCCKCOptionsDialogContent = () => {
-      verticalAquaRadioButtonGroup.dispose();
-    };
+    this.disposeCCKCOptionsDialogContent = () => verticalAquaRadioButtonGroup.dispose();
   }
 
   // @public

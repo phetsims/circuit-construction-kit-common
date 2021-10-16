@@ -22,7 +22,6 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Fuse from '../model/Fuse.js';
 import FixedCircuitElementNode from './FixedCircuitElementNode.js';
 import FuseTripAnimation from './FuseTripAnimation.js';
-import SchematicType from './SchematicType.js';
 import schematicTypeProperty from './schematicTypeProperty.js';
 
 // constants
@@ -147,7 +146,7 @@ class FuseNode extends FixedCircuitElementNode {
       .lineToRelative( 0, -boxHeight );
 
     const updateSchematicType = schematicType => {
-      schematicNode.shape = ( schematicType === SchematicType.IEEE || schematicType === SchematicType.BRITISH ) ? schematicShape :
+      schematicNode.shape = ( schematicType === 'ieee' || schematicType === 'british' ) ? schematicShape :
                             fuseIEC;
     };
     schematicTypeProperty.link( updateSchematicType );

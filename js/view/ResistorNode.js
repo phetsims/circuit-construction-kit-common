@@ -27,7 +27,6 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Resistor from '../model/Resistor.js';
 import FixedCircuitElementNode from './FixedCircuitElementNode.js';
 import ResistorColors from './ResistorColors.js';
-import SchematicType from './SchematicType.js';
 import schematicTypeProperty from './schematicTypeProperty.js';
 
 // constants
@@ -189,7 +188,7 @@ class ResistorNode extends FixedCircuitElementNode {
     } );
 
     const updateSchematicType = schematicType => {
-      schematicNode.shape = schematicType === SchematicType.IEEE ? ieeeSchematicShape :
+      schematicNode.shape = schematicType === 'ieee' ? ieeeSchematicShape :
                             iecSchematicShape;
     };
     schematicTypeProperty.link( updateSchematicType );

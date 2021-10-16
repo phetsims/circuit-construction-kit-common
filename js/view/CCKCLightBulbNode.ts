@@ -27,7 +27,6 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CustomLightBulbNode from './CustomLightBulbNode.js';
 import FixedCircuitElementNode, { FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
 import LightBulbSocketNode from './LightBulbSocketNode.js';
-import SchematicType from './SchematicType.js';
 import schematicTypeProperty from './schematicTypeProperty.js';
 import CCKCScreenView from './CCKCScreenView.js';
 import CircuitLayerNode from './CircuitLayerNode.js';
@@ -198,11 +197,11 @@ class CCKCLightBulbNode extends FixedCircuitElementNode {
     const updateSchematicType = schematicType => {
       if ( filledOptions.isIcon ) {
         // @ts-ignore
-        schematicNode.shape = schematicType === SchematicType.IEEE ? ieeeShapeIcon : iecShapeIcon;
+        schematicNode.shape = schematicType === 'ieee' ? ieeeShapeIcon : iecShapeIcon;
       }
       else {
         // @ts-ignore
-        schematicNode.shape = schematicType === SchematicType.IEEE ? ieeeShapeWithLeads : iecShapeWithLeads;
+        schematicNode.shape = schematicType === 'ieee' ? ieeeShapeWithLeads : iecShapeWithLeads;
       }
     };
     schematicTypeProperty.link( updateSchematicType );

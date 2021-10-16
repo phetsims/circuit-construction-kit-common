@@ -8,11 +8,11 @@
 import Property from '../../../axon/js/Property.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import SchematicType from './SchematicType.js';
 
-const schematicTypeProperty = new Property( CCKCQueryParameters.schematicStandard === 'iec' ? SchematicType.IEC :
-                                            CCKCQueryParameters.schematicStandard === 'british' ? SchematicType.BRITISH :
-                                            SchematicType.IEEE );
+// TODO: Can be simplified with new enums
+const schematicTypeProperty = new Property( CCKCQueryParameters.schematicStandard === 'iec' ? 'iec' :
+                                            CCKCQueryParameters.schematicStandard === 'british' ? 'british' :
+                                            'ieee' );
 
 circuitConstructionKitCommon.register( 'schematicTypeProperty', schematicTypeProperty );
 export default schematicTypeProperty;
