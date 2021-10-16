@@ -25,7 +25,13 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import wireIconImage from '../../images/wire-icon_png.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import Capacitor from '../model/Capacitor.js';
+import CircuitElementViewType from '../model/CircuitElementViewType.js';
+import CCKCScreenView from './CCKCScreenView.js';
+import CircuitLayerNode from './CircuitLayerNode.js';
 import FixedCircuitElementNode from './FixedCircuitElementNode.js';
+import { FixedCircuitElementOptions } from '../model/FixedCircuitElement.js';
+import Vector2 from '../../../dot/js/Vector2.js';
 
 // constants
 // dimensions for schematic
@@ -58,6 +64,14 @@ leftSchematicShape = leftSchematicShape.transformed( Matrix3.scale( SCHEMATIC_SC
 rightSchematicShape = rightSchematicShape.transformed( Matrix3.scale( SCHEMATIC_SCALE, SCHEMATIC_SCALE ) );
 
 class CapacitorCircuitElementNode extends FixedCircuitElementNode {
+  private readonly capacitor: Capacitor;
+  private readonly capacitorCircuitElementLifelikeNode: CapacitorNode;
+  private readonly capacitorCircuitElementSchematicNode: Node;
+  private readonly leftWireStub: Node;
+  private readonly rightWireStub: Node;
+  private readonly leftSchematicPath: Path;
+  private readonly rightSchematicPath: Path;
+  private readonly disposeCapacitorCircuitElementNode: () => void;
 
   /**
    * @param {CCKCScreenView|null} screenView - main screen view, null for isIcon
@@ -67,7 +81,7 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( screenView, circuitLayerNode, capacitor, viewTypeProperty, tandem, options ) {
+  constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, capacitor: Capacitor, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, options?: Partial<FixedCircuitElementOptions> ) {
 
     options = merge( {
       isIcon: false
@@ -103,7 +117,11 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
 
     const lifelikeNode = new CapacitorNode( circuit, modelViewTransform, plateChargeVisibleProperty, electricFieldVisibleProperty, {
       tandem: Tandem.OPTIONAL,
+
+      // @ts-ignore
       orientation: Orientation.HORIZONTAL, // so the "-" charges are upside-up in the default orientation
+
+      // @ts-ignore
       includeChargeNode: !options.isIcon,
       scale: 0.45,
       rotation: -Math.PI / 2,
@@ -115,7 +133,7 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
     const capacitanceVoltageListener = Property.multilink( [
       capacitor.capacitanceProperty,
       capacitor.voltageDifferenceProperty
-    ], ( C, V ) => {
+    ], ( C: number, V: number ) => {
 
       let q = 2E-13 * C * V;
 
@@ -129,11 +147,11 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
     const leftWireStub = new Image( wireIconImage, merge( {
       centerX: lifelikeNode.centerX,
       centerY: lifelikeNode.centerY
-    }, wireStubOptions ) );
+    }, wireStubOptions ) ) as unknown as Node;
     const rightWireStub = new Image( wireIconImage, merge( {
       centerX: lifelikeNode.centerX,
       centerY: lifelikeNode.centerY
-    }, wireStubOptions ) );
+    }, wireStubOptions ) ) as unknown as Node;
 
     const schematicPathOptions = {
       stroke: Color.BLACK,
@@ -164,6 +182,8 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
       lifelikeNodeContainer,
       schematicNode,
       tandem,
+
+      // @ts-ignore
       options
     );
 
@@ -184,7 +204,7 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
     this.leftSchematicPath = leftSchematicPath;
     this.rightSchematicPath = rightSchematicPath;
 
-    capacitor.capacitanceProperty.link( capacitance => {
+    capacitor.capacitanceProperty.link( ( capacitance: number ) => {
 
       // compute proportionality constant based on defaults.
       const k = 0.1 * 0.004;
@@ -220,7 +240,7 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
    * @overrides
    * @public
    */
-  containsSensorPoint( globalPoint ) {
+  containsSensorPoint( globalPoint: Vector2 ) {
 
     // make sure bounds are correct if cut or joined in this animation frame
     this.step();
@@ -234,7 +254,7 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
    * @returns {boolean}
    * @public
    */
-  frontSideContainsSensorPoint( globalPoint ) {
+  frontSideContainsSensorPoint( globalPoint: Vector2 ) {
 
     if ( this.viewTypeProperty.value === 'lifelike' ) {
       return this.capacitorCircuitElementLifelikeNode.frontSideContainsSensorPoint( globalPoint ) ||
@@ -251,7 +271,7 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
    * @returns {boolean}
    * @public
    */
-  backSideContainsSensorPoint( globalPoint ) {
+  backSideContainsSensorPoint( globalPoint: Vector2 ) {
 
     if ( this.viewTypeProperty.value === 'lifelike' ) {
       return this.capacitorCircuitElementLifelikeNode.backSideContainsSensorPoint( globalPoint ) ||

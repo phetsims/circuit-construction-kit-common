@@ -59,7 +59,7 @@ abstract class CircuitElement extends PhetioObject {
   readonly disposeEmitterCircuitElement: Emitter<[]>;
   private readonly vertexMovedListener: () => void;
   private readonly linkVertexListener: ( newVertex: Vertex, oldVertex: Vertex ) => void;
-  protected readonly voltageDifferenceProperty: NumberProperty;
+  readonly voltageDifferenceProperty: NumberProperty;
   private readonly vertexVoltageListener: () => Property<any>;
   chargePathLength: number;
   private circuitElementDisposed: boolean;
