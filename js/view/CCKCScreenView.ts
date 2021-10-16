@@ -94,7 +94,7 @@ type CCKCScreenViewOptions = {
 
 class CCKCScreenView extends ScreenView {
   readonly model: CircuitConstructionKitModel;
-  private readonly circuitLayerNodeBackLayer: Node;
+  readonly circuitLayerNodeBackLayer: Node;
   private readonly circuitLayerNode: CircuitLayerNode;
   private readonly chartNodes: CurrentChartNode[];
   private readonly voltageChartNode1: VoltageChartNode | null;

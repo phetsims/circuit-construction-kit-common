@@ -73,7 +73,7 @@ class Circuit {
   readonly currentTypeProperty: Property<CurrentType>;
   readonly timeProperty: NumberProperty;
   readonly chargeAnimator: ChargeAnimator;
-  private readonly circuitChangedEmitter: Emitter<[]>;
+  readonly circuitChangedEmitter: Emitter<[]>;
   readonly vertexDroppedEmitter: Emitter<[ Vertex ]>;
   readonly componentEditedEmitter: Emitter<[]>;
   readonly vertexGroup: PhetioGroup<Vertex>;
@@ -1209,9 +1209,9 @@ class Circuit {
    * @returns {Vertex|null}
    * @public
    */
-  getSelectedVertex() {
+  getSelectedVertex(): Vertex | null {
     const selectedVertex = _.find( this.vertexGroup.getArray(), vertex => vertex.selectedProperty.get() );
-    return selectedVertex || null;
+    return ( selectedVertex || null ) as ( Vertex | null );
   }
 
   /**
@@ -1223,7 +1223,7 @@ class Circuit {
    * @returns {Vertex|null} - the vertex it will be able to connect to, if dropped or null if no connection is available
    * @public
    */
-  getDropTarget( vertex: Vertex, mode: InteractionMode, blackBoxBounds: Bounds2 | undefined ) { // TODO Enum for InteractionMode
+  getDropTarget( vertex: Vertex, mode: InteractionMode, blackBoxBounds: Bounds2 | null ) { // TODO Enum for InteractionMode
 
     if ( mode === 'test' ) {
       assert && assert( blackBoxBounds, 'bounds should be provided for build mode' );

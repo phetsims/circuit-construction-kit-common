@@ -38,10 +38,10 @@ type CircuitElementOptions = {
 };
 
 abstract class CircuitElement extends PhetioObject {
-  private readonly id: number;
+  readonly id: number;
   private readonly creationTime: number;
   readonly isFlammable: boolean;
-  private readonly isMetallic: boolean;
+  readonly isMetallic: boolean;
   private readonly isSizeChangedOnViewChange: boolean;
   private readonly canBeDroppedInToolbox: boolean;
   readonly startVertexProperty: Property<Vertex>;

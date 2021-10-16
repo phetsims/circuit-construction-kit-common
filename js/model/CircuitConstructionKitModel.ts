@@ -46,9 +46,9 @@ class CircuitConstructionKitModel {
   readonly selectedZoomProperty: NumberProperty;
   readonly currentZoomProperty: NumberProperty;
   readonly isPlayingProperty: BooleanProperty;
-  readonly modeProperty: Property<string>;
-  private readonly revealingProperty: BooleanProperty;
-  private readonly blackBoxBounds: Bounds2 | null;
+  readonly modeProperty: Property<'explore' | 'test'>; // TODO: enum
+  readonly revealingProperty: BooleanProperty;
+  readonly blackBoxBounds: Bounds2 | null;
   readonly stopwatch: Stopwatch;
   readonly stepEmitter: Emitter<[ number ]>;
 

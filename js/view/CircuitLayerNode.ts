@@ -59,6 +59,13 @@ import SwitchNode from './SwitchNode.js';
 import ValueNode from './ValueNode.js';
 import VertexNode from './VertexNode.js';
 import WireNode from './WireNode.js';
+import Circuit from '../model/Circuit.js';
+import CCKCScreenView from './CCKCScreenView.js';
+import CircuitElementViewType from '../model/CircuitElementViewType.js';
+import CircuitElement from '../model/CircuitElement.js';
+import Vertex from '../model/Vertex.js';
+import CircuitConstructionKitModel from '../model/CircuitConstructionKitModel.js';
+import CapacitorNode from '../../../scenery-phet/js/capacitor/CapacitorNode.js';
 
 // constants
 
@@ -68,12 +75,38 @@ import WireNode from './WireNode.js';
 const RENDERER = 'svg';
 
 class CircuitLayerNode extends Node {
+  private readonly viewTypeProperty: Property<CircuitElementViewType>;
+  private readonly model: CircuitConstructionKitModel;
+  private readonly visibleBoundsProperty: Property<any>;
+  private readonly circuitLayerNodeBackLayer: Node;
+  readonly highlightLayer: Node;
+  private readonly seriesAmmeterNodeReadoutPanelLayer: Node;
+  private readonly buttonLayer: Node;
+  private readonly valueLayer: Node;
+  private readonly lightRaysLayer: Node;
+  private readonly wireLayer: Node;
+  private readonly solderLayer: Node;
+  private readonly vertexLayer: Node;
+  private readonly fixedCircuitElementLayer: Node;
+  readonly lightBulbSocketLayer: Node;
+  private readonly chargeLayer: Node;
+  readonly sensorLayer: Node;
+  private readonly beforeCircuitElementsLayer: Node;
+  private readonly afterCircuitElementsLayer: Node;
+  readonly visibleBoundsInCircuitCoordinateFrameProperty: Property<Bounds2>;
+  readonly circuit: Circuit;
+  private readonly circuitElementNodeMap: { [ key: number ]: CircuitElementNode };
+  private readonly solderNodes: { [ key: number ]: SolderNode };
+  private readonly vertexNodes: { [ key: number ]: VertexNode };
+  private readonly cutButton: RoundPushButton;
+  private readonly circuitDebugLayer: CircuitDebugLayer | null;
+
   /**
    * @param {Circuit} circuit - the model Circuit
    * @param {CCKCScreenView} screenView - for dropping CircuitElement instances back in the toolbox
    * @param {Tandem} tandem
    */
-  constructor( circuit, screenView, tandem ) {
+  constructor( circuit: Circuit, screenView: CCKCScreenView, tandem: Tandem ) {
     super();
 
     // @private {Property.<CircuitElementViewType>}
@@ -145,7 +178,7 @@ class CircuitLayerNode extends Node {
       renderer: RENDERER,
       children: [ new Node( {
         visible: false,
-        children: []
+        children: ( [] as any )
           .concat( BatteryNode.webglSpriteNodes )
           .concat( ResistorNode.webglSpriteNodes )
           .concat( FixedCircuitElementNode.webglSpriteNodes )
@@ -176,7 +209,7 @@ class CircuitLayerNode extends Node {
       // } ) ]
     } );
 
-    Property.multilink( [ screenView.model.isValueDepictionEnabledProperty, screenView.model.revealingProperty ], ( isValueDepictionEnabled, revealing ) => {
+    Property.multilink( [ screenView.model.isValueDepictionEnabledProperty, screenView.model.revealingProperty ], ( isValueDepictionEnabled: boolean, revealing: boolean ) => {
       this.chargeLayer.visible = isValueDepictionEnabled && revealing;
     } );
 
@@ -225,7 +258,7 @@ class CircuitLayerNode extends Node {
 
     // choose layering for schematic vs lifelike.  HEADS UP, this means circuitLayerNode.addChild() will get overwritten
     // so all nodes must be added as children in the array above.
-    screenView.model.viewTypeProperty.link( view => {
+    screenView.model.viewTypeProperty.link( ( view: CircuitElementViewType ) => {
       this.children = ( view === 'lifelike' ) ? lifelikeLayering : schematicLayering;
     } );
 
@@ -256,8 +289,8 @@ class CircuitLayerNode extends Node {
      * @param {Node} layer
      * @param {function} createCircuitElement - creates the node, given a circuitElement and tandem BatteryNode
      */
-    const initializeCircuitElementType = ( predicate, layer, createCircuitElement ) => {
-      const addCircuitElement = circuitElement => {
+    const initializeCircuitElementType = ( predicate: any, layer: Node, createCircuitElement: any ) => {
+      const addCircuitElement = ( circuitElement: CircuitElement ) => {
         if ( predicate( circuitElement ) ) {
           const circuitElementNode = createCircuitElement( circuitElement, Tandem.OPTIONAL );
           this.circuitElementNodeMap[ circuitElement.id ] = circuitElementNode;
@@ -275,7 +308,7 @@ class CircuitLayerNode extends Node {
               Tandem.OPTIONAL
             );
 
-            const updateShowValues = showValues => CCKCUtils.setInSceneGraph( showValues, this.valueLayer, valueNode );
+            const updateShowValues = ( showValues: boolean ) => CCKCUtils.setInSceneGraph( showValues, this.valueLayer, valueNode );
             this.model.showValuesProperty.link( updateShowValues );
 
             circuitElement.disposeEmitterCircuitElement.addListener( () => {
@@ -300,28 +333,28 @@ class CircuitLayerNode extends Node {
       } );
     };
 
-    initializeCircuitElementType( e => e instanceof Wire, this.wireLayer,
-      ( circuitElement, tandem ) => new WireNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem ) );
-    initializeCircuitElementType( e => e instanceof Battery, this.fixedCircuitElementLayer,
-      ( circuitElement, tandem ) => new BatteryNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem ) );
-    initializeCircuitElementType( e => e instanceof LightBulb, this.fixedCircuitElementLayer,
-      ( circuitElement, tandem ) => new CCKCLightBulbNode( screenView, this, circuitElement, this.model.isValueDepictionEnabledProperty, this.model.viewTypeProperty, tandem ) );
-    initializeCircuitElementType( e => e instanceof Resistor && !( e instanceof Dog ), this.fixedCircuitElementLayer,
-      ( circuitElement, tandem ) => new ResistorNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem ) );
-    initializeCircuitElementType( e => e instanceof Dog, this.fixedCircuitElementLayer,
-      ( circuitElement, tandem ) => new DogNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem ) );
-    initializeCircuitElementType( e => e instanceof Capacitor, this.fixedCircuitElementLayer,
-      ( circuitElement, tandem ) => new CapacitorCircuitElementNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem ) );
-    initializeCircuitElementType( e => e instanceof SeriesAmmeter, this.fixedCircuitElementLayer,
-      ( circuitElement, tandem ) => new SeriesAmmeterNode( screenView, this, circuitElement, tandem ) );
-    initializeCircuitElementType( e => e instanceof Switch, this.fixedCircuitElementLayer,
-      ( circuitElement, tandem ) => new SwitchNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem ) );
-    initializeCircuitElementType( e => e instanceof ACVoltage, this.fixedCircuitElementLayer,
-      ( circuitElement, tandem ) => new ACVoltageNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem ) );
-    initializeCircuitElementType( e => e instanceof Fuse, this.fixedCircuitElementLayer,
-      ( circuitElement, tandem ) => new FuseNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem ) );
-    initializeCircuitElementType( e => e instanceof Inductor, this.fixedCircuitElementLayer,
-      ( circuitElement, tandem ) => new InductorNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem ) );
+    initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Wire, this.wireLayer,
+      ( circuitElement: CircuitElement, tandem: Tandem ) => new WireNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem ) );
+    initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Battery, this.fixedCircuitElementLayer,
+      ( circuitElement: CircuitElement, tandem: Tandem ) => new BatteryNode( screenView, this, circuitElement as Battery, this.model.viewTypeProperty, tandem ) );
+    initializeCircuitElementType( ( e: CircuitElement ) => e instanceof LightBulb, this.fixedCircuitElementLayer,
+      ( circuitElement: CircuitElement, tandem: Tandem ) => new CCKCLightBulbNode( screenView, this, circuitElement as LightBulb, this.model.isValueDepictionEnabledProperty, this.model.viewTypeProperty, tandem ) );
+    initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Resistor && !( e instanceof Dog ), this.fixedCircuitElementLayer,
+      ( circuitElement: CircuitElement, tandem: Tandem ) => new ResistorNode( screenView, this, circuitElement as Resistor, this.model.viewTypeProperty, tandem ) );
+    initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Dog, this.fixedCircuitElementLayer,
+      ( circuitElement: CircuitElement, tandem: Tandem ) => new DogNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem ) );
+    initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Capacitor, this.fixedCircuitElementLayer,
+      ( circuitElement: CircuitElement, tandem: Tandem ) => new CapacitorCircuitElementNode( screenView, this, circuitElement as Capacitor, this.model.viewTypeProperty, tandem ) );
+    initializeCircuitElementType( ( e: CircuitElement ) => e instanceof SeriesAmmeter, this.fixedCircuitElementLayer,
+      ( circuitElement: CircuitElement, tandem: Tandem ) => new SeriesAmmeterNode( screenView, this, circuitElement, tandem ) );
+    initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Switch, this.fixedCircuitElementLayer,
+      ( circuitElement: CircuitElement, tandem: Tandem ) => new SwitchNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem ) );
+    initializeCircuitElementType( ( e: CircuitElement ) => e instanceof ACVoltage, this.fixedCircuitElementLayer,
+      ( circuitElement: CircuitElement, tandem: Tandem ) => new ACVoltageNode( screenView, this, circuitElement as ACVoltage, this.model.viewTypeProperty, tandem ) );
+    initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Fuse, this.fixedCircuitElementLayer,
+      ( circuitElement: CircuitElement, tandem: Tandem ) => new FuseNode( screenView, this, circuitElement as Fuse, this.model.viewTypeProperty, tandem ) );
+    initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Inductor, this.fixedCircuitElementLayer,
+      ( circuitElement: CircuitElement, tandem: Tandem ) => new InductorNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem ) );
 
     // When a vertex is selected, a cut button is shown near to the vertex.  If the vertex is connected to >1 circuit
     // element, the button is enabled.  Pressing the button will cut the vertex from the neighbors.  Only one cutButton
@@ -343,15 +376,18 @@ class CircuitLayerNode extends Node {
       tandem: tandem.createTandem( 'cutButton' )
     } );
     this.cutButton.addListener( () => {
-      assert && assert( circuit.getSelectedVertex(), 'Button should only be available if a vertex is selected' );
-      circuit.cutVertex( circuit.getSelectedVertex() );
+      const selectedVertex = circuit.getSelectedVertex();
+      assert && assert( selectedVertex, 'Button should only be available if a vertex is selected' );
+      if ( selectedVertex ) {
+        circuit.cutVertex( selectedVertex );
 
-      // Make sure no vertices got nudged out of bounds during a cut, see https://github.com/phetsims/circuit-construction-kit-dc/issues/138
-      moveVerticesInBounds( this.visibleBoundsInCircuitCoordinateFrameProperty.value );
+        // Make sure no vertices got nudged out of bounds during a cut, see https://github.com/phetsims/circuit-construction-kit-dc/issues/138
+        moveVerticesInBounds( this.visibleBoundsInCircuitCoordinateFrameProperty.value );
+      }
     } );
 
     // When a Vertex is added to the model, create the corresponding views
-    const addVertexNode = vertex => {
+    const addVertexNode = ( vertex: Vertex ) => {
       const solderNode = new SolderNode( this, vertex );
       this.solderNodes[ vertex.index ] = solderNode;
       this.solderLayer.addChild( solderNode );
@@ -379,7 +415,7 @@ class CircuitLayerNode extends Node {
     circuit.vertexGroup.forEach( addVertexNode );
 
     // When the screen is resized or zoomed, move all vertices into view.
-    const moveVerticesInBounds = localBounds => {
+    const moveVerticesInBounds = ( localBounds: Bounds2 ) => {
 
       // Check all vertices
       for ( let i = 0; i < circuit.vertexGroup.count; i++ ) {
@@ -406,6 +442,9 @@ class CircuitLayerNode extends Node {
       this.circuitDebugLayer = new CircuitDebugLayer( this );
       this.addChild( this.circuitDebugLayer );
     }
+    else {
+      this.circuitDebugLayer = null;
+    }
   }
 
   /**
@@ -414,7 +453,7 @@ class CircuitLayerNode extends Node {
    * @returns {CircuitElementNode}
    * @public
    */
-  getCircuitElementNode( circuitElement ) {
+  getCircuitElementNode( circuitElement: CircuitElement ) {
     return this.circuitElementNodeMap[ circuitElement.id ];
   }
 
@@ -424,7 +463,7 @@ class CircuitLayerNode extends Node {
    * @returns {SolderNode}
    * @public
    */
-  getSolderNode( vertex ) { return this.solderNodes[ vertex.index ]; }
+  getSolderNode( vertex: Vertex ) { return this.solderNodes[ vertex.index ]; }
 
   /**
    * Get the VertexNode associated with the specified Vertex
@@ -432,7 +471,7 @@ class CircuitLayerNode extends Node {
    * @returns {VertexNode}
    * @public
    */
-  getVertexNode( vertex ) { return this.vertexNodes[ vertex.index ]; }
+  getVertexNode( vertex: Vertex ) { return this.vertexNodes[ vertex.index ]; }
 
   /**
    * Find drop targets for all the given vertices
@@ -440,7 +479,7 @@ class CircuitLayerNode extends Node {
    * @returns {Object[]} candidates for connection, each Object has {src:Vertex,dst:Vertex} indicating what can snap
    * @public
    */
-  getAllDropTargets( vertices ) {
+  getAllDropTargets( vertices: Vertex[] ) {
     const allDropTargets = [];
 
     for ( let i = 0; i < vertices.length; i++ ) {
@@ -464,7 +503,7 @@ class CircuitLayerNode extends Node {
    *                        or null if no match is suitable.
    * @private
    */
-  getBestDropTarget( vertices ) {
+  getBestDropTarget( vertices: Vertex[] ) {
     const allDropTargets = this.getAllDropTargets( vertices );
     if ( allDropTargets ) {
       const sorted = _.sortBy( allDropTargets, dropTarget =>
@@ -496,7 +535,7 @@ class CircuitLayerNode extends Node {
    * @returns {boolean}
    * @public
    */
-  canDragVertex( vertex ) {
+  canDragVertex( vertex: Vertex ) {
     const vertices = this.circuit.findAllFixedVertices( vertex );
 
     // If any of the vertices in the subgraph is already being dragged, then this vertex cannot be dragged.
@@ -514,7 +553,7 @@ class CircuitLayerNode extends Node {
    * @param {Vertex} vertex
    * @public
    */
-  setVerticesDragging( vertex ) {
+  setVerticesDragging( vertex: Vertex ) {
     const vertices = this.circuit.findAllFixedVertices( vertex );
     for ( let i = 0; i < vertices.length; i++ ) {
       vertices[ i ].isDragged = true;
@@ -527,7 +566,7 @@ class CircuitLayerNode extends Node {
    * @param {Vertex} vertex
    * @public
    */
-  startDragVertex( point, vertex ) {
+  startDragVertex( point: Vector2, vertex: Vertex ) {
 
     // If it is the edge of a fixed length circuit element, the element rotates and moves toward the mouse
     const vertexNode = this.getVertexNode( vertex );
@@ -545,31 +584,35 @@ class CircuitLayerNode extends Node {
    * @param {Vertex[]} vertices
    * @private
    */
-  rotateAboutFixedPivot( point, vertex, okToRotate, vertexNode, position, neighbors, vertices ) {
+  rotateAboutFixedPivot( point: Vector2, vertex: Vertex, okToRotate: boolean, vertexNode: VertexNode, position: Vector2, neighbors: CircuitElement[], vertices: Vertex[] ) {
 
     // Don't traverse across the black box interface, or it would rotate objects on the other side
     vertices = this.circuit.findAllFixedVertices( vertex, currentVertex => !currentVertex.blackBoxInterfaceProperty.get() );
     const fixedNeighbors = neighbors.filter( neighbor => neighbor.getOppositeVertex( vertex ).blackBoxInterfaceProperty.get() );
     if ( fixedNeighbors.length === 1 ) {
       const fixedNeighbor = fixedNeighbors[ 0 ];
-      const fixedVertex = fixedNeighbor.getOppositeVertex( vertex );
-      const desiredAngle = position.minus( fixedVertex.positionProperty.get() ).angle;
-      assert && assert( !isNaN( desiredAngle ), 'angle should be a number' );
+      assert && assert( fixedNeighbor instanceof FixedCircuitElement, 'should be a fixed length circuit element' );
+      if ( fixedNeighbor instanceof FixedCircuitElement ) {
+        const fixedVertex = fixedNeighbor.getOppositeVertex( vertex );
+        const desiredAngle = position.minus( fixedVertex.positionProperty.get() ).angle;
+        assert && assert( !isNaN( desiredAngle ), 'angle should be a number' );
 
-      const length = fixedNeighbor.distanceBetweenVertices || fixedNeighbor.lengthProperty.get();
-      const indexOfFixedVertex = vertices.indexOf( fixedVertex );
-      vertices.splice( indexOfFixedVertex, 1 );
+        // @ts-ignore
+        const length = fixedNeighbor.distanceBetweenVertices || fixedNeighbor.lengthProperty.get();
+        const indexOfFixedVertex = vertices.indexOf( fixedVertex );
+        vertices.splice( indexOfFixedVertex, 1 );
 
-      const dest = Vector2.createPolar( length, desiredAngle ).plus( fixedVertex.positionProperty.get() );
-      const src = vertex.positionProperty.get();
-      const delta = dest.minus( src );
-      const relative = Vector2.createPolar( length, desiredAngle + Math.PI );
-      assert && assert( !isNaN( relative.x ), 'x should be a number' );
-      assert && assert( !isNaN( relative.y ), 'y should be a number' );
+        const dest = Vector2.createPolar( length, desiredAngle ).plus( fixedVertex.positionProperty.get() );
+        const src = vertex.positionProperty.get();
+        const delta = dest.minus( src );
+        const relative = Vector2.createPolar( length, desiredAngle + Math.PI );
+        assert && assert( !isNaN( relative.x ), 'x should be a number' );
+        assert && assert( !isNaN( relative.y ), 'y should be a number' );
 
-      // Do not propose attachments, since connections cannot be made from a rotation.
-      const attachable = [];
-      this.translateVertexGroup( vertex, vertices, delta, () => vertex.unsnappedPositionProperty.set( fixedVertex.unsnappedPositionProperty.get().minus( relative ) ), attachable );
+        // Do not propose attachments, since connections cannot be made from a rotation.
+        const attachable: Vertex[] = [];
+        this.translateVertexGroup( vertex, vertices, delta, () => vertex.unsnappedPositionProperty.set( fixedVertex.unsnappedPositionProperty.get().minus( relative ) ), attachable );
+      }
     }
   }
 
@@ -580,7 +623,7 @@ class CircuitLayerNode extends Node {
    * @param {boolean} okToRotate - true if it is allowed to rotate adjacent CircuitElements
    * @public
    */
-  dragVertex( point, vertex, okToRotate ) {
+  dragVertex( point: Vector2, vertex: Vertex, okToRotate: boolean ) {
     const vertexNode = this.getVertexNode( vertex );
 
     // Guard against the case in which the battery is flipped while dragging, see https://github.com/phetsims/circuit-construction-kit-common/issues/416
@@ -662,7 +705,7 @@ class CircuitLayerNode extends Node {
    * @param {Array.<Vertex>} attachable - the nodes that are candidates for attachment
    * @public
    */
-  translateVertexGroup( vertex, vertices, unsnappedDelta, updatePositions, attachable ) {
+  translateVertexGroup( vertex: Vertex, vertices: Vertex[], unsnappedDelta: Vector2, updatePositions: any, attachable: Vertex[] ) {
 
     const screenBounds = this.visibleBoundsProperty.get();
     const bounds = this.parentToLocalBounds( screenBounds );
@@ -718,7 +761,7 @@ class CircuitLayerNode extends Node {
    * @param {boolean} dragged - true if the vertex actually moved with at least 1 drag call
    * @public
    */
-  endDrag( vertex, dragged ) {
+  endDrag( vertex: Vertex, dragged: boolean ) {
     assert && assert( typeof dragged === 'boolean', 'didDrag must be supplied' );
 
     const vertexNode = this.getVertexNode( vertex );
@@ -758,7 +801,7 @@ class CircuitLayerNode extends Node {
    * @param {Node} child - the Node to add
    * @public
    */
-  addChildToBackground( child ) {
+  addChildToBackground( child: Node ) {
     this.circuitLayerNodeBackLayer.addChild( child );
   }
 
@@ -767,7 +810,7 @@ class CircuitLayerNode extends Node {
    * @param {Node} child - the Node to remove
    * @public
    */
-  removeChildFromBackground( child ) {
+  removeChildFromBackground( child: Node ) {
     this.circuitLayerNodeBackLayer.removeChild( child );
   }
 
@@ -777,7 +820,7 @@ class CircuitLayerNode extends Node {
    * @param {Bounds2} visibleBounds - view coordinates for the visible region
    * @public
    */
-  updateTransform( visibleBounds ) {
+  updateTransform( visibleBounds: Bounds2 ) {
     this.visibleBoundsInCircuitCoordinateFrameProperty.set( this.parentToLocalBounds( visibleBounds ) );
   }
 
@@ -789,7 +832,7 @@ class CircuitLayerNode extends Node {
    * @returns {CircuitElementNode|null}
    * @public
    */
-  hitCircuitElementNode( position, filter, globalPoint ) {
+  hitCircuitElementNode( position: Vector2, filter: any, globalPoint: Vector2 | null ) {
 
     assert && assert( globalPoint !== undefined );
 
@@ -826,7 +869,7 @@ class CircuitLayerNode extends Node {
    * @returns {VoltageConnection|null} returns VoltageConnection if connected, otherwise null
    * @private
    */
-  getVoltageConnection( probePosition ) {
+  getVoltageConnection( probePosition: Vector2 ) {
 
     const globalPoint = this.localToGlobalPoint( probePosition );
 
@@ -836,7 +879,7 @@ class CircuitLayerNode extends Node {
     // When solder is shown, it is used as the conductive element for the voltmeter (and hence why the solder radius
     // is used in the computation below.
     const solderNodes = _.values( this.solderNodes );
-    const hitSolderNode = _.find( solderNodes, solderNode => {
+    const hitSolderNode = _.find( solderNodes, ( solderNode: SolderNode ) => {
       const position = solderNode.vertex.positionProperty.get();
       return probePosition.distance( position ) <= SolderNode.SOLDER_RADIUS;
     } );
@@ -845,7 +888,7 @@ class CircuitLayerNode extends Node {
     }
 
     // Check for intersection with a metallic circuit element, which can provide voltmeter readings
-    const metallicCircuitElement = this.hitCircuitElementNode( probePosition, circuitElement => circuitElement.isMetallic, globalPoint );
+    const metallicCircuitElement = this.hitCircuitElementNode( probePosition, ( circuitElement: CircuitElement ) => circuitElement.isMetallic, globalPoint );
     if ( metallicCircuitElement ) {
 
       const startPoint = metallicCircuitElement.circuitElement.startPositionProperty.get();
@@ -867,27 +910,35 @@ class CircuitLayerNode extends Node {
     else {
 
       // check for intersection with switch node
-      const switchNode = this.hitCircuitElementNode( probePosition, circuitElement => circuitElement instanceof Switch, globalPoint );
+      const switchNode = this.hitCircuitElementNode( probePosition, ( circuitElement: CircuitElement ) => circuitElement instanceof Switch, globalPoint );
       if ( switchNode ) {
 
-        // address closed switch.  Find out whether the probe was near the start or end vertex
-        if ( switchNode.startSideContainsSensorPoint( probePosition ) ) {
-          return new VoltageConnection( switchNode.circuitSwitch.startVertexProperty.get() );
-        }
-        else if ( switchNode.endSideContainsSensorPoint( probePosition ) ) {
-          return new VoltageConnection( switchNode.circuitSwitch.endVertexProperty.get() );
+        assert && assert( switchNode instanceof SwitchNode );
+        if ( switchNode instanceof SwitchNode ) {
+
+          // address closed switch.  Find out whether the probe was near the start or end vertex
+          if ( switchNode.startSideContainsSensorPoint( probePosition ) ) {
+            return new VoltageConnection( switchNode.circuitSwitch.startVertexProperty.get() );
+          }
+          else if ( switchNode.endSideContainsSensorPoint( probePosition ) ) {
+            return new VoltageConnection( switchNode.circuitSwitch.endVertexProperty.get() );
+          }
         }
       }
 
-      const capacitorNode = this.hitCircuitElementNode( probePosition, circuitElement => circuitElement instanceof Capacitor, globalPoint );
+      const capacitorNode = this.hitCircuitElementNode( probePosition, ( circuitElement: CircuitElement ) => circuitElement instanceof Capacitor, globalPoint );
       if ( capacitorNode ) {
 
-        // Check front first since it visually looks like it would be touching the probe
-        if ( capacitorNode.frontSideContainsSensorPoint( globalPoint ) ) {
-          return new VoltageConnection( capacitorNode.circuitElement.startVertexProperty.get() );
-        }
-        else if ( capacitorNode.backSideContainsSensorPoint( globalPoint ) ) {
-          return new VoltageConnection( capacitorNode.circuitElement.endVertexProperty.get() );
+        assert && assert( capacitorNode instanceof CapacitorNode );
+        if ( capacitorNode instanceof CapacitorNode ) {
+
+          // Check front first since it visually looks like it would be touching the probe
+          if ( capacitorNode.frontSideContainsSensorPoint( globalPoint ) ) {
+            return new VoltageConnection( capacitorNode.circuitElement.startVertexProperty.get() );
+          }
+          else if ( capacitorNode.backSideContainsSensorPoint( globalPoint ) ) {
+            return new VoltageConnection( capacitorNode.circuitElement.endVertexProperty.get() );
+          }
         }
       }
       return null;
@@ -901,7 +952,7 @@ class CircuitLayerNode extends Node {
    * @returns {number|null}
    * @private
    */
-  getCurrentInLayer( probeNode, layer ) {
+  getCurrentInLayer( probeNode: Node, layer: Node ) {
 
     const globalPoint = probeNode.parentToGlobalPoint( probeNode.translation );
 
@@ -931,7 +982,7 @@ class CircuitLayerNode extends Node {
    * @returns {number|null}
    * @public
    */
-  getCurrent( probeNode ) {
+  getCurrent( probeNode: Node ) {
     const mainCurrent = this.getCurrentInLayer( probeNode, this.fixedCircuitElementLayer );
     if ( mainCurrent !== null ) {
       return mainCurrent;
