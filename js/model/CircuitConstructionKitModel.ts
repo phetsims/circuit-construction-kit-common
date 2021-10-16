@@ -35,22 +35,22 @@ type CircuitConstructionKitModelOptions = {
 
 class CircuitConstructionKitModel {
   private zoomAnimation: ZoomAnimation | null;
-  private readonly viewTypeProperty: Property<CircuitElementViewType>;
+  readonly viewTypeProperty: Property<CircuitElementViewType>;
   private readonly addRealBulbsProperty: BooleanProperty;
-  private readonly circuit: Circuit;
-  private readonly voltmeters: Voltmeter[];
-  private readonly ammeters: Ammeter[];
-  private readonly isValueDepictionEnabledProperty: BooleanProperty;
-  private readonly showLabelsProperty: BooleanProperty;
-  private readonly showValuesProperty: BooleanProperty;
-  private readonly selectedZoomProperty: NumberProperty;
-  private readonly currentZoomProperty: NumberProperty;
-  private readonly isPlayingProperty: BooleanProperty;
-  private readonly modeProperty: Property<string>;
+  readonly circuit: Circuit;
+  readonly voltmeters: Voltmeter[];
+  readonly ammeters: Ammeter[];
+  readonly isValueDepictionEnabledProperty: BooleanProperty;
+  readonly showLabelsProperty: BooleanProperty;
+  readonly showValuesProperty: BooleanProperty;
+  readonly selectedZoomProperty: NumberProperty;
+  readonly currentZoomProperty: NumberProperty;
+  readonly isPlayingProperty: BooleanProperty;
+  readonly modeProperty: Property<string>;
   private readonly revealingProperty: BooleanProperty;
   private readonly blackBoxBounds: Bounds2 | null;
-  private readonly stopwatch: Stopwatch;
-  private readonly stepEmitter: Emitter<[ number ]>;
+  readonly stopwatch: Stopwatch;
+  readonly stepEmitter: Emitter<[ number ]>;
 
   /**
    * @param {Tandem} tandem

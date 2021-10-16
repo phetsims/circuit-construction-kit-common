@@ -412,7 +412,7 @@ class CircuitLayerNode extends Node {
    * Returns the circuit element node that matches the given circuit element.
    * @param {CircuitElement} circuitElement
    * @returns {CircuitElementNode}
-   * @private
+   * @public
    */
   getCircuitElementNode( circuitElement ) {
     return this.circuitElementNodeMap[ circuitElement.id ];

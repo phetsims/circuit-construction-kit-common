@@ -8,6 +8,8 @@
 
 import merge from '../../../phet-core/js/merge.js';
 import Panel from '../../../sun/js/Panel.js';
+import Tandem from '../../../tandem/js/Tandem.js';
+import Node from '../../../scenery/js/nodes/Node.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
@@ -18,7 +20,7 @@ class CCKCPanel extends Panel {
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( content, tandem, options ) {
+  constructor( content: Node, tandem: Tandem, options: object ) {
     options = merge( {
       fill: CCKCConstants.PANEL_COLOR,
       lineWidth: CCKCConstants.PANEL_LINE_WIDTH,

@@ -69,12 +69,12 @@ class Circuit {
   readonly sourceResistanceProperty: NumberProperty;
   readonly circuitElements: ObservableArray<CircuitElement>;
   readonly charges: ObservableArray<Charge>;
-  private readonly showCurrentProperty: BooleanProperty;
-  private readonly currentTypeProperty: Property<CurrentType>;
-  private readonly timeProperty: NumberProperty;
+  readonly showCurrentProperty: BooleanProperty;
+  readonly currentTypeProperty: Property<CurrentType>;
+  readonly timeProperty: NumberProperty;
   readonly chargeAnimator: ChargeAnimator;
   private readonly circuitChangedEmitter: Emitter<[]>;
-  private readonly vertexDroppedEmitter: Emitter<[ Vertex ]>;
+  readonly vertexDroppedEmitter: Emitter<[ Vertex ]>;
   readonly componentEditedEmitter: Emitter<[]>;
   readonly vertexGroup: PhetioGroup<Vertex>;
   private readonly selectedCircuitElementProperty: Property<CircuitElement | null>;

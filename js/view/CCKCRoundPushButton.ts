@@ -16,7 +16,7 @@ class CCKCRoundPushButton extends RoundPushButton {
   /**
    * @param {Object} [options]
    */
-  constructor( options ) {
+  constructor( options: object ) {
     super( merge( {
       baseColor: PhetColorScheme.BUTTON_YELLOW,
       xMargin: 10,

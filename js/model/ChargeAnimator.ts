@@ -58,7 +58,7 @@ class ChargeAnimator {
   private readonly circuit: Circuit;
   private scale: number;
   readonly timeScaleRunningAverage: RunningAverage;
-  private readonly timeScaleProperty: NumberProperty;
+  readonly timeScaleProperty: NumberProperty;
 
   /**
    * @param {Circuit} circuit

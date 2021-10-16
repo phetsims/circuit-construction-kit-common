@@ -9,6 +9,7 @@
 
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Property from '../../../axon/js/Property.js';
+import Bounds2 from '../../../dot/js/Bounds2.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import ScreenView from '../../../joist/js/ScreenView.js';
 import merge from '../../../phet-core/js/merge.js';
@@ -26,12 +27,15 @@ import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
+import CircuitConstructionKitModel from '../model/CircuitConstructionKitModel.js';
 import SeriesAmmeter from '../model/SeriesAmmeter.js';
 import AdvancedAccordionBox from './AdvancedAccordionBox.js';
 import AmmeterNode from './AmmeterNode.js';
 import ChargeSpeedThrottlingReadoutNode from './ChargeSpeedThrottlingReadoutNode.js';
 import CircuitElementEditContainerNode from './CircuitElementEditContainerNode.js';
+import CircuitElementNode from './CircuitElementNode.js';
 import CircuitElementToolbox from './CircuitElementToolbox.js';
+import CircuitElementToolNode from './CircuitElementToolNode.js';
 import CircuitLayerNode from './CircuitLayerNode.js';
 import CurrentChartNode from './CurrentChartNode.js';
 import DisplayOptionsPanel from './DisplayOptionsPanel.js';
@@ -62,12 +66,47 @@ const CONTROL_PANEL_ALIGN_GROUP = new AlignGroup( {
 // Support accessibility for deleting selected circuit elements, but don't support broader tab navigation until it
 // is complete
 document.addEventListener( 'keydown', event => {
+
+  // @ts-ignore
   if ( KeyboardUtils.isKeyEvent( event, KeyboardUtils.KEY_TAB ) ) {
     event.preventDefault();
   }
 } );
 
+type CCKCScreenViewOptions = {
+  showResetAllButton: boolean,
+
+  circuitElementToolboxOptions: any,
+
+  showSeriesAmmeters: boolean,
+  showTimeControls: boolean,
+  showNoncontactAmmeters: boolean,
+
+  // @ts-ignore
+  getCircuitEditPanelLayoutPosition: any,
+  showAdvancedControls: boolean,
+  showCharts: boolean,
+  blackBoxStudy: boolean,
+  showStopwatchCheckbox: boolean,
+  showPhaseShiftControl: boolean,
+  hasACandDCVoltageSources: boolean
+};
+
 class CCKCScreenView extends ScreenView {
+  readonly model: CircuitConstructionKitModel;
+  private readonly circuitLayerNodeBackLayer: Node;
+  private readonly circuitLayerNode: CircuitLayerNode;
+  private readonly chartNodes: CurrentChartNode[];
+  private readonly voltageChartNode1: VoltageChartNode | null;
+  private readonly voltageChartNode2: VoltageChartNode | null;
+  private readonly currentChartNode1: CurrentChartNode | null;
+  private readonly currentChartNode2: CurrentChartNode | null;
+  private readonly circuitElementToolbox: CircuitElementToolbox;
+  readonly sensorToolbox: SensorToolbox;
+  private readonly viewRadioButtonGroup: ViewRadioButtonGroup;
+  private readonly displayOptionsPanel: DisplayOptionsPanel;
+  private readonly advancedAccordionBox: AdvancedAccordionBox;
+  private stopwatchNodePositionDirty: boolean;
 
   /**
    * @param {CircuitConstructionKitModel} model
@@ -75,9 +114,9 @@ class CCKCScreenView extends ScreenView {
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( model, circuitElementToolNodes, tandem, options ) {
+  constructor( model: CircuitConstructionKitModel, circuitElementToolNodes: CircuitElementToolNode[], tandem: Tandem, options?: Partial<CCKCScreenViewOptions> ) {
 
-    options = merge( {
+    const filledOptions = merge( {
 
       // When used as a scene, the reset all button is suppressed here, added in the screen so that it may reset all
       // scenes (including but not limited to this one).
@@ -88,6 +127,8 @@ class CCKCScreenView extends ScreenView {
       showSeriesAmmeters: false,
       showTimeControls: false,
       showNoncontactAmmeters: true,
+
+      // @ts-ignore
       getCircuitEditPanelLayoutPosition: CircuitElementEditContainerNode.GET_LAYOUT_POSITION,
       showAdvancedControls: true,
       showCharts: false,
@@ -95,7 +136,7 @@ class CCKCScreenView extends ScreenView {
       showStopwatchCheckbox: false,
       showPhaseShiftControl: false,
       hasACandDCVoltageSources: false // determines the string shown in the AdvancedAccordionBox
-    }, options );
+    }, options ) as CCKCScreenViewOptions;
 
     super( { tandem: tandem } );
 
@@ -131,7 +172,7 @@ class CCKCScreenView extends ScreenView {
         tandem: tandem.createTandem( `ammeterNode${ammeter.phetioIndex}` ), // TODO (phet-io): Group?
         showResultsProperty: model.isValueDepictionEnabledProperty,
         visibleBoundsProperty: this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty,
-        blackBoxStudy: options.blackBoxStudy
+        blackBoxStudy: filledOptions.blackBoxStudy
       } );
       ammeter.droppedEmitter.addListener( bodyNodeGlobalBounds => {
         if ( bodyNodeGlobalBounds.intersectsBounds( this.sensorToolbox.globalBounds ) ) {
@@ -145,9 +186,9 @@ class CCKCScreenView extends ScreenView {
     this.chartNodes = [];
 
     // Optionally initialize the chart nodes
-    if ( options.showCharts ) {
+    if ( filledOptions.showCharts ) {
 
-      const createVoltageChartNode = tandemName => {
+      const createVoltageChartNode = ( tandemName: string ) => {
         const voltageChartNode = new VoltageChartNode( this.circuitLayerNode, model.circuit.timeProperty,
           this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty, {
             tandem: tandem.createTandem( tandemName )
@@ -156,7 +197,7 @@ class CCKCScreenView extends ScreenView {
         voltageChartNode.initializeBodyDragListener( this );
         return voltageChartNode;
       };
-      const createCurrentChartNode = tandemName => {
+      const createCurrentChartNode = ( tandemName: string ) => {
         const currentChartNode = new CurrentChartNode( this.circuitLayerNode, model.circuit.timeProperty,
           this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty, {
             tandem: tandem.createTandem( tandemName )
@@ -176,13 +217,21 @@ class CCKCScreenView extends ScreenView {
 
       this.chartNodes.push( this.voltageChartNode1, this.voltageChartNode2, this.currentChartNode1, this.currentChartNode2 );
     }
+    else {
+      this.voltageChartNode1 = null;
+      this.voltageChartNode2 = null;
+
+      // @private {CurrentChartNode}
+      this.currentChartNode1 = null;
+      this.currentChartNode2 = null;
+    }
 
     // @public (read-only) {CircuitElementToolbox} - Toolbox from which CircuitElements can be dragged
     this.circuitElementToolbox = new CircuitElementToolbox(
       model.viewTypeProperty,
       circuitElementToolNodes,
       tandem.createTandem( 'circuitElementToolbox' ),
-      options.circuitElementToolboxOptions
+      filledOptions.circuitElementToolboxOptions
     );
 
     // @protected {SensorToolbox} - so that subclasses can add a layout circuit element near it
@@ -191,12 +240,14 @@ class CCKCScreenView extends ScreenView {
       this.circuitLayerNode,
       voltmeterNodes,
       ammeterNodes,
+
+      // @ts-ignore
       [ this.voltageChartNode1, this.voltageChartNode2 ],
       [ this.currentChartNode1, this.currentChartNode2 ],
       tandem.createTandem( 'sensorToolbox' ), {
-        showSeriesAmmeters: options.showSeriesAmmeters,
-        showNoncontactAmmeters: options.showNoncontactAmmeters,
-        showCharts: options.showCharts
+        showSeriesAmmeters: filledOptions.showSeriesAmmeters,
+        showNoncontactAmmeters: filledOptions.showNoncontactAmmeters,
+        showCharts: filledOptions.showCharts
       } );
 
     // @private {ViewRadioButtonGroup}
@@ -216,7 +267,7 @@ class CCKCScreenView extends ScreenView {
       model.showValuesProperty,
       model.showLabelsProperty,
       model.stopwatch,
-      options.showStopwatchCheckbox,
+      filledOptions.showStopwatchCheckbox,
       tandem.createTandem( 'displayOptionsPanel' )
     );
 
@@ -224,17 +275,17 @@ class CCKCScreenView extends ScreenView {
     this.advancedAccordionBox = new AdvancedAccordionBox(
       model.circuit,
       CONTROL_PANEL_ALIGN_GROUP,
-      options.hasACandDCVoltageSources ? sourceResistanceString : batteryResistanceString,
+      filledOptions.hasACandDCVoltageSources ? sourceResistanceString : batteryResistanceString,
       tandem.createTandem( 'advancedAccordionBox' ), {
-        showRealBulbsCheckbox: !options.hasACandDCVoltageSources
+        showRealBulbsCheckbox: !filledOptions.hasACandDCVoltageSources
       }
     );
 
     this.addChild( this.circuitLayerNodeBackLayer );
 
     // Reset All button
-    let resetAllButton = null;
-    if ( options.showResetAllButton ) {
+    let resetAllButton: ResetAllButton | null = null;
+    if ( filledOptions.showResetAllButton ) {
       resetAllButton = new ResetAllButton( {
         tandem: tandem.createTandem( 'resetAllButton' ),
         listener: () => {
@@ -250,7 +301,7 @@ class CCKCScreenView extends ScreenView {
 
     const controlPanelVBox = new VBox( {
       spacing: VERTICAL_MARGIN,
-      children: options.showAdvancedControls ?
+      children: filledOptions.showAdvancedControls ?
         [ this.displayOptionsPanel, this.sensorToolbox, this.advancedAccordionBox ] :
         [ this.displayOptionsPanel, this.sensorToolbox ]
     } );
@@ -282,7 +333,7 @@ class CCKCScreenView extends ScreenView {
       model.modeProperty,
       playAreaCenterXProperty,
       tandem.createTandem( 'circuitElementEditContainerNode' ), {
-        showPhaseShiftControl: options.showPhaseShiftControl
+        showPhaseShiftControl: filledOptions.showPhaseShiftControl
       }
     );
 
@@ -308,7 +359,7 @@ class CCKCScreenView extends ScreenView {
         baseColor: '#33ff44' // the default blue fades into the background too much
       } );
       this.addChild( playPauseButton );
-      this.visibleBoundsProperty.link( visibleBounds => {
+      this.visibleBoundsProperty.link( ( visibleBounds: Bounds2 ) => {
 
         // Float the playPauseButton to the bottom left
         playPauseButton.mutate( {
@@ -318,8 +369,8 @@ class CCKCScreenView extends ScreenView {
       } );
     }
 
-    let timeControlNode = null;
-    if ( options.showTimeControls ) {
+    let timeControlNode: TimeControlNode | null = null;
+    if ( filledOptions.showTimeControls ) {
       timeControlNode = new TimeControlNode( model.isPlayingProperty, {
         tandem: tandem.createTandem( 'timeControlNode' ),
         playPauseStepButtonOptions: {
@@ -334,7 +385,7 @@ class CCKCScreenView extends ScreenView {
     // Add it in front of everything (should never be obscured by a CircuitElement)
     this.addChild( zoomControlPanel );
 
-    this.visibleBoundsProperty.link( visibleBounds => {
+    this.visibleBoundsProperty.link( ( visibleBounds: Bounds2 ) => {
 
       this.circuitElementToolbox.left = visibleBounds.left + VERTICAL_MARGIN +
                                         ( this.circuitElementToolbox.carousel ? 0 : 12 );
@@ -343,7 +394,7 @@ class CCKCScreenView extends ScreenView {
       this.viewRadioButtonGroup.centerX = this.circuitElementToolbox.right - this.circuitElementToolbox.carousel.width / 2;
 
       // Float the resetAllButton to the bottom right
-      options.showResetAllButton && resetAllButton.mutate( {
+      filledOptions.showResetAllButton && resetAllButton && resetAllButton.mutate( {
         right: visibleBounds.right - HORIZONTAL_MARGIN,
         bottom: visibleBounds.bottom - HORIZONTAL_MARGIN
       } );
@@ -369,7 +420,7 @@ class CCKCScreenView extends ScreenView {
     this.circuitLayerNodeBackLayer.setTranslation( this.layoutBounds.centerX, this.layoutBounds.centerY );
 
     // Continuously zoom in and out as the current zoom interpolates, and update when the visible bounds change
-    Property.multilink( [ model.currentZoomProperty, this.visibleBoundsProperty ], ( currentZoom, visibleBounds ) => {
+    Property.multilink( [ model.currentZoomProperty, this.visibleBoundsProperty ], ( currentZoom: number, visibleBounds: Bounds2 ) => {
       this.circuitLayerNode.setScaleMagnitude( currentZoom );
       this.circuitLayerNodeBackLayer.setScaleMagnitude( currentZoom );
       this.circuitLayerNode.updateTransform( visibleBounds );
@@ -399,7 +450,7 @@ class CCKCScreenView extends ScreenView {
     this.stopwatchNodePositionDirty = true;
 
     // @public - the StopwatchNode
-    if ( options.showStopwatchCheckbox ) {
+    if ( filledOptions.showStopwatchCheckbox ) {
       const stopwatchNode = new StopwatchNode( model.stopwatch, {
         dragBoundsProperty: this.visibleBoundsProperty,
         right: controlPanelVBox.left - HORIZONTAL_MARGIN,
@@ -413,7 +464,7 @@ class CCKCScreenView extends ScreenView {
       this.addChild( stopwatchNode );
 
       // Show the StopwatchNode when the checkbox is checked
-      model.stopwatch.isVisibleProperty.link( isVisible => {
+      model.stopwatch.isVisibleProperty.link( ( isVisible: boolean ) => {
         if ( isVisible && this.stopwatchNodePositionDirty ) {
 
           // Compute bounds lazily now that everything is attached to the scene graph
@@ -421,6 +472,7 @@ class CCKCScreenView extends ScreenView {
             controlPanelVBox.left - stopwatchNode.width - 10,
 
             // center the text are vertically on the checkbox, so the non-draggable buttons aren't right next to the checkbox
+            // @ts-ignore
             this.globalToLocalBounds( this.displayOptionsPanel.stopwatchCheckbox.globalBounds ).centerY - stopwatchNode.height * 0.2
           );
           this.stopwatchNodePositionDirty = false;
@@ -437,7 +489,7 @@ class CCKCScreenView extends ScreenView {
    *
    * @param {number} dt
    */
-  stepOnce( dt ) {
+  stepOnce( dt: number ) {
 
     // If the step is large, it probably means that the screen was hidden for a while, so just ignore it.
     // see https://github.com/phetsims/circuit-construction-kit-common/issues/476
@@ -453,10 +505,10 @@ class CCKCScreenView extends ScreenView {
    * @param {number} dt - seconds
    * @public
    */
-  step( dt ) {
+  step( dt: number ) {
 
     // noting from the main step
-    this.circuitLayerNode.step( dt );
+    this.circuitLayerNode.step();
 
     // if the model is stepping, the charts will sample new values.  Otherwise, take a reading at the current point,
     // for updating the pen location
@@ -482,7 +534,7 @@ class CCKCScreenView extends ScreenView {
    * @returns {boolean}
    * @public
    */
-  canNodeDropInToolbox( circuitElementNode ) {
+  canNodeDropInToolbox( circuitElementNode: CircuitElementNode ) {
     const circuitElement = circuitElementNode.circuitElement;
 
     // Only single (unconnected) elements can be dropped into the toolbox
