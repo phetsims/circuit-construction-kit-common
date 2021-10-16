@@ -6,6 +6,9 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import Property from '../../../axon/js/Property.js';
+import Bounds2 from '../../../dot/js/Bounds2.js';
+import Node from '../../../scenery/js/nodes/Node.js';
 import merge from '../../../phet-core/js/merge.js';
 import ProbeNode from '../../../scenery-phet/js/ProbeNode.js';
 import DragListener from '../../../scenery/js/listeners/DragListener.js';
@@ -19,7 +22,7 @@ class CCKCProbeNode extends ProbeNode {
    * @param {Property.<Bounds2>} visibleBoundsProperty - visible bounds of the ScreenView
    * @param {Object} [options]
    */
-  constructor( node, visibleBoundsProperty, options ) {
+  constructor( node: Node, visibleBoundsProperty: Property<Bounds2>, options: object ) {
 
     options = merge( {
       cursor: 'pointer',
@@ -31,13 +34,17 @@ class CCKCProbeNode extends ProbeNode {
 
     super( options );
 
-    visibleBoundsProperty.link( visibleBounds => this.setCenter( visibleBounds.closestPointTo( this.center ) ) );
+    visibleBoundsProperty.link( ( visibleBounds: Bounds2 ) => this.setCenter( visibleBounds.closestPointTo( this.center ) ) );
 
     this.addInputListener( new DragListener( {
       translateNode: true,
       dragBoundsProperty: visibleBoundsProperty,
       press: () => node.moveToFront(),
+
+      // @ts-ignore
       drag: () => options.drag(),
+
+      // @ts-ignore
       tandem: options.tandem.createTandem( 'dragListener' )
     } ) );
   }

@@ -37,6 +37,11 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import Meter from '../model/Meter.js';
 import CCKCProbeNode from './CCKCProbeNode.js';
+import CircuitLayerNode from './CircuitLayerNode.js';
+import Property from '../../../axon/js/Property.js';
+import Bounds2 from '../../../dot/js/Bounds2.js';
+import SceneryEvent from '../../../scenery/js/input/SceneryEvent.js';
+import CCKCScreenView from './CCKCScreenView.js';
 
 const oneSecondString = circuitConstructionKitCommonStrings.oneSecond;
 const timeString = circuitConstructionKitCommonStrings.time;
@@ -51,7 +56,22 @@ const WIRE_LINE_WIDTH = 3;
 
 const MAX_AXIS_LABEL_WIDTH = 120;
 
+type CCKCChartNodeOptions = {} & NodeOptions;
+
 class CCKCChartNode extends Node {
+  meter: Meter;
+  series: ObservableArray<Vector2 | null>;
+  circuitLayerNode: CircuitLayerNode;
+  timeProperty: Property<number>;
+  visibleBoundsProperty: Property<Bounds2>;
+  backgroundNode: Node;
+  backgroundDragListener: DragListener | null;
+  alignProbesEmitter: Emitter<unknown>;
+  droppedEmitter: Emitter<unknown>;
+  aboveBottomLeft1: DerivedProperty<unknown>;
+  aboveBottomLeft2: DerivedProperty<unknown>;
+  zoomLevelProperty: NumberProperty;
+  updatePen: () => void;
 
   /**
    * @param {CircuitLayerNode} circuitLayerNode
@@ -61,7 +81,8 @@ class CCKCChartNode extends Node {
    * @param {string} verticalAxisLabel
    * @param {Object} [options]
    */
-  constructor( circuitLayerNode, timeProperty, visibleBoundsProperty, series, verticalAxisLabel, options ) {
+  constructor( circuitLayerNode: CircuitLayerNode, timeProperty: Property<number>, visibleBoundsProperty: Property<Bounds2>,
+               series: ObservableArray<Vector2 | null>, verticalAxisLabel: string, options?: Partial<CCKCChartNodeOptions> ) {
     options = merge( {
       defaultZoomLevel: new Range( -2, 2 ),
 
@@ -113,13 +134,13 @@ class CCKCChartNode extends Node {
     // @protected - for attaching probes
     this.aboveBottomLeft1 = new DerivedProperty(
       [ leftBottomProperty ],
-      position => position.isFinite() ? position.plusXY( 0, -20 ) : Vector2.ZERO
+      ( position: Vector2 ) => position.isFinite() ? position.plusXY( 0, -20 ) : Vector2.ZERO
     );
 
     // @protected - for attaching probes
     this.aboveBottomLeft2 = new DerivedProperty(
       [ leftBottomProperty ],
-      position => position.isFinite() ? position.plusXY( 0, -10 ) : Vector2.ZERO
+      ( position: Vector2 ) => position.isFinite() ? position.plusXY( 0, -10 ) : Vector2.ZERO
     );
 
     const chartTransform = new ChartTransform( {
@@ -160,6 +181,8 @@ class CCKCChartNode extends Node {
       new Range( -2, 2 ),
       new Range( -0.4, 0.4 )
     ];
+
+    // @ts-ignore
     const initialZoomIndex = zoomRanges.findIndex( e => e.equals( options.defaultZoomLevel ) );
 
     // @private
@@ -172,12 +195,15 @@ class CCKCChartNode extends Node {
       lineDashOffset: 5 / 2
     };
 
+    // @ts-ignore
     const horizontalGridLineSet = new CanvasGridLineSet( chartTransform, Orientation.HORIZONTAL, 1, gridLineOptions );
+    // @ts-ignore
     const verticalGridLineSet = new CanvasGridLineSet( chartTransform, Orientation.VERTICAL, 1, gridLineOptions );
+    // @ts-ignore
     const verticalLabelSet = new TickLabelSet( chartTransform, Orientation.VERTICAL, 1, {
       edge: 'min',
       extent: 1.5,
-      createLabel: value => new Text( Utils.toFixed( value, this.zoomLevelProperty.value === zoomRanges.length - 1 ? 1 : 0 ), {
+      createLabel: ( value: number ) => new Text( Utils.toFixed( value, this.zoomLevelProperty.value === zoomRanges.length - 1 ? 1 : 0 ), {
         fontSize: 10,
         fill: 'white'
       } )
@@ -202,7 +228,7 @@ class CCKCChartNode extends Node {
       },
       tandem: options.tandem.createTandem( 'zoomButtonGroup' )
     } );
-    this.zoomLevelProperty.link( zoomLevel => {
+    this.zoomLevelProperty.link( ( zoomLevel: number ) => {
       chartTransform.setModelYRange( zoomRanges[ zoomLevel ] );
       verticalGridLineSet.setSpacing( zoomRanges[ zoomLevel ].max / 2 );
       verticalLabelSet.setSpacing( zoomRanges[ zoomLevel ].max / 2 );
@@ -230,12 +256,13 @@ class CCKCChartNode extends Node {
       pen.update();
     };
 
-    timeProperty.link( time => {
+    timeProperty.link( ( time: number ) => {
 
       // Show 4 seconds, plus a lead time of 0.25 sec
       chartTransform.setModelXRange( new Range( time - 4, time + 0.25 ) );
+
+      // @ts-ignore
       verticalGridLineSet.setLineDashOffset( time * chartTransform.modelToViewDelta( Orientation.HORIZONTAL, 1 ) );
-      // horizontalGridLineSet.setLineDashOffset( -time * chartTransform.modelToViewDelta( Orientation.VERTICAL, 1 )/2 );
       this.updatePen();
     } );
 
@@ -249,11 +276,11 @@ class CCKCChartNode extends Node {
         lineWidth: 1.5
       } ) ] );
 
-    series.elementAddedEmitter.addListener( () => {
+    series.addItemAddedListener( () => {
       linePlot.update();
       this.updatePen();
     } );
-    series.elementRemovedEmitter.addListener( () => {
+    series.addItemRemovedListener( () => {
       linePlot.update();
       this.updatePen();
     } );
@@ -274,6 +301,8 @@ class CCKCChartNode extends Node {
       rightCenter: verticalLabelSet.leftCenter.plusXY( -10, 0 ),
       maxWidth: MAX_AXIS_LABEL_WIDTH
     } );
+
+    // @ts-ignore
     const spanNode = new SpanNode( chartTransform, Orientation.HORIZONTAL, 1, scaleIndicatorText, {
       color: 'white',
       left: chartBackground.left,
@@ -303,8 +332,8 @@ class CCKCChartNode extends Node {
     shadedRectangle.addChild( chartNode );
     backgroundNode.addChild( shadedRectangle );
 
-    this.meter.visibleProperty.link( visible => this.setVisible( visible ) );
-    this.meter.bodyPositionProperty.link( bodyPosition => backgroundNode.setCenter( bodyPosition ) );
+    this.meter.visibleProperty.link( ( visible: boolean ) => this.setVisible( visible ) );
+    this.meter.bodyPositionProperty.link( ( bodyPosition: Vector2 ) => backgroundNode.setCenter( bodyPosition ) );
   }
 
   /**
@@ -317,8 +346,9 @@ class CCKCChartNode extends Node {
    * @returns {CCKCProbeNode}
    * @protected
    */
-  addProbeNode( color, wireColor, dx, dy, connectionProperty, tandem ) {
+  addProbeNode( color: string, wireColor: string, dx: number, dy: number, connectionProperty: Property<Vector2>, tandem: Tandem ) {
 
+    // @ts-ignore
     const probeNode = new CCKCProbeNode( this, this.visibleBoundsProperty, { color: color, tandem: tandem } );
 
     // Add the wire behind the probe.
@@ -368,13 +398,13 @@ class CCKCChartNode extends Node {
   /**
    * Forward an event from the toolbox to start dragging the node in the play area.  This triggers the probes (if any)
    * to drag together with the chart.  This is accomplished by calling this.alignProbes() at each drag event.
-   * @param {Object} event
+   * @param {SceneryEvent} event
    * @public
    */
-  startDrag( event ) {
+  startDrag( event: SceneryEvent ) {
 
     // Forward the event to the drag listener
-    this.backgroundDragListener.press( event );
+    this.backgroundDragListener && this.backgroundDragListener.press( event );
   }
 
   /**
@@ -385,7 +415,7 @@ class CCKCChartNode extends Node {
    * @param {CCKCScreenView} screenView
    * @public
    */
-  initializeBodyDragListener( screenView ) {
+  initializeBodyDragListener( screenView: CCKCScreenView ) {
 
     // Since this will be shown from the toolbox, make the play area icon invisible and prepare to drag with probes
     this.meter.visibleProperty.value = false;
