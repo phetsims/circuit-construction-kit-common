@@ -90,7 +90,7 @@ class InductorNode extends FixedCircuitElementNode {
     inductor.inductanceProperty.link( ( inductance: number ) => {
 
       // Determine the number of loops, including the start and end segments, which are each half.
-      const numLoops = Utils.roundSymmetric( Utils.linear( 10, 100, 5, 20, inductance ) );
+      const numLoops = Utils.roundSymmetric( Utils.linear( 5, 10, 12, 20, inductance ) );
       const children = [];
       for ( let i = 0; i < numLoops; i++ ) {
 
