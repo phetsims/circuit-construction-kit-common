@@ -33,6 +33,7 @@ import VoltageSource from '../model/VoltageSource.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CircuitElement from '../model/CircuitElement.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
+import CurrentSense from '../model/CurrentSense.js';
 
 const capacitanceFaradsSymbolString = circuitConstructionKitCommonStrings.capacitanceFaradsSymbol;
 const fuseValueString = circuitConstructionKitCommonStrings.fuseValue;
@@ -82,7 +83,7 @@ class ValueNode extends Panel {
     const disposeEmitterValueNode = new Emitter();
 
     let contentNode: any;
-    let updatePosition: any = null; // TODO: is this unused?
+    let updatePosition: any = null;
     if ( circuitElement instanceof VoltageSource ) {
 
       const voltageText = createText( tandem.createTandem( 'voltageText' ) );
@@ -220,7 +221,7 @@ class ValueNode extends Panel {
 
     if ( CCKCQueryParameters.showCurrents ) {
       const text = new Text( '' );
-      Property.multilink( [ circuitElement.currentProperty, circuitElement.currentSenseProperty ], ( current: number, sense: any ) => {
+      Property.multilink( [ circuitElement.currentProperty, circuitElement.currentSenseProperty ], ( current: number, sense: CurrentSense ) => {
         text.text = sense.toString() + ', ' + current.toFixed( 4 );// eslint-disable-line
       } );
 

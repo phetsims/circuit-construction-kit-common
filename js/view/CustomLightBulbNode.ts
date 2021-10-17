@@ -27,7 +27,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 const BULB_IMAGE_SCALE = 0.125;
 
 class CustomLightBulbNode extends Node {
-  baseOnly: any;
+  baseOnly: boolean;
   backNode: Node;
   raysNode: LightRaysNode | null;
   brightnessProperty: Property<number>;

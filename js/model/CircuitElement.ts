@@ -22,6 +22,7 @@ import ReferenceIO from '../../../tandem/js/types/ReferenceIO.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 import Circuit from './Circuit.js';
+import CurrentSense from './CurrentSense.js';
 import Vertex from './Vertex.js';
 
 // variables
@@ -47,7 +48,7 @@ abstract class CircuitElement extends PhetioObject {
   readonly startVertexProperty: Property<Vertex>;
   readonly endVertexProperty: Property<Vertex>;
   readonly currentProperty: NumberProperty;
-  readonly currentSenseProperty: Property<any>;
+  readonly currentSenseProperty: Property<CurrentSense>;
   readonly interactiveProperty: BooleanProperty;
   readonly insideTrueBlackBoxProperty: BooleanProperty;
   chargeLayoutDirty: boolean;
@@ -60,7 +61,7 @@ abstract class CircuitElement extends PhetioObject {
   private readonly vertexMovedListener: () => void;
   private readonly linkVertexListener: ( newVertex: Vertex, oldVertex: Vertex ) => void;
   readonly voltageDifferenceProperty: NumberProperty;
-  private readonly vertexVoltageListener: () => Property<any>;
+  private readonly vertexVoltageListener: () => void;
   chargePathLength: number;
   circuitElementDisposed: boolean;
   static CircuitElementIO: IOType;

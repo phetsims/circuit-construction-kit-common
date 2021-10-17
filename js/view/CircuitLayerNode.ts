@@ -77,7 +77,7 @@ const RENDERER = 'svg';
 class CircuitLayerNode extends Node {
   private readonly viewTypeProperty: Property<CircuitElementViewType>;
   readonly model: CircuitConstructionKitModel;
-  private readonly visibleBoundsProperty: Property<any>;
+  private readonly visibleBoundsProperty: Property<Bounds2>;
   private readonly circuitLayerNodeBackLayer: Node;
   readonly highlightLayer: Node;
   readonly seriesAmmeterNodeReadoutPanelLayer: Node;
@@ -832,7 +832,7 @@ class CircuitLayerNode extends Node {
    * @returns {CircuitElementNode|null}
    * @public
    */
-  hitCircuitElementNode( position: Vector2, filter: any, globalPoint: Vector2 | null ) {
+  hitCircuitElementNode( position: Vector2, filter: ( c: CircuitElement ) => boolean, globalPoint: Vector2 | null ) {
 
     assert && assert( globalPoint !== undefined );
 

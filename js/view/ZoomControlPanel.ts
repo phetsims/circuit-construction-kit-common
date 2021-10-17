@@ -29,7 +29,7 @@ class ZoomControlPanel extends MagnifyingGlassZoomButtonGroup {
    * @param {Property.<number>} selectedZoomProperty
    * @param {Object} [options]
    */
-  constructor( selectedZoomProperty: Property<number>, options: any ) {
+  constructor( selectedZoomProperty: Property<number>, options?: any ) {
     options = merge( {
       spacing: BUTTON_SPACING,
       tandem: Tandem.REQUIRED,

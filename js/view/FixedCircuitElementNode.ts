@@ -58,7 +58,7 @@ class FixedCircuitElementNode extends CircuitElementNode {
   contentNode: Node;
   fireNode: Image | null;
   viewTypeProperty: Property<CircuitElementViewType>;
-  viewPropertyListener: ( viewType: any ) => void;
+  viewPropertyListener: ( viewType: CircuitElementViewType ) => void;
   highlightNode: FixedCircuitElementHighlightNode | null;
   markDirtyListener: () => void;
   moveToFrontListener: () => void;

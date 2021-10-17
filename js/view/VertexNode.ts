@@ -47,19 +47,19 @@ class VertexNode extends Node {
   cutButton: RoundPushButton;
   vertexNodeTandem: Tandem;
   circuitLayerNode: CircuitLayerNode;
-  voltageReadoutText: any;
+  voltageReadoutText: Text | null;
   updateReadoutTextPosition: ( () => void ) | null;
   vertex: Vertex;
   startOffset: Vector2 | null;
   highlightNode: Circle;
   keyListener: { keydown: ( event: any ) => void; };
   updateStrokeListener: () => void;
-  updateSelectedListener: ( selected: any ) => void;
+  updateSelectedListener: ( selected: boolean ) => void;
   updateMoveToFront: () => Node;
   updatePickableListener: ( pickable: boolean | null ) => Node;
-  clickToDismissListeners: any[];
+  clickToDismissListeners: { down: ( event: any ) => void }[];
   dragListener: CircuitLayerNodeDragListener;
-  interruptionListener: ( draggable: any ) => void;
+  interruptionListener: ( draggable: boolean ) => void;
   updateVertexNodePositionListener: () => void;
   static VERTEX_RADIUS: number;
   static webglSpriteNodes: Node[];
@@ -107,14 +107,14 @@ class VertexNode extends Node {
 
       // @private {function} for debugging
       this.updateReadoutTextPosition = () => {
-        this.voltageReadoutText.centerX = 0;
-        this.voltageReadoutText.bottom = -30;
+        this.voltageReadoutText!.centerX = 0;
+        this.voltageReadoutText!.bottom = -30;
       };
       vertex.voltageProperty.link( ( voltage: number ) => {
 
         // No need for i18n because this is for debugging only
         const voltageText = `${Utils.toFixed( voltage, 3 )}V`;
-        this.voltageReadoutText.setText( `${vertex.index} @ ${voltageText}` );
+        this.voltageReadoutText!.setText( `${vertex.index} @ ${voltageText}` );
         assert && assert( this.updateReadoutTextPosition );
         if ( this.updateReadoutTextPosition ) {
           this.updateReadoutTextPosition();

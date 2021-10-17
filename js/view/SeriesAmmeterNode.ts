@@ -43,7 +43,7 @@ const CORNER_RADIUS = 4;
  * @param {Object} [options]
  * @returns {Rectangle}
  */
-const createPanel = ( options: any ) => new Rectangle( 0, 0, PANEL_WIDTH, PANEL_HEIGHT, options ).rasterized( { wrap: false } );
+const createPanel = ( options?: any ) => new Rectangle( 0, 0, PANEL_WIDTH, PANEL_HEIGHT, options ).rasterized( { wrap: false } );
 
 const orangeBackgroundPanel = createPanel( { cornerRadius: CORNER_RADIUS, fill: ORANGE } );
 const blackBorder = createPanel( {

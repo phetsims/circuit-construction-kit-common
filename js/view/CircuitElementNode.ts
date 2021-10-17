@@ -36,7 +36,7 @@ class CircuitElementNode extends Node {
    * @param {Circuit|null} circuit - the circuit which the element can be removed from or null for icons
    * @param {Object} [options]
    */
-  constructor( circuitElement: CircuitElement, circuit: Circuit | null, options: any ) {
+  constructor( circuitElement: CircuitElement, circuit: Circuit | null, options?: any ) {
 
     options = merge( {
 
