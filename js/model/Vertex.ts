@@ -44,6 +44,7 @@ class Vertex extends PhetioObject {
   private readonly vertexSelectedPropertyListener: null;
   isDragged: boolean;
   static VertexIO: IOType;
+  outerWireStub: boolean;
 
   /**
    * @param {Vector2} position - position in view coordinates
@@ -128,6 +129,9 @@ class Vertex extends PhetioObject {
 
     // @public {boolean} - Whether the vertex is being actively dragged.
     this.isDragged = false;
+
+    // @public {boolean} - for black box study
+    this.outerWireStub = false;
   }
 
   /**

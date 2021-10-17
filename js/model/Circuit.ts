@@ -1348,7 +1348,6 @@ class Circuit {
       } );
 
       // a vertex must be attachable. Some black box vertices are not attachable, such as vertices hidden in the box
-      // @ts-ignore
       candidateVertices = candidateVertices.filter( candidateVertex => !candidateVertex.outerWireStub );
     }
     if ( candidateVertices.length === 0 ) { return null; }
