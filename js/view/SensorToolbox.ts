@@ -89,12 +89,11 @@ class SensorToolbox extends CCKCPanel {
         if ( meterNode ) {
           // @ts-ignore
           const meterModel = meterNode[ meterModelName ];
-          // @ts-ignore
-          const viewPosition = circuitLayerNode.globalToLocalPoint( event.pointer.point );
+          const viewPosition = circuitLayerNode.globalToLocalPoint( event.pointer.point! );
           meterModel.draggingProbesWithBodyProperty.value = true;
           meterModel.visibleProperty.value = true;
           meterModel.bodyPositionProperty.value = viewPosition;
-          //@ts-ignore
+          // @ts-ignore
           meterNode.startDrag( event );
         }
       }, {
@@ -104,7 +103,7 @@ class SensorToolbox extends CCKCPanel {
     // Draggable isIcon for the voltmeter
     const voltmeter = new Voltmeter( Tandem.OPTIONAL, 0 );
 
-    // @ts-ignore
+    // @ts-dontignore
     const voltmeterNodeIcon = new VoltmeterNode( voltmeter, null, null, tandem.createTandem( 'voltmeterNodeIcon' ), {
       isIcon: true
     } );
@@ -214,8 +213,7 @@ class SensorToolbox extends CCKCPanel {
     if ( options.showCharts ) {
       const everything = new Property( Bounds2.EVERYTHING );
 
-      // @ts-ignore
-      const createChartToolIcon = ( chartNodes, chartNodeIcon, labelNode ) => {
+      const createChartToolIcon = ( chartNodes: Node[], chartNodeIcon: VoltageChartNode | CurrentChartNode, labelNode: Text ) => {
 
         // Rasterization comes out blurry, instead put an overlay to intercept input events.
         const overlay = Rectangle.bounds( chartNodeIcon.bounds, { fill: 'blue', opacity: 0 } );
@@ -231,6 +229,7 @@ class SensorToolbox extends CCKCPanel {
         // @ts-ignore
         const iconVisibleProperty = DerivedProperty.and( chartNodes.map( chartNode => chartNode.meter.visibleProperty ) );
         iconVisibleProperty.link( ( visible: boolean ) => chartNodeIcon.setVisible( !visible ) );
+        // @ts-ignore
         overlay.addInputListener( createListenerMulti( chartNodes, 'meter' ) );
 
         return chartToolIcon;

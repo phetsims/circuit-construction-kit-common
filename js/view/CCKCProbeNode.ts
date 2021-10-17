@@ -22,7 +22,7 @@ class CCKCProbeNode extends ProbeNode {
    * @param {Property.<Bounds2>} visibleBoundsProperty - visible bounds of the ScreenView
    * @param {Object} [options]
    */
-  constructor( node: Node, visibleBoundsProperty: Property<Bounds2>, options: object ) {
+  constructor( node: Node, visibleBoundsProperty: Property<Bounds2>, options?: any ) {
 
     options = merge( {
       cursor: 'pointer',
@@ -40,11 +40,7 @@ class CCKCProbeNode extends ProbeNode {
       translateNode: true,
       dragBoundsProperty: visibleBoundsProperty,
       press: () => node.moveToFront(),
-
-      // @ts-ignore
       drag: () => options.drag(),
-
-      // @ts-ignore
       tandem: options.tandem.createTandem( 'dragListener' )
     } ) );
   }

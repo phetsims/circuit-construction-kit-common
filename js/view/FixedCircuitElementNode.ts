@@ -56,7 +56,7 @@ class FixedCircuitElementNode extends CircuitElementNode {
   isIcon: boolean;
   circuitLayerNode: CircuitLayerNode | null;
   contentNode: Node;
-  fireNode: Image | null;
+  fireNode: Node | null;
   viewTypeProperty: Property<CircuitElementViewType>;
   viewPropertyListener: ( viewType: CircuitElementViewType ) => void;
   highlightNode: FixedCircuitElementHighlightNode | null;
@@ -192,9 +192,7 @@ class FixedCircuitElementNode extends CircuitElementNode {
         },
         end: ( event: SceneryEvent ) =>
           this.endDrag( this.contentNode, [ circuitElement.endVertexProperty.get() ], screenView as CCKCScreenView, circuitLayerNode,
-
-            // @ts-ignore
-            initialPoint, latestPoint, dragged ),
+            initialPoint!, latestPoint!, dragged ),
         tandem: tandem.createTandem( 'dragListener' )
       } );
       this.contentNode.addInputListener( this.dragListener );
@@ -212,11 +210,10 @@ class FixedCircuitElementNode extends CircuitElementNode {
       // Show fire for batteries and resistors
       if ( circuitElement.isFlammable ) {
 
-        this.fireNode = new Image( fireImage, { pickable: false, imageOpacity: 0.95 } );
-        // @ts-ignore
+        this.fireNode = new Image( fireImage, { pickable: false, imageOpacity: 0.95 } ) as unknown as Node;
         this.fireNode.mutate( { scale: this.contentNode.width / this.fireNode.width } );
 
-        // @ts-ignore
+        // @ts-dontignore
         this.addChild( this.fireNode );
         if ( screenView ) {
 
@@ -297,7 +294,7 @@ class FixedCircuitElementNode extends CircuitElementNode {
     matrix.multiplyMatrix( rotationMatrix.setToScale( scale ) )
       .multiplyMatrix( rotationMatrix.setToTranslation( flameX, flameY ) );
 
-    // @ts-ignore
+    // @ts-dontignore
     this.fireNode && this.fireNode.setMatrix( matrix );
   }
 
@@ -368,8 +365,8 @@ class FixedCircuitElementNode extends CircuitElementNode {
    */
   updateFireVisible( current: number, resistance: number, isValueDepictionEnabled: boolean ) {
 
-    // @ts-ignore
-    this.fireNode.visible = isFireShown( current, isValueDepictionEnabled ) && resistance >= 1E-8;
+    // @ts-dontignore
+    this.fireNode!.visible = isFireShown( current, isValueDepictionEnabled ) && resistance >= 1E-8;
   }
 
   /**

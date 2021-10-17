@@ -31,7 +31,7 @@ class CurrentChartNode extends CCKCChartNode {
    * @param {Property.<Bounds2>} visibleBoundsProperty
    * @param {Object} [options]
    */
-  constructor( circuitLayerNode: CircuitLayerNode, timeProperty: Property<number>, visibleBoundsProperty: Property<Bounds2>, options: object ) {
+  constructor( circuitLayerNode: CircuitLayerNode, timeProperty: Property<number>, visibleBoundsProperty: Property<Bounds2>, options?: any ) {
 
     options = merge( {
       timeDivisions: CCKCConstants.NUMBER_OF_TIME_DIVISIONS,
@@ -48,7 +48,7 @@ class CurrentChartNode extends CCKCChartNode {
       10,
       this.aboveBottomLeft1,
 
-      // @ts-ignore
+      // @ts-dontignore
       options.tandem.createTandem( 'probeNode' )
     );
     this.lastStepTime = null;

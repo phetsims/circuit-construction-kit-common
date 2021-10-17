@@ -194,8 +194,7 @@ Resistor.ResistorIO = new IOType( 'ResistorIO', {
     return stateObject;
   },
 
-  // @ts-ignore
-  stateToArgsForConstructor( stateObject ) {
+  stateToArgsForConstructor( stateObject: any ) {
     const args = CircuitElement.CircuitElementIO.stateToArgsForConstructor( stateObject );
     // @ts-ignore
     args.push( EnumerationIO( Resistor.ResistorType ).fromStateObject( stateObject.resistorType ) );

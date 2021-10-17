@@ -82,7 +82,7 @@ type CCKCScreenViewOptions = {
   showTimeControls: boolean,
   showNoncontactAmmeters: boolean,
 
-  // @ts-ignore
+  // @ts-dontignore
   getCircuitEditPanelLayoutPosition: any,
   showAdvancedControls: boolean,
   showCharts: boolean,
@@ -473,8 +473,7 @@ class CCKCScreenView extends ScreenView {
             controlPanelVBox.left - stopwatchNode.width - 10,
 
             // center the text are vertically on the checkbox, so the non-draggable buttons aren't right next to the checkbox
-            // @ts-ignore
-            this.globalToLocalBounds( this.displayOptionsPanel.stopwatchCheckbox.globalBounds ).centerY - stopwatchNode.height * 0.2
+            this.globalToLocalBounds( this.displayOptionsPanel.stopwatchCheckbox!.globalBounds ).centerY - stopwatchNode.height * 0.2
           );
           this.stopwatchNodePositionDirty = false;
         }

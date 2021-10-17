@@ -70,8 +70,7 @@ class CircuitElementNode extends Node {
     // keyboard listener so that delete or backspace deletes the element - must be disposed
     const keyListener = {
 
-      // @ts-ignore
-      keydown: event => {
+      keydown: ( event: any ) => {
 
         // on delete or backspace, the focused circuit element should be deleted
         // @ts-ignore
@@ -84,8 +83,7 @@ class CircuitElementNode extends Node {
           // Only permit deletion when not being dragged, see https://github.com/phetsims/circuit-construction-kit-common/issues/414
           if ( !circuitElement.startVertexProperty.value.isDragged && !circuitElement.endVertexProperty.value.isDragged ) {
 
-            // @ts-ignore
-            circuit.disposeCircuitElement( circuitElement );
+            circuit!.disposeCircuitElement( circuitElement );
           }
         }
       }
@@ -115,14 +113,14 @@ class CircuitElementNode extends Node {
       this.disposeEmitterCircuitElementNode.dispose();
     };
 
-    // @ts-ignore
+    // @ts-dontignore
     circuitElement.startDragEmitter.addListener( startDragListener );
 
     // @private {boolean} - Flag to indicate when updating view is necessary, in order to avoid duplicate work when both
     // vertices move
     this.dirty = true;
 
-    // @ts-ignore
+    // @ts-dontignore
     this.disposeEmitterCircuitElementNode.addListener( () => circuitElement.startDragEmitter.removeListener( startDragListener ) );
   }
 
@@ -216,9 +214,7 @@ class CircuitElementNode extends Node {
 
       // If over the toolbox, then drop into it
       if ( screenView.canNodeDropInToolbox( this ) ) {
-
-        // @ts-ignore
-        this.circuit.disposeCircuitElement( circuitElement );
+        this.circuit!.disposeCircuitElement( circuitElement );
       }
       else {
 
@@ -258,8 +254,7 @@ class CircuitElementNode extends Node {
       // listener for 'click outside to dismiss'
       const clickToDismissListener = {
 
-        // @ts-ignore
-        down: event => {
+        down: ( event: any ) => {
 
           // When fuzzing, don't click away from the circuit element so eagerly, so that fuzzing has more of a chance to
           // press the associated controls.

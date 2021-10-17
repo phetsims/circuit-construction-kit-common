@@ -194,9 +194,7 @@ class SwitchNode extends FixedCircuitElementNode {
       tandem: tandem.createTandem( 'fireListener' ),
       attach: false,
       press: ( event: any ) => {
-
-        // @ts-ignore
-        downPoint = circuitLayerNode.globalToLocalPoint( event.pointer.point );
+        downPoint = circuitLayerNode!.globalToLocalPoint( event.pointer.point );
       },
       fire: ( event: any ) => {
 

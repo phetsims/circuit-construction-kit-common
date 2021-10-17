@@ -37,8 +37,7 @@ const testVRCCircuit = ( v: number, r: number, c: number, assert: Assert ) => {
     const t = i * dt;
 
     const companionSolution = dynamicCircuit.solveItWithSubdivisions( dt );
-    // @ts-ignore
-    const voltage = companionSolution.getVoltage( resistor );
+    const voltage = companionSolution!.getVoltage( resistor );
     const desiredVoltageAtTPlusDT = -v * Math.exp( -( t + dt ) / r / c );
     const error = Math.abs( voltage - desiredVoltageAtTPlusDT );
     assert.ok( error < errorThreshold ); // sample run indicates largest error is 1.5328E-7
@@ -78,8 +77,7 @@ const testVRLCircuit = ( V: number, R: number, L: number, assert: Assert ) => {
   for ( let i = 0; i < ITERATIONS; i++ ) {
     const t = i * dt;
     const solution = circuit.solveItWithSubdivisions( dt );
-    // @ts-ignore
-    const current = solution.getCurrent( resistor );
+    const current = solution!.getCurrent( resistor );
     const expectedCurrent = V / R * ( 1 - Math.exp( -( t + dt ) * R / L ) );//positive, by definition of MNA.Battery
     const error = Math.abs( current - expectedCurrent );
     assert.ok( error < errorThreshold );

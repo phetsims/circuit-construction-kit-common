@@ -300,8 +300,7 @@ class VertexNode extends Node {
       // https://github.com/phetsims/circuit-construction-kit-common/issues/307
       domEvent.preventDefault();
 
-      // @ts-ignore
-      this.cutButton.enabled && this.circuit.cutVertex( this.circuit.getSelectedVertex() );
+      this.cutButton.enabled && this.circuit.cutVertex( this.circuit.getSelectedVertex()! );
     }
   }
 

@@ -122,10 +122,8 @@ class ModifiedNodalAnalysisAdapter {
 
         const logWithBase = ( value: number, base: number ) => Math.log( value ) / Math.log( base );
 
-        // @ts-ignore
-        const v0 = circuitResult.resultSet.getFinalState().dynamicCircuitSolution.getNodeVoltage( resistorAdapter.nodeId0 );
-        // @ts-ignore
-        const v1 = circuitResult.resultSet.getFinalState().dynamicCircuitSolution.getNodeVoltage( resistorAdapter.nodeId1 );
+        const v0 = circuitResult.resultSet.getFinalState().dynamicCircuitSolution!.getNodeVoltage( resistorAdapter.nodeId0 );
+        const v1 = circuitResult.resultSet.getFinalState().dynamicCircuitSolution!.getNodeVoltage( resistorAdapter.nodeId1 );
         const V = Math.abs( v1 - v0 );
 
         const base = 2;
@@ -161,8 +159,7 @@ class ModifiedNodalAnalysisAdapter {
 
     // Apply the node voltages to the vertices
     circuit.vertexGroup.forEach( vertex => {
-      // @ts-ignore
-      const voltage = circuitResult.resultSet.getFinalState().dynamicCircuitSolution.getNodeVoltage( vertex.index );
+      const voltage = circuitResult.resultSet.getFinalState().dynamicCircuitSolution!.getNodeVoltage( vertex.index );
 
       if ( typeof voltage === 'number' ) {
         vertex.voltageProperty.set( voltage );

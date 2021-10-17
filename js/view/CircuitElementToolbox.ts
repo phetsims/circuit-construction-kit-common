@@ -33,7 +33,7 @@ class CircuitElementToolbox extends HBox {
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( viewTypeProperty: Property<CircuitElementViewType>, circuitElementToolNodes: CircuitElementToolNode[], tandem: Tandem, options?: object ) {
+  constructor( viewTypeProperty: Property<CircuitElementViewType>, circuitElementToolNodes: CircuitElementToolNode[], tandem: Tandem, options?: any ) {
 
     options = merge( {
       carouselOptions: {
@@ -56,7 +56,6 @@ class CircuitElementToolbox extends HBox {
     }, options );
 
     // create the carousel
-    // @ts-ignore
     const carousel = new Carousel( circuitElementToolNodes, options.carouselOptions );
     carousel.mutate( { scale: CCKCConstants.CAROUSEL_SCALE } );
 

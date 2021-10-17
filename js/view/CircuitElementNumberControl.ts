@@ -43,8 +43,7 @@ class CircuitElementNumberControl extends NumberControl {
     valueProperty.lazyLink( valuePropertyListener );
 
     // Create the controls
-    // @ts-ignore
-    super( title, valueProperty, valueProperty.range, merge( {
+    super( title, valueProperty, valueProperty.range!, merge( {
 
       // subcomponent options
       titleNodeOptions: {

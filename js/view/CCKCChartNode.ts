@@ -56,7 +56,9 @@ const WIRE_LINE_WIDTH = 3;
 
 const MAX_AXIS_LABEL_WIDTH = 120;
 
-type CCKCChartNodeOptions = {} & NodeOptions;
+type CCKCChartNodeOptions = {
+  defaultZoomLevel: number
+} & NodeOptions;
 
 class CCKCChartNode extends Node {
   protected readonly meter: Meter;
@@ -83,20 +85,20 @@ class CCKCChartNode extends Node {
    */
   constructor( circuitLayerNode: CircuitLayerNode, timeProperty: Property<number>, visibleBoundsProperty: Property<Bounds2>,
                series: ObservableArray<Vector2 | null>, verticalAxisLabel: string, options?: Partial<CCKCChartNodeOptions> ) {
-    options = merge( {
+    const filledOptions = merge( {
       defaultZoomLevel: new Range( -2, 2 ),
 
       // Prevent adjustment of the control panel rendering while dragging,
       // see https://github.com/phetsims/wave-interference/issues/212
       preventFit: true,
       tandem: Tandem.OPTIONAL
-    }, options );
+    }, options ) as CCKCChartNodeOptions;
     const backgroundNode = new Node( { cursor: 'pointer' } );
 
     super();
 
     // @public {Meter}
-    this.meter = new Meter( options.tandem.createTandem( 'meter' ), 0 );
+    this.meter = new Meter( filledOptions.tandem.createTandem( 'meter' ), 0 );
 
     // @protected {ObservableArrayDef.<Vector2|null>}
     this.series = series;
@@ -120,7 +122,7 @@ class CCKCChartNode extends Node {
     this.addChild( this.backgroundNode );
 
     // Mutate after backgroundNode is added as a child
-    this.mutate( options );
+    this.mutate( filledOptions );
 
     // @public - emits when the probes should be put in standard relative position to the body
     this.alignProbesEmitter = new Emitter();
@@ -182,8 +184,8 @@ class CCKCChartNode extends Node {
       new Range( -0.4, 0.4 )
     ];
 
-    // @ts-ignore
-    const initialZoomIndex = zoomRanges.findIndex( e => e.equals( options.defaultZoomLevel ) );
+    // @ts-dontignore
+    const initialZoomIndex = zoomRanges.findIndex( e => e.equals( filledOptions.defaultZoomLevel ) );
 
     // @private
     this.zoomLevelProperty = new NumberProperty( initialZoomIndex, { range: new Range( 0, zoomRanges.length - 1 ) } );
@@ -226,7 +228,7 @@ class CCKCChartNode extends Node {
         xMargin: 3,
         yMargin: 3
       },
-      tandem: options.tandem.createTandem( 'zoomButtonGroup' )
+      tandem: filledOptions.tandem.createTandem( 'zoomButtonGroup' )
     } );
     this.zoomLevelProperty.link( ( zoomLevel: number ) => {
       chartTransform.setModelYRange( zoomRanges[ zoomLevel ] );
@@ -348,7 +350,7 @@ class CCKCChartNode extends Node {
    */
   addProbeNode( color: string, wireColor: string, dx: number, dy: number, connectionProperty: Property<Vector2>, tandem: Tandem ) {
 
-    // @ts-ignore
+    // @ts-dontignore
     const probeNode = new CCKCProbeNode( this, this.visibleBoundsProperty, { color: color, tandem: tandem } );
 
     // Add the wire behind the probe.

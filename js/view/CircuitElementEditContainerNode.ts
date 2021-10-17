@@ -170,7 +170,7 @@ class CircuitElementEditContainerNode extends Node {
               },
               numberDisplayOptions: {
 
-                // @ts-ignore
+                // @ts-dontignore
                 decimalPlaces: selectedCircuitElement.numberOfDecimalPlaces
               }
             }
@@ -210,7 +210,7 @@ class CircuitElementEditContainerNode extends Node {
               },
               numberDisplayOptions: {
 
-                // @ts-ignore
+                // @ts-dontignore
                 decimalPlaces: selectedCircuitElement.numberOfDecimalPlaces
               },
               phetioState: false

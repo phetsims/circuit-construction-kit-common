@@ -172,7 +172,7 @@ class CircuitElementToolFactory {
       this.viewTypeProperty,
       this.circuit,
       this.globalToCircuitLayerNodePoint,
-      // @ts-ignore
+      // @ts-dontignore
       iconAlignGroup.createBox( toggleNode, { yAlign: 'bottom' } ),
       count,
       this.createCounter( predicate ),

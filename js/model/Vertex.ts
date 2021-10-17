@@ -157,8 +157,8 @@ Vertex.VertexIO = new IOType( 'VertexIO', {
   valueType: Vertex,
   toStateObject: ( vertex: Vertex ) => ( { position: Vector2.Vector2IO.toStateObject( vertex.positionProperty.value ) } ),
 
-  // @ts-ignore
-  stateToArgsForConstructor: stateObject => [ Vector2.Vector2IO.fromStateObject( stateObject.position ) ],
+  // @ts-dontignore
+  stateToArgsForConstructor: ( stateObject: any ) => [ Vector2.Vector2IO.fromStateObject( stateObject.position ) ],
   stateSchema: {
     position: Vector2.Vector2IO
   }

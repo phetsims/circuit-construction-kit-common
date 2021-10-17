@@ -120,7 +120,7 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
       // @ts-ignore
       orientation: Orientation.HORIZONTAL, // so the "-" charges are upside-up in the default orientation
 
-      // @ts-ignore
+      // @ts-dontignore
       includeChargeNode: !options.isIcon,
       scale: 0.45,
       rotation: -Math.PI / 2,
@@ -182,7 +182,7 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
       schematicNode,
       tandem,
 
-      // @ts-ignore
+      // @ts-dontignore
       options
     );
 

@@ -12,7 +12,7 @@ import InductorAdapter from './InductorAdapter.js';
  * dynamics (using instantaneous solutions) but also to show intermediate states (using the average results), see #2270.
  */
 class CircuitResult {
-  private readonly resultSet: ResultSet<DynamicState>;
+  readonly resultSet: ResultSet<DynamicState>;
 
   /**
    * @param {ResultSet.<DynamicCircuit.DynamicState>} resultSet

@@ -91,21 +91,17 @@ const ResistorColors = {
     let color = null;
     for ( let i = 0; i < sortedColorsWithTolerance.length; i++ ) {
       color = sortedColorsWithTolerance[ i ];
-
-      // @ts-ignore
-      if ( color.tolerance > percentError ) {
+      if ( color.tolerance! > percentError ) {
         break;
       }
     }
-    // @ts-ignore
-    assert && assert( percentError < color.tolerance, 'no tolerance high enough to accommodate error' );
+    // @ts-dontignore
+    assert && assert( percentError < color!.tolerance!, 'no tolerance high enough to accommodate error' );
     return [
       getEntry( 'significantFigure', firstSignificantDigit ),
       getEntry( 'significantFigure', secondSignificantDigit ),
       getEntry( 'multiplier', exponent - 1 ), // second significant figure counts for a power (see https://en.wikipedia.org/wiki/Electronic_color_code and 4700 ohm example)
-
-      // @ts-ignore
-      getEntry( 'tolerance', color.tolerance )
+      getEntry( 'tolerance', color!.tolerance )
     ];
   },
 

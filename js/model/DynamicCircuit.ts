@@ -231,8 +231,7 @@ class DynamicCircuit {
   updateCircuit( solution: DynamicCircuitSolution ) {
     const updatedCapacitors = this.capacitorAdapters.map( capacitorAdapter => {
       const newState = new DynamicElementState(
-        // @ts-ignore
-        solution.getNodeVoltage( capacitorAdapter.capacitorVoltageNode1 ) - solution.getNodeVoltage( capacitorAdapter.capacitorVoltageNode0 ),
+        solution.getNodeVoltage( capacitorAdapter.capacitorVoltageNode1! ) - solution.getNodeVoltage( capacitorAdapter.capacitorVoltageNode0! ),
         solution.getCurrent( capacitorAdapter )
       );
       return new DynamicCapacitor( capacitorAdapter.dynamicCircuitCapacitor, newState );

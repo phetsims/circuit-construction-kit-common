@@ -58,25 +58,16 @@ const SCHEMATIC_PERIOD = 22 * SCHEMATIC_SCALE;
 const SCHEMATIC_STEM_WIDTH = 84 * SCHEMATIC_SCALE;
 const SCHEMATIC_WAVELENGTH = 54 * SCHEMATIC_SCALE;
 
-const RESISTOR_IMAGE_MAP: any = {} as any;
-// @ts-ignore
-RESISTOR_IMAGE_MAP[ Resistor.ResistorType.COIN ] = coinImage;
-// @ts-ignore
-RESISTOR_IMAGE_MAP[ Resistor.ResistorType.PAPER_CLIP ] = paperClipImage;
-// @ts-ignore
-RESISTOR_IMAGE_MAP[ Resistor.ResistorType.PENCIL ] = pencilImage;
-// @ts-ignore
-RESISTOR_IMAGE_MAP[ Resistor.ResistorType.ERASER ] = eraserImage;
-// @ts-ignore
-RESISTOR_IMAGE_MAP[ Resistor.ResistorType.HAND ] = handImage;
-// @ts-ignore
-RESISTOR_IMAGE_MAP[ Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR ] = resistorHighImage;
-// @ts-ignore
-RESISTOR_IMAGE_MAP[ Resistor.ResistorType.RESISTOR ] = resistorImage;
-// @ts-ignore
-RESISTOR_IMAGE_MAP[ Resistor.ResistorType.DOG ] = dogImage;
-// @ts-ignore
-RESISTOR_IMAGE_MAP[ Resistor.ResistorType.DOLLAR_BILL ] = dollarBillImage;
+const RESISTOR_IMAGE_MAP = new Map();
+RESISTOR_IMAGE_MAP.set( Resistor.ResistorType.COIN, coinImage );
+RESISTOR_IMAGE_MAP.set( Resistor.ResistorType.PAPER_CLIP, paperClipImage );
+RESISTOR_IMAGE_MAP.set( Resistor.ResistorType.PENCIL, pencilImage );
+RESISTOR_IMAGE_MAP.set( Resistor.ResistorType.ERASER, eraserImage );
+RESISTOR_IMAGE_MAP.set( Resistor.ResistorType.HAND, handImage );
+RESISTOR_IMAGE_MAP.set( Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR, resistorHighImage );
+RESISTOR_IMAGE_MAP.set( Resistor.ResistorType.RESISTOR, resistorImage );
+RESISTOR_IMAGE_MAP.set( Resistor.ResistorType.DOG, dogImage );
+RESISTOR_IMAGE_MAP.set( Resistor.ResistorType.DOLLAR_BILL, dollarBillImage );
 
 class ResistorNode extends FixedCircuitElementNode {
   resistor: Resistor;
@@ -96,7 +87,7 @@ class ResistorNode extends FixedCircuitElementNode {
     options = merge( { isIcon: false, useHitTestForSensors: true }, options );
 
     // Assigned to instance variable after super()
-    const lifelikeResistorImageNode = new Image( RESISTOR_IMAGE_MAP[ resistor.resistorType ] ) as unknown as Node;
+    const lifelikeResistorImageNode = new Image( RESISTOR_IMAGE_MAP.get( resistor.resistorType ) ) as unknown as Node;
 
     let updateColorBands: ( ( n: number ) => void ) | null = null;
 

@@ -53,7 +53,7 @@ const CONTROL_POINT_Y1 = 15;
 const CONTROL_POINT_Y2 = 60;
 
 class VoltmeterNode extends Node {
-  circuitLayerNode: CircuitLayerNode;
+  circuitLayerNode: CircuitLayerNode | null;
   voltmeter: Voltmeter;
   redProbeNode: Rectangle;
   blackProbeNode: Rectangle;
@@ -67,7 +67,7 @@ class VoltmeterNode extends Node {
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( voltmeter: Voltmeter, model: CircuitConstructionKitModel, circuitLayerNode: CircuitLayerNode, tandem: Tandem, options?: any ) {
+  constructor( voltmeter: Voltmeter, model: CircuitConstructionKitModel | null, circuitLayerNode: CircuitLayerNode | null, tandem: Tandem, options?: any ) {
 
     options = merge( {
 
@@ -298,13 +298,13 @@ class VoltmeterNode extends Node {
         const probeTipTail = probeTip.plus( probeTipVector );
         for ( let i = 0; i < VOLTMETER_NUMBER_SAMPLE_POINTS; i++ ) {
           const samplePoint = probeTip.blend( probeTipTail, i / VOLTMETER_NUMBER_SAMPLE_POINTS );
-          const voltageConnection = circuitLayerNode.getVoltageConnection( samplePoint );
+          const voltageConnection = circuitLayerNode!.getVoltageConnection( samplePoint );
 
           // For debugging, depict the points where the sampling happens
           if ( CCKCQueryParameters.showVoltmeterSamplePoints ) {
 
             // Note, these get erased when changing between lifelike/schematic
-            this.circuitLayerNode.addChild( new Rectangle( -1, -1, 2, 2, {
+            this.circuitLayerNode!.addChild( new Rectangle( -1, -1, 2, 2, {
               fill: Color.BLACK,
               translation: samplePoint
             } ) );
@@ -323,11 +323,11 @@ class VoltmeterNode extends Node {
         if ( voltmeter.visibleProperty.get() ) {
           const blackConnection = findConnection( blackProbeNode, voltmeter.blackProbePositionProperty.get(), +1 );
           const redConnection = findConnection( redProbeNode, voltmeter.redProbePositionProperty.get(), -1 );
-          const voltage = this.circuitLayerNode.circuit.getVoltageBetweenConnections( redConnection, blackConnection, false );
+          const voltage = this.circuitLayerNode!.circuit.getVoltageBetweenConnections( redConnection, blackConnection, false );
           voltmeter.voltageProperty.set( voltage );
         }
       };
-      model.circuit.circuitChangedEmitter.addListener( updateVoltmeter );
+      model!.circuit.circuitChangedEmitter.addListener( updateVoltmeter );
       voltmeter.redProbePositionProperty.link( updateVoltmeter );
       voltmeter.blackProbePositionProperty.link( updateVoltmeter );
     }
