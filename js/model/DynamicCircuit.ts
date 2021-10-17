@@ -38,7 +38,10 @@ class DynamicCircuit {
    * @param {CapacitorAdapter[]} capacitorAdapters
    * @param {InductorAdapter[]} inductorAdapters
    */
-  constructor( resistorAdapters: ResistorAdapter[], resistiveBatteryAdapters: ResistiveBatteryAdapter[], capacitorAdapters: CapacitorAdapter[], inductorAdapters: InductorAdapter[] ) {
+  constructor( resistorAdapters: ResistorAdapter[],
+               resistiveBatteryAdapters: ResistiveBatteryAdapter[],
+               capacitorAdapters: CapacitorAdapter[],
+               inductorAdapters: InductorAdapter[] ) {
 
     // @private
     this.resistorAdapters = resistorAdapters;
@@ -242,7 +245,7 @@ class DynamicCircuit {
       return new DynamicInductor( inductorAdapter.dynamicCircuitInductor, newState );
     } );
 
-    // @ts-ignore
+    // @ts-ignore TODO: This seems buggy
     return new DynamicCircuit( this.resistorAdapters, this.resistiveBatteryAdapters, updatedCapacitors, updatedInductors );
   }
 }

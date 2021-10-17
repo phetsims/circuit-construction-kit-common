@@ -8,8 +8,7 @@
 
 import circuitConstructionKitCommon from './circuitConstructionKitCommon.js';
 
-// @ts-ignore
-const CCKCQueryParameters = window.QueryStringMachine.getAll( {
+const CCKCQueryParameters = QueryStringMachine.getAll( {
 
   //------------------------------------------------------------------------------------------------------------------
   // Public facing

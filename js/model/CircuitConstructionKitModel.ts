@@ -27,6 +27,7 @@ import ZoomAnimation from './ZoomAnimation.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import CircuitElementViewType from './CircuitElementViewType.js';
+import LightBulb from './LightBulb.js';
 
 type CircuitConstructionKitModelOptions = {
   blackBoxStudy: boolean,
@@ -197,9 +198,9 @@ class CircuitConstructionKitModel {
 
       // First update the length of the light bulbs
       this.circuit.circuitElements.forEach( circuitElement => {
-
-        // @ts-ignore
-        circuitElement.updatePathLength && circuitElement.updatePathLength();
+        if ( circuitElement instanceof LightBulb ) {
+          circuitElement.updatePathLength();
+        }
       } );
 
       // Then position the electrons in the new paths

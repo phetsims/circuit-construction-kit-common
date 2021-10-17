@@ -96,7 +96,7 @@ class AmmeterNode extends Node {
       }
     );
 
-    const currentReadoutProperty = new DerivedProperty( [ ammeter.currentProperty ], ( ( current: number ) => {
+    const currentReadoutProperty = new DerivedProperty<string>( [ ammeter.currentProperty ], ( ( current: number ) => {
 
       const max = filledOptions.blackBoxStudy ? 1E3 : 1E10;
       const maxString = filledOptions.blackBoxStudy ? '> 10^3' : '> 10^10';

@@ -46,8 +46,7 @@ class CircuitResult {
    * @public
    */
   getInstantaneousCurrent( element: ModifiedNodalAnalysisCircuitElement ) {
-    // @ts-ignore
-    return this.getFinalState().dynamicCircuitSolution.getCurrent( element );
+    return this.getFinalState().dynamicCircuitSolution!.getCurrent( element );
   }
 
   /**
@@ -56,8 +55,7 @@ class CircuitResult {
    * @public
    */
   getInstantaneousVoltage( element: ModifiedNodalAnalysisCircuitElement ) {
-    // @ts-ignore
-    return this.getFinalState().dynamicCircuitSolution.getVoltage( element );
+    return this.getFinalState().dynamicCircuitSolution!.getVoltage( element );
   }
 
   /**

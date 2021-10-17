@@ -175,9 +175,7 @@ class Circuit {
       // For circuit elements that can change their length, make sure to update charges when the length changes.
       if ( circuitElement.lengthProperty ) {
         circuitElement.lengthProperty.link( updateCharges );
-
-        // @ts-ignore
-        circuitElement.disposeEmitterCircuitElement.addListener( () => circuitElement.lengthProperty.unlink( updateCharges ) );
+        circuitElement.disposeEmitterCircuitElement.addListener( () => circuitElement.lengthProperty!.unlink( updateCharges ) );
       }
       this.markDirty();
     } );
@@ -369,14 +367,11 @@ class Circuit {
 
     // @public {PhetioGroup}
     this.resistorGroup = new PhetioGroup(
-      // @ts-ignore
       ( tandem, startVertex, endVertex, resistorType ) => resistorType === Resistor.ResistorType.DOG ?
                                                           new Dog( startVertex, endVertex, tandem ) :
                                                           new Resistor( startVertex, endVertex, resistorType, tandem ),
       () => {
-        // @ts-ignore
-        const argumentArray = createVertices( Resistor.ResistorType.RESISTOR.length );
-        // @ts-ignore
+        const argumentArray: any[] = createVertices( Resistor.ResistorType.RESISTOR.length );
         argumentArray.push( Resistor.ResistorType.RESISTOR );
         return argumentArray;
       }, {
@@ -876,9 +871,7 @@ class Circuit {
 
         // If the circuit element has a closed property (like a Switch), it is only OK to traverse if the element is
         // closed.
-        // @ts-ignore
-        if ( circuitElement.closedProperty ) {
-          // @ts-ignore
+        if ( circuitElement instanceof Switch ) {
           return circuitElement.closedProperty.get();
         }
         else {
@@ -1471,7 +1464,6 @@ class Circuit {
                                ( firstChargePosition + lastChargePosition ) / 2 :
                                i * spacing + offset;
 
-        // @ts-ignore
         const desiredCharge = this.currentTypeProperty.get() === 'electrons' ? -1 : +1;
 
         if ( charges.length > 0 &&
