@@ -150,13 +150,12 @@ class ModifiedNodalAnalysisCircuit {
    * @param {Term[]} nodeTerms - to accumulate the result
    * @private
    */
-  getCurrentTerms( node: string | number, side: string, sign: number, nodeTerms: Term[] ) {
+  getCurrentTerms( node: string | number, side: 'nodeId0' | 'nodeId1', sign: number, nodeTerms: Term[] ) {
     assert && CCKCUtils.validateNodeIndex( node );
 
     // Each battery introduces an unknown current through the battery
     for ( let i = 0; i < this.batteries.length; i++ ) {
       const battery = this.batteries[ i ];
-      // @ts-ignore
       if ( battery[ side ] === node ) {
         nodeTerms.push( new Term( sign, new UnknownCurrent( battery ) ) );
       }
@@ -165,7 +164,6 @@ class ModifiedNodalAnalysisCircuit {
     for ( let i = 0; i < this.resistors.length; i++ ) {
       const resistor = this.resistors[ i ];
 
-      // @ts-ignore
       if ( resistor[ side ] === node ) {
         if ( resistor.value === 0 ) {
 
@@ -360,7 +358,7 @@ class ModifiedNodalAnalysisCircuit {
       console.log( getDebugInfo( this, A, z, equations, unknowns, x ) );
     }
 
-    const voltageMap = {};
+    const voltageMap: { [ key: string | number ]: number } = {};
     for ( let i = 0; i < unknownVoltages.length; i++ ) {
       const unknownVoltage = unknownVoltages[ i ];
       const rhs = x.get( getIndexByEquals( unknowns, unknownVoltage ), 0 );
@@ -370,7 +368,6 @@ class ModifiedNodalAnalysisCircuit {
         assert && assert( !isNaN( rhs ), `the right-hand-side-value must be a number. Instead it was ${rhs}. debug info=${getDebugInfo( this, A, z, equations, unknowns, x )}` );
       }
 
-      // @ts-ignore
       voltageMap[ unknownVoltage.node ] = rhs;
     }
     for ( let i = 0; i < unknownCurrents.length; i++ ) {
