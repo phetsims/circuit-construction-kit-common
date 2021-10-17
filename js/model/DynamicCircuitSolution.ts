@@ -39,11 +39,17 @@ class DynamicCircuitSolution {
    */
   getCurrent( element: ModifiedNodalAnalysisCircuitElement | CapacitorAdapter | InductorAdapter ) {
 
+    // Scaffolding tests for TypeScript migration
+    if ( element instanceof ModifiedNodalAnalysisCircuitElement ) {
+      assert && assert( element.hasOwnProperty( 'currentSolution' ) );
+    }
+    if ( element instanceof CapacitorAdapter || element instanceof InductorAdapter ) {
+      assert && assert( !element.hasOwnProperty( 'currentSolution' ) );
+    }
+
     // For resistors with r>0, Ohm's Law gives the current.  For components with no resistance (like closed switch or
     // 0-resistance battery), the current is given by the matrix solution.
-    // @ts-ignore
-    if ( element.hasOwnProperty( 'currentSolution' ) && element.currentSolution !== null ) {
-      // @ts-ignore
+    if ( element instanceof ModifiedNodalAnalysisCircuitElement && element.currentSolution !== null ) {
       return element.currentSolution;
     }
 
