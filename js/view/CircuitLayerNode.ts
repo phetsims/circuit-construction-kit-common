@@ -65,7 +65,6 @@ import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import CircuitElement from '../model/CircuitElement.js';
 import Vertex from '../model/Vertex.js';
 import CircuitConstructionKitModel from '../model/CircuitConstructionKitModel.js';
-import CapacitorNode from '../../../scenery-phet/js/capacitor/CapacitorNode.js';
 
 // constants
 
@@ -929,8 +928,8 @@ class CircuitLayerNode extends Node {
       const capacitorNode = this.hitCircuitElementNode( probePosition, ( circuitElement: CircuitElement ) => circuitElement instanceof Capacitor, globalPoint );
       if ( capacitorNode ) {
 
-        assert && assert( capacitorNode instanceof CapacitorNode );
-        if ( capacitorNode instanceof CapacitorNode ) {
+        assert && assert( capacitorNode instanceof CapacitorCircuitElementNode );
+        if ( capacitorNode instanceof CapacitorCircuitElementNode ) {
 
           // Check front first since it visually looks like it would be touching the probe
           if ( capacitorNode.frontSideContainsSensorPoint( globalPoint ) ) {

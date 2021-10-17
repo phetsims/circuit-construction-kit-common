@@ -4,6 +4,8 @@ import ModifiedNodalAnalysisSolution from './ModifiedNodalAnalysisSolution.js';
 import ModifiedNodalAnalysisCircuitElement from './ModifiedNodalAnalysisCircuitElement.js';
 import CapacitorAdapter from './CapacitorAdapter.js';
 import InductorAdapter from './InductorAdapter.js';
+import DynamicCapacitor from './DynamicCapacitor.js';
+import DynamicInductor from './DynamicInductor.js';
 
 class DynamicCircuitSolution {
   private readonly circuit: DynamicCircuit;
@@ -37,7 +39,7 @@ class DynamicCircuitSolution {
    * @returns {number}
    * @public
    */
-  getCurrent( element: ModifiedNodalAnalysisCircuitElement | CapacitorAdapter | InductorAdapter ) {
+  getCurrent( element: ModifiedNodalAnalysisCircuitElement | DynamicCapacitor | DynamicInductor ) {
 
     // Scaffolding tests for TypeScript migration
     if ( element instanceof ModifiedNodalAnalysisCircuitElement ) {

@@ -20,28 +20,25 @@ import DynamicState from './DynamicState.js';
 import DynamicElementState from './DynamicElementState.js';
 import DynamicInductor from './DynamicInductor.js';
 import DynamicCapacitor from './DynamicCapacitor.js';
-import ResistorAdapter from './ResistorAdapter.js';
-import ResistiveBatteryAdapter from './ResistiveBatteryAdapter.js';
-import CapacitorAdapter from './CapacitorAdapter.js';
-import InductorAdapter from './InductorAdapter.js';
 import ModifiedNodalAnalysisSolution from './ModifiedNodalAnalysisSolution.js';
+import DynamicCircuitResistiveBattery from './DynamicCircuitResistiveBattery.js';
 
 class DynamicCircuit {
-  resistorAdapters: ResistorAdapter[];
-  resistiveBatteryAdapters: ResistiveBatteryAdapter[];
-  capacitorAdapters: CapacitorAdapter[];
-  inductorAdapters: InductorAdapter[];
+  resistorAdapters: ModifiedNodalAnalysisCircuitElement[];
+  resistiveBatteryAdapters: DynamicCircuitResistiveBattery[];
+  capacitorAdapters: DynamicCapacitor[];
+  inductorAdapters: DynamicInductor[];
 
   /**
-   * @param {ResistorAdapter[]} resistorAdapters
-   * @param {ResistiveBatteryAdapter[]} resistiveBatteryAdapters
-   * @param {CapacitorAdapter[]} capacitorAdapters
-   * @param {InductorAdapter[]} inductorAdapters
+   * @param {ModifiedNodalAnalysisCircuitElement[]} resistorAdapters
+   * @param {DynamicCircuitResistiveBattery[]} resistiveBatteryAdapters
+   * @param {DynamicCapacitor[]} capacitorAdapters
+   * @param {DynamicInductor[]} inductorAdapters
    */
-  constructor( resistorAdapters: ResistorAdapter[],
-               resistiveBatteryAdapters: ResistiveBatteryAdapter[],
-               capacitorAdapters: CapacitorAdapter[],
-               inductorAdapters: InductorAdapter[] ) {
+  constructor( resistorAdapters: ModifiedNodalAnalysisCircuitElement[],
+               resistiveBatteryAdapters: DynamicCircuitResistiveBattery[],
+               capacitorAdapters: DynamicCapacitor[],
+               inductorAdapters: DynamicInductor[] ) {
 
     // @private
     this.resistorAdapters = resistorAdapters;

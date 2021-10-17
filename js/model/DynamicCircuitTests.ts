@@ -30,7 +30,6 @@ const testVRCCircuit = ( v: number, r: number, c: number, assert: Assert ) => {
     new DynamicElementState( 0.0, v / r )
   );
 
-  // @ts-ignore
   let dynamicCircuit = new DynamicCircuit( [ resistor ], [ battery ], [ capacitor ], [] );
 
   for ( let i = 0; i < ITERATIONS; i++ ) {//takes 0.3 sec on my machine
