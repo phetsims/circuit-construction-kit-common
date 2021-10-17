@@ -17,7 +17,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Meter from './Meter.js';
 
 class Ammeter extends Meter {
-  readonly currentProperty: Property<number|null>;
+  readonly currentProperty: Property<number | null>;
   readonly probePositionProperty: Vector2Property;
 
   /**

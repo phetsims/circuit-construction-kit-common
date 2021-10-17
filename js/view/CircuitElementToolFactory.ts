@@ -104,17 +104,6 @@ class CircuitElementToolFactory {
   }
 
   /**
-   * Resets the toolbox.
-   * @override
-   * @public
-   */
-  reset() {
-
-    // @ts-ignore
-    this.carousel.reset( { animationEnabled: false } ); // TODO is this line never called?
-  }
-
-  /**
    * Returns a function which counts the number of circuit elements (not counting those in the true black box).
    * @param {function} predicate - CircuitElement => boolean
    * @returns {function} a no-arg function that returns the {number} of CircuitElements of the specified type

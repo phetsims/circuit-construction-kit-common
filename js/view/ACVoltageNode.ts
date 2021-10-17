@@ -19,7 +19,7 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import ACVoltage from '../model/ACVoltage.js';
-import FixedCircuitElementNode from './FixedCircuitElementNode.js';
+import FixedCircuitElementNode, { FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
 import CCKCScreenView from './CCKCScreenView.js';
 import CircuitLayerNode from './CircuitLayerNode.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
@@ -88,7 +88,7 @@ schematicNode.mouseArea = Shape.circle(
   CIRCLE_DIAMETER );
 schematicNode.touchArea = schematicNode.mouseArea;
 
-type ACVoltageNodeOptions = {}; // TODO & FixedCircuitElementNodeOptions
+type ACVoltageNodeOptions = {} & FixedCircuitElementNodeOptions;
 
 class ACVoltageNode extends FixedCircuitElementNode {
   private readonly acSource: ACVoltage;

@@ -33,6 +33,7 @@ import CircuitLayerNode from './CircuitLayerNode.js';
 import LightBulb from '../model/LightBulb.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import Tandem from '../../../tandem/js/Tandem.js';
+import SchematicType from './SchematicType.js';
 
 // constants
 const SCRATCH_MATRIX = new Matrix3();
@@ -192,9 +193,7 @@ class CCKCLightBulbNode extends FixedCircuitElementNode {
       schematicNode.center = lightBulbNode.center.plusXY( 0, 22 );
     }
 
-    // TODO: enum for SchematicType
-    // @ts-ignore
-    const updateSchematicType = schematicType => {
+    const updateSchematicType = ( schematicType: SchematicType ) => {
       if ( filledOptions.isIcon ) {
         // @ts-ignore
         schematicNode.shape = schematicType === 'ieee' ? ieeeShapeIcon : iecShapeIcon;
