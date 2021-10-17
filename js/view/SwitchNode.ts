@@ -39,6 +39,11 @@ const lifelikeGradient = new LinearGradient( 0, -lifelikeNodeThickness / 2, 0, l
   .addColorStop( 0.3, '#e39b8c' )
   .addColorStop( 1, '#b56351' );
 
+type SegmentedNode = {
+  leftSegmentNode: Node,
+  rightSegmentNode: Node,
+  rotatingSegmentNode: Node
+} & Node;
 /**
  * @param {CircuitElementViewType} viewType
  * @param {Color|string|LinearGradient} fill
@@ -110,7 +115,7 @@ const createNode = function( viewType: string, fill: Gradient | Color, thickness
 
   const node = new Node( {
     children: [ leftSegmentNode, rotatingSegmentNode, rightSegmentNode, lifelikeHinge ]
-  } );
+  } ) as SegmentedNode;
 
   if ( viewType === 'schematic' ) {
     node.addChild( new Circle( thickness * 0.6, {
@@ -121,11 +126,8 @@ const createNode = function( viewType: string, fill: Gradient | Color, thickness
     } ) );
   }
 
-  // @ts-ignore
   node.leftSegmentNode = leftSegmentNode;
-  // @ts-ignore
   node.rotatingSegmentNode = rotatingSegmentNode;
-  // @ts-ignore
   node.rightSegmentNode = rightSegmentNode;
 
   return node;
@@ -199,8 +201,7 @@ class SwitchNode extends FixedCircuitElementNode {
       fire: ( event: any ) => {
 
         // Measure how far the switch was dragged in CircuitLayerNode coordinates (if any)
-        // @ts-ignore
-        const distance = circuitLayerNode.globalToLocalPoint( event.pointer.point ).distance( downPoint );
+        const distance = circuitLayerNode!.globalToLocalPoint( event.pointer.point ).distance( downPoint! );
 
         // Toggle the state of the switch, but only if the event is classified as a tap and not a drag
         if ( distance < CCKCConstants.TAP_THRESHOLD ) {
@@ -239,11 +240,8 @@ class SwitchNode extends FixedCircuitElementNode {
    */
   startSideContainsSensorPoint( point: Vector2 ) {
     const localPoint = this.contentNode.parentToLocalPoint( point );
-
-    // @ts-ignore
     const leftSegmentContainsPoint = lifelikeOpenNode.leftSegmentNode.containsPoint( localPoint );
     const node = this.circuitSwitch.closedProperty.get() ? lifelikeClosedNode : lifelikeOpenNode;
-    // @ts-ignore
     const rotatingSegmentContainsPoint = node.rotatingSegmentNode.containsPoint( localPoint );
     return leftSegmentContainsPoint || rotatingSegmentContainsPoint;
   }
@@ -256,7 +254,6 @@ class SwitchNode extends FixedCircuitElementNode {
    */
   endSideContainsSensorPoint( point: Vector2 ) {
     const localPoint = this.contentNode.parentToLocalPoint( point );
-    // @ts-ignore
     return lifelikeOpenNode.rightSegmentNode.containsPoint( localPoint );
   }
 

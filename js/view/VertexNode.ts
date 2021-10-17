@@ -199,8 +199,7 @@ class VertexNode extends Node {
         circuitLayerNode.endDrag( vertex, dragged );
 
         // Only show on a tap, not on every drag.
-        // @ts-ignore
-        if ( vertex.interactiveProperty.get() && latestPoint.distance( initialPoint ) < CCKCConstants.TAP_THRESHOLD ) {
+        if ( vertex.interactiveProperty.get() && latestPoint!.distance( initialPoint! ) < CCKCConstants.TAP_THRESHOLD ) {
 
           vertex.selectedProperty.set( true );
 

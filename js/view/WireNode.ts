@@ -49,10 +49,8 @@ const BLACK_LINE_NODE = new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
  * @param {function} colorStopPointMap - (Vector2) => number, the operation to apply to create color stops
  * @returns {LinearGradient}
  */
-// @ts-ignore
-const createGradient = ( colorStops, colorStopPointMap ) => {
+const createGradient = ( colorStops: any[], colorStopPointMap: ( n: number ) => number ) => {
   const gradient = new LinearGradient( 0, -LIFELIKE_LINE_WIDTH / 2, 0, LIFELIKE_LINE_WIDTH / 2 );
-  // @ts-ignore
   colorStops.forEach( colorStop => {
     gradient.addColorStop( colorStopPointMap( colorStop.point ), colorStop.color );
   } );

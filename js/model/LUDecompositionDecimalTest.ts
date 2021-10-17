@@ -49,8 +49,7 @@ QUnit.test( 'test decomposition', assert => {
   const x = matrix.solve( b );
   // console.log( x.toString() );
 
-  // @ts-ignore
-  assert.ok( x.entries[ 0 ] === 0.02496337890625 );// wrong
+  assert.ok( x.entries![ 0 ] === 0.02496337890625 );// wrong
 
   const x2 = new LUDecompositionDecimal( matrix, LUDecimal ).solve( b, LUDecimal );
   assert.ok( x2.entries[ 0 ] === 5.274e-86 ); // still wrong, but less wrong
