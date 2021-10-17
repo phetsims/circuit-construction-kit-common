@@ -215,6 +215,7 @@ class CCKCScreenView extends ScreenView {
       this.currentChartNode1 = createCurrentChartNode( 'currentChartNode1' );
       this.currentChartNode2 = createCurrentChartNode( 'currentChartNode2' );
 
+      // @ts-ignore
       this.chartNodes.push( this.voltageChartNode1, this.voltageChartNode2, this.currentChartNode1, this.currentChartNode2 );
     }
     else {

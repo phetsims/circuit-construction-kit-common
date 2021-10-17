@@ -53,7 +53,7 @@ type FixedCircuitElementNodeOptions = {
 class FixedCircuitElementNode extends CircuitElementNode {
   lifelikeNode: Node;
   schematicNode: Node;
-  isIcon: any;
+  isIcon: boolean;
   circuitLayerNode: CircuitLayerNode | null;
   contentNode: Node;
   fireNode: Image | null;

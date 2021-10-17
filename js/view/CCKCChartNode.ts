@@ -59,19 +59,19 @@ const MAX_AXIS_LABEL_WIDTH = 120;
 type CCKCChartNodeOptions = {} & NodeOptions;
 
 class CCKCChartNode extends Node {
-  meter: Meter;
-  series: ObservableArray<Vector2 | null>;
-  circuitLayerNode: CircuitLayerNode;
-  timeProperty: Property<number>;
-  visibleBoundsProperty: Property<Bounds2>;
-  backgroundNode: Node;
-  backgroundDragListener: DragListener | null;
-  alignProbesEmitter: Emitter<unknown>;
-  droppedEmitter: Emitter<unknown>;
-  aboveBottomLeft1: DerivedProperty<unknown>;
-  aboveBottomLeft2: DerivedProperty<unknown>;
-  zoomLevelProperty: NumberProperty;
-  updatePen: () => void;
+  protected readonly meter: Meter;
+  protected readonly series: ObservableArray<Vector2 | null>;
+  protected readonly circuitLayerNode: CircuitLayerNode;
+  protected readonly timeProperty: Property<number>;
+  private readonly visibleBoundsProperty: Property<Bounds2>;
+  private readonly backgroundNode: Node;
+  private backgroundDragListener: DragListener | null;
+  private readonly alignProbesEmitter: Emitter<unknown>;
+  private readonly droppedEmitter: Emitter<unknown>;
+  protected readonly aboveBottomLeft1: DerivedProperty<Vector2>;
+  protected readonly aboveBottomLeft2: DerivedProperty<Vector2>;
+  private readonly zoomLevelProperty: NumberProperty;
+  protected readonly updatePen: () => void;
 
   /**
    * @param {CircuitLayerNode} circuitLayerNode

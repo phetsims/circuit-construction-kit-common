@@ -80,18 +80,18 @@ class Circuit {
   readonly selectedCircuitElementProperty: Property<CircuitElement | null>;
   dirty: boolean;
   private readonly stepActions: ( () => void )[];
-  private readonly wireGroup: PhetioGroup<Wire>;
-  private readonly batteryGroup: PhetioGroup<Battery>;
-  private readonly highVoltageBatteryGroup: PhetioGroup<Battery>;
-  private readonly acVoltageGroup: PhetioGroup<ACVoltage>;
-  private readonly resistorGroup: PhetioGroup<Resistor>;
-  private readonly fuseGroup: PhetioGroup<Fuse>;
-  private readonly seriesAmmeterGroup: PhetioGroup<SeriesAmmeter>;
-  private readonly highResistanceLightBulbGroup: PhetioGroup<LightBulb>
-  private readonly capacitorGroup: PhetioGroup<Capacitor>;
-  private readonly inductorGroup: PhetioGroup<Inductor>;
-  private readonly switchGroup: PhetioGroup<Switch>
-  private readonly lightBulbGroup: PhetioGroup<LightBulb>;
+  readonly wireGroup: PhetioGroup<Wire>;
+  readonly batteryGroup: PhetioGroup<Battery>;
+  readonly highVoltageBatteryGroup: PhetioGroup<Battery>;
+  readonly acVoltageGroup: PhetioGroup<ACVoltage>;
+  readonly resistorGroup: PhetioGroup<Resistor>;
+  readonly fuseGroup: PhetioGroup<Fuse>;
+  readonly seriesAmmeterGroup: PhetioGroup<SeriesAmmeter>;
+  readonly highResistanceLightBulbGroup: PhetioGroup<LightBulb>
+  readonly capacitorGroup: PhetioGroup<Capacitor>;
+  readonly inductorGroup: PhetioGroup<Inductor>;
+  readonly switchGroup: PhetioGroup<Switch>
+  readonly lightBulbGroup: PhetioGroup<LightBulb>;
   private readonly realLightBulbGroup: PhetioGroup<LightBulb>;
   private readonly groups: PhetioGroup<CircuitElement>[];
 
@@ -838,7 +838,7 @@ class Circuit {
    *
    * @public
    */
-  getVoltageBetweenConnections( redConnection: VoltageConnection, blackConnection: VoltageConnection, revealing: boolean ) {
+  getVoltageBetweenConnections( redConnection: VoltageConnection | null, blackConnection: VoltageConnection | null, revealing: boolean ) {
 
     if ( redConnection === null || blackConnection === null ) {
       return null;

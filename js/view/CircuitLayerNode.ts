@@ -80,8 +80,8 @@ class CircuitLayerNode extends Node {
   private readonly visibleBoundsProperty: Property<any>;
   private readonly circuitLayerNodeBackLayer: Node;
   readonly highlightLayer: Node;
-  private readonly seriesAmmeterNodeReadoutPanelLayer: Node;
-  private readonly buttonLayer: Node;
+  readonly seriesAmmeterNodeReadoutPanelLayer: Node;
+  readonly buttonLayer: Node;
   private readonly valueLayer: Node;
   private readonly lightRaysLayer: Node;
   private readonly wireLayer: Node;
@@ -98,7 +98,7 @@ class CircuitLayerNode extends Node {
   private readonly circuitElementNodeMap: { [ key: number ]: CircuitElementNode };
   private readonly solderNodes: { [ key: number ]: SolderNode };
   private readonly vertexNodes: { [ key: number ]: VertexNode };
-  private readonly cutButton: RoundPushButton;
+  readonly cutButton: RoundPushButton;
   private readonly circuitDebugLayer: CircuitDebugLayer | null;
 
   /**
@@ -334,7 +334,7 @@ class CircuitLayerNode extends Node {
     };
 
     initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Wire, this.wireLayer,
-      ( circuitElement: CircuitElement, tandem: Tandem ) => new WireNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem ) );
+      ( circuitElement: CircuitElement, tandem: Tandem ) => new WireNode( screenView, this, circuitElement as Wire, this.model.viewTypeProperty, tandem ) );
     initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Battery, this.fixedCircuitElementLayer,
       ( circuitElement: CircuitElement, tandem: Tandem ) => new BatteryNode( screenView, this, circuitElement as Battery, this.model.viewTypeProperty, tandem ) );
     initializeCircuitElementType( ( e: CircuitElement ) => e instanceof LightBulb, this.fixedCircuitElementLayer,
@@ -342,19 +342,19 @@ class CircuitLayerNode extends Node {
     initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Resistor && !( e instanceof Dog ), this.fixedCircuitElementLayer,
       ( circuitElement: CircuitElement, tandem: Tandem ) => new ResistorNode( screenView, this, circuitElement as Resistor, this.model.viewTypeProperty, tandem ) );
     initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Dog, this.fixedCircuitElementLayer,
-      ( circuitElement: CircuitElement, tandem: Tandem ) => new DogNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem ) );
+      ( circuitElement: CircuitElement, tandem: Tandem ) => new DogNode( screenView, this, circuitElement as Dog, this.model.viewTypeProperty, tandem ) );
     initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Capacitor, this.fixedCircuitElementLayer,
       ( circuitElement: CircuitElement, tandem: Tandem ) => new CapacitorCircuitElementNode( screenView, this, circuitElement as Capacitor, this.model.viewTypeProperty, tandem ) );
     initializeCircuitElementType( ( e: CircuitElement ) => e instanceof SeriesAmmeter, this.fixedCircuitElementLayer,
-      ( circuitElement: CircuitElement, tandem: Tandem ) => new SeriesAmmeterNode( screenView, this, circuitElement, tandem ) );
+      ( circuitElement: CircuitElement, tandem: Tandem ) => new SeriesAmmeterNode( screenView, this, circuitElement as SeriesAmmeter, tandem ) );
     initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Switch, this.fixedCircuitElementLayer,
-      ( circuitElement: CircuitElement, tandem: Tandem ) => new SwitchNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem ) );
+      ( circuitElement: CircuitElement, tandem: Tandem ) => new SwitchNode( screenView, this, circuitElement as Switch, this.model.viewTypeProperty, tandem ) );
     initializeCircuitElementType( ( e: CircuitElement ) => e instanceof ACVoltage, this.fixedCircuitElementLayer,
       ( circuitElement: CircuitElement, tandem: Tandem ) => new ACVoltageNode( screenView, this, circuitElement as ACVoltage, this.model.viewTypeProperty, tandem ) );
     initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Fuse, this.fixedCircuitElementLayer,
       ( circuitElement: CircuitElement, tandem: Tandem ) => new FuseNode( screenView, this, circuitElement as Fuse, this.model.viewTypeProperty, tandem ) );
     initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Inductor, this.fixedCircuitElementLayer,
-      ( circuitElement: CircuitElement, tandem: Tandem ) => new InductorNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem ) );
+      ( circuitElement: CircuitElement, tandem: Tandem ) => new InductorNode( screenView, this, circuitElement as Inductor, this.model.viewTypeProperty, tandem ) );
 
     // When a vertex is selected, a cut button is shown near to the vertex.  If the vertex is connected to >1 circuit
     // element, the button is enabled.  Pressing the button will cut the vertex from the neighbors.  Only one cutButton
@@ -870,7 +870,7 @@ class CircuitLayerNode extends Node {
    * @returns {VoltageConnection|null} returns VoltageConnection if connected, otherwise null
    * @private
    */
-  getVoltageConnection( probePosition: Vector2 ) {
+  getVoltageConnection( probePosition: Vector2 ): VoltageConnection | null {
 
     const globalPoint = this.localToGlobalPoint( probePosition );
 

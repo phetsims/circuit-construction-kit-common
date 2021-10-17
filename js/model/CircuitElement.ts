@@ -55,7 +55,7 @@ abstract class CircuitElement extends PhetioObject {
   readonly vertexSelectedEmitter: Emitter<[]>;
   readonly vertexMovedEmitter: Emitter<[]>;
   readonly moveToFrontEmitter: Emitter<[]>;
-  readonly startDragEmitter: Emitter<[]>;
+  readonly startDragEmitter: Emitter<[ SceneryEvent ]>;
   readonly disposeEmitterCircuitElement: Emitter<[]>;
   private readonly vertexMovedListener: () => void;
   private readonly linkVertexListener: ( newVertex: Vertex, oldVertex: Vertex ) => void;

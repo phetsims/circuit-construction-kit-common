@@ -25,8 +25,8 @@ type FuseOptions = {
 
 class Fuse extends FixedCircuitElement {
   readonly currentRatingProperty: NumberProperty;
-  private readonly isTrippedProperty: BooleanProperty;
-  private readonly resistanceProperty: NumberProperty;
+  readonly isTrippedProperty: BooleanProperty;
+  readonly resistanceProperty: NumberProperty;
   private timeCurrentRatingExceeded: number;
 
   /**

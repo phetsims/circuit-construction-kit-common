@@ -39,7 +39,7 @@ type ResistorEnumGroup = {
 
 class Resistor extends FixedCircuitElement {
   readonly resistanceProperty: NumberProperty;
-  private readonly resistorType: any;
+  readonly resistorType: any;
   static ResistorIO: IOType;
   static ResistorType: ResistorEnumGroup;
   static Resistor: { [ key: string ]: ResistorEnumValue; };

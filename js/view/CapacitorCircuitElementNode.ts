@@ -29,8 +29,7 @@ import Capacitor from '../model/Capacitor.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import CCKCScreenView from './CCKCScreenView.js';
 import CircuitLayerNode from './CircuitLayerNode.js';
-import FixedCircuitElementNode from './FixedCircuitElementNode.js';
-import { FixedCircuitElementOptions } from '../model/FixedCircuitElement.js';
+import FixedCircuitElementNode, { FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 
 // constants
@@ -81,7 +80,7 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, capacitor: Capacitor, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, options?: Partial<FixedCircuitElementOptions> ) {
+  constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, capacitor: Capacitor, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, options?: Partial<FixedCircuitElementNodeOptions> ) {
 
     options = merge( {
       isIcon: false

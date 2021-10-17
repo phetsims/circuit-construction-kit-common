@@ -36,7 +36,7 @@ class Vertex extends PhetioObject {
   readonly voltageProperty: NumberProperty;
   readonly selectedProperty: BooleanProperty;
   readonly draggableProperty: BooleanProperty;
-  private readonly interactiveProperty: BooleanProperty;
+  readonly interactiveProperty: BooleanProperty;
   readonly attachableProperty: BooleanProperty;
   readonly blackBoxInterfaceProperty: BooleanProperty;
   readonly insideTrueBlackBoxProperty: BooleanProperty;

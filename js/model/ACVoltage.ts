@@ -29,7 +29,7 @@ type ACVoltageOptions = {} & VoltageSourceOptions;
 class ACVoltage extends VoltageSource {
   readonly maximumVoltageProperty: NumberProperty;
   readonly frequencyProperty: NumberProperty;
-  private readonly phaseProperty: NumberProperty;
+  readonly phaseProperty: NumberProperty;
   private time: number;
 
   /**
