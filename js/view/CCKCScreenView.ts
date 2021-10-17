@@ -81,7 +81,6 @@ type CCKCScreenViewOptions = {
   showSeriesAmmeters: boolean,
   showTimeControls: boolean,
   showNoncontactAmmeters: boolean,
-  getCircuitEditPanelLayoutPosition: any,
   showAdvancedControls: boolean,
   showCharts: boolean,
   blackBoxStudy: boolean,
@@ -126,8 +125,6 @@ class CCKCScreenView extends ScreenView {
       showTimeControls: false,
       showNoncontactAmmeters: true,
 
-      // @ts-ignore
-      getCircuitEditPanelLayoutPosition: CircuitElementEditContainerNode.GET_LAYOUT_POSITION,
       showAdvancedControls: true,
       showCharts: false,
       blackBoxStudy: false,
