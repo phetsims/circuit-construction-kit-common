@@ -169,8 +169,6 @@ class CircuitElementEditContainerNode extends Node {
                 constrainValue: ( value: number ) => Utils.roundToInterval( value, isHighResistance ? HIGH_SLIDER_KNOB_DELTA : NORMAL_SLIDER_KNOB_DELTA )
               },
               numberDisplayOptions: {
-
-                // @ts-dontignore
                 decimalPlaces: selectedCircuitElement.numberOfDecimalPlaces
               }
             }
@@ -209,8 +207,6 @@ class CircuitElementEditContainerNode extends Node {
                 constrainValue: ( value: number ) => Utils.roundToInterval( value, knobDelta )
               },
               numberDisplayOptions: {
-
-                // @ts-dontignore
                 decimalPlaces: selectedCircuitElement.numberOfDecimalPlaces
               },
               phetioState: false

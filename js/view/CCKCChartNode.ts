@@ -183,8 +183,6 @@ class CCKCChartNode extends Node {
       new Range( -2, 2 ),
       new Range( -0.4, 0.4 )
     ];
-
-    // @ts-dontignore
     const initialZoomIndex = zoomRanges.findIndex( e => e.equals( filledOptions.defaultZoomLevel ) );
 
     // @private
@@ -349,8 +347,6 @@ class CCKCChartNode extends Node {
    * @protected
    */
   addProbeNode( color: string, wireColor: string, dx: number, dy: number, connectionProperty: Property<Vector2>, tandem: Tandem ) {
-
-    // @ts-dontignore
     const probeNode = new CCKCProbeNode( this, this.visibleBoundsProperty, { color: color, tandem: tandem } );
 
     // Add the wire behind the probe.

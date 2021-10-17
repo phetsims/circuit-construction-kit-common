@@ -81,8 +81,6 @@ type CCKCScreenViewOptions = {
   showSeriesAmmeters: boolean,
   showTimeControls: boolean,
   showNoncontactAmmeters: boolean,
-
-  // @ts-dontignore
   getCircuitEditPanelLayoutPosition: any,
   showAdvancedControls: boolean,
   showCharts: boolean,

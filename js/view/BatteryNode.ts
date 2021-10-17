@@ -93,8 +93,6 @@ class BatteryNode extends FixedCircuitElementNode {
       lifelikeNode,
       schematicNode,
       tandem,
-
-      // @ts-dontignore
       options
     );
 

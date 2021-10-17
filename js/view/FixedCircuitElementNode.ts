@@ -212,8 +212,6 @@ class FixedCircuitElementNode extends CircuitElementNode {
 
         this.fireNode = new Image( fireImage, { pickable: false, imageOpacity: 0.95 } ) as unknown as Node;
         this.fireNode.mutate( { scale: this.contentNode.width / this.fireNode.width } );
-
-        // @ts-dontignore
         this.addChild( this.fireNode );
         if ( screenView ) {
 
@@ -293,8 +291,6 @@ class FixedCircuitElementNode extends CircuitElementNode {
     const flameY = -fireImage.height;
     matrix.multiplyMatrix( rotationMatrix.setToScale( scale ) )
       .multiplyMatrix( rotationMatrix.setToTranslation( flameX, flameY ) );
-
-    // @ts-dontignore
     this.fireNode && this.fireNode.setMatrix( matrix );
   }
 
@@ -364,8 +360,6 @@ class FixedCircuitElementNode extends CircuitElementNode {
    * @private - for listener bind
    */
   updateFireVisible( current: number, resistance: number, isValueDepictionEnabled: boolean ) {
-
-    // @ts-dontignore
     this.fireNode!.visible = isFireShown( current, isValueDepictionEnabled ) && resistance >= 1E-8;
   }
 

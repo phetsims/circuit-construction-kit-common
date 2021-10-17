@@ -322,7 +322,6 @@ class ModifiedNodalAnalysisCircuit {
     const unknownCurrents = this.getUnknownCurrents() as any[];
     const unknownVoltages = this.nodes.map( node => new UnknownVoltage( node ) );
 
-    // @ts-dontignore
     const unknowns = unknownCurrents.concat( unknownVoltages );
 
     // Gets the index of the specified unknown.

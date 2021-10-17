@@ -113,14 +113,11 @@ class CircuitElementNode extends Node {
       this.disposeEmitterCircuitElementNode.dispose();
     };
 
-    // @ts-dontignore
     circuitElement.startDragEmitter.addListener( startDragListener );
 
     // @private {boolean} - Flag to indicate when updating view is necessary, in order to avoid duplicate work when both
     // vertices move
     this.dirty = true;
-
-    // @ts-dontignore
     this.disposeEmitterCircuitElementNode.addListener( () => circuitElement.startDragEmitter.removeListener( startDragListener ) );
   }
 

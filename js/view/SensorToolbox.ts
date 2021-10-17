@@ -102,8 +102,6 @@ class SensorToolbox extends CCKCPanel {
 
     // Draggable isIcon for the voltmeter
     const voltmeter = new Voltmeter( Tandem.OPTIONAL, 0 );
-
-    // @ts-dontignore
     const voltmeterNodeIcon = new VoltmeterNode( voltmeter, null, null, tandem.createTandem( 'voltmeterNodeIcon' ), {
       isIcon: true
     } );

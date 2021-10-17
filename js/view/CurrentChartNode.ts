@@ -47,8 +47,6 @@ class CurrentChartNode extends CCKCChartNode {
       5,
       10,
       this.aboveBottomLeft1,
-
-      // @ts-dontignore
       options.tandem.createTandem( 'probeNode' )
     );
     this.lastStepTime = null;

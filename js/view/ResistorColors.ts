@@ -95,7 +95,6 @@ const ResistorColors = {
         break;
       }
     }
-    // @ts-dontignore
     assert && assert( percentError < color!.tolerance!, 'no tolerance high enough to accommodate error' );
     return [
       getEntry( 'significantFigure', firstSignificantDigit ),

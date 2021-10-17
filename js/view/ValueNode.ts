@@ -113,9 +113,7 @@ class ValueNode extends Panel {
           const desiredChildren = internalResistance > CCKCQueryParameters.batteryMinimumResistance ? [ voltageText, resistanceNode ] : [ voltageText ];
 
           // Only set children if changed
-          // @ts-dontignore
           if ( contentNode.getChildrenCount() !== desiredChildren.length ) {
-            // @ts-dontignore
             contentNode.children = desiredChildren;
           }
         }
