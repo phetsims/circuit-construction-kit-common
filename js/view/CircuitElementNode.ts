@@ -22,7 +22,7 @@ import CCKCScreenView from './CCKCScreenView.js';
 import CircuitLayerNode from './CircuitLayerNode.js';
 import Vertex from '../model/Vertex.js';
 
-class CircuitElementNode extends Node {
+abstract class CircuitElementNode extends Node {
   private readonly useHitTestForSensors: any;
   private readonly circuit: Circuit | null;
   readonly circuitElement: CircuitElement;
@@ -187,11 +187,13 @@ class CircuitElementNode extends Node {
   step() {
     if ( this.dirty ) {
 
-      // @ts-ignore
       this.updateRender();
       this.dirty = false;
     }
   }
+
+// @public overridden in subclasses
+  abstract updateRender():void;
 
   /**
    * Handles when the node is dropped, called by subclass input listener.

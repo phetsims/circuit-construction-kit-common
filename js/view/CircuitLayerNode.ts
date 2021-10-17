@@ -596,8 +596,7 @@ class CircuitLayerNode extends Node {
         const desiredAngle = position.minus( fixedVertex.positionProperty.get() ).angle;
         assert && assert( !isNaN( desiredAngle ), 'angle should be a number' );
 
-        // @ts-ignore
-        const length = fixedNeighbor.distanceBetweenVertices || fixedNeighbor.lengthProperty.get();
+        const length = fixedNeighbor.distanceBetweenVertices || fixedNeighbor.lengthProperty!.get();
         const indexOfFixedVertex = vertices.indexOf( fixedVertex );
         vertices.splice( indexOfFixedVertex, 1 );
 

@@ -236,10 +236,8 @@ class CCKCScreenView extends ScreenView {
       this.circuitLayerNode,
       voltmeterNodes,
       ammeterNodes,
-
-      // @ts-ignore
-      [ this.voltageChartNode1, this.voltageChartNode2 ],
-      [ this.currentChartNode1, this.currentChartNode2 ],
+      [ this.voltageChartNode1!, this.voltageChartNode2! ],
+      [ this.currentChartNode1!, this.currentChartNode2! ],
       tandem.createTandem( 'sensorToolbox' ), {
         showSeriesAmmeters: filledOptions.showSeriesAmmeters,
         showNoncontactAmmeters: filledOptions.showNoncontactAmmeters,
