@@ -139,7 +139,6 @@ class AmmeterNode extends Node {
 
     assert && assert( !filledOptions.hasOwnProperty( 'children' ), 'children will be supplied by AmmeterNode' );
 
-    // @ts-ignore
     filledOptions.children = [ bodyNode, wireNode, probeNode ];
 
     super( filledOptions );

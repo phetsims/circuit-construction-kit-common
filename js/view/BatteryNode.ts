@@ -106,8 +106,8 @@ class BatteryNode extends FixedCircuitElementNode {
  * @public {Array.<Image>}
  */
 BatteryNode.webglSpriteNodes = [
-  new Image( batteryImage ),
-  new Image( batteryHighImage )
+  new Image( batteryImage ) as unknown as Node,
+  new Image( batteryHighImage ) as unknown as Node
 ];
 
 circuitConstructionKitCommon.register( 'BatteryNode', BatteryNode );

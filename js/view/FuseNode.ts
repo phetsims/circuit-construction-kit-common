@@ -215,7 +215,7 @@ class FuseNode extends FixedCircuitElementNode {
  * @public {Array.<Image>}
  */
 FuseNode.webglSpriteNodes = [
-  new Image( fuseImage )
+  new Image( fuseImage ) as unknown as Node
 ];
 
 circuitConstructionKitCommon.register( 'FuseNode', FuseNode );

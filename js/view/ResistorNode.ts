@@ -258,15 +258,15 @@ class ResistorNode extends FixedCircuitElementNode {
  * @public {Array.<Image>}
  */
 ResistorNode.webglSpriteNodes = [
-  new Image( resistorImage ),
-  new Image( paperClipImage ),
-  new Image( coinImage ),
-  new Image( pencilImage ),
-  new Image( eraserImage ),
-  new Image( handImage ),
-  new Image( resistorHighImage ),
-  new Image( dogImage ),
-  new Image( dollarBillImage )
+  new Image( resistorImage ) as unknown as Node,
+  new Image( paperClipImage ) as unknown as Node,
+  new Image( coinImage ) as unknown as Node,
+  new Image( pencilImage ) as unknown as Node,
+  new Image( eraserImage ) as unknown as Node,
+  new Image( handImage ) as unknown as Node,
+  new Image( resistorHighImage ) as unknown as Node,
+  new Image( dogImage ) as unknown as Node,
+  new Image( dollarBillImage ) as unknown as Node
 ];
 
 circuitConstructionKitCommon.register( 'ResistorNode', ResistorNode );

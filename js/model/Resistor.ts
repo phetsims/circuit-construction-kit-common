@@ -35,7 +35,7 @@ type ResistorEnumGroup = {
   HAND: ResistorEnumValue,
   DOG: ResistorEnumValue,
   DOLLAR_BILL: ResistorEnumValue,
-};
+} & Enumeration;
 
 class Resistor extends FixedCircuitElement {
   readonly resistanceProperty: NumberProperty;
@@ -183,20 +183,16 @@ Resistor.ResistorIO = new IOType( 'ResistorIO', {
   valueType: Resistor,
   supertype: CircuitElement.CircuitElementIO,
   stateSchema: {
-    // @ts-ignore
     resistorType: EnumerationIO( Resistor.ResistorType )
   },
   toStateObject: ( resistor: Resistor ) => {
     const stateObject = CircuitElement.CircuitElementIO.toStateObject( resistor );
-
-    // @ts-ignore
     stateObject.resistorType = EnumerationIO( Resistor.ResistorType ).toStateObject( resistor.resistorType );
     return stateObject;
   },
 
   stateToArgsForConstructor( stateObject: any ) {
     const args = CircuitElement.CircuitElementIO.stateToArgsForConstructor( stateObject );
-    // @ts-ignore
     args.push( EnumerationIO( Resistor.ResistorType ).fromStateObject( stateObject.resistorType ) );
     return args;
   }

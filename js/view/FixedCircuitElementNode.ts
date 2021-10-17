@@ -65,7 +65,7 @@ class FixedCircuitElementNode extends CircuitElementNode {
   pickableListener: ( pickable: boolean | null ) => Node;
   fixedCircuitElementNodePickable: boolean | null;
   dragListener: CircuitLayerNodeDragListener | null;
-  static webglSpriteNodes: Image[];
+  static webglSpriteNodes: Node[];
   updateHighlightVisibility: ( ( circuitElement: CircuitElement | null ) => void ) | null;
   updateFireMultilink: Multilink | null;
 
@@ -378,7 +378,7 @@ class FixedCircuitElementNode extends CircuitElementNode {
  * @public {Array.<Image>}
  */
 FixedCircuitElementNode.webglSpriteNodes = [
-  new Image( fireImage )
+  new Image( fireImage ) as unknown as Node
 ];
 
 circuitConstructionKitCommon.register( 'FixedCircuitElementNode', FixedCircuitElementNode );

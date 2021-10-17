@@ -78,8 +78,8 @@ const createNode = ( schematic: boolean ) => new Node( {
         } ) ]
   ]
 } );
-const schematicNode = createNode( true ).rasterized( { wrap: false, resolution: 2 } );
-const lifelikeNode = createNode( false ).rasterized( { wrap: false, resolution: 2 } );
+const schematicNode = createNode( true ).rasterized( { wrap: false, resolution: 2 } ) as unknown as Node;
+const lifelikeNode = createNode( false ).rasterized( { wrap: false, resolution: 2 } ) as unknown as Node;
 
 // Expand the pointer areas with a defensive copy, see https://github.com/phetsims/circuit-construction-kit-common/issues/310
 schematicNode.mouseArea = Shape.circle(
@@ -132,7 +132,6 @@ class ACVoltageNode extends FixedCircuitElementNode {
  * Identifies the images used to render this node so they can be pre-populated in the WebGL sprite sheet.
  * @public {Array.<Node>}
  */
-// @ts-ignore
 ACVoltageNode.webglSpriteNodes = [ schematicNode, lifelikeNode ];
 
 circuitConstructionKitCommon.register( 'ACVoltageNode', ACVoltageNode );
