@@ -28,7 +28,7 @@ type WireOptions = {
 
 class Wire extends CircuitElement {
   private readonly wireStub: boolean;
-  private readonly resistanceProperty: NumberProperty;
+  readonly resistanceProperty: NumberProperty;
   private readonly resistivityProperty: NumberProperty;
   private wireDirty: boolean;
   private readonly markWireDirtyListener: () => void;

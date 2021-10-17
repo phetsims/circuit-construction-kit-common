@@ -1,31 +1,24 @@
 // Copyright 2021, University of Colorado Boulder
 
 import ModifiedNodalAnalysisCircuitElement from './ModifiedNodalAnalysisCircuitElement.js';
-import CCKCConstants from '../CCKCConstants.js';
 import Circuit from './Circuit.js';
-import Resistor from './Resistor.js';
 import CircuitResult from './CircuitResult.js';
+import CircuitElement from './CircuitElement.js';
 
 class ResistorAdapter extends ModifiedNodalAnalysisCircuitElement {
-  private readonly resistor: Resistor;
 
   /**
    * @param {Circuit} circuit
    * @param {Resistor} resistor
+   * @param resistance
    */
-  constructor( circuit: Circuit, resistor: Resistor ) {
+  constructor( circuit: Circuit, resistor: CircuitElement, resistance: number ) {
     super(
       resistor.startVertexProperty.value.index,
       resistor.endVertexProperty.value.index,
       resistor,
-
-      // If a resistor goes to 0 resistance, then we cannot compute the current through as I=V/R.  Therefore,
-      // simulate a small amount of resistance.
-      resistor.resistanceProperty.value || CCKCConstants.MINIMUM_RESISTANCE
+      resistance
     );
-
-    // @private
-    this.resistor = resistor;
   }
 
   /**
@@ -33,7 +26,7 @@ class ResistorAdapter extends ModifiedNodalAnalysisCircuitElement {
    * @public
    */
   applySolution( circuitResult: CircuitResult ) {
-    this.resistor.currentProperty.value = circuitResult.getTimeAverageCurrent( this );
+    this.circuitElement!.currentProperty.value = circuitResult.getTimeAverageCurrent( this );
   }
 }
 

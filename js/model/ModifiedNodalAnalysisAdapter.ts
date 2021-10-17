@@ -28,6 +28,7 @@ import Circuit from './Circuit.js';
 import DynamicState from './DynamicState.js';
 import Vertex from './Vertex.js';
 import CircuitElement from './CircuitElement.js';
+import CCKCConstants from '../CCKCConstants.js';
 
 // constants
 const TIMESTEP_SUBDIVISIONS = new TimestepSubdivisions<DynamicState>();
@@ -69,8 +70,11 @@ class ModifiedNodalAnalysisAdapter {
                   // Since no closed circuit there; see below where current is zeroed out
                   ( circuitElement instanceof Switch && circuitElement.closedProperty.value ) ) {
 
-          // @ts-ignore
-          resistorAdapters.push( new ResistorAdapter( circuit, circuitElement ) );
+          // If a resistor goes to 0 resistance, then we cannot compute the current through as I=V/R.  Therefore,
+          // simulate a small amount of resistance.
+          const resistance = circuitElement.resistanceProperty.value || CCKCConstants.MINIMUM_RESISTANCE;
+
+          resistorAdapters.push( new ResistorAdapter( circuit, circuitElement, resistance ) );
         }
         else if ( circuitElement instanceof Switch && !circuitElement.closedProperty.value ) {
 

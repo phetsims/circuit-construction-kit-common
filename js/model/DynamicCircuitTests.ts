@@ -69,7 +69,6 @@ const testVRLCircuit = ( V: number, R: number, L: number, assert: Assert ) => {
   const resistor = new ModifiedNodalAnalysisCircuitElement( 1, 2, null, R );
   const battery = new DynamicCircuitResistiveBattery( 0, 1, V, 0 );
   const inductor = new DynamicInductor( new DynamicCircuitInductor( 2, 0, L ), new DynamicElementState( V, 0.0 ) );
-  // @ts-ignore
   let circuit = new DynamicCircuit( [ resistor ], [ battery ], [], [ inductor ] );
 
   // let x = '';

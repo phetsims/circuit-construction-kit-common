@@ -14,7 +14,7 @@ import FixedCircuitElement, { FixedCircuitElementOptions } from './FixedCircuitE
 import Vertex from './Vertex.js';
 
 class SeriesAmmeter extends FixedCircuitElement {
-  private readonly resistanceProperty: NumberProperty;
+   readonly resistanceProperty: NumberProperty;
 
   /**
    * @param {Vertex} startVertex
