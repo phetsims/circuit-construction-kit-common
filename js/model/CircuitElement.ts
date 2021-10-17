@@ -485,11 +485,9 @@ CircuitElement.CircuitElementIO = new IOType( 'CircuitElementIO', {
     startVertexID: VertexReferenceIO,
     endVertexID: VertexReferenceIO
   },
-  stateToArgsForConstructor: ( stateObject: object ) => {
+  stateToArgsForConstructor: ( stateObject: any ) => {
     return [
-      // @ts-ignore
       VertexReferenceIO.fromStateObject( stateObject.startVertexID ),
-      // @ts-ignore
       VertexReferenceIO.fromStateObject( stateObject.endVertexID )
     ];
   }

@@ -66,8 +66,8 @@ class CCKCChartNode extends Node {
   private readonly visibleBoundsProperty: Property<Bounds2>;
   private readonly backgroundNode: Node;
   private backgroundDragListener: DragListener | null;
-  private readonly alignProbesEmitter: Emitter<unknown>;
-  private readonly droppedEmitter: Emitter<unknown>;
+  private readonly alignProbesEmitter: Emitter<[]>;
+  private readonly droppedEmitter: Emitter<[]>;
   protected readonly aboveBottomLeft1: DerivedProperty<Vector2>;
   protected readonly aboveBottomLeft2: DerivedProperty<Vector2>;
   private readonly zoomLevelProperty: NumberProperty;

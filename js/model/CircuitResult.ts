@@ -31,8 +31,7 @@ class CircuitResult {
    */
   getTimeAverageCurrent( element: ModifiedNodalAnalysisCircuitElement | CapacitorAdapter | InductorAdapter ) {
     let weightedSum = 0.0;
-    this.resultSet.states.forEach( stateObject => {
-      // @ts-ignore
+    this.resultSet.states.forEach( ( stateObject: any ) => {
       weightedSum += stateObject.state.dynamicCircuitSolution.getCurrent( element ) * stateObject.dt;
     } );
     const number = weightedSum / this.resultSet.getTotalTime();
