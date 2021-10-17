@@ -331,7 +331,7 @@ class CircuitElementEditContainerNode extends Node {
 
               // For dragging the slider knob
               sliderOptions: {
-                constrainValue: ( value: number ) => Utils.roundToInterval( value, CCKCQueryParameters.inductanceStep )
+                constrainValue: ( value: number ) => Utils.roundToInterval( value, 0.1 )
               }
             }
           );

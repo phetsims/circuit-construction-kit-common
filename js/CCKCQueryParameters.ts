@@ -106,23 +106,23 @@ const CCKCQueryParameters = QueryStringMachine.getAll( {
 
   inductanceMin: {
     type: 'number',
-    defaultValue: 10
+    defaultValue: 0.1
   },
   inductanceMax: {
     type: 'number',
-    defaultValue: 100
+    defaultValue: 10
   },
   inductanceStep: {
     type: 'number',
-    defaultValue: 1
+    defaultValue: 0.001
   },
   inductanceDefault: {
     type: 'number',
-    defaultValue: 50
+    defaultValue: 5
   },
   inductorNumberDecimalPlaces: {
     type: 'number',
-    defaultValue: 2
+    defaultValue: 3
   },
 
   minDT: {
