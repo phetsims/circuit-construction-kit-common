@@ -44,6 +44,7 @@ import CircuitElementViewType from './CircuitElementViewType.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import VoltageConnection from './VoltageConnection.js';
+import StringIO from '../../../tandem/js/types/StringIO.js';
 
 // constants
 const SNAP_RADIUS = 30; // For two vertices to join together, they must be this close, in view coordinates
@@ -137,7 +138,8 @@ class Circuit {
 
     // @public {Property.<CurrentType>} - whether to show charges or conventional current
     this.currentTypeProperty = new Property( CCKCQueryParameters.currentType, {
-      tandem: tandem.createTandem( 'currentTypeProperty' )
+      tandem: tandem.createTandem( 'currentTypeProperty' ),
+      phetioType: Property.PropertyIO( StringIO )
     } );
 
     // When the current type changes, mark everything as dirty and relayout charges
