@@ -29,7 +29,7 @@ abstract class DynamicCircuitElement extends FixedCircuitElement {
    * @param {Object} [options]
    */
 
-  constructor( startVertex: Vertex, endVertex: Vertex, length: number, tandem: Tandem, options?: any ) {
+  constructor( startVertex: Vertex, endVertex: Vertex, length: number, tandem: Tandem, options?: Partial<DynamicCircuitElementOptions> ) {
     super( startVertex, endVertex, length, tandem, options );
 
     // @public {number} - value of the voltage drop set and read by the modified nodal analysis.  This is in addition

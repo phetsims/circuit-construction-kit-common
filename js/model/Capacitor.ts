@@ -12,12 +12,12 @@ import merge from '../../../phet-core/js/merge.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import DynamicCircuitElement from './DynamicCircuitElement.js';
+import DynamicCircuitElement, { DynamicCircuitElementOptions } from './DynamicCircuitElement.js';
 import Vertex from './Vertex.js';
 
 type CapacitorOptions = {
   capacitance: number
-} // TODO: Extends DynamicCircuitElementOptions
+} & DynamicCircuitElementOptions;
 
 class Capacitor extends DynamicCircuitElement {
   readonly capacitanceProperty: NumberProperty;
@@ -28,7 +28,7 @@ class Capacitor extends DynamicCircuitElement {
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, options?: CapacitorOptions ) {
+  constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, options?: Partial<CapacitorOptions> ) {
     const filledOptions = merge( {
       capacitance: CCKCConstants.DEFAULT_CAPACITANCE,
 

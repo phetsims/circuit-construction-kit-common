@@ -42,7 +42,7 @@ class ModifiedNodalAnalysisSolution {
     assert && assert( keyDifference.length === 0, 'wrong keys in compared solution' );
     for ( let i = 0; i < keys.length; i++ ) {
       const key = keys[ i ];
-      const closeEnough = NUMBER_APPROXIMATELY_EQUALS(
+      const closeEnough = approximatelyEquals(
         this.getNodeVoltage( key ),
         modifiedNodalAnalysisSolution.getNodeVoltage( key )
       );
@@ -85,12 +85,12 @@ class ModifiedNodalAnalysisSolution {
    * @returns {boolean}
    * @private
    */
-  hasMatchingElement( element: any ) {
+  hasMatchingElement( element: ModifiedNodalAnalysisCircuitElement ) {
     for ( let i = 0; i < this.elements.length; i++ ) {
-      const proposedElement: any = this.elements[ i ];
+      const proposedElement: ModifiedNodalAnalysisCircuitElement = this.elements[ i ];
       if ( proposedElement.nodeId0 === element.nodeId0 &&
            proposedElement.nodeId1 === element.nodeId1 &&
-           NUMBER_APPROXIMATELY_EQUALS( proposedElement.currentSolution, element.currentSolution ) ) {
+           approximatelyEquals( proposedElement.currentSolution!, element.currentSolution! ) ) {
         return true;
       }
     }
@@ -143,7 +143,7 @@ class ModifiedNodalAnalysisSolution {
  * @param {number} b - another number
  * @returns {boolean} true if the numbers are approximately equal
  */
-const NUMBER_APPROXIMATELY_EQUALS = ( a: number, b: number ) => Math.abs( a - b ) < 1E-6;
+const approximatelyEquals = ( a: number, b: number ) => Math.abs( a - b ) < 1E-6;
 
 circuitConstructionKitCommon.register( 'ModifiedNodalAnalysisSolution', ModifiedNodalAnalysisSolution );
 export default ModifiedNodalAnalysisSolution;
