@@ -22,7 +22,7 @@ class TrashButton extends CCKCRoundPushButton {
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( circuit: Circuit, tandem: Tandem, options?: object ) {
+  constructor( circuit: Circuit, tandem: Tandem, options?: Partial<RoundPushButtonOptions> ) {
 
     super( merge( {
       touchAreaDilation: 5, // radius dilation for touch area

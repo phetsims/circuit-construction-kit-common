@@ -33,7 +33,7 @@ class CircuitElementNumberControl extends NumberControl {
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( title: string, valuePattern: string, valueProperty: NumberProperty, circuit: Circuit, circuitElement: FixedCircuitElement, tandem: Tandem, options?: object ) {
+  constructor( title: string, valuePattern: string, valueProperty: NumberProperty, circuit: Circuit, circuitElement: FixedCircuitElement, tandem: Tandem, options?: any ) {
 
     assert && assert( !!valueProperty.range, 'Range must be provided' );
 

@@ -18,7 +18,7 @@ import LightBulb from '../model/LightBulb.js';
 import CCKCScreenView from './CCKCScreenView.js';
 import CircuitLayerNode from './CircuitLayerNode.js';
 import CustomLightBulbNode from './CustomLightBulbNode.js';
-import FixedCircuitElementNode from './FixedCircuitElementNode.js';
+import FixedCircuitElementNode, { FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
 
 // constants
 const SCRATCH_MATRIX = new Matrix3();
@@ -33,7 +33,8 @@ class LightBulbSocketNode extends FixedCircuitElementNode {
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, lightBulb: LightBulb, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, options?: object ) {
+  constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, lightBulb: LightBulb,
+               viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, options?: Partial<FixedCircuitElementNodeOptions> ) {
 
     // Render the bulb socket only
     const lightBulbNode = new CustomLightBulbNode( new NumberProperty( 0 ), {
