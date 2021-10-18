@@ -14,7 +14,7 @@ import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommon
 import schematicTypeProperty from './schematicTypeProperty.js';
 
 class CCKCOptionsDialogContent extends VBox {
-  disposeCCKCOptionsDialogContent: () => void;
+  private readonly disposeCCKCOptionsDialogContent: () => void;
 
   /**
    * @param {Tandem} tandem

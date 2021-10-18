@@ -53,11 +53,11 @@ const CONTROL_POINT_Y1 = 15;
 const CONTROL_POINT_Y2 = 60;
 
 class VoltmeterNode extends Node {
-  circuitLayerNode: CircuitLayerNode | null;
-  voltmeter: Voltmeter;
-  redProbeNode: Rectangle;
-  blackProbeNode: Rectangle;
-  dragHandler: DragListener | null;
+  private readonly circuitLayerNode: CircuitLayerNode | null;
+  readonly voltmeter: Voltmeter;
+  private readonly redProbeNode: Rectangle;
+  private readonly blackProbeNode: Rectangle;
+  private readonly dragHandler: DragListener | null;
   static PROBE_ANGLE: number;
 
   /**

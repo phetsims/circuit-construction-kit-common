@@ -153,9 +153,9 @@ const schematicClosedImage = createNode(
 ).rasterized( { wrap: false } );
 
 class SwitchNode extends FixedCircuitElementNode {
-  circuitSwitch: Switch;
-  lifelikeOpenNode: Node;
-  disposeSwitchNode: () => void;
+  readonly circuitSwitch: Switch;
+  private readonly lifelikeOpenNode: Node;
+  private readonly disposeSwitchNode: () => void;
 
   /**
    * @param {CCKCScreenView|null} screenView - main screen view, null for icon

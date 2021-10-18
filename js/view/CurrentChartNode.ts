@@ -22,8 +22,8 @@ import CCKCProbeNode from './CCKCProbeNode.js';
 const currentWithUnitsString = circuitConstructionKitCommonStrings.currentWithUnits;
 
 class CurrentChartNode extends CCKCChartNode {
-  probeNode1: CCKCProbeNode;
-  lastStepTime: number | null;
+  private readonly probeNode1: CCKCProbeNode;
+  private lastStepTime: number | null;
 
   /**
    * @param {CircuitLayerNode} circuitLayerNode

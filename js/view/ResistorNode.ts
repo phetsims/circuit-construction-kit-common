@@ -70,9 +70,9 @@ RESISTOR_IMAGE_MAP.set( Resistor.ResistorType.DOG, dogImage );
 RESISTOR_IMAGE_MAP.set( Resistor.ResistorType.DOLLAR_BILL, dollarBillImage );
 
 class ResistorNode extends FixedCircuitElementNode {
-  resistor: Resistor;
-  lifelikeResistorImageNode: Node;
-  disposeResistorNode: () => void;
+  private readonly resistor: Resistor;
+  private readonly lifelikeResistorImageNode: Node;
+  private readonly disposeResistorNode: () => void;
 
   /**
    * @param {CCKCScreenView|null} screenView - main screen view, null for isIcon

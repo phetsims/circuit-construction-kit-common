@@ -388,7 +388,7 @@ class EditHBox extends HBox {
  * Panel to facilitate in visual layout of the controls.
  */
 class EditPanel extends Panel {
-  hbox: EditHBox;
+  private readonly hbox: EditHBox;
 
   /**
    * @param {Array.<Node>} children

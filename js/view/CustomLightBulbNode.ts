@@ -27,12 +27,12 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 const BULB_IMAGE_SCALE = 0.125;
 
 class CustomLightBulbNode extends Node {
-  baseOnly: boolean;
-  backNode: Node;
-  raysNode: LightRaysNode | null;
-  brightnessProperty: Property<number>;
-  brightnessObserver: ( () => void ) | null;
-  disposeCustomLightBulbNode: () => void;
+  private readonly baseOnly: boolean;
+  private readonly backNode: Node;
+  private readonly raysNode: LightRaysNode | null;
+  private readonly brightnessProperty: Property<number>;
+  private readonly brightnessObserver: ( () => void ) | null;
+  private readonly disposeCustomLightBulbNode: () => void;
   static webglSpriteNodes: Image[];
 
   /**

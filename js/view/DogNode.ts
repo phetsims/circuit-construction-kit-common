@@ -21,7 +21,7 @@ import ResistorNode from './ResistorNode.js';
 import Dog from '../model/Dog.js';
 
 class DogNode extends ResistorNode {
-  barkNode: BarkNode;
+  private readonly barkNode: BarkNode;
 
   /**
    * @param {CCKCScreenView|null} screenView - main screen view, null for isIcon

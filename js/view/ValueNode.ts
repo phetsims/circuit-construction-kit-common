@@ -70,7 +70,7 @@ const createRichText = ( tandem: Tandem, options?: any ) => new RichText( '', me
 const infinitySpan = '<span style="font-size: 26px; font-family: serif;"><b>∞</b></span>';
 
 class ValueNode extends Panel {
-  disposeValueNode: () => void;
+  private readonly disposeValueNode: () => void;
 
   /**
    * @param {Property.<number>} sourceResistanceProperty - user-specified value for internal resistance for batteries

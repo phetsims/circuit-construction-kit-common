@@ -21,7 +21,7 @@ const NUMBER_CONTROL_ELEMENT_MAX_WIDTH = 115;
 const READOUT_MAX_WIDTH = 80;
 
 class CircuitElementNumberControl extends NumberControl {
-  disposeCircuitElementNumberControl: () => void;
+  private readonly disposeCircuitElementNumberControl: () => void;
   static NUMBER_CONTROL_ELEMENT_MAX_WIDTH: number;
 
   /**

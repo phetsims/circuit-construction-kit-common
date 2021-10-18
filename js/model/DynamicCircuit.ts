@@ -24,10 +24,10 @@ import ModifiedNodalAnalysisSolution from './ModifiedNodalAnalysisSolution.js';
 import DynamicCircuitResistiveBattery from './DynamicCircuitResistiveBattery.js';
 
 class DynamicCircuit {
-  resistorAdapters: ModifiedNodalAnalysisCircuitElement[];
-  resistiveBatteryAdapters: DynamicCircuitResistiveBattery[];
-  capacitorAdapters: DynamicCapacitor[];
-  inductorAdapters: DynamicInductor[];
+  private readonly resistorAdapters: ModifiedNodalAnalysisCircuitElement[];
+  private readonly resistiveBatteryAdapters: DynamicCircuitResistiveBattery[];
+  readonly capacitorAdapters: DynamicCapacitor[];
+  readonly inductorAdapters: DynamicInductor[];
 
   /**
    * @param {ModifiedNodalAnalysisCircuitElement[]} resistorAdapters

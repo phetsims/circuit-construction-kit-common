@@ -138,16 +138,16 @@ const getTouchArea = ( wire: Wire ) => {
 };
 
 class WireNode extends CircuitElementNode {
-  viewTypeProperty: Property<CircuitElementViewType>;
-  circuitLayerNode: CircuitLayerNode | null;
-  wire: Wire;
-  startCapParent: Node;
-  endCapParent: Node;
-  lineNodeParent: Node;
-  lineNode: Node;
-  highlightNode: Path;
-  dragListener: CircuitLayerNodeDragListener | null;
-  disposeWireNode: () => void;
+  private readonly viewTypeProperty: Property<CircuitElementViewType>;
+  private readonly circuitLayerNode: CircuitLayerNode | null;
+  private readonly wire: Wire;
+  private readonly startCapParent: Node;
+  private readonly endCapParent: Node;
+  private readonly lineNodeParent: Node;
+  private readonly lineNode: Node;
+  private readonly highlightNode: Path;
+  private readonly dragListener: CircuitLayerNodeDragListener | null;
+  private readonly disposeWireNode: () => void;
   static webglSpriteNodes: Node[];
 
   /**

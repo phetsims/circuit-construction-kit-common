@@ -53,8 +53,8 @@ const blackBorder = createPanel( {
 } );
 
 class SeriesAmmeterNode extends FixedCircuitElementNode {
-  frontPanelContainer: Node;
-  disposeSeriesAmmeterNode: () => void;
+  private readonly frontPanelContainer: Node;
+  private readonly disposeSeriesAmmeterNode: () => void;
 
   /**
    * @param {CCKCScreenView|null} screenView - main screen view, null for isIcon

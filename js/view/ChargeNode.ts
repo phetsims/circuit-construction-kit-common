@@ -38,11 +38,11 @@ const ARROW_NODE = new ConventionalCurrentArrowNode( Tandem.GLOBAL_VIEW.createTa
 const CONVENTIONAL_CHARGE_THRESHOLD = 1E-6;
 
 class ChargeNode extends Node {
-  circuitLayerNode: CircuitLayerNode;
-  charge: Charge;
-  outsideOfBlackBoxProperty: BooleanProperty;
-  updateVisibleListener: () => void;
-  updateTransformListener: () => void;
+  private readonly circuitLayerNode: CircuitLayerNode;
+  private readonly charge: Charge;
+  private readonly outsideOfBlackBoxProperty: BooleanProperty;
+  private readonly updateVisibleListener: () => void;
+  private readonly updateTransformListener: () => void;
   static webglSpriteNodes: Node[];
 
   /**

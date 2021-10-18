@@ -118,11 +118,11 @@ class Resistor extends FixedCircuitElement {
  * Values for the ResistorTypeEnum
  */
 class ResistorEnumValue {
-  defaultResistance: number;
-  range: Range;
-  isMetallic: boolean;
-  length: number;
-  verticalOffset: number;
+  private readonly defaultResistance: number;
+  private readonly range: Range;
+  private readonly isMetallic: boolean;
+  readonly length: number;
+  private readonly verticalOffset: number;
 
   /**
    * @param {number} defaultResistance - default value for resistance, in Ohms

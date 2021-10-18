@@ -55,9 +55,9 @@ type AmmeterNodeOptions = {
 } & NodeOptions;
 
 class AmmeterNode extends Node {
-  probeNode: ProbeNode;
-  ammeter: Ammeter;
-  dragHandler: DragListener | null;
+  private readonly probeNode: ProbeNode;
+  readonly ammeter: Ammeter;
+  private readonly dragHandler: DragListener | null;
 
   /**
    * @param {Ammeter} ammeter

@@ -415,8 +415,8 @@ const batteryToString = ( battery: ModifiedNodalAnalysisCircuitElement ) =>
   `node${battery.nodeId0} -> node${battery.nodeId1} @ ${battery.value} Volts`;
 
 class Term {
-  coefficient: number;
-  variable: UnknownCurrent | UnknownVoltage;
+  readonly coefficient: number;
+  readonly variable: UnknownCurrent | UnknownVoltage;
 
   /**
    * @param {number} coefficient - the multiplier for this term
@@ -445,7 +445,7 @@ class Term {
 }
 
 class UnknownCurrent {
-  element: ModifiedNodalAnalysisCircuitElement;
+  private readonly element: ModifiedNodalAnalysisCircuitElement;
 
   /**
    * @param {ModifiedNodalAnalysisCircuitElement} element
@@ -478,7 +478,7 @@ class UnknownCurrent {
 }
 
 class UnknownVoltage {
-  node: string | number;
+  readonly node: string | number;
 
   /**
    * @param {number} node - the index of the node
@@ -511,8 +511,8 @@ class UnknownVoltage {
 }
 
 class Equation {
-  value: number;
-  terms: Term[];
+  private readonly value: number;
+  private readonly terms: Term[];
 
   /**
    * @param {number} value - the value on the right hand side of the equation, such as x+y=7

@@ -22,7 +22,7 @@ const theSwitchIsOpenString = circuitConstructionKitCommonStrings.theSwitchIsOpe
 const MAX_TEXT_WIDTH = 300;
 
 class SwitchReadoutNode extends Node {
-  disposeSwitchReadoutNode: () => void;
+  private readonly disposeSwitchReadoutNode: () => void;
 
   /**
    * @param {Circuit} circuit - the circuit from which the switch can be removed when the trash button is pressed

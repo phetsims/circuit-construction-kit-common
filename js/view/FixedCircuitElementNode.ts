@@ -51,23 +51,23 @@ type FixedCircuitElementNodeOptions = {
 } & NodeOptions;// TODO: & CircuitElementNodeOptions
 
 class FixedCircuitElementNode extends CircuitElementNode {
-  lifelikeNode: Node;
-  schematicNode: Node;
+  private readonly lifelikeNode: Node;
+  private readonly schematicNode: Node;
   isIcon: boolean;
-  circuitLayerNode: CircuitLayerNode | null;
+  private readonly circuitLayerNode: CircuitLayerNode | null;
   contentNode: Node;
-  fireNode: Node | null;
-  viewTypeProperty: Property<CircuitElementViewType>;
-  viewPropertyListener: ( viewType: CircuitElementViewType ) => void;
-  highlightNode: FixedCircuitElementHighlightNode | null;
-  markDirtyListener: () => void;
-  moveToFrontListener: () => void;
-  pickableListener: ( pickable: boolean | null ) => Node;
-  fixedCircuitElementNodePickable: boolean | null;
-  dragListener: CircuitLayerNodeDragListener | null;
+  private readonly fireNode: Node | null;
+  readonly viewTypeProperty: Property<CircuitElementViewType>;
+  private readonly viewPropertyListener: ( viewType: CircuitElementViewType ) => void;
+  readonly highlightNode: FixedCircuitElementHighlightNode | null;
+  private readonly markDirtyListener: () => void;
+  private readonly moveToFrontListener: () => void;
+  private readonly pickableListener: ( pickable: boolean | null ) => Node;
+  private readonly fixedCircuitElementNodePickable: boolean | null;
+  private readonly dragListener: CircuitLayerNodeDragListener | null;
   static webglSpriteNodes: Node[];
-  updateHighlightVisibility: ( ( circuitElement: CircuitElement | null ) => void ) | null;
-  updateFireMultilink: Multilink | null;
+  private readonly updateHighlightVisibility: ( ( circuitElement: CircuitElement | null ) => void ) | null;
+  private readonly updateFireMultilink: Multilink | null;
 
   /**
    * @param {CCKCScreenView|null} screenView - the main screen view, null for isIcon

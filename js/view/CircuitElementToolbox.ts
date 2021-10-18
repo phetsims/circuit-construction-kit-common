@@ -25,7 +25,7 @@ import CircuitElementToolNode from './CircuitElementToolNode.js';
 const CAROUSEL_ITEM_SPACING = 11;
 
 class CircuitElementToolbox extends HBox {
-  carousel: Carousel;
+  readonly carousel: Carousel;
 
   /**
    * @param {Property.<CircuitElementViewType>} viewTypeProperty

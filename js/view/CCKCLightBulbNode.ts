@@ -59,9 +59,9 @@ const toBrightness = ( multiplier: number, power: number ) => {
 };
 
 class CCKCLightBulbNode extends FixedCircuitElementNode {
-  rayNodeContainer: Node;
-  disposeCircuitConstructionKitLightBulbNode: () => void;
-  socketNode: LightBulbSocketNode | null;
+  private readonly rayNodeContainer: Node;
+  private readonly disposeCircuitConstructionKitLightBulbNode: () => void;
+  private readonly socketNode: LightBulbSocketNode | null;
 
   /**
    * @param {CCKCScreenView|null} screenView - main screen view, null for icon

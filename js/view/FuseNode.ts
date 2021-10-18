@@ -41,8 +41,8 @@ const VERTICAL_GLASS_MARGIN = 3;
 const DEFAULT_GLASS_FILL = '#c3dbfd';
 
 class FuseNode extends FixedCircuitElementNode {
-  fuse: Fuse;
-  disposeFuseNode: () => void;
+  private readonly fuse: Fuse;
+  private readonly disposeFuseNode: () => void;
 
   /**
    * @param {CCKCScreenView|null} screenView - main screen view, null for isIcon

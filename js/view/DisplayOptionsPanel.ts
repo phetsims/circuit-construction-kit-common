@@ -43,7 +43,7 @@ const SPACING = 10;
 const LEFT_MARGIN = 30;
 
 class DisplayOptionsPanel extends CCKCPanel {
-  stopwatchCheckbox: CCKCCheckbox | null;
+  readonly stopwatchCheckbox: CCKCCheckbox | null;
 
   /**
    * @param {AlignGroup} alignGroup - box for aligning with other controls

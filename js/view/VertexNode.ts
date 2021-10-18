@@ -43,24 +43,24 @@ const BLACK_CIRCLE_NODE = new Circle( VERTEX_RADIUS, merge( CIRCLE_OPTIONS, {
 } ) ).rasterized( { wrap: false } );
 
 class VertexNode extends Node {
-  circuit: Circuit;
-  cutButton: RoundPushButton;
-  vertexNodeTandem: Tandem;
-  circuitLayerNode: CircuitLayerNode;
-  voltageReadoutText: Text | null;
-  updateReadoutTextPosition: ( () => void ) | null;
-  vertex: Vertex;
+  private readonly circuit: Circuit;
+  private readonly cutButton: RoundPushButton;
+  private readonly vertexNodeTandem: Tandem;
+  private readonly circuitLayerNode: CircuitLayerNode;
+  private readonly voltageReadoutText: Text | null;
+  private readonly updateReadoutTextPosition: ( () => void ) | null;
+  private readonly vertex: Vertex;
   startOffset: Vector2 | null;
-  highlightNode: Circle;
-  keyListener: { keydown: ( event: any ) => void; };
-  updateStrokeListener: () => void;
-  updateSelectedListener: ( selected: boolean ) => void;
-  updateMoveToFront: () => Node;
-  updatePickableListener: ( pickable: boolean | null ) => Node;
-  clickToDismissListeners: { down: ( event: any ) => void }[];
-  dragListener: CircuitLayerNodeDragListener;
-  interruptionListener: ( draggable: boolean ) => void;
-  updateVertexNodePositionListener: () => void;
+  private readonly highlightNode: Circle;
+  private readonly keyListener: { keydown: ( event: any ) => void; };
+  private readonly updateStrokeListener: () => void;
+  private readonly updateSelectedListener: ( selected: boolean ) => void;
+  private readonly updateMoveToFront: () => Node;
+  private readonly updatePickableListener: ( pickable: boolean | null ) => Node;
+  private readonly clickToDismissListeners: { down: ( event: any ) => void }[];
+  private readonly dragListener: CircuitLayerNodeDragListener;
+  private readonly interruptionListener: ( draggable: boolean ) => void;
+  private readonly updateVertexNodePositionListener: () => void;
   static VERTEX_RADIUS: number;
   static webglSpriteNodes: Node[];
 

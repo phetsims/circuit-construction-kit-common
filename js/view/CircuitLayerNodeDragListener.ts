@@ -12,8 +12,8 @@ import Vertex from '../model/Vertex.js';
 import CircuitLayerNode from './CircuitLayerNode.js';
 
 class CircuitLayerNodeDragListener extends DragListener {
-  circuitLayerNode: CircuitLayerNode;
-  vertexGetters: ( () => Vertex )[];
+  private readonly circuitLayerNode: CircuitLayerNode;
+  private readonly vertexGetters: ( () => Vertex )[];
 
   /**
    * @param {CircuitLayerNode} circuitLayerNode
