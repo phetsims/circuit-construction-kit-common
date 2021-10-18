@@ -34,7 +34,7 @@ import FixedCircuitElement from './FixedCircuitElement.js';
 import Fuse from './Fuse.js';
 import Inductor from './Inductor.js';
 import LightBulb from './LightBulb.js';
-import ModifiedNodalAnalysisAdapter from './ModifiedNodalAnalysisAdapter.js';
+import ModifiedNodalAnalysisAdapter from './mna/ModifiedNodalAnalysisAdapter.js';
 import Resistor from './Resistor.js';
 import SeriesAmmeter from './SeriesAmmeter.js';
 import Switch from './Switch.js';

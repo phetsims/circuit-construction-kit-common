@@ -7,9 +7,9 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import CCKCUtils from '../CCKCUtils.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitElement from './CircuitElement.js';
+import CCKCUtils from '../../CCKCUtils.js';
+import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
+import CircuitElement from '../CircuitElement.js';
 
 class ModifiedNodalAnalysisCircuitElement {
   readonly nodeId0: string | number;

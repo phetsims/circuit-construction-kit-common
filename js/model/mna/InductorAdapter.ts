@@ -1,7 +1,7 @@
 // Copyright 2021, University of Colorado Boulder
-import CCKCUtils from '../CCKCUtils.js';
-import Inductor from './Inductor.js';
-import Circuit from './Circuit.js';
+import CCKCUtils from '../../CCKCUtils.js';
+import Inductor from '../Inductor.js';
+import Circuit from '../Circuit.js';
 import CircuitResult from './CircuitResult.js';
 import DynamicElementState from './DynamicElementState.js';
 import DynamicInductor from './DynamicInductor.js';

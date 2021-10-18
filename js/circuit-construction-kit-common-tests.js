@@ -6,8 +6,8 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import './model/DynamicCircuitTests.js';
-import './model/ModifiedNodalAnalysisCircuitTests.js';
+import './model/mna/DynamicCircuitTests.js';
+import './model/mna/ModifiedNodalAnalysisCircuitTests.js';
 import './view/ResistorColorsTests.js';
 import qunitStart from '../../chipper/js/sim-tests/qunitStart.js';
 import './model/LUDecompositionDecimalTest.js';

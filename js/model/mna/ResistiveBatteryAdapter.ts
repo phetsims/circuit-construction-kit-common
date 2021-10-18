@@ -1,9 +1,9 @@
 // Copyright 2021, University of Colorado Boulder
 
 import DynamicCircuitResistiveBattery from './DynamicCircuitResistiveBattery.js';
-import Circuit from './Circuit.js';
+import Circuit from '../Circuit.js';
 import CircuitResult from './CircuitResult.js';
-import VoltageSource from './VoltageSource.js';
+import VoltageSource from '../VoltageSource.js';
 
 class ResistiveBatteryAdapter extends DynamicCircuitResistiveBattery {
   readonly battery: VoltageSource;
