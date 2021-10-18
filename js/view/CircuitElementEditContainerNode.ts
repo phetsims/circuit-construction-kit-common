@@ -80,7 +80,7 @@ class CircuitElementEditContainerNode extends Node {
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( circuit: Circuit, visibleBoundsProperty: Property<Bounds2>, modeProperty: Property<'explore' | 'test'>, playAreaCenterXProperty: Property<number>, tandem: Tandem, options: any ) {
+  constructor( circuit: Circuit, visibleBoundsProperty: Property<Bounds2>, modeProperty: Property<'explore' | 'test'>, playAreaCenterXProperty: Property<number>, tandem: Tandem, options?: any ) {
 
     super();
 

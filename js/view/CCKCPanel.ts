@@ -20,7 +20,7 @@ class CCKCPanel extends Panel {
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( content: Node, tandem: Tandem, options: object ) {
+  constructor( content: Node, tandem: Tandem, options?: object ) {
     options = merge( {
       fill: CCKCConstants.PANEL_COLOR,
       lineWidth: CCKCConstants.PANEL_LINE_WIDTH,

@@ -64,7 +64,7 @@ class LightBulb extends FixedCircuitElement {
   private readonly viewTypeProperty: Property<CircuitElementViewType>;
 
   // TODO: improve types
-  static createAtPosition: ( startVertex: Vertex, endVertex: Vertex, circuit: Circuit, resistance: number, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, options: any ) => LightBulb;
+  static createAtPosition: ( startVertex: Vertex, endVertex: Vertex, circuit: Circuit, resistance: number, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, options?: any ) => LightBulb;
   static createVertexPair: ( position: Vector2, circuit: Circuit, icon?: boolean ) => { startVertex: Vertex; endVertex: Vertex; };
 
   /**

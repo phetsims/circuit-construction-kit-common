@@ -33,7 +33,7 @@ class LightBulbSocketNode extends FixedCircuitElementNode {
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, lightBulb: LightBulb, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, options: object ) {
+  constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, lightBulb: LightBulb, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, options?: object ) {
 
     // Render the bulb socket only
     const lightBulbNode = new CustomLightBulbNode( new NumberProperty( 0 ), {
