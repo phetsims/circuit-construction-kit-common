@@ -22,7 +22,7 @@ import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import Inductor from '../model/Inductor.js';
 import CCKCScreenView from './CCKCScreenView.js';
 import CircuitLayerNode from './CircuitLayerNode.js';
-import FixedCircuitElementNode from './FixedCircuitElementNode.js';
+import FixedCircuitElementNode, { FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
 
 // constants
 // dimensions for schematic
@@ -67,7 +67,8 @@ class InductorNode extends FixedCircuitElementNode {
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, inductor: Inductor, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, options?: any ) {
+  constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, inductor: Inductor,
+               viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, options?: Partial<FixedCircuitElementNodeOptions> ) {
 
     options = merge( { isIcon: false, useHitTestForSensors: true }, options );
 

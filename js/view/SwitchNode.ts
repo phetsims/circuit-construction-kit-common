@@ -24,7 +24,7 @@ import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import Switch from '../model/Switch.js';
 import CCKCScreenView from './CCKCScreenView.js';
 import CircuitLayerNode from './CircuitLayerNode.js';
-import FixedCircuitElementNode from './FixedCircuitElementNode.js';
+import FixedCircuitElementNode, { FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
 
 // constants
 // dimensions for schematic battery
@@ -165,7 +165,8 @@ class SwitchNode extends FixedCircuitElementNode {
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, circuitSwitch: Switch, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, options?: any ) {
+  constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, circuitSwitch: Switch,
+               viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, options?: Partial<FixedCircuitElementNodeOptions> ) {
 
     const lifelikeNode = new Node();
     const schematicNode = new Node();

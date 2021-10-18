@@ -20,7 +20,7 @@ class FuseTripAnimation extends Node {
   /**
    * @param {Object} [options]
    */
-  constructor( options?: any ) {
+  constructor( options?: Partial<NodeOptions> ) {
     super();
 
     // Geometry sampled by exporting circuit-construction-kit-common/assets/spark.ai to SVG then copying the
@@ -47,6 +47,7 @@ class FuseTripAnimation extends Node {
     } );
 
     const path = new Path( shape, { stroke: 'yellow', lineWidth: 2 } );
+    options = options || {};
     options.children = [ path ];
     this.mutate( options );
 
