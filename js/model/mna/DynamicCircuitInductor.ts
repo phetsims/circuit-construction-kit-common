@@ -9,7 +9,7 @@ class DynamicCircuitInductor extends ModifiedNodalAnalysisCircuitElement {
    * @param {number} node1
    * @param {number} inductance
    */
-  constructor( node0: number, node1: number, inductance: number ) {
+  constructor( node0: string, node1: string, inductance: number ) {
     super( node0, node1, null, 0 );
 
     // @public

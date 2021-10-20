@@ -14,8 +14,8 @@ class ResistorAdapter extends ModifiedNodalAnalysisCircuitElement {
    */
   constructor( circuit: Circuit, resistor: CircuitElement, resistance: number ) {
     super(
-      resistor.startVertexProperty.value.index,
-      resistor.endVertexProperty.value.index,
+      resistor.startVertexProperty.value.index + '',
+      resistor.endVertexProperty.value.index + '',
       resistor,
       resistance
     );

@@ -15,8 +15,8 @@ class CapacitorAdapter extends DynamicCapacitor {
   constructor( capacitor: Capacitor ) {
 
     const dynamicCircuitCapacitor = new DynamicCircuitCapacitor(
-      capacitor.startVertexProperty.value.index,
-      capacitor.endVertexProperty.value.index,
+      capacitor.startVertexProperty.value.index + '',
+      capacitor.endVertexProperty.value.index + '',
       capacitor.capacitanceProperty.value
     );
     super( dynamicCircuitCapacitor, new DynamicElementState( capacitor.mnaVoltageDrop, capacitor.mnaCurrent ) );

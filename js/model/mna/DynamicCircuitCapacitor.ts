@@ -5,11 +5,11 @@ class DynamicCircuitCapacitor extends ModifiedNodalAnalysisCircuitElement {
   readonly capacitance: number;
 
   /**
-   * @param {number} node0
-   * @param {number} node1
+   * @param {string} node0
+   * @param {string} node1
    * @param {number} capacitance
    */
-  constructor( node0: number, node1: number, capacitance: number ) {
+  constructor( node0: string, node1: string, capacitance: number ) {
     super( node0, node1, null, 0 );
 
     // @public

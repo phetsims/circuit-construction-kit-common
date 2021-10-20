@@ -32,7 +32,7 @@ class ModifiedNodalAnalysisCircuit {
   private readonly resistors: ModifiedNodalAnalysisCircuitElement[];
   private readonly currentSources: ModifiedNodalAnalysisCircuitElement[];
   private readonly elements: ModifiedNodalAnalysisCircuitElement[];
-  private readonly nodeSet: { [ key: string | number ]: string | number }; // TODO: make these all string?
+  private readonly nodeSet: { [ key: string ]: string };
   private readonly nodeCount: number;
   private readonly nodes: ( string | number )[];
 
@@ -210,12 +210,11 @@ class ModifiedNodalAnalysisCircuit {
 
   /**
    * Finds all nodes connected (by any path) to the given node
-   * @param {number} node
-   * @returns {number[]}
+   * @param {string} node
+   * @returns {string[]}
    * @private
    */
-  getConnectedNodeIds( node: string | number ) {
-    assert && assert( typeof node === 'number', 'node should be a number' );
+  getConnectedNodeIds( node: string ) {
     const visited = [];
     const toVisit = [ node ];
 

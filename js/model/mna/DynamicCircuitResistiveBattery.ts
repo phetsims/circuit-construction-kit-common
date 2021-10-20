@@ -6,12 +6,12 @@ class DynamicCircuitResistiveBattery extends ModifiedNodalAnalysisCircuitElement
   resistance: number;
 
   /**
-   * @param {number} node0
-   * @param {number} node1
+   * @param {string} node0
+   * @param {string} node1
    * @param {number} voltage
    * @param {number} resistance
    */
-  constructor( node0: number, node1: number, voltage: number, resistance: number ) {
+  constructor( node0: string, node1: string, voltage: number, resistance: number ) {
     super( node0, node1, null, 0 );
 
     // @public

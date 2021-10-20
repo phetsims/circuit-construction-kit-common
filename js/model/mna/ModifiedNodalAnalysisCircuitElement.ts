@@ -12,20 +12,20 @@ import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js'
 import CircuitElement from '../CircuitElement.js';
 
 class ModifiedNodalAnalysisCircuitElement {
-  readonly nodeId0: string | number;
-  readonly nodeId1: string | number;
+  readonly nodeId0: string;
+  readonly nodeId1: string;
   readonly circuitElement: CircuitElement | null;
   value: number;
   currentSolution: number | null;
 
   /**
-   * @param {number|string} nodeId0
-   * @param {number|string} nodeId1
+   * @param {string} nodeId0
+   * @param {string} nodeId1
    * @param {CircuitElement|null} circuitElement, null during qunit tests
    * @param {number} value - resistance for resistors, voltage for battery or current for current source
    * @param {number|null} [currentSolution]
    */
-  constructor( nodeId0: string | number, nodeId1: string | number, circuitElement: CircuitElement | null, value: number, currentSolution: number | null = null ) {
+  constructor( nodeId0: string, nodeId1: string, circuitElement: CircuitElement | null, value: number, currentSolution: number | null = null ) {
     assert && CCKCUtils.validateNodeIndex( nodeId0 );
     assert && CCKCUtils.validateNodeIndex( nodeId1 );
 

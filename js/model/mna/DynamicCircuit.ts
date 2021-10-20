@@ -68,8 +68,8 @@ class DynamicCircuit {
       const newNode = 'syntheticNode' + syntheticNodeIndex;
       syntheticNodeIndex++;
 
-      const idealBattery = new ModifiedNodalAnalysisCircuitElement( resistiveBatteryAdapter.nodeId0, newNode, null, resistiveBatteryAdapter.voltage ); // final LinearCircuitSolver.Battery
-      const idealResistor = new ModifiedNodalAnalysisCircuitElement( newNode, resistiveBatteryAdapter.nodeId1, null, resistiveBatteryAdapter.resistance ); // LinearCircuitSolver.Resistor
+      const idealBattery = new ModifiedNodalAnalysisCircuitElement( resistiveBatteryAdapter.nodeId0 + '', newNode, null, resistiveBatteryAdapter.voltage ); // final LinearCircuitSolver.Battery
+      const idealResistor = new ModifiedNodalAnalysisCircuitElement( newNode, resistiveBatteryAdapter.nodeId1 + '', null, resistiveBatteryAdapter.resistance ); // LinearCircuitSolver.Resistor
       companionBatteries.push( idealBattery );
       companionResistors.push( idealResistor );
 
@@ -107,9 +107,9 @@ class DynamicCircuit {
       // |V|=|IReq| and sign is unchanged since the conventional current flows from high to low voltage.
       const companionVoltage = capacitorAdapter.state.voltage - companionResistance * capacitorAdapter.state.current;
 
-      const battery = new ModifiedNodalAnalysisCircuitElement( capacitorAdapter.dynamicCircuitCapacitor.nodeId0, newNode1, null, companionVoltage );
+      const battery = new ModifiedNodalAnalysisCircuitElement( capacitorAdapter.dynamicCircuitCapacitor.nodeId0 + '', newNode1, null, companionVoltage );
       const resistor = new ModifiedNodalAnalysisCircuitElement( newNode1, newNode2, null, companionResistance );
-      const resistor2 = new ModifiedNodalAnalysisCircuitElement( newNode2, capacitorAdapter.dynamicCircuitCapacitor.nodeId1, null, resistanceTerm );
+      const resistor2 = new ModifiedNodalAnalysisCircuitElement( newNode2, capacitorAdapter.dynamicCircuitCapacitor.nodeId1 + '', null, resistanceTerm );
 
       companionBatteries.push( battery );
       companionResistors.push( resistor );
@@ -139,8 +139,8 @@ class DynamicCircuit {
       const companionResistance = 2 * inductor.inductance / dt;
       const companionVoltage = -inductorAdapter.state.voltage - companionResistance * inductorAdapter.state.current;
 
-      const battery = new ModifiedNodalAnalysisCircuitElement( inductor.nodeId0, newNode, null, companionVoltage );
-      const resistor = new ModifiedNodalAnalysisCircuitElement( newNode, inductor.nodeId1, null, companionResistance );
+      const battery = new ModifiedNodalAnalysisCircuitElement( inductor.nodeId0 + '', newNode, null, companionVoltage );
+      const resistor = new ModifiedNodalAnalysisCircuitElement( newNode, inductor.nodeId1 + '', null, companionResistance );
       companionBatteries.push( battery );
       companionResistors.push( resistor );
 

@@ -14,8 +14,8 @@ class InductorAdapter extends DynamicInductor {
    */
   constructor( inductor: Inductor ) {
     const dynamicCircuitInductor = new DynamicCircuitInductor(
-      inductor.startVertexProperty.value.index,
-      inductor.endVertexProperty.value.index,
+      inductor.startVertexProperty.value.index + '',
+      inductor.endVertexProperty.value.index + '',
       inductor.inductanceProperty.value
     );
 

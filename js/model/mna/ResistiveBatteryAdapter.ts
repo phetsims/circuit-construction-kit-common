@@ -14,8 +14,8 @@ class ResistiveBatteryAdapter extends DynamicCircuitResistiveBattery {
    */
   constructor( circuit: Circuit, battery: VoltageSource ) {
     super(
-      battery.startVertexProperty.value.index,
-      battery.endVertexProperty.value.index,
+      battery.startVertexProperty.value.index + '',
+      battery.endVertexProperty.value.index + '',
       battery.voltageProperty.value,
       battery.internalResistanceProperty.value
     );
