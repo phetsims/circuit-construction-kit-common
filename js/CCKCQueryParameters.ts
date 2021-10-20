@@ -93,12 +93,6 @@ const CCKCQueryParameters = QueryStringMachine.getAll( {
     defaultValue: 1E-10
   },
 
-  // Precision for the numerical matrix solution for the linear algebra step
-  precision: {
-    type: 'number',
-    defaultValue: 32
-  },
-
   // For debugging the current value and sense of FixedCircuitElement
   showCurrents: {
     type: 'flag'

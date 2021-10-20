@@ -13,9 +13,6 @@
     "runnable": true,
     "generatedUnitTests": true,
     "requirejsNamespace": "CIRCUIT_CONSTRUCTION_KIT_COMMON",
-    "preload": [
-      "../sherpa/lib/decimal-10.3.1.js"
-    ],
     "phetLibs": [
       "twixt",
       "griddle"

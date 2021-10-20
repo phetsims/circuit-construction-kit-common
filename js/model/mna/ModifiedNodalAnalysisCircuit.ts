@@ -15,17 +15,10 @@ import QRDecomposition from '../../../../dot/js/QRDecomposition.js';
 import Matrix from '../../../../dot/js/Matrix.js';
 import Utils from '../../../../dot/js/Utils.js';
 import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
-import CCKCQueryParameters from '../../CCKCQueryParameters.js';
 import CCKCUtils from '../../CCKCUtils.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import ModifiedNodalAnalysisSolution from './ModifiedNodalAnalysisSolution.js';
 import ModifiedNodalAnalysisCircuitElement from './ModifiedNodalAnalysisCircuitElement.js';
-
-// @ts-ignore
-const LUDecimal = Decimal.clone( {
-  // precision: 16 // default precision for {number}
-  precision: CCKCQueryParameters.precision
-} );
 
 class ModifiedNodalAnalysisCircuit {
   private readonly batteries: ModifiedNodalAnalysisCircuitElement[];
@@ -336,11 +329,9 @@ class ModifiedNodalAnalysisCircuit {
     let x;
     try {
 
-      CCKCUtils.incrementAccumulatedSteps();
-
       // if we have to run too many steps within a frame, then go to the high performance solver
       for ( let i = 0; i < equations.length; i++ ) {
-        equations[ i ].stamp( i, A, z, getIndex, false );
+        equations[ i ].stamp( i, A, z, getIndex );
       }
 
       x = new QRDecomposition( A ).solve( z );
@@ -536,10 +527,9 @@ class Equation {
    * @param {Matrix} a - the matrix of coefficients in Ax=z
    * @param {Matrix} z - the matrix on the right hand side in Ax=z
    * @param {function} getColumn - (UnknownCurrent|UnknownVoltage) => number
-   * @param isDecimal
    * @public
    */
-  stamp( row: number, a: Matrix, z: Matrix, getColumn: { ( unknown: UnknownCurrent | UnknownVoltage ): number; ( arg0: UnknownCurrent | UnknownVoltage ): any; }, isDecimal = false ) {
+  stamp( row: number, a: Matrix, z: Matrix, getColumn: { ( unknown: UnknownCurrent | UnknownVoltage ): number; ( arg0: UnknownCurrent | UnknownVoltage ): any; } ) {
 
     // Set the equation's value into the solution matrix
     z.set( row, 0, this.value );
@@ -549,14 +539,7 @@ class Equation {
       const term = this.terms[ i ];
       const column = getColumn( term.variable );
       assert && assert( !isNaN( term.coefficient ), 'coefficient should be a number' );
-      if ( isDecimal ) {
-
-        // @ts-ignore
-        a.set( row, column, a.get( row, column ).plus( new LUDecimal( term.coefficient ) ) );
-      }
-      else {
-        a.set( row, column, term.coefficient + a.get( row, column ) );
-      }
+      a.set( row, column, term.coefficient + a.get( row, column ) );
     }
   }
 
