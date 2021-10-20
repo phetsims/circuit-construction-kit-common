@@ -27,7 +27,7 @@ class ModifiedNodalAnalysisCircuit {
   private readonly elements: ModifiedNodalAnalysisCircuitElement[];
   private readonly nodeSet: { [ key: string ]: string };
   private readonly nodeCount: number;
-  private readonly nodes: ( string | number )[];
+  private readonly nodes: string[];
 
   /**
    * @param {ModifiedNodalAnalysisCircuitElement[]} batteries
@@ -117,7 +117,7 @@ class ModifiedNodalAnalysisCircuit {
    * @returns {number}
    * @private
    */
-  getCurrentSourceTotal( nodeIndex: string | number ) {
+  getCurrentSourceTotal( nodeIndex: string ) {
     let currentSourceTotal = 0.0;
     for ( let i = 0; i < this.currentSources.length; i++ ) {
       const currentSource = this.currentSources[ i ];
@@ -143,7 +143,7 @@ class ModifiedNodalAnalysisCircuit {
    * @param {Term[]} nodeTerms - to accumulate the result
    * @private
    */
-  getCurrentTerms( node: string | number, side: 'nodeId0' | 'nodeId1', sign: number, nodeTerms: Term[] ) {
+  getCurrentTerms( node: string, side: 'nodeId0' | 'nodeId1', sign: number, nodeTerms: Term[] ) {
     assert && CCKCUtils.validateNodeIndex( node );
 
     // Each battery introduces an unknown current through the battery
@@ -209,11 +209,11 @@ class ModifiedNodalAnalysisCircuit {
    */
   getConnectedNodeIds( node: string ) {
     const visited = [];
-    const toVisit = [ node ];
+    const toVisit: string[] = [ node ];
 
     while ( toVisit.length > 0 ) {
 
-      const nodeToVisit = toVisit.shift() as ( number | string );
+      const nodeToVisit = toVisit.shift() as string;
       visited.push( nodeToVisit );
       for ( let i = 0; i < this.elements.length; i++ ) {
         const element = this.elements[ i ];
@@ -348,7 +348,7 @@ class ModifiedNodalAnalysisCircuit {
       console.log( getDebugInfo( this, A, z, equations, unknowns, x ) );
     }
 
-    const voltageMap: { [ key: string | number ]: number } = {};
+    const voltageMap: { [ key: string ]: number } = {};
     for ( let i = 0; i < unknownVoltages.length; i++ ) {
       const unknownVoltage = unknownVoltages[ i ];
       const rhs = x.get( getIndexByEquals( unknowns, unknownVoltage ), 0 );
@@ -468,12 +468,12 @@ class UnknownCurrent {
 }
 
 class UnknownVoltage {
-  readonly node: string | number;
+  readonly node: string;
 
   /**
    * @param {number} node - the index of the node
    */
-  constructor( node: string | number ) {
+  constructor( node: string ) {
     assert && CCKCUtils.validateNodeIndex( node );
 
     // @public (read-only) {number}

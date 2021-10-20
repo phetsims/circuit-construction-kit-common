@@ -61,11 +61,11 @@ class ModifiedNodalAnalysisCircuitElement {
 
   /**
    * Determine if the element contains the given node id
-   * @param {number} nodeId
+   * @param {string} nodeId
    * @returns {boolean}
    * @private
    */
-  containsNodeId( nodeId: string | number ) {
+  containsNodeId( nodeId: string ) {
     return this.nodeId0 === nodeId || this.nodeId1 === nodeId;
   }
 

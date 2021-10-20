@@ -101,7 +101,7 @@ const CCKCUtils = {
    * @param {string|number} nodeIndex
    * @public
    */
-  validateNodeIndex( nodeIndex: string | number ) { // TODO: May be unnecessary in TS
+  validateNodeIndex( nodeIndex: string ) {
     if ( assert ) {
       assert && assert( typeof nodeIndex === 'string' || typeof nodeIndex === 'number', 'nodeIndex must be string or number' );
       if ( typeof nodeIndex === 'number' ) {
