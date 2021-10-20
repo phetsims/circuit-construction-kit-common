@@ -6,7 +6,7 @@ import DynamicElementState from './DynamicElementState.js';
 import DynamicCapacitor from './DynamicCapacitor.js';
 import DynamicCircuitCapacitor from './DynamicCircuitCapacitor.js';
 
-class CapacitorAdapter extends DynamicCapacitor {
+class DynamicCapacitorAdapter extends DynamicCapacitor {
   private readonly capacitor: Capacitor;
 
   /**
@@ -49,4 +49,4 @@ class CapacitorAdapter extends DynamicCapacitor {
   }
 }
 
-export default CapacitorAdapter;
+export default DynamicCapacitorAdapter;

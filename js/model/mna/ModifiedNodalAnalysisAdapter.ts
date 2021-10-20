@@ -9,7 +9,7 @@
 
 import ResistiveBatteryAdapter from './ResistiveBatteryAdapter.js';
 import ResistorAdapter from './ResistorAdapter.js';
-import CapacitorAdapter from './CapacitorAdapter.js';
+import DynamicCapacitorAdapter from './DynamicCapacitorAdapter.js';
 import InductorAdapter from './InductorAdapter.js';
 import CCKCQueryParameters from '../../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
@@ -81,7 +81,7 @@ class ModifiedNodalAnalysisAdapter {
           // no element for an open switch
         }
         else if ( circuitElement instanceof Capacitor ) {
-          capacitorAdapters.push( new CapacitorAdapter( circuitElement ) );
+          capacitorAdapters.push( new DynamicCapacitorAdapter( circuitElement ) );
         }
         else if ( circuitElement instanceof Inductor ) {
           inductorAdapters.push( new InductorAdapter( circuitElement ) );

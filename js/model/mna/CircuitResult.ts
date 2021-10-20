@@ -3,7 +3,7 @@ import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js'
 import ResultSet from '../ResultSet.js';
 import ModifiedNodalAnalysisCircuitElement from './ModifiedNodalAnalysisCircuitElement.js';
 import DynamicState from './DynamicState.js';
-import CapacitorAdapter from './CapacitorAdapter.js';
+import DynamicCapacitorAdapter from './DynamicCapacitorAdapter.js';
 import InductorAdapter from './InductorAdapter.js';
 
 /**
@@ -29,7 +29,7 @@ class CircuitResult {
    * @returns {number}
    * @public
    */
-  getTimeAverageCurrent( element: ModifiedNodalAnalysisCircuitElement | CapacitorAdapter | InductorAdapter ) {
+  getTimeAverageCurrent( element: ModifiedNodalAnalysisCircuitElement | DynamicCapacitorAdapter | InductorAdapter ) {
     let weightedSum = 0.0;
     this.resultSet.states.forEach( ( stateObject: any ) => {
       weightedSum += stateObject.state.dynamicCircuitSolution.getCurrent( element ) * stateObject.dt;
