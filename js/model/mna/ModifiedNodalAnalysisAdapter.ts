@@ -10,7 +10,7 @@
 import ResistiveBatteryAdapter from './ResistiveBatteryAdapter.js';
 import ResistorAdapter from './ResistorAdapter.js';
 import DynamicCapacitorAdapter from './DynamicCapacitorAdapter.js';
-import InductorAdapter from './InductorAdapter.js';
+import DynamicInductorAdapter from './DynamicInductorAdapter.js';
 import CCKCQueryParameters from '../../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import Capacitor from '../Capacitor.js';
@@ -84,7 +84,7 @@ class ModifiedNodalAnalysisAdapter {
           capacitorAdapters.push( new DynamicCapacitorAdapter( circuitElement ) );
         }
         else if ( circuitElement instanceof Inductor ) {
-          inductorAdapters.push( new InductorAdapter( circuitElement ) );
+          inductorAdapters.push( new DynamicInductorAdapter( circuitElement ) );
         }
         else {
           assert && assert( false, `

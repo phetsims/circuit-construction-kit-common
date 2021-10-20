@@ -6,7 +6,7 @@ import DynamicElementState from './DynamicElementState.js';
 import DynamicInductor from './DynamicInductor.js';
 import DynamicCircuitInductor from './DynamicCircuitInductor.js';
 
-class InductorAdapter extends DynamicInductor {
+class DynamicInductorAdapter extends DynamicInductor {
   private readonly inductor: Inductor;
 
   /**
@@ -38,4 +38,4 @@ class InductorAdapter extends DynamicInductor {
   }
 }
 
-export default InductorAdapter;
+export default DynamicInductorAdapter;
