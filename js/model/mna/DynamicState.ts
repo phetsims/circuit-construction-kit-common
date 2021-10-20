@@ -44,11 +44,11 @@ class DynamicState {
 
     // The solution has been applied to the this.dynamicCircuit, so we can read values from it
     const currents = [];
-    for ( let i = 0; i < this.dynamicCircuit.capacitorAdapters.length; i++ ) {
-      currents.push( this.dynamicCircuit.capacitorAdapters[ i ].state.current );
+    for ( let i = 0; i < this.dynamicCircuit.dynamicCapacitors.length; i++ ) {
+      currents.push( this.dynamicCircuit.dynamicCapacitors[ i ].state.current );
     }
-    for ( let i = 0; i < this.dynamicCircuit.inductorAdapters.length; i++ ) {
-      currents.push( this.dynamicCircuit.inductorAdapters[ i ].state.current );
+    for ( let i = 0; i < this.dynamicCircuit.dynamicInductors.length; i++ ) {
+      currents.push( this.dynamicCircuit.dynamicInductors[ i ].state.current );
     }
     return currents;
   }
