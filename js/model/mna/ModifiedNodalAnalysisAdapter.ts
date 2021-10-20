@@ -163,7 +163,7 @@ class ModifiedNodalAnalysisAdapter {
 
     // Apply the node voltages to the vertices
     circuit.vertexGroup.forEach( vertex => {
-      const voltage = circuitResult.resultSet.getFinalState().dynamicCircuitSolution!.getNodeVoltage( vertex.index );
+      const voltage = circuitResult.resultSet.getFinalState().dynamicCircuitSolution!.getNodeVoltage( vertex.index + '' );
 
       if ( typeof voltage === 'number' ) {
         vertex.voltageProperty.set( voltage );

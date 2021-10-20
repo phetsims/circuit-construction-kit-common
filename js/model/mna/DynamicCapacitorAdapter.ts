@@ -33,13 +33,10 @@ class DynamicCapacitorAdapter extends DynamicCapacitor {
     this.capacitor.currentProperty.value = circuitResult.getTimeAverageCurrent( this.dynamicCircuitCapacitor );
     this.capacitor.mnaCurrent = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousCurrent( this.dynamicCircuitCapacitor ) );
 
-    assert && assert( typeof this.capacitorVoltageNode1 === 'number' || typeof this.capacitorVoltageNode1 === 'string' );
-    assert && assert( typeof this.capacitorVoltageNode0 === 'number' || typeof this.capacitorVoltageNode0 === 'string' );
+    assert && assert( typeof this.capacitorVoltageNode1 === 'string' );
+    assert && assert( typeof this.capacitorVoltageNode0 === 'string' );
 
-    if (
-      ( typeof this.capacitorVoltageNode0 === 'number' || typeof this.capacitorVoltageNode0 === 'string' ) &&
-      ( typeof this.capacitorVoltageNode1 === 'number' || typeof this.capacitorVoltageNode1 === 'string' ) ) {
-
+    if ( typeof this.capacitorVoltageNode0 === 'string' && typeof this.capacitorVoltageNode1 === 'string' ) {
       this.capacitor.mnaVoltageDrop = CCKCUtils.clampMagnitude( circuitResult.getFinalState().dynamicCircuitSolution!.getNodeVoltage( this.capacitorVoltageNode1 )
                                                                 - circuitResult.getFinalState().dynamicCircuitSolution!.getNodeVoltage( this.capacitorVoltageNode0 ) );
     }

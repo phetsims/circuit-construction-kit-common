@@ -71,10 +71,10 @@ class ModifiedNodalAnalysisCircuitElement {
 
   /**
    * Find the node across from the specified node.
-   * @param {number} nodeId
+   * @param {string} nodeId
    * @private
    */
-  getOppositeNode( nodeId: number | string ) {
+  getOppositeNode( nodeId: string ) {
     assert && assert( this.nodeId0 === nodeId || this.nodeId1 === nodeId );
     return this.nodeId0 === nodeId ? this.nodeId1 : this.nodeId0;
   }

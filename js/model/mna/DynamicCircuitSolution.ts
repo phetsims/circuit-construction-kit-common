@@ -26,11 +26,11 @@ class DynamicCircuitSolution {
   }
 
   /**
-   * @param {number} nodeIndex - index
+   * @param {string} nodeIndex
    * @returns {number}
    * @public
    */
-  getNodeVoltage( nodeIndex: number | string ) {
+  getNodeVoltage( nodeIndex: string ) {
     return this.mnaSolution.getNodeVoltage( nodeIndex );
   }
 

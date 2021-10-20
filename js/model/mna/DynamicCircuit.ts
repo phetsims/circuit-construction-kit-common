@@ -87,7 +87,6 @@ class DynamicCircuit {
     // Veq = V + dt*I/2/C;
     // Req = dt/2/C
     this.dynamicCapacitors.forEach( dynamicCapacitor => {
-      assert && assert( dynamicCapacitor instanceof DynamicCapacitor, 'Should have been DynamicCapacitor' );
       assert && assert( dynamicCapacitor.dynamicCircuitCapacitor.capacitance >= 0, 'capacitance should be non-negative' );
       assert && assert( dt >= 0, 'dt should be non-negative' );
 

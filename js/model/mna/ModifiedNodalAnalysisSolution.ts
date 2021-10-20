@@ -10,14 +10,14 @@ import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js'
 import ModifiedNodalAnalysisCircuitElement from './ModifiedNodalAnalysisCircuitElement.js';
 
 class ModifiedNodalAnalysisSolution {
-  private readonly nodeVoltages: { [ key: number | string ]: number };
+  private readonly nodeVoltages: { [ key: string ]: number };
   private readonly elements: ModifiedNodalAnalysisCircuitElement[];
 
   /**
    * @param {Object} nodeVoltages - see below
    * @param {ModifiedNodalAnalysisCircuitElement[]} elements
    */
-  constructor( nodeVoltages: { [ key: number | string ]: number }, elements: ModifiedNodalAnalysisCircuitElement[] ) {
+  constructor( nodeVoltages: { [ key: string ]: number }, elements: ModifiedNodalAnalysisCircuitElement[] ) {
 
     // @public (read-only) {Object} - the solved node voltages.
     // keys are {number} indicating the node id, values are {number} for the voltage at the node
@@ -121,7 +121,7 @@ class ModifiedNodalAnalysisSolution {
    * @returns {number} the voltage of the node
    * @public
    */
-  getNodeVoltage( nodeIndex: number | string ) {
+  getNodeVoltage( nodeIndex: string ) {
     return this.nodeVoltages[ nodeIndex ];
   }
 
