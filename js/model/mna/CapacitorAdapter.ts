@@ -1,7 +1,6 @@
 // Copyright 2021, University of Colorado Boulder
 import CCKCUtils from '../../CCKCUtils.js';
 import Capacitor from '../Capacitor.js';
-import Circuit from '../Circuit.js';
 import CircuitResult from './CircuitResult.js';
 import DynamicElementState from './DynamicElementState.js';
 import DynamicCapacitor from './DynamicCapacitor.js';
@@ -11,10 +10,9 @@ class CapacitorAdapter extends DynamicCapacitor {
   private readonly capacitor: Capacitor;
 
   /**
-   * @param {Circuit} circuit
    * @param {Capacitor} capacitor
    */
-  constructor( circuit: Circuit, capacitor: Capacitor ) {
+  constructor( capacitor: Capacitor ) {
 
     const dynamicCircuitCapacitor = new DynamicCircuitCapacitor(
       capacitor.startVertexProperty.value.index,

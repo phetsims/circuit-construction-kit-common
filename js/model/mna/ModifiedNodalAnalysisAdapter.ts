@@ -81,10 +81,10 @@ class ModifiedNodalAnalysisAdapter {
           // no element for an open switch
         }
         else if ( circuitElement instanceof Capacitor ) {
-          capacitorAdapters.push( new CapacitorAdapter( circuit, circuitElement ) );
+          capacitorAdapters.push( new CapacitorAdapter( circuitElement ) );
         }
         else if ( circuitElement instanceof Inductor ) {
-          inductorAdapters.push( new InductorAdapter( circuit, circuitElement ) );
+          inductorAdapters.push( new InductorAdapter( circuitElement ) );
         }
         else {
           assert && assert( false, `
