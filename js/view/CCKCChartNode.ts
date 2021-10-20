@@ -186,7 +186,10 @@ class CCKCChartNode extends Node {
     const initialZoomIndex = zoomRanges.findIndex( e => e.equals( filledOptions.defaultZoomLevel ) );
 
     // @private
-    this.zoomLevelProperty = new NumberProperty( initialZoomIndex, { range: new Range( 0, zoomRanges.length - 1 ) } );
+    this.zoomLevelProperty = new NumberProperty( initialZoomIndex, {
+      range: new Range( 0, zoomRanges.length - 1 ),
+      tandem: filledOptions.tandem.createTandem( 'zoomLevelProperty' )
+    } );
 
     const gridLineOptions = {
       stroke: 'lightGray',

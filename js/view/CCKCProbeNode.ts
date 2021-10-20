@@ -14,6 +14,8 @@ import ProbeNode from '../../../scenery-phet/js/ProbeNode.js';
 import DragListener from '../../../scenery/js/listeners/DragListener.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import Vector2Property from '../../../dot/js/Vector2Property.js';
+import Vector2 from '../../../dot/js/Vector2.js';
 
 class CCKCProbeNode extends ProbeNode {
 
@@ -34,10 +36,17 @@ class CCKCProbeNode extends ProbeNode {
 
     super( options );
 
+    // Wire position through PhET-iO so it can be recorded in the state
+    const positionProperty = new Vector2Property( new Vector2( 0, 0 ), {
+      tandem: options.tandem.createTandem( 'positionProperty' )
+    } );
+
+    positionProperty.link( ( p: Vector2 ) => this.setTranslation( p ) );
+
     visibleBoundsProperty.link( ( visibleBounds: Bounds2 ) => this.setCenter( visibleBounds.closestPointTo( this.center ) ) );
 
     this.addInputListener( new DragListener( {
-      translateNode: true,
+      positionProperty: positionProperty,
       dragBoundsProperty: visibleBoundsProperty,
       press: () => node.moveToFront(),
       drag: () => options.drag(),
