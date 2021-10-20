@@ -9,9 +9,9 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import CCKCQueryParameters from '../CCKCQueryParameters.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import ResultSet from './ResultSet.js';
+import CCKCQueryParameters from '../../CCKCQueryParameters.js';
+import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
+import ResultSet from '../ResultSet.js';
 
 // smallest possible time
 const MIN_DT = CCKCQueryParameters.minDT;

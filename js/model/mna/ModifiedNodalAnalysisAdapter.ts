@@ -21,7 +21,7 @@ import LightBulb from '../LightBulb.js';
 import Resistor from '../Resistor.js';
 import SeriesAmmeter from '../SeriesAmmeter.js';
 import Switch from '../Switch.js';
-import TimestepSubdivisions from '../TimestepSubdivisions.js';
+import TimestepSubdivisions from './TimestepSubdivisions.js';
 import VoltageSource from '../VoltageSource.js';
 import Wire from '../Wire.js';
 import Circuit from '../Circuit.js';

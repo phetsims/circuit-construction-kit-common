@@ -14,7 +14,7 @@ import CCKCUtils from '../../CCKCUtils.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import ModifiedNodalAnalysisCircuit from './ModifiedNodalAnalysisCircuit.js';
 import ModifiedNodalAnalysisCircuitElement from './ModifiedNodalAnalysisCircuitElement.js';
-import TimestepSubdivisions from '../TimestepSubdivisions.js';
+import TimestepSubdivisions from './TimestepSubdivisions.js';
 import DynamicCircuitSolution from './DynamicCircuitSolution.js';
 import DynamicState from './DynamicState.js';
 import DynamicElementState from './DynamicElementState.js';
