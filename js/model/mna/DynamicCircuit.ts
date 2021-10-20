@@ -239,7 +239,6 @@ class DynamicCircuit {
       return new DynamicInductor( inductorAdapter.dynamicCircuitInductor, newState );
     } );
 
-    // @ts-ignore TODO: This seems buggy
     return new DynamicCircuit( this.resistorAdapters, this.resistiveBatteryAdapters, updatedCapacitors, updatedInductors );
   }
 }
