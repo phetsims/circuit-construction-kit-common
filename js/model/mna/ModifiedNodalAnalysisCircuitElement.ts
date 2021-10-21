@@ -31,10 +31,10 @@ class ModifiedNodalAnalysisCircuitElement {
 
     assert && assert( !isNaN( value ) );
 
-    // @public (read-only) {number|string} index of the start node
+    // @public (read-only) {string} index of the start node
     this.nodeId0 = nodeId0;
 
-    // @public (read-only) {number|string} index of the end node
+    // @public (read-only) {string} index of the end node
     this.nodeId1 = nodeId1;
 
     // @public (read-only) {CircuitElement|null} index of the start node
