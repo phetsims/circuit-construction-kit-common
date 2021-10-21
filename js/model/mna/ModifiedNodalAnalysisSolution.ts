@@ -103,7 +103,7 @@ class ModifiedNodalAnalysisSolution {
    * @returns {number}
    * @public
    */
-  getCurrentForResistor( resistor: any ) {
+  getCurrentForResistor( resistor: ModifiedNodalAnalysisCircuitElement ) {
     assert && assert( resistor.value > 0, 'resistor must have resistance to use Ohms Law' );
 
     // To help understand the minus sign here:

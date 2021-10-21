@@ -64,7 +64,9 @@ class DynamicCircuitSolution {
       return companion.getValueForSolution( this.mnaSolution );
     }
     else {
-      return this.mnaSolution.getCurrentForResistor( element );
+
+      assert && assert( element instanceof ModifiedNodalAnalysisCircuitElement );
+      return this.mnaSolution.getCurrentForResistor( element as ModifiedNodalAnalysisCircuitElement );
     }
   }
 
