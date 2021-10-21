@@ -147,6 +147,7 @@ class ModifiedNodalAnalysisAdapter {
     } );
 
     if ( needsHelp ) {
+      // TODO: Could this be causing https://github.com/phetsims/circuit-construction-kit-common/issues/758 ?
       circuitResult = dynamicCircuit.solveWithSubdivisions( TIMESTEP_SUBDIVISIONS, dt );
     }
 

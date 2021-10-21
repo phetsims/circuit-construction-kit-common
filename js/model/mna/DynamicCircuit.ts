@@ -136,6 +136,8 @@ class DynamicCircuit {
 
       const companionResistance = 2 * inductor.inductance / dt;
       const companionVoltage = -dynamicInductor.state.voltage - companionResistance * dynamicInductor.state.current;
+      // TODO: this is how it appears in Java https://github.com/phetsims/circuit-construction-kit-common/issues/758
+      // const companionVoltage = dynamicInductor.state.voltage + companionResistance * dynamicInductor.state.current;
 
       const battery = new ModifiedNodalAnalysisCircuitElement( inductor.nodeId0 + '', newNode, null, companionVoltage );
       const resistor = new ModifiedNodalAnalysisCircuitElement( newNode, inductor.nodeId1 + '', null, companionResistance );
@@ -146,6 +148,7 @@ class DynamicCircuit {
       // in series, so current is same through both companion components
       currentCompanions.push( {
         element: dynamicInductor,
+        // TODO: This sign looks very wrong https://github.com/phetsims/circuit-construction-kit-common/issues/758
         getValueForSolution: ( solution: ModifiedNodalAnalysisSolution ) => -solution.getCurrentForResistor( resistor )
       } );
     } );
@@ -225,6 +228,7 @@ class DynamicCircuit {
   updateCircuit( solution: DynamicCircuitSolution ) {
     const updatedCapacitors = this.dynamicCapacitors.map( capacitorAdapter => {
       const newState = new DynamicElementState(
+        // TODO: This may have something to do with it?  https://github.com/phetsims/circuit-construction-kit-common/issues/758
         solution.getNodeVoltage( capacitorAdapter.capacitorVoltageNode1! ) - solution.getNodeVoltage( capacitorAdapter.capacitorVoltageNode0! ),
         solution.getCurrent( capacitorAdapter )
       );
@@ -232,6 +236,7 @@ class DynamicCircuit {
     } );
     const updatedInductors = this.dynamicInductors.map( inductorAdapter => {
       const newState = new DynamicElementState(
+        // TODO: This may have something to do with it? https://github.com/phetsims/circuit-construction-kit-common/issues/758
         solution.getNodeVoltage( inductorAdapter.dynamicCircuitInductor.nodeId1 ) - solution.getNodeVoltage( inductorAdapter.dynamicCircuitInductor.nodeId0 ),
         solution.getCurrent( inductorAdapter )
       );

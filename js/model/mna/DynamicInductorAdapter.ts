@@ -30,6 +30,8 @@ class DynamicInductorAdapter extends DynamicInductor {
    * @public
    */
   applySolution( circuitResult: CircuitResult ) {
+
+    // TODO: This line is seemingly wrong https://github.com/phetsims/circuit-construction-kit-common/issues/758
     this.inductor.currentProperty.value = -circuitResult.getTimeAverageCurrent( this.dynamicCircuitInductor );
     this.inductor.mnaCurrent = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousCurrent( this.dynamicCircuitInductor ) );
     this.inductor.mnaVoltageDrop = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousVoltage( this.dynamicCircuitInductor ) );

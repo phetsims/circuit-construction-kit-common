@@ -29,7 +29,6 @@ class ModifiedNodalAnalysisCircuitElement {
     assert && CCKCUtils.validateNodeIndex( nodeId0 );
     assert && CCKCUtils.validateNodeIndex( nodeId1 );
 
-    assert && assert( typeof value === 'number' );
     assert && assert( !isNaN( value ) );
 
     // @public (read-only) {number|string} index of the start node
