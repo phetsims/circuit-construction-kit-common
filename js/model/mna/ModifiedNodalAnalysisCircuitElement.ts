@@ -15,7 +15,7 @@ class ModifiedNodalAnalysisCircuitElement {
   readonly nodeId0: string;
   readonly nodeId1: string;
   readonly circuitElement: CircuitElement | null;
-  value: number;
+  mnaValue: number;
   currentSolution: number | null;
 
   /**
@@ -41,7 +41,7 @@ class ModifiedNodalAnalysisCircuitElement {
     this.circuitElement = circuitElement;
 
     // @public (read-only) {number} resistance for resistors, voltage for battery or current for current source
-    this.value = value;
+    this.mnaValue = value;
 
     // @public {number} supplied by the modified nodal analysis
     this.currentSolution = currentSolution;
@@ -55,7 +55,7 @@ class ModifiedNodalAnalysisCircuitElement {
    * @public (unit-tests)
    */
   withCurrentSolution( currentSolution: number ) {
-    return new ModifiedNodalAnalysisCircuitElement( this.nodeId0, this.nodeId1, this.circuitElement, this.value, currentSolution );
+    return new ModifiedNodalAnalysisCircuitElement( this.nodeId0, this.nodeId1, this.circuitElement, this.mnaValue, currentSolution );
   }
 
   /**

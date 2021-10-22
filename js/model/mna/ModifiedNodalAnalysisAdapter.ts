@@ -141,8 +141,8 @@ class ModifiedNodalAnalysisAdapter {
         const coefficient = 3;
 
         // shift by base so at V=0 the log is 1
-        resistorAdapter.value = 10 + coefficient * V / logWithBase( V + base, base );
-        resistorAdapter.circuitElement.resistanceProperty.value = resistorAdapter.value;
+        resistorAdapter.mnaValue = 10 + coefficient * V / logWithBase( V + base, base );
+        resistorAdapter.circuitElement.resistanceProperty.value = resistorAdapter.mnaValue;
       }
     } );
 
