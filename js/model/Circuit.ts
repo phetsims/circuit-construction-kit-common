@@ -34,7 +34,7 @@ import FixedCircuitElement from './FixedCircuitElement.js';
 import Fuse from './Fuse.js';
 import Inductor from './Inductor.js';
 import LightBulb from './LightBulb.js';
-import ModifiedNodalAnalysisAdapter from './mna/ModifiedNodalAnalysisAdapter.js';
+import LinearTransientAnalysis from './mna/LinearTransientAnalysis.js';
 import Resistor from './Resistor.js';
 import SeriesAmmeter from './SeriesAmmeter.js';
 import Switch from './Switch.js';
@@ -946,7 +946,7 @@ class Circuit {
     stepElements.forEach( element => element.step( this.timeProperty.value, dt, this ) );
 
     if ( this.dirty || stepElements.length > 0 || dynamicElements.length > 0 ) {
-      ModifiedNodalAnalysisAdapter.solveModifiedNodalAnalysis( this, dt );
+      LinearTransientAnalysis.solveModifiedNodalAnalysis( this, dt );
       this.dirty = false;
 
       // check the incoming and outgoing current to each inductor.  If it is all 0, then clear the inductor.
@@ -1066,7 +1066,7 @@ class Circuit {
 
   /**
    * Find the subgraph where all vertices are connected, given the list of traversible circuit elements.
-   * There are a few other ad-hoc graph searches around, such as isInLoop and in ModifiedNodalAnalysisAdapter
+   * There are a few other ad-hoc graph searches around, such as isInLoop and in LinearTransientAnalysis
    * @param {Vertex} vertex
    * @param {function} okToVisit - (startVertex:Vertex,circuitElement:CircuitElement,endVertex:Vertex)=>boolean, rule
    *                             - that determines which vertices are OK to visit

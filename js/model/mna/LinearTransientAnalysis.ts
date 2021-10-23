@@ -33,7 +33,7 @@ import CCKCConstants from '../../CCKCConstants.js';
 // constants
 const TIMESTEP_SUBDIVISIONS = new TimestepSubdivisions<DynamicState>();
 
-class ModifiedNodalAnalysisAdapter {
+class LinearTransientAnalysis {
 
   /**
    * Solves the system with Modified Nodal Analysis, and apply the results back to the Circuit.
@@ -249,5 +249,5 @@ class ModifiedNodalAnalysisAdapter {
   }
 }
 
-circuitConstructionKitCommon.register( 'ModifiedNodalAnalysisAdapter', ModifiedNodalAnalysisAdapter );
-export default ModifiedNodalAnalysisAdapter;
+circuitConstructionKitCommon.register( 'LinearTransientAnalysis', LinearTransientAnalysis );
+export default LinearTransientAnalysis;
