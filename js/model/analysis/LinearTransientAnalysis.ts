@@ -74,7 +74,7 @@ class LinearTransientAnalysis {
           // simulate a small amount of resistance.
           const resistance = circuitElement.resistanceProperty.value || CCKCConstants.MINIMUM_RESISTANCE;
 
-          resistorAdapters.push( new ResistorAdapter( circuit, circuitElement, resistance ) );
+          resistorAdapters.push( new ResistorAdapter( circuitElement, resistance ) );
         }
         else if ( circuitElement instanceof Switch && !circuitElement.closedProperty.value ) {
 
