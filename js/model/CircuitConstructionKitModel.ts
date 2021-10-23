@@ -26,7 +26,7 @@ import Voltmeter from './Voltmeter.js';
 import ZoomAnimation from './ZoomAnimation.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
-import CircuitElementViewType from './CircuitElementViewType.js';
+import CircuitElementViewType, { CircuitElementViewTypeValues } from './CircuitElementViewType.js';
 import LightBulb from './LightBulb.js';
 
 type CircuitConstructionKitModelOptions = {
@@ -73,6 +73,7 @@ class CircuitConstructionKitModel {
     // @public {Property.<CircuitElementViewType>} - whether to show lifelike or schematic representations
     this.viewTypeProperty = new Property( 'lifelike', {
       tandem: tandem.createTandem( 'viewTypeProperty' ),
+      validValues: CircuitElementViewTypeValues,
       phetioType: Property.PropertyIO( StringIO ) // TODO: Validvalues for studio?
     } );
 
