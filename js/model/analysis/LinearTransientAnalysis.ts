@@ -87,10 +87,7 @@ class LinearTransientAnalysis {
           inductorAdapters.push( new DynamicInductorAdapter( circuitElement ) );
         }
         else {
-          assert && assert( false, `
-      Type
-      not
-      found: ${circuitElement.constructor.name}` );
+          assert && assert( false, `Type not found: ${circuitElement.constructor.name}` );
         }
       }
       else {
