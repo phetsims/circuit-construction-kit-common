@@ -59,7 +59,7 @@ class LinearTransientAnalysis {
       if ( inLoop ) {
         participants.push( circuitElement );
         if ( circuitElement instanceof VoltageSource ) {
-          resistiveBatteryAdapters.push( new ResistiveBatteryAdapter( circuit, circuitElement ) );
+          resistiveBatteryAdapters.push( new ResistiveBatteryAdapter( circuitElement ) );
         }
         else if ( circuitElement instanceof Resistor ||
                   circuitElement instanceof Fuse ||

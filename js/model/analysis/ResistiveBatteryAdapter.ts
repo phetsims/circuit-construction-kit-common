@@ -1,7 +1,6 @@
 // Copyright 2021, University of Colorado Boulder
 
 import DynamicCircuitResistiveBattery from './DynamicCircuitResistiveBattery.js';
-import Circuit from '../Circuit.js';
 import CircuitResult from './CircuitResult.js';
 import VoltageSource from '../VoltageSource.js';
 
@@ -9,10 +8,9 @@ class ResistiveBatteryAdapter extends DynamicCircuitResistiveBattery {
   readonly battery: VoltageSource;
 
   /**
-   * @param {Circuit} circuit - the primary Circuit model instance, so we can look up Vertex indices
    * @param {Battery} battery
    */
-  constructor( circuit: Circuit, battery: VoltageSource ) {
+  constructor( battery: VoltageSource ) {
     super(
       battery.startVertexProperty.value.index + '',
       battery.endVertexProperty.value.index + '',
