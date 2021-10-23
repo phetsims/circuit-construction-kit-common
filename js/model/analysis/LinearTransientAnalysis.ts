@@ -7,8 +7,6 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import ResistiveBatteryAdapter from './ResistiveBatteryAdapter.js';
-import ResistorAdapter from './ResistorAdapter.js';
 import DynamicCapacitorAdapter from './DynamicCapacitorAdapter.js';
 import DynamicInductorAdapter from './DynamicInductorAdapter.js';
 import CCKCQueryParameters from '../../CCKCQueryParameters.js';
@@ -29,6 +27,8 @@ import DynamicState from './DynamicState.js';
 import Vertex from '../Vertex.js';
 import CircuitElement from '../CircuitElement.js';
 import CCKCConstants from '../../CCKCConstants.js';
+import ModifiedNodalAnalysisCircuitElement from './mna/ModifiedNodalAnalysisCircuitElement.js';
+import DynamicCircuitResistiveBattery from './DynamicCircuitResistiveBattery.js';
 
 // constants
 const TIMESTEP_SUBDIVISIONS = new TimestepSubdivisions<DynamicState>();
@@ -51,6 +51,7 @@ class LinearTransientAnalysis {
     // Identify CircuitElements that are not in a loop with a voltage source. They will have their currents zeroed out.
     const nonParticipants = [];
     const participants = [];
+    const backwardMap = new Map<any, CircuitElement>();
     for ( let i = 0; i < circuit.circuitElements.length; i++ ) {
       const circuitElement = circuit.circuitElements[ i ];
 
@@ -59,7 +60,14 @@ class LinearTransientAnalysis {
       if ( inLoop ) {
         participants.push( circuitElement );
         if ( circuitElement instanceof VoltageSource ) {
-          resistiveBatteryAdapters.push( new ResistiveBatteryAdapter( circuitElement ) );
+          const dynamicCircuitResistiveBattery = new DynamicCircuitResistiveBattery(
+            circuitElement.startVertexProperty.value.index + '',
+            circuitElement.endVertexProperty.value.index + '',
+            circuitElement.voltageProperty.value,
+            circuitElement.internalResistanceProperty.value
+          );
+          backwardMap.set( dynamicCircuitResistiveBattery, circuitElement );
+          resistiveBatteryAdapters.push( dynamicCircuitResistiveBattery );
         }
         else if ( circuitElement instanceof Resistor ||
                   circuitElement instanceof Fuse ||
@@ -74,7 +82,10 @@ class LinearTransientAnalysis {
           // simulate a small amount of resistance.
           const resistance = circuitElement.resistanceProperty.value || CCKCConstants.MINIMUM_RESISTANCE;
 
-          resistorAdapters.push( new ResistorAdapter( circuitElement, resistance ) );
+          const resistorAdapter = new ModifiedNodalAnalysisCircuitElement( circuitElement.startVertexProperty.value.index + '',
+            circuitElement.endVertexProperty.value.index + '', null, resistance );
+          backwardMap.set( resistorAdapter, circuitElement );
+          resistorAdapters.push( resistorAdapter );
         }
         else if ( circuitElement instanceof Switch && !circuitElement.closedProperty.value ) {
 
@@ -113,7 +124,8 @@ class LinearTransientAnalysis {
 
     resistiveBatteryAdapters.forEach( batteryAdapter => {
       if ( Math.abs( circuitResult.getTimeAverageCurrent( batteryAdapter ) ) > CCKCQueryParameters.batteryCurrentThreshold ) {
-        batteryAdapter.resistance = batteryAdapter.battery.internalResistanceProperty.value;
+        const battery = backwardMap.get( batteryAdapter ) as VoltageSource;
+        batteryAdapter.resistance = battery.internalResistanceProperty.value;
         needsHelp = true;
       }
     } );
@@ -148,8 +160,14 @@ class LinearTransientAnalysis {
       circuitResult = dynamicCircuit.solveWithSubdivisions( TIMESTEP_SUBDIVISIONS, dt );
     }
 
-    resistiveBatteryAdapters.forEach( batteryAdapter => batteryAdapter.applySolution( circuitResult ) );
-    resistorAdapters.forEach( resistorAdapter => resistorAdapter.applySolution( circuitResult ) );
+    resistiveBatteryAdapters.forEach( batteryAdapter => {
+      const circuitElement = backwardMap.get( batteryAdapter ) as VoltageSource;
+      circuitElement.currentProperty.value = circuitResult.getTimeAverageCurrent( batteryAdapter );
+    } );
+    resistorAdapters.forEach( resistorAdapter => {
+      const circuitElement = backwardMap.get( resistorAdapter )!;
+      circuitElement.currentProperty.value = circuitResult.getTimeAverageCurrent( resistorAdapter );
+    } );
     capacitorAdapters.forEach( capacitorAdapter => capacitorAdapter.applySolution( circuitResult ) );
     inductorAdapters.forEach( inductorAdapter => inductorAdapter.applySolution( circuitResult ) );
 
