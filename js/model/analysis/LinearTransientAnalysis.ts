@@ -50,7 +50,7 @@ class LinearTransientAnalysis {
     const resistiveBatteryAdapters = [];
     const resistorAdapters = [];
     const dynamicCapacitors = [];
-    const inductorAdapters = [];
+    const dynamicInductors = [];
 
     // Identify CircuitElements that are not in a loop with a voltage source. They will have their currents zeroed out.
     const nonParticipants = [];
@@ -114,7 +114,7 @@ class LinearTransientAnalysis {
             circuitElement.inductanceProperty.value
           ), new DynamicElementState( circuitElement.mnaVoltageDrop, circuitElement.mnaCurrent ) );
           backwardMap.set( dynamicInductor, circuitElement );
-          inductorAdapters.push( dynamicInductor );
+          dynamicInductors.push( dynamicInductor );
         }
         else {
           assert && assert( false, `Type not found: ${circuitElement.constructor.name}` );
@@ -125,7 +125,7 @@ class LinearTransientAnalysis {
       }
     }
 
-    const dynamicCircuit = new DynamicCircuit( resistorAdapters, resistiveBatteryAdapters, dynamicCapacitors, inductorAdapters );
+    const dynamicCircuit = new DynamicCircuit( resistorAdapters, resistiveBatteryAdapters, dynamicCapacitors, dynamicInductors );
     let circuitResult = dynamicCircuit.solveWithSubdivisions( TIMESTEP_SUBDIVISIONS, dt );
 
     // if any battery exceeds its current threshold, increase its resistance and run the solution again.
@@ -203,7 +203,7 @@ class LinearTransientAnalysis {
       assert && assert( Math.abs( capacitor.mnaCurrent ) < 1E100, 'mnaCurrent out of range' );
       assert && assert( Math.abs( capacitor.mnaVoltageDrop ) < 1E100, 'mnaVoltageDrop out of range' );
     } );
-    inductorAdapters.forEach( dynamicInductor => {
+    dynamicInductors.forEach( dynamicInductor => {
 
       const inductor = backwardMap.get( dynamicInductor ) as Inductor;
 
