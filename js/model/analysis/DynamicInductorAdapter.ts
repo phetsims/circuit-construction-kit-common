@@ -1,5 +1,4 @@
 // Copyright 2021, University of Colorado Boulder
-import CCKCUtils from '../../CCKCUtils.js';
 import Inductor from '../Inductor.js';
 import CircuitResult from './CircuitResult.js';
 import DynamicElementState from './DynamicElementState.js';
@@ -31,12 +30,7 @@ class DynamicInductorAdapter extends DynamicInductor {
    */
   applySolution( circuitResult: CircuitResult ) {
 
-    // TODO: This line is seemingly wrong https://github.com/phetsims/circuit-construction-kit-common/issues/758
-    this.inductor.currentProperty.value = -circuitResult.getTimeAverageCurrent( this.dynamicCircuitInductor );
-    this.inductor.mnaCurrent = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousCurrent( this.dynamicCircuitInductor ) );
-    this.inductor.mnaVoltageDrop = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousVoltage( this.dynamicCircuitInductor ) );
-    assert && assert( Math.abs( this.inductor.mnaCurrent ) < 1E100, 'mnaCurrent out of range' );
-    assert && assert( Math.abs( this.inductor.mnaVoltageDrop ) < 1E100, 'mnaVoltageDrop out of range' );
+
   }
 }
 

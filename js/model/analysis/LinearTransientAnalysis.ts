@@ -8,7 +8,6 @@
  */
 
 import DynamicCapacitorAdapter from './DynamicCapacitorAdapter.js';
-import DynamicInductorAdapter from './DynamicInductorAdapter.js';
 import CCKCQueryParameters from '../../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import Capacitor from '../Capacitor.js';
@@ -29,6 +28,10 @@ import CircuitElement from '../CircuitElement.js';
 import CCKCConstants from '../../CCKCConstants.js';
 import ModifiedNodalAnalysisCircuitElement from './mna/ModifiedNodalAnalysisCircuitElement.js';
 import DynamicCircuitResistiveBattery from './DynamicCircuitResistiveBattery.js';
+import DynamicInductor from './DynamicInductor.js';
+import DynamicCircuitInductor from './DynamicCircuitInductor.js';
+import DynamicElementState from './DynamicElementState.js';
+import CCKCUtils from '../../CCKCUtils.js';
 
 // constants
 const TIMESTEP_SUBDIVISIONS = new TimestepSubdivisions<DynamicState>();
@@ -95,7 +98,14 @@ class LinearTransientAnalysis {
           capacitorAdapters.push( new DynamicCapacitorAdapter( circuitElement ) );
         }
         else if ( circuitElement instanceof Inductor ) {
-          inductorAdapters.push( new DynamicInductorAdapter( circuitElement ) );
+
+          const dynamicInductor = new DynamicInductor( new DynamicCircuitInductor(
+            circuitElement.startVertexProperty.value.index + '',
+            circuitElement.endVertexProperty.value.index + '',
+            circuitElement.inductanceProperty.value
+          ), new DynamicElementState( circuitElement.mnaVoltageDrop, circuitElement.mnaCurrent ) );
+          backwardMap.set( dynamicInductor, circuitElement );
+          inductorAdapters.push( dynamicInductor );
         }
         else {
           assert && assert( false, `Type not found: ${circuitElement.constructor.name}` );
@@ -169,7 +179,17 @@ class LinearTransientAnalysis {
       circuitElement.currentProperty.value = circuitResult.getTimeAverageCurrent( resistorAdapter );
     } );
     capacitorAdapters.forEach( capacitorAdapter => capacitorAdapter.applySolution( circuitResult ) );
-    inductorAdapters.forEach( inductorAdapter => inductorAdapter.applySolution( circuitResult ) );
+    inductorAdapters.forEach( dynamicInductor => {
+
+      const inductor = backwardMap.get( dynamicInductor ) as Inductor;
+
+      // TODO: This line is seemingly wrong https://github.com/phetsims/circuit-construction-kit-common/issues/758
+      inductor.currentProperty.value = -circuitResult.getTimeAverageCurrent( dynamicInductor.dynamicCircuitInductor );
+      inductor.mnaCurrent = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousCurrent( dynamicInductor.dynamicCircuitInductor ) );
+      inductor.mnaVoltageDrop = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousVoltage( dynamicInductor.dynamicCircuitInductor ) );
+      assert && assert( Math.abs( inductor.mnaCurrent ) < 1E100, 'mnaCurrent out of range' );
+      assert && assert( Math.abs( inductor.mnaVoltageDrop ) < 1E100, 'mnaVoltageDrop out of range' );
+    } );
 
     // zero out currents on open branches
     nonParticipants.forEach( circuitElement => circuitElement.currentProperty.set( 0 ) );
