@@ -11,12 +11,12 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import QRDecomposition from '../../../../dot/js/QRDecomposition.js';
-import Matrix from '../../../../dot/js/Matrix.js';
-import Utils from '../../../../dot/js/Utils.js';
-import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
-import CCKCUtils from '../../CCKCUtils.js';
-import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
+import QRDecomposition from '../../../../../dot/js/QRDecomposition.js';
+import Matrix from '../../../../../dot/js/Matrix.js';
+import Utils from '../../../../../dot/js/Utils.js';
+import arrayRemove from '../../../../../phet-core/js/arrayRemove.js';
+import CCKCUtils from '../../../CCKCUtils.js';
+import circuitConstructionKitCommon from '../../../circuitConstructionKitCommon.js';
 import ModifiedNodalAnalysisSolution from './ModifiedNodalAnalysisSolution.js';
 import ModifiedNodalAnalysisCircuitElement from './ModifiedNodalAnalysisCircuitElement.js';
 

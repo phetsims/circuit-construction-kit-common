@@ -1,6 +1,6 @@
 // Copyright 2021, University of Colorado Boulder
 
-import ModifiedNodalAnalysisCircuitElement from './ModifiedNodalAnalysisCircuitElement.js';
+import ModifiedNodalAnalysisCircuitElement from './mna/ModifiedNodalAnalysisCircuitElement.js';
 import Circuit from '../Circuit.js';
 import CircuitResult from './CircuitResult.js';
 import CircuitElement from '../CircuitElement.js';

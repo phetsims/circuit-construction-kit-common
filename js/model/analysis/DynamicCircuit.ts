@@ -11,15 +11,15 @@
 import CCKCQueryParameters from '../../CCKCQueryParameters.js';
 import CircuitResult from './CircuitResult.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
-import ModifiedNodalAnalysisCircuit from './ModifiedNodalAnalysisCircuit.js';
-import ModifiedNodalAnalysisCircuitElement from './ModifiedNodalAnalysisCircuitElement.js';
+import ModifiedNodalAnalysisCircuit from './mna/ModifiedNodalAnalysisCircuit.js';
+import ModifiedNodalAnalysisCircuitElement from './mna/ModifiedNodalAnalysisCircuitElement.js';
 import TimestepSubdivisions from './TimestepSubdivisions.js';
 import DynamicCircuitSolution from './DynamicCircuitSolution.js';
 import DynamicState from './DynamicState.js';
 import DynamicElementState from './DynamicElementState.js';
 import DynamicInductor from './DynamicInductor.js';
 import DynamicCapacitor from './DynamicCapacitor.js';
-import ModifiedNodalAnalysisSolution from './ModifiedNodalAnalysisSolution.js';
+import ModifiedNodalAnalysisSolution from './mna/ModifiedNodalAnalysisSolution.js';
 import DynamicCircuitResistiveBattery from './DynamicCircuitResistiveBattery.js';
 
 class DynamicCircuit {

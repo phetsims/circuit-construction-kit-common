@@ -1,5 +1,5 @@
 // Copyright 2021, University of Colorado Boulder
-import ModifiedNodalAnalysisCircuitElement from './ModifiedNodalAnalysisCircuitElement.js';
+import ModifiedNodalAnalysisCircuitElement from './mna/ModifiedNodalAnalysisCircuitElement.js';
 
 class DynamicCircuitInductor extends ModifiedNodalAnalysisCircuitElement {
   readonly inductance: number;
