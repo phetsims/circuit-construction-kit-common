@@ -7,7 +7,6 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import DynamicCapacitorAdapter from './DynamicCapacitorAdapter.js';
 import CCKCQueryParameters from '../../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import Capacitor from '../Capacitor.js';
@@ -32,6 +31,8 @@ import DynamicInductor from './DynamicInductor.js';
 import DynamicCircuitInductor from './DynamicCircuitInductor.js';
 import DynamicElementState from './DynamicElementState.js';
 import CCKCUtils from '../../CCKCUtils.js';
+import DynamicCircuitCapacitor from './DynamicCircuitCapacitor.js';
+import DynamicCapacitor from './DynamicCapacitor.js';
 
 // constants
 const TIMESTEP_SUBDIVISIONS = new TimestepSubdivisions<DynamicState>();
@@ -48,7 +49,7 @@ class LinearTransientAnalysis {
 
     const resistiveBatteryAdapters = [];
     const resistorAdapters = [];
-    const capacitorAdapters = [];
+    const dynamicCapacitors = [];
     const inductorAdapters = [];
 
     // Identify CircuitElements that are not in a loop with a voltage source. They will have their currents zeroed out.
@@ -95,7 +96,15 @@ class LinearTransientAnalysis {
           // no element for an open switch
         }
         else if ( circuitElement instanceof Capacitor ) {
-          capacitorAdapters.push( new DynamicCapacitorAdapter( circuitElement ) );
+          const dynamicCircuitCapacitor = new DynamicCircuitCapacitor(
+            circuitElement.startVertexProperty.value.index + '',
+            circuitElement.endVertexProperty.value.index + '',
+            circuitElement.capacitanceProperty.value
+          );
+
+          const dynamicCapacitor = new DynamicCapacitor( dynamicCircuitCapacitor, new DynamicElementState( circuitElement.mnaVoltageDrop, circuitElement.mnaCurrent ) );
+          dynamicCapacitors.push( dynamicCapacitor );
+          backwardMap.set( dynamicCapacitor, circuitElement );
         }
         else if ( circuitElement instanceof Inductor ) {
 
@@ -116,7 +125,7 @@ class LinearTransientAnalysis {
       }
     }
 
-    const dynamicCircuit = new DynamicCircuit( resistorAdapters, resistiveBatteryAdapters, capacitorAdapters, inductorAdapters );
+    const dynamicCircuit = new DynamicCircuit( resistorAdapters, resistiveBatteryAdapters, dynamicCapacitors, inductorAdapters );
     let circuitResult = dynamicCircuit.solveWithSubdivisions( TIMESTEP_SUBDIVISIONS, dt );
 
     // if any battery exceeds its current threshold, increase its resistance and run the solution again.
@@ -178,7 +187,22 @@ class LinearTransientAnalysis {
       const circuitElement = backwardMap.get( resistorAdapter )!;
       circuitElement.currentProperty.value = circuitResult.getTimeAverageCurrent( resistorAdapter );
     } );
-    capacitorAdapters.forEach( capacitorAdapter => capacitorAdapter.applySolution( circuitResult ) );
+    dynamicCapacitors.forEach( dynamicCapacitor => {
+      const capacitor = backwardMap.get( dynamicCapacitor ) as Capacitor;
+      capacitor.currentProperty.value = circuitResult.getTimeAverageCurrent( dynamicCapacitor.dynamicCircuitCapacitor );
+      capacitor.mnaCurrent = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousCurrent( dynamicCapacitor.dynamicCircuitCapacitor ) );
+
+      assert && assert( typeof dynamicCapacitor.capacitorVoltageNode1 === 'string' );
+      assert && assert( typeof dynamicCapacitor.capacitorVoltageNode0 === 'string' );
+
+      if ( typeof dynamicCapacitor.capacitorVoltageNode0 === 'string' && typeof dynamicCapacitor.capacitorVoltageNode1 === 'string' ) {
+        capacitor.mnaVoltageDrop = CCKCUtils.clampMagnitude( circuitResult.getFinalState().dynamicCircuitSolution!.getNodeVoltage( dynamicCapacitor.capacitorVoltageNode1 )
+                                                             - circuitResult.getFinalState().dynamicCircuitSolution!.getNodeVoltage( dynamicCapacitor.capacitorVoltageNode0 ) );
+      }
+
+      assert && assert( Math.abs( capacitor.mnaCurrent ) < 1E100, 'mnaCurrent out of range' );
+      assert && assert( Math.abs( capacitor.mnaVoltageDrop ) < 1E100, 'mnaVoltageDrop out of range' );
+    } );
     inductorAdapters.forEach( dynamicInductor => {
 
       const inductor = backwardMap.get( dynamicInductor ) as Inductor;

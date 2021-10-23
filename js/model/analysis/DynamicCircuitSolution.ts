@@ -2,7 +2,6 @@
 import DynamicCircuit from './DynamicCircuit.js';
 import ModifiedNodalAnalysisSolution from './mna/ModifiedNodalAnalysisSolution.js';
 import ModifiedNodalAnalysisCircuitElement from './mna/ModifiedNodalAnalysisCircuitElement.js';
-import DynamicCapacitorAdapter from './DynamicCapacitorAdapter.js';
 import DynamicCapacitor from './DynamicCapacitor.js';
 import DynamicInductor from './DynamicInductor.js';
 
@@ -34,7 +33,7 @@ class DynamicCircuitSolution {
   }
 
   /**
-   * @param {ModifiedNodalAnalysisCircuitElement|DynamicCapacitorAdapter|DynamicInductor} element
+   * @param {ModifiedNodalAnalysisCircuitElement|DynamicCapacitor|DynamicInductor} element
    * @returns {number}
    * @public
    */
@@ -44,7 +43,7 @@ class DynamicCircuitSolution {
     if ( element instanceof ModifiedNodalAnalysisCircuitElement ) {
       assert && assert( element.hasOwnProperty( 'currentSolution' ) );
     }
-    if ( element instanceof DynamicCapacitorAdapter || element instanceof DynamicInductor ) {
+    if ( element instanceof DynamicCapacitor || element instanceof DynamicInductor ) {
       assert && assert( !element.hasOwnProperty( 'currentSolution' ) );
     }
 

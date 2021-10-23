@@ -3,8 +3,8 @@ import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js'
 import ResultSet from '../ResultSet.js';
 import ModifiedNodalAnalysisCircuitElement from './mna/ModifiedNodalAnalysisCircuitElement.js';
 import DynamicState from './DynamicState.js';
-import DynamicCapacitorAdapter from './DynamicCapacitorAdapter.js';
 import DynamicInductor from './DynamicInductor.js';
+import DynamicCapacitor from './DynamicCapacitor.js';
 
 /**
  * This class represents the solution obtained by a timestep-subdivision-oriented MNA solve with companion models.
@@ -29,7 +29,7 @@ class CircuitResult {
    * @returns {number}
    * @public
    */
-  getTimeAverageCurrent( element: ModifiedNodalAnalysisCircuitElement | DynamicCapacitorAdapter | DynamicInductor ) {
+  getTimeAverageCurrent( element: ModifiedNodalAnalysisCircuitElement | DynamicCapacitor | DynamicInductor ) {
     let weightedSum = 0.0;
     this.resultSet.states.forEach( ( stateObject: any ) => {
       weightedSum += stateObject.state.dynamicCircuitSolution.getCurrent( element ) * stateObject.dt;
