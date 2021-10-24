@@ -82,6 +82,18 @@ class DynamicCircuitSolution {
   }
 
   // @public
+  getCurrentForCapacitor( dynamicCapacitor: DynamicCapacitor ): number {
+    const companion = _.find( this.currentCompanions, c => {
+
+      // TODO: use IDs for equality, see https://github.com/phetsims/circuit-construction-kit-common/issues/764
+      return c.element instanceof DynamicCapacitor && c.element.node0 === dynamicCapacitor.node0 && c.element.node1 === dynamicCapacitor.node1;
+    } );
+    assert && assert( companion, 'dynamic capacitor must have companion' );
+
+    return companion.getValueForSolution( this.mnaSolution );
+  }
+
+  // @public
   getVoltageForInductor( dynamicCircuitInductor: DynamicInductor ) {
     return this.getNodeVoltage( dynamicCircuitInductor.node1 ) - this.getNodeVoltage( dynamicCircuitInductor.node0 );
   }

@@ -51,6 +51,17 @@ class CircuitResult {
     return number;
   }
 
+  // @public - TODO duplicated with https://github.com/phetsims/circuit-construction-kit-common/issues/764
+  getTimeAverageCurrentForCapacitor( element: DynamicCapacitor ) {
+    let weightedSum = 0.0;
+    this.resultSet.states.forEach( ( stateObject: any ) => {
+      weightedSum += stateObject.state.dynamicCircuitSolution.getCurrentForCapacitor( element ) * stateObject.dt;
+    } );
+    const number = weightedSum / this.resultSet.getTotalTime();
+    assert && assert( !isNaN( number ) );
+    return number;
+  }
+
   /**
    * The instantaneous current is used for computing the next modified nodal analysis state and integration.
    * @param {ModifiedNodalAnalysisCircuitElement} element
@@ -78,6 +89,11 @@ class CircuitResult {
   // @public
   getInstantaneousCurrentForInductor( dynamicCircuitInductor: DynamicInductor ): number {
     return this.getFinalState().dynamicCircuitSolution!.getCurrentForInductor( dynamicCircuitInductor );
+  }
+
+  // @public
+  getInstantaneousCurrentForCapacitor( dynamicCapacitor: DynamicCapacitor ): number {
+    return this.getFinalState().dynamicCircuitSolution!.getCurrentForCapacitor( dynamicCapacitor );
   }
 
   /**

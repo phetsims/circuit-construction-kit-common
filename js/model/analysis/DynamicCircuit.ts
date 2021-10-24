@@ -104,15 +104,15 @@ class DynamicCircuit {
       // |V|=|IReq| and sign is unchanged since the conventional current flows from high to low voltage.
       const companionVoltage = dynamicCapacitor.state.voltage - companionResistance * dynamicCapacitor.state.current;
 
-      const battery = new ModifiedNodalAnalysisCircuitElement( dynamicCapacitor.dynamicCircuitCapacitor.nodeId0 + '', newNode1, null, companionVoltage );
+      const battery = new ModifiedNodalAnalysisCircuitElement( dynamicCapacitor.node0, newNode1, null, companionVoltage );
       const resistor = new ModifiedNodalAnalysisCircuitElement( newNode1, newNode2, null, companionResistance );
-      const resistor2 = new ModifiedNodalAnalysisCircuitElement( newNode2, dynamicCapacitor.dynamicCircuitCapacitor.nodeId1 + '', null, resistanceTerm );
+      const resistor2 = new ModifiedNodalAnalysisCircuitElement( newNode2, dynamicCapacitor.node1, null, resistanceTerm );
 
       companionBatteries.push( battery );
       companionResistors.push( resistor );
       companionResistors.push( resistor2 );
 
-      dynamicCapacitor.capacitorVoltageNode0 = dynamicCapacitor.dynamicCircuitCapacitor.nodeId0;
+      dynamicCapacitor.capacitorVoltageNode0 = dynamicCapacitor.node0;
       dynamicCapacitor.capacitorVoltageNode1 = newNode2;
 
       // We need to be able to get the current for this component. In series, so the current is the same through both.
@@ -230,7 +230,7 @@ class DynamicCircuit {
         solution.getNodeVoltage( dynamicCapacitor.capacitorVoltageNode1! ) - solution.getNodeVoltage( dynamicCapacitor.capacitorVoltageNode0! ),
         solution.getCurrent( dynamicCapacitor )
       );
-      return new DynamicCapacitor( dynamicCapacitor.dynamicCircuitCapacitor, newState, dynamicCapacitor.capacitance );
+      return new DynamicCapacitor( dynamicCapacitor.node0, dynamicCapacitor.node1, newState, dynamicCapacitor.capacitance );
     } );
     const updatedInductors = this.dynamicInductors.map( dynamicInductor => {
       const newState = new DynamicElementState(

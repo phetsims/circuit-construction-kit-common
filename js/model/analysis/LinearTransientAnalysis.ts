@@ -94,14 +94,9 @@ class LinearTransientAnalysis {
           // no element for an open switch
         }
         else if ( circuitElement instanceof Capacitor ) {
-          const dynamicCircuitCapacitor = new ModifiedNodalAnalysisCircuitElement(
-            circuitElement.startVertexProperty.value.index + '',
-            circuitElement.endVertexProperty.value.index + '',
-            null,
-            0
-          );
 
-          const dynamicCapacitor = new DynamicCapacitor( dynamicCircuitCapacitor, new DynamicElementState( circuitElement.mnaVoltageDrop, circuitElement.mnaCurrent ), circuitElement.capacitanceProperty.value );
+          const dynamicCapacitor = new DynamicCapacitor( circuitElement.startVertexProperty.value.index + '',
+            circuitElement.endVertexProperty.value.index + '', new DynamicElementState( circuitElement.mnaVoltageDrop, circuitElement.mnaCurrent ), circuitElement.capacitanceProperty.value );
           dynamicCapacitors.push( dynamicCapacitor );
           backwardMap.set( dynamicCapacitor, circuitElement );
         }
@@ -189,12 +184,13 @@ class LinearTransientAnalysis {
     } );
     dynamicCapacitors.forEach( dynamicCapacitor => {
       const capacitor = backwardMap.get( dynamicCapacitor ) as Capacitor;
-      capacitor.currentProperty.value = circuitResult.getTimeAverageCurrent( dynamicCapacitor.dynamicCircuitCapacitor );
-      capacitor.mnaCurrent = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousCurrent( dynamicCapacitor.dynamicCircuitCapacitor ) );
+      capacitor.currentProperty.value = circuitResult.getTimeAverageCurrentForCapacitor( dynamicCapacitor );
+      capacitor.mnaCurrent = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousCurrentForCapacitor( dynamicCapacitor ) );
 
       assert && assert( typeof dynamicCapacitor.capacitorVoltageNode1 === 'string' );
       assert && assert( typeof dynamicCapacitor.capacitorVoltageNode0 === 'string' );
 
+      // TODO: this is done differently for inductor, see https://github.com/phetsims/circuit-construction-kit-common/issues/764
       if ( typeof dynamicCapacitor.capacitorVoltageNode0 === 'string' && typeof dynamicCapacitor.capacitorVoltageNode1 === 'string' ) {
         capacitor.mnaVoltageDrop = CCKCUtils.clampMagnitude( circuitResult.getFinalState().dynamicCircuitSolution!.getNodeVoltage( dynamicCapacitor.capacitorVoltageNode1 )
                                                              - circuitResult.getFinalState().dynamicCircuitSolution!.getNodeVoltage( dynamicCapacitor.capacitorVoltageNode0 ) );

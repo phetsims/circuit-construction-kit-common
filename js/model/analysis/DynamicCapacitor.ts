@@ -1,18 +1,15 @@
 // Copyright 2021, University of Colorado Boulder
 import DynamicElementState from './DynamicElementState.js';
-import ModifiedNodalAnalysisCircuitElement from './mna/ModifiedNodalAnalysisCircuitElement.js';
 
 class DynamicCapacitor {
-  readonly dynamicCircuitCapacitor: ModifiedNodalAnalysisCircuitElement;
   readonly state: DynamicElementState;
+  readonly node0: string;
+  readonly node1: string;
   capacitorVoltageNode0: string | null;
   capacitorVoltageNode1: string | null;
   capacitance: number;
 
-  constructor( dynamicCircuitCapacitor: ModifiedNodalAnalysisCircuitElement, state: DynamicElementState, capacitance: number ) {
-
-    // @public {DynamicCircuit.Capacitor}
-    this.dynamicCircuitCapacitor = dynamicCircuitCapacitor;
+  constructor( node0: string, node1: string, state: DynamicElementState, capacitance: number ) {
 
     // @public {DynamicElementState}
     this.state = state;
@@ -21,6 +18,8 @@ class DynamicCapacitor {
     this.capacitorVoltageNode0 = null;
     this.capacitorVoltageNode1 = null;
     this.capacitance = capacitance;
+    this.node0 = node0;
+    this.node1 = node1;
   }
 }
 

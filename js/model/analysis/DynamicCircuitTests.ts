@@ -23,8 +23,7 @@ const errorThreshold = 1E-2;
 const testVRCCircuit = ( v: number, r: number, c: number, assert: Assert ) => {
   const resistor = new ModifiedNodalAnalysisCircuitElement( '1', '2', null, r );
   const battery = new DynamicCircuitResistiveBattery( '0', '1', v, 0 );
-  const capacitor = new DynamicCapacitor(
-    new ModifiedNodalAnalysisCircuitElement( '2', '0', null, 0 ),
+  const capacitor = new DynamicCapacitor( '2', '0',
     new DynamicElementState( 0.0, v / r ),
     c
   );
