@@ -8,7 +8,6 @@ class DynamicElementState {
    * @param {number} current - the conventional current as it moves from node 0 to node 1
    */
   constructor( voltage: number, current: number ) {
-    // @public
     this.voltage = voltage;
     this.current = current;
   }

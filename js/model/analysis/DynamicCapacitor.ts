@@ -10,16 +10,15 @@ class DynamicCapacitor {
   capacitance: number;
 
   constructor( node0: string, node1: string, state: DynamicElementState, capacitance: number ) {
-
-    // @public {DynamicElementState}
+    this.node0 = node0;
+    this.node1 = node1;
     this.state = state;
+    this.capacitance = capacitance;
 
     // @public placeholders for where to read the capacitor part of the voltage without the series resistor
     this.capacitorVoltageNode0 = null;
     this.capacitorVoltageNode1 = null;
-    this.capacitance = capacitance;
-    this.node0 = node0;
-    this.node1 = node1;
+
   }
 }
 

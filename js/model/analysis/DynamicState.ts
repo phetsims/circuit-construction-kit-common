@@ -7,19 +7,9 @@ class DynamicState {
   readonly dynamicCircuitSolution: DynamicCircuitSolution | null;
   private solution: DynamicCircuitSolution | null;
 
-  /**
-   * @param {DynamicCircuit} dynamicCircuit
-   * @param {DynamicCircuitSolution|null} dynamicCircuitSolution
-   */
   constructor( dynamicCircuit: DynamicCircuit, dynamicCircuitSolution: DynamicCircuitSolution | null ) {
-    assert && assert( dynamicCircuit, 'circuit should be defined' );
-
-    // @public (read-only)
     this.dynamicCircuit = dynamicCircuit;
-
-    // @public (read-only)
     this.dynamicCircuitSolution = dynamicCircuitSolution;
-
     this.solution = null;
   }
 
