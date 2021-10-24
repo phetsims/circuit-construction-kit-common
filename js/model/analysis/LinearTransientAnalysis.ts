@@ -189,16 +189,8 @@ class LinearTransientAnalysis {
     dynamicCapacitors.forEach( dynamicCapacitor => {
       const capacitor = backwardMap.get( dynamicCapacitor ) as Capacitor;
       capacitor.currentProperty.value = circuitResult.getTimeAverageCurrentForCoreModel( dynamicCapacitor );
-      capacitor.mnaCurrent = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousCurrentForCapacitor( dynamicCapacitor ) );
-
-      assert && assert( typeof dynamicCapacitor.capacitorVoltageNode1 === 'string' );
-      assert && assert( typeof dynamicCapacitor.capacitorVoltageNode0 === 'string' );
-
-      // TODO: this is done differently for inductor, see https://github.com/phetsims/circuit-construction-kit-common/issues/764
-      if ( typeof dynamicCapacitor.capacitorVoltageNode0 === 'string' && typeof dynamicCapacitor.capacitorVoltageNode1 === 'string' ) {
-        capacitor.mnaVoltageDrop = CCKCUtils.clampMagnitude( circuitResult.getFinalState().dynamicCircuitSolution!.getNodeVoltage( dynamicCapacitor.capacitorVoltageNode1 )
-                                                             - circuitResult.getFinalState().dynamicCircuitSolution!.getNodeVoltage( dynamicCapacitor.capacitorVoltageNode0 ) );
-      }
+      capacitor.mnaCurrent = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousCurrentForCoreModel( dynamicCapacitor ) );
+      capacitor.mnaVoltageDrop = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousVoltageForCoreModel( dynamicCapacitor ) );
 
       assert && assert( Math.abs( capacitor.mnaCurrent ) < 1E100, 'mnaCurrent out of range' );
       assert && assert( Math.abs( capacitor.mnaVoltageDrop ) < 1E100, 'mnaVoltageDrop out of range' );
@@ -209,8 +201,8 @@ class LinearTransientAnalysis {
 
       // TODO: This line is seemingly wrong https://github.com/phetsims/circuit-construction-kit-common/issues/758
       inductor.currentProperty.value = -circuitResult.getTimeAverageCurrentForCoreModel( dynamicInductor );
-      inductor.mnaCurrent = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousCurrentForInductor( dynamicInductor ) );
-      inductor.mnaVoltageDrop = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousVoltageForInductor( dynamicInductor ) );
+      inductor.mnaCurrent = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousCurrentForCoreModel( dynamicInductor ) );
+      inductor.mnaVoltageDrop = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousVoltageForCoreModel( dynamicInductor ) );
       assert && assert( Math.abs( inductor.mnaCurrent ) < 1E100, 'mnaCurrent out of range' );
       assert && assert( Math.abs( inductor.mnaVoltageDrop ) < 1E100, 'mnaVoltageDrop out of range' );
     } );

@@ -3,8 +3,6 @@ import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js'
 import ResultSet from '../ResultSet.js';
 import ModifiedNodalAnalysisCircuitElement from './mna/ModifiedNodalAnalysisCircuitElement.js';
 import DynamicState from './DynamicState.js';
-import DynamicInductor from './DynamicInductor.js';
-import DynamicCapacitor from './DynamicCapacitor.js';
 import CoreModel from './CoreModel.js';
 
 /**
@@ -72,18 +70,13 @@ class CircuitResult {
   }
 
   // @public
-  getInstantaneousVoltageForInductor( dynamicCircuitInductor: DynamicInductor ): number {
-    return this.getFinalState().dynamicCircuitSolution!.getVoltage( dynamicCircuitInductor.node0, dynamicCircuitInductor.node1 );
+  getInstantaneousVoltageForCoreModel( coreModel: CoreModel ): number {
+    return this.getFinalState().dynamicCircuitSolution!.getVoltage( coreModel.node0, coreModel.node1 );
   }
 
   // @public
-  getInstantaneousCurrentForInductor( dynamicCircuitInductor: DynamicInductor ): number {
-    return this.getFinalState().dynamicCircuitSolution!.getCurrentForCompanion( dynamicCircuitInductor );
-  }
-
-  // @public
-  getInstantaneousCurrentForCapacitor( dynamicCapacitor: DynamicCapacitor ): number {
-    return this.getFinalState().dynamicCircuitSolution!.getCurrentForCompanion( dynamicCapacitor );
+  getInstantaneousCurrentForCoreModel( coreModel: CoreModel ): number {
+    return this.getFinalState().dynamicCircuitSolution!.getCurrentForCompanion( coreModel );
   }
 
   /**
