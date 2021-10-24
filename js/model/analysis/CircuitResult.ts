@@ -12,6 +12,7 @@ import DynamicCapacitor from './DynamicCapacitor.js';
  * dynamics (using instantaneous solutions) but also to show intermediate states (using the average results), see #2270.
  */
 class CircuitResult {
+
   readonly resultSet: ResultSet<DynamicState>;
 
   /**
@@ -39,6 +40,17 @@ class CircuitResult {
     return number;
   }
 
+  // @public - TODO duplicated with https://github.com/phetsims/circuit-construction-kit-common/issues/764
+  getTimeAverageCurrentForInductor( element: DynamicInductor ) {
+    let weightedSum = 0.0;
+    this.resultSet.states.forEach( ( stateObject: any ) => {
+      weightedSum += stateObject.state.dynamicCircuitSolution.getCurrentForInductor( element ) * stateObject.dt;
+    } );
+    const number = weightedSum / this.resultSet.getTotalTime();
+    assert && assert( !isNaN( number ) );
+    return number;
+  }
+
   /**
    * The instantaneous current is used for computing the next modified nodal analysis state and integration.
    * @param {ModifiedNodalAnalysisCircuitElement} element
@@ -56,6 +68,16 @@ class CircuitResult {
    */
   getInstantaneousVoltage( element: ModifiedNodalAnalysisCircuitElement ) {
     return this.getFinalState().dynamicCircuitSolution!.getVoltage( element );
+  }
+
+  // @public
+  getInstantaneousVoltageForInductor( dynamicCircuitInductor: DynamicInductor ): number {
+    return this.getFinalState().dynamicCircuitSolution!.getVoltageForInductor( dynamicCircuitInductor );
+  }
+
+  // @public
+  getInstantaneousCurrentForInductor( dynamicCircuitInductor: DynamicInductor ): number {
+    return this.getFinalState().dynamicCircuitSolution!.getCurrentForInductor( dynamicCircuitInductor );
   }
 
   /**

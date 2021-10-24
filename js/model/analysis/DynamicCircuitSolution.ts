@@ -6,6 +6,7 @@ import DynamicCapacitor from './DynamicCapacitor.js';
 import DynamicInductor from './DynamicInductor.js';
 
 class DynamicCircuitSolution {
+
   private readonly circuit: DynamicCircuit;
   private readonly mnaSolution: ModifiedNodalAnalysisSolution;
   private readonly currentCompanions: any;
@@ -37,7 +38,7 @@ class DynamicCircuitSolution {
    * @returns {number}
    * @public
    */
-  getCurrent( element: ModifiedNodalAnalysisCircuitElement | DynamicCapacitor | DynamicInductor ) {
+  getCurrent( element: ModifiedNodalAnalysisCircuitElement | DynamicCapacitor ) {
 
     // Scaffolding tests for TypeScript migration
     if ( element instanceof ModifiedNodalAnalysisCircuitElement ) {
@@ -66,6 +67,23 @@ class DynamicCircuitSolution {
       assert && assert( element instanceof ModifiedNodalAnalysisCircuitElement );
       return this.mnaSolution.getCurrentForResistor( element as ModifiedNodalAnalysisCircuitElement );
     }
+  }
+
+  // @public
+  getCurrentForInductor( dynamicInductor: DynamicInductor ) {
+    const companion = _.find( this.currentCompanions, c => {
+
+      // TODO: use IDs for equality, see https://github.com/phetsims/circuit-construction-kit-common/issues/764
+      return c.element instanceof DynamicInductor && c.element.node0 === dynamicInductor.node0 && c.element.node1 === dynamicInductor.node1;
+    } );
+    assert && assert( companion, 'dynamic inductor must have companion' );
+
+    return companion.getValueForSolution( this.mnaSolution );
+  }
+
+  // @public
+  getVoltageForInductor( dynamicCircuitInductor: DynamicInductor ) {
+    return this.getNodeVoltage( dynamicCircuitInductor.node1 ) - this.getNodeVoltage( dynamicCircuitInductor.node0 );
   }
 
   /**

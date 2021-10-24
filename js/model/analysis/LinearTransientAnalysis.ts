@@ -107,12 +107,12 @@ class LinearTransientAnalysis {
         }
         else if ( circuitElement instanceof Inductor ) {
 
-          const dynamicInductor = new DynamicInductor( new ModifiedNodalAnalysisCircuitElement(
+          const dynamicInductor = new DynamicInductor(
             circuitElement.startVertexProperty.value.index + '',
             circuitElement.endVertexProperty.value.index + '',
-            null,
-            0
-          ), new DynamicElementState( circuitElement.mnaVoltageDrop, circuitElement.mnaCurrent ), circuitElement.inductanceProperty.value );
+            new DynamicElementState( circuitElement.mnaVoltageDrop, circuitElement.mnaCurrent ),
+            circuitElement.inductanceProperty.value
+          );
           backwardMap.set( dynamicInductor, circuitElement );
           dynamicInductors.push( dynamicInductor );
         }
@@ -208,9 +208,9 @@ class LinearTransientAnalysis {
       const inductor = backwardMap.get( dynamicInductor ) as Inductor;
 
       // TODO: This line is seemingly wrong https://github.com/phetsims/circuit-construction-kit-common/issues/758
-      inductor.currentProperty.value = -circuitResult.getTimeAverageCurrent( dynamicInductor.dynamicCircuitInductor );
-      inductor.mnaCurrent = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousCurrent( dynamicInductor.dynamicCircuitInductor ) );
-      inductor.mnaVoltageDrop = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousVoltage( dynamicInductor.dynamicCircuitInductor ) );
+      inductor.currentProperty.value = -circuitResult.getTimeAverageCurrentForInductor( dynamicInductor );
+      inductor.mnaCurrent = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousCurrentForInductor( dynamicInductor ) );
+      inductor.mnaVoltageDrop = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousVoltageForInductor( dynamicInductor ) );
       assert && assert( Math.abs( inductor.mnaCurrent ) < 1E100, 'mnaCurrent out of range' );
       assert && assert( Math.abs( inductor.mnaVoltageDrop ) < 1E100, 'mnaVoltageDrop out of range' );
     } );

@@ -127,7 +127,6 @@ class DynamicCircuit {
     // Veq = -2Li/dt-v
     // See najm page 279 and Pillage page 86
     this.dynamicInductors.forEach( dynamicInductor => {
-      const inductor = dynamicInductor.dynamicCircuitInductor;
 
       // In series
       const newNode = 'syntheticNode' + syntheticNodeIndex;
@@ -138,8 +137,8 @@ class DynamicCircuit {
       // TODO: this is how it appears in Java https://github.com/phetsims/circuit-construction-kit-common/issues/758
       // const companionVoltage = dynamicInductor.state.voltage + companionResistance * dynamicInductor.state.current;
 
-      const battery = new ModifiedNodalAnalysisCircuitElement( inductor.nodeId0 + '', newNode, null, companionVoltage );
-      const resistor = new ModifiedNodalAnalysisCircuitElement( newNode, inductor.nodeId1 + '', null, companionResistance );
+      const battery = new ModifiedNodalAnalysisCircuitElement( dynamicInductor.node0, newNode, null, companionVoltage );
+      const resistor = new ModifiedNodalAnalysisCircuitElement( newNode, dynamicInductor.node1, null, companionResistance );
       companionBatteries.push( battery );
       companionResistors.push( resistor );
 
@@ -236,10 +235,10 @@ class DynamicCircuit {
     const updatedInductors = this.dynamicInductors.map( dynamicInductor => {
       const newState = new DynamicElementState(
         // TODO: This may have something to do with it? https://github.com/phetsims/circuit-construction-kit-common/issues/758
-        solution.getNodeVoltage( dynamicInductor.dynamicCircuitInductor.nodeId1 ) - solution.getNodeVoltage( dynamicInductor.dynamicCircuitInductor.nodeId0 ),
-        solution.getCurrent( dynamicInductor )
+        solution.getNodeVoltage( dynamicInductor.node1 ) - solution.getNodeVoltage( dynamicInductor.node0 ),
+        solution.getCurrentForInductor( dynamicInductor )
       );
-      return new DynamicInductor( dynamicInductor.dynamicCircuitInductor, newState, dynamicInductor.inductance );
+      return new DynamicInductor( dynamicInductor.node0, dynamicInductor.node1, newState, dynamicInductor.inductance );
     } );
 
     return new DynamicCircuit( this.resistorAdapters, this.resistiveBatteryAdapters, updatedCapacitors, updatedInductors );

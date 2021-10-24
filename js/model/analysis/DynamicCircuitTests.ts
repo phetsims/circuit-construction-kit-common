@@ -67,7 +67,7 @@ QUnit.test( 'test RC Circuit should have voltage exponentially decay with T RC f
 const testVRLCircuit = ( V: number, R: number, L: number, assert: Assert ) => {
   const resistor = new ModifiedNodalAnalysisCircuitElement( '1', '2', null, R );
   const battery = new DynamicCircuitResistiveBattery( '0', '1', V, 0 );
-  const inductor = new DynamicInductor( new ModifiedNodalAnalysisCircuitElement( '2', '0', null, 0 ), new DynamicElementState( V, 0.0 ), L );
+  const inductor = new DynamicInductor( '2', '0', new DynamicElementState( V, 0.0 ), L );
   let circuit = new DynamicCircuit( [ resistor ], [ battery ], [], [ inductor ] );
 
   // let x = '';
