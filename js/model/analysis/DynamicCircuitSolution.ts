@@ -2,9 +2,8 @@
 import DynamicCircuit from './DynamicCircuit.js';
 import ModifiedNodalAnalysisSolution from './mna/ModifiedNodalAnalysisSolution.js';
 import ModifiedNodalAnalysisCircuitElement from './mna/ModifiedNodalAnalysisCircuitElement.js';
-import DynamicCapacitor from './DynamicCapacitor.js';
 import DynamicInductor from './DynamicInductor.js';
-import DynamicCircuitResistiveBattery from './DynamicCircuitResistiveBattery.js';
+import CoreModel from './CoreModel.js';
 
 class DynamicCircuitSolution {
 
@@ -52,42 +51,13 @@ class DynamicCircuitSolution {
   }
 
   // @public
-  getCurrentForInductor( dynamicInductor: DynamicInductor ) {
-    const companion = _.find( this.currentCompanions, c => {
-
-      // TODO: use IDs for equality, see https://github.com/phetsims/circuit-construction-kit-common/issues/764
-      return c.element instanceof DynamicInductor && c.element.node0 === dynamicInductor.node0 && c.element.node1 === dynamicInductor.node1;
-    } );
-    assert && assert( companion, 'dynamic inductor must have companion' );
-
+  getCurrentForCompanion( dynamicInductor: CoreModel ) {
+    const companion = _.find( this.currentCompanions, c => c.element.id === dynamicInductor.id );
     return companion.getValueForSolution( this.mnaSolution );
   }
 
   // @public
-  getCurrentForCapacitor( dynamicCapacitor: DynamicCapacitor ): number {
-    const companion = _.find( this.currentCompanions, c => {
-
-      // TODO: use IDs for equality, see https://github.com/phetsims/circuit-construction-kit-common/issues/764
-      return c.element instanceof DynamicCapacitor && c.element.node0 === dynamicCapacitor.node0 && c.element.node1 === dynamicCapacitor.node1;
-    } );
-    assert && assert( companion, 'dynamic capacitor must have companion' );
-
-    return companion.getValueForSolution( this.mnaSolution );
-  }
-
-  // @public
-  getCurrentForDynamicCircuitResistiveBattery( dynamicCircuitResistiveBattery: DynamicCircuitResistiveBattery ) {
-    const companion = _.find( this.currentCompanions, c => {
-
-      // TODO: use IDs for equality, see https://github.com/phetsims/circuit-construction-kit-common/issues/764
-      return c.element instanceof DynamicCircuitResistiveBattery && c.element.node0 === dynamicCircuitResistiveBattery.node0 && c.element.node1 === dynamicCircuitResistiveBattery.node1;
-    } );
-    assert && assert( companion, 'dynamicCircuitResistiveBattery must have companion' );
-
-    return companion.getValueForSolution( this.mnaSolution );
-  }
-
-  // @public
+  // TODO: Move out https://github.com/phetsims/circuit-construction-kit-common/issues/764
   getVoltageForInductor( dynamicCircuitInductor: DynamicInductor ) {
     return this.getNodeVoltage( dynamicCircuitInductor.node1 ) - this.getNodeVoltage( dynamicCircuitInductor.node0 );
   }

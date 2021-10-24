@@ -45,7 +45,7 @@ class CircuitResult {
   getTimeAverageCurrentForDynamicCircuitResistiveBattery( element: DynamicCircuitResistiveBattery ) {
     let weightedSum = 0.0;
     this.resultSet.states.forEach( ( stateObject: any ) => {
-      weightedSum += stateObject.state.dynamicCircuitSolution.getCurrentForDynamicCircuitResistiveBattery( element ) * stateObject.dt;
+      weightedSum += stateObject.state.dynamicCircuitSolution.getCurrentForCompanion( element ) * stateObject.dt;
     } );
     const number = weightedSum / this.resultSet.getTotalTime();
     assert && assert( !isNaN( number ) );
@@ -56,7 +56,7 @@ class CircuitResult {
   getTimeAverageCurrentForInductor( element: DynamicInductor ) {
     let weightedSum = 0.0;
     this.resultSet.states.forEach( ( stateObject: any ) => {
-      weightedSum += stateObject.state.dynamicCircuitSolution.getCurrentForInductor( element ) * stateObject.dt;
+      weightedSum += stateObject.state.dynamicCircuitSolution.getCurrentForCompanion( element ) * stateObject.dt;
     } );
     const number = weightedSum / this.resultSet.getTotalTime();
     assert && assert( !isNaN( number ) );
@@ -67,7 +67,7 @@ class CircuitResult {
   getTimeAverageCurrentForCapacitor( element: DynamicCapacitor ) {
     let weightedSum = 0.0;
     this.resultSet.states.forEach( ( stateObject: any ) => {
-      weightedSum += stateObject.state.dynamicCircuitSolution.getCurrentForCapacitor( element ) * stateObject.dt;
+      weightedSum += stateObject.state.dynamicCircuitSolution.getCurrentForCompanion( element ) * stateObject.dt;
     } );
     const number = weightedSum / this.resultSet.getTotalTime();
     assert && assert( !isNaN( number ) );
@@ -100,12 +100,12 @@ class CircuitResult {
 
   // @public
   getInstantaneousCurrentForInductor( dynamicCircuitInductor: DynamicInductor ): number {
-    return this.getFinalState().dynamicCircuitSolution!.getCurrentForInductor( dynamicCircuitInductor );
+    return this.getFinalState().dynamicCircuitSolution!.getCurrentForCompanion( dynamicCircuitInductor );
   }
 
   // @public
   getInstantaneousCurrentForCapacitor( dynamicCapacitor: DynamicCapacitor ): number {
-    return this.getFinalState().dynamicCircuitSolution!.getCurrentForCapacitor( dynamicCapacitor );
+    return this.getFinalState().dynamicCircuitSolution!.getCurrentForCompanion( dynamicCapacitor );
   }
 
   /**
