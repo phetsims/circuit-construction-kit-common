@@ -230,7 +230,7 @@ class DynamicCircuit {
         solution.getNodeVoltage( dynamicCapacitor.capacitorVoltageNode1! ) - solution.getNodeVoltage( dynamicCapacitor.capacitorVoltageNode0! ),
         solution.getCurrentForCapacitor( dynamicCapacitor )
       );
-      return new DynamicCapacitor( dynamicCapacitor.node0, dynamicCapacitor.node1, newState, dynamicCapacitor.capacitance );
+      return new DynamicCapacitor( dynamicCapacitor.id, dynamicCapacitor.node0, dynamicCapacitor.node1, newState, dynamicCapacitor.capacitance );
     } );
     const updatedInductors = this.dynamicInductors.map( dynamicInductor => {
       const newState = new DynamicElementState(
@@ -238,7 +238,7 @@ class DynamicCircuit {
         solution.getNodeVoltage( dynamicInductor.node1 ) - solution.getNodeVoltage( dynamicInductor.node0 ),
         solution.getCurrentForInductor( dynamicInductor )
       );
-      return new DynamicInductor( dynamicInductor.node0, dynamicInductor.node1, newState, dynamicInductor.inductance );
+      return new DynamicInductor( dynamicInductor.id, dynamicInductor.node0, dynamicInductor.node1, newState, dynamicInductor.inductance );
     } );
 
     return new DynamicCircuit( this.resistorAdapters, this.resistiveBatteryAdapters, updatedCapacitors, updatedInductors );

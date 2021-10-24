@@ -35,6 +35,8 @@ import DynamicCapacitor from './DynamicCapacitor.js';
 // constants
 const TIMESTEP_SUBDIVISIONS = new TimestepSubdivisions<DynamicState>();
 
+let id = 0;
+
 class LinearTransientAnalysis {
 
   /**
@@ -63,6 +65,7 @@ class LinearTransientAnalysis {
         participants.push( circuitElement );
         if ( circuitElement instanceof VoltageSource ) {
           const dynamicCircuitResistiveBattery = new DynamicCircuitResistiveBattery(
+            id++,
             circuitElement.startVertexProperty.value.index + '',
             circuitElement.endVertexProperty.value.index + '',
             circuitElement.voltageProperty.value,
@@ -95,7 +98,7 @@ class LinearTransientAnalysis {
         }
         else if ( circuitElement instanceof Capacitor ) {
 
-          const dynamicCapacitor = new DynamicCapacitor( circuitElement.startVertexProperty.value.index + '',
+          const dynamicCapacitor = new DynamicCapacitor( id++, circuitElement.startVertexProperty.value.index + '',
             circuitElement.endVertexProperty.value.index + '', new DynamicElementState( circuitElement.mnaVoltageDrop, circuitElement.mnaCurrent ), circuitElement.capacitanceProperty.value );
           dynamicCapacitors.push( dynamicCapacitor );
           backwardMap.set( dynamicCapacitor, circuitElement );
@@ -103,6 +106,7 @@ class LinearTransientAnalysis {
         else if ( circuitElement instanceof Inductor ) {
 
           const dynamicInductor = new DynamicInductor(
+            id++,
             circuitElement.startVertexProperty.value.index + '',
             circuitElement.endVertexProperty.value.index + '',
             new DynamicElementState( circuitElement.mnaVoltageDrop, circuitElement.mnaCurrent ),
