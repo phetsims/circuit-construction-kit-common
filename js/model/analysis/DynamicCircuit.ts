@@ -133,7 +133,7 @@ class DynamicCircuit {
       const newNode = 'syntheticNode' + syntheticNodeIndex;
       syntheticNodeIndex++;
 
-      const companionResistance = 2 * inductor.inductance / dt;
+      const companionResistance = 2 * dynamicInductor.inductance / dt;
       const companionVoltage = -dynamicInductor.state.voltage - companionResistance * dynamicInductor.state.current;
       // TODO: this is how it appears in Java https://github.com/phetsims/circuit-construction-kit-common/issues/758
       // const companionVoltage = dynamicInductor.state.voltage + companionResistance * dynamicInductor.state.current;
@@ -239,7 +239,7 @@ class DynamicCircuit {
         solution.getNodeVoltage( dynamicInductor.dynamicCircuitInductor.nodeId1 ) - solution.getNodeVoltage( dynamicInductor.dynamicCircuitInductor.nodeId0 ),
         solution.getCurrent( dynamicInductor )
       );
-      return new DynamicInductor( dynamicInductor.dynamicCircuitInductor, newState );
+      return new DynamicInductor( dynamicInductor.dynamicCircuitInductor, newState, dynamicInductor.inductance );
     } );
 
     return new DynamicCircuit( this.resistorAdapters, this.resistiveBatteryAdapters, updatedCapacitors, updatedInductors );

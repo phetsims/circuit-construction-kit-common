@@ -28,7 +28,6 @@ import CCKCConstants from '../../CCKCConstants.js';
 import ModifiedNodalAnalysisCircuitElement from './mna/ModifiedNodalAnalysisCircuitElement.js';
 import DynamicCircuitResistiveBattery from './DynamicCircuitResistiveBattery.js';
 import DynamicInductor from './DynamicInductor.js';
-import DynamicCircuitInductor from './DynamicCircuitInductor.js';
 import DynamicElementState from './DynamicElementState.js';
 import CCKCUtils from '../../CCKCUtils.js';
 import DynamicCapacitor from './DynamicCapacitor.js';
@@ -108,11 +107,12 @@ class LinearTransientAnalysis {
         }
         else if ( circuitElement instanceof Inductor ) {
 
-          const dynamicInductor = new DynamicInductor( new DynamicCircuitInductor(
+          const dynamicInductor = new DynamicInductor( new ModifiedNodalAnalysisCircuitElement(
             circuitElement.startVertexProperty.value.index + '',
             circuitElement.endVertexProperty.value.index + '',
-            circuitElement.inductanceProperty.value
-          ), new DynamicElementState( circuitElement.mnaVoltageDrop, circuitElement.mnaCurrent ) );
+            null,
+            0
+          ), new DynamicElementState( circuitElement.mnaVoltageDrop, circuitElement.mnaCurrent ), circuitElement.inductanceProperty.value );
           backwardMap.set( dynamicInductor, circuitElement );
           dynamicInductors.push( dynamicInductor );
         }
