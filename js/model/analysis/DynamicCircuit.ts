@@ -67,8 +67,8 @@ class DynamicCircuit {
       const newNode = 'syntheticNode' + syntheticNodeIndex;
       syntheticNodeIndex++;
 
-      const idealBattery = new ModifiedNodalAnalysisCircuitElement( resistiveBatteryAdapter.nodeId0 + '', newNode, null, resistiveBatteryAdapter.voltage ); // final LinearCircuitSolver.Battery
-      const idealResistor = new ModifiedNodalAnalysisCircuitElement( newNode, resistiveBatteryAdapter.nodeId1 + '', null, resistiveBatteryAdapter.resistance ); // LinearCircuitSolver.Resistor
+      const idealBattery = new ModifiedNodalAnalysisCircuitElement( resistiveBatteryAdapter.node0, newNode, null, resistiveBatteryAdapter.voltage ); // final LinearCircuitSolver.Battery
+      const idealResistor = new ModifiedNodalAnalysisCircuitElement( newNode, resistiveBatteryAdapter.node1, null, resistiveBatteryAdapter.resistance ); // LinearCircuitSolver.Resistor
       companionBatteries.push( idealBattery );
       companionResistors.push( idealResistor );
 

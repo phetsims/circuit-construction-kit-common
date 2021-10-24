@@ -137,7 +137,7 @@ class LinearTransientAnalysis {
     } );
 
     resistiveBatteryAdapters.forEach( batteryAdapter => {
-      if ( Math.abs( circuitResult.getTimeAverageCurrent( batteryAdapter ) ) > CCKCQueryParameters.batteryCurrentThreshold ) {
+      if ( Math.abs( circuitResult.getTimeAverageCurrentForDynamicCircuitResistiveBattery( batteryAdapter ) ) > CCKCQueryParameters.batteryCurrentThreshold ) {
         const battery = backwardMap.get( batteryAdapter ) as VoltageSource;
         batteryAdapter.resistance = battery.internalResistanceProperty.value;
         needsHelp = true;
@@ -176,7 +176,7 @@ class LinearTransientAnalysis {
 
     resistiveBatteryAdapters.forEach( batteryAdapter => {
       const circuitElement = backwardMap.get( batteryAdapter ) as VoltageSource;
-      circuitElement.currentProperty.value = circuitResult.getTimeAverageCurrent( batteryAdapter );
+      circuitElement.currentProperty.value = circuitResult.getTimeAverageCurrentForDynamicCircuitResistiveBattery( batteryAdapter );
     } );
     resistorAdapters.forEach( resistorAdapter => {
       const circuitElement = backwardMap.get( resistorAdapter )!;

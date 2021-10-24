@@ -5,6 +5,7 @@ import ModifiedNodalAnalysisCircuitElement from './mna/ModifiedNodalAnalysisCirc
 import DynamicState from './DynamicState.js';
 import DynamicInductor from './DynamicInductor.js';
 import DynamicCapacitor from './DynamicCapacitor.js';
+import DynamicCircuitResistiveBattery from './DynamicCircuitResistiveBattery.js';
 
 /**
  * This class represents the solution obtained by a timestep-subdivision-oriented MNA solve with companion models.
@@ -34,6 +35,17 @@ class CircuitResult {
     let weightedSum = 0.0;
     this.resultSet.states.forEach( ( stateObject: any ) => {
       weightedSum += stateObject.state.dynamicCircuitSolution.getCurrent( element ) * stateObject.dt;
+    } );
+    const number = weightedSum / this.resultSet.getTotalTime();
+    assert && assert( !isNaN( number ) );
+    return number;
+  }
+
+  // @public
+  getTimeAverageCurrentForDynamicCircuitResistiveBattery( element: DynamicCircuitResistiveBattery ) {
+    let weightedSum = 0.0;
+    this.resultSet.states.forEach( ( stateObject: any ) => {
+      weightedSum += stateObject.state.dynamicCircuitSolution.getCurrentForDynamicCircuitResistiveBattery( element ) * stateObject.dt;
     } );
     const number = weightedSum / this.resultSet.getTotalTime();
     assert && assert( !isNaN( number ) );
