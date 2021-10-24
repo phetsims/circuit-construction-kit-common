@@ -99,7 +99,7 @@ class LinearTransientAnalysis {
             circuitElement.startVertexProperty.value.index + '',
             circuitElement.endVertexProperty.value.index + '',
             null,
-            circuitElement.capacitanceProperty.value
+            0
           );
 
           const dynamicCapacitor = new DynamicCapacitor( dynamicCircuitCapacitor, new DynamicElementState( circuitElement.mnaVoltageDrop, circuitElement.mnaCurrent ), circuitElement.capacitanceProperty.value );
