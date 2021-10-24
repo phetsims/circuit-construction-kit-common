@@ -36,7 +36,7 @@ const testVRCCircuit = ( v: number, r: number, c: number, assert: Assert ) => {
     const t = i * dt;
 
     const companionSolution = dynamicCircuit.solveItWithSubdivisions( dt );
-    const voltage = companionSolution!.getVoltage( resistor );
+    const voltage = companionSolution!.getVoltage( resistor.nodeId0, resistor.nodeId1 );
     const desiredVoltageAtTPlusDT = -v * Math.exp( -( t + dt ) / r / c );
     const error = Math.abs( voltage - desiredVoltageAtTPlusDT );
     assert.ok( error < errorThreshold ); // sample run indicates largest error is 1.5328E-7

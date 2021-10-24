@@ -90,12 +90,12 @@ class CircuitResult {
    * @public
    */
   getInstantaneousVoltage( element: ModifiedNodalAnalysisCircuitElement ) {
-    return this.getFinalState().dynamicCircuitSolution!.getVoltage( element );
+    return this.getFinalState().dynamicCircuitSolution!.getVoltage( element.nodeId0, element.nodeId1 );
   }
 
   // @public
   getInstantaneousVoltageForInductor( dynamicCircuitInductor: DynamicInductor ): number {
-    return this.getFinalState().dynamicCircuitSolution!.getVoltageForInductor( dynamicCircuitInductor );
+    return this.getFinalState().dynamicCircuitSolution!.getVoltage( dynamicCircuitInductor.node0, dynamicCircuitInductor.node1 );
   }
 
   // @public

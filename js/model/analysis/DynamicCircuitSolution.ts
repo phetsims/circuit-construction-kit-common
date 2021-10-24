@@ -2,7 +2,6 @@
 import DynamicCircuit from './DynamicCircuit.js';
 import ModifiedNodalAnalysisSolution from './mna/ModifiedNodalAnalysisSolution.js';
 import ModifiedNodalAnalysisCircuitElement from './mna/ModifiedNodalAnalysisCircuitElement.js';
-import DynamicInductor from './DynamicInductor.js';
 import CoreModel from './CoreModel.js';
 
 class DynamicCircuitSolution {
@@ -57,18 +56,8 @@ class DynamicCircuitSolution {
   }
 
   // @public
-  // TODO: Move out https://github.com/phetsims/circuit-construction-kit-common/issues/764
-  getVoltageForInductor( dynamicCircuitInductor: DynamicInductor ) {
-    return this.getNodeVoltage( dynamicCircuitInductor.node1 ) - this.getNodeVoltage( dynamicCircuitInductor.node0 );
-  }
-
-  /**
-   * @param {ModifiedNodalAnalysisCircuitElement} element
-   * @returns {number}
-   * @public
-   */
-  getVoltage( element: ModifiedNodalAnalysisCircuitElement ) {
-    return this.getNodeVoltage( element.nodeId1 ) - this.getNodeVoltage( element.nodeId0 );
+  getVoltage( node0: string, node1: string ) {
+    return this.getNodeVoltage( node1 ) - this.getNodeVoltage( node0 );
   }
 }
 
