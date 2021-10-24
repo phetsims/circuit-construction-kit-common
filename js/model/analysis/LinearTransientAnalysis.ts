@@ -141,7 +141,7 @@ class LinearTransientAnalysis {
     } );
 
     resistiveBatteryAdapters.forEach( batteryAdapter => {
-      if ( Math.abs( circuitResult.getTimeAverageCurrentForDynamicCircuitResistiveBattery( batteryAdapter ) ) > CCKCQueryParameters.batteryCurrentThreshold ) {
+      if ( Math.abs( circuitResult.getTimeAverageCurrentForCoreModel( batteryAdapter ) ) > CCKCQueryParameters.batteryCurrentThreshold ) {
         const battery = backwardMap.get( batteryAdapter ) as VoltageSource;
         batteryAdapter.resistance = battery.internalResistanceProperty.value;
         needsHelp = true;
@@ -180,7 +180,7 @@ class LinearTransientAnalysis {
 
     resistiveBatteryAdapters.forEach( batteryAdapter => {
       const circuitElement = backwardMap.get( batteryAdapter ) as VoltageSource;
-      circuitElement.currentProperty.value = circuitResult.getTimeAverageCurrentForDynamicCircuitResistiveBattery( batteryAdapter );
+      circuitElement.currentProperty.value = circuitResult.getTimeAverageCurrentForCoreModel( batteryAdapter );
     } );
     resistorAdapters.forEach( resistorAdapter => {
       const circuitElement = backwardMap.get( resistorAdapter )!;
@@ -188,7 +188,7 @@ class LinearTransientAnalysis {
     } );
     dynamicCapacitors.forEach( dynamicCapacitor => {
       const capacitor = backwardMap.get( dynamicCapacitor ) as Capacitor;
-      capacitor.currentProperty.value = circuitResult.getTimeAverageCurrentForCapacitor( dynamicCapacitor );
+      capacitor.currentProperty.value = circuitResult.getTimeAverageCurrentForCoreModel( dynamicCapacitor );
       capacitor.mnaCurrent = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousCurrentForCapacitor( dynamicCapacitor ) );
 
       assert && assert( typeof dynamicCapacitor.capacitorVoltageNode1 === 'string' );
@@ -208,7 +208,7 @@ class LinearTransientAnalysis {
       const inductor = backwardMap.get( dynamicInductor ) as Inductor;
 
       // TODO: This line is seemingly wrong https://github.com/phetsims/circuit-construction-kit-common/issues/758
-      inductor.currentProperty.value = -circuitResult.getTimeAverageCurrentForInductor( dynamicInductor );
+      inductor.currentProperty.value = -circuitResult.getTimeAverageCurrentForCoreModel( dynamicInductor );
       inductor.mnaCurrent = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousCurrentForInductor( dynamicInductor ) );
       inductor.mnaVoltageDrop = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousVoltageForInductor( dynamicInductor ) );
       assert && assert( Math.abs( inductor.mnaCurrent ) < 1E100, 'mnaCurrent out of range' );

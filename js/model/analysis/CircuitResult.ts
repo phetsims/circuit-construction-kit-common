@@ -5,7 +5,7 @@ import ModifiedNodalAnalysisCircuitElement from './mna/ModifiedNodalAnalysisCirc
 import DynamicState from './DynamicState.js';
 import DynamicInductor from './DynamicInductor.js';
 import DynamicCapacitor from './DynamicCapacitor.js';
-import DynamicCircuitResistiveBattery from './DynamicCircuitResistiveBattery.js';
+import CoreModel from './CoreModel.js';
 
 /**
  * This class represents the solution obtained by a timestep-subdivision-oriented MNA solve with companion models.
@@ -42,29 +42,7 @@ class CircuitResult {
   }
 
   // @public
-  getTimeAverageCurrentForDynamicCircuitResistiveBattery( element: DynamicCircuitResistiveBattery ) {
-    let weightedSum = 0.0;
-    this.resultSet.states.forEach( ( stateObject: any ) => {
-      weightedSum += stateObject.state.dynamicCircuitSolution.getCurrentForCompanion( element ) * stateObject.dt;
-    } );
-    const number = weightedSum / this.resultSet.getTotalTime();
-    assert && assert( !isNaN( number ) );
-    return number;
-  }
-
-  // @public - TODO duplicated with https://github.com/phetsims/circuit-construction-kit-common/issues/764
-  getTimeAverageCurrentForInductor( element: DynamicInductor ) {
-    let weightedSum = 0.0;
-    this.resultSet.states.forEach( ( stateObject: any ) => {
-      weightedSum += stateObject.state.dynamicCircuitSolution.getCurrentForCompanion( element ) * stateObject.dt;
-    } );
-    const number = weightedSum / this.resultSet.getTotalTime();
-    assert && assert( !isNaN( number ) );
-    return number;
-  }
-
-  // @public - TODO duplicated with https://github.com/phetsims/circuit-construction-kit-common/issues/764
-  getTimeAverageCurrentForCapacitor( element: DynamicCapacitor ) {
+  getTimeAverageCurrentForCoreModel( element: CoreModel ) {
     let weightedSum = 0.0;
     this.resultSet.states.forEach( ( stateObject: any ) => {
       weightedSum += stateObject.state.dynamicCircuitSolution.getCurrentForCompanion( element ) * stateObject.dt;
