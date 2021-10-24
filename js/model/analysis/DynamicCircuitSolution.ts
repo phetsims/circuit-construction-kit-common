@@ -46,18 +46,7 @@ class DynamicCircuitSolution {
     if ( element.currentSolution !== null ) {
       return element.currentSolution;
     }
-
-    // Support
-    const companion = _.find( this.currentCompanions, c => c.element === element ||
-                                                           c.element.dynamicCircuitCapacitor === element ||
-                                                           c.element.dynamicCircuitInductor === element );
-
-    if ( companion ) {
-      return companion.getValueForSolution( this.mnaSolution );
-    }
     else {
-
-      assert && assert( element instanceof ModifiedNodalAnalysisCircuitElement );
       return this.mnaSolution.getCurrentForResistor( element as ModifiedNodalAnalysisCircuitElement );
     }
   }
