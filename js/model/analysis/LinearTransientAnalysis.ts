@@ -31,7 +31,6 @@ import DynamicInductor from './DynamicInductor.js';
 import DynamicCircuitInductor from './DynamicCircuitInductor.js';
 import DynamicElementState from './DynamicElementState.js';
 import CCKCUtils from '../../CCKCUtils.js';
-import DynamicCircuitCapacitor from './DynamicCircuitCapacitor.js';
 import DynamicCapacitor from './DynamicCapacitor.js';
 
 // constants
@@ -96,13 +95,14 @@ class LinearTransientAnalysis {
           // no element for an open switch
         }
         else if ( circuitElement instanceof Capacitor ) {
-          const dynamicCircuitCapacitor = new DynamicCircuitCapacitor(
+          const dynamicCircuitCapacitor = new ModifiedNodalAnalysisCircuitElement(
             circuitElement.startVertexProperty.value.index + '',
             circuitElement.endVertexProperty.value.index + '',
+            null,
             circuitElement.capacitanceProperty.value
           );
 
-          const dynamicCapacitor = new DynamicCapacitor( dynamicCircuitCapacitor, new DynamicElementState( circuitElement.mnaVoltageDrop, circuitElement.mnaCurrent ) );
+          const dynamicCapacitor = new DynamicCapacitor( dynamicCircuitCapacitor, new DynamicElementState( circuitElement.mnaVoltageDrop, circuitElement.mnaCurrent ), circuitElement.capacitanceProperty.value );
           dynamicCapacitors.push( dynamicCapacitor );
           backwardMap.set( dynamicCapacitor, circuitElement );
         }

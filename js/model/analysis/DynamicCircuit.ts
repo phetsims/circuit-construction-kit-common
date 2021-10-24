@@ -87,7 +87,6 @@ class DynamicCircuit {
     // Veq = V + dt*I/2/C;
     // Req = dt/2/C
     this.dynamicCapacitors.forEach( dynamicCapacitor => {
-      assert && assert( dynamicCapacitor.dynamicCircuitCapacitor.capacitance >= 0, 'capacitance should be non-negative' );
       assert && assert( dt >= 0, 'dt should be non-negative' );
 
       const newNode1 = 'syntheticNode' + syntheticNodeIndex;
@@ -95,7 +94,7 @@ class DynamicCircuit {
       const newNode2 = 'syntheticNode' + syntheticNodeIndex;
       syntheticNodeIndex++;
 
-      const companionResistance = dt / 2.0 / dynamicCapacitor.dynamicCircuitCapacitor.capacitance;
+      const companionResistance = dt / 2.0 / dynamicCapacitor.capacitance;
       const resistanceTerm = CCKCQueryParameters.capacitorResistance;
 
       // The capacitor is modeled as a battery in series with a resistor.  Hence the voltage drop across the capacitor
@@ -226,21 +225,21 @@ class DynamicCircuit {
    * @public
    */
   updateCircuit( solution: DynamicCircuitSolution ) {
-    const updatedCapacitors = this.dynamicCapacitors.map( capacitorAdapter => {
+    const updatedCapacitors = this.dynamicCapacitors.map( dynamicCapacitor => {
       const newState = new DynamicElementState(
         // TODO: This may have something to do with it?  https://github.com/phetsims/circuit-construction-kit-common/issues/758
-        solution.getNodeVoltage( capacitorAdapter.capacitorVoltageNode1! ) - solution.getNodeVoltage( capacitorAdapter.capacitorVoltageNode0! ),
-        solution.getCurrent( capacitorAdapter )
+        solution.getNodeVoltage( dynamicCapacitor.capacitorVoltageNode1! ) - solution.getNodeVoltage( dynamicCapacitor.capacitorVoltageNode0! ),
+        solution.getCurrent( dynamicCapacitor )
       );
-      return new DynamicCapacitor( capacitorAdapter.dynamicCircuitCapacitor, newState );
+      return new DynamicCapacitor( dynamicCapacitor.dynamicCircuitCapacitor, newState, dynamicCapacitor.capacitance );
     } );
-    const updatedInductors = this.dynamicInductors.map( inductorAdapter => {
+    const updatedInductors = this.dynamicInductors.map( dynamicInductor => {
       const newState = new DynamicElementState(
         // TODO: This may have something to do with it? https://github.com/phetsims/circuit-construction-kit-common/issues/758
-        solution.getNodeVoltage( inductorAdapter.dynamicCircuitInductor.nodeId1 ) - solution.getNodeVoltage( inductorAdapter.dynamicCircuitInductor.nodeId0 ),
-        solution.getCurrent( inductorAdapter )
+        solution.getNodeVoltage( dynamicInductor.dynamicCircuitInductor.nodeId1 ) - solution.getNodeVoltage( dynamicInductor.dynamicCircuitInductor.nodeId0 ),
+        solution.getCurrent( dynamicInductor )
       );
-      return new DynamicInductor( inductorAdapter.dynamicCircuitInductor, newState );
+      return new DynamicInductor( dynamicInductor.dynamicCircuitInductor, newState );
     } );
 
     return new DynamicCircuit( this.resistorAdapters, this.resistiveBatteryAdapters, updatedCapacitors, updatedInductors );

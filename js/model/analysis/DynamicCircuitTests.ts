@@ -11,7 +11,6 @@
 import DynamicCircuit from './DynamicCircuit.js';
 import DynamicCapacitor from './DynamicCapacitor.js';
 import DynamicInductor from './DynamicInductor.js';
-import DynamicCircuitCapacitor from './DynamicCircuitCapacitor.js';
 import DynamicCircuitResistiveBattery from './DynamicCircuitResistiveBattery.js';
 import DynamicCircuitInductor from './DynamicCircuitInductor.js';
 import DynamicElementState from './DynamicElementState.js';
@@ -26,8 +25,9 @@ const testVRCCircuit = ( v: number, r: number, c: number, assert: Assert ) => {
   const resistor = new ModifiedNodalAnalysisCircuitElement( '1', '2', null, r );
   const battery = new DynamicCircuitResistiveBattery( '0', '1', v, 0 );
   const capacitor = new DynamicCapacitor(
-    new DynamicCircuitCapacitor( '2', '0', c ),
-    new DynamicElementState( 0.0, v / r )
+    new ModifiedNodalAnalysisCircuitElement( '2', '0', null, c ),
+    new DynamicElementState( 0.0, v / r ),
+    c
   );
 
   let dynamicCircuit = new DynamicCircuit( [ resistor ], [ battery ], [ capacitor ], [] );

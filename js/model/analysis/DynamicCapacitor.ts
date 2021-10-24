@@ -1,18 +1,15 @@
 // Copyright 2021, University of Colorado Boulder
-import DynamicCircuitCapacitor from './DynamicCircuitCapacitor.js';
 import DynamicElementState from './DynamicElementState.js';
+import ModifiedNodalAnalysisCircuitElement from './mna/ModifiedNodalAnalysisCircuitElement.js';
 
 class DynamicCapacitor {
-  readonly dynamicCircuitCapacitor: DynamicCircuitCapacitor;
+  readonly dynamicCircuitCapacitor: ModifiedNodalAnalysisCircuitElement;
   readonly state: DynamicElementState;
   capacitorVoltageNode0: string | null;
   capacitorVoltageNode1: string | null;
+  capacitance: number;
 
-  /**
-   * @param {DynamicCircuit.Capacitor} dynamicCircuitCapacitor
-   * @param {DynamicElementState} state
-   */
-  constructor( dynamicCircuitCapacitor: DynamicCircuitCapacitor, state: DynamicElementState ) {
+  constructor( dynamicCircuitCapacitor: ModifiedNodalAnalysisCircuitElement, state: DynamicElementState, capacitance: number ) {
 
     // @public {DynamicCircuit.Capacitor}
     this.dynamicCircuitCapacitor = dynamicCircuitCapacitor;
@@ -23,6 +20,7 @@ class DynamicCapacitor {
     // @public placeholders for where to read the capacitor part of the voltage without the series resistor
     this.capacitorVoltageNode0 = null;
     this.capacitorVoltageNode1 = null;
+    this.capacitance = capacitance;
   }
 }
 
