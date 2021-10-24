@@ -47,7 +47,7 @@ class DynamicCircuitSolution {
       return element.currentSolution;
     }
     else {
-      return this.mnaSolution.getCurrentForResistor( element as ModifiedNodalAnalysisCircuitElement );
+      return this.mnaSolution.getCurrentForResistor( element );
     }
   }
 
