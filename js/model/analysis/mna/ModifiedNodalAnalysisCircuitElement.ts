@@ -15,21 +15,17 @@ class ModifiedNodalAnalysisCircuitElement {
   readonly nodeId0: string;
   readonly nodeId1: string;
   readonly circuitElement: CircuitElement | null;
-  mnaValue: number;
   currentSolution: number | null;
 
   /**
    * @param {string} nodeId0
    * @param {string} nodeId1
    * @param {CircuitElement|null} circuitElement, null during qunit tests
-   * @param {number} value - resistance for resistors, voltage for battery or current for current source
    * @param {number|null} [currentSolution]
    */
-  constructor( nodeId0: string, nodeId1: string, circuitElement: CircuitElement | null, value: number, currentSolution: number | null = null ) {
+  constructor( nodeId0: string, nodeId1: string, circuitElement: CircuitElement | null, currentSolution: number | null = null ) {
     assert && CCKCUtils.validateNodeIndex( nodeId0 );
     assert && CCKCUtils.validateNodeIndex( nodeId1 );
-
-    assert && assert( !isNaN( value ) );
 
     // @public (read-only) {string} index of the start node
     this.nodeId0 = nodeId0;
@@ -39,9 +35,6 @@ class ModifiedNodalAnalysisCircuitElement {
 
     // @public (read-only) {CircuitElement|null} index of the start node
     this.circuitElement = circuitElement;
-
-    // @public (read-only) {number} resistance for resistors, voltage for battery or current for current source
-    this.mnaValue = value;
 
     // @public {number} supplied by the modified nodal analysis
     this.currentSolution = currentSolution;
@@ -55,7 +48,7 @@ class ModifiedNodalAnalysisCircuitElement {
    * @public (unit-tests)
    */
   withCurrentSolution( currentSolution: number ) {
-    return new ModifiedNodalAnalysisCircuitElement( this.nodeId0, this.nodeId1, this.circuitElement, this.mnaValue, currentSolution );
+    return new ModifiedNodalAnalysisCircuitElement( this.nodeId0, this.nodeId1, this.circuitElement, currentSolution );
   }
 
   /**

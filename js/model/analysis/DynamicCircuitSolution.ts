@@ -1,8 +1,8 @@
 // Copyright 2021, University of Colorado Boulder
 import DynamicCircuit from './DynamicCircuit.js';
 import ModifiedNodalAnalysisSolution from './mna/ModifiedNodalAnalysisSolution.js';
-import ModifiedNodalAnalysisCircuitElement from './mna/ModifiedNodalAnalysisCircuitElement.js';
 import CoreModel from './CoreModel.js';
+import MNAResistor from './mna/MNAResistor.js';
 
 class DynamicCircuitSolution {
 
@@ -37,7 +37,7 @@ class DynamicCircuitSolution {
    * @returns {number}
    * @public
    */
-  getCurrent( element: ModifiedNodalAnalysisCircuitElement ) {
+  getCurrent( element: MNAResistor ) {
 
     // For resistors with r>0, Ohm's Law gives the current.  For components with no resistance (like closed switch or
     // 0-resistance battery), the current is given by the matrix solution.

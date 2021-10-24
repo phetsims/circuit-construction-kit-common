@@ -4,6 +4,7 @@ import ResultSet from '../ResultSet.js';
 import ModifiedNodalAnalysisCircuitElement from './mna/ModifiedNodalAnalysisCircuitElement.js';
 import DynamicState from './DynamicState.js';
 import CoreModel from './CoreModel.js';
+import MNAResistor from './mna/MNAResistor.js';
 
 /**
  * This class represents the solution obtained by a timestep-subdivision-oriented MNA solve with companion models.
@@ -56,7 +57,7 @@ class CircuitResult {
    * @returns {number}
    * @public
    */
-  getInstantaneousCurrent( element: ModifiedNodalAnalysisCircuitElement ) {
+  getInstantaneousCurrent( element: MNAResistor ) {
     return this.getFinalState().dynamicCircuitSolution!.getCurrent( element );
   }
 

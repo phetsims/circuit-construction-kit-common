@@ -13,7 +13,7 @@ import DynamicCapacitor from './DynamicCapacitor.js';
 import DynamicInductor from './DynamicInductor.js';
 import DynamicCircuitResistiveBattery from './DynamicCircuitResistiveBattery.js';
 import DynamicElementState from './DynamicElementState.js';
-import ModifiedNodalAnalysisCircuitElement from './mna/ModifiedNodalAnalysisCircuitElement.js';
+import MNAResistor from './mna/MNAResistor.js';
 
 const ITERATIONS = 250;
 QUnit.module( 'DynamicCircuit' );
@@ -23,7 +23,7 @@ const errorThreshold = 1E-2;
 let id = 0;
 
 const testVRCCircuit = ( v: number, r: number, c: number, assert: Assert ) => {
-  const resistor = new ModifiedNodalAnalysisCircuitElement( '1', '2', null, r );
+  const resistor = new MNAResistor( '1', '2', null, r );
   const battery = new DynamicCircuitResistiveBattery( id++, '0', '1', v, 0 );
   const capacitor = new DynamicCapacitor( id++, '2', '0',
     new DynamicElementState( 0.0, v / r ),
@@ -66,7 +66,7 @@ QUnit.test( 'test RC Circuit should have voltage exponentially decay with T RC f
 } );
 
 const testVRLCircuit = ( V: number, R: number, L: number, assert: Assert ) => {
-  const resistor = new ModifiedNodalAnalysisCircuitElement( '1', '2', null, R );
+  const resistor = new MNAResistor( '1', '2', null, R );
   const battery = new DynamicCircuitResistiveBattery( id++, '0', '1', V, 0 );
   const inductor = new DynamicInductor( id++, '2', '0', new DynamicElementState( V, 0.0 ), L );
   let circuit = new DynamicCircuit( [ resistor ], [ battery ], [], [ inductor ] );

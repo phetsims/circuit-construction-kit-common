@@ -12,7 +12,6 @@ import CCKCQueryParameters from '../../CCKCQueryParameters.js';
 import CircuitResult from './CircuitResult.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import ModifiedNodalAnalysisCircuit from './mna/ModifiedNodalAnalysisCircuit.js';
-import ModifiedNodalAnalysisCircuitElement from './mna/ModifiedNodalAnalysisCircuitElement.js';
 import TimestepSubdivisions from './TimestepSubdivisions.js';
 import DynamicCircuitSolution from './DynamicCircuitSolution.js';
 import DynamicState from './DynamicState.js';
@@ -21,20 +20,17 @@ import DynamicInductor from './DynamicInductor.js';
 import DynamicCapacitor from './DynamicCapacitor.js';
 import ModifiedNodalAnalysisSolution from './mna/ModifiedNodalAnalysisSolution.js';
 import DynamicCircuitResistiveBattery from './DynamicCircuitResistiveBattery.js';
+import MNABattery from './mna/MNABattery.js';
+import MNAResistor from './mna/MNAResistor.js';
+import MNACurrent from './mna/MNACurrent.js';
 
 class DynamicCircuit {
-  private readonly resistorAdapters: ModifiedNodalAnalysisCircuitElement[];
+  private readonly resistorAdapters: MNAResistor[];
   private readonly resistiveBatteryAdapters: DynamicCircuitResistiveBattery[];
   readonly dynamicCapacitors: DynamicCapacitor[];
   readonly dynamicInductors: DynamicInductor[];
 
-  /**
-   * @param {ModifiedNodalAnalysisCircuitElement[]} resistorAdapters
-   * @param {DynamicCircuitResistiveBattery[]} resistiveBatteryAdapters
-   * @param {DynamicCapacitor[]} dynamicCapacitors
-   * @param {DynamicInductor[]} dynamicInductors
-   */
-  constructor( resistorAdapters: ModifiedNodalAnalysisCircuitElement[],
+  constructor( resistorAdapters: MNAResistor[],
                resistiveBatteryAdapters: DynamicCircuitResistiveBattery[],
                dynamicCapacitors: DynamicCapacitor[],
                dynamicInductors: DynamicInductor[] ) {
@@ -55,8 +51,8 @@ class DynamicCircuit {
    */
   solvePropagate( dt: number ) {
 
-    const companionBatteries: ModifiedNodalAnalysisCircuitElement[] = [];
-    const companionResistors: ModifiedNodalAnalysisCircuitElement[] = [];
+    const companionBatteries: MNABattery[] = [];
+    const companionResistors: MNAResistor[] = [];
     const currentCompanions: { element: any, getValueForSolution: any }[] = [];
 
     // Node indices that have been used
@@ -67,8 +63,8 @@ class DynamicCircuit {
       const newNode = 'syntheticNode' + syntheticNodeIndex;
       syntheticNodeIndex++;
 
-      const idealBattery = new ModifiedNodalAnalysisCircuitElement( resistiveBatteryAdapter.node0, newNode, null, resistiveBatteryAdapter.voltage ); // final LinearCircuitSolver.Battery
-      const idealResistor = new ModifiedNodalAnalysisCircuitElement( newNode, resistiveBatteryAdapter.node1, null, resistiveBatteryAdapter.resistance ); // LinearCircuitSolver.Resistor
+      const idealBattery = new MNABattery( resistiveBatteryAdapter.node0, newNode, null, resistiveBatteryAdapter.voltage ); // final LinearCircuitSolver.Battery
+      const idealResistor = new MNAResistor( newNode, resistiveBatteryAdapter.node1, null, resistiveBatteryAdapter.resistance ); // LinearCircuitSolver.Resistor
       companionBatteries.push( idealBattery );
       companionResistors.push( idealResistor );
 
@@ -104,9 +100,9 @@ class DynamicCircuit {
       // |V|=|IReq| and sign is unchanged since the conventional current flows from high to low voltage.
       const companionVoltage = dynamicCapacitor.state.voltage - companionResistance * dynamicCapacitor.state.current;
 
-      const battery = new ModifiedNodalAnalysisCircuitElement( dynamicCapacitor.node0, newNode1, null, companionVoltage );
-      const resistor = new ModifiedNodalAnalysisCircuitElement( newNode1, newNode2, null, companionResistance );
-      const resistor2 = new ModifiedNodalAnalysisCircuitElement( newNode2, dynamicCapacitor.node1, null, resistanceTerm );
+      const battery = new MNABattery( dynamicCapacitor.node0, newNode1, null, companionVoltage );
+      const resistor = new MNAResistor( newNode1, newNode2, null, companionResistance );
+      const resistor2 = new MNAResistor( newNode2, dynamicCapacitor.node1, null, resistanceTerm );
 
       companionBatteries.push( battery );
       companionResistors.push( resistor );
@@ -137,8 +133,8 @@ class DynamicCircuit {
       // TODO: this is how it appears in Java https://github.com/phetsims/circuit-construction-kit-common/issues/758
       // const companionVoltage = dynamicInductor.state.voltage + companionResistance * dynamicInductor.state.current;
 
-      const battery = new ModifiedNodalAnalysisCircuitElement( dynamicInductor.node0, newNode, null, companionVoltage );
-      const resistor = new ModifiedNodalAnalysisCircuitElement( newNode, dynamicInductor.node1, null, companionResistance );
+      const battery = new MNABattery( dynamicInductor.node0, newNode, null, companionVoltage );
+      const resistor = new MNAResistor( newNode, dynamicInductor.node1, null, companionResistance );
       companionBatteries.push( battery );
       companionResistors.push( resistor );
 
@@ -153,7 +149,7 @@ class DynamicCircuit {
 
     const newBatteryList = companionBatteries;
     const newResistorList = [ ...this.resistorAdapters, ...companionResistors ];
-    const newCurrentList: ModifiedNodalAnalysisCircuitElement[] = []; // Placeholder for if we add other circuit elements in the future
+    const newCurrentList: MNACurrent[] = []; // Placeholder for if we add other circuit elements in the future
 
     const mnaCircuit = new ModifiedNodalAnalysisCircuit( newBatteryList, newResistorList, newCurrentList );
 

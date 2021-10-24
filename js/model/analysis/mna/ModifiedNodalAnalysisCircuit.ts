@@ -19,22 +19,20 @@ import CCKCUtils from '../../../CCKCUtils.js';
 import circuitConstructionKitCommon from '../../../circuitConstructionKitCommon.js';
 import ModifiedNodalAnalysisSolution from './ModifiedNodalAnalysisSolution.js';
 import ModifiedNodalAnalysisCircuitElement from './ModifiedNodalAnalysisCircuitElement.js';
+import MNABattery from './MNABattery.js';
+import MNAResistor from './MNAResistor.js';
+import MNACurrent from './MNACurrent.js';
 
 class ModifiedNodalAnalysisCircuit {
-  private readonly batteries: ModifiedNodalAnalysisCircuitElement[];
-  private readonly resistors: ModifiedNodalAnalysisCircuitElement[];
-  private readonly currentSources: ModifiedNodalAnalysisCircuitElement[];
+  private readonly batteries: MNABattery[];
+  private readonly resistors: MNAResistor[];
+  private readonly currentSources: MNACurrent[];
   private readonly elements: ModifiedNodalAnalysisCircuitElement[];
   private readonly nodeSet: { [ key: string ]: string };
   private readonly nodeCount: number;
   private readonly nodes: string[];
 
-  /**
-   * @param {ModifiedNodalAnalysisCircuitElement[]} batteries
-   * @param {ModifiedNodalAnalysisCircuitElement[]} resistors
-   * @param {ModifiedNodalAnalysisCircuitElement[]} currentSources
-   */
-  constructor( batteries: ModifiedNodalAnalysisCircuitElement[], resistors: ModifiedNodalAnalysisCircuitElement[], currentSources: ModifiedNodalAnalysisCircuitElement[] ) {
+  constructor( batteries: MNABattery[], resistors: MNAResistor[], currentSources: MNACurrent[] ) {
     assert && assert( batteries, 'batteries should be defined' );
     assert && assert( resistors, 'resistors should be defined' );
     assert && assert( currentSources, 'currentSources should be defined' );
@@ -49,6 +47,7 @@ class ModifiedNodalAnalysisCircuit {
     this.currentSources = currentSources;
 
     // @public (read-only) {ModifiedNodalAnalysisCircuitElement[]} - the list of all the elements for ease of access
+    // @ts-ignore
     this.elements = this.batteries.concat( this.resistors ).concat( this.currentSources );
 
     // @public (read-only) {Object} - an object with index for all keys that have a node in the circuit, such as:
@@ -94,7 +93,7 @@ class ModifiedNodalAnalysisCircuit {
   getCurrentCount() {
     let numberOfResistanceFreeResistors = 0;
     for ( let i = 0; i < this.resistors.length; i++ ) {
-      if ( this.resistors[ i ].mnaValue === 0 ) {
+      if ( this.resistors[ i ].resistance === 0 ) {
         numberOfResistanceFreeResistors++;
       }
     }
@@ -124,12 +123,12 @@ class ModifiedNodalAnalysisCircuit {
       if ( currentSource.nodeId1 === nodeIndex ) {
 
         // positive current is entering the node, and the convention is for incoming current to be negative
-        currentSourceTotal = currentSourceTotal - currentSource.mnaValue;
+        currentSourceTotal = currentSourceTotal - currentSource.current;
       }
       if ( currentSource.nodeId0 === nodeIndex ) {
 
         // positive current is leaving the node, and the convention is for outgoing current to be positive
-        currentSourceTotal = currentSourceTotal + currentSource.mnaValue;
+        currentSourceTotal = currentSourceTotal + currentSource.current;
       }
     }
     return currentSourceTotal;
@@ -158,7 +157,7 @@ class ModifiedNodalAnalysisCircuit {
       const resistor = this.resistors[ i ];
 
       if ( resistor[ side ] === node ) {
-        if ( resistor.mnaValue === 0 ) {
+        if ( resistor.resistance === 0 ) {
 
           // Each resistor with 0 resistance introduces an unknown current, and v1=v2
           nodeTerms.push( new Term( sign, new UnknownCurrent( resistor ) ) );
@@ -166,8 +165,8 @@ class ModifiedNodalAnalysisCircuit {
         else {
 
           // Each resistor with nonzero resistance has unknown voltages
-          nodeTerms.push( new Term( -sign / resistor.mnaValue, new UnknownVoltage( resistor.nodeId1 ) ) );
-          nodeTerms.push( new Term( sign / resistor.mnaValue, new UnknownVoltage( resistor.nodeId0 ) ) );
+          nodeTerms.push( new Term( -sign / resistor.resistance, new UnknownVoltage( resistor.nodeId1 ) ) );
+          nodeTerms.push( new Term( sign / resistor.resistance, new UnknownVoltage( resistor.nodeId0 ) ) );
         }
       }
     }
@@ -260,7 +259,7 @@ class ModifiedNodalAnalysisCircuit {
     // For each battery, voltage drop is given
     for ( let i = 0; i < this.batteries.length; i++ ) {
       const battery = this.batteries[ i ];
-      equations.push( new Equation( battery.mnaValue, [
+      equations.push( new Equation( battery.voltage, [
         new Term( -1, new UnknownVoltage( battery.nodeId0 ) ),
         new Term( 1, new UnknownVoltage( battery.nodeId1 ) )
       ] ) );
@@ -269,7 +268,7 @@ class ModifiedNodalAnalysisCircuit {
     // If resistor has no resistance, nodeId0 and nodeId1 should have same voltage
     for ( let i = 0; i < this.resistors.length; i++ ) {
       const resistor = this.resistors[ i ];
-      if ( resistor.mnaValue === 0 ) {
+      if ( resistor.resistance === 0 ) {
         equations.push( new Equation( 0, [
           new Term( 1, new UnknownVoltage( resistor.nodeId0 ) ),
           new Term( -1, new UnknownVoltage( resistor.nodeId1 ) )
@@ -295,7 +294,7 @@ class ModifiedNodalAnalysisCircuit {
 
     // Treat resisters with R=0 as having unknown current and v1=v2
     for ( let i = 0; i < this.resistors.length; i++ ) {
-      if ( this.resistors[ i ].mnaValue === 0 ) {
+      if ( this.resistors[ i ].resistance === 0 ) {
         unknownCurrents.push( new UnknownCurrent( this.resistors[ i ] ) );
       }
     }
@@ -393,16 +392,16 @@ const getIndexByEquals = ( array: Array<any>, element: any ) => {
  * @param {Resistor} resistor
  * @returns {string}
  */
-const resistorToString = ( resistor: ModifiedNodalAnalysisCircuitElement ) =>
-  `node${resistor.nodeId0} -> node${resistor.nodeId1} @ ${resistor.mnaValue} Ohms`;
+const resistorToString = ( resistor: MNAResistor ) =>
+  `node${resistor.nodeId0} -> node${resistor.nodeId1} @ ${resistor.resistance} Ohms`;
 
 /**
  * For debugging, display a Battery as a string
  * @param {Battery} battery
  * @returns {string}
  */
-const batteryToString = ( battery: ModifiedNodalAnalysisCircuitElement ) =>
-  `node${battery.nodeId0} -> node${battery.nodeId1} @ ${battery.mnaValue} Volts`;
+const batteryToString = ( battery: MNABattery ) =>
+  `node${battery.nodeId0} -> node${battery.nodeId1} @ ${battery.voltage} Volts`;
 
 class Term {
   readonly coefficient: number;

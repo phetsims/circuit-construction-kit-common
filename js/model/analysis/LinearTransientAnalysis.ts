@@ -25,12 +25,12 @@ import DynamicState from './DynamicState.js';
 import Vertex from '../Vertex.js';
 import CircuitElement from '../CircuitElement.js';
 import CCKCConstants from '../../CCKCConstants.js';
-import ModifiedNodalAnalysisCircuitElement from './mna/ModifiedNodalAnalysisCircuitElement.js';
 import DynamicCircuitResistiveBattery from './DynamicCircuitResistiveBattery.js';
 import DynamicInductor from './DynamicInductor.js';
 import DynamicElementState from './DynamicElementState.js';
 import CCKCUtils from '../../CCKCUtils.js';
 import DynamicCapacitor from './DynamicCapacitor.js';
+import MNAResistor from './mna/MNAResistor.js';
 
 // constants
 const TIMESTEP_SUBDIVISIONS = new TimestepSubdivisions<DynamicState>();
@@ -87,7 +87,7 @@ class LinearTransientAnalysis {
           // simulate a small amount of resistance.
           const resistance = circuitElement.resistanceProperty.value || CCKCConstants.MINIMUM_RESISTANCE;
 
-          const resistorAdapter = new ModifiedNodalAnalysisCircuitElement( circuitElement.startVertexProperty.value.index + '',
+          const resistorAdapter = new MNAResistor( circuitElement.startVertexProperty.value.index + '',
             circuitElement.endVertexProperty.value.index + '', null, resistance );
           backwardMap.set( resistorAdapter, circuitElement );
           resistorAdapters.push( resistorAdapter );
@@ -168,8 +168,8 @@ class LinearTransientAnalysis {
         const coefficient = 3;
 
         // shift by base so at V=0 the log is 1
-        resistorAdapter.mnaValue = 10 + coefficient * V / logWithBase( V + base, base );
-        resistorAdapter.circuitElement.resistanceProperty.value = resistorAdapter.mnaValue;
+        resistorAdapter.resistance = 10 + coefficient * V / logWithBase( V + base, base );
+        resistorAdapter.circuitElement.resistanceProperty.value = resistorAdapter.resistance;
       }
     } );
 

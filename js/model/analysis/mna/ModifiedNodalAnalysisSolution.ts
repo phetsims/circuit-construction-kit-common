@@ -8,6 +8,7 @@
 
 import circuitConstructionKitCommon from '../../../circuitConstructionKitCommon.js';
 import ModifiedNodalAnalysisCircuitElement from './ModifiedNodalAnalysisCircuitElement.js';
+import MNAResistor from './MNAResistor.js';
 
 class ModifiedNodalAnalysisSolution {
   private readonly nodeVoltages: { [ key: string ]: number };
@@ -103,8 +104,8 @@ class ModifiedNodalAnalysisSolution {
    * @returns {number}
    * @public
    */
-  getCurrentForResistor( resistor: ModifiedNodalAnalysisCircuitElement ) {
-    assert && assert( resistor.mnaValue > 0, 'resistor must have resistance to use Ohms Law' );
+  getCurrentForResistor( resistor: MNAResistor ) {
+    assert && assert( resistor.resistance > 0, 'resistor must have resistance to use Ohms Law' );
 
     // To help understand the minus sign here:
     // Imagine a resistor that goes from node r0 to r1, with a conventional current flowing from r0 to r1.  Then
@@ -113,7 +114,7 @@ class ModifiedNodalAnalysisSolution {
     // Conversely, if v0>v1, then voltage is negative, so for the conventional current to flow to the right we must
     // multiply it by a negative.
     // Same sign as Java, see https://github.com/phetsims/circuit-construction-kit-common/issues/758
-    return -this.getVoltage( resistor ) / resistor.mnaValue;
+    return -this.getVoltage( resistor ) / resistor.resistance;
   }
 
   /**
