@@ -228,7 +228,7 @@ class DynamicCircuit {
       const newState = new DynamicElementState(
         // TODO: This may have something to do with it?  https://github.com/phetsims/circuit-construction-kit-common/issues/758
         solution.getNodeVoltage( dynamicCapacitor.capacitorVoltageNode1! ) - solution.getNodeVoltage( dynamicCapacitor.capacitorVoltageNode0! ),
-        solution.getCurrent( dynamicCapacitor )
+        solution.getCurrentForCapacitor( dynamicCapacitor )
       );
       return new DynamicCapacitor( dynamicCapacitor.node0, dynamicCapacitor.node1, newState, dynamicCapacitor.capacitance );
     } );

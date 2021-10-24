@@ -30,7 +30,7 @@ class CircuitResult {
    * @returns {number}
    * @public
    */
-  getTimeAverageCurrent( element: ModifiedNodalAnalysisCircuitElement | DynamicCapacitor | DynamicInductor ) {
+  getTimeAverageCurrent( element: ModifiedNodalAnalysisCircuitElement ) {
     let weightedSum = 0.0;
     this.resultSet.states.forEach( ( stateObject: any ) => {
       weightedSum += stateObject.state.dynamicCircuitSolution.getCurrent( element ) * stateObject.dt;

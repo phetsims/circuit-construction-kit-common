@@ -38,7 +38,7 @@ class DynamicCircuitSolution {
    * @returns {number}
    * @public
    */
-  getCurrent( element: ModifiedNodalAnalysisCircuitElement | DynamicCapacitor ) {
+  getCurrent( element: ModifiedNodalAnalysisCircuitElement ) {
 
     // Scaffolding tests for TypeScript migration
     if ( element instanceof ModifiedNodalAnalysisCircuitElement ) {
