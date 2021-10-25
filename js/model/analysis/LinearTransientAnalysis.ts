@@ -54,7 +54,12 @@ class LinearTransientAnalysis {
     // Identify CircuitElements that are not in a loop with a voltage source. They will have their currents zeroed out.
     const nonParticipants = [];
     const participants = [];
-    const backwardMap = new Map<any, CircuitElement>();
+
+    // TODO: Factor out a type that has the commonalities of these things
+    const resistorMap = new Map<MNAResistor, Resistor | Fuse | Wire | LightBulb | SeriesAmmeter | Switch>();
+    const voltageSourceMap = new Map<LTAResistiveBattery, VoltageSource>();
+    const capacitorMap = new Map<LTACapacitor, Capacitor>();
+    const inductorMap = new Map<LTAInductor, Inductor>();
     for ( let i = 0; i < circuit.circuitElements.length; i++ ) {
       const circuitElement = circuit.circuitElements[ i ];
 
@@ -70,7 +75,7 @@ class LinearTransientAnalysis {
             circuitElement.voltageProperty.value,
             circuitElement.internalResistanceProperty.value
           );
-          backwardMap.set( dynamicCircuitResistiveBattery, circuitElement );
+          voltageSourceMap.set( dynamicCircuitResistiveBattery, circuitElement );
           resistiveBatteryAdapters.push( dynamicCircuitResistiveBattery );
         }
         else if ( circuitElement instanceof Resistor ||
@@ -86,9 +91,13 @@ class LinearTransientAnalysis {
           // simulate a small amount of resistance.
           const resistance = circuitElement.resistanceProperty.value || CCKCConstants.MINIMUM_RESISTANCE;
 
-          const resistorAdapter = new MNAResistor( circuitElement.startVertexProperty.value.index + '',
-            circuitElement.endVertexProperty.value.index + '', null, resistance );
-          backwardMap.set( resistorAdapter, circuitElement );
+          const resistorAdapter = new MNAResistor(
+            circuitElement.startVertexProperty.value.index + '',
+            circuitElement.endVertexProperty.value.index + '',
+            null,
+            resistance
+          );
+          resistorMap.set( resistorAdapter, circuitElement );
           resistorAdapters.push( resistorAdapter );
         }
         else if ( circuitElement instanceof Switch && !circuitElement.closedProperty.value ) {
@@ -106,7 +115,7 @@ class LinearTransientAnalysis {
             circuitElement.capacitanceProperty.value
           );
           dynamicCapacitors.push( dynamicCapacitor );
-          backwardMap.set( dynamicCapacitor, circuitElement );
+          capacitorMap.set( dynamicCapacitor, circuitElement );
         }
         else if ( circuitElement instanceof Inductor ) {
 
@@ -118,7 +127,7 @@ class LinearTransientAnalysis {
             circuitElement.mnaCurrent,
             circuitElement.inductanceProperty.value
           );
-          backwardMap.set( dynamicInductor, circuitElement );
+          inductorMap.set( dynamicInductor, circuitElement );
           dynamicInductors.push( dynamicInductor );
         }
         else {
@@ -146,10 +155,10 @@ class LinearTransientAnalysis {
       }
     } );
 
-    resistiveBatteryAdapters.forEach( batteryAdapter => {
-      if ( Math.abs( circuitResult.getTimeAverageCurrentForCoreModel( batteryAdapter ) ) > CCKCQueryParameters.batteryCurrentThreshold ) {
-        const battery = backwardMap.get( batteryAdapter ) as VoltageSource;
-        batteryAdapter.resistance = battery.internalResistanceProperty.value;
+    resistiveBatteryAdapters.forEach( resistiveBatteryAdapter => {
+      if ( Math.abs( circuitResult.getTimeAverageCurrentForCoreModel( resistiveBatteryAdapter ) ) > CCKCQueryParameters.batteryCurrentThreshold ) {
+        const voltageSource = voltageSourceMap.get( resistiveBatteryAdapter )!;
+        resistiveBatteryAdapter.resistance = voltageSource.internalResistanceProperty.value;
         needsHelp = true;
       }
     } );
@@ -184,15 +193,15 @@ class LinearTransientAnalysis {
     }
 
     resistiveBatteryAdapters.forEach( batteryAdapter => {
-      const circuitElement = backwardMap.get( batteryAdapter ) as VoltageSource;
+      const circuitElement = voltageSourceMap.get( batteryAdapter )!;
       circuitElement.currentProperty.value = circuitResult.getTimeAverageCurrentForCoreModel( batteryAdapter );
     } );
     resistorAdapters.forEach( resistorAdapter => {
-      const circuitElement = backwardMap.get( resistorAdapter )!;
+      const circuitElement = resistorMap.get( resistorAdapter )!;
       circuitElement.currentProperty.value = circuitResult.getTimeAverageCurrent( resistorAdapter );
     } );
     dynamicCapacitors.forEach( dynamicCapacitor => {
-      const capacitor = backwardMap.get( dynamicCapacitor ) as Capacitor;
+      const capacitor = capacitorMap.get( dynamicCapacitor )!;
       capacitor.currentProperty.value = circuitResult.getTimeAverageCurrentForCoreModel( dynamicCapacitor );
       capacitor.mnaCurrent = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousCurrentForCoreModel( dynamicCapacitor ) );
       capacitor.mnaVoltageDrop = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousVoltageForCoreModel( dynamicCapacitor ) );
@@ -202,7 +211,7 @@ class LinearTransientAnalysis {
     } );
     dynamicInductors.forEach( dynamicInductor => {
 
-      const inductor = backwardMap.get( dynamicInductor ) as Inductor;
+      const inductor = inductorMap.get( dynamicInductor )!;
 
       // TODO: This line is seemingly wrong https://github.com/phetsims/circuit-construction-kit-common/issues/758
       inductor.currentProperty.value = -circuitResult.getTimeAverageCurrentForCoreModel( dynamicInductor );
