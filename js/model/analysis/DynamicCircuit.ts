@@ -129,8 +129,6 @@ class DynamicCircuit {
 
       const companionResistance = 2 * dynamicInductor.inductance / dt;
       const companionVoltage = -dynamicInductor.voltage - companionResistance * dynamicInductor.current;
-      // TODO: this is how it appears in Java https://github.com/phetsims/circuit-construction-kit-common/issues/758
-      // const companionVoltage = dynamicInductor.state.voltage + companionResistance * dynamicInductor.state.current;
 
       const battery = new MNABattery( dynamicInductor.node0, newNode, null, companionVoltage );
       const resistor = new MNAResistor( newNode, dynamicInductor.node1, null, companionResistance );
