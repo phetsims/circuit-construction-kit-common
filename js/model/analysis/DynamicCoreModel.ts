@@ -3,7 +3,8 @@
 import CoreModel from './CoreModel.js';
 
 /**
- * Something with a companion model.
+ * For capacitors and inductors, includes the voltage and current from prior calculation,
+ * since they feed into the next calculation.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */

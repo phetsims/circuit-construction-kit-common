@@ -64,8 +64,8 @@ class LTACircuit {
     this.ltaBatteries.forEach( resistiveBatteryAdapter => {
       const newNode = 'syntheticNode' + ( syntheticNodeIndex++ );
 
-      const idealBattery = new MNABattery( resistiveBatteryAdapter.node0, newNode, null, resistiveBatteryAdapter.voltage ); // final LinearCircuitSolver.Battery
-      const idealResistor = new MNAResistor( newNode, resistiveBatteryAdapter.node1, null, resistiveBatteryAdapter.resistance ); // LinearCircuitSolver.Resistor
+      const idealBattery = new MNABattery( resistiveBatteryAdapter.node0, newNode, resistiveBatteryAdapter.voltage ); // final LinearCircuitSolver.Battery
+      const idealResistor = new MNAResistor( newNode, resistiveBatteryAdapter.node1, resistiveBatteryAdapter.resistance ); // LinearCircuitSolver.Resistor
       companionBatteries.push( idealBattery );
       companionResistors.push( idealResistor );
 
@@ -102,9 +102,9 @@ class LTACircuit {
       // |V|=|IReq| and sign is unchanged since the conventional current flows from high to low voltage.
       const companionVoltage = ltaCapacitor.voltage - companionResistance * ltaCapacitor.current;
 
-      const battery = new MNABattery( ltaCapacitor.node0, newNode1, null, companionVoltage );
-      const resistor = new MNAResistor( newNode1, newNode2, null, companionResistance );
-      const resistor2 = new MNAResistor( newNode2, ltaCapacitor.node1, null, resistanceTerm );
+      const battery = new MNABattery( ltaCapacitor.node0, newNode1, companionVoltage );
+      const resistor = new MNAResistor( newNode1, newNode2, companionResistance );
+      const resistor2 = new MNAResistor( newNode2, ltaCapacitor.node1, resistanceTerm );
 
       companionBatteries.push( battery );
       companionResistors.push( resistor );
@@ -131,8 +131,8 @@ class LTACircuit {
       const companionResistance = 2 * ltaInductor.inductance / dt;
       const companionVoltage = -ltaInductor.voltage - companionResistance * ltaInductor.current;
 
-      const battery = new MNABattery( ltaInductor.node0, newNode, null, companionVoltage );
-      const resistor = new MNAResistor( newNode, ltaInductor.node1, null, companionResistance );
+      const battery = new MNABattery( ltaInductor.node0, newNode, companionVoltage );
+      const resistor = new MNAResistor( newNode, ltaInductor.node1, companionResistance );
       companionBatteries.push( battery );
       companionResistors.push( resistor );
 

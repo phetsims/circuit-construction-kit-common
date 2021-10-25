@@ -94,7 +94,6 @@ class LinearTransientAnalysis {
           const resistorAdapter = new MNAResistor(
             circuitElement.startVertexProperty.value.index + '',
             circuitElement.endVertexProperty.value.index + '',
-            null,
             resistance
           );
           resistorMap.set( resistorAdapter, circuitElement );
@@ -148,7 +147,8 @@ class LinearTransientAnalysis {
     let needsHelp = false;
 
     ltaResistors.forEach( resistorAdapter => {
-      if ( resistorAdapter.circuitElement instanceof LightBulb && resistorAdapter.circuitElement.real ) {
+      const circuitElement = resistorMap.get( resistorAdapter )!;
+      if ( circuitElement instanceof LightBulb && circuitElement.real ) {
 
         // @ts-ignore
         resistorAdapter.resistance = 1.0;
@@ -165,7 +165,8 @@ class LinearTransientAnalysis {
     } );
 
     ltaResistors.forEach( resistorAdapter => {
-      if ( resistorAdapter.circuitElement instanceof LightBulb && resistorAdapter.circuitElement.real ) {
+      const circuitElement = resistorMap.get( resistorAdapter )!;
+      if ( circuitElement instanceof LightBulb && circuitElement.real ) {
 
         const logWithBase = ( value: number, base: number ) => Math.log( value ) / Math.log( base );
 
@@ -184,7 +185,7 @@ class LinearTransientAnalysis {
 
         // shift by base so at V=0 the log is 1
         resistorAdapter.resistance = 10 + coefficient * V / logWithBase( V + base, base );
-        resistorAdapter.circuitElement.resistanceProperty.value = resistorAdapter.resistance;
+        circuitElement.resistanceProperty.value = resistorAdapter.resistance;
       }
     } );
 

@@ -9,21 +9,18 @@
 
 import CCKCUtils from '../../../CCKCUtils.js';
 import circuitConstructionKitCommon from '../../../circuitConstructionKitCommon.js';
-import CircuitElement from '../../CircuitElement.js';
 
 class MNACircuitElement {
   readonly nodeId0: string;
   readonly nodeId1: string;
-  readonly circuitElement: CircuitElement | null;
   currentSolution: number | null;
 
   /**
    * @param {string} nodeId0
    * @param {string} nodeId1
-   * @param {CircuitElement|null} circuitElement, null during qunit tests
    * @param {number|null} [currentSolution]
    */
-  constructor( nodeId0: string, nodeId1: string, circuitElement: CircuitElement | null, currentSolution: number | null = null ) {
+  constructor( nodeId0: string, nodeId1: string, currentSolution: number | null = null ) {
     assert && CCKCUtils.validateNodeIndex( nodeId0 );
     assert && CCKCUtils.validateNodeIndex( nodeId1 );
 
@@ -32,9 +29,6 @@ class MNACircuitElement {
 
     // @public (read-only) {string} index of the end node
     this.nodeId1 = nodeId1;
-
-    // @public (read-only) {CircuitElement|null} index of the start node
-    this.circuitElement = circuitElement;
 
     // @public {number} supplied by the modified nodal analysis
     this.currentSolution = currentSolution;
@@ -48,7 +42,7 @@ class MNACircuitElement {
    * @public (unit-tests)
    */
   withCurrentSolution( currentSolution: number ) {
-    return new MNACircuitElement( this.nodeId0, this.nodeId1, this.circuitElement, currentSolution );
+    return new MNACircuitElement( this.nodeId0, this.nodeId1, currentSolution );
   }
 
   /**

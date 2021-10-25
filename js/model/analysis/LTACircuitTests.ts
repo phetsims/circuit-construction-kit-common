@@ -22,7 +22,7 @@ const errorThreshold = 1E-2;
 let id = 0;
 
 const testVRCCircuit = ( v: number, r: number, c: number, assert: Assert ) => {
-  const resistor = new MNAResistor( '1', '2', null, r );
+  const resistor = new MNAResistor( '1', '2', r );
   const battery = new LTAResistiveBattery( id++, '0', '1', v, 0 );
   const capacitor = new LTACapacitor( id++, '2', '0', 0.0, v / r, c );
 
@@ -62,7 +62,7 @@ QUnit.test( 'test RC Circuit should have voltage exponentially decay with T RC f
 } );
 
 const testVRLCircuit = ( V: number, R: number, L: number, assert: Assert ) => {
-  const resistor = new MNAResistor( '1', '2', null, R );
+  const resistor = new MNAResistor( '1', '2', R );
   const battery = new LTAResistiveBattery( id++, '0', '1', V, 0 );
   const inductor = new LTAInductor( id++, '2', '0', V, 0.0, L );
   let circuit = new LTACircuit( [ resistor ], [ battery ], [], [ inductor ] );
@@ -71,7 +71,7 @@ const testVRLCircuit = ( V: number, R: number, L: number, assert: Assert ) => {
   for ( let i = 0; i < ITERATIONS; i++ ) {
     const t = i * dt;
     const solution = circuit.solveItWithSubdivisions( dt );
-    const current = solution!.getCurrent( resistor );
+    const current = solution!.getCurrent( resistor )!;
     const expectedCurrent = V / R * ( 1 - Math.exp( -( t + dt ) * R / L ) );//positive, by definition of MNA.Battery
     const error = Math.abs( current - expectedCurrent );
     assert.ok( error < errorThreshold );

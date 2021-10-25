@@ -18,8 +18,8 @@ const approxEquals = ( a: number, b: number ) => Math.abs( a - b ) < 1E-6;
 
 QUnit.test( 'test_battery_resistor_circuit_should_have_correct_voltages_and_currents_for_a_simple_circuit',
   assert => {
-    const battery = new MNABattery( '0', '1', null, 4.0 );
-    const resistor = new MNAResistor( '1', '0', null, 4.0 );
+    const battery = new MNABattery( '0', '1', 4.0 );
+    const resistor = new MNAResistor( '1', '0', 4.0 );
     const circuit = new MNACircuit( [ battery ], [ resistor ], [] );
     const voltageMap = { 0: 0.0, 1: 4.0 };
 
@@ -35,8 +35,8 @@ QUnit.test( 'test_battery_resistor_circuit_should_have_correct_voltages_and_curr
 
 QUnit.test( 'test_battery_resistor_circuit_should_have_correct_voltages_and_currents_for_a_simple_circuit_ii',
   assert => {
-    const battery = new MNABattery( '0', '1', null, 4.0 );
-    const resistor = new MNAResistor( '1', '0', null, 2.0 );
+    const battery = new MNABattery( '0', '1', 4.0 );
+    const resistor = new MNAResistor( '1', '0', 2.0 );
     const circuit = new MNACircuit( [ battery ], [ resistor ], [] );
     const desiredSolution = new MNASolution( {
       0: 0,
@@ -48,8 +48,8 @@ QUnit.test( 'test_battery_resistor_circuit_should_have_correct_voltages_and_curr
 
 
 QUnit.test( 'test_should_be_able_to_obtain_current_for_a_resistor', assert => {
-  const battery = new MNABattery( '0', '1', null, 4.0 );
-  const resistor = new MNAResistor( '1', '0', null, 2.0 );
+  const battery = new MNABattery( '0', '1', 4.0 );
+  const resistor = new MNAResistor( '1', '0', 2.0 );
   const solution = new MNACircuit( [ battery ], [ resistor ], [] ).solve();
   const desiredSolution = new MNASolution( {
     0: 0,
@@ -64,9 +64,9 @@ QUnit.test( 'test_should_be_able_to_obtain_current_for_a_resistor', assert => {
 } );
 
 QUnit.test( 'test_an_unconnected_resistor_shouldnt_cause_problems', assert => {
-  const battery = new MNABattery( '0', '1', null, 4.0 );
-  const resistor1 = new MNAResistor( '1', '0', null, 4.0 );
-  const resistor2 = new MNAResistor( '2', '3', null, 100 );
+  const battery = new MNABattery( '0', '1', 4.0 );
+  const resistor1 = new MNAResistor( '1', '0', 4.0 );
+  const resistor2 = new MNAResistor( '2', '3', 100 );
   const circuit = new MNACircuit( [ battery ], [ resistor1, resistor2 ], [] );
   const desiredSolution = new MNASolution( {
     0: 0,
@@ -79,8 +79,8 @@ QUnit.test( 'test_an_unconnected_resistor_shouldnt_cause_problems', assert => {
 } );
 
 QUnit.test( 'test_current_source_should_provide_current', assert => {
-  const currentSource = new MNACurrent( '0', '1', null, 10 );
-  const resistor = new MNAResistor( '1', '0', null, 4 );
+  const currentSource = new MNACurrent( '0', '1', 10 );
+  const resistor = new MNAResistor( '1', '0', 4 );
   const circuit = new MNACircuit( [], [ resistor ], [ currentSource ] );
   const voltageMap = {
     0: 0,
@@ -95,8 +95,8 @@ QUnit.test( 'test_current_source_should_provide_current', assert => {
 } );
 
 QUnit.test( 'test_current_should_be_reversed_when_voltage_is_reversed', assert => {
-  const battery = new MNABattery( '0', '1', null, -4 );
-  const resistor = new MNAResistor( '1', '0', null, 2 );
+  const battery = new MNABattery( '0', '1', -4 );
+  const resistor = new MNAResistor( '1', '0', 2 );
   const circuit = new MNACircuit( [ battery ], [ resistor ], [] );
   const voltageMap = {
     0: 0,
@@ -109,9 +109,9 @@ QUnit.test( 'test_current_should_be_reversed_when_voltage_is_reversed', assert =
 } );
 
 QUnit.test( 'test_two_batteries_in_series_should_have_voltage_added', assert => {
-  const battery1 = new MNABattery( '0', '1', null, -4 );
-  const battery2 = new MNABattery( '1', '2', null, -4 );
-  const resistor1 = new MNAResistor( '2', '0', null, 2.0 );
+  const battery1 = new MNABattery( '0', '1', -4 );
+  const battery2 = new MNABattery( '1', '2', -4 );
+  const resistor1 = new MNAResistor( '2', '0', 2.0 );
   const circuit = new MNACircuit( [ battery1, battery2 ], [ resistor1 ], [] );
 
   const voltageMap = {
@@ -128,9 +128,9 @@ QUnit.test( 'test_two_batteries_in_series_should_have_voltage_added', assert => 
 } );
 
 QUnit.test( 'test_two_resistors_in_series_should_have_resistance_added', assert => {
-  const battery = new MNABattery( '0', '1', null, 5.0 );
-  const resistor1 = new MNAResistor( '1', '2', null, 10.0 );
-  const resistor2 = new MNAResistor( '2', '0', null, 10.0 );
+  const battery = new MNABattery( '0', '1', 5.0 );
+  const resistor1 = new MNAResistor( '1', '2', 10.0 );
+  const resistor2 = new MNAResistor( '2', '0', 10.0 );
   const circuit = new MNACircuit( [ battery ], [
     resistor1,
     resistor2
@@ -146,9 +146,9 @@ QUnit.test( 'test_two_resistors_in_series_should_have_resistance_added', assert 
 } );
 
 QUnit.test( 'test_A_resistor_with_one_node_unconnected_shouldnt_cause_problems', assert => {
-  const battery = new MNABattery( '0', '1', null, 4.0 );
-  const resistor1 = new MNAResistor( '1', '0', null, 4.0 );
-  const resistor2 = new MNAResistor( '0', '2', null, 100.0 );
+  const battery = new MNABattery( '0', '1', 4.0 );
+  const resistor1 = new MNAResistor( '1', '0', 4.0 );
+  const resistor2 = new MNAResistor( '0', '2', 100.0 );
   const circuit = new MNACircuit(
     [ battery ],
     [ resistor1, resistor2 ], []
@@ -164,9 +164,9 @@ QUnit.test( 'test_A_resistor_with_one_node_unconnected_shouldnt_cause_problems',
 } );
 
 QUnit.test( 'test_an_unconnected_resistor_shouldnt_cause_problems', assert => {
-  const battery = new MNABattery( '0', '1', null, 4.0 );
-  const resistor1 = new MNAResistor( '1', '0', null, 4.0 );
-  const resistor2 = new MNAResistor( '2', '3', null, 100.0 );
+  const battery = new MNABattery( '0', '1', 4.0 );
+  const resistor1 = new MNAResistor( '1', '0', 4.0 );
+  const resistor2 = new MNAResistor( '2', '3', 100.0 );
   const circuit = new MNACircuit( [ battery ], [
     resistor1,
     resistor2
@@ -182,9 +182,9 @@ QUnit.test( 'test_an_unconnected_resistor_shouldnt_cause_problems', assert => {
 } );
 
 QUnit.test( 'test_should_handle_resistors_with_no_resistance', assert => {
-  const battery = new MNABattery( '0', '1', null, 5 );
-  const resistor = new MNAResistor( '2', '0', null, 0 );
-  const resistor0 = new MNAResistor( '1', '2', null, 10 );
+  const battery = new MNABattery( '0', '1', 5 );
+  const resistor = new MNAResistor( '2', '0', 0 );
+  const resistor0 = new MNAResistor( '1', '2', 10 );
   const circuit = new MNACircuit( [ battery ], [
     resistor0,
     resistor
@@ -207,9 +207,9 @@ QUnit.test( 'test_resistors_in_parallel_should_have_harmonic_mean_of_resistance'
   const R1 = 5.0;
   const R2 = 5.0;
   const Req = 1 / ( 1 / R1 + 1 / R2 );
-  const battery = new MNABattery( '0', '1', null, V );
-  const resistor1 = new MNAResistor( '1', '0', null, R1 );
-  const resistor2 = new MNAResistor( '1', '0', null, R2 );
+  const battery = new MNABattery( '0', '1', V );
+  const resistor1 = new MNAResistor( '1', '0', R1 );
+  const resistor2 = new MNAResistor( '1', '0', R2 );
   const circuit = new MNACircuit( [ battery ], [
     resistor1,
     resistor2
