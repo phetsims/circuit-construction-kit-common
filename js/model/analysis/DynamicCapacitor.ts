@@ -1,16 +1,13 @@
 // Copyright 2021, University of Colorado Boulder
-import CoreModel from './CoreModel.js';
-import DynamicElementState from './DynamicElementState.js';
+import DynamicCoreModel from './DynamicCoreModel.js';
 
-class DynamicCapacitor extends CoreModel {
-  readonly state: DynamicElementState;
+class DynamicCapacitor extends DynamicCoreModel {
   capacitorVoltageNode0: string | null;
   capacitorVoltageNode1: string | null;
   capacitance: number;
 
-  constructor( id: number, node0: string, node1: string, state: DynamicElementState, capacitance: number ) {
-    super( id, node0, node1 );
-    this.state = state;
+  constructor( id: number, node0: string, node1: string, voltage: number, current: number, capacitance: number ) {
+    super( id, node0, node1, voltage, current );
     this.capacitance = capacitance;
 
     // @public placeholders for where to read the capacitor part of the voltage without the series resistor

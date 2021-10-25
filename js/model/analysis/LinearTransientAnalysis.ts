@@ -27,7 +27,6 @@ import CircuitElement from '../CircuitElement.js';
 import CCKCConstants from '../../CCKCConstants.js';
 import DynamicCircuitResistiveBattery from './DynamicCircuitResistiveBattery.js';
 import DynamicInductor from './DynamicInductor.js';
-import DynamicElementState from './DynamicElementState.js';
 import CCKCUtils from '../../CCKCUtils.js';
 import DynamicCapacitor from './DynamicCapacitor.js';
 import MNAResistor from './mna/MNAResistor.js';
@@ -98,8 +97,14 @@ class LinearTransientAnalysis {
         }
         else if ( circuitElement instanceof Capacitor ) {
 
-          const dynamicCapacitor = new DynamicCapacitor( id++, circuitElement.startVertexProperty.value.index + '',
-            circuitElement.endVertexProperty.value.index + '', new DynamicElementState( circuitElement.mnaVoltageDrop, circuitElement.mnaCurrent ), circuitElement.capacitanceProperty.value );
+          const dynamicCapacitor = new DynamicCapacitor(
+            id++,
+            circuitElement.startVertexProperty.value.index + '',
+            circuitElement.endVertexProperty.value.index + '',
+            circuitElement.mnaVoltageDrop,
+            circuitElement.mnaCurrent,
+            circuitElement.capacitanceProperty.value
+          );
           dynamicCapacitors.push( dynamicCapacitor );
           backwardMap.set( dynamicCapacitor, circuitElement );
         }
@@ -109,7 +114,8 @@ class LinearTransientAnalysis {
             id++,
             circuitElement.startVertexProperty.value.index + '',
             circuitElement.endVertexProperty.value.index + '',
-            new DynamicElementState( circuitElement.mnaVoltageDrop, circuitElement.mnaCurrent ),
+            circuitElement.mnaVoltageDrop,
+            circuitElement.mnaCurrent,
             circuitElement.inductanceProperty.value
           );
           backwardMap.set( dynamicInductor, circuitElement );

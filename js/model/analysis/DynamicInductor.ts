@@ -1,14 +1,11 @@
 // Copyright 2021, University of Colorado Boulder
-import CoreModel from './CoreModel.js';
-import DynamicElementState from './DynamicElementState.js';
+import DynamicCoreModel from './DynamicCoreModel.js';
 
-class DynamicInductor extends CoreModel {
-  readonly state: DynamicElementState;
+class DynamicInductor extends DynamicCoreModel {
   readonly inductance: number;
 
-  constructor( id: number, node0: string, node1: string, state: DynamicElementState, inductance: number ) {
-    super( id, node0, node1 );
-    this.state = state;
+  constructor( id: number, node0: string, node1: string, voltage: number, current: number, inductance: number ) {
+    super( id, node0, node1, voltage, current );
     this.inductance = inductance;
   }
 }

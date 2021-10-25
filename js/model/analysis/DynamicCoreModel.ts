@@ -1,0 +1,21 @@
+// Copyright 2021, University of Colorado Boulder
+
+import CoreModel from './CoreModel.js';
+
+/**
+ * Something with a companion model.
+ *
+ * @author Sam Reid (PhET Interactive Simulations)
+ */
+class DynamicCoreModel extends CoreModel {
+  readonly voltage: number; // the voltage drop v1-v0
+  readonly current: number; // the conventional current as it moves from node 0 to node 1
+
+  constructor( id: number, node0: string, node1: string, voltage: number, current: number ) {
+    super( id, node0, node1 );
+    this.voltage = voltage;
+    this.current = current;
+  }
+}
+
+export default DynamicCoreModel;

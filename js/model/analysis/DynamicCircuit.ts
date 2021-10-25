@@ -15,7 +15,6 @@ import ModifiedNodalAnalysisCircuit from './mna/ModifiedNodalAnalysisCircuit.js'
 import TimestepSubdivisions from './TimestepSubdivisions.js';
 import DynamicCircuitSolution from './DynamicCircuitSolution.js';
 import DynamicState from './DynamicState.js';
-import DynamicElementState from './DynamicElementState.js';
 import DynamicInductor from './DynamicInductor.js';
 import DynamicCapacitor from './DynamicCapacitor.js';
 import ModifiedNodalAnalysisSolution from './mna/ModifiedNodalAnalysisSolution.js';
@@ -98,7 +97,7 @@ class DynamicCircuit {
       // V = Vbattery + Vresistor.  We need to solve for the voltage across the battery to use it in the companion
       // model, so we have Vbattery = V-Vresistor.  The magnitude of the voltage drop across the resistor is given by
       // |V|=|IReq| and sign is unchanged since the conventional current flows from high to low voltage.
-      const companionVoltage = dynamicCapacitor.state.voltage - companionResistance * dynamicCapacitor.state.current;
+      const companionVoltage = dynamicCapacitor.voltage - companionResistance * dynamicCapacitor.current;
 
       const battery = new MNABattery( dynamicCapacitor.node0, newNode1, null, companionVoltage );
       const resistor = new MNAResistor( newNode1, newNode2, null, companionResistance );
@@ -129,7 +128,7 @@ class DynamicCircuit {
       syntheticNodeIndex++;
 
       const companionResistance = 2 * dynamicInductor.inductance / dt;
-      const companionVoltage = -dynamicInductor.state.voltage - companionResistance * dynamicInductor.state.current;
+      const companionVoltage = -dynamicInductor.voltage - companionResistance * dynamicInductor.current;
       // TODO: this is how it appears in Java https://github.com/phetsims/circuit-construction-kit-common/issues/758
       // const companionVoltage = dynamicInductor.state.voltage + companionResistance * dynamicInductor.state.current;
 
@@ -221,20 +220,15 @@ class DynamicCircuit {
    */
   updateCircuit( solution: DynamicCircuitSolution ) {
     const updatedCapacitors = this.dynamicCapacitors.map( dynamicCapacitor => {
-      const newState = new DynamicElementState(
-        // TODO: This may have something to do with it?  https://github.com/phetsims/circuit-construction-kit-common/issues/758
-        solution.getVoltage( dynamicCapacitor.capacitorVoltageNode0!, dynamicCapacitor.capacitorVoltageNode1! ),
-        solution.getCurrentForCompanion( dynamicCapacitor )
-      );
-      return new DynamicCapacitor( dynamicCapacitor.id, dynamicCapacitor.node0, dynamicCapacitor.node1, newState, dynamicCapacitor.capacitance );
+      // TODO: This may have something to do with it?  https://github.com/phetsims/circuit-construction-kit-common/issues/758
+      return new DynamicCapacitor( dynamicCapacitor.id, dynamicCapacitor.node0, dynamicCapacitor.node1, solution.getVoltage( dynamicCapacitor.capacitorVoltageNode0!, dynamicCapacitor.capacitorVoltageNode1! ),
+        solution.getCurrentForCompanion( dynamicCapacitor ), dynamicCapacitor.capacitance );
     } );
     const updatedInductors = this.dynamicInductors.map( dynamicInductor => {
-      const newState = new DynamicElementState(
+      return new DynamicInductor( dynamicInductor.id, dynamicInductor.node0, dynamicInductor.node1,
         // TODO: This may have something to do with it? https://github.com/phetsims/circuit-construction-kit-common/issues/758
         solution.getVoltage( dynamicInductor.node0, dynamicInductor.node1 ),
-        solution.getCurrentForCompanion( dynamicInductor )
-      );
-      return new DynamicInductor( dynamicInductor.id, dynamicInductor.node0, dynamicInductor.node1, newState, dynamicInductor.inductance );
+        solution.getCurrentForCompanion( dynamicInductor ), dynamicInductor.inductance );
     } );
 
     return new DynamicCircuit( this.resistorAdapters, this.resistiveBatteryAdapters, updatedCapacitors, updatedInductors );
