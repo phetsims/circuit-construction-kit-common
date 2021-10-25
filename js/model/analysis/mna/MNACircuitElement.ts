@@ -11,26 +11,16 @@ import CCKCUtils from '../../../CCKCUtils.js';
 import circuitConstructionKitCommon from '../../../circuitConstructionKitCommon.js';
 
 class MNACircuitElement {
-  readonly nodeId0: string;
-  readonly nodeId1: string;
-  currentSolution: number | null;
+  readonly nodeId0: string; // index of the start node
+  readonly nodeId1: string; // index of the end node
+  currentSolution: number | null; // supplied by the modified nodal analysis
 
-  /**
-   * @param {string} nodeId0
-   * @param {string} nodeId1
-   * @param {number|null} [currentSolution]
-   */
   constructor( nodeId0: string, nodeId1: string, currentSolution: number | null = null ) {
     assert && CCKCUtils.validateNodeIndex( nodeId0 );
     assert && CCKCUtils.validateNodeIndex( nodeId1 );
 
-    // @public (read-only) {string} index of the start node
     this.nodeId0 = nodeId0;
-
-    // @public (read-only) {string} index of the end node
     this.nodeId1 = nodeId1;
-
-    // @public {number} supplied by the modified nodal analysis
     this.currentSolution = currentSolution;
   }
 
