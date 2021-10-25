@@ -155,7 +155,7 @@ class FixedCircuitElementNode extends CircuitElementNode {
     filledOptions.pickable && circuitElement.interactiveProperty.link( this.pickableListener );
 
     // @private {boolean}
-    this.fixedCircuitElementNodePickable = filledOptions.pickable!;
+    this.fixedCircuitElementNodePickable = filledOptions.pickable || null;
 
     // Use whatever the start node currently is (it can change), and let the circuit manage the dependent vertices
     let initialPoint: Vector2 | null = null;
