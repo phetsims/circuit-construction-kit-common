@@ -9,7 +9,7 @@
  */
 
 import CCKCQueryParameters from '../../CCKCQueryParameters.js';
-import CircuitResult from './CircuitResult.js';
+import LTAStateSet from './LTAStateSet.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import MNACircuit from './mna/MNACircuit.js';
 import TimestepSubdivisions from './TimestepSubdivisions.js';
@@ -157,7 +157,7 @@ class LTACircuit {
   /**
    * @param {TimestepSubdivisions} timestepSubdivisions
    * @param {number} dt
-   * @returns {CircuitResult}
+   * @returns {LTAStateSet}
    * @public
    */
   solveWithSubdivisions( timestepSubdivisions: TimestepSubdivisions<LTAState>, dt: number ) {
@@ -170,12 +170,12 @@ class LTACircuit {
 
     // Turning the error threshold too low here can fail the inductor tests in MNATestCase
     const x = timestepSubdivisions.stepInTimeWithHistory( new LTAState( this, null ), steppable, dt );
-    return new CircuitResult( x );
+    return new LTAStateSet( x );
   }
 
   /**
    * @param {number} dt
-   * @returns {CircuitResult}
+   * @returns {LTAStateSet}
    * @private
    */
   solveWithSubdivisions2( dt: number ) {
