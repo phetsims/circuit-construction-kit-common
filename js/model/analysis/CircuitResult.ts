@@ -1,10 +1,14 @@
 // Copyright 2021, University of Colorado Boulder
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
-import ResultSet from './ResultSet.js';
 import MNACircuitElement from './mna/MNACircuitElement.js';
 import LTAState from './LTAState.js';
 import CoreModel from './CoreModel.js';
 import MNAResistor from './mna/MNAResistor.js';
+
+type Element = {
+  dt: number
+  state: LTAState
+};
 
 /**
  * This class represents the solution obtained by a timestep-subdivision-oriented MNA solve with companion models.
@@ -13,13 +17,12 @@ import MNAResistor from './mna/MNAResistor.js';
  */
 class CircuitResult {
 
-  readonly resultSet: ResultSet<LTAState>;
+  readonly resultSet: Element[];
 
   /**
    * @param {ResultSet.<LTACircuit.LTAState>} resultSet
    */
-  constructor( resultSet: ResultSet<LTAState> ) {
-    // @public
+  constructor( resultSet: Element[] ) {
     this.resultSet = resultSet;
   }
 
@@ -32,10 +35,12 @@ class CircuitResult {
    */
   getTimeAverageCurrent( element: MNACircuitElement ) {
     let weightedSum = 0.0;
-    this.resultSet.states.forEach( ( stateObject: any ) => {
+    let totalTime = 0.0;
+    this.resultSet.forEach( ( stateObject: any ) => {
       weightedSum += stateObject.state.dynamicCircuitSolution.getCurrent( element ) * stateObject.dt;
+      totalTime += stateObject.dt;
     } );
-    const number = weightedSum / this.resultSet.getTotalTime();
+    const number = weightedSum / totalTime;
     assert && assert( !isNaN( number ) );
     return number;
   }
@@ -43,10 +48,12 @@ class CircuitResult {
   // @public
   getTimeAverageCurrentForCoreModel( element: CoreModel ) {
     let weightedSum = 0.0;
-    this.resultSet.states.forEach( ( stateObject: any ) => {
+    let totalTime = 0.0;
+    this.resultSet.forEach( ( stateObject: any ) => {
       weightedSum += stateObject.state.dynamicCircuitSolution.getCurrentForCompanion( element ) * stateObject.dt;
+      totalTime += stateObject.dt;
     } );
-    const number = weightedSum / this.resultSet.getTotalTime();
+    const number = weightedSum / totalTime;
     assert && assert( !isNaN( number ) );
     return number;
   }
@@ -85,7 +92,7 @@ class CircuitResult {
    * @public
    */
   getFinalState() {
-    return this.resultSet.getFinalState();
+    return _.last( this.resultSet )!.state;
   }
 }
 

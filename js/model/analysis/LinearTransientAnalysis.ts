@@ -159,7 +159,7 @@ class LinearTransientAnalysis {
 
         const logWithBase = ( value: number, base: number ) => Math.log( value ) / Math.log( base );
 
-        const dV = circuitResult.resultSet.getFinalState().dynamicCircuitSolution!.getVoltage( resistorAdapter.nodeId0, resistorAdapter.nodeId1 );
+        const dV = _.last( circuitResult.resultSet )!.state.dynamicCircuitSolution!.getVoltage( resistorAdapter.nodeId0, resistorAdapter.nodeId1 );
         const V = Math.abs( dV );
 
         const base = 2;
@@ -220,7 +220,7 @@ class LinearTransientAnalysis {
 
     // Apply the node voltages to the vertices
     circuit.vertexGroup.forEach( vertex => {
-      const voltage = circuitResult.resultSet.getFinalState().dynamicCircuitSolution!.getNodeVoltage( vertex.index + '' );
+      const voltage = circuitResult.getFinalState().dynamicCircuitSolution!.getNodeVoltage( vertex.index + '' );
 
       if ( typeof voltage === 'number' ) {
         vertex.voltageProperty.set( voltage );

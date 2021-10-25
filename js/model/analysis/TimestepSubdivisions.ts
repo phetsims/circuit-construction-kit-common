@@ -11,7 +11,6 @@
 
 import CCKCQueryParameters from '../../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
-import ResultSet from './ResultSet.js';
 
 // smallest possible time
 const MIN_DT = CCKCQueryParameters.minDT;
@@ -20,15 +19,13 @@ const MIN_DT = CCKCQueryParameters.minDT;
 const ERROR_THRESHOLD = 1E-5;
 
 type Steppable<T> = {
+
+  // immutable time integration from one state to the next by a time of dt
   update: ( state: T, dt: number ) => T,
+
+  // determine how much two states differ
   distance: ( a: T, b: T ) => number
 };
-
-/**
- * @typedef Steppable
- * @property update<T>(state:T,dt:number):T - immutable time integration from one state to the next by a time of dt
- * @property distance<T>(state1:T,state2:T):number - determine how much two states differ
- */
 
 class TimestepSubdivisions<T> {
 
@@ -36,7 +33,7 @@ class TimestepSubdivisions<T> {
    * @param {Object} originalState
    * @param {Steppable} steppable with update function
    * @param {number} totalTime
-   * @returns {ResultSet}
+   * @returns { {dt:number,state:T}[]}
    * @public
    */
   stepInTimeWithHistory( originalState: T, steppable: Steppable<T>, totalTime: number ) {
@@ -61,7 +58,7 @@ class TimestepSubdivisions<T> {
     if ( phet.log ) {
       console.log( 'states per frame: ' + states.length );
     }
-    return new ResultSet<T>( states );
+    return states;
   }
 
   /**
