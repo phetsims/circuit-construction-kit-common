@@ -13,26 +13,26 @@ import CircuitResult from './CircuitResult.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import MNACircuit from './mna/MNACircuit.js';
 import TimestepSubdivisions from './TimestepSubdivisions.js';
-import DynamicCircuitSolution from './DynamicCircuitSolution.js';
-import DynamicState from './DynamicState.js';
-import DynamicInductor from './DynamicInductor.js';
-import DynamicCapacitor from './DynamicCapacitor.js';
+import LTASolution from './LTASolution.js';
+import LTAState from './LTAState.js';
+import LTAInductor from './LTAInductor.js';
+import LTACapacitor from './LTACapacitor.js';
 import MNASolution from './mna/MNASolution.js';
-import DynamicResistiveBattery from './DynamicResistiveBattery.js';
+import LTAResistiveBattery from './LTAResistiveBattery.js';
 import MNABattery from './mna/MNABattery.js';
 import MNAResistor from './mna/MNAResistor.js';
 import MNACurrent from './mna/MNACurrent.js';
 
-class DynamicCircuit {
+class LTACircuit {
   private readonly resistorAdapters: MNAResistor[];
-  private readonly resistiveBatteryAdapters: DynamicResistiveBattery[];
-  readonly dynamicCapacitors: DynamicCapacitor[];
-  readonly dynamicInductors: DynamicInductor[];
+  private readonly resistiveBatteryAdapters: LTAResistiveBattery[];
+  readonly dynamicCapacitors: LTACapacitor[];
+  readonly dynamicInductors: LTAInductor[];
 
   constructor( resistorAdapters: MNAResistor[],
-               resistiveBatteryAdapters: DynamicResistiveBattery[],
-               dynamicCapacitors: DynamicCapacitor[],
-               dynamicInductors: DynamicInductor[] ) {
+               resistiveBatteryAdapters: LTAResistiveBattery[],
+               dynamicCapacitors: LTACapacitor[],
+               dynamicInductors: LTAInductor[] ) {
 
     // @private
     this.resistorAdapters = resistorAdapters;
@@ -45,7 +45,7 @@ class DynamicCircuit {
    * Solving the companion model is the same as propagating forward in time by dt.
    *
    * @param {number} dt
-   * @returns {DynamicCircuitSolution}
+   * @returns {LTASolution}
    * @public
    */
   solvePropagate( dt: number ) {
@@ -151,7 +151,7 @@ class DynamicCircuit {
     const mnaCircuit = new MNACircuit( newBatteryList, newResistorList, newCurrentList );
 
     const mnaSolution = mnaCircuit.solve();
-    return new DynamicCircuitSolution( this, mnaSolution, currentCompanions );
+    return new LTASolution( this, mnaSolution, currentCompanions );
   }
 
   /**
@@ -160,7 +160,7 @@ class DynamicCircuit {
    * @returns {CircuitResult}
    * @public
    */
-  solveWithSubdivisions( timestepSubdivisions: TimestepSubdivisions<DynamicState>, dt: number ) {
+  solveWithSubdivisions( timestepSubdivisions: TimestepSubdivisions<LTAState>, dt: number ) {
     const steppable = {
 
       // TODO: types
@@ -169,7 +169,7 @@ class DynamicCircuit {
     };
 
     // Turning the error threshold too low here can fail the inductor tests in MNATestCase
-    const x = timestepSubdivisions.stepInTimeWithHistory( new DynamicState( this, null ), steppable, dt );
+    const x = timestepSubdivisions.stepInTimeWithHistory( new LTAState( this, null ), steppable, dt );
     return new CircuitResult( x );
   }
 
@@ -184,7 +184,7 @@ class DynamicCircuit {
 
   /**
    * @param {number} dt
-   * @returns {DynamicCircuit}
+   * @returns {LTACircuit}
    * @private
    */
   updateWithSubdivisions( dt: number ) {
@@ -193,7 +193,7 @@ class DynamicCircuit {
 
   /**
    * @param {number} dt
-   * @returns {DynamicCircuitSolution}
+   * @returns {LTASolution}
    * @public (unit-tests)
    */
   solveItWithSubdivisions( dt: number ) {
@@ -202,7 +202,7 @@ class DynamicCircuit {
 
   /**
    * @param {number} dt
-   * @returns {DynamicCircuit}
+   * @returns {LTACircuit}
    * @public
    */
   update( dt: number ) {
@@ -212,24 +212,24 @@ class DynamicCircuit {
   /**
    * Applies the specified solution to the circuit.
    *
-   * @param {DynamicCircuitSolution} solution
-   * @returns {DynamicCircuit}
+   * @param {LTASolution} solution
+   * @returns {LTACircuit}
    * @public
    */
-  updateCircuit( solution: DynamicCircuitSolution ) {
+  updateCircuit( solution: LTASolution ) {
     const updatedCapacitors = this.dynamicCapacitors.map( dynamicCapacitor => {
       // TODO: This may have something to do with it?  https://github.com/phetsims/circuit-construction-kit-common/issues/758
-      return new DynamicCapacitor( dynamicCapacitor.id, dynamicCapacitor.node0, dynamicCapacitor.node1, solution.getVoltage( dynamicCapacitor.capacitorVoltageNode0!, dynamicCapacitor.capacitorVoltageNode1! ),
+      return new LTACapacitor( dynamicCapacitor.id, dynamicCapacitor.node0, dynamicCapacitor.node1, solution.getVoltage( dynamicCapacitor.capacitorVoltageNode0!, dynamicCapacitor.capacitorVoltageNode1! ),
         solution.getCurrentForCompanion( dynamicCapacitor ), dynamicCapacitor.capacitance );
     } );
     const updatedInductors = this.dynamicInductors.map( dynamicInductor => {
-      return new DynamicInductor( dynamicInductor.id, dynamicInductor.node0, dynamicInductor.node1,
+      return new LTAInductor( dynamicInductor.id, dynamicInductor.node0, dynamicInductor.node1,
         // TODO: This may have something to do with it? https://github.com/phetsims/circuit-construction-kit-common/issues/758
         solution.getVoltage( dynamicInductor.node0, dynamicInductor.node1 ),
         solution.getCurrentForCompanion( dynamicInductor ), dynamicInductor.inductance );
     } );
 
-    return new DynamicCircuit( this.resistorAdapters, this.resistiveBatteryAdapters, updatedCapacitors, updatedInductors );
+    return new LTACircuit( this.resistorAdapters, this.resistiveBatteryAdapters, updatedCapacitors, updatedInductors );
   }
 }
 
@@ -247,5 +247,5 @@ const euclideanDistance = ( x: number[], y: number[] ) => {
   return Math.sqrt( sumSqDiffs );
 };
 
-circuitConstructionKitCommon.register( 'DynamicCircuit', DynamicCircuit );
-export default DynamicCircuit;
+circuitConstructionKitCommon.register( 'LTACircuit', LTACircuit );
+export default LTACircuit;

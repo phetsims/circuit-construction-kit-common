@@ -2,7 +2,7 @@
 
 /**
  * Circuit element used for Modified Nodal Analysis.  The same type represents batteries and resistors--what matters
- * is what array they are placed into in the DynamicCircuit.
+ * is what array they are placed into in the LTACircuit.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */

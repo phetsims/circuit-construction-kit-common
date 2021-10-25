@@ -1,7 +1,7 @@
 // Copyright 2021, University of Colorado Boulder
 import DynamicCoreModel from './DynamicCoreModel.js';
 
-class DynamicCapacitor extends DynamicCoreModel {
+class LTACapacitor extends DynamicCoreModel {
   capacitorVoltageNode0: string | null;
   capacitorVoltageNode1: string | null;
   capacitance: number;
@@ -16,4 +16,4 @@ class DynamicCapacitor extends DynamicCoreModel {
   }
 }
 
-export default DynamicCapacitor;
+export default LTACapacitor;

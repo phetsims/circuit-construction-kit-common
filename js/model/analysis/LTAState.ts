@@ -1,13 +1,13 @@
 // Copyright 2021, University of Colorado Boulder
-import DynamicCircuit from './DynamicCircuit.js';
-import DynamicCircuitSolution from './DynamicCircuitSolution.js';
+import LTACircuit from './LTACircuit.js';
+import LTASolution from './LTASolution.js';
 
-class DynamicState {
-  readonly dynamicCircuit: DynamicCircuit;
-  readonly dynamicCircuitSolution: DynamicCircuitSolution | null;
-  private solution: DynamicCircuitSolution | null;
+class LTAState {
+  readonly dynamicCircuit: LTACircuit;
+  readonly dynamicCircuitSolution: LTASolution | null;
+  private solution: LTASolution | null;
 
-  constructor( dynamicCircuit: DynamicCircuit, dynamicCircuitSolution: DynamicCircuitSolution | null ) {
+  constructor( dynamicCircuit: LTACircuit, dynamicCircuitSolution: LTASolution | null ) {
     this.dynamicCircuit = dynamicCircuit;
     this.dynamicCircuitSolution = dynamicCircuitSolution;
     this.solution = null;
@@ -15,13 +15,13 @@ class DynamicState {
 
   /**
    * @param {number} dt
-   * @returns {DynamicState}
+   * @returns {LTAState}
    * @public
    */
   update( dt: number ) {
     this.solution = this.dynamicCircuit.solvePropagate( dt );
     const newCircuit = this.dynamicCircuit.updateCircuit( this.solution );
-    return new DynamicState( newCircuit, this.solution );
+    return new LTAState( newCircuit, this.solution );
   }
 
   /**
@@ -44,4 +44,4 @@ class DynamicState {
   }
 }
 
-export default DynamicState;
+export default LTAState;

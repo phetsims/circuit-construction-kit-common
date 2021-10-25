@@ -1,7 +1,7 @@
 // Copyright 2019-2021, University of Colorado Boulder
 
 /**
- * Takes a Circuit, creates a corresponding DynamicCircuit, solves the DynamicCircuit and applies the results back
+ * Takes a Circuit, creates a corresponding LTACircuit, solves the LTACircuit and applies the results back
  * to the original Circuit.
  *
  * @author Sam Reid (PhET Interactive Simulations)
@@ -10,7 +10,7 @@
 import CCKCQueryParameters from '../../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import Capacitor from '../Capacitor.js';
-import DynamicCircuit from './DynamicCircuit.js';
+import LTACircuit from './LTACircuit.js';
 import Fuse from '../Fuse.js';
 import Inductor from '../Inductor.js';
 import LightBulb from '../LightBulb.js';
@@ -21,18 +21,18 @@ import TimestepSubdivisions from './TimestepSubdivisions.js';
 import VoltageSource from '../VoltageSource.js';
 import Wire from '../Wire.js';
 import Circuit from '../Circuit.js';
-import DynamicState from './DynamicState.js';
+import LTAState from './LTAState.js';
 import Vertex from '../Vertex.js';
 import CircuitElement from '../CircuitElement.js';
 import CCKCConstants from '../../CCKCConstants.js';
-import DynamicResistiveBattery from './DynamicResistiveBattery.js';
-import DynamicInductor from './DynamicInductor.js';
+import LTAResistiveBattery from './LTAResistiveBattery.js';
+import LTAInductor from './LTAInductor.js';
 import CCKCUtils from '../../CCKCUtils.js';
-import DynamicCapacitor from './DynamicCapacitor.js';
+import LTACapacitor from './LTACapacitor.js';
 import MNAResistor from './mna/MNAResistor.js';
 
 // constants
-const TIMESTEP_SUBDIVISIONS = new TimestepSubdivisions<DynamicState>();
+const TIMESTEP_SUBDIVISIONS = new TimestepSubdivisions<LTAState>();
 
 let id = 0;
 
@@ -63,7 +63,7 @@ class LinearTransientAnalysis {
       if ( inLoop ) {
         participants.push( circuitElement );
         if ( circuitElement instanceof VoltageSource ) {
-          const dynamicCircuitResistiveBattery = new DynamicResistiveBattery(
+          const dynamicCircuitResistiveBattery = new LTAResistiveBattery(
             id++,
             circuitElement.startVertexProperty.value.index + '',
             circuitElement.endVertexProperty.value.index + '',
@@ -97,7 +97,7 @@ class LinearTransientAnalysis {
         }
         else if ( circuitElement instanceof Capacitor ) {
 
-          const dynamicCapacitor = new DynamicCapacitor(
+          const dynamicCapacitor = new LTACapacitor(
             id++,
             circuitElement.startVertexProperty.value.index + '',
             circuitElement.endVertexProperty.value.index + '',
@@ -110,7 +110,7 @@ class LinearTransientAnalysis {
         }
         else if ( circuitElement instanceof Inductor ) {
 
-          const dynamicInductor = new DynamicInductor(
+          const dynamicInductor = new LTAInductor(
             id++,
             circuitElement.startVertexProperty.value.index + '',
             circuitElement.endVertexProperty.value.index + '',
@@ -130,7 +130,7 @@ class LinearTransientAnalysis {
       }
     }
 
-    const dynamicCircuit = new DynamicCircuit( resistorAdapters, resistiveBatteryAdapters, dynamicCapacitors, dynamicInductors );
+    const dynamicCircuit = new LTACircuit( resistorAdapters, resistiveBatteryAdapters, dynamicCapacitors, dynamicInductors );
     let circuitResult = dynamicCircuit.solveWithSubdivisions( TIMESTEP_SUBDIVISIONS, dt );
 
     // if any battery exceeds its current threshold, increase its resistance and run the solution again.

@@ -2,7 +2,7 @@
 
 import CoreModel from './CoreModel.js';
 
-class DynamicResistiveBattery extends CoreModel {
+class LTAResistiveBattery extends CoreModel {
   readonly voltage: number;
   resistance: number;
 
@@ -13,4 +13,4 @@ class DynamicResistiveBattery extends CoreModel {
   }
 }
 
-export default DynamicResistiveBattery;
+export default LTAResistiveBattery;

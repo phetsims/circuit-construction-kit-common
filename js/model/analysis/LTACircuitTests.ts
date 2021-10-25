@@ -8,14 +8,14 @@
 
 
 // modules
-import DynamicCircuit from './DynamicCircuit.js';
-import DynamicCapacitor from './DynamicCapacitor.js';
-import DynamicInductor from './DynamicInductor.js';
-import DynamicResistiveBattery from './DynamicResistiveBattery.js';
+import LTACircuit from './LTACircuit.js';
+import LTACapacitor from './LTACapacitor.js';
+import LTAInductor from './LTAInductor.js';
+import LTAResistiveBattery from './LTAResistiveBattery.js';
 import MNAResistor from './mna/MNAResistor.js';
 
 const ITERATIONS = 250;
-QUnit.module( 'DynamicCircuit' );
+QUnit.module( 'LTACircuit' );
 const dt = 1 / 60;
 const errorThreshold = 1E-2;
 
@@ -23,10 +23,10 @@ let id = 0;
 
 const testVRCCircuit = ( v: number, r: number, c: number, assert: Assert ) => {
   const resistor = new MNAResistor( '1', '2', null, r );
-  const battery = new DynamicResistiveBattery( id++, '0', '1', v, 0 );
-  const capacitor = new DynamicCapacitor( id++, '2', '0', 0.0, v / r, c );
+  const battery = new LTAResistiveBattery( id++, '0', '1', v, 0 );
+  const capacitor = new LTACapacitor( id++, '2', '0', 0.0, v / r, c );
 
-  let dynamicCircuit = new DynamicCircuit( [ resistor ], [ battery ], [ capacitor ], [] );
+  let dynamicCircuit = new LTACircuit( [ resistor ], [ battery ], [ capacitor ], [] );
 
   for ( let i = 0; i < ITERATIONS; i++ ) {//takes 0.3 sec on my machine
     const t = i * dt;
@@ -63,9 +63,9 @@ QUnit.test( 'test RC Circuit should have voltage exponentially decay with T RC f
 
 const testVRLCircuit = ( V: number, R: number, L: number, assert: Assert ) => {
   const resistor = new MNAResistor( '1', '2', null, R );
-  const battery = new DynamicResistiveBattery( id++, '0', '1', V, 0 );
-  const inductor = new DynamicInductor( id++, '2', '0', V, 0.0, L );
-  let circuit = new DynamicCircuit( [ resistor ], [ battery ], [], [ inductor ] );
+  const battery = new LTAResistiveBattery( id++, '0', '1', V, 0 );
+  const inductor = new LTAInductor( id++, '2', '0', V, 0.0, L );
+  let circuit = new LTACircuit( [ resistor ], [ battery ], [], [ inductor ] );
 
   // let x = '';
   for ( let i = 0; i < ITERATIONS; i++ ) {

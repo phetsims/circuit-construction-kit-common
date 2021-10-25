@@ -1,22 +1,22 @@
 // Copyright 2021, University of Colorado Boulder
-import DynamicCircuit from './DynamicCircuit.js';
+import LTACircuit from './LTACircuit.js';
 import MNASolution from './mna/MNASolution.js';
 import CoreModel from './CoreModel.js';
 import MNAResistor from './mna/MNAResistor.js';
 
-class DynamicCircuitSolution {
+class LTASolution {
 
-  private readonly circuit: DynamicCircuit;
+  private readonly circuit: LTACircuit;
   private readonly mnaSolution: MNASolution;
   private readonly currentCompanions: any;
 
   /**
-   * @param {DynamicCircuit} circuit
+   * @param {LTACircuit} circuit
    * @param {MNASolution} mnaSolution
    * @param {{element:MNACircuitElement,getValueForSolution(MNASolution):number}[]} currentCompanions
    * @constructor
    */
-  constructor( circuit: DynamicCircuit, mnaSolution: MNASolution, currentCompanions: any ) {
+  constructor( circuit: LTACircuit, mnaSolution: MNASolution, currentCompanions: any ) {
     // @public
     this.circuit = circuit;
     this.mnaSolution = mnaSolution;
@@ -61,4 +61,4 @@ class DynamicCircuitSolution {
   }
 }
 
-export default DynamicCircuitSolution;
+export default LTASolution;

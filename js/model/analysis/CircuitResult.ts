@@ -1,8 +1,8 @@
 // Copyright 2021, University of Colorado Boulder
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
-import ResultSet from '../ResultSet.js';
+import ResultSet from './ResultSet.js';
 import MNACircuitElement from './mna/MNACircuitElement.js';
-import DynamicState from './DynamicState.js';
+import LTAState from './LTAState.js';
 import CoreModel from './CoreModel.js';
 import MNAResistor from './mna/MNAResistor.js';
 
@@ -13,12 +13,12 @@ import MNAResistor from './mna/MNAResistor.js';
  */
 class CircuitResult {
 
-  readonly resultSet: ResultSet<DynamicState>;
+  readonly resultSet: ResultSet<LTAState>;
 
   /**
-   * @param {ResultSet.<DynamicCircuit.DynamicState>} resultSet
+   * @param {ResultSet.<LTACircuit.LTAState>} resultSet
    */
-  constructor( resultSet: ResultSet<DynamicState> ) {
+  constructor( resultSet: ResultSet<LTAState> ) {
     // @public
     this.resultSet = resultSet;
   }
@@ -81,7 +81,7 @@ class CircuitResult {
   }
 
   /**
-   * @returns {DynamicState}
+   * @returns {LTAState}
    * @public
    */
   getFinalState() {
