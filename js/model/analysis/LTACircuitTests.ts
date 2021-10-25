@@ -26,17 +26,17 @@ const testVRCCircuit = ( v: number, r: number, c: number, assert: Assert ) => {
   const battery = new LTAResistiveBattery( id++, '0', '1', v, 0 );
   const capacitor = new LTACapacitor( id++, '2', '0', 0.0, v / r, c );
 
-  let dynamicCircuit = new LTACircuit( [ resistor ], [ battery ], [ capacitor ], [] );
+  let circuit = new LTACircuit( [ resistor ], [ battery ], [ capacitor ], [] );
 
   for ( let i = 0; i < ITERATIONS; i++ ) {//takes 0.3 sec on my machine
     const t = i * dt;
 
-    const companionSolution = dynamicCircuit.solveItWithSubdivisions( dt );
+    const companionSolution = circuit.solveItWithSubdivisions( dt );
     const voltage = companionSolution!.getVoltage( resistor.nodeId0, resistor.nodeId1 );
     const desiredVoltageAtTPlusDT = -v * Math.exp( -( t + dt ) / r / c );
     const error = Math.abs( voltage - desiredVoltageAtTPlusDT );
     assert.ok( error < errorThreshold ); // sample run indicates largest error is 1.5328E-7
-    dynamicCircuit = dynamicCircuit.updateWithSubdivisions( dt );
+    circuit = circuit.updateWithSubdivisions( dt );
   }
 };
 

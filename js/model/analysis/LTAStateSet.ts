@@ -37,7 +37,7 @@ class LTAStateSet {
     let weightedSum = 0.0;
     let totalTime = 0.0;
     this.resultSet.forEach( ( stateObject: any ) => {
-      weightedSum += stateObject.state.dynamicCircuitSolution.getCurrent( element ) * stateObject.dt;
+      weightedSum += stateObject.state.ltaSolution.getCurrent( element ) * stateObject.dt;
       totalTime += stateObject.dt;
     } );
     const number = weightedSum / totalTime;
@@ -50,7 +50,7 @@ class LTAStateSet {
     let weightedSum = 0.0;
     let totalTime = 0.0;
     this.resultSet.forEach( ( stateObject: any ) => {
-      weightedSum += stateObject.state.dynamicCircuitSolution.getCurrentForCompanion( element ) * stateObject.dt;
+      weightedSum += stateObject.state.ltaSolution.getCurrentForCompanion( element ) * stateObject.dt;
       totalTime += stateObject.dt;
     } );
     const number = weightedSum / totalTime;
@@ -65,7 +65,7 @@ class LTAStateSet {
    * @public
    */
   getInstantaneousCurrent( element: MNAResistor ) {
-    return this.getFinalState().dynamicCircuitSolution!.getCurrent( element );
+    return this.getFinalState().ltaSolution!.getCurrent( element );
   }
 
   /**
@@ -74,17 +74,17 @@ class LTAStateSet {
    * @public
    */
   getInstantaneousVoltage( element: MNACircuitElement ) {
-    return this.getFinalState().dynamicCircuitSolution!.getVoltage( element.nodeId0, element.nodeId1 );
+    return this.getFinalState().ltaSolution!.getVoltage( element.nodeId0, element.nodeId1 );
   }
 
   // @public
   getInstantaneousVoltageForCoreModel( coreModel: CoreModel ): number {
-    return this.getFinalState().dynamicCircuitSolution!.getVoltage( coreModel.node0, coreModel.node1 );
+    return this.getFinalState().ltaSolution!.getVoltage( coreModel.node0, coreModel.node1 );
   }
 
   // @public
   getInstantaneousCurrentForCoreModel( coreModel: CoreModel ): number {
-    return this.getFinalState().dynamicCircuitSolution!.getCurrentForCompanion( coreModel );
+    return this.getFinalState().ltaSolution!.getCurrentForCompanion( coreModel );
   }
 
   /**

@@ -27,21 +27,21 @@ import CoreModel from './CoreModel.js';
 type DistanceParams = { getCharacteristicArray: () => number[]; };
 
 class LTACircuit {
-  private readonly resistorAdapters: MNAResistor[];
-  private readonly resistiveBatteryAdapters: LTAResistiveBattery[];
-  readonly dynamicCapacitors: LTACapacitor[];
-  readonly dynamicInductors: LTAInductor[];
+  private readonly ltaResistors: MNAResistor[];
+  private readonly ltaBatteries: LTAResistiveBattery[];
+  readonly ltaCapacitors: LTACapacitor[];
+  readonly ltaInductors: LTAInductor[];
 
-  constructor( resistorAdapters: MNAResistor[],
-               resistiveBatteryAdapters: LTAResistiveBattery[],
-               dynamicCapacitors: LTACapacitor[],
-               dynamicInductors: LTAInductor[] ) {
+  constructor( ltaResistors: MNAResistor[],
+               ltaBatteries: LTAResistiveBattery[],
+               ltaCapacitors: LTACapacitor[],
+               ltaInductors: LTAInductor[] ) {
 
     // @private
-    this.resistorAdapters = resistorAdapters;
-    this.resistiveBatteryAdapters = resistiveBatteryAdapters;
-    this.dynamicCapacitors = dynamicCapacitors;
-    this.dynamicInductors = dynamicInductors;
+    this.ltaResistors = ltaResistors;
+    this.ltaBatteries = ltaBatteries;
+    this.ltaCapacitors = ltaCapacitors;
+    this.ltaInductors = ltaInductors;
   }
 
   /**
@@ -61,7 +61,7 @@ class LTACircuit {
     let syntheticNodeIndex = 0;
 
     // Each resistive battery is a resistor in series with a battery
-    this.resistiveBatteryAdapters.forEach( resistiveBatteryAdapter => {
+    this.ltaBatteries.forEach( resistiveBatteryAdapter => {
       const newNode = 'syntheticNode' + ( syntheticNodeIndex++ );
 
       const idealBattery = new MNABattery( resistiveBatteryAdapter.node0, newNode, null, resistiveBatteryAdapter.voltage ); // final LinearCircuitSolver.Battery
@@ -86,13 +86,13 @@ class LTACircuit {
     // See http://circsimproj.blogspot.com/2009/07/companion-models.html
     // Veq = V + dt*I/2/C;
     // Req = dt/2/C
-    this.dynamicCapacitors.forEach( dynamicCapacitor => {
+    this.ltaCapacitors.forEach( ltaCapacitor => {
       assert && assert( dt >= 0, 'dt should be non-negative' );
 
       const newNode1 = 'syntheticNode' + ( syntheticNodeIndex++ );
       const newNode2 = 'syntheticNode' + ( syntheticNodeIndex++ );
 
-      const companionResistance = dt / 2.0 / dynamicCapacitor.capacitance;
+      const companionResistance = dt / 2.0 / ltaCapacitor.capacitance;
       const resistanceTerm = CCKCQueryParameters.capacitorResistance;
 
       // The capacitor is modeled as a battery in series with a resistor.  Hence the voltage drop across the capacitor
@@ -100,21 +100,21 @@ class LTACircuit {
       // V = Vbattery + Vresistor.  We need to solve for the voltage across the battery to use it in the companion
       // model, so we have Vbattery = V-Vresistor.  The magnitude of the voltage drop across the resistor is given by
       // |V|=|IReq| and sign is unchanged since the conventional current flows from high to low voltage.
-      const companionVoltage = dynamicCapacitor.voltage - companionResistance * dynamicCapacitor.current;
+      const companionVoltage = ltaCapacitor.voltage - companionResistance * ltaCapacitor.current;
 
-      const battery = new MNABattery( dynamicCapacitor.node0, newNode1, null, companionVoltage );
+      const battery = new MNABattery( ltaCapacitor.node0, newNode1, null, companionVoltage );
       const resistor = new MNAResistor( newNode1, newNode2, null, companionResistance );
-      const resistor2 = new MNAResistor( newNode2, dynamicCapacitor.node1, null, resistanceTerm );
+      const resistor2 = new MNAResistor( newNode2, ltaCapacitor.node1, null, resistanceTerm );
 
       companionBatteries.push( battery );
       companionResistors.push( resistor );
       companionResistors.push( resistor2 );
 
-      dynamicCapacitor.capacitorVoltageNode1 = newNode2;
+      ltaCapacitor.capacitorVoltageNode1 = newNode2;
 
       // We need to be able to get the current for this component. In series, so the current is the same through both.
       currentCompanions.push( {
-        element: dynamicCapacitor,
+        element: ltaCapacitor,
         getValueForSolution: ( solution: MNASolution ) => solution.getCurrentForResistor( resistor )
       } );
     } );
@@ -123,30 +123,30 @@ class LTACircuit {
     // Req = 2L/dt
     // Veq = -2Li/dt-v
     // See najm page 279 and Pillage page 86
-    this.dynamicInductors.forEach( dynamicInductor => {
+    this.ltaInductors.forEach( ltaInductor => {
 
       // In series
       const newNode = 'syntheticNode' + ( syntheticNodeIndex++ );
 
-      const companionResistance = 2 * dynamicInductor.inductance / dt;
-      const companionVoltage = -dynamicInductor.voltage - companionResistance * dynamicInductor.current;
+      const companionResistance = 2 * ltaInductor.inductance / dt;
+      const companionVoltage = -ltaInductor.voltage - companionResistance * ltaInductor.current;
 
-      const battery = new MNABattery( dynamicInductor.node0, newNode, null, companionVoltage );
-      const resistor = new MNAResistor( newNode, dynamicInductor.node1, null, companionResistance );
+      const battery = new MNABattery( ltaInductor.node0, newNode, null, companionVoltage );
+      const resistor = new MNAResistor( newNode, ltaInductor.node1, null, companionResistance );
       companionBatteries.push( battery );
       companionResistors.push( resistor );
 
       // we need to be able to get the current for this component
       // in series, so current is same through both companion components
       currentCompanions.push( {
-        element: dynamicInductor,
+        element: ltaInductor,
         // TODO: This sign looks very wrong https://github.com/phetsims/circuit-construction-kit-common/issues/758
         getValueForSolution: ( solution: MNASolution ) => -solution.getCurrentForResistor( resistor )
       } );
     } );
 
     const newBatteryList = companionBatteries;
-    const newResistorList = [ ...this.resistorAdapters, ...companionResistors ];
+    const newResistorList = [ ...this.ltaResistors, ...companionResistors ];
     const newCurrentList: MNACurrent[] = []; // Placeholder for if we add other circuit elements in the future
 
     const mnaCircuit = new MNACircuit( newBatteryList, newResistorList, newCurrentList );
@@ -187,7 +187,7 @@ class LTACircuit {
    * @private
    */
   updateWithSubdivisions( dt: number ) {
-    return this.solveWithSubdivisions2( dt ).getFinalState().dynamicCircuit;
+    return this.solveWithSubdivisions2( dt ).getFinalState().ltaCircuit;
   }
 
   /**
@@ -196,7 +196,7 @@ class LTACircuit {
    * @public (unit-tests)
    */
   solveItWithSubdivisions( dt: number ) {
-    return this.solveWithSubdivisions2( dt ).getFinalState().dynamicCircuitSolution;
+    return this.solveWithSubdivisions2( dt ).getFinalState().ltaSolution;
   }
 
   /**
@@ -216,30 +216,30 @@ class LTACircuit {
    * @public
    */
   updateCircuit( solution: LTASolution ) {
-    const updatedCapacitors = this.dynamicCapacitors.map( dynamicCapacitor => {
+    const updatedCapacitors = this.ltaCapacitors.map( ltaCapacitor => {
       // TODO: This may have something to do with it?  https://github.com/phetsims/circuit-construction-kit-common/issues/758
       return new LTACapacitor(
-        dynamicCapacitor.id,
-        dynamicCapacitor.node0,
-        dynamicCapacitor.node1,
-        solution.getVoltage( dynamicCapacitor.node0, dynamicCapacitor.capacitorVoltageNode1! ),
-        solution.getCurrentForCompanion( dynamicCapacitor ),
-        dynamicCapacitor.capacitance );
+        ltaCapacitor.id,
+        ltaCapacitor.node0,
+        ltaCapacitor.node1,
+        solution.getVoltage( ltaCapacitor.node0, ltaCapacitor.capacitorVoltageNode1! ),
+        solution.getCurrentForCompanion( ltaCapacitor ),
+        ltaCapacitor.capacitance );
     } );
-    const updatedInductors = this.dynamicInductors.map( dynamicInductor => {
+    const updatedInductors = this.ltaInductors.map( ltaInductor => {
 
       // TODO: This may have something to do with it? https://github.com/phetsims/circuit-construction-kit-common/issues/758
       return new LTAInductor(
-        dynamicInductor.id,
-        dynamicInductor.node0,
-        dynamicInductor.node1,
-        solution.getVoltage( dynamicInductor.node0, dynamicInductor.node1 ),
-        solution.getCurrentForCompanion( dynamicInductor ),
-        dynamicInductor.inductance
+        ltaInductor.id,
+        ltaInductor.node0,
+        ltaInductor.node1,
+        solution.getVoltage( ltaInductor.node0, ltaInductor.node1 ),
+        solution.getCurrentForCompanion( ltaInductor ),
+        ltaInductor.inductance
       );
     } );
 
-    return new LTACircuit( this.resistorAdapters, this.resistiveBatteryAdapters, updatedCapacitors, updatedInductors );
+    return new LTACircuit( this.ltaResistors, this.ltaBatteries, updatedCapacitors, updatedInductors );
   }
 }
 

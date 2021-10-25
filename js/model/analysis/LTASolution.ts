@@ -50,8 +50,8 @@ class LTASolution {
   }
 
   // @public
-  getCurrentForCompanion( dynamicInductor: CoreModel ) {
-    const companion = _.find( this.currentCompanions, c => c.element.id === dynamicInductor.id );
+  getCurrentForCompanion( coreModel: CoreModel ) {
+    const companion = _.find( this.currentCompanions, c => c.element.id === coreModel.id );
     return companion.getValueForSolution( this.mnaSolution );
   }
 

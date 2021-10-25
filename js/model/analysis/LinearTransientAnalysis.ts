@@ -46,10 +46,10 @@ class LinearTransientAnalysis {
    */
   static solveModifiedNodalAnalysis( circuit: Circuit, dt: number ) {
 
-    const resistiveBatteryAdapters = [];
-    const resistorAdapters = [];
-    const dynamicCapacitors = [];
-    const dynamicInductors = [];
+    const ltaBatteries = [];
+    const ltaResistors = [];
+    const ltaCapacitors = [];
+    const ltaInductors = [];
 
     // Identify CircuitElements that are not in a loop with a voltage source. They will have their currents zeroed out.
     const nonParticipants = [];
@@ -68,15 +68,15 @@ class LinearTransientAnalysis {
       if ( inLoop ) {
         participants.push( circuitElement );
         if ( circuitElement instanceof VoltageSource ) {
-          const dynamicCircuitResistiveBattery = new LTAResistiveBattery(
+          const ltaVoltageSource = new LTAResistiveBattery(
             id++,
             circuitElement.startVertexProperty.value.index + '',
             circuitElement.endVertexProperty.value.index + '',
             circuitElement.voltageProperty.value,
             circuitElement.internalResistanceProperty.value
           );
-          voltageSourceMap.set( dynamicCircuitResistiveBattery, circuitElement );
-          resistiveBatteryAdapters.push( dynamicCircuitResistiveBattery );
+          voltageSourceMap.set( ltaVoltageSource, circuitElement );
+          ltaBatteries.push( ltaVoltageSource );
         }
         else if ( circuitElement instanceof Resistor ||
                   circuitElement instanceof Fuse ||
@@ -98,7 +98,7 @@ class LinearTransientAnalysis {
             resistance
           );
           resistorMap.set( resistorAdapter, circuitElement );
-          resistorAdapters.push( resistorAdapter );
+          ltaResistors.push( resistorAdapter );
         }
         else if ( circuitElement instanceof Switch && !circuitElement.closedProperty.value ) {
 
@@ -106,7 +106,7 @@ class LinearTransientAnalysis {
         }
         else if ( circuitElement instanceof Capacitor ) {
 
-          const dynamicCapacitor = new LTACapacitor(
+          const ltaCapacitor = new LTACapacitor(
             id++,
             circuitElement.startVertexProperty.value.index + '',
             circuitElement.endVertexProperty.value.index + '',
@@ -114,12 +114,12 @@ class LinearTransientAnalysis {
             circuitElement.mnaCurrent,
             circuitElement.capacitanceProperty.value
           );
-          dynamicCapacitors.push( dynamicCapacitor );
-          capacitorMap.set( dynamicCapacitor, circuitElement );
+          ltaCapacitors.push( ltaCapacitor );
+          capacitorMap.set( ltaCapacitor, circuitElement );
         }
         else if ( circuitElement instanceof Inductor ) {
 
-          const dynamicInductor = new LTAInductor(
+          const ltaInductor = new LTAInductor(
             id++,
             circuitElement.startVertexProperty.value.index + '',
             circuitElement.endVertexProperty.value.index + '',
@@ -127,8 +127,8 @@ class LinearTransientAnalysis {
             circuitElement.mnaCurrent,
             circuitElement.inductanceProperty.value
           );
-          inductorMap.set( dynamicInductor, circuitElement );
-          dynamicInductors.push( dynamicInductor );
+          inductorMap.set( ltaInductor, circuitElement );
+          ltaInductors.push( ltaInductor );
         }
         else {
           assert && assert( false, `Type not found: ${circuitElement.constructor.name}` );
@@ -140,14 +140,14 @@ class LinearTransientAnalysis {
     }
 
     // Solve the system
-    const dynamicCircuit = new LTACircuit( resistorAdapters, resistiveBatteryAdapters, dynamicCapacitors, dynamicInductors );
-    let circuitResult = dynamicCircuit.solveWithSubdivisions( TIMESTEP_SUBDIVISIONS, dt );
+    const ltaCircuit = new LTACircuit( ltaResistors, ltaBatteries, ltaCapacitors, ltaInductors );
+    let circuitResult = ltaCircuit.solveWithSubdivisions( TIMESTEP_SUBDIVISIONS, dt );
 
     // if any battery exceeds its current threshold, increase its resistance and run the solution again.
     // see https://github.com/phetsims/circuit-construction-kit-common/issues/245
     let needsHelp = false;
 
-    resistorAdapters.forEach( resistorAdapter => {
+    ltaResistors.forEach( resistorAdapter => {
       if ( resistorAdapter.circuitElement instanceof LightBulb && resistorAdapter.circuitElement.real ) {
 
         // @ts-ignore
@@ -156,7 +156,7 @@ class LinearTransientAnalysis {
       }
     } );
 
-    resistiveBatteryAdapters.forEach( resistiveBatteryAdapter => {
+    ltaBatteries.forEach( resistiveBatteryAdapter => {
       if ( Math.abs( circuitResult.getTimeAverageCurrentForCoreModel( resistiveBatteryAdapter ) ) > CCKCQueryParameters.batteryCurrentThreshold ) {
         const voltageSource = voltageSourceMap.get( resistiveBatteryAdapter )!;
         resistiveBatteryAdapter.resistance = voltageSource.internalResistanceProperty.value;
@@ -164,12 +164,12 @@ class LinearTransientAnalysis {
       }
     } );
 
-    resistorAdapters.forEach( resistorAdapter => {
+    ltaResistors.forEach( resistorAdapter => {
       if ( resistorAdapter.circuitElement instanceof LightBulb && resistorAdapter.circuitElement.real ) {
 
         const logWithBase = ( value: number, base: number ) => Math.log( value ) / Math.log( base );
 
-        const dV = circuitResult.getFinalState().dynamicCircuitSolution!.getVoltage( resistorAdapter.nodeId0, resistorAdapter.nodeId1 );
+        const dV = circuitResult.getFinalState().ltaSolution!.getVoltage( resistorAdapter.nodeId0, resistorAdapter.nodeId1 );
         const V = Math.abs( dV );
 
         const base = 2;
@@ -191,35 +191,35 @@ class LinearTransientAnalysis {
     // Run the secondary solution if necessary
     if ( needsHelp ) {
       // TODO: Could this be causing https://github.com/phetsims/circuit-construction-kit-common/issues/758 ?
-      circuitResult = dynamicCircuit.solveWithSubdivisions( TIMESTEP_SUBDIVISIONS, dt );
+      circuitResult = ltaCircuit.solveWithSubdivisions( TIMESTEP_SUBDIVISIONS, dt );
     }
 
     // Apply the solutions from the analysis back to the actual Circuit
-    resistiveBatteryAdapters.forEach( batteryAdapter => {
+    ltaBatteries.forEach( batteryAdapter => {
       const circuitElement = voltageSourceMap.get( batteryAdapter )!;
       circuitElement.currentProperty.value = circuitResult.getTimeAverageCurrentForCoreModel( batteryAdapter );
     } );
-    resistorAdapters.forEach( resistorAdapter => {
+    ltaResistors.forEach( resistorAdapter => {
       const circuitElement = resistorMap.get( resistorAdapter )!;
       circuitElement.currentProperty.value = circuitResult.getTimeAverageCurrent( resistorAdapter );
     } );
-    dynamicCapacitors.forEach( dynamicCapacitor => {
-      const capacitor = capacitorMap.get( dynamicCapacitor )!;
-      capacitor.currentProperty.value = circuitResult.getTimeAverageCurrentForCoreModel( dynamicCapacitor );
-      capacitor.mnaCurrent = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousCurrentForCoreModel( dynamicCapacitor ) );
-      capacitor.mnaVoltageDrop = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousVoltageForCoreModel( dynamicCapacitor ) );
+    ltaCapacitors.forEach( ltaCapacitor => {
+      const capacitor = capacitorMap.get( ltaCapacitor )!;
+      capacitor.currentProperty.value = circuitResult.getTimeAverageCurrentForCoreModel( ltaCapacitor );
+      capacitor.mnaCurrent = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousCurrentForCoreModel( ltaCapacitor ) );
+      capacitor.mnaVoltageDrop = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousVoltageForCoreModel( ltaCapacitor ) );
 
       assert && assert( Math.abs( capacitor.mnaCurrent ) < 1E100, 'mnaCurrent out of range' );
       assert && assert( Math.abs( capacitor.mnaVoltageDrop ) < 1E100, 'mnaVoltageDrop out of range' );
     } );
-    dynamicInductors.forEach( dynamicInductor => {
+    ltaInductors.forEach( ltaInductor => {
 
-      const inductor = inductorMap.get( dynamicInductor )!;
+      const inductor = inductorMap.get( ltaInductor )!;
 
       // TODO: This line is seemingly wrong https://github.com/phetsims/circuit-construction-kit-common/issues/758
-      inductor.currentProperty.value = -circuitResult.getTimeAverageCurrentForCoreModel( dynamicInductor );
-      inductor.mnaCurrent = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousCurrentForCoreModel( dynamicInductor ) );
-      inductor.mnaVoltageDrop = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousVoltageForCoreModel( dynamicInductor ) );
+      inductor.currentProperty.value = -circuitResult.getTimeAverageCurrentForCoreModel( ltaInductor );
+      inductor.mnaCurrent = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousCurrentForCoreModel( ltaInductor ) );
+      inductor.mnaVoltageDrop = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousVoltageForCoreModel( ltaInductor ) );
       assert && assert( Math.abs( inductor.mnaCurrent ) < 1E100, 'mnaCurrent out of range' );
       assert && assert( Math.abs( inductor.mnaVoltageDrop ) < 1E100, 'mnaVoltageDrop out of range' );
     } );
@@ -232,7 +232,7 @@ class LinearTransientAnalysis {
 
     // Apply the node voltages to the vertices
     circuit.vertexGroup.forEach( vertex => {
-      const voltage = circuitResult.getFinalState().dynamicCircuitSolution!.getNodeVoltage( vertex.index + '' );
+      const voltage = circuitResult.getFinalState().ltaSolution!.getNodeVoltage( vertex.index + '' );
 
       if ( typeof voltage === 'number' ) {
         vertex.voltageProperty.set( voltage );
