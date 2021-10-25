@@ -219,14 +219,25 @@ class LTACircuit {
   updateCircuit( solution: LTASolution ) {
     const updatedCapacitors = this.dynamicCapacitors.map( dynamicCapacitor => {
       // TODO: This may have something to do with it?  https://github.com/phetsims/circuit-construction-kit-common/issues/758
-      return new LTACapacitor( dynamicCapacitor.id, dynamicCapacitor.node0, dynamicCapacitor.node1, solution.getVoltage( dynamicCapacitor.capacitorVoltageNode0!, dynamicCapacitor.capacitorVoltageNode1! ),
-        solution.getCurrentForCompanion( dynamicCapacitor ), dynamicCapacitor.capacitance );
+      return new LTACapacitor(
+        dynamicCapacitor.id,
+        dynamicCapacitor.node0,
+        dynamicCapacitor.node1,
+        solution.getVoltage( dynamicCapacitor.capacitorVoltageNode0!, dynamicCapacitor.capacitorVoltageNode1! ),
+        solution.getCurrentForCompanion( dynamicCapacitor ),
+        dynamicCapacitor.capacitance );
     } );
     const updatedInductors = this.dynamicInductors.map( dynamicInductor => {
-      return new LTAInductor( dynamicInductor.id, dynamicInductor.node0, dynamicInductor.node1,
-        // TODO: This may have something to do with it? https://github.com/phetsims/circuit-construction-kit-common/issues/758
+
+      // TODO: This may have something to do with it? https://github.com/phetsims/circuit-construction-kit-common/issues/758
+      return new LTAInductor(
+        dynamicInductor.id,
+        dynamicInductor.node0,
+        dynamicInductor.node1,
         solution.getVoltage( dynamicInductor.node0, dynamicInductor.node1 ),
-        solution.getCurrentForCompanion( dynamicInductor ), dynamicInductor.inductance );
+        solution.getCurrentForCompanion( dynamicInductor ),
+        dynamicInductor.inductance
+      );
     } );
 
     return new LTACircuit( this.resistorAdapters, this.resistiveBatteryAdapters, updatedCapacitors, updatedInductors );
