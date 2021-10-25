@@ -24,6 +24,8 @@ import MNAResistor from './mna/MNAResistor.js';
 import MNACurrent from './mna/MNACurrent.js';
 import CoreModel from './CoreModel.js';
 
+type DistanceParams = { getCharacteristicArray: () => number[]; };
+
 class LTACircuit {
   private readonly resistorAdapters: MNAResistor[];
   private readonly resistiveBatteryAdapters: LTAResistiveBattery[];
@@ -162,10 +164,8 @@ class LTACircuit {
    */
   solveWithSubdivisions( timestepSubdivisions: TimestepSubdivisions<LTAState>, dt: number ) {
     const steppable = {
-
-      // TODO: types
-      update: ( a: { update: ( arg0: any ) => any; }, dt: any ) => a.update( dt ),
-      distance: ( a: { getCharacteristicArray: () => number[]; }, b: { getCharacteristicArray: () => number[]; } ) => euclideanDistance( a.getCharacteristicArray(), b.getCharacteristicArray() )
+      update: ( a: { update: ( dt: number ) => LTAState; }, dt: number ) => a.update( dt ),
+      distance: ( a: DistanceParams, b: DistanceParams ) => euclideanDistance( a.getCharacteristicArray(), b.getCharacteristicArray() )
     };
 
     // Turning the error threshold too low here can fail the inductor tests in MNATestCase
