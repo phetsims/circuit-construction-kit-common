@@ -25,7 +25,7 @@ import DynamicState from './DynamicState.js';
 import Vertex from '../Vertex.js';
 import CircuitElement from '../CircuitElement.js';
 import CCKCConstants from '../../CCKCConstants.js';
-import DynamicCircuitResistiveBattery from './DynamicCircuitResistiveBattery.js';
+import DynamicResistiveBattery from './DynamicResistiveBattery.js';
 import DynamicInductor from './DynamicInductor.js';
 import CCKCUtils from '../../CCKCUtils.js';
 import DynamicCapacitor from './DynamicCapacitor.js';
@@ -63,7 +63,7 @@ class LinearTransientAnalysis {
       if ( inLoop ) {
         participants.push( circuitElement );
         if ( circuitElement instanceof VoltageSource ) {
-          const dynamicCircuitResistiveBattery = new DynamicCircuitResistiveBattery(
+          const dynamicCircuitResistiveBattery = new DynamicResistiveBattery(
             id++,
             circuitElement.startVertexProperty.value.index + '',
             circuitElement.endVertexProperty.value.index + '',

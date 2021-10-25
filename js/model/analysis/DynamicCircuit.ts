@@ -18,19 +18,19 @@ import DynamicState from './DynamicState.js';
 import DynamicInductor from './DynamicInductor.js';
 import DynamicCapacitor from './DynamicCapacitor.js';
 import ModifiedNodalAnalysisSolution from './mna/ModifiedNodalAnalysisSolution.js';
-import DynamicCircuitResistiveBattery from './DynamicCircuitResistiveBattery.js';
+import DynamicResistiveBattery from './DynamicResistiveBattery.js';
 import MNABattery from './mna/MNABattery.js';
 import MNAResistor from './mna/MNAResistor.js';
 import MNACurrent from './mna/MNACurrent.js';
 
 class DynamicCircuit {
   private readonly resistorAdapters: MNAResistor[];
-  private readonly resistiveBatteryAdapters: DynamicCircuitResistiveBattery[];
+  private readonly resistiveBatteryAdapters: DynamicResistiveBattery[];
   readonly dynamicCapacitors: DynamicCapacitor[];
   readonly dynamicInductors: DynamicInductor[];
 
   constructor( resistorAdapters: MNAResistor[],
-               resistiveBatteryAdapters: DynamicCircuitResistiveBattery[],
+               resistiveBatteryAdapters: DynamicResistiveBattery[],
                dynamicCapacitors: DynamicCapacitor[],
                dynamicInductors: DynamicInductor[] ) {
 
