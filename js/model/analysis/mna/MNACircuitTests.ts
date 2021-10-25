@@ -11,6 +11,7 @@ import MNASolution from './MNASolution.js';
 import MNAResistor from './MNAResistor.js';
 import MNABattery from './MNABattery.js';
 import MNACurrent from './MNACurrent.js';
+import MNACircuitElement from './MNACircuitElement.js';
 
 QUnit.module( 'MNACircuitTests' );
 
@@ -23,7 +24,9 @@ QUnit.test( 'test_battery_resistor_circuit_should_have_correct_voltages_and_curr
     const circuit = new MNACircuit( [ battery ], [ resistor ], [] );
     const voltageMap = { 0: 0.0, 1: 4.0 };
 
-    const desiredSolution = new MNASolution( voltageMap, [ battery ] );
+    const desiredSolution = new MNASolution( voltageMap, new Map( [
+      [ battery, 1.0 ]
+    ] ) );
     const solution = circuit.solve();
     assert.equal( true, solution.approxEquals( desiredSolution, assert ), 'solutions instances should match' );
 
@@ -41,7 +44,9 @@ QUnit.test( 'test_battery_resistor_circuit_should_have_correct_voltages_and_curr
     const desiredSolution = new MNASolution( {
       0: 0,
       1: 4
-    }, [ battery.withCurrentSolution( 2.0 ) ] );
+    }, new Map<MNACircuitElement, number>( [
+      [ battery, 2.0 ]
+    ] ) );
     const solution = circuit.solve();
     assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solution should match' );
   } );
@@ -54,7 +59,9 @@ QUnit.test( 'test_should_be_able_to_obtain_current_for_a_resistor', assert => {
   const desiredSolution = new MNASolution( {
     0: 0,
     1: 4
-  }, [ battery.withCurrentSolution( 2.0 ) ] );
+  }, new Map<MNACircuitElement, number>( [
+    [ battery, 2.0 ]
+  ] ) );
   assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solution should match' );
 
   // same magnitude as battery: positive because current flows from node 1 to 0
@@ -73,7 +80,9 @@ QUnit.test( 'test_an_unconnected_resistor_shouldnt_cause_problems', assert => {
     1: 4,
     2: 0,
     3: 0
-  }, [ battery.withCurrentSolution( 1.0 ) ] );
+  }, new Map<MNACircuitElement, number>( [
+    [ battery, 1.0 ]
+  ] ) );
   const solution = circuit.solve();
   assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
 } );
@@ -89,7 +98,7 @@ QUnit.test( 'test_current_source_should_provide_current', assert => {
     // http://en.wikipedia.org/wiki/Current_source
     1: -40.0
   };
-  const desiredSolution = new MNASolution( voltageMap, [] );
+  const desiredSolution = new MNASolution( voltageMap, new Map<MNACircuitElement, number>() );
   const solution = circuit.solve();
   assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
 } );
@@ -103,7 +112,9 @@ QUnit.test( 'test_current_should_be_reversed_when_voltage_is_reversed', assert =
     1: -4
   };
 
-  const desiredSolution = new MNASolution( voltageMap, [ battery.withCurrentSolution( -2 ) ] );
+  const desiredSolution = new MNASolution( voltageMap, new Map<MNACircuitElement, number>( [
+    [ battery, -2.0 ]
+  ] ) );
   const solution = circuit.solve();
   assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
 } );
@@ -119,10 +130,10 @@ QUnit.test( 'test_two_batteries_in_series_should_have_voltage_added', assert => 
     1: -4,
     2: -8
   };
-  const desiredSolution = new MNASolution( voltageMap, [
-    battery1.withCurrentSolution( -4 ),
-    battery2.withCurrentSolution( -4 )
-  ] );
+  const desiredSolution = new MNASolution( voltageMap, new Map<MNACircuitElement, number>( [
+    [ battery1, -4.0 ],
+    [ battery2, -4.0 ]
+  ] ) );
   const solution = circuit.solve();
   assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
 } );
@@ -140,7 +151,9 @@ QUnit.test( 'test_two_resistors_in_series_should_have_resistance_added', assert 
     1: 5,
     2: 2.5
   };
-  const desiredSolution = new MNASolution( voltageMap, [ battery.withCurrentSolution( 5 / 20.0 ) ] );
+  const desiredSolution = new MNASolution( voltageMap, new Map<MNACircuitElement, number>( [
+    [ battery, 5 / 20.0 ]
+  ] ) );
   const solution = circuit.solve();
   assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
 } );
@@ -158,7 +171,9 @@ QUnit.test( 'test_A_resistor_with_one_node_unconnected_shouldnt_cause_problems',
     1: 4,
     2: 0
   };
-  const desiredSolution = new MNASolution( voltageMap, [ battery.withCurrentSolution( 1.0 ) ] );
+  const desiredSolution = new MNASolution( voltageMap, new Map<MNACircuitElement, number>( [
+    [ battery, 1.0 ]
+  ] ) );
   const solution = circuit.solve();
   assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
 } );
@@ -176,7 +191,9 @@ QUnit.test( 'test_an_unconnected_resistor_shouldnt_cause_problems', assert => {
     1: 4, 2: 0, 3: 0
   };
 
-  const desiredSolution = new MNASolution( voltageMap, [ battery.withCurrentSolution( 1.0 ) ] );
+  const desiredSolution = new MNASolution( voltageMap, new Map<MNACircuitElement, number>( [
+    [ battery, 1.0 ]
+  ] ) );
   const solution = circuit.solve();
   assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
 } );
@@ -194,10 +211,10 @@ QUnit.test( 'test_should_handle_resistors_with_no_resistance', assert => {
     1: 5,
     2: 0
   };
-  const desiredSolution = new MNASolution( voltageMap, [
-    battery.withCurrentSolution( 5 / 10 ),
-    resistor.withCurrentSolution( 5 / 10 )
-  ] );
+  const desiredSolution = new MNASolution( voltageMap, new Map<MNACircuitElement, number>( [
+    [ battery, 5 / 10 ],
+    [ resistor, 5 / 10 ]
+  ] ) );
   const solution = circuit.solve();
   assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
 } );
@@ -216,7 +233,9 @@ QUnit.test( 'test_resistors_in_parallel_should_have_harmonic_mean_of_resistance'
   ], [] );
   const voltageMap = { 0: 0, 1: V };
 
-  const desiredSolution = new MNASolution( voltageMap, [ battery.withCurrentSolution( V / Req ) ] );
+  const desiredSolution = new MNASolution( voltageMap, new Map<MNACircuitElement, number>( [
+    [ battery, V / Req ]
+  ] ) );
   const solution = circuit.solve();
   assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
 } );

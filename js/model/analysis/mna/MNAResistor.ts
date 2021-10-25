@@ -5,8 +5,8 @@ import MNACircuitElement from './MNACircuitElement.js';
 class MNAResistor extends MNACircuitElement {
   resistance: number;
 
-  constructor( nodeId0: string, nodeId1: string, resistance: number, currentSolution: number | null = null ) {
-    super( nodeId0, nodeId1, currentSolution );
+  constructor( nodeId0: string, nodeId1: string, resistance: number ) {
+    super( nodeId0, nodeId1 );
     this.resistance = resistance;
   }
 }

@@ -13,26 +13,13 @@ import circuitConstructionKitCommon from '../../../circuitConstructionKitCommon.
 class MNACircuitElement {
   readonly nodeId0: string; // index of the start node
   readonly nodeId1: string; // index of the end node
-  currentSolution: number | null; // supplied by the modified nodal analysis
 
-  constructor( nodeId0: string, nodeId1: string, currentSolution: number | null = null ) {
+  constructor( nodeId0: string, nodeId1: string ) {
     assert && CCKCUtils.validateNodeIndex( nodeId0 );
     assert && CCKCUtils.validateNodeIndex( nodeId1 );
 
     this.nodeId0 = nodeId0;
     this.nodeId1 = nodeId1;
-    this.currentSolution = currentSolution;
-  }
-
-  /**
-   * Creates a new instance matching this one but with a newly specified currentSolution.
-   * Used in unit testing.
-   * @param {number} currentSolution
-   * @returns {MNACircuitElement}
-   * @public (unit-tests)
-   */
-  withCurrentSolution( currentSolution: number ) {
-    return new MNACircuitElement( this.nodeId0, this.nodeId1, currentSolution );
   }
 
   /**

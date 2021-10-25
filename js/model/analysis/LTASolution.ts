@@ -45,7 +45,7 @@ class LTASolution {
       return this.mnaSolution.getCurrentForResistor( element );
     }
     else {
-      return element.currentSolution;
+      return this.mnaSolution.getSolvedCurrent( element );
     }
   }
 

@@ -308,9 +308,10 @@ class MNACircuit {
    */
   solve() {
     const equations = this.getEquations();
-    const unknownCurrents = this.getUnknownCurrents() as any[];
+    const unknownCurrents = this.getUnknownCurrents();
     const unknownVoltages = this.nodes.map( node => new UnknownVoltage( node ) );
 
+    // @ts-ignore
     const unknowns = unknownCurrents.concat( unknownVoltages );
 
     // Gets the index of the specified unknown.
@@ -359,12 +360,15 @@ class MNACircuit {
 
       voltageMap[ unknownVoltage.node ] = rhs;
     }
+
+    const map = new Map<MNACircuitElement, number>();
+
     for ( let i = 0; i < unknownCurrents.length; i++ ) {
       const unknownCurrent = unknownCurrents[ i ];
-      unknownCurrent.element.currentSolution = x.get( getIndexByEquals( unknowns, unknownCurrent ), 0 );
+      map.set( unknownCurrent.element, x.get( getIndexByEquals( unknowns, unknownCurrent ), 0 ) );
     }
 
-    return new MNASolution( voltageMap, unknownCurrents.map( unknownCurrent => unknownCurrent.element ) );
+    return new MNASolution( voltageMap, map );
   }
 }
 
@@ -434,7 +438,7 @@ class Term {
 }
 
 class UnknownCurrent {
-  private readonly element: MNACircuitElement;
+  readonly element: MNACircuitElement;
 
   /**
    * @param {MNACircuitElement} element

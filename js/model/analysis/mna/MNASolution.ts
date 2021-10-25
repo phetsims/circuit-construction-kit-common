@@ -11,20 +11,27 @@ import MNACircuitElement from './MNACircuitElement.js';
 import MNAResistor from './MNAResistor.js';
 
 class MNASolution {
+
+  // @public
+  getSolvedCurrent( circuitElement: MNACircuitElement ): number {
+    assert && assert( this.elements.has( circuitElement ) );
+    const value = this.elements.get( circuitElement )!;
+    assert && assert( typeof value === 'number' );
+    return value;
+  }
+
   private readonly nodeVoltages: { [ key: string ]: number };
-  private readonly elements: MNACircuitElement[];
+  private readonly elements: Map<MNACircuitElement, number>; // circuit elements in the solution
 
   /**
    * @param {Object} nodeVoltages - see below
    * @param {MNACircuitElement[]} elements
    */
-  constructor( nodeVoltages: { [ key: string ]: number }, elements: MNACircuitElement[] ) {
+  constructor( nodeVoltages: { [ key: string ]: number }, elements: Map<MNACircuitElement, number> ) {
 
     // @public (read-only) {Object} - the solved node voltages.
     // keys are {number} indicating the node id, values are {number} for the voltage at the node
     this.nodeVoltages = nodeVoltages;
-
-    // @public (read-only) {MNACircuitElement[]} - circuit elements in the solution
     this.elements = elements;
   }
 
@@ -71,8 +78,9 @@ class MNASolution {
    * @private
    */
   hasAllCurrents( modifiedNodalAnalysisSolution: MNASolution ) {
-    for ( let i = 0; i < modifiedNodalAnalysisSolution.elements.length; i++ ) {
-      const element = modifiedNodalAnalysisSolution.elements[ i ];
+    const keys = Array.from( modifiedNodalAnalysisSolution.elements.keys() );
+    for ( let i = 0; i < keys.length; i++ ) {
+      const element = keys[ i ];
       if ( !this.hasMatchingElement( element ) ) {
         return false;
       }
@@ -87,11 +95,12 @@ class MNASolution {
    * @private
    */
   hasMatchingElement( element: MNACircuitElement ) {
-    for ( let i = 0; i < this.elements.length; i++ ) {
-      const proposedElement: MNACircuitElement = this.elements[ i ];
+    const elements = Array.from( this.elements.keys() );
+    for ( let i = 0; i < elements.length; i++ ) {
+      const proposedElement = elements[ i ];
       if ( proposedElement.nodeId0 === element.nodeId0 &&
            proposedElement.nodeId1 === element.nodeId1 &&
-           approximatelyEquals( proposedElement.currentSolution!, element.currentSolution! ) ) {
+           approximatelyEquals( this.elements.get( proposedElement )!, this.elements.get( element )! ) ) {
         return true;
       }
     }

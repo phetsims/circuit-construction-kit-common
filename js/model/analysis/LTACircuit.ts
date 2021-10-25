@@ -73,8 +73,7 @@ class LTACircuit {
       currentCompanions.push( {
         element: resistiveBatteryAdapter,
         getValueForSolution: ( solution: MNASolution ) => {
-          assert && assert( idealBattery.currentSolution !== null );
-          return idealBattery.currentSolution!;
+          return solution.getSolvedCurrent( idealBattery );
         }
       } );
     } );
