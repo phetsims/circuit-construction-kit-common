@@ -223,7 +223,7 @@ class DynamicCircuit {
     const updatedCapacitors = this.dynamicCapacitors.map( dynamicCapacitor => {
       const newState = new DynamicElementState(
         // TODO: This may have something to do with it?  https://github.com/phetsims/circuit-construction-kit-common/issues/758
-        solution.getNodeVoltage( dynamicCapacitor.capacitorVoltageNode1! ) - solution.getNodeVoltage( dynamicCapacitor.capacitorVoltageNode0! ),
+        solution.getVoltage( dynamicCapacitor.capacitorVoltageNode0!, dynamicCapacitor.capacitorVoltageNode1! ),
         solution.getCurrentForCompanion( dynamicCapacitor )
       );
       return new DynamicCapacitor( dynamicCapacitor.id, dynamicCapacitor.node0, dynamicCapacitor.node1, newState, dynamicCapacitor.capacitance );
@@ -231,7 +231,7 @@ class DynamicCircuit {
     const updatedInductors = this.dynamicInductors.map( dynamicInductor => {
       const newState = new DynamicElementState(
         // TODO: This may have something to do with it? https://github.com/phetsims/circuit-construction-kit-common/issues/758
-        solution.getNodeVoltage( dynamicInductor.node1 ) - solution.getNodeVoltage( dynamicInductor.node0 ),
+        solution.getVoltage( dynamicInductor.node0, dynamicInductor.node1 ),
         solution.getCurrentForCompanion( dynamicInductor )
       );
       return new DynamicInductor( dynamicInductor.id, dynamicInductor.node0, dynamicInductor.node1, newState, dynamicInductor.inductance );

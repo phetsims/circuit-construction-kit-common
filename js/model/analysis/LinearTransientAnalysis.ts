@@ -153,9 +153,8 @@ class LinearTransientAnalysis {
 
         const logWithBase = ( value: number, base: number ) => Math.log( value ) / Math.log( base );
 
-        const v0 = circuitResult.resultSet.getFinalState().dynamicCircuitSolution!.getNodeVoltage( resistorAdapter.nodeId0 );
-        const v1 = circuitResult.resultSet.getFinalState().dynamicCircuitSolution!.getNodeVoltage( resistorAdapter.nodeId1 );
-        const V = Math.abs( v1 - v0 );
+        const dV = circuitResult.resultSet.getFinalState().dynamicCircuitSolution!.getVoltage( resistorAdapter.nodeId0, resistorAdapter.nodeId1 );
+        const V = Math.abs( dV );
 
         const base = 2;
 
