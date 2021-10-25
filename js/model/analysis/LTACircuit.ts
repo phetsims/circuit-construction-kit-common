@@ -22,6 +22,7 @@ import LTAResistiveBattery from './LTAResistiveBattery.js';
 import MNABattery from './mna/MNABattery.js';
 import MNAResistor from './mna/MNAResistor.js';
 import MNACurrent from './mna/MNACurrent.js';
+import CoreModel from './CoreModel.js';
 
 class LTACircuit {
   private readonly resistorAdapters: MNAResistor[];
@@ -52,15 +53,14 @@ class LTACircuit {
 
     const companionBatteries: MNABattery[] = [];
     const companionResistors: MNAResistor[] = [];
-    const currentCompanions: { element: any, getValueForSolution: any }[] = [];
+    const currentCompanions: { element: CoreModel, getValueForSolution: ( solution: MNASolution ) => number }[] = [];
 
     // Node indices that have been used
     let syntheticNodeIndex = 0;
 
     // Each resistive battery is a resistor in series with a battery
     this.resistiveBatteryAdapters.forEach( resistiveBatteryAdapter => {
-      const newNode = 'syntheticNode' + syntheticNodeIndex;
-      syntheticNodeIndex++;
+      const newNode = 'syntheticNode' + ( syntheticNodeIndex++ );
 
       const idealBattery = new MNABattery( resistiveBatteryAdapter.node0, newNode, null, resistiveBatteryAdapter.voltage ); // final LinearCircuitSolver.Battery
       const idealResistor = new MNAResistor( newNode, resistiveBatteryAdapter.node1, null, resistiveBatteryAdapter.resistance ); // LinearCircuitSolver.Resistor
@@ -70,7 +70,10 @@ class LTACircuit {
       // We need to be able to get the current for this component
       currentCompanions.push( {
         element: resistiveBatteryAdapter,
-        getValueForSolution: ( solution: MNASolution ) => idealBattery.currentSolution
+        getValueForSolution: ( solution: MNASolution ) => {
+          assert && assert( idealBattery.currentSolution !== null );
+          return idealBattery.currentSolution!;
+        }
       } );
     } );
 
@@ -84,10 +87,8 @@ class LTACircuit {
     this.dynamicCapacitors.forEach( dynamicCapacitor => {
       assert && assert( dt >= 0, 'dt should be non-negative' );
 
-      const newNode1 = 'syntheticNode' + syntheticNodeIndex;
-      syntheticNodeIndex++;
-      const newNode2 = 'syntheticNode' + syntheticNodeIndex;
-      syntheticNodeIndex++;
+      const newNode1 = 'syntheticNode' + ( syntheticNodeIndex++ );
+      const newNode2 = 'syntheticNode' + ( syntheticNodeIndex++ );
 
       const companionResistance = dt / 2.0 / dynamicCapacitor.capacitance;
       const resistanceTerm = CCKCQueryParameters.capacitorResistance;
@@ -124,8 +125,7 @@ class LTACircuit {
     this.dynamicInductors.forEach( dynamicInductor => {
 
       // In series
-      const newNode = 'syntheticNode' + syntheticNodeIndex;
-      syntheticNodeIndex++;
+      const newNode = 'syntheticNode' + ( syntheticNodeIndex++ );
 
       const companionResistance = 2 * dynamicInductor.inductance / dt;
       const companionVoltage = -dynamicInductor.voltage - companionResistance * dynamicInductor.current;
