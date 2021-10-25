@@ -1,42 +1,42 @@
 // Copyright 2015-2021, University of Colorado Boulder
 
 /**
- * Sparse solution containing the solved variables from ModifiedNodalAnalysisCircuit. * No listeners are attached and hence no dispose implementation is necessary.
+ * Sparse solution containing the solved variables from MNACircuit. * No listeners are attached and hence no dispose implementation is necessary.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
 import circuitConstructionKitCommon from '../../../circuitConstructionKitCommon.js';
-import ModifiedNodalAnalysisCircuitElement from './ModifiedNodalAnalysisCircuitElement.js';
+import MNACircuitElement from './MNACircuitElement.js';
 import MNAResistor from './MNAResistor.js';
 
-class ModifiedNodalAnalysisSolution {
+class MNASolution {
   private readonly nodeVoltages: { [ key: string ]: number };
-  private readonly elements: ModifiedNodalAnalysisCircuitElement[];
+  private readonly elements: MNACircuitElement[];
 
   /**
    * @param {Object} nodeVoltages - see below
-   * @param {ModifiedNodalAnalysisCircuitElement[]} elements
+   * @param {MNACircuitElement[]} elements
    */
-  constructor( nodeVoltages: { [ key: string ]: number }, elements: ModifiedNodalAnalysisCircuitElement[] ) {
+  constructor( nodeVoltages: { [ key: string ]: number }, elements: MNACircuitElement[] ) {
 
     // @public (read-only) {Object} - the solved node voltages.
     // keys are {number} indicating the node id, values are {number} for the voltage at the node
     this.nodeVoltages = nodeVoltages;
 
-    // @public (read-only) {ModifiedNodalAnalysisCircuitElement[]} - circuit elements in the solution
+    // @public (read-only) {MNACircuitElement[]} - circuit elements in the solution
     this.elements = elements;
   }
 
   /**
    * Compare two solutions, and provide detailed qunit equal test if equal is provided.  For the AC CCK, this method
    * will also be used to identify when enough dt-subdivisions have been made in the adaptive timestep integration.
-   * @param {ModifiedNodalAnalysisSolution} modifiedNodalAnalysisSolution
+   * @param {MNASolution} modifiedNodalAnalysisSolution
    * @param {Object} [qassert] from qunit
    * @returns {boolean}
    * @public
    */
-  approxEquals( modifiedNodalAnalysisSolution: ModifiedNodalAnalysisSolution, qassert: Assert ) {
+  approxEquals( modifiedNodalAnalysisSolution: MNASolution, qassert: Assert ) {
     const keys = _.keys( this.nodeVoltages );
     const otherKeys = _.keys( modifiedNodalAnalysisSolution.nodeVoltages );
     const keyDifference = _.difference( keys, otherKeys );
@@ -67,10 +67,10 @@ class ModifiedNodalAnalysisSolution {
 
   /**
    * For equality testing, make sure all of the specified elements and currents match ours
-   * @param {ModifiedNodalAnalysisSolution} modifiedNodalAnalysisSolution
+   * @param {MNASolution} modifiedNodalAnalysisSolution
    * @private
    */
-  hasAllCurrents( modifiedNodalAnalysisSolution: ModifiedNodalAnalysisSolution ) {
+  hasAllCurrents( modifiedNodalAnalysisSolution: MNASolution ) {
     for ( let i = 0; i < modifiedNodalAnalysisSolution.elements.length; i++ ) {
       const element = modifiedNodalAnalysisSolution.elements[ i ];
       if ( !this.hasMatchingElement( element ) ) {
@@ -86,9 +86,9 @@ class ModifiedNodalAnalysisSolution {
    * @returns {boolean}
    * @private
    */
-  hasMatchingElement( element: ModifiedNodalAnalysisCircuitElement ) {
+  hasMatchingElement( element: MNACircuitElement ) {
     for ( let i = 0; i < this.elements.length; i++ ) {
-      const proposedElement: ModifiedNodalAnalysisCircuitElement = this.elements[ i ];
+      const proposedElement: MNACircuitElement = this.elements[ i ];
       if ( proposedElement.nodeId0 === element.nodeId0 &&
            proposedElement.nodeId1 === element.nodeId1 &&
            approximatelyEquals( proposedElement.currentSolution!, element.currentSolution! ) ) {
@@ -133,7 +133,7 @@ class ModifiedNodalAnalysisSolution {
    * @returns {number} - the voltage
    * @private
    */
-  getVoltage( element: ModifiedNodalAnalysisCircuitElement ) {
+  getVoltage( element: MNACircuitElement ) {
     return this.nodeVoltages[ element.nodeId1 ] - this.nodeVoltages[ element.nodeId0 ];
   }
 }
@@ -147,5 +147,5 @@ class ModifiedNodalAnalysisSolution {
  */
 const approximatelyEquals = ( a: number, b: number ) => Math.abs( a - b ) < 1E-6;
 
-circuitConstructionKitCommon.register( 'ModifiedNodalAnalysisSolution', ModifiedNodalAnalysisSolution );
-export default ModifiedNodalAnalysisSolution;
+circuitConstructionKitCommon.register( 'MNASolution', MNASolution );
+export default MNASolution;

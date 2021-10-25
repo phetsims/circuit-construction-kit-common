@@ -11,7 +11,7 @@ import CCKCUtils from '../../../CCKCUtils.js';
 import circuitConstructionKitCommon from '../../../circuitConstructionKitCommon.js';
 import CircuitElement from '../../CircuitElement.js';
 
-class ModifiedNodalAnalysisCircuitElement {
+class MNACircuitElement {
   readonly nodeId0: string;
   readonly nodeId1: string;
   readonly circuitElement: CircuitElement | null;
@@ -44,11 +44,11 @@ class ModifiedNodalAnalysisCircuitElement {
    * Creates a new instance matching this one but with a newly specified currentSolution.
    * Used in unit testing.
    * @param {number} currentSolution
-   * @returns {ModifiedNodalAnalysisCircuitElement}
+   * @returns {MNACircuitElement}
    * @public (unit-tests)
    */
   withCurrentSolution( currentSolution: number ) {
-    return new ModifiedNodalAnalysisCircuitElement( this.nodeId0, this.nodeId1, this.circuitElement, currentSolution );
+    return new MNACircuitElement( this.nodeId0, this.nodeId1, this.circuitElement, currentSolution );
   }
 
   /**
@@ -72,5 +72,5 @@ class ModifiedNodalAnalysisCircuitElement {
   }
 }
 
-circuitConstructionKitCommon.register( 'ModifiedNodalAnalysisCircuitElement', ModifiedNodalAnalysisCircuitElement );
-export default ModifiedNodalAnalysisCircuitElement;
+circuitConstructionKitCommon.register( 'MNACircuitElement', MNACircuitElement );
+export default MNACircuitElement;

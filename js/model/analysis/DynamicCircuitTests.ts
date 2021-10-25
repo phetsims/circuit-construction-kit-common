@@ -1,7 +1,7 @@
 // Copyright 2019-2021, University of Colorado Boulder
 
 /**
- * ModifiedNodalAnalysisCircuit tests
+ * MNACircuit tests
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */

@@ -1,9 +1,9 @@
 // Copyright 2021, University of Colorado Boulder
 
-import ModifiedNodalAnalysisCircuitElement from './ModifiedNodalAnalysisCircuitElement.js';
+import MNACircuitElement from './MNACircuitElement.js';
 import CircuitElement from '../../CircuitElement.js';
 
-class MNAResistor extends ModifiedNodalAnalysisCircuitElement {
+class MNAResistor extends MNACircuitElement {
   resistance: number;
 
   constructor( nodeId0: string, nodeId1: string, circuitElement: CircuitElement | null, resistance: number, currentSolution: number | null = null ) {

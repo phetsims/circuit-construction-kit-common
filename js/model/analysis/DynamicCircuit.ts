@@ -11,13 +11,13 @@
 import CCKCQueryParameters from '../../CCKCQueryParameters.js';
 import CircuitResult from './CircuitResult.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
-import ModifiedNodalAnalysisCircuit from './mna/ModifiedNodalAnalysisCircuit.js';
+import MNACircuit from './mna/MNACircuit.js';
 import TimestepSubdivisions from './TimestepSubdivisions.js';
 import DynamicCircuitSolution from './DynamicCircuitSolution.js';
 import DynamicState from './DynamicState.js';
 import DynamicInductor from './DynamicInductor.js';
 import DynamicCapacitor from './DynamicCapacitor.js';
-import ModifiedNodalAnalysisSolution from './mna/ModifiedNodalAnalysisSolution.js';
+import MNASolution from './mna/MNASolution.js';
 import DynamicResistiveBattery from './DynamicResistiveBattery.js';
 import MNABattery from './mna/MNABattery.js';
 import MNAResistor from './mna/MNAResistor.js';
@@ -70,7 +70,7 @@ class DynamicCircuit {
       // We need to be able to get the current for this component
       currentCompanions.push( {
         element: resistiveBatteryAdapter,
-        getValueForSolution: ( solution: ModifiedNodalAnalysisSolution ) => idealBattery.currentSolution
+        getValueForSolution: ( solution: MNASolution ) => idealBattery.currentSolution
       } );
     } );
 
@@ -113,7 +113,7 @@ class DynamicCircuit {
       // We need to be able to get the current for this component. In series, so the current is the same through both.
       currentCompanions.push( {
         element: dynamicCapacitor,
-        getValueForSolution: ( solution: ModifiedNodalAnalysisSolution ) => solution.getCurrentForResistor( resistor )
+        getValueForSolution: ( solution: MNASolution ) => solution.getCurrentForResistor( resistor )
       } );
     } );
 
@@ -140,7 +140,7 @@ class DynamicCircuit {
       currentCompanions.push( {
         element: dynamicInductor,
         // TODO: This sign looks very wrong https://github.com/phetsims/circuit-construction-kit-common/issues/758
-        getValueForSolution: ( solution: ModifiedNodalAnalysisSolution ) => -solution.getCurrentForResistor( resistor )
+        getValueForSolution: ( solution: MNASolution ) => -solution.getCurrentForResistor( resistor )
       } );
     } );
 
@@ -148,7 +148,7 @@ class DynamicCircuit {
     const newResistorList = [ ...this.resistorAdapters, ...companionResistors ];
     const newCurrentList: MNACurrent[] = []; // Placeholder for if we add other circuit elements in the future
 
-    const mnaCircuit = new ModifiedNodalAnalysisCircuit( newBatteryList, newResistorList, newCurrentList );
+    const mnaCircuit = new MNACircuit( newBatteryList, newResistorList, newCurrentList );
 
     const mnaSolution = mnaCircuit.solve();
     return new DynamicCircuitSolution( this, mnaSolution, currentCompanions );

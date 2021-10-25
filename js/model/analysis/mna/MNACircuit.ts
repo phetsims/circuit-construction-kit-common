@@ -17,17 +17,17 @@ import Utils from '../../../../../dot/js/Utils.js';
 import arrayRemove from '../../../../../phet-core/js/arrayRemove.js';
 import CCKCUtils from '../../../CCKCUtils.js';
 import circuitConstructionKitCommon from '../../../circuitConstructionKitCommon.js';
-import ModifiedNodalAnalysisSolution from './ModifiedNodalAnalysisSolution.js';
-import ModifiedNodalAnalysisCircuitElement from './ModifiedNodalAnalysisCircuitElement.js';
+import MNASolution from './MNASolution.js';
+import MNACircuitElement from './MNACircuitElement.js';
 import MNABattery from './MNABattery.js';
 import MNAResistor from './MNAResistor.js';
 import MNACurrent from './MNACurrent.js';
 
-class ModifiedNodalAnalysisCircuit {
+class MNACircuit {
   private readonly batteries: MNABattery[];
   private readonly resistors: MNAResistor[];
   private readonly currentSources: MNACurrent[];
-  private readonly elements: ModifiedNodalAnalysisCircuitElement[];
+  private readonly elements: MNACircuitElement[];
   private readonly nodeSet: { [ key: string ]: string };
   private readonly nodeCount: number;
   private readonly nodes: string[];
@@ -37,16 +37,16 @@ class ModifiedNodalAnalysisCircuit {
     assert && assert( resistors, 'resistors should be defined' );
     assert && assert( currentSources, 'currentSources should be defined' );
 
-    // @public (read-only) {ModifiedNodalAnalysisCircuitElement[]}
+    // @public (read-only) {MNACircuitElement[]}
     this.batteries = batteries;
 
-    // @public (read-only) {ModifiedNodalAnalysisCircuitElement[]}
+    // @public (read-only) {MNACircuitElement[]}
     this.resistors = resistors;
 
-    // @public (read-only) {ModifiedNodalAnalysisCircuitElement[]}
+    // @public (read-only) {MNACircuitElement[]}
     this.currentSources = currentSources;
 
-    // @public (read-only) {ModifiedNodalAnalysisCircuitElement[]} - the list of all the elements for ease of access
+    // @public (read-only) {MNACircuitElement[]} - the list of all the elements for ease of access
     // @ts-ignore
     this.elements = this.batteries.concat( this.resistors ).concat( this.currentSources );
 
@@ -303,7 +303,7 @@ class ModifiedNodalAnalysisCircuit {
 
   /**
    * Solves for all unknown currents and voltages in the circuit.
-   * @returns {ModifiedNodalAnalysisSolution}
+   * @returns {MNASolution}
    * @public
    */
   solve() {
@@ -364,11 +364,11 @@ class ModifiedNodalAnalysisCircuit {
       unknownCurrent.element.currentSolution = x.get( getIndexByEquals( unknowns, unknownCurrent ), 0 );
     }
 
-    return new ModifiedNodalAnalysisSolution( voltageMap, unknownCurrents.map( unknownCurrent => unknownCurrent.element ) );
+    return new MNASolution( voltageMap, unknownCurrents.map( unknownCurrent => unknownCurrent.element ) );
   }
 }
 
-circuitConstructionKitCommon.register( 'ModifiedNodalAnalysisCircuit', ModifiedNodalAnalysisCircuit );
+circuitConstructionKitCommon.register( 'MNACircuit', MNACircuit );
 
 /**
  * Find the index of an element in an array comparing with the equals() method.
@@ -434,12 +434,12 @@ class Term {
 }
 
 class UnknownCurrent {
-  private readonly element: ModifiedNodalAnalysisCircuitElement;
+  private readonly element: MNACircuitElement;
 
   /**
-   * @param {ModifiedNodalAnalysisCircuitElement} element
+   * @param {MNACircuitElement} element
    */
-  constructor( element: ModifiedNodalAnalysisCircuitElement ) {
+  constructor( element: MNACircuitElement ) {
     assert && assert( element, 'element should be defined' );
 
     // @public (read-only) {Object}
@@ -559,7 +559,7 @@ class Equation {
   }
 }
 
-const getDebugInfo = ( modifiedNodalAnalysisCircuit: ModifiedNodalAnalysisCircuit, A: Matrix, z: Matrix, equations: Equation[], unknowns: ( UnknownCurrent | UnknownVoltage )[], x: Matrix ) => {
+const getDebugInfo = ( modifiedNodalAnalysisCircuit: MNACircuit, A: Matrix, z: Matrix, equations: Equation[], unknowns: ( UnknownCurrent | UnknownVoltage )[], x: Matrix ) => {
   const conditionNumber = A.cond();
   const debugInfo = `Debugging circuit: ${modifiedNodalAnalysisCircuit.toString()}
     equations:
@@ -576,4 +576,4 @@ x=\n${x.transpose().toString()}
 };
 
 
-export default ModifiedNodalAnalysisCircuit;
+export default MNACircuit;

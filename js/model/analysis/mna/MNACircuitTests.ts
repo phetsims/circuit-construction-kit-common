@@ -1,18 +1,18 @@
 // Copyright 2015-2021, University of Colorado Boulder
 
 /**
- * ModifiedNodalAnalysisCircuit tests
+ * MNACircuit tests
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import ModifiedNodalAnalysisCircuit from './ModifiedNodalAnalysisCircuit.js';
-import ModifiedNodalAnalysisSolution from './ModifiedNodalAnalysisSolution.js';
+import MNACircuit from './MNACircuit.js';
+import MNASolution from './MNASolution.js';
 import MNAResistor from './MNAResistor.js';
 import MNABattery from './MNABattery.js';
 import MNACurrent from './MNACurrent.js';
 
-QUnit.module( 'ModifiedNodalAnalysisCircuitTests' );
+QUnit.module( 'MNACircuitTests' );
 
 const approxEquals = ( a: number, b: number ) => Math.abs( a - b ) < 1E-6;
 
@@ -20,10 +20,10 @@ QUnit.test( 'test_battery_resistor_circuit_should_have_correct_voltages_and_curr
   assert => {
     const battery = new MNABattery( '0', '1', null, 4.0 );
     const resistor = new MNAResistor( '1', '0', null, 4.0 );
-    const circuit = new ModifiedNodalAnalysisCircuit( [ battery ], [ resistor ], [] );
+    const circuit = new MNACircuit( [ battery ], [ resistor ], [] );
     const voltageMap = { 0: 0.0, 1: 4.0 };
 
-    const desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [ battery ] );
+    const desiredSolution = new MNASolution( voltageMap, [ battery ] );
     const solution = circuit.solve();
     assert.equal( true, solution.approxEquals( desiredSolution, assert ), 'solutions instances should match' );
 
@@ -37,8 +37,8 @@ QUnit.test( 'test_battery_resistor_circuit_should_have_correct_voltages_and_curr
   assert => {
     const battery = new MNABattery( '0', '1', null, 4.0 );
     const resistor = new MNAResistor( '1', '0', null, 2.0 );
-    const circuit = new ModifiedNodalAnalysisCircuit( [ battery ], [ resistor ], [] );
-    const desiredSolution = new ModifiedNodalAnalysisSolution( {
+    const circuit = new MNACircuit( [ battery ], [ resistor ], [] );
+    const desiredSolution = new MNASolution( {
       0: 0,
       1: 4
     }, [ battery.withCurrentSolution( 2.0 ) ] );
@@ -50,8 +50,8 @@ QUnit.test( 'test_battery_resistor_circuit_should_have_correct_voltages_and_curr
 QUnit.test( 'test_should_be_able_to_obtain_current_for_a_resistor', assert => {
   const battery = new MNABattery( '0', '1', null, 4.0 );
   const resistor = new MNAResistor( '1', '0', null, 2.0 );
-  const solution = new ModifiedNodalAnalysisCircuit( [ battery ], [ resistor ], [] ).solve();
-  const desiredSolution = new ModifiedNodalAnalysisSolution( {
+  const solution = new MNACircuit( [ battery ], [ resistor ], [] ).solve();
+  const desiredSolution = new MNASolution( {
     0: 0,
     1: 4
   }, [ battery.withCurrentSolution( 2.0 ) ] );
@@ -67,8 +67,8 @@ QUnit.test( 'test_an_unconnected_resistor_shouldnt_cause_problems', assert => {
   const battery = new MNABattery( '0', '1', null, 4.0 );
   const resistor1 = new MNAResistor( '1', '0', null, 4.0 );
   const resistor2 = new MNAResistor( '2', '3', null, 100 );
-  const circuit = new ModifiedNodalAnalysisCircuit( [ battery ], [ resistor1, resistor2 ], [] );
-  const desiredSolution = new ModifiedNodalAnalysisSolution( {
+  const circuit = new MNACircuit( [ battery ], [ resistor1, resistor2 ], [] );
+  const desiredSolution = new MNASolution( {
     0: 0,
     1: 4,
     2: 0,
@@ -81,7 +81,7 @@ QUnit.test( 'test_an_unconnected_resistor_shouldnt_cause_problems', assert => {
 QUnit.test( 'test_current_source_should_provide_current', assert => {
   const currentSource = new MNACurrent( '0', '1', null, 10 );
   const resistor = new MNAResistor( '1', '0', null, 4 );
-  const circuit = new ModifiedNodalAnalysisCircuit( [], [ resistor ], [ currentSource ] );
+  const circuit = new MNACircuit( [], [ resistor ], [ currentSource ] );
   const voltageMap = {
     0: 0,
 
@@ -89,7 +89,7 @@ QUnit.test( 'test_current_source_should_provide_current', assert => {
     // http://en.wikipedia.org/wiki/Current_source
     1: -40.0
   };
-  const desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [] );
+  const desiredSolution = new MNASolution( voltageMap, [] );
   const solution = circuit.solve();
   assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
 } );
@@ -97,13 +97,13 @@ QUnit.test( 'test_current_source_should_provide_current', assert => {
 QUnit.test( 'test_current_should_be_reversed_when_voltage_is_reversed', assert => {
   const battery = new MNABattery( '0', '1', null, -4 );
   const resistor = new MNAResistor( '1', '0', null, 2 );
-  const circuit = new ModifiedNodalAnalysisCircuit( [ battery ], [ resistor ], [] );
+  const circuit = new MNACircuit( [ battery ], [ resistor ], [] );
   const voltageMap = {
     0: 0,
     1: -4
   };
 
-  const desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [ battery.withCurrentSolution( -2 ) ] );
+  const desiredSolution = new MNASolution( voltageMap, [ battery.withCurrentSolution( -2 ) ] );
   const solution = circuit.solve();
   assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
 } );
@@ -112,14 +112,14 @@ QUnit.test( 'test_two_batteries_in_series_should_have_voltage_added', assert => 
   const battery1 = new MNABattery( '0', '1', null, -4 );
   const battery2 = new MNABattery( '1', '2', null, -4 );
   const resistor1 = new MNAResistor( '2', '0', null, 2.0 );
-  const circuit = new ModifiedNodalAnalysisCircuit( [ battery1, battery2 ], [ resistor1 ], [] );
+  const circuit = new MNACircuit( [ battery1, battery2 ], [ resistor1 ], [] );
 
   const voltageMap = {
     0: 0,
     1: -4,
     2: -8
   };
-  const desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [
+  const desiredSolution = new MNASolution( voltageMap, [
     battery1.withCurrentSolution( -4 ),
     battery2.withCurrentSolution( -4 )
   ] );
@@ -131,7 +131,7 @@ QUnit.test( 'test_two_resistors_in_series_should_have_resistance_added', assert 
   const battery = new MNABattery( '0', '1', null, 5.0 );
   const resistor1 = new MNAResistor( '1', '2', null, 10.0 );
   const resistor2 = new MNAResistor( '2', '0', null, 10.0 );
-  const circuit = new ModifiedNodalAnalysisCircuit( [ battery ], [
+  const circuit = new MNACircuit( [ battery ], [
     resistor1,
     resistor2
   ], [] );
@@ -140,7 +140,7 @@ QUnit.test( 'test_two_resistors_in_series_should_have_resistance_added', assert 
     1: 5,
     2: 2.5
   };
-  const desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [ battery.withCurrentSolution( 5 / 20.0 ) ] );
+  const desiredSolution = new MNASolution( voltageMap, [ battery.withCurrentSolution( 5 / 20.0 ) ] );
   const solution = circuit.solve();
   assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
 } );
@@ -149,7 +149,7 @@ QUnit.test( 'test_A_resistor_with_one_node_unconnected_shouldnt_cause_problems',
   const battery = new MNABattery( '0', '1', null, 4.0 );
   const resistor1 = new MNAResistor( '1', '0', null, 4.0 );
   const resistor2 = new MNAResistor( '0', '2', null, 100.0 );
-  const circuit = new ModifiedNodalAnalysisCircuit(
+  const circuit = new MNACircuit(
     [ battery ],
     [ resistor1, resistor2 ], []
   );
@@ -158,7 +158,7 @@ QUnit.test( 'test_A_resistor_with_one_node_unconnected_shouldnt_cause_problems',
     1: 4,
     2: 0
   };
-  const desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [ battery.withCurrentSolution( 1.0 ) ] );
+  const desiredSolution = new MNASolution( voltageMap, [ battery.withCurrentSolution( 1.0 ) ] );
   const solution = circuit.solve();
   assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
 } );
@@ -167,7 +167,7 @@ QUnit.test( 'test_an_unconnected_resistor_shouldnt_cause_problems', assert => {
   const battery = new MNABattery( '0', '1', null, 4.0 );
   const resistor1 = new MNAResistor( '1', '0', null, 4.0 );
   const resistor2 = new MNAResistor( '2', '3', null, 100.0 );
-  const circuit = new ModifiedNodalAnalysisCircuit( [ battery ], [
+  const circuit = new MNACircuit( [ battery ], [
     resistor1,
     resistor2
   ], [] );
@@ -176,7 +176,7 @@ QUnit.test( 'test_an_unconnected_resistor_shouldnt_cause_problems', assert => {
     1: 4, 2: 0, 3: 0
   };
 
-  const desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [ battery.withCurrentSolution( 1.0 ) ] );
+  const desiredSolution = new MNASolution( voltageMap, [ battery.withCurrentSolution( 1.0 ) ] );
   const solution = circuit.solve();
   assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
 } );
@@ -185,7 +185,7 @@ QUnit.test( 'test_should_handle_resistors_with_no_resistance', assert => {
   const battery = new MNABattery( '0', '1', null, 5 );
   const resistor = new MNAResistor( '2', '0', null, 0 );
   const resistor0 = new MNAResistor( '1', '2', null, 10 );
-  const circuit = new ModifiedNodalAnalysisCircuit( [ battery ], [
+  const circuit = new MNACircuit( [ battery ], [
     resistor0,
     resistor
   ], [] );
@@ -194,7 +194,7 @@ QUnit.test( 'test_should_handle_resistors_with_no_resistance', assert => {
     1: 5,
     2: 0
   };
-  const desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [
+  const desiredSolution = new MNASolution( voltageMap, [
     battery.withCurrentSolution( 5 / 10 ),
     resistor.withCurrentSolution( 5 / 10 )
   ] );
@@ -210,13 +210,13 @@ QUnit.test( 'test_resistors_in_parallel_should_have_harmonic_mean_of_resistance'
   const battery = new MNABattery( '0', '1', null, V );
   const resistor1 = new MNAResistor( '1', '0', null, R1 );
   const resistor2 = new MNAResistor( '1', '0', null, R2 );
-  const circuit = new ModifiedNodalAnalysisCircuit( [ battery ], [
+  const circuit = new MNACircuit( [ battery ], [
     resistor1,
     resistor2
   ], [] );
   const voltageMap = { 0: 0, 1: V };
 
-  const desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [ battery.withCurrentSolution( V / Req ) ] );
+  const desiredSolution = new MNASolution( voltageMap, [ battery.withCurrentSolution( V / Req ) ] );
   const solution = circuit.solve();
   assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
 } );
