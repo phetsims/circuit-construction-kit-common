@@ -139,6 +139,7 @@ class LinearTransientAnalysis {
       }
     }
 
+    // Solve the system
     const dynamicCircuit = new LTACircuit( resistorAdapters, resistiveBatteryAdapters, dynamicCapacitors, dynamicInductors );
     let circuitResult = dynamicCircuit.solveWithSubdivisions( TIMESTEP_SUBDIVISIONS, dt );
 
@@ -187,11 +188,13 @@ class LinearTransientAnalysis {
       }
     } );
 
+    // Run the secondary solution if necessary
     if ( needsHelp ) {
       // TODO: Could this be causing https://github.com/phetsims/circuit-construction-kit-common/issues/758 ?
       circuitResult = dynamicCircuit.solveWithSubdivisions( TIMESTEP_SUBDIVISIONS, dt );
     }
 
+    // Apply the solutions from the analysis back to the actual Circuit
     resistiveBatteryAdapters.forEach( batteryAdapter => {
       const circuitElement = voltageSourceMap.get( batteryAdapter )!;
       circuitElement.currentProperty.value = circuitResult.getTimeAverageCurrentForCoreModel( batteryAdapter );

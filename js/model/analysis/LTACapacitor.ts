@@ -2,7 +2,6 @@
 import DynamicCoreModel from './DynamicCoreModel.js';
 
 class LTACapacitor extends DynamicCoreModel {
-  capacitorVoltageNode0: string | null;
   capacitorVoltageNode1: string | null;
   capacitance: number;
 
@@ -10,8 +9,7 @@ class LTACapacitor extends DynamicCoreModel {
     super( id, node0, node1, voltage, current );
     this.capacitance = capacitance;
 
-    // @public placeholders for where to read the capacitor part of the voltage without the series resistor
-    this.capacitorVoltageNode0 = null;
+    // Synthetic node to read the voltage different across the capacitor part (since it is modeled in series with a resistor)
     this.capacitorVoltageNode1 = null;
   }
 }

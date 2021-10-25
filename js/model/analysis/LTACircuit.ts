@@ -110,7 +110,6 @@ class LTACircuit {
       companionResistors.push( resistor );
       companionResistors.push( resistor2 );
 
-      dynamicCapacitor.capacitorVoltageNode0 = dynamicCapacitor.node0;
       dynamicCapacitor.capacitorVoltageNode1 = newNode2;
 
       // We need to be able to get the current for this component. In series, so the current is the same through both.
@@ -223,7 +222,7 @@ class LTACircuit {
         dynamicCapacitor.id,
         dynamicCapacitor.node0,
         dynamicCapacitor.node1,
-        solution.getVoltage( dynamicCapacitor.capacitorVoltageNode0!, dynamicCapacitor.capacitorVoltageNode1! ),
+        solution.getVoltage( dynamicCapacitor.node0, dynamicCapacitor.capacitorVoltageNode1! ),
         solution.getCurrentForCompanion( dynamicCapacitor ),
         dynamicCapacitor.capacitance );
     } );
