@@ -26,7 +26,7 @@ class MNACircuitElement {
    * Determine if the element contains the given node id
    * @param {string} nodeId
    * @returns {boolean}
-   * @private
+   * @public
    */
   containsNodeId( nodeId: string ) {
     return this.nodeId0 === nodeId || this.nodeId1 === nodeId;

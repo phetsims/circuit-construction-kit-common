@@ -12,14 +12,6 @@ import MNAResistor from './MNAResistor.js';
 
 class MNASolution {
 
-  // @public
-  getSolvedCurrent( circuitElement: MNACircuitElement ): number {
-    assert && assert( this.elements.has( circuitElement ) );
-    const value = this.elements.get( circuitElement )!;
-    assert && assert( typeof value === 'number' );
-    return value;
-  }
-
   private readonly nodeVoltages: { [ key: string ]: number };
   private readonly elements: Map<MNACircuitElement, number>; // circuit elements in the solution
 
@@ -33,6 +25,14 @@ class MNASolution {
     // keys are {number} indicating the node id, values are {number} for the voltage at the node
     this.nodeVoltages = nodeVoltages;
     this.elements = elements;
+  }
+
+  // @public
+  getSolvedCurrent( circuitElement: MNACircuitElement ): number {
+    assert && assert( this.elements.has( circuitElement ) );
+    const value = this.elements.get( circuitElement )!;
+    assert && assert( typeof value === 'number' );
+    return value;
   }
 
   /**
