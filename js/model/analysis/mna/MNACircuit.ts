@@ -37,18 +37,12 @@ class MNACircuit {
     assert && assert( resistors, 'resistors should be defined' );
     assert && assert( currentSources, 'currentSources should be defined' );
 
-    // @public (read-only) {MNACircuitElement[]}
     this.batteries = batteries;
-
-    // @public (read-only) {MNACircuitElement[]}
     this.resistors = resistors;
-
-    // @public (read-only) {MNACircuitElement[]}
     this.currentSources = currentSources;
 
     // @public (read-only) {MNACircuitElement[]} - the list of all the elements for ease of access
-    // @ts-ignore
-    this.elements = this.batteries.concat( this.resistors ).concat( this.currentSources );
+    this.elements = [ ...this.batteries, ...this.resistors, ...this.currentSources ];
 
     // @public (read-only) {Object} - an object with index for all keys that have a node in the circuit, such as:
     // {0:0, 1:1, 2:2, 7:7}
