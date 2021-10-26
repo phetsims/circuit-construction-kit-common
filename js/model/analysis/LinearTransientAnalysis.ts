@@ -146,16 +146,6 @@ class LinearTransientAnalysis {
     // see https://github.com/phetsims/circuit-construction-kit-common/issues/245
     let needsHelp = false;
 
-    ltaResistors.forEach( resistorAdapter => {
-      const circuitElement = resistorMap.get( resistorAdapter )!;
-      if ( circuitElement instanceof LightBulb && circuitElement.real ) {
-
-        // @ts-ignore
-        resistorAdapter.resistance = 1.0;
-        needsHelp = true;
-      }
-    } );
-
     ltaBatteries.forEach( resistiveBatteryAdapter => {
       if ( Math.abs( circuitResult.getTimeAverageCurrentForCoreModel( resistiveBatteryAdapter ) ) > CCKCQueryParameters.batteryCurrentThreshold ) {
         const voltageSource = voltageSourceMap.get( resistiveBatteryAdapter )!;
@@ -186,6 +176,8 @@ class LinearTransientAnalysis {
         // shift by base so at V=0 the log is 1
         resistorAdapter.resistance = 10 + coefficient * V / logWithBase( V + base, base );
         circuitElement.resistanceProperty.value = resistorAdapter.resistance;
+
+        needsHelp = true;
       }
     } );
 
