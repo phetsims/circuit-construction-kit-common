@@ -286,7 +286,7 @@ class MNACircuit {
       unknownCurrents.push( new UnknownCurrent( this.batteries[ i ] ) );
     }
 
-    // Treat resisters with R=0 as having unknown current and v1=v2
+    // Treat resistors with R=0 as having unknown current and v1=v2
     for ( let i = 0; i < this.resistors.length; i++ ) {
       if ( this.resistors[ i ].resistance === 0 ) {
         unknownCurrents.push( new UnknownCurrent( this.resistors[ i ] ) );
@@ -305,8 +305,7 @@ class MNACircuit {
     const unknownCurrents = this.getUnknownCurrents();
     const unknownVoltages = this.nodes.map( node => new UnknownVoltage( node ) );
 
-    // @ts-ignore
-    const unknowns = unknownCurrents.concat( unknownVoltages );
+    const unknowns = [ ...unknownCurrents, ...unknownVoltages ];
 
     // Gets the index of the specified unknown.
     const getIndex = ( unknown: UnknownCurrent | UnknownVoltage ) => {
