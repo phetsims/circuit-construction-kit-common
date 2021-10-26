@@ -272,7 +272,7 @@ class CircuitConstructionKitModel {
     }
 
     if ( this.isPlayingProperty.value || this.circuit.dirty ) {
-      this.stepOnce( this.isPlayingProperty.value ? dt : CCKCConstants.PAUSED_DT );
+      this.stepOnce( this.isPlayingProperty.value ? 1 / 60 : CCKCConstants.PAUSED_DT );
     }
 
     this.circuit.layoutChargesInDirtyCircuitElements();
