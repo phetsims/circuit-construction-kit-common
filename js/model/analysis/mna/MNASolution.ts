@@ -12,14 +12,14 @@ import MNAResistor from './MNAResistor.js';
 
 class MNASolution {
 
-  private readonly nodeVoltages: { [ key: string ]: number };
+  private readonly nodeVoltages: Map<string, number>;
   private readonly elements: Map<MNACircuitElement, number>; // circuit elements in the solution
 
   /**
    * @param {Object} nodeVoltages - see below
    * @param {MNACircuitElement[]} elements
    */
-  constructor( nodeVoltages: { [ key: string ]: number }, elements: Map<MNACircuitElement, number> ) {
+  constructor( nodeVoltages: Map<string, number>, elements: Map<MNACircuitElement, number> ) {
 
     // @public (read-only) {Object} - the solved node voltages.
     // keys are {number} indicating the node id, values are {number} for the voltage at the node
@@ -133,7 +133,7 @@ class MNASolution {
    * @public
    */
   getNodeVoltage( nodeIndex: string ) {
-    return this.nodeVoltages[ nodeIndex ];
+    return this.nodeVoltages.get( nodeIndex )!;
   }
 
   /**
@@ -143,7 +143,9 @@ class MNASolution {
    * @private
    */
   getVoltage( element: MNACircuitElement ) {
-    return this.nodeVoltages[ element.nodeId1 ] - this.nodeVoltages[ element.nodeId0 ];
+    const voltage = this.nodeVoltages.get( element.nodeId1 )! - this.nodeVoltages.get( element.nodeId0 )!;
+    assert && assert( !isNaN( voltage ) );
+    return voltage;
   }
 }
 

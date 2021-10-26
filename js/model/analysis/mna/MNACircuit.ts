@@ -323,7 +323,6 @@ class MNACircuit {
     let x;
     try {
 
-      // if we have to run too many steps within a frame, then go to the high performance solver
       for ( let i = 0; i < equations.length; i++ ) {
         equations[ i ].stamp( i, A, z, getIndex );
       }
@@ -342,7 +341,7 @@ class MNACircuit {
       console.log( getDebugInfo( this, A, z, equations, unknowns, x ) );
     }
 
-    const voltageMap: { [ key: string ]: number } = {};
+    const voltageMap = new Map<string, number>();
     for ( let i = 0; i < unknownVoltages.length; i++ ) {
       const unknownVoltage = unknownVoltages[ i ];
       const rhs = x.get( getIndexByEquals( unknowns, unknownVoltage ), 0 );
@@ -352,17 +351,17 @@ class MNACircuit {
         assert && assert( !isNaN( rhs ), `the right-hand-side-value must be a number. Instead it was ${rhs}. debug info=${getDebugInfo( this, A, z, equations, unknowns, x )}` );
       }
 
-      voltageMap[ unknownVoltage.node ] = rhs;
+      voltageMap.set( unknownVoltage.node, rhs );
     }
 
-    const map = new Map<MNACircuitElement, number>();
+    const currentMap = new Map<MNACircuitElement, number>();
 
     for ( let i = 0; i < unknownCurrents.length; i++ ) {
       const unknownCurrent = unknownCurrents[ i ];
-      map.set( unknownCurrent.element, x.get( getIndexByEquals( unknowns, unknownCurrent ), 0 ) );
+      currentMap.set( unknownCurrent.element, x.get( getIndexByEquals( unknowns, unknownCurrent ), 0 ) );
     }
 
-    return new MNASolution( voltageMap, map );
+    return new MNASolution( voltageMap, currentMap );
   }
 }
 
@@ -434,13 +433,7 @@ class Term {
 class UnknownCurrent {
   readonly element: MNACircuitElement;
 
-  /**
-   * @param {MNACircuitElement} element
-   */
   constructor( element: MNACircuitElement ) {
-    assert && assert( element, 'element should be defined' );
-
-    // @public (read-only) {Object}
     this.element = element;
   }
 
@@ -455,7 +448,7 @@ class UnknownCurrent {
 
   /**
    * Two UnknownCurrents are equal if the refer to the same element.
-   * @param {UnknownCurrent|UnknownVoltage} other - an UnknownCurrent to compare with this one
+   * @param {UnknownCurrent} other - an UnknownCurrent to compare with this one
    * @returns {boolean}
    * @public
    */
@@ -465,15 +458,10 @@ class UnknownCurrent {
 }
 
 class UnknownVoltage {
-  readonly node: string;
+  readonly node: string; // the index of the node
 
-  /**
-   * @param {number} node - the index of the node
-   */
   constructor( node: string ) {
     assert && CCKCUtils.validateNodeIndex( node );
-
-    // @public (read-only) {number}
     this.node = node;
   }
 
@@ -488,7 +476,7 @@ class UnknownVoltage {
 
   /**
    * Two UnknownVoltages are equal if they refer to the same node.
-   * @param {UnknownVoltage|UnknownCurrent} other - another object to compare with this one
+   * @param {UnknownVoltage} other - another object to compare with this one
    * @returns {boolean}
    * @public
    */
@@ -510,11 +498,10 @@ class Equation {
 
     assert && assert( !isNaN( value ) );
 
-    // @public (read-only) {number} the value of the equation.  For instance in x+3y=12, the value is 12
+    // the value of the equation.  For instance in x+3y=12, the value is 12
     this.value = value;
 
-    // @public (read-only) {Term[]} the terms on the left-hand side of the equation.  E.g., in 3x+y=12 the terms are 3x
-    // and y
+    // the terms on the left-hand side of the equation.  E.g., in 3x+y=12 the terms are 3x and y
     this.terms = terms;
   }
 
