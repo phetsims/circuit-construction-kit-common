@@ -94,7 +94,7 @@ class Fuse extends FixedCircuitElement {
     }
 
     // Trip the fuse if it has exceeded the current rating beyond the threshold time
-    if ( this.timeCurrentRatingExceeded > 0.1 ) {
+    if ( this.timeCurrentRatingExceeded > 0.0 ) {
       this.isTrippedProperty.value = true;
     }
 
