@@ -231,6 +231,8 @@ class LightBulb extends FixedCircuitElement {
 
     throw new Error( 'exceeded charge path bounds' );
   }
+
+  static REAL_BULB_COLD_RESISTANCE = 10;
 }
 
 /**

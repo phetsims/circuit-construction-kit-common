@@ -174,7 +174,7 @@ class LinearTransientAnalysis {
         const coefficient = 3;
 
         // shift by base so at V=0 the log is 1
-        resistorAdapter.resistance = 10 + coefficient * V / logWithBase( V + base, base );
+        resistorAdapter.resistance = LightBulb.REAL_BULB_COLD_RESISTANCE + coefficient * V / logWithBase( V + base, base );
         circuitElement.resistanceProperty.value = resistorAdapter.resistance;
 
         needsHelp = true;
@@ -218,7 +218,14 @@ class LinearTransientAnalysis {
     } );
 
     // zero out currents on open branches
-    nonParticipants.forEach( circuitElement => circuitElement.currentProperty.set( 0 ) );
+    nonParticipants.forEach( circuitElement => {
+      circuitElement.currentProperty.set( 0 );
+
+      // Clear disconnected real light bulbs
+      if ( circuitElement instanceof LightBulb && circuitElement.real ) {
+        circuitElement.resistanceProperty.value = LightBulb.REAL_BULB_COLD_RESISTANCE;
+      }
+    } );
 
     const solvedVertices: Vertex[] = [];
     const unsolvedVertices: Vertex[] = [];
