@@ -22,9 +22,9 @@ import CCKCScreenView from './CCKCScreenView.js';
 import CircuitLayerNode from './CircuitLayerNode.js';
 import SeriesAmmeter from '../model/SeriesAmmeter.js';
 import Tandem from '../../../tandem/js/Tandem.js';
+import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
 
 const currentString = circuitConstructionKitCommonStrings.current;
-const questionMarkString = circuitConstructionKitCommonStrings.questionMark;
 
 // constants
 const PANEL_HEIGHT = 40;
@@ -79,7 +79,7 @@ class SeriesAmmeterNode extends FixedCircuitElementNode {
      * Update the text in the numeric readout text box.  Shows '?' if disconnected.
      */
     const updateText = () => {
-      let readout = questionMarkString;
+      let readout = MathSymbols.NO_VALUE;
 
       // If it is not an icon and connected at both sides, show the current, otherwise show '?'
       if ( screenView ) {

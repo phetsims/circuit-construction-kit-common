@@ -32,8 +32,8 @@ import CircuitConstructionKitModel from '../model/CircuitConstructionKitModel.js
 import CircuitLayerNode from './CircuitLayerNode.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
+import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
 
-const questionMarkString = circuitConstructionKitCommonStrings.questionMark;
 const voltageString = circuitConstructionKitCommonStrings.voltage;
 
 // constants
@@ -111,7 +111,7 @@ class VoltmeterNode extends Node {
 
     // Displays the voltage reading
     const voltageReadoutProperty = new DerivedProperty<string>( [ voltmeter.voltageProperty ], ( voltage: number ) =>
-      voltage === null ? questionMarkString : CCKCUtils.createVoltageReadout( voltage )
+      voltage === null ? MathSymbols.NO_VALUE : CCKCUtils.createVoltageReadout( voltage )
     );
 
     const probeTextNode = new ProbeTextNode(

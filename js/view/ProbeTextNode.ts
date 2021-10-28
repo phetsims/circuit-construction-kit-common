@@ -13,12 +13,10 @@ import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import VBox from '../../../scenery/js/nodes/VBox.js';
 import Color from '../../../scenery/js/util/Color.js';
-import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Property from '../../../axon/js/Property.js';
 import Tandem from '../../../tandem/js/Tandem.js';
-
-const questionMarkString = circuitConstructionKitCommonStrings.questionMark;
+import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
 
 // constants
 const TEXT_BOX_WIDTH = 140;
@@ -53,9 +51,9 @@ class ProbeTextNode extends VBox {
 
     textProperty.link( ( text: string ) => {
       readout.setText( text );
-      if ( text === questionMarkString ) {
+      if ( text === MathSymbols.NO_VALUE ) {
 
-        // ? is centered
+        // --- is centered
         readout.centerX = textBox.centerX;
       }
       else {

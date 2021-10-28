@@ -31,9 +31,9 @@ import CircuitLayerNode from './CircuitLayerNode.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import Property from '../../../axon/js/Property.js';
 import SceneryEvent from '../../../scenery/js/input/SceneryEvent.js';
+import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
 
 const currentString = circuitConstructionKitCommonStrings.current;
-const questionMarkString = circuitConstructionKitCommonStrings.questionMark;
 
 // constants
 // measurements for the cubic curve for the wire nodes
@@ -102,7 +102,7 @@ class AmmeterNode extends Node {
       const maxString = filledOptions.blackBoxStudy ? '> 10^3' : '> 10^10';
 
       // Ammeters in this sim only show positive values, not direction (which is arbitrary anyways)
-      return current === null ? questionMarkString :
+      return current === null ? MathSymbols.NO_VALUE :
              Math.abs( current ) > max ? maxString :
              CCKCUtils.createCurrentReadout( current );
     } ) );
