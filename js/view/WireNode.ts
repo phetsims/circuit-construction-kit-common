@@ -42,6 +42,13 @@ const BLACK_LINE_NODE = new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
   stroke: Color.BLACK
 } ).rasterized( { wrap: false } );
 
+// Not displayed, used to get accurate hit bounds for the schematic view.
+const SCHEMATIC_BACKGROUND = new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
+  lineWidth: LIFELIKE_LINE_WIDTH,
+  stroke: Color.BLUE,
+  opacity: 0.0
+} ).rasterized( { wrap: false } );
+
 /**
  * Create a LinearGradient for the wire, depending on the orientation relative to the shading (light comes from
  * top left)
@@ -378,7 +385,7 @@ class WireNode extends CircuitElementNode {
       this.endCapParent.visible = true;
     }
     else {
-      ( this.lineNode.getChildAt( 0 ) !== BLACK_LINE_NODE ) && this.lineNode.setChildren( [ BLACK_LINE_NODE ] );
+      ( this.lineNode.getChildAt( 0 ) !== SCHEMATIC_BACKGROUND ) && this.lineNode.setChildren( [ SCHEMATIC_BACKGROUND, BLACK_LINE_NODE ] );
       this.startCapParent.visible = false;
       this.endCapParent.visible = false;
     }
