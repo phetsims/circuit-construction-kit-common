@@ -11,6 +11,7 @@
 
 import CCKCQueryParameters from '../../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
+import CCKCConstants from '../../CCKCConstants.js';
 
 // smallest possible time
 const MIN_DT = CCKCQueryParameters.minDT;
@@ -73,8 +74,15 @@ class TimestepSubdivisions<T> {
    */
   search( state: T, steppable: Steppable<T>, dt: number, halfStepState: T | null ): { dt: number, state: T } {
 
-    // if dt is already too low, no need to do error checking
-    if ( dt <= MIN_DT ) {
+    if ( dt === CCKCConstants.PAUSED_DT ) {
+
+      // When paused, we run the clock at a very low dt to make sure the circuit is fully updated when something changes.
+      // In this case, no error checking, just run with the paused DT.
+      return { dt: MIN_DT, state: steppable.update( state, CCKCConstants.PAUSED_DT ) };
+    }
+    else if ( dt <= MIN_DT ) {
+
+      // if dt is already too low, no need to do error checking
       return { dt: MIN_DT, state: steppable.update( state, MIN_DT ) };
     }
     else {
