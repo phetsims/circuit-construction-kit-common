@@ -69,7 +69,9 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
   private readonly leftWireStub: Node;
   private readonly rightWireStub: Node;
   private readonly leftSchematicPath: Path;
+  private readonly leftSchematicHitAreaPath: Path;
   private readonly rightSchematicPath: Path;
+  private readonly rightSchematicHitAreaPath: Path;
   private readonly disposeCapacitorCircuitElementNode: () => void;
 
   /**
@@ -156,6 +158,13 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
       strokePickable: true,
       pickable: true // so that we can use hit detection for the voltmeter probes.
     };
+
+    const schematicPathHitAreaOptions = {
+      stroke: null,
+      lineWidth: 15,
+      strokePickable: true,
+      pickable: true // so that we can use hit detection for the voltmeter probes.
+    };
     const leftSchematicPath = new Path( leftSchematicShape, schematicPathOptions );
     const rightSchematicPath = new Path( rightSchematicShape, schematicPathOptions );
 
@@ -198,7 +207,11 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
     // @private {Path}
     this.leftSchematicPath = leftSchematicPath;
     this.rightSchematicPath = rightSchematicPath;
+    this.leftSchematicHitAreaPath = new Path( leftSchematicShape, schematicPathHitAreaOptions );
+    this.rightSchematicHitAreaPath = new Path( rightSchematicShape, schematicPathHitAreaOptions );
 
+    schematicNode.addChild( this.leftSchematicHitAreaPath );
+    schematicNode.addChild( this.rightSchematicHitAreaPath );
     capacitor.capacitanceProperty.link( ( capacitance: number ) => {
 
       // compute proportionality constant based on defaults.
@@ -256,7 +269,7 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
              this.leftWireStub.containsPoint( this.leftWireStub.globalToParentPoint( globalPoint ) );
     }
     else {
-      return this.leftSchematicPath.containsPoint( this.leftSchematicPath.globalToParentPoint( globalPoint ) );
+      return this.leftSchematicHitAreaPath.containsPoint( this.leftSchematicHitAreaPath.globalToParentPoint( globalPoint ) );
     }
   }
 
@@ -273,7 +286,7 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
              this.rightWireStub.containsPoint( this.rightWireStub.globalToParentPoint( globalPoint ) );
     }
     else {
-      return this.rightSchematicPath.containsPoint( this.rightSchematicPath.globalToParentPoint( globalPoint ) );
+      return this.rightSchematicHitAreaPath.containsPoint( this.rightSchematicHitAreaPath.globalToParentPoint( globalPoint ) );
     }
   }
 
