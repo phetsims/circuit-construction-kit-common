@@ -65,12 +65,12 @@ class InductorNode extends FixedCircuitElementNode {
    * @param {Inductor} inductor
    * @param {Property.<CircuitElementViewType>} viewTypeProperty
    * @param {Tandem} tandem
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
   constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, inductor: Inductor,
-               viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, options?: Partial<FixedCircuitElementNodeOptions> ) {
+               viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: Partial<FixedCircuitElementNodeOptions> ) {
 
-    options = merge( { isIcon: false, useHitTestForSensors: true }, options );
+    providedOptions = merge( { isIcon: false, useHitTestForSensors: true }, providedOptions );
 
     // The main body, in front.
     const lifelikeBodyShape = new Shape()
@@ -153,7 +153,7 @@ class InductorNode extends FixedCircuitElementNode {
       lifelikeNode,
       schematicNode,
       tandem,
-      options
+      providedOptions
     );
 
     // @public (read-only) {Inductor}

@@ -20,9 +20,9 @@ class TrashButton extends CCKCRoundPushButton {
   /**
    * @param {Circuit} circuit - the circuit from which the CircuitElement can be removed
    * @param {Tandem} tandem
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
-  constructor( circuit: Circuit, tandem: Tandem, options?: Partial<RoundPushButtonOptions> ) {
+  constructor( circuit: Circuit, tandem: Tandem, providedOptions?: Partial<RoundPushButtonOptions> ) {
 
     super( merge( {
       touchAreaDilation: 5, // radius dilation for touch area
@@ -42,7 +42,7 @@ class TrashButton extends CCKCRoundPushButton {
         }
       },
       tandem: tandem
-    }, options ) );
+    }, providedOptions ) );
   }
 
   // @public

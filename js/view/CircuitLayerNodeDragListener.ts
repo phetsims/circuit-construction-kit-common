@@ -18,10 +18,10 @@ class CircuitLayerNodeDragListener extends DragListener {
   /**
    * @param {CircuitLayerNode} circuitLayerNode
    * @param {function[]} vertexGetters
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
-  constructor( circuitLayerNode: CircuitLayerNode, vertexGetters: ( () => Vertex )[], options?: any ) {
-    super( options );
+  constructor( circuitLayerNode: CircuitLayerNode, vertexGetters: ( () => Vertex )[], providedOptions?: any ) {
+    super( providedOptions );
 
     // @private
     this.circuitLayerNode = circuitLayerNode;

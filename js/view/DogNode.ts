@@ -29,10 +29,11 @@ class DogNode extends ResistorNode {
    * @param {Dog} dog
    * @param {Property.<CircuitElementViewType>} viewTypeProperty
    * @param {Tandem} tandem
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
-  constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, dog: Dog, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, options?: any ) {
-    super( screenView, circuitLayerNode, dog, viewTypeProperty, tandem, options );
+  constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, dog: Dog,
+               viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: any ) {
+    super( screenView, circuitLayerNode, dog, viewTypeProperty, tandem, providedOptions );
 
     const soundClip = new SoundClip( dogBarkSound );
     soundManager.addSoundGenerator( soundClip );

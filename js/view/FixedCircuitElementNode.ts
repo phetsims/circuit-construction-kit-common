@@ -78,11 +78,11 @@ class FixedCircuitElementNode extends CircuitElementNode {
    *                            - left-center
    * @param {Node} schematicNode - the Node that will display the component. Origin must be left-center.
    * @param {Tandem} tandem
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
   constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, circuitElement: FixedCircuitElement,
                viewTypeProperty: Property<CircuitElementViewType>, lifelikeNode: Node, schematicNode: Node, tandem: Tandem,
-               options?: Partial<FixedCircuitElementNodeOptions> ) {
+               providedOptions?: Partial<FixedCircuitElementNodeOptions> ) {
     assert && assert( lifelikeNode !== schematicNode, 'schematicNode should be different than lifelikeNode' );
 
     const circuit = circuitLayerNode && circuitLayerNode.circuit;
@@ -93,7 +93,7 @@ class FixedCircuitElementNode extends CircuitElementNode {
       children: [ contentNode ],
       tandem: tandem,
       pickable: true
-    }, options ) );
+    }, providedOptions ) );
 
     // @private {Node} shows the lifelike view
     this.lifelikeNode = lifelikeNode;
@@ -104,7 +104,7 @@ class FixedCircuitElementNode extends CircuitElementNode {
     const filledOptions = merge( {
       isIcon: false,
       showHighlight: true
-    }, options ) as FixedCircuitElementNodeOptions;
+    }, providedOptions ) as FixedCircuitElementNodeOptions;
 
     // @private {boolean} - whether an isIcon is being rendered
     this.isIcon = filledOptions.isIcon;

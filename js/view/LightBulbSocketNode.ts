@@ -31,10 +31,10 @@ class LightBulbSocketNode extends FixedCircuitElementNode {
    * @param {LightBulb} lightBulb - the light bulb model
    * @param {Property.<CircuitElementViewType>} viewTypeProperty
    * @param {Tandem} tandem
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
   constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, lightBulb: LightBulb,
-               viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, options?: Partial<FixedCircuitElementNodeOptions> ) {
+               viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: Partial<FixedCircuitElementNodeOptions> ) {
 
     // Render the bulb socket only
     const lightBulbNode = new CustomLightBulbNode( new NumberProperty( 0 ), {
@@ -45,14 +45,14 @@ class LightBulbSocketNode extends FixedCircuitElementNode {
 
     // Interferes with Cut Button selection when the foreground is in front, see
     // https://github.com/phetsims/circuit-construction-kit-black-box-study/issues/18
-    options = merge( {
+    providedOptions = merge( {
       pickable: false,
 
       // Suppress the highlight for the socket, the highlight is shown by the CCKCLightBulbNode
       showHighlight: false
-    }, options );
+    }, providedOptions );
     super( screenView, circuitLayerNode, lightBulb, viewTypeProperty, lightBulbNode, new Rectangle( 0, 0, 10, 10 ),
-      tandem, options );
+      tandem, providedOptions );
   }
 
   /**

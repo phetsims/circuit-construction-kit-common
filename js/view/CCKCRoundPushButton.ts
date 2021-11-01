@@ -14,14 +14,14 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 class CCKCRoundPushButton extends RoundPushButton {
 
   /**
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
-  constructor( options?: Partial<RoundPushButtonOptions> ) {
+  constructor( providedOptions?: Partial<RoundPushButtonOptions> ) {
     super( merge( {
       baseColor: PhetColorScheme.BUTTON_YELLOW,
       xMargin: 10,
       yMargin: 10
-    }, options ) );
+    }, providedOptions ) );
   }
 }
 

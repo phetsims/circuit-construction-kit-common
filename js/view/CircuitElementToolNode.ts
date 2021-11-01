@@ -40,13 +40,14 @@ class CircuitElementToolNode extends VBox {
    * @param {function} createElement - (Vector2) => CircuitElement Function that creates a CircuitElement at the given position
    *                                 - for most components it is the center of the component.  For Light Bulbs, it is
    *                                 - in the center of the socket
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
   constructor( labelText: string, showLabelsProperty: Property<boolean>, viewTypeProperty: Property<CircuitElementViewType>,
-               circuit: Circuit, globalToCircuitLayerNodePoint: ( v: Vector2 ) => Vector2, iconNode: Node, maxNumber: number, count: () => number, createElement: ( v: Vector2 ) => CircuitElement, options?: any ) {
+               circuit: Circuit, globalToCircuitLayerNodePoint: ( v: Vector2 ) => Vector2, iconNode: Node, maxNumber: number,
+               count: () => number, createElement: ( v: Vector2 ) => CircuitElement, providedOptions?: any ) {
     const labelNode = new Text( labelText, { fontSize: 12, maxWidth: TOOLBOX_ICON_WIDTH } );
     showLabelsProperty.linkAttribute( labelNode, 'visible' );
-    options = merge( {
+    providedOptions = merge( {
       spacing: 2, // Spacing between the icon and the text
       cursor: 'pointer',
 
@@ -61,8 +62,8 @@ class CircuitElementToolNode extends VBox {
 
       excludeInvisibleChildrenFromBounds: false,
       additionalProperty: new BooleanProperty( true )
-    }, options );
-    super( options );
+    }, providedOptions );
+    super( providedOptions );
 
     this.addInputListener( DragListener.createForwardingListener( ( event: SceneryEvent ) => {
 
@@ -91,7 +92,7 @@ class CircuitElementToolNode extends VBox {
     let lastCount: number | null = null;
     let lastValue: boolean | null = null;
 
-    Property.multilink( [ circuit.circuitElements.lengthProperty, options.additionalProperty ], ( length: number, additionalValue: boolean ) => {
+    Property.multilink( [ circuit.circuitElements.lengthProperty, providedOptions.additionalProperty ], ( length: number, additionalValue: boolean ) => {
       const currentCount = count();
       if ( lastCount !== currentCount || lastValue !== additionalValue ) {
         this.setVisible( ( currentCount < maxNumber ) && additionalValue );
@@ -105,10 +106,10 @@ class CircuitElementToolNode extends VBox {
 
       // Expand touch area around text, see https://github.com/phetsims/circuit-construction-kit-dc/issues/82
       this.touchArea = this.localBounds.withOffsets(
-        options.touchAreaExpansionLeft,
-        options.touchAreaExpansionTop,
-        options.touchAreaExpansionRight,
-        options.touchAreaExpansionBottom
+        providedOptions.touchAreaExpansionLeft,
+        providedOptions.touchAreaExpansionTop,
+        providedOptions.touchAreaExpansionRight,
+        providedOptions.touchAreaExpansionBottom
       );
       this.mouseArea = this.touchArea;
     };

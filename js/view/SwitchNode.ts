@@ -163,10 +163,10 @@ class SwitchNode extends FixedCircuitElementNode {
    * @param {Switch} circuitSwitch
    * @param {Property.<CircuitElementViewType>} viewTypeProperty
    * @param {Tandem} tandem
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
   constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, circuitSwitch: Switch,
-               viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, options?: Partial<FixedCircuitElementNodeOptions> ) {
+               viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: Partial<FixedCircuitElementNodeOptions> ) {
 
     const lifelikeNode = new Node();
     const schematicNode = new Node();
@@ -184,7 +184,7 @@ class SwitchNode extends FixedCircuitElementNode {
       lifelikeNode,
       schematicNode,
       tandem,
-      options
+      providedOptions
     );
 
     // @public (read-only) {Switch} - the Switch rendered by this Node, equivalent to this.circuitElement

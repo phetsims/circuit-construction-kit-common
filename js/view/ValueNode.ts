@@ -50,22 +50,22 @@ const FONT = new PhetFont( { size: 22 } );
 /**
  * For convenience, creates a Text node with empty content and the specified tandem.
  * @param {Tandem} tandem
- * @param {Object} [options]
+ * @param {Object} [providedOptions]
  */
-const createText = ( tandem: Tandem, options?: any ) => new Text( '', merge( {
+const createText = ( tandem: Tandem, providedOptions?: any ) => new Text( '', merge( {
   tandem: tandem,
   font: FONT
-}, options ) );
+}, providedOptions ) );
 
 /**
  * For convenience, creates a RichText node with empty content and the specified tandem.
  * @param {Tandem} tandem
- * @param {Object} [options]
+ * @param {Object} [providedOptions]
  */
-const createRichText = ( tandem: Tandem, options?: any ) => new RichText( '', merge( {
+const createRichText = ( tandem: Tandem, providedOptions?: any ) => new RichText( '', merge( {
   tandem: tandem,
   font: FONT
-}, options ) );
+}, providedOptions ) );
 
 const infinitySpan = '<span style="font-size: 26px; font-family: serif;"><b>∞</b></span>';
 

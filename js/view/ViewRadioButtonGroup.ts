@@ -29,11 +29,11 @@ class ViewRadioButtonGroup extends RectangularRadioButtonGroup {
   /**
    * @param {Property.<CircuitElementViewType>} viewTypeProperty - whether to show lifelike or schematic representations
    * @param {Tandem} tandem
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
-  constructor( viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, options?: any ) {
+  constructor( viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: any ) {
 
-    options = merge( {
+    providedOptions = merge( {
       spacing: 20,
       orientation: 'horizontal',
       buttonContentXMargin: 8,
@@ -45,7 +45,7 @@ class ViewRadioButtonGroup extends RectangularRadioButtonGroup {
       tandem: tandem,
       touchAreaXDilation: 9,
       touchAreaYDilation: 10
-    }, options );
+    }, providedOptions );
 
     // Create a battery which can be used in the views
     const startVertex = new Vertex( new Vector2( BATTERY_LENGTH / 2, 0 ) );
@@ -75,7 +75,7 @@ class ViewRadioButtonGroup extends RectangularRadioButtonGroup {
       value: 'schematic',
       node: schematicIcon,
       tandemName: 'schematicRadioButton'
-    } ], options );
+    } ], providedOptions );
   }
 }
 

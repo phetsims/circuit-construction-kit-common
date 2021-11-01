@@ -18,9 +18,9 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 class FuseTripAnimation extends Node {
 
   /**
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
-  constructor( options?: Partial<NodeOptions> ) {
+  constructor( providedOptions?: Partial<NodeOptions> ) {
     super();
 
     // Geometry sampled by exporting circuit-construction-kit-common/assets/spark.ai to SVG then copying the
@@ -47,9 +47,9 @@ class FuseTripAnimation extends Node {
     } );
 
     const path = new Path( shape, { stroke: 'yellow', lineWidth: 2 } );
-    options = options || {};
-    options.children = [ path ];
-    this.mutate( options );
+    providedOptions = providedOptions || {};
+    providedOptions.children = [ path ];
+    this.mutate( providedOptions );
 
     const animation = new Animation( {
       setValue: ( value: number ) => {

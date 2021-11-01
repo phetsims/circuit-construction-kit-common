@@ -61,19 +61,19 @@ class SensorToolbox extends CCKCPanel {
    * @param {VoltageChartNode[]} voltageChartNodes - nodes for the VoltageChartNode, if present
    * @param {CurrentChartNode[]} currentChartNodes - nodes for the CurrentChartNode, if present
    * @param {Tandem} tandem
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
   constructor( alignGroup: AlignGroup, circuitLayerNode: CircuitLayerNode, voltmeterNodes: VoltmeterNode[],
                ammeterNodes: AmmeterNode[], voltageChartNodes: VoltageChartNode[], currentChartNodes: CurrentChartNode[],
-               tandem: Tandem, options?: any ) {
+               tandem: Tandem, providedOptions?: any ) {
     const circuit = circuitLayerNode.circuit;
 
-    options = merge( {
+    providedOptions = merge( {
       showResultsProperty: circuitLayerNode.model.isValueDepictionEnabledProperty,
       showSeriesAmmeters: true, // whether the series ammeters should be shown in the toolbox
       showNoncontactAmmeters: true, // whether the noncontact ammeters should be shown in the toolbox
       showCharts: false
-    }, options );
+    }, providedOptions );
 
     /**
      * @param {VoltmeterNode[]|AmmeterNode[]|VoltageChartNode[]|CurrentChartNode[]} meterNodes
@@ -163,7 +163,7 @@ class SensorToolbox extends CCKCPanel {
       maxWidth: 60,
       tandem: tandem.createTandem( 'voltmeterLabel' )
     } );
-    const ammeterText = new Text( options.showSeriesAmmeters && options.showNoncontactAmmeters ? ammetersString : ammeterString, {
+    const ammeterText = new Text( providedOptions.showSeriesAmmeters && providedOptions.showNoncontactAmmeters ? ammetersString : ammeterString, {
       maxWidth: 60,
       tandem: tandem.createTandem( 'ammeterLabel' )
     } );
@@ -183,8 +183,8 @@ class SensorToolbox extends CCKCPanel {
     } );
 
     const children = [];
-    options.showNoncontactAmmeters && children.push( ammeterToolNode );
-    options.showSeriesAmmeters && children.push( seriesAmmeterToolNode );
+    providedOptions.showNoncontactAmmeters && children.push( ammeterToolNode );
+    providedOptions.showSeriesAmmeters && children.push( seriesAmmeterToolNode );
 
     const ammeterToolIcon = new VBox( {
       spacing: ICON_TEXT_SPACING,
@@ -202,13 +202,13 @@ class SensorToolbox extends CCKCPanel {
     } );
 
     const topBox = alignGroup.createBox( new HBox( {
-      spacing: ( options.showNoncontactAmmeters && options.showSeriesAmmeters ) ? 20 : 40,
+      spacing: ( providedOptions.showNoncontactAmmeters && providedOptions.showSeriesAmmeters ) ? 20 : 40,
       align: 'bottom',
       children: [ voltmeterToolIcon, ammeterToolIcon ]
     } ) );
 
     const rows: Node[] = [ topBox ];
-    if ( options.showCharts ) {
+    if ( providedOptions.showCharts ) {
       const everything = new Property( Bounds2.EVERYTHING );
 
       const createChartToolIcon = ( chartNodes: Node[], chartNodeIcon: VoltageChartNode | CurrentChartNode, labelNode: Text ) => {

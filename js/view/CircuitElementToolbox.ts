@@ -31,11 +31,11 @@ class CircuitElementToolbox extends HBox {
    * @param {Property.<CircuitElementViewType>} viewTypeProperty
    * @param {CircuitElementToolNode[]} circuitElementToolNodes
    * @param {Tandem} tandem
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
-  constructor( viewTypeProperty: Property<CircuitElementViewType>, circuitElementToolNodes: CircuitElementToolNode[], tandem: Tandem, options?: any ) {
+  constructor( viewTypeProperty: Property<CircuitElementViewType>, circuitElementToolNodes: CircuitElementToolNode[], tandem: Tandem, providedOptions?: any ) {
 
-    options = merge( {
+    providedOptions = merge( {
       carouselOptions: {
 
         itemsPerPage: 5,
@@ -53,10 +53,10 @@ class CircuitElementToolbox extends HBox {
 
         tandem: tandem.createTandem( 'carousel' )
       }
-    }, options );
+    }, providedOptions );
 
     // create the carousel
-    const carousel = new Carousel( circuitElementToolNodes, options.carouselOptions );
+    const carousel = new Carousel( circuitElementToolNodes, providedOptions.carouselOptions );
     carousel.mutate( { scale: CCKCConstants.CAROUSEL_SCALE } );
 
     const pageControl = new PageControl( carousel.numberOfPages, carousel.pageNumberProperty, {

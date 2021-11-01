@@ -64,7 +64,7 @@ class LightBulb extends FixedCircuitElement {
   private readonly viewTypeProperty: Property<CircuitElementViewType>;
 
   // TODO: improve types
-  static createAtPosition: ( startVertex: Vertex, endVertex: Vertex, circuit: Circuit, resistance: number, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, options?: any ) => LightBulb;
+  static createAtPosition: ( startVertex: Vertex, endVertex: Vertex, circuit: Circuit, resistance: number, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: any ) => LightBulb;
   static createVertexPair: ( position: Vector2, circuit: Circuit, icon?: boolean ) => { startVertex: Vertex; endVertex: Vertex; };
 
   /**
@@ -73,13 +73,13 @@ class LightBulb extends FixedCircuitElement {
    * @param {number} resistance - in ohms
    * @param {Property.<CircuitElementViewType>} viewTypeProperty
    * @param {Tandem} tandem
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
-  constructor( startVertex: Vertex, endVertex: Vertex, resistance: number, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, options?: Partial<LightBulbOptions> ) {
+  constructor( startVertex: Vertex, endVertex: Vertex, resistance: number, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: Partial<LightBulbOptions> ) {
     const filledOptions = merge( {
       highResistance: false,
       real: false
-    }, options ) as LightBulbOptions;
+    }, providedOptions ) as LightBulbOptions;
     assert && assert( !filledOptions.hasOwnProperty( 'numberOfDecimalPlaces' ), 'supplied by LightBulb' );
     filledOptions.numberOfDecimalPlaces = filledOptions.highResistance ? 0 : 1;
 

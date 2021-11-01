@@ -78,15 +78,15 @@ class CircuitElementEditContainerNode extends Node {
    * @param {Property.<InteractionMode>} modeProperty
    * @param {Property.<Number>} playAreaCenterXProperty
    * @param {Tandem} tandem
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
-  constructor( circuit: Circuit, visibleBoundsProperty: Property<Bounds2>, modeProperty: Property<'explore' | 'test'>, playAreaCenterXProperty: Property<number>, tandem: Tandem, options?: any ) {
+  constructor( circuit: Circuit, visibleBoundsProperty: Property<Bounds2>, modeProperty: Property<'explore' | 'test'>, playAreaCenterXProperty: Property<number>, tandem: Tandem, providedOptions?: any ) {
 
     super();
 
-    options = merge( {
+    providedOptions = merge( {
       showPhaseShiftControl: false
-    }, options );
+    }, providedOptions );
 
     const trashButton = new TrashButton( circuit, tandem.createTandem( 'trashButton' ) );
     const resetFuseButton = new ResetFuseButton( circuit, tandem.createTandem( 'resetFuseButton' ) );
@@ -287,7 +287,7 @@ class CircuitElementEditContainerNode extends Node {
               }
             ) ];
 
-          if ( options.showPhaseShiftControl ) {
+          if ( providedOptions.showPhaseShiftControl ) {
             children.push( new PhaseShiftControl( selectedCircuitElement, {
               tandem: Tandem.OPT_OUT
             } ) );

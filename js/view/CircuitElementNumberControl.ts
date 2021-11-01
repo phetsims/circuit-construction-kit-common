@@ -31,9 +31,9 @@ class CircuitElementNumberControl extends NumberControl {
    * @param {Circuit} circuit - parent circuit
    * @param {FixedCircuitElement} circuitElement - the CircuitElement controlled by this UI
    * @param {Tandem} tandem
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
-  constructor( title: string, valuePattern: string, valueProperty: NumberProperty, circuit: Circuit, circuitElement: FixedCircuitElement, tandem: Tandem, options?: any ) {
+  constructor( title: string, valuePattern: string, valueProperty: NumberProperty, circuit: Circuit, circuitElement: FixedCircuitElement, tandem: Tandem, providedOptions?: any ) {
 
     assert && assert( !!valueProperty.range, 'Range must be provided' );
 
@@ -74,7 +74,7 @@ class CircuitElementNumberControl extends NumberControl {
       // in the state wrapper, probably from this code being called anyways from when the circuit element
       // is selected.
       tandem: Tandem.OPTIONAL
-    }, options ) );
+    }, providedOptions ) );
 
     // @private {function} - for disposal
     this.disposeCircuitElementNumberControl = () => valueProperty.unlink( valuePropertyListener );

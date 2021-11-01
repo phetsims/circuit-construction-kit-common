@@ -40,10 +40,10 @@ const CORNER_RADIUS = 4;
 /**
  * Utility function for creating a panel for the sensor body
  * Rasterize so it can be rendered in WebGL, see https://github.com/phetsims/circuit-construction-kit-dc/issues/67
- * @param {Object} [options]
+ * @param {Object} [providedOptions]
  * @returns {Rectangle}
  */
-const createPanel = ( options?: any ) => new Rectangle( 0, 0, PANEL_WIDTH, PANEL_HEIGHT, options ).rasterized( { wrap: false } );
+const createPanel = ( providedOptions?: any ) => new Rectangle( 0, 0, PANEL_WIDTH, PANEL_HEIGHT, providedOptions ).rasterized( { wrap: false } );
 
 const orangeBackgroundPanel = createPanel( { cornerRadius: CORNER_RADIUS, fill: ORANGE } );
 const blackBorder = createPanel( {
@@ -61,10 +61,11 @@ class SeriesAmmeterNode extends FixedCircuitElementNode {
    * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
    * @param {SeriesAmmeter} seriesAmmeter
    * @param {Tandem} tandem
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
-  constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, seriesAmmeter: SeriesAmmeter, tandem: Tandem, options?: any ) {
-    options = options || {};
+  constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, seriesAmmeter: SeriesAmmeter,
+               tandem: Tandem, providedOptions?: any ) {
+    providedOptions = providedOptions || {};
 
     // Charges go behind this panel to give the appearance they go through the ammeter
     const readoutText = new Text( WIDEST_LABEL, { fontSize: 15 } );
@@ -167,7 +168,7 @@ class SeriesAmmeterNode extends FixedCircuitElementNode {
       lifelikeNode,
       new Node( { children: [ lifelikeNode ] } ), // reuse lifelike view for the schematic view
       tandem,
-      options
+      providedOptions
     );
 
     // @private {Node} - the panel to be shown in front for z-ordering.  Wrap centered in a child node to make the layout
@@ -176,7 +177,7 @@ class SeriesAmmeterNode extends FixedCircuitElementNode {
       children: [ readoutPanel ]
     } );
 
-    if ( options.isIcon ) {
+    if ( providedOptions.isIcon ) {
       lifelikeNode.addChild( this.frontPanelContainer.mutate( { centerY: lifelikeNode.height / 2 - 2 } ) );
     }
     else {
@@ -187,7 +188,7 @@ class SeriesAmmeterNode extends FixedCircuitElementNode {
     }
 
     // @private (read-only) {boolean} - whether to show as an isIcon
-    this.isIcon = options.isIcon;
+    this.isIcon = providedOptions.isIcon;
 
     // @private {function}
     this.disposeSeriesAmmeterNode = () => {

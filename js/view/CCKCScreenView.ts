@@ -109,11 +109,11 @@ class CCKCScreenView extends ScreenView {
    * @param {CircuitConstructionKitModel} model
    * @param {CircuitElementToolNode[]} circuitElementToolNodes - to be shown in the carousel
    * @param {Tandem} tandem
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
-  constructor( model: CircuitConstructionKitModel, circuitElementToolNodes: CircuitElementToolNode[], tandem: Tandem, options?: Partial<CCKCScreenViewOptions> ) {
+  constructor( model: CircuitConstructionKitModel, circuitElementToolNodes: CircuitElementToolNode[], tandem: Tandem, providedOptions?: Partial<CCKCScreenViewOptions> ) {
 
-    const filledOptions = merge( {
+    const options = merge( {
 
       // When used as a scene, the reset all button is suppressed here, added in the screen so that it may reset all
       // scenes (including but not limited to this one).
@@ -131,7 +131,7 @@ class CCKCScreenView extends ScreenView {
       showStopwatchCheckbox: false,
       showPhaseShiftControl: false,
       hasACandDCVoltageSources: false // determines the string shown in the AdvancedAccordionBox
-    }, options ) as CCKCScreenViewOptions;
+    }, providedOptions ) as CCKCScreenViewOptions;
 
     super( { tandem: tandem } );
 
@@ -167,7 +167,7 @@ class CCKCScreenView extends ScreenView {
         tandem: tandem.createTandem( `ammeterNode${ammeter.phetioIndex}` ), // TODO (phet-io): Group?
         showResultsProperty: model.isValueDepictionEnabledProperty,
         visibleBoundsProperty: this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty,
-        blackBoxStudy: filledOptions.blackBoxStudy
+        blackBoxStudy: options.blackBoxStudy
       } );
       ammeter.droppedEmitter.addListener( bodyNodeGlobalBounds => {
         if ( bodyNodeGlobalBounds.intersectsBounds( this.sensorToolbox.globalBounds ) ) {
@@ -181,7 +181,7 @@ class CCKCScreenView extends ScreenView {
     this.chartNodes = [];
 
     // Optionally initialize the chart nodes
-    if ( filledOptions.showCharts ) {
+    if ( options.showCharts ) {
 
       const createVoltageChartNode = ( tandemName: string ) => {
         const voltageChartNode = new VoltageChartNode( this.circuitLayerNode, model.circuit.timeProperty,
@@ -227,7 +227,7 @@ class CCKCScreenView extends ScreenView {
       model.viewTypeProperty,
       circuitElementToolNodes,
       tandem.createTandem( 'circuitElementToolbox' ),
-      filledOptions.circuitElementToolboxOptions
+      options.circuitElementToolboxOptions
     );
 
     // @protected {SensorToolbox} - so that subclasses can add a layout circuit element near it
@@ -239,9 +239,9 @@ class CCKCScreenView extends ScreenView {
       [ this.voltageChartNode1!, this.voltageChartNode2! ],
       [ this.currentChartNode1!, this.currentChartNode2! ],
       tandem.createTandem( 'sensorToolbox' ), {
-        showSeriesAmmeters: filledOptions.showSeriesAmmeters,
-        showNoncontactAmmeters: filledOptions.showNoncontactAmmeters,
-        showCharts: filledOptions.showCharts
+        showSeriesAmmeters: options.showSeriesAmmeters,
+        showNoncontactAmmeters: options.showNoncontactAmmeters,
+        showCharts: options.showCharts
       } );
 
     // @private {ViewRadioButtonGroup}
@@ -261,7 +261,7 @@ class CCKCScreenView extends ScreenView {
       model.showValuesProperty,
       model.showLabelsProperty,
       model.stopwatch,
-      filledOptions.showStopwatchCheckbox,
+      options.showStopwatchCheckbox,
       tandem.createTandem( 'displayOptionsPanel' )
     );
 
@@ -269,9 +269,9 @@ class CCKCScreenView extends ScreenView {
     this.advancedAccordionBox = new AdvancedAccordionBox(
       model.circuit,
       CONTROL_PANEL_ALIGN_GROUP,
-      filledOptions.hasACandDCVoltageSources ? sourceResistanceString : batteryResistanceString,
+      options.hasACandDCVoltageSources ? sourceResistanceString : batteryResistanceString,
       tandem.createTandem( 'advancedAccordionBox' ), {
-        showRealBulbsCheckbox: !filledOptions.hasACandDCVoltageSources
+        showRealBulbsCheckbox: !options.hasACandDCVoltageSources
       }
     );
 
@@ -279,7 +279,7 @@ class CCKCScreenView extends ScreenView {
 
     // Reset All button
     let resetAllButton: ResetAllButton | null = null;
-    if ( filledOptions.showResetAllButton ) {
+    if ( options.showResetAllButton ) {
       resetAllButton = new ResetAllButton( {
         tandem: tandem.createTandem( 'resetAllButton' ),
         listener: () => {
@@ -295,7 +295,7 @@ class CCKCScreenView extends ScreenView {
 
     const controlPanelVBox = new VBox( {
       spacing: VERTICAL_MARGIN,
-      children: filledOptions.showAdvancedControls ?
+      children: options.showAdvancedControls ?
         [ this.displayOptionsPanel, this.sensorToolbox, this.advancedAccordionBox ] :
         [ this.displayOptionsPanel, this.sensorToolbox ]
     } );
@@ -327,7 +327,7 @@ class CCKCScreenView extends ScreenView {
       model.modeProperty,
       playAreaCenterXProperty,
       tandem.createTandem( 'circuitElementEditContainerNode' ), {
-        showPhaseShiftControl: filledOptions.showPhaseShiftControl
+        showPhaseShiftControl: options.showPhaseShiftControl
       }
     );
 
@@ -364,7 +364,7 @@ class CCKCScreenView extends ScreenView {
     }
 
     let timeControlNode: TimeControlNode | null = null;
-    if ( filledOptions.showTimeControls ) {
+    if ( options.showTimeControls ) {
       timeControlNode = new TimeControlNode( model.isPlayingProperty, {
         tandem: tandem.createTandem( 'timeControlNode' ),
         playPauseStepButtonOptions: {
@@ -388,7 +388,7 @@ class CCKCScreenView extends ScreenView {
       this.viewRadioButtonGroup.centerX = this.circuitElementToolbox.right - this.circuitElementToolbox.carousel.width / 2;
 
       // Float the resetAllButton to the bottom right
-      filledOptions.showResetAllButton && resetAllButton && resetAllButton.mutate( {
+      options.showResetAllButton && resetAllButton && resetAllButton.mutate( {
         right: visibleBounds.right - HORIZONTAL_MARGIN,
         bottom: visibleBounds.bottom - HORIZONTAL_MARGIN
       } );
@@ -444,7 +444,7 @@ class CCKCScreenView extends ScreenView {
     this.stopwatchNodePositionDirty = true;
 
     // @public - the StopwatchNode
-    if ( filledOptions.showStopwatchCheckbox ) {
+    if ( options.showStopwatchCheckbox ) {
       const stopwatchNode = new StopwatchNode( model.stopwatch, {
         dragBoundsProperty: this.visibleBoundsProperty,
         right: controlPanelVBox.left - HORIZONTAL_MARGIN,

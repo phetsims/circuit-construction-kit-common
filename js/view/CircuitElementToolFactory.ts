@@ -129,21 +129,21 @@ class CircuitElementToolFactory {
    * @param {function} createElement - (Vector2) => CircuitElement Function that creates a CircuitElement at the given position
    *                                 - for most components it is the center of the component.  For Light Bulbs, it is
    *                                 - in the center of the socket
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    * @returns {CircuitElementToolNode}
    * @private
    */
   createCircuitElementToolNode( labelString: string, count: number, createIcon: ( t: Tandem, p: Property<CircuitElementViewType> ) => Node,
-                                predicate: ( circuitElement: CircuitElement ) => boolean, createElement: any, options?: any ) {
+                                predicate: ( circuitElement: CircuitElement ) => boolean, createElement: any, providedOptions?: any ) {
 
     assert && assert( Number.isInteger( count ), 'count should be an integer' );
 
-    options = merge( {
+    providedOptions = merge( {
       tandem: Tandem.REQUIRED,
       additionalProperty: new BooleanProperty( true ),
       lifelikeIconHeight: CCKCConstants.TOOLBOX_ICON_HEIGHT,
       schematicIconHeight: CCKCConstants.TOOLBOX_ICON_HEIGHT
-    }, options );
+    }, providedOptions );
 
     const wrap = ( node: Node, height: number ) => {
       const node1 = new Node( {
@@ -153,8 +153,8 @@ class CircuitElementToolFactory {
       return node1;
     };
 
-    const lifelikeIcon = wrap( createIcon( options.tandem.createTandem( 'lifelikeIcon' ), LIFELIKE_PROPERTY ), options.lifelikeIconHeight );
-    const schematicIcon = wrap( createIcon( options.tandem.createTandem( 'schematicIcon' ), SCHEMATIC_PROPERTY ), options.schematicIconHeight );
+    const lifelikeIcon = wrap( createIcon( providedOptions.tandem.createTandem( 'lifelikeIcon' ), LIFELIKE_PROPERTY ), providedOptions.lifelikeIconHeight );
+    const schematicIcon = wrap( createIcon( providedOptions.tandem.createTandem( 'schematicIcon' ), SCHEMATIC_PROPERTY ), providedOptions.schematicIconHeight );
 
     const toggleNode = new ToggleNode( this.viewTypeProperty, [
       { value: 'lifelike', node: lifelikeIcon },
@@ -176,8 +176,8 @@ class CircuitElementToolFactory {
       count,
       this.createCounter( predicate ),
       createElement, {
-        tandem: options.tandem,
-        additionalProperty: options.additionalProperty
+        tandem: providedOptions.tandem,
+        additionalProperty: providedOptions.additionalProperty
       }
     );
   }
@@ -297,21 +297,21 @@ class CircuitElementToolFactory {
   }
 
   /**
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    * @returns {CircuitElementToolNode}
    * @public
    */
-  createResistorToolNode( options?: any ) {
-    options = merge( {
+  createResistorToolNode( providedOptions?: any ) {
+    providedOptions = merge( {
       count: 10,
       resistorType: Resistor.ResistorType.RESISTOR,
       lifelikeIconHeight: 15,
       schematicIconHeight: 14,
       labelString: resistorString,
       tandemName: 'resistorToolNode'
-    }, options );
-    const labelString = options.labelString;
-    const resistorType = options.resistorType;
+    }, providedOptions );
+    const labelString = providedOptions.labelString;
+    const resistorType = providedOptions.resistorType;
 
     // Create the icon model without using the PhetioGroup, so it will not be PhET-iO instrumented.
     const resistorModel = new Resistor(
@@ -321,7 +321,7 @@ class CircuitElementToolFactory {
       Tandem.OPTIONAL
     );
 
-    return this.createCircuitElementToolNode( labelString, options.count,
+    return this.createCircuitElementToolNode( labelString, providedOptions.count,
       ( tandem, viewTypeProperty ) => new ResistorNode( null, null, resistorModel, viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
         isIcon: true
       } ),
@@ -330,9 +330,9 @@ class CircuitElementToolFactory {
         const vertices = this.circuit.createVertexPairArray( position, resistorType.length );
         return this.circuit.resistorGroup.createNextElement( vertices[ 0 ], vertices[ 1 ], resistorType );
       }, {
-        tandem: this.parentTandem.createTandem( options.tandemName ),
-        lifelikeIconHeight: options.lifelikeIconHeight,
-        schematicIconHeight: options.schematicIconHeight
+        tandem: this.parentTandem.createTandem( providedOptions.tandemName ),
+        lifelikeIconHeight: providedOptions.lifelikeIconHeight,
+        schematicIconHeight: providedOptions.schematicIconHeight
       } );
   }
 

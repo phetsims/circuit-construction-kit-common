@@ -65,11 +65,12 @@ class VoltmeterNode extends Node {
    * @param {CircuitConstructionKitModel} model
    * @param {CircuitLayerNode} circuitLayerNode
    * @param {Tandem} tandem
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
-  constructor( voltmeter: Voltmeter, model: CircuitConstructionKitModel | null, circuitLayerNode: CircuitLayerNode | null, tandem: Tandem, options?: any ) {
+  constructor( voltmeter: Voltmeter, model: CircuitConstructionKitModel | null, circuitLayerNode: CircuitLayerNode | null,
+               tandem: Tandem, providedOptions?: any ) {
 
-    options = merge( {
+    providedOptions = merge( {
 
       // Whether this will be used as an icon or not.
       isIcon: false,
@@ -79,7 +80,7 @@ class VoltmeterNode extends Node {
 
       // Whether values can be displayed (hidden after user makes a change in some Black Box modes).
       showResultsProperty: new BooleanProperty( true )
-    }, options );
+    }, providedOptions );
 
     const blackProbeNode = new Rectangle( -2, -2, 4, 4, { // the hit area
       fill: CCKCQueryParameters.showVoltmeterSamplePoints ? Color.BLACK : null,
@@ -115,7 +116,7 @@ class VoltmeterNode extends Node {
     );
 
     const probeTextNode = new ProbeTextNode(
-      voltageReadoutProperty, options.showResultsProperty, voltageString, tandem.createTandem( 'probeTextNode' ), {
+      voltageReadoutProperty, providedOptions.showResultsProperty, voltageString, tandem.createTandem( 'probeTextNode' ), {
         centerX: voltmeterBodyImage[ 0 ].width / 2,
         centerY: voltmeterBodyImage[ 0 ].height / 2
       } );
@@ -171,8 +172,8 @@ class VoltmeterNode extends Node {
         const probeY = -30 - bodyNode.height / 2;
         const probeOffsetX = 78;
 
-        const constrain = ( pt: Vector2 ) => options.visibleBoundsProperty ?
-                                             options.visibleBoundsProperty.value.eroded( CCKCConstants.DRAG_BOUNDS_EROSION ).closestPointTo( pt ) :
+        const constrain = ( pt: Vector2 ) => providedOptions.visibleBoundsProperty ?
+                                             providedOptions.visibleBoundsProperty.value.eroded( CCKCConstants.DRAG_BOUNDS_EROSION ).closestPointTo( pt ) :
                                              pt;
 
         voltmeter.redProbePositionProperty.set( constrain( bodyPosition.plusXY( +probeOffsetX, probeY ) ) );
@@ -227,7 +228,7 @@ class VoltmeterNode extends Node {
     this.blackProbeNode = blackProbeNode;
 
     // For the real version (not the icon), add drag listeners and update visibility
-    if ( !options.isIcon ) {
+    if ( !providedOptions.isIcon ) {
 
       // Show the voltmeter when icon dragged out of the toolbox
       voltmeter.visibleProperty.linkAttribute( this, 'visible' );
@@ -244,7 +245,7 @@ class VoltmeterNode extends Node {
           start: () => this.moveToFront(),
           tandem: tandem.createTandem( 'probeDragListener' )
         } );
-        options.visibleBoundsProperty.link( ( visibleBounds: Bounds2 ) => {
+        providedOptions.visibleBoundsProperty.link( ( visibleBounds: Bounds2 ) => {
           probeDragListener.dragBounds = visibleBounds.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
         } );
         return probeDragListener;
@@ -276,7 +277,7 @@ class VoltmeterNode extends Node {
         // https://github.com/phetsims/circuit-construction-kit-common/issues/301
         targetNode: this
       } );
-      options.visibleBoundsProperty.link( ( visibleBounds: Bounds2 ) => {
+      providedOptions.visibleBoundsProperty.link( ( visibleBounds: Bounds2 ) => {
         const erodedBounds = visibleBounds.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
         this.dragHandler!.dragBounds = erodedBounds;
 
@@ -336,7 +337,7 @@ class VoltmeterNode extends Node {
     }
 
     // When rendered as an icon, the touch area should span the bounds (no gaps between probes and body)
-    if ( options.isIcon ) {
+    if ( providedOptions.isIcon ) {
       this.touchArea = this.bounds.copy();
       this.mouseArea = this.bounds.copy();
       this.cursor = 'pointer';

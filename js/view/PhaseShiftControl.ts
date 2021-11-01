@@ -24,13 +24,13 @@ class PhaseShiftControl extends VBox {
 
   /**
    * @param {ACVoltage} acVoltage
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
-  constructor( acVoltage: ACVoltage, options?: any ) {
-    options = merge( {
+  constructor( acVoltage: ACVoltage, providedOptions?: any ) {
+    providedOptions = merge( {
       spacing: 7
-    }, options );
-    assert && assert( !options.children, 'children not supported' );
+    }, providedOptions );
+    assert && assert( !providedOptions.children, 'children not supported' );
 
     const valueRangeProperty = new Property( new Range( -180, 180 ) );
     const enabledProperty = new BooleanProperty( true );
@@ -52,7 +52,7 @@ class PhaseShiftControl extends VBox {
       },
       arrowsPosition: 'leftRight',
       arrowsScale: 0.9,
-      tandem: options.tandem.createTandem( 'numberSpinner' )
+      tandem: providedOptions.tandem.createTandem( 'numberSpinner' )
     };
 
     const title = new Text( circuitConstructionKitCommonStrings.phaseShift, {
@@ -61,8 +61,8 @@ class PhaseShiftControl extends VBox {
     } );
 
     const numberSpinner = new NumberSpinner( acVoltage.phaseProperty, valueRangeProperty, spinnerOptions );
-    options.children = [ title, numberSpinner ];
-    super( options );
+    providedOptions.children = [ title, numberSpinner ];
+    super( providedOptions );
   }
 }
 

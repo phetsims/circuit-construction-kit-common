@@ -80,12 +80,12 @@ class ResistorNode extends FixedCircuitElementNode {
    * @param {Resistor} resistor
    * @param {Property.<CircuitElementViewType>} viewTypeProperty
    * @param {Tandem} tandem
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
   constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, resistor: Resistor,
-               viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, options?: Partial<FixedCircuitElementNodeOptions> ) {
+               viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: Partial<FixedCircuitElementNodeOptions> ) {
 
-    options = merge( { isIcon: false, useHitTestForSensors: true }, options );
+    providedOptions = merge( { isIcon: false, useHitTestForSensors: true }, providedOptions );
 
     // Assigned to instance variable after super()
     const lifelikeResistorImageNode = new Image( RESISTOR_IMAGE_MAP.get( resistor.resistorType ) ) as unknown as Node;
@@ -143,7 +143,7 @@ class ResistorNode extends FixedCircuitElementNode {
 
     // Icons should appear the same in the toolbox, see
     // https://github.com/phetsims/circuit-construction-kit-common/issues/389
-    const width = options.isIcon ? CCKCConstants.RESISTOR_LENGTH : resistor.distanceBetweenVertices;
+    const width = providedOptions.isIcon ? CCKCConstants.RESISTOR_LENGTH : resistor.distanceBetweenVertices;
     lifelikeResistorImageNode.mutate( {
       scale: width / lifelikeResistorImageNode.width
     } );
@@ -224,7 +224,7 @@ class ResistorNode extends FixedCircuitElementNode {
       lifelikeResistorImageNode,
       schematicNode,
       tandem,
-      options
+      providedOptions
     );
 
     // @public (read-only) {Resistor} the resistor depicted by this node

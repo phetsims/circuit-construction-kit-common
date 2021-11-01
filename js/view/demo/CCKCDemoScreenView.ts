@@ -23,10 +23,10 @@ const LEAD_Y = -73;
 
 class CCKCDemoScreenView extends ScreenView {
   /**
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
-  constructor( options?: any ) {
-    super( options );
+  constructor( providedOptions?: any ) {
+    super( providedOptions );
 
     // Classical zig-zag shape
     const schematicShape = new Shape()

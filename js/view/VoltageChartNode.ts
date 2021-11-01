@@ -38,21 +38,21 @@ class VoltageChartNode extends CCKCChartNode {
    * @param {CircuitLayerNode} circuitLayerNode
    * @param {Property.<number>} timeProperty
    * @param {Property.<Bounds2>} visibleBoundsProperty
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
-  constructor( circuitLayerNode: CircuitLayerNode, timeProperty: Property<number>, visibleBoundsProperty: Property<Bounds2>, options?: any ) {
+  constructor( circuitLayerNode: CircuitLayerNode, timeProperty: Property<number>, visibleBoundsProperty: Property<Bounds2>, providedOptions?: any ) {
 
-    options = merge( {
+    providedOptions = merge( {
       defaultZoomLevel: new Range( -10, 10 ),
       timeDivisions: CCKCConstants.NUMBER_OF_TIME_DIVISIONS,
       tandem: Tandem.OPTIONAL
-    }, options );
+    }, providedOptions );
 
-    super( circuitLayerNode, timeProperty, visibleBoundsProperty, createObservableArray(), voltageWithUnitsString, options );
+    super( circuitLayerNode, timeProperty, visibleBoundsProperty, createObservableArray(), voltageWithUnitsString, providedOptions );
 
     // @private {CCKCProbeNode}
-    this.probeNode1 = this.addProbeNode( SERIES_1_COLOR, SERIES_1_COLOR, 5, 10, this.aboveBottomLeft1, options.tandem.createTandem( 'probeNode1' ) );
-    this.probeNode2 = this.addProbeNode( SERIES_2_COLOR, SERIES_2_COLOR, 36, 54, this.aboveBottomLeft2, options.tandem.createTandem( 'probeNode2' ) );
+    this.probeNode1 = this.addProbeNode( SERIES_1_COLOR, SERIES_1_COLOR, 5, 10, this.aboveBottomLeft1, providedOptions.tandem.createTandem( 'probeNode1' ) );
+    this.probeNode2 = this.addProbeNode( SERIES_2_COLOR, SERIES_2_COLOR, 36, 54, this.aboveBottomLeft2, providedOptions.tandem.createTandem( 'probeNode2' ) );
 
     this.lastStepTime = null;
   }

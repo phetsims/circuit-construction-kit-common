@@ -50,13 +50,14 @@ class FuseNode extends FixedCircuitElementNode {
    * @param {Fuse} fuse
    * @param {Property.<CircuitElementViewType>} viewTypeProperty
    * @param {Tandem} tandem
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
-  constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, fuse: Fuse, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, options?: any ) {
+  constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, fuse: Fuse,
+               viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: any ) {
 
     assert && assert( fuse instanceof Fuse, 'fuse should be a Fuse' );
 
-    options = merge( { isIcon: false, useHitTestForSensors: true }, options );
+    providedOptions = merge( { isIcon: false, useHitTestForSensors: true }, providedOptions );
 
     const fuseImageNode = new Image( fuseImage, { scale: 0.691 } ) as unknown as Node;
     const numberOfZigZags = ( fuseImageNode.width - CAP_WIDTH * 2 ) / HORIZONTAL_ZIG_ZAG_DISTANCE / 2;
@@ -110,7 +111,7 @@ class FuseNode extends FixedCircuitElementNode {
 
     // Icons should appear the same in the toolbox, see
     // https://github.com/phetsims/circuit-construction-kit-common/issues/389
-    const width = options.isIcon ? CCKCConstants.RESISTOR_LENGTH : fuse.distanceBetweenVertices;
+    const width = providedOptions.isIcon ? CCKCConstants.RESISTOR_LENGTH : fuse.distanceBetweenVertices;
     lifelikeFuseNode.mutate( { scale: width / lifelikeFuseNode.width } );
 
     const scale = lifelikeFuseNode.width / schematicShape.bounds.width;
@@ -170,7 +171,7 @@ class FuseNode extends FixedCircuitElementNode {
     schematicNode.mouseArea = schematicNode.bounds.shiftedY( schematicNode.height / 2 );
     schematicNode.touchArea = schematicNode.bounds.shiftedY( schematicNode.height / 2 );
 
-    super( screenView, circuitLayerNode, fuse, viewTypeProperty, lifelikeFuseNode, schematicNode, tandem, options );
+    super( screenView, circuitLayerNode, fuse, viewTypeProperty, lifelikeFuseNode, schematicNode, tandem, providedOptions );
 
     // @public (read-only) {Fuse} the fuse depicted by this node
     this.fuse = fuse;
@@ -184,7 +185,7 @@ class FuseNode extends FixedCircuitElementNode {
       glassNode.fill = isTripped ? '#4e4e4e' : DEFAULT_GLASS_FILL;
       filamentPath.shape = isTripped ? brokenFilamentShape : filamentShape;
     };
-    if ( !options.isIcon ) {
+    if ( !providedOptions.isIcon ) {
       this.fuse.isTrippedProperty.link( updateTripped );
     }
 
@@ -192,7 +193,7 @@ class FuseNode extends FixedCircuitElementNode {
     this.disposeFuseNode = () => {
       lifelikeFuseNode.dispose();
       fuse.currentRatingProperty.unlink( updateFilamentPathLineWidth );
-      if ( !options.isIcon ) {
+      if ( !providedOptions.isIcon ) {
         this.fuse.isTrippedProperty.unlink( updateTripped );
       }
       schematicTypeProperty.unlink( updateSchematicType );

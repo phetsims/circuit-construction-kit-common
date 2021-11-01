@@ -28,13 +28,14 @@ class ProbeTextNode extends VBox {
    * @param {Property.<boolean>} showResultsProperty - true if the text should be displayed
    * @param {string} title - the title
    * @param {Tandem} tandem
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
-  constructor( textProperty: Property<string>, showResultsProperty: Property<boolean>, title: string, tandem: Tandem, options?: any ) {
+  constructor( textProperty: Property<string>, showResultsProperty: Property<boolean>, title: string, tandem: Tandem,
+               providedOptions?: any ) {
 
-    options = merge( {
+    providedOptions = merge( {
       spacing: 3
-    }, options );
+    }, providedOptions );
 
     const readout = new Text( textProperty.value, {
       fontSize: 40,
@@ -70,7 +71,7 @@ class ProbeTextNode extends VBox {
     showResultsProperty.linkAttribute( readout, 'visible' );
 
     // set the children
-    options.children = [ new Text( title, {
+    providedOptions.children = [ new Text( title, {
       fontSize: 42,
       maxWidth: 190,
       tandem: tandem.createTandem( 'titleText' )
@@ -78,7 +79,7 @@ class ProbeTextNode extends VBox {
       children: [ textBox, readout ]
     } ) ];
 
-    super( options );
+    super( providedOptions );
   }
 }
 

@@ -34,28 +34,28 @@ abstract class CircuitElementNode extends Node {
   /**
    * @param {CircuitElement} circuitElement - the CircuitElement to be rendered
    * @param {Circuit|null} circuit - the circuit which the element can be removed from or null for icons
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
-  constructor( circuitElement: CircuitElement, circuit: Circuit | null, options?: any ) {
+  constructor( circuitElement: CircuitElement, circuit: Circuit | null, providedOptions?: any ) {
 
-    options = merge( {
+    providedOptions = merge( {
 
       useHitTestForSensors: false // if true, use the scenery mouse region hit test for fine-grained region. Otherwise, use bounds test.
-    }, options );
+    }, providedOptions );
 
     // When not an icon, enable keyboard navigation
     if ( circuit ) {
-      options = merge( {
+      providedOptions = merge( {
         tagName: 'div', // HTML tag name for representative element in the document, see ParallelDOM.js
         focusable: true,
         focusHighlight: 'invisible' // highlights are drawn by the simulation, invisible is deprecated don't use in future
-      }, options );
+      }, providedOptions );
     }
 
-    super( options );
+    super( providedOptions );
 
     // @private - see above
-    this.useHitTestForSensors = options.useHitTestForSensors;
+    this.useHitTestForSensors = providedOptions.useHitTestForSensors;
 
     // @private (read-only) {Circuit|null} - the circuit which the element can be removed from or null for icons
     this.circuit = circuit;
