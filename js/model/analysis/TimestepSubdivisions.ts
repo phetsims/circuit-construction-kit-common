@@ -78,7 +78,7 @@ class TimestepSubdivisions<T> {
 
       // When paused, we run the clock at a very low dt to make sure the circuit is fully updated when something changes.
       // In this case, no error checking, just run with the paused DT.
-      return { dt: MIN_DT, state: steppable.update( state, CCKCConstants.PAUSED_DT ) };
+      return { dt: CCKCConstants.PAUSED_DT, state: steppable.update( state, CCKCConstants.PAUSED_DT ) };
     }
     else if ( dt <= MIN_DT ) {
 
