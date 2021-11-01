@@ -100,18 +100,19 @@ class Circuit {
    * @param {Property.<CircuitElementViewType>} viewTypeProperty
    * @param {Property.<boolean>} addRealBulbsProperty
    * @param {Tandem} tandem
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
-  constructor( viewTypeProperty: Property<CircuitElementViewType>, addRealBulbsProperty: Property<boolean>, tandem: Tandem, options?: Partial<CircuitOptions> ) {
+  constructor( viewTypeProperty: Property<CircuitElementViewType>, addRealBulbsProperty: Property<boolean>, tandem: Tandem,
+               providedOptions?: Partial<CircuitOptions> ) {
 
     // @public
     this.viewTypeProperty = viewTypeProperty;
     this.addRealBulbsProperty = addRealBulbsProperty;
 
-    const filledOptions = merge( { blackBoxStudy: false }, options ) as CircuitOptions;
+    const options = merge( { blackBoxStudy: false }, providedOptions ) as CircuitOptions;
 
     // @public {Object}
-    this.blackBoxStudy = filledOptions.blackBoxStudy;
+    this.blackBoxStudy = options.blackBoxStudy;
 
     // @public {NumberProperty} - All wires share the same resistivity, which is defined by
     // resistance = resistivity * length. On the Lab Screen, there is a wire resistivity control

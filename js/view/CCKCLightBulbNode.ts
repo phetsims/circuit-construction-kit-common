@@ -70,14 +70,14 @@ class CCKCLightBulbNode extends FixedCircuitElementNode {
    * @param {Property.<boolean>} showResultsProperty - true if the sim can display values
    * @param {Property.<CircuitElementViewType>} viewTypeProperty
    * @param {Tandem} tandem
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
   constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, lightBulb: LightBulb,
-               showResultsProperty: Property<boolean>, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, options?: Partial<FixedCircuitElementNodeOptions> ) {
+               showResultsProperty: Property<boolean>, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: Partial<FixedCircuitElementNodeOptions> ) {
     let filledOptions = merge( {
       isIcon: false,
       useHitTestForSensors: true
-    }, options ) as FixedCircuitElementNodeOptions;
+    }, providedOptions ) as FixedCircuitElementNodeOptions;
     const brightnessProperty = new NumberProperty( 0 );
     const updateBrightness = Property.multilink(
       [ lightBulb.currentProperty, showResultsProperty, lightBulb.resistanceProperty ],

@@ -22,23 +22,23 @@ class CCKCProbeNode extends ProbeNode {
   /**
    * @param {Node} node container node which should move to front on press
    * @param {Property.<Bounds2>} visibleBoundsProperty - visible bounds of the ScreenView
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
-  constructor( node: Node, visibleBoundsProperty: Property<Bounds2>, options?: any ) {
+  constructor( node: Node, visibleBoundsProperty: Property<Bounds2>, providedOptions?: any ) {
 
-    options = merge( {
+    providedOptions = merge( {
       cursor: 'pointer',
       sensorTypeFunction: ProbeNode.crosshairs( { stroke: 'white' } ),
       scale: 0.4,
       drag: () => {},
       tandem: Tandem.OPTIONAL
-    }, options );
+    }, providedOptions );
 
-    super( options );
+    super( providedOptions );
 
     // Wire position through PhET-iO so it can be recorded in the state
     const positionProperty = new Vector2Property( new Vector2( 0, 0 ), {
-      tandem: options.tandem.createTandem( 'positionProperty' )
+      tandem: providedOptions.tandem.createTandem( 'positionProperty' )
     } );
 
     positionProperty.link( ( p: Vector2 ) => this.setTranslation( p ) );
@@ -49,8 +49,8 @@ class CCKCProbeNode extends ProbeNode {
       positionProperty: positionProperty,
       dragBoundsProperty: visibleBoundsProperty,
       press: () => node.moveToFront(),
-      drag: () => options.drag(),
-      tandem: options.tandem.createTandem( 'dragListener' )
+      drag: () => providedOptions.drag(),
+      tandem: providedOptions.tandem.createTandem( 'dragListener' )
     } ) );
   }
 }

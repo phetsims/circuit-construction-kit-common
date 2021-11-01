@@ -33,21 +33,21 @@ class Fuse extends FixedCircuitElement {
    * @param {Vertex} startVertex
    * @param {Vertex} endVertex
    * @param {Tandem} tandem
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
-  constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, options?: Partial<FuseOptions> ) {
-    const filledOptions = merge( {
+  constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: Partial<FuseOptions> ) {
+    const options = merge( {
       resistance: CCKCConstants.MINIMUM_RESISTANCE,
       fuseLength: CCKCConstants.RESISTOR_LENGTH, // Same length as a resistor
       currentRating: 4, // Amps
       isCurrentReentrant: true, // Changing the current can trip a fuse, which changes the current
       numberOfDecimalPlaces: 1
-    }, options ) as FuseOptions;
+    }, providedOptions ) as FuseOptions;
 
-    super( startVertex, endVertex, filledOptions.fuseLength, tandem, filledOptions );
+    super( startVertex, endVertex, options.fuseLength, tandem, options );
 
     // @public {Property.<number>} the current at which the fuse trips, in amps
-    this.currentRatingProperty = new NumberProperty( filledOptions.currentRating, {
+    this.currentRatingProperty = new NumberProperty( options.currentRating, {
       range: new Range( 0.5, 20 )
     } );
 

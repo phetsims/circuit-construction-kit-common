@@ -20,10 +20,10 @@ class SeriesAmmeter extends FixedCircuitElement {
    * @param {Vertex} startVertex
    * @param {Vertex} endVertex
    * @param {Tandem} tandem
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
-  constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, options?: Partial<FixedCircuitElementOptions> ) {
-    super( startVertex, endVertex, CCKCConstants.SERIES_AMMETER_LENGTH, tandem, options );
+  constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: Partial<FixedCircuitElementOptions> ) {
+    super( startVertex, endVertex, CCKCConstants.SERIES_AMMETER_LENGTH, tandem, providedOptions );
 
     // @public (read-only) {Property.<number>} the resistance in ohms.  A constant, but modeled as a property for
     // uniformity with other resistive elements.

@@ -99,14 +99,14 @@ class ACVoltageNode extends FixedCircuitElementNode {
    * @param {ACVoltage} acSource
    * @param {Property.<CircuitElementViewType>} viewTypeProperty
    * @param {Tandem} tandem
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
   constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, acSource: ACVoltage,
-               viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, options?: Partial<ACVoltageNodeOptions> ) {
-    options = merge( {
+               viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: Partial<ACVoltageNodeOptions> ) {
+    const options = merge( {
       numberOfDecimalPlaces: 1,
       useHitTestForSensors: true
-    }, options );
+    }, providedOptions );
     assert && assert( acSource instanceof ACVoltage, 'should be AC voltage' );
 
     // Center vertically to match the FixedCircuitElementNode assumption that origin is center left

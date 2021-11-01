@@ -78,13 +78,13 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
    * @param {Capacitor} capacitor
    * @param {Property.<CircuitElementViewType>} viewTypeProperty
    * @param {Tandem} tandem
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
-  constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, capacitor: Capacitor, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, options?: Partial<FixedCircuitElementNodeOptions> ) {
+  constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, capacitor: Capacitor, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: Partial<FixedCircuitElementNodeOptions> ) {
 
-    options = merge( {
+    providedOptions = merge( {
       isIcon: false
-    }, options );
+    }, providedOptions );
 
     const wireStubOptions = {
 
@@ -119,7 +119,7 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
 
       // @ts-ignore
       orientation: Orientation.HORIZONTAL, // so the "-" charges are upside-up in the default orientation
-      includeChargeNode: !options.isIcon,
+      includeChargeNode: !providedOptions.isIcon,
       scale: 0.45,
       rotation: -Math.PI / 2,
       centerX: capacitor.distanceBetweenVertices / 2,
@@ -179,7 +179,7 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
       lifelikeNodeContainer,
       schematicNode,
       tandem,
-      options
+      providedOptions
     );
 
     // @public (read-only) {Capacitor} - the Capacitor rendered by this Node

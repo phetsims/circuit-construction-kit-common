@@ -18,18 +18,18 @@ class CCKCPanel extends Panel {
   /**
    * @param {Node} content - what will appear in the panel
    * @param {Tandem} tandem
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
-  constructor( content: Node, tandem: Tandem, options?: Partial<PanelOptions> ) {
-    options = merge( {
+  constructor( content: Node, tandem: Tandem, providedOptions?: Partial<PanelOptions> ) {
+    providedOptions = merge( {
       fill: CCKCConstants.PANEL_COLOR,
       lineWidth: CCKCConstants.PANEL_LINE_WIDTH,
       xMargin: 15,
       yMargin: 15,
       tandem: tandem,
       cornerRadius: CCKCConstants.CORNER_RADIUS
-    }, options );
-    super( content, options );
+    }, providedOptions );
+    super( content, providedOptions );
   }
 }
 

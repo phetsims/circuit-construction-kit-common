@@ -28,19 +28,19 @@ abstract class FixedCircuitElement extends CircuitElement {
    * @param {Vertex} endVertex
    * @param {number} chargePathLength - the distance the charges travel (in view coordinates), see CircuitElement.js
    * @param {Tandem} tandem
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
-  constructor( startVertex: Vertex, endVertex: Vertex, chargePathLength: number, tandem: Tandem, options?: Partial<FixedCircuitElementOptions> ) {
+  constructor( startVertex: Vertex, endVertex: Vertex, chargePathLength: number, tandem: Tandem, providedOptions?: Partial<FixedCircuitElementOptions> ) {
 
-    const filledOptions = merge( {
+    const options = merge( {
       numberOfDecimalPlaces: 1
-    }, options ) as FixedCircuitElementOptions;
+    }, providedOptions ) as FixedCircuitElementOptions;
 
     // Super constructor
-    super( startVertex, endVertex, chargePathLength, tandem, filledOptions );
+    super( startVertex, endVertex, chargePathLength, tandem, options );
 
     // @public (read-only) {number} - the number of decimal places to show in readouts and controls
-    this.numberOfDecimalPlaces = filledOptions.numberOfDecimalPlaces;
+    this.numberOfDecimalPlaces = options.numberOfDecimalPlaces;
 
     // @public (read-only) {number} The distance from one vertex to another (as the crow flies), used for rotation
     // about a vertex

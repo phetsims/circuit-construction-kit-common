@@ -81,24 +81,24 @@ class CCKCChartNode extends Node {
    * @param {Property.<Bounds2>} visibleBoundsProperty
    * @param {ObservableArrayDef.<Vector2|null>} series
    * @param {string} verticalAxisLabel
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
   constructor( circuitLayerNode: CircuitLayerNode, timeProperty: Property<number>, visibleBoundsProperty: Property<Bounds2>,
-               series: ObservableArray<Vector2 | null>, verticalAxisLabel: string, options?: Partial<CCKCChartNodeOptions> ) {
-    const filledOptions = merge( {
+               series: ObservableArray<Vector2 | null>, verticalAxisLabel: string, providedOptions?: Partial<CCKCChartNodeOptions> ) {
+    const options = merge( {
       defaultZoomLevel: new Range( -2, 2 ),
 
       // Prevent adjustment of the control panel rendering while dragging,
       // see https://github.com/phetsims/wave-interference/issues/212
       preventFit: true,
       tandem: Tandem.OPTIONAL
-    }, options ) as CCKCChartNodeOptions;
+    }, providedOptions ) as CCKCChartNodeOptions;
     const backgroundNode = new Node( { cursor: 'pointer' } );
 
     super();
 
     // @public {Meter}
-    this.meter = new Meter( filledOptions.tandem.createTandem( 'meter' ), 0 );
+    this.meter = new Meter( options.tandem.createTandem( 'meter' ), 0 );
 
     // @protected {ObservableArrayDef.<Vector2|null>}
     this.series = series;
@@ -122,7 +122,7 @@ class CCKCChartNode extends Node {
     this.addChild( this.backgroundNode );
 
     // Mutate after backgroundNode is added as a child
-    this.mutate( filledOptions );
+    this.mutate( options );
 
     // @public - emits when the probes should be put in standard relative position to the body
     this.alignProbesEmitter = new Emitter();
@@ -183,12 +183,12 @@ class CCKCChartNode extends Node {
       new Range( -2, 2 ),
       new Range( -0.4, 0.4 )
     ];
-    const initialZoomIndex = zoomRanges.findIndex( e => e.equals( filledOptions.defaultZoomLevel ) );
+    const initialZoomIndex = zoomRanges.findIndex( e => e.equals( options.defaultZoomLevel ) );
 
     // @private
     this.zoomLevelProperty = new NumberProperty( initialZoomIndex, {
       range: new Range( 0, zoomRanges.length - 1 ),
-      tandem: filledOptions.tandem.createTandem( 'zoomLevelProperty' )
+      tandem: options.tandem.createTandem( 'zoomLevelProperty' )
     } );
 
     const gridLineOptions = {
@@ -229,7 +229,7 @@ class CCKCChartNode extends Node {
         xMargin: 3,
         yMargin: 3
       },
-      tandem: filledOptions.tandem.createTandem( 'zoomButtonGroup' )
+      tandem: options.tandem.createTandem( 'zoomButtonGroup' )
     } );
     this.zoomLevelProperty.link( ( zoomLevel: number ) => {
       chartTransform.setModelYRange( zoomRanges[ zoomLevel ] );

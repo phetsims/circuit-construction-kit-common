@@ -22,9 +22,11 @@ import Circuit from '../model/Circuit.js';
 import AlignGroup from '../../../scenery/js/nodes/AlignGroup.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 
-type AdvancedAccordionBoxOptions = {
+
+type AdvancedAccordionBoxImplementationOptions = {
   showRealBulbsCheckbox: boolean
-} & CCKCAccordionBoxOptions;
+};
+type AdvancedAccordionBoxOptions = AdvancedAccordionBoxImplementationOptions & CCKCAccordionBoxOptions;
 
 class AdvancedAccordionBox extends CCKCAccordionBox {
 
@@ -33,13 +35,13 @@ class AdvancedAccordionBox extends CCKCAccordionBox {
    * @param {AlignGroup} alignGroup - to match the width of other panels
    * @param {string} batteryResistanceControlString
    * @param {Tandem} tandem
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
-  constructor( circuit: Circuit, alignGroup: AlignGroup, batteryResistanceControlString: string, tandem: Tandem, options?: Partial<AdvancedAccordionBoxOptions> ) {
+  constructor( circuit: Circuit, alignGroup: AlignGroup, batteryResistanceControlString: string, tandem: Tandem, providedOptions?: Partial<AdvancedAccordionBoxOptions> ) {
 
-    options = merge( {
+    const options = merge( {
       showRealBulbsCheckbox: true
-    }, options );
+    }, providedOptions ) as Required<AdvancedAccordionBoxImplementationOptions>;
 
     const titleConfig = {
       fontSize: CCKCConstants.FONT_SIZE,

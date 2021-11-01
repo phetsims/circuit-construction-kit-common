@@ -37,11 +37,11 @@ class ACVoltage extends VoltageSource {
    * @param {Vertex} endVertex - the other battery vertex
    * @param {Property.<number>} internalResistanceProperty - the resistance of the battery
    * @param {Tandem} tandem
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
-  constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, tandem: Tandem, options?: Partial<ACVoltageOptions> ) {
+  constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, tandem: Tandem, providedOptions?: Partial<ACVoltageOptions> ) {
     assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );
-    const filledOptions = merge( {
+    const options = merge( {
       initialOrientation: 'right',
       voltage: 9.0,
       isFlammable: true,
@@ -49,11 +49,11 @@ class ACVoltage extends VoltageSource {
       voltagePropertyOptions: {
         range: new Range( -MAX_VOLTAGE, MAX_VOLTAGE )
       }
-    }, options ) as ACVoltageOptions;
-    super( startVertex, endVertex, internalResistanceProperty, CCKCConstants.BATTERY_LENGTH, tandem, filledOptions );
+    }, providedOptions ) as ACVoltageOptions;
+    super( startVertex, endVertex, internalResistanceProperty, CCKCConstants.BATTERY_LENGTH, tandem, options );
 
     // @public {NumberProperty} - the maximum voltage, which can be controlled by the CircuitElementNumberControl
-    this.maximumVoltageProperty = new NumberProperty( filledOptions.voltage, {
+    this.maximumVoltageProperty = new NumberProperty( options.voltage, {
       tandem: tandem.createTandem( 'maximumVoltageProperty' ),
       range: new Range( 0, MAX_VOLTAGE )
     } );

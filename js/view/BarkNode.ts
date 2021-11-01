@@ -17,9 +17,9 @@ import Node from '../../../scenery/js/nodes/Node.js';
 class BarkNode extends Node {
 
   /**
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
-  constructor( options?: Partial<NodeOptions> ) {
+  constructor( providedOptions?: Partial<NodeOptions> ) {
     super();
     this.addChild( new Path( commentSolidShape, {
       fill: 'white',
@@ -53,7 +53,7 @@ class BarkNode extends Node {
       center: this.center.plusXY( 0, -3 )
     } ) );
 
-    this.mutate( options );
+    this.mutate( providedOptions );
   }
 }
 

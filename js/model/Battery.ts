@@ -32,9 +32,10 @@ class Battery extends VoltageSource {
    * @param {Property.<number>} internalResistanceProperty - the resistance of the battery
    * @param {BatteryType} batteryType
    * @param {Tandem} tandem
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
-  constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, batteryType: BatteryType, tandem: Tandem, options?: Partial<BatteryOptions> ) {
+  constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, batteryType: BatteryType,
+               tandem: Tandem, providedOptions?: Partial<BatteryOptions> ) {
     assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );
     const filledOptions = merge( {
       initialOrientation: 'right',
@@ -44,7 +45,7 @@ class Battery extends VoltageSource {
       voltagePropertyOptions: {
         range: batteryType === 'normal' ? new Range( 0, 120 ) : new Range( 100, 100000 )
       }
-    }, options ) as BatteryOptions;
+    }, providedOptions ) as BatteryOptions;
     super( startVertex, endVertex, internalResistanceProperty, BATTERY_LENGTH, tandem, filledOptions );
 
     // @public (read-only) {string} - track which way the battery "button" (plus side) was facing the initial state so

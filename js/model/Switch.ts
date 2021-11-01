@@ -34,9 +34,9 @@ class Switch extends FixedCircuitElement {
    * @param {Vertex} startVertex
    * @param {Vertex} endVertex
    * @param {Tandem} tandem
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
-  constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, options?: Partial<SwitchOptions> ) {
+  constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: Partial<SwitchOptions> ) {
 
     const filledOptions = merge( {
       closed: false,
@@ -44,7 +44,7 @@ class Switch extends FixedCircuitElement {
       // Use the bounding box of the open lifelike switch to show bounds for all combinations of open/closed x lifelike/schematic
       // See https://github.com/phetsims/circuit-construction-kit-dc/issues/132
       isSizeChangedOnViewChange: false
-    }, options ) as SwitchOptions;
+    }, providedOptions ) as SwitchOptions;
 
     super( startVertex, endVertex, SWITCH_LENGTH, tandem, filledOptions );
 

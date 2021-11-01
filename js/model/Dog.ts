@@ -22,10 +22,10 @@ class Dog extends Resistor {
    * @param {Vertex} startVertex
    * @param {Vertex} endVertex
    * @param {Tandem} tandem
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
-  constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, options?: ResistorOptions ) {
-    super( startVertex, endVertex, Resistor.ResistorType.DOG, tandem, options );
+  constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: ResistorOptions ) {
+    super( startVertex, endVertex, Resistor.ResistorType.DOG, tandem, providedOptions );
 
     // @private - keep track of whether the dog is barking, so we can update the view accordingly
     this.isBarkingProperty = new BooleanProperty( false );

@@ -72,14 +72,14 @@ abstract class CircuitElement extends PhetioObject {
    * @param {Vertex} endVertex
    * @param {number} chargePathLength
    * @param {Tandem} tandem
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
-  constructor( startVertex: Vertex, endVertex: Vertex, chargePathLength: number, tandem: Tandem, options?: Partial<CircuitElementOptions> ) {
+  constructor( startVertex: Vertex, endVertex: Vertex, chargePathLength: number, tandem: Tandem, providedOptions?: Partial<CircuitElementOptions> ) {
     assert && assert( startVertex !== endVertex, 'startVertex cannot be the same as endVertex' );
     assert && assert( typeof chargePathLength === 'number', 'charge path length should be a number' );
     assert && assert( chargePathLength > 0, 'charge path length must be positive' );
 
-    const filledOptions = merge( {
+    const options = merge( {
       canBeDroppedInToolbox: true, // In the CCK: Basics intro screen, CircuitElements can't be dropped into the toolbox
       interactive: true, // In CCK: Black Box Study, CircuitElements in the black box cannot be manipulated
       isSizeChangedOnViewChange: true,
@@ -90,9 +90,9 @@ abstract class CircuitElement extends PhetioObject {
       isCurrentReentrant: false,
       phetioDynamicElement: true,
       phetioType: CircuitElement.CircuitElementIO
-    }, options ) as CircuitElementOptions;
+    }, providedOptions ) as CircuitElementOptions;
 
-    super( filledOptions );
+    super( options );
 
     // @public (read-only) {number} unique identifier for looking up corresponding views
     this.id = index++;
@@ -102,19 +102,19 @@ abstract class CircuitElement extends PhetioObject {
     this.creationTime = phet.joist.elapsedTime;
 
     // @public (read-only) {boolean} flammable circuit elements can catch on fire
-    this.isFlammable = filledOptions.isFlammable;
+    this.isFlammable = options.isFlammable;
 
     // @public (read-only) {boolean} metallic circuit elements behave like exposed wires--sensor values can be read
     // directly on the resistor. For instance, coins and paper clips and wires are metallic and can have their values
     // read directly.
-    this.isMetallic = filledOptions.isMetallic;
+    this.isMetallic = options.isMetallic;
 
     // @public (read-only) {boolean} - whether the size changes when changing from lifelike/schematic, used to determine
     // whether the highlight region should be changed.  True for everything except the switch.
-    this.isSizeChangedOnViewChange = filledOptions.isSizeChangedOnViewChange;
+    this.isSizeChangedOnViewChange = options.isSizeChangedOnViewChange;
 
     // @public (read-only) {number} - whether it is possible to drop the CircuitElement in the toolbox
-    this.canBeDroppedInToolbox = filledOptions.canBeDroppedInToolbox;
+    this.canBeDroppedInToolbox = options.canBeDroppedInToolbox;
 
     // @public {Property.<Vertex>} - the Vertex at the origin of the CircuitElement, may change when CircuitElements are
     // connected
@@ -126,7 +126,7 @@ abstract class CircuitElement extends PhetioObject {
 
     // @public {NumberProperty} - the flowing current, in amps.
     this.currentProperty = new NumberProperty( 0, {
-      reentrant: filledOptions.isCurrentReentrant
+      reentrant: options.isCurrentReentrant
     } );
     this.currentProperty.link( ( current: number ) => {
       assert && assert( !isNaN( current ) );
@@ -137,11 +137,11 @@ abstract class CircuitElement extends PhetioObject {
     this.currentSenseProperty = new Property( 'unspecified' );
 
     // @public (read-only) {BooleanProperty} - true if the CircuitElement can be edited and dragged
-    this.interactiveProperty = new BooleanProperty( filledOptions.interactive );
+    this.interactiveProperty = new BooleanProperty( options.interactive );
 
     // @public {BooleanProperty} - whether the circuit element is inside the true black box, not inside the user-created
     // black box, on the interface or outside of the black box
-    this.insideTrueBlackBoxProperty = new BooleanProperty( filledOptions.insideTrueBlackBox );
+    this.insideTrueBlackBoxProperty = new BooleanProperty( options.insideTrueBlackBox );
 
     // @public {boolean} - true if the charge layout must be updated (each element is visited every frame to check this)
     this.chargeLayoutDirty = true;

@@ -49,26 +49,26 @@ class Resistor extends FixedCircuitElement {
    * @param {Vertex} endVertex
    * @param {Resistor.ResistorType} resistorType
    * @param {Tandem} tandem
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
-  constructor( startVertex: Vertex, endVertex: Vertex, resistorType: any, tandem: Tandem, options?: Partial<ResistorOptions> ) {
-    const filledOptions = merge( {
+  constructor( startVertex: Vertex, endVertex: Vertex, resistorType: any, tandem: Tandem, providedOptions?: Partial<ResistorOptions> ) {
+    const options = merge( {
       isFlammable: true, // All resistors are flammable except for the dog, which automatically disconnects at high current.
       phetioType: Resistor.ResistorIO,
       numberOfDecimalPlaces: resistorType === Resistor.ResistorType.RESISTOR ? 1 : 0
-    }, options ) as ResistorOptions;
+    }, providedOptions ) as ResistorOptions;
 
-    assert && assert( !filledOptions.hasOwnProperty( 'resistance' ), 'Resistance should be passed through resistorType' );
+    assert && assert( !options.hasOwnProperty( 'resistance' ), 'Resistance should be passed through resistorType' );
 
     // validate resistor type
     // @ts-ignore
     validate( resistorType, { valueType: Resistor.ResistorType } );
 
     // @public (read-only)
-    assert && assert( !filledOptions.hasOwnProperty( 'isMetallic' ), 'isMetallic is given by the resistorType' );
-    filledOptions.isMetallic = resistorType.isMetallic;
+    assert && assert( !options.hasOwnProperty( 'isMetallic' ), 'isMetallic is given by the resistorType' );
+    options.isMetallic = resistorType.isMetallic;
 
-    super( startVertex, endVertex, resistorType.length, tandem, filledOptions );
+    super( startVertex, endVertex, resistorType.length, tandem, options );
 
     // @public (read-only) {Resistor.ResistorType} indicates one of ResistorType values
     this.resistorType = resistorType;

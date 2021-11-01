@@ -19,12 +19,12 @@ class CCKCCheckbox extends Checkbox {
   /**
    * @param {Node} content
    * @param {Property.<boolean>} property
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
-  constructor( content: Node, property: Property<boolean>, options?: Partial<CheckboxOptions> ) {
+  constructor( content: Node, property: Property<boolean>, providedOptions?: Partial<CheckboxOptions> ) {
 
-    options = merge( { boxWidth: BOX_WIDTH }, options );
-    super( content, property, options );
+    providedOptions = merge( { boxWidth: BOX_WIDTH }, providedOptions );
+    super( content, property, providedOptions );
   }
 }
 

@@ -71,11 +71,11 @@ class BatteryNode extends FixedCircuitElementNode {
    * @param {Battery} battery
    * @param {Property.<CircuitElementViewType>} viewTypeProperty
    * @param {Tandem} tandem
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
-  constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, battery: Battery, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, options?: Partial<FixedCircuitElementNodeOptions> ) {
+  constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, battery: Battery, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: Partial<FixedCircuitElementNodeOptions> ) {
 
-    options = merge( { useHitTestForSensors: true }, options );
+    providedOptions = merge( { useHitTestForSensors: true }, providedOptions );
     const lifelikeNode = new Image( battery.batteryType === 'normal' ? batteryImage : batteryHighImage ) as unknown as Node;
 
     lifelikeNode.mutate( {
@@ -93,7 +93,7 @@ class BatteryNode extends FixedCircuitElementNode {
       lifelikeNode,
       schematicNode,
       tandem,
-      options
+      providedOptions
     );
 
     // @public (read-only) {Battery} - the Battery rendered by this Node

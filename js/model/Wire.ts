@@ -39,21 +39,21 @@ class Wire extends CircuitElement {
    * @param {Vertex} endVertex
    * @param {Property.<number>} resistivityProperty
    * @param {Tandem} tandem
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
-  constructor( startVertex: Vertex, endVertex: Vertex, resistivityProperty: NumberProperty, tandem: Tandem, options?: Partial<WireOptions> ) {
+  constructor( startVertex: Vertex, endVertex: Vertex, resistivityProperty: NumberProperty, tandem: Tandem, providedOptions?: Partial<WireOptions> ) {
     assert && assert( typeof resistivityProperty !== 'number', 'property should not be a number' );
     assert && assert( !startVertex.isDisposed, 'vertex should not be disposed' );
     assert && assert( !endVertex.isDisposed, 'vertex should not be disposed' );
-    const filledOptions = merge( {
+    const options = merge( {
       wireStub: false,
       isMetallic: true
-    }, options ) as WireOptions;
+    }, providedOptions ) as WireOptions;
     const chargePathLength = startVertex.positionProperty.get().distance( endVertex.positionProperty.get() );
-    super( startVertex, endVertex, chargePathLength, tandem, filledOptions );
+    super( startVertex, endVertex, chargePathLength, tandem, options );
 
     // @public (read-only) {boolean} - if the wire is a small stub attached to the black box
-    this.wireStub = filledOptions.wireStub;
+    this.wireStub = options.wireStub;
 
     // @public {NumberProperty} - the resistance of the Wire in ohms
     this.resistanceProperty = new NumberProperty( CCKCConstants.MINIMUM_WIRE_RESISTANCE );

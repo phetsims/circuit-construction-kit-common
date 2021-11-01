@@ -33,11 +33,12 @@ abstract class VoltageSource extends FixedCircuitElement {
    * @param {Property.<number>} internalResistanceProperty - the resistance of the battery
    * @param {number} length - the length of the battery in view coordinates
    * @param {Tandem} tandem
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
-  constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, length: number, tandem: Tandem, options?: Partial<VoltageSourceOptions> ) {
+  constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, length: number, tandem: Tandem,
+               providedOptions?: Partial<VoltageSourceOptions> ) {
     assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );
-    const filledOptions = merge( {
+    const options = merge( {
       initialOrientation: 'right',
       voltage: 9.0,
       isFlammable: true,
@@ -45,18 +46,18 @@ abstract class VoltageSource extends FixedCircuitElement {
       voltagePropertyOptions: {
         tandem: tandem.createTandem( 'voltageProperty' )
       }
-    }, options ) as VoltageSourceOptions;
-    super( startVertex, endVertex, length, tandem, filledOptions );
+    }, providedOptions ) as VoltageSourceOptions;
+    super( startVertex, endVertex, length, tandem, options );
 
     // @public {NumberProperty} - the voltage of the battery in volts
-    this.voltageProperty = new NumberProperty( filledOptions.voltage, filledOptions.voltagePropertyOptions );
+    this.voltageProperty = new NumberProperty( options.voltage, options.voltagePropertyOptions );
 
     // @public {Property.<number>} the internal resistance of the battery
     this.internalResistanceProperty = internalResistanceProperty;
 
     // @public (read-only) {string} - track which way the battery "button" (plus side) was facing the initial state so
     // the user can only create a certain number of "left" or "right" batteries from the toolbox.
-    this.initialOrientation = filledOptions.initialOrientation;
+    this.initialOrientation = options.initialOrientation;
   }
 
   /**

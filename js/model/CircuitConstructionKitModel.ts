@@ -55,17 +55,17 @@ class CircuitConstructionKitModel {
 
   /**
    * @param {Tandem} tandem
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
-  constructor( tandem: Tandem, options?: Partial<CircuitConstructionKitModelOptions> ) {
+  constructor( tandem: Tandem, providedOptions?: Partial<CircuitConstructionKitModelOptions> ) {
 
-    const filledOptions = merge( {
+    const options = merge( {
 
       // Determines whether electrons can be shown.  In black box, electrons can only be shown when the user reveals
       // the answer by pressing the reveal answer button.
       revealing: true,
       blackBoxStudy: false
-    }, options ) as CircuitConstructionKitModelOptions;
+    }, providedOptions ) as CircuitConstructionKitModelOptions;
 
     // @private {ZoomAnimation|null} - animation for the zoom level or null if not animating
     this.zoomAnimation = null;
@@ -83,7 +83,7 @@ class CircuitConstructionKitModel {
     } );
 
     // @public (read-only) {Circuit} - contains CircuitElements, Vertices, etc.
-    this.circuit = new Circuit( this.viewTypeProperty, this.addRealBulbsProperty, tandem.createTandem( 'circuit' ), { blackBoxStudy: filledOptions.blackBoxStudy } );
+    this.circuit = new Circuit( this.viewTypeProperty, this.addRealBulbsProperty, tandem.createTandem( 'circuit' ), { blackBoxStudy: options.blackBoxStudy } );
 
     // @public (read-only) {Voltmeter[]} - created statically and indexed starting at 1 for human-readability for PhET-iO
     this.voltmeters = [
@@ -209,7 +209,7 @@ class CircuitConstructionKitModel {
     } );
 
     // @public - true when the user is holding down the reveal button and the answer (inside the black box) is showing
-    this.revealingProperty = new BooleanProperty( filledOptions.revealing, {
+    this.revealingProperty = new BooleanProperty( options.revealing, {
       tandem: tandem.createTandem( 'revealingProperty' )
     } );
 

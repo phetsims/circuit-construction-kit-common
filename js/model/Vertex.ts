@@ -48,11 +48,11 @@ class Vertex extends PhetioObject {
 
   /**
    * @param {Vector2} position - position in view coordinates
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
-  constructor( position: Vector2, options?: Partial<VertexOptions> ) {
+  constructor( position: Vector2, providedOptions?: Partial<VertexOptions> ) {
 
-    const filledOptions = merge( {
+    const options = merge( {
       draggable: true, // whether the vertex can be dragged, false for Black Box elements
       attachable: true, // Black box interior elements cannot be connected while the box is closed
       interactive: true, // Black box interface vertices can be interactive (tap to select) without being draggable
@@ -61,20 +61,20 @@ class Vertex extends PhetioObject {
       tandem: Tandem.OPTIONAL, // Temporary vertices (for icons) should not be instrumented since they
       phetioDynamicElement: true
       // are more of an implementation detail rather than a feature
-    }, options ) as VertexOptions;
+    }, providedOptions ) as VertexOptions;
 
-    super( filledOptions );
+    super( options );
 
     // @public (readonly) {number} - Index counter for hashing in CircuitLayerNode.  Also useful for debugging and can be shown
     // with ?vertexDisplay=index
     this.index = counter++;
 
     // @public (read-only) {Tandem}
-    this.vertexTandem = filledOptions.tandem;
+    this.vertexTandem = options.tandem;
 
     // @public - position of the vertex
     this.positionProperty = new Vector2Property( position, {
-      tandem: filledOptions.tandem && filledOptions.tandem.createTandem( 'positionProperty' ),
+      tandem: options.tandem && options.tandem.createTandem( 'positionProperty' ),
       useDeepEquality: true,
       isValidValue: ( position: Vector2 ) => position.isFinite()
     } );
@@ -86,7 +86,7 @@ class Vertex extends PhetioObject {
 
     // @public {NumberProperty} Relative voltage of the node, determined by Circuit.solve
     this.voltageProperty = new NumberProperty( 0, {
-      tandem: filledOptions.tandem && filledOptions.tandem.createTandem( 'voltageProperty' ),
+      tandem: options.tandem && options.tandem.createTandem( 'voltageProperty' ),
       units: 'V'
     } );
 
@@ -94,7 +94,7 @@ class Vertex extends PhetioObject {
     // 'cut' button. Multiple vertices can be selected on an iPad, unlike CircuitElements, which can only have one
     // vertex selected at a time.
     this.selectedProperty = new BooleanProperty( false, {
-      tandem: filledOptions.tandem && filledOptions.tandem.createTandem( 'selectedProperty' )
+      tandem: options.tandem && options.tandem.createTandem( 'selectedProperty' )
     } );
 
     // Some of the following properties overlap.  For example, if 'insideTrueBlackBox' is true, then the interactive
@@ -102,23 +102,23 @@ class Vertex extends PhetioObject {
 
     // @public {BooleanProperty} - Vertices on the black box interface persist between build/investigate, and cannot be
     // moved/deleted
-    this.draggableProperty = new BooleanProperty( filledOptions.draggable );
+    this.draggableProperty = new BooleanProperty( options.draggable );
 
     // @public {BooleanProperty} - Black box interface vertices can be interactive (tap to select) without being
     // draggable
-    this.interactiveProperty = new BooleanProperty( filledOptions.interactive );
+    this.interactiveProperty = new BooleanProperty( options.interactive );
 
     // @public {BooleanProperty} - whether the Vertex can be dragged or moved by dragging another part of the circuit
     // must be observable.  When two vertices are joined in Circuit.connect, non-interactivity propagates
-    this.attachableProperty = new BooleanProperty( filledOptions.attachable );
+    this.attachableProperty = new BooleanProperty( options.attachable );
 
     // @public (read-only) {BooleanProperty} - whether the vertex is on the edge of a black box.  This means it cannot
     // be deleted, but it can be attached to
-    this.blackBoxInterfaceProperty = new BooleanProperty( filledOptions.blackBoxInterface );
+    this.blackBoxInterfaceProperty = new BooleanProperty( options.blackBoxInterface );
 
     // @public {BooleanProperty} - whether the vertex is inside the true black box, not inside the
     // user-created black box, on the interface or outside of the black box
-    this.insideTrueBlackBoxProperty = new BooleanProperty( filledOptions.insideTrueBlackBox );
+    this.insideTrueBlackBoxProperty = new BooleanProperty( options.insideTrueBlackBox );
 
     // @public {Emitter} - indicate when the vertex has been moved to the front in z-ordering and layering in the
     // view must be updated

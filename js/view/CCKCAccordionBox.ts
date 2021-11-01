@@ -31,11 +31,11 @@ class CCKCAccordionBox extends AccordionBox {
    * @param {Node} content - the content to display in the accordion box when it is expanded
    * @param {string} title - the text to display in the title bar
    * @param {Tandem} tandem
-   * @param {Object} [options]
+   * @param {Object} [providedOptions]
    */
-  constructor( content: Node, title: string, tandem: Tandem, options?: Partial<CCKCAccordionBoxOptions> ) {
+  constructor( content: Node, title: string, tandem: Tandem, providedOptions?: Partial<CCKCAccordionBoxOptions> ) {
 
-    options = options || {};
+    providedOptions = providedOptions || {};
     super( content, merge( {
       fill: CCKCConstants.PANEL_COLOR,
       cornerRadius: CCKCConstants.CORNER_RADIUS,
@@ -58,7 +58,7 @@ class CCKCAccordionBox extends AccordionBox {
       },
       titleNode: new HBox( {
         children: [
-          new HStrut( options.strutWidth || 10 ),
+          new HStrut( providedOptions.strutWidth || 10 ),
           new Text( title, {
             fontSize: CCKCConstants.FONT_SIZE,
             maxWidth: 175,
@@ -67,7 +67,7 @@ class CCKCAccordionBox extends AccordionBox {
         ]
       } ),
       tandem: tandem
-    }, options ) );
+    }, providedOptions ) );
   }
 }
 
