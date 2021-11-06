@@ -202,5 +202,14 @@
   },
   "theSwitchIsOpen": {
     "value": "The switch is open."
+  },
+  "ammeterReadout": {
+    "value": "Ammeter Readout"
+  },
+  "magnitude": {
+    "value": "Magnitude"
+  },
+  "signed": {
+    "value": "Signed"
   }
 }

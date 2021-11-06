@@ -8,9 +8,9 @@
 import Property from '../../../axon/js/Property.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import SchematicType from './SchematicType.js';
+import AmmeterReadoutType from '../model/AmmeterReadoutType.js';
 
-const schematicTypeProperty = new Property<SchematicType>( CCKCQueryParameters.schematicStandard );
+const ammeterReadoutTypeProperty = new Property<AmmeterReadoutType>( CCKCQueryParameters.ammeterReadout );
 
-circuitConstructionKitCommon.register( 'schematicTypeProperty', schematicTypeProperty );
-export default schematicTypeProperty;
+circuitConstructionKitCommon.register( 'ammeterReadoutTypeProperty', ammeterReadoutTypeProperty );
+export default ammeterReadoutTypeProperty;

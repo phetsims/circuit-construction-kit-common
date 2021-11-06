@@ -7,6 +7,7 @@
  */
 
 import circuitConstructionKitCommon from './circuitConstructionKitCommon.js';
+import { AmmeterReadoutTypeValues } from './model/AmmeterReadoutType.js';
 
 const CCKCQueryParameters = QueryStringMachine.getAll( {
 
@@ -52,6 +53,13 @@ const CCKCQueryParameters = QueryStringMachine.getAll( {
     type: 'string',
     defaultValue: 'ieee',
     validValues: [ 'ieee', 'iec', 'british' ]
+  },
+
+  ammeterReadout: {
+    public: true,
+    type: 'string',
+    defaultValue: 'magnitude',
+    validValues: AmmeterReadoutTypeValues
   },
 
   //------------------------------------------------------------------------------------------------------------------
