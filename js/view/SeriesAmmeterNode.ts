@@ -23,6 +23,7 @@ import CircuitLayerNode from './CircuitLayerNode.js';
 import SeriesAmmeter from '../model/SeriesAmmeter.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
+import ammeterReadoutTypeProperty from './ammeterReadoutTypeProperty.js';
 
 const currentString = circuitConstructionKitCommonStrings.current;
 
@@ -91,8 +92,8 @@ class SeriesAmmeterNode extends FixedCircuitElementNode {
 
         if ( startConnection && endConnection ) {
 
-          // The ammeter doesn't indicate direction
-          readout = CCKCUtils.createCurrentReadout( seriesAmmeter.currentProperty.get() );
+          const sign = seriesAmmeter.currentSenseProperty.value === 'backward' ? -1 : +1;
+          readout = CCKCUtils.createCurrentReadout( seriesAmmeter.currentProperty.get() * sign, false );
         }
       }
 
@@ -104,8 +105,9 @@ class SeriesAmmeterNode extends FixedCircuitElementNode {
     };
 
     seriesAmmeter.currentProperty.link( updateText );
-    seriesAmmeter.startVertexProperty.link( updateText );
-    seriesAmmeter.endVertexProperty.link( updateText );
+    seriesAmmeter.startVertexProperty.lazyLink( updateText );
+    seriesAmmeter.endVertexProperty.lazyLink( updateText );
+    ammeterReadoutTypeProperty.lazyLink( updateText );
     circuitLayerNode && circuitLayerNode.circuit.circuitChangedEmitter.addListener( updateText );
 
     // The readout panel is in front of the series ammeter node, and makes it look like the charges flow through the

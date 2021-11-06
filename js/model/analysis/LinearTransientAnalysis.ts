@@ -219,7 +219,7 @@ class LinearTransientAnalysis {
 
     // zero out currents on open branches
     nonParticipants.forEach( circuitElement => {
-      circuitElement.currentProperty.set( 0 );
+      circuitElement.currentProperty.value = 0;
 
       // Clear disconnected real light bulbs
       if ( circuitElement instanceof LightBulb && circuitElement.real ) {

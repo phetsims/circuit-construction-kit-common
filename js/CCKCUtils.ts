@@ -12,6 +12,8 @@ import StringUtils from '../../phetcommon/js/util/StringUtils.js';
 import CCKCQueryParameters from './CCKCQueryParameters.js';
 import circuitConstructionKitCommonStrings from './circuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from './circuitConstructionKitCommon.js';
+import ammeterReadoutTypeProperty from './view/ammeterReadoutTypeProperty.js';
+import MathSymbols from '../../scenery-phet/js/MathSymbols.js';
 
 const currentUnitsString = circuitConstructionKitCommonStrings.currentUnits;
 const voltageUnitsString = circuitConstructionKitCommonStrings.voltageUnits;
@@ -34,20 +36,41 @@ const CCKCUtils = {
 
   /**
    * Returns a string that adjusts its ampere value.
-   * @param {number} current - number of Amps
+   * @param current - in Amps
+   * @param blackBoxStudy
    * @returns {string}
    * @public
    */
-  createCurrentReadout: function( current: number ) {
+  createCurrentReadout: function( current: number, blackBoxStudy: boolean ) {
     if ( CCKCQueryParameters.fullPrecisionAmmeter ) {
       return current + '';
     }
     else {
-      const absoluteCurrent = Math.abs( current );
-      const decimals = this.getNumberOfDecimalPoints( absoluteCurrent );
 
-      // Show 3 decimal places so that current can still be seen with a glowing high-resistance bulb
-      return StringUtils.fillIn( currentUnitsString, { current: Utils.toFixed( absoluteCurrent, decimals ) } );
+      const max = blackBoxStudy ? 1E3 : 1E10;
+      const maxString = blackBoxStudy ? '> 10^3' : '> 10^10';
+      const minString = blackBoxStudy ? '< -10^3' : '< -10^10';
+      const ammeterReadoutType = ammeterReadoutTypeProperty.value;
+
+      if ( current === null ) {
+        return MathSymbols.NO_VALUE;
+      }
+      else if ( ammeterReadoutType === 'magnitude' && Math.abs( current ) > max ) {
+        return maxString;
+      }
+      else if ( ammeterReadoutType === 'signed' && current > max ) {
+        return maxString;
+      }
+      else if ( ammeterReadoutType === 'signed' && current < -max ) {
+        return minString;
+      }
+      else {
+        const signedCurrent = ammeterReadoutTypeProperty.value === 'magnitude' ? Math.abs( current ) : current;
+        const decimals = this.getNumberOfDecimalPoints( signedCurrent );
+
+        // Show 3 decimal places so that current can still be seen with a glowing high-resistance bulb
+        return StringUtils.fillIn( currentUnitsString, { current: Utils.toFixed( signedCurrent, decimals ) } );
+      }
     }
   },
 

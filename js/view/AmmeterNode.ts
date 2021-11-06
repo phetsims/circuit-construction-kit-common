@@ -31,7 +31,8 @@ import CircuitLayerNode from './CircuitLayerNode.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import Property from '../../../axon/js/Property.js';
 import SceneryEvent from '../../../scenery/js/input/SceneryEvent.js';
-import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
+import ammeterReadoutTypeProperty from './ammeterReadoutTypeProperty.js';
+import AmmeterReadoutType from '../model/AmmeterReadoutType.js';
 
 const currentString = circuitConstructionKitCommonStrings.current;
 
@@ -96,16 +97,10 @@ class AmmeterNode extends Node {
       }
     );
 
-    const currentReadoutProperty = new DerivedProperty<string>( [ ammeter.currentProperty ], ( ( current: number ) => {
-
-      const max = options.blackBoxStudy ? 1E3 : 1E10;
-      const maxString = options.blackBoxStudy ? '> 10^3' : '> 10^10';
-
-      // Ammeters in this sim only show positive values, not direction (which is arbitrary anyways)
-      return current === null ? MathSymbols.NO_VALUE :
-             Math.abs( current ) > max ? maxString :
-             CCKCUtils.createCurrentReadout( current );
-    } ) );
+    const currentReadoutProperty = new DerivedProperty<string>( [ ammeter.currentProperty, ammeterReadoutTypeProperty ],
+      ( ( current: number, ammeterReadoutType: AmmeterReadoutType ) => {
+        return CCKCUtils.createCurrentReadout( current, options.blackBoxStudy );
+      } ) );
 
     const probeTextNode = new ProbeTextNode(
       currentReadoutProperty, options.showResultsProperty, currentString, tandem.createTandem( 'probeTextNode' ), {
@@ -221,7 +216,7 @@ class AmmeterNode extends Node {
         // Skip work when ammeter is not out, to improve performance.
         if ( ammeter.visibleProperty.get() ) {
           const current = circuitLayerNode!.getCurrent( this.probeNode );
-          ammeter.currentProperty.set( current );
+          ammeter.currentProperty.value = current;
         }
       };
       circuitLayerNode!.circuit.circuitChangedEmitter.addListener( updateAmmeter );
