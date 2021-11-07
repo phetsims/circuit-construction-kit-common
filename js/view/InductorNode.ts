@@ -72,15 +72,18 @@ class InductorNode extends FixedCircuitElementNode {
 
     providedOptions = merge( { isIcon: false, useHitTestForSensors: true }, providedOptions );
 
+    // Padding on the left and right for the lifelike cylinder
+    const inset = 7;
+
     // The main body, in front.
     const lifelikeBodyShape = new Shape()
-      .ellipticalArc( LIFELIKE_WIDTH, LIFELIKE_HEIGHT / 2, LIFELIKE_RADIUS_X, LIFELIKE_RADIUS_Y, 0, -Math.PI / 2, Math.PI / 2, false )
-      .ellipticalArc( 0, LIFELIKE_HEIGHT / 2, LIFELIKE_RADIUS_X, LIFELIKE_RADIUS_Y, 0, Math.PI / 2, -Math.PI / 2, true )
+      .ellipticalArc( LIFELIKE_WIDTH - inset, LIFELIKE_HEIGHT / 2, LIFELIKE_RADIUS_X, LIFELIKE_RADIUS_Y, 0, -Math.PI / 2, Math.PI / 2, false )
+      .ellipticalArc( inset, LIFELIKE_HEIGHT / 2, LIFELIKE_RADIUS_X, LIFELIKE_RADIUS_Y, 0, Math.PI / 2, -Math.PI / 2, true )
       .close();
     const lifelikeBodyPath = new Path( lifelikeBodyShape, { fill: 'white', stroke: 'black' } );
 
     // The elliptical edge shown to the left of the main body.
-    const lifelikeEndCapShape = Shape.ellipse( 0, LIFELIKE_HEIGHT / 2, LIFELIKE_RADIUS_X, LIFELIKE_RADIUS_Y, Math.PI * 2 );
+    const lifelikeEndCapShape = Shape.ellipse( inset, LIFELIKE_HEIGHT / 2, LIFELIKE_RADIUS_X, LIFELIKE_RADIUS_Y, Math.PI * 2 );
     const lifelikeEndCapPath = new Path( lifelikeEndCapShape, {
       fill: '#c4c4c4',
       stroke: 'black'
