@@ -276,13 +276,31 @@ class CCKCChartNode extends Node {
         lineWidth: 1.5
       } ) ] );
 
+    // Show a text message when there is data, but none of the data is in range.
+    const dataOutOfRangeMessage = new Text( circuitConstructionKitCommonStrings.dataOutOfRange, {
+      fill: 'red',
+      centerX: linePlot.centerX,
+      centerY: linePlot.centerY,
+      fontSize: 13,
+      maxWidth: chartTransform.viewWidth - 20
+    } );
+
+    const updateDataOutOfRangeMessage = () => {
+      const visible = series.length > 0 && !series.find( ( point: Vector2 | null ) => {
+        return point && chartTransform.modelXRange.contains( point.x ) && chartTransform.modelYRange.contains( point.y );
+      } );
+      dataOutOfRangeMessage.setVisible( visible );
+    };
+    updateDataOutOfRangeMessage();
     series.addItemAddedListener( () => {
       linePlot.update();
       this.updatePen();
+      updateDataOutOfRangeMessage();
     } );
     series.addItemRemovedListener( () => {
       linePlot.update();
       this.updatePen();
+      updateDataOutOfRangeMessage();
     } );
 
     // Anything you want clipped goes in here
@@ -290,6 +308,7 @@ class CCKCChartNode extends Node {
       clipArea: chartBackground.getShape(),
       children: [
         linePlot,
+        dataOutOfRangeMessage,
         pen
       ]
     } );

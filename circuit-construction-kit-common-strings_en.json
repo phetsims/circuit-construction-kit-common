@@ -211,5 +211,8 @@
   },
   "signed": {
     "value": "Signed"
+  },
+  "dataOutOfRange": {
+    "value": "Data out of range"
   }
 }
