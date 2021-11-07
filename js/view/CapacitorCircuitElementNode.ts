@@ -118,8 +118,6 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
 
     const lifelikeNode = new CapacitorNode( circuit, modelViewTransform, plateChargeVisibleProperty, electricFieldVisibleProperty, {
       tandem: Tandem.OPTIONAL,
-
-      // @ts-ignore
       orientation: Orientation.HORIZONTAL, // so the "-" charges are upside-up in the default orientation
       includeChargeNode: !providedOptions.isIcon,
       scale: 0.45,

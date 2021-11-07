@@ -198,11 +198,8 @@ class CCKCChartNode extends Node {
       lineDashOffset: 5 / 2
     };
 
-    // @ts-ignore
     const horizontalGridLineSet = new CanvasGridLineSet( chartTransform, Orientation.HORIZONTAL, 1, gridLineOptions );
-    // @ts-ignore
     const verticalGridLineSet = new CanvasGridLineSet( chartTransform, Orientation.VERTICAL, 1, gridLineOptions );
-    // @ts-ignore
     const verticalLabelSet = new TickLabelSet( chartTransform, Orientation.VERTICAL, 1, {
       edge: 'min',
       extent: 1.5,
@@ -305,7 +302,6 @@ class CCKCChartNode extends Node {
       maxWidth: MAX_AXIS_LABEL_WIDTH
     } );
 
-    // @ts-ignore
     const spanNode = new SpanNode( chartTransform, Orientation.HORIZONTAL, 1, scaleIndicatorText, {
       color: 'white',
       left: chartBackground.left,
