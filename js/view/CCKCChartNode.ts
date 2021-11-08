@@ -286,10 +286,22 @@ class CCKCChartNode extends Node {
     } );
 
     const updateDataOutOfRangeMessage = () => {
-      const visible = series.length > 0 && !series.find( ( point: Vector2 | null ) => {
-        return point && chartTransform.modelXRange.contains( point.x ) && chartTransform.modelYRange.contains( point.y );
+      let showOutOfRangeMessage = true;
+
+      // If any point is in the displayed range, we don't want to show the data out of range message
+      series.forEach( point => {
+        if ( point && chartTransform.modelXRange.contains( point.x ) && chartTransform.modelYRange.contains( point.y ) ) {
+          showOutOfRangeMessage = false;
+        }
       } );
-      dataOutOfRangeMessage.setVisible( visible );
+
+      // This is the same as the logic in updatePen.  If the pen is shown at 0, then we don't want to display the
+      // data out of range message
+      const lastPointIsNull = series.length > 0 && series[ series.length - 1 ] === null;
+      if ( lastPointIsNull || series.length === 0 ) {
+        showOutOfRangeMessage = false;
+      }
+      dataOutOfRangeMessage.setVisible( showOutOfRangeMessage );
     };
     updateDataOutOfRangeMessage();
     series.addItemAddedListener( () => {
