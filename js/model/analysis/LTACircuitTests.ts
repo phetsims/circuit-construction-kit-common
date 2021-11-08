@@ -21,14 +21,9 @@ const errorThreshold = 1E-2;
 
 let id = 0;
 
-const testVRCCircuit = ( v: number, r: number, c: number, assert: Assert ) => {
-  const resistor = new MNAResistor( '1', '2', r );
-  const battery = new LTAResistiveBattery( id++, '0', '1', v, 0 );
-  const capacitor = new LTACapacitor( id++, '2', '0', 0.0, v / r, c );
-
-  let circuit = new LTACircuit( [ resistor ], [ battery ], [ capacitor ], [] );
-
-  for ( let i = 0; i < ITERATIONS; i++ ) {//takes 0.3 sec on my machine
+// Check the values coming from an RC circuit (may be an equivalent capacitance)
+const iterateCapacitor = ( circuit: LTACircuit, resistor: MNAResistor, v: number, r: number, c: number, assert: Assert ) => {
+  for ( let i = 0; i < ITERATIONS; i++ ) {
     const t = i * dt;
 
     const companionSolution = circuit.solveItWithSubdivisions( dt );
@@ -40,6 +35,14 @@ const testVRCCircuit = ( v: number, r: number, c: number, assert: Assert ) => {
   }
 };
 
+const testVRCCircuit = ( v: number, r: number, c: number, assert: Assert ) => {
+  const resistor = new MNAResistor( '1', '2', r );
+  const battery = new LTAResistiveBattery( id++, '0', '1', v, 0 );
+  const capacitor = new LTACapacitor( id++, '2', '0', 0.0, v / r, c );
+  const circuit = new LTACircuit( [ resistor ], [ battery ], [ capacitor ], [] );
+  iterateCapacitor( circuit, resistor, v, r, c, assert );
+};
+
 const testVRCCircuitSeriesCapacitors = ( v: number, r: number, c1: number, c2: number, assert: Assert ) => {
 
   const ceq = 1 / ( 1 / c1 + 1 / c2 );
@@ -48,18 +51,9 @@ const testVRCCircuitSeriesCapacitors = ( v: number, r: number, c1: number, c2: n
   const capacitor1 = new LTACapacitor( id++, '2', '3', 0.0, v / r, c1 );
   const capacitor2 = new LTACapacitor( id++, '3', '0', 0.0, v / r, c2 );
 
-  let circuit = new LTACircuit( [ resistor ], [ battery ], [ capacitor1, capacitor2 ], [] );
+  const circuit = new LTACircuit( [ resistor ], [ battery ], [ capacitor1, capacitor2 ], [] );
 
-  for ( let i = 0; i < ITERATIONS; i++ ) {
-    const t = i * dt;
-
-    const companionSolution = circuit.solveItWithSubdivisions( dt );
-    const voltage = companionSolution!.getVoltage( resistor.nodeId0, resistor.nodeId1 );
-    const desiredVoltageAtTPlusDT = -v * Math.exp( -( t + dt ) / r / ceq );
-    const error = Math.abs( voltage - desiredVoltageAtTPlusDT );
-    assert.ok( error < errorThreshold ); // sample run indicates largest error is 1.5328E-7
-    circuit = circuit.updateWithSubdivisions( dt );
-  }
+  iterateCapacitor( circuit, resistor, v, r, ceq, assert );
 };
 
 // This is for comparison with TestTheveninCapacitorRC
