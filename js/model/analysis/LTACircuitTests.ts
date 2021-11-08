@@ -40,6 +40,28 @@ const testVRCCircuit = ( v: number, r: number, c: number, assert: Assert ) => {
   }
 };
 
+const testVRCCircuitSeriesCapacitors = ( v: number, r: number, c1: number, c2: number, assert: Assert ) => {
+
+  const ceq = 1 / ( 1 / c1 + 1 / c2 );
+  const resistor = new MNAResistor( '1', '2', r );
+  const battery = new LTAResistiveBattery( id++, '0', '1', v, 0 );
+  const capacitor1 = new LTACapacitor( id++, '2', '3', 0.0, v / r, c1 );
+  const capacitor2 = new LTACapacitor( id++, '3', '0', 0.0, v / r, c2 );
+
+  let circuit = new LTACircuit( [ resistor ], [ battery ], [ capacitor1, capacitor2 ], [] );
+
+  for ( let i = 0; i < ITERATIONS; i++ ) {
+    const t = i * dt;
+
+    const companionSolution = circuit.solveItWithSubdivisions( dt );
+    const voltage = companionSolution!.getVoltage( resistor.nodeId0, resistor.nodeId1 );
+    const desiredVoltageAtTPlusDT = -v * Math.exp( -( t + dt ) / r / ceq );
+    const error = Math.abs( voltage - desiredVoltageAtTPlusDT );
+    assert.ok( error < errorThreshold ); // sample run indicates largest error is 1.5328E-7
+    circuit = circuit.updateWithSubdivisions( dt );
+  }
+};
+
 // This is for comparison with TestTheveninCapacitorRC
 QUnit.test( 'testVRC991Eminus2', assert => {
   testVRCCircuit( 9, 9, 1E-2, assert );
@@ -59,6 +81,13 @@ QUnit.test( 'test RC Circuit should have voltage exponentially decay with T RC f
 
 QUnit.test( 'test RC Circuit should have voltage exponentially decay with T RC for v 3  r 7  c 100', assert => {
   testVRCCircuit( 3, 7, 100, assert );
+} );
+
+QUnit.test( 'test RC Circuit with series capacitors', assert => {
+  testVRCCircuitSeriesCapacitors( 3, 7, 10, 10, assert );
+  for ( let i = 0; i < 10; i++ ) {
+    testVRCCircuitSeriesCapacitors( 3, 7, Math.random() * 10, Math.random() * 10, assert ); // eslint-disable-line
+  }
 } );
 
 const testVRLCircuit = ( V: number, R: number, L: number, assert: Assert ) => {
