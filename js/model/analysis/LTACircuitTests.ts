@@ -56,6 +56,18 @@ const testVRCCircuitSeriesCapacitors = ( v: number, r: number, c1: number, c2: n
   iterateCapacitor( circuit, resistor, v, r, ceq, assert );
 };
 
+const testVRCCircuitParallelCapacitors = ( v: number, r: number, c1: number, c2: number, assert: Assert ) => {
+
+  const ceq = c1 + c2;
+  const resistor = new MNAResistor( '1', '2', r );
+  const battery = new LTAResistiveBattery( id++, '0', '1', v, 0 );
+  const capacitor1 = new LTACapacitor( id++, '2', '0', 0.0, v / r, c1 );
+  const capacitor2 = new LTACapacitor( id++, '2', '0', 0.0, v / r, c2 );
+
+  const circuit = new LTACircuit( [ resistor ], [ battery ], [ capacitor1, capacitor2 ], [] );
+  iterateCapacitor( circuit, resistor, v, r, ceq, assert );
+};
+
 // This is for comparison with TestTheveninCapacitorRC
 QUnit.test( 'testVRC991Eminus2', assert => {
   testVRCCircuit( 9, 9, 1E-2, assert );
@@ -81,6 +93,13 @@ QUnit.test( 'test RC Circuit with series capacitors', assert => {
   testVRCCircuitSeriesCapacitors( 3, 7, 10, 10, assert );
   for ( let i = 0; i < 10; i++ ) {
     testVRCCircuitSeriesCapacitors( 3, 7, Math.random() * 10, Math.random() * 10, assert ); // eslint-disable-line
+  }
+} );
+
+QUnit.test( 'test RC Circuit with parallel capacitors', assert => {
+  testVRCCircuitParallelCapacitors( 3, 7, 10, 10, assert );
+  for ( let i = 0; i < 10; i++ ) {
+    testVRCCircuitParallelCapacitors( 3, 7, Math.random() * 10, Math.random() * 10, assert ); // eslint-disable-line
   }
 } );
 
