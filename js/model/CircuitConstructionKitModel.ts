@@ -71,7 +71,7 @@ class CircuitConstructionKitModel {
     this.zoomAnimation = null;
 
     // @public {Property.<CircuitElementViewType>} - whether to show lifelike or schematic representations
-    this.viewTypeProperty = new Property( 'lifelike', {
+    this.viewTypeProperty = new Property<CircuitElementViewType>( 'lifelike', {
       tandem: tandem.createTandem( 'viewTypeProperty' ),
       validValues: CircuitElementViewTypeValues,
       phetioType: Property.PropertyIO( StringIO ) // TODO: Validvalues for studio?
@@ -141,7 +141,7 @@ class CircuitConstructionKitModel {
     } );
 
     // @public {Property.<InteractionMode>} - whether the user is in the CircuitConstructionKitModel.InteractionMode.EXPLORE or CircuitConstructionKitModel.InteractionMode.TEST mode
-    this.modeProperty = new Property( 'explore', {
+    this.modeProperty = new Property<'explore' | 'test'>( 'explore', {
       tandem: tandem.createTandem( 'modeProperty' ),
       phetioType: Property.PropertyIO( StringIO ) // TODO: validValues for studio?
     } );

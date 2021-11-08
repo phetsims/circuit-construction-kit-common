@@ -39,6 +39,7 @@ import VoltmeterNode from './VoltmeterNode.js';
 import AlignGroup from '../../../scenery/js/nodes/AlignGroup.js';
 import CircuitLayerNode from './CircuitLayerNode.js';
 import SceneryEvent from '../../../scenery/js/input/SceneryEvent.js';
+import CircuitElementViewType from '../model/CircuitElementViewType.js';
 
 const ammetersString = circuitConstructionKitCommonStrings.ammeters;
 const ammeterString = circuitConstructionKitCommonStrings.ammeter;
@@ -144,7 +145,7 @@ class SensorToolbox extends CCKCPanel {
     const seriesAmmeterToolNode = new CircuitElementToolNode(
       '',
       new BooleanProperty( false ),
-      new Property( 'schematic' ),
+      new Property<CircuitElementViewType>( 'schematic' ),
       circuit,
       point => circuitLayerNode.globalToLocalPoint( point ),
       seriesAmmeterNodeIcon,

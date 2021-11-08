@@ -270,12 +270,12 @@ class Circuit {
     // taps away from a selected circuit element, the selection is `null`.  Once this simulation is instrumented
     // for a11y, the focus property can be used to track this. Note that vertex selection is done via
     // Vertex.selectedProperty.  These strategies can be unified when we work on a11y.
-    this.selectedCircuitElementProperty = new Property( null, {
+    this.selectedCircuitElementProperty = new Property<CircuitElement | null>( null, {
       tandem: tandem.createTandem( 'selectedCircuitElementProperty' ),
       phetioType: Property.PropertyIO( NullableIO( ReferenceIO( CircuitElement.CircuitElementIO ) ) )
     } );
 
-    this.selectedCircuitElementProperty.link( ( selectedCircuitElement: CircuitElement ) => {
+    this.selectedCircuitElementProperty.link( selectedCircuitElement => {
 
       // When a circuit element is selected, deselect all the vertices
       if ( selectedCircuitElement ) {

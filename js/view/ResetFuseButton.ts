@@ -53,7 +53,7 @@ class ResetFuseButton extends CCKCRoundPushButton {
     const isTrippedListener = ( isTripped: boolean ) => this.setEnabled( isTripped );
 
     let oldFuse: Fuse | null = null;
-    circuit.selectedCircuitElementProperty.link( ( fuse: Fuse ) => {
+    circuit.selectedCircuitElementProperty.link( fuse => {
       if ( fuse instanceof Fuse ) {
         oldFuse && oldFuse.isTrippedProperty.unlink( isTrippedListener );
         fuse.isTrippedProperty.link( isTrippedListener );

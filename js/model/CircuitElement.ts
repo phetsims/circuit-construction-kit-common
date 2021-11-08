@@ -59,7 +59,7 @@ abstract class CircuitElement extends PhetioObject {
   readonly startDragEmitter: Emitter<[ SceneryEvent ]>;
   readonly disposeEmitterCircuitElement: Emitter<[]>;
   private readonly vertexMovedListener: () => void;
-  private readonly linkVertexListener: ( newVertex: Vertex, oldVertex: Vertex ) => void;
+  private readonly linkVertexListener: ( newVertex: Vertex, oldVertex: Vertex | null, property: Property<Vertex> ) => void;
   readonly voltageDifferenceProperty: NumberProperty;
   private readonly vertexVoltageListener: () => void;
   chargePathLength: number;
@@ -134,7 +134,7 @@ abstract class CircuitElement extends PhetioObject {
 
     // we assign the directionality based on the initial current direction, so the initial current is always positive.
     // see https://github.com/phetsims/circuit-construction-kit-common/issues/508
-    this.currentSenseProperty = new Property( 'unspecified' );
+    this.currentSenseProperty = new Property<CurrentSense>( 'unspecified' );
 
     // @public (read-only) {BooleanProperty} - true if the CircuitElement can be edited and dragged
     this.interactiveProperty = new BooleanProperty( options.interactive );
@@ -210,11 +210,12 @@ abstract class CircuitElement extends PhetioObject {
 
   /**
    * When the start or end Vertex changes, move the listeners from the old Vertex to the new one
-   * @param {Vertex} newVertex - the new vertex
-   * @param {Vertex} oldVertex - the previous vertex
+   * @param newVertex - the new vertex
+   * @param oldVertex - the previous vertex
+   * @param property
    * @private
    */
-  linkVertex( newVertex: Vertex, oldVertex: Vertex ) {
+  linkVertex( newVertex: Vertex, oldVertex: Vertex | null, property: Property<Vertex> ) {
 
     // These guards prevent errors from the bad transient state caused by the Circuit.flip causing the same Vertex
     // to be both start and end at the same time.

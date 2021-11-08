@@ -8,6 +8,7 @@
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
+import Property from '../../../axon/js/Property.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
@@ -16,8 +17,8 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 class Meter {
   phetioIndex: number;
-  readonly visibleProperty: BooleanProperty;
-  readonly bodyPositionProperty: Vector2Property;
+  readonly visibleProperty: Property<boolean>;
+  readonly bodyPositionProperty: Property<Vector2>;
   readonly draggingProbesWithBodyProperty: BooleanProperty;
   readonly droppedEmitter: Emitter<[ Bounds2 ]>;
 

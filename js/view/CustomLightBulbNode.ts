@@ -31,7 +31,7 @@ class CustomLightBulbNode extends Node {
   private readonly backNode: Node;
   private readonly raysNode: LightRaysNode | null;
   private readonly brightnessProperty: Property<number>;
-  private readonly brightnessObserver: ( () => void ) | null;
+  private readonly brightnessObserver: ( ( brightness: number ) => void ) | null;
   private readonly disposeCustomLightBulbNode: () => void;
   static webglSpriteNodes: Image[];
 
@@ -125,7 +125,7 @@ class CustomLightBulbNode extends Node {
     // @private {function} - for disposal
     this.disposeCustomLightBulbNode = () => {
       if ( !providedOptions.baseOnly ) {
-        this.brightnessProperty.unlink( this.brightnessObserver );
+        this.brightnessProperty.unlink( this.brightnessObserver! );
       }
     };
 

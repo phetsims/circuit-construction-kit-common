@@ -103,7 +103,7 @@ class ValueNode extends Panel {
       } );
 
       const resistanceNode = createText( tandem.createTandem( 'resistanceText' ) );
-      const sourceResistanceListener = ( internalResistance: number, lastInternalResistance: number ) => {
+      const sourceResistanceListener = ( internalResistance: number, lastInternalResistance: number | null ) => {
         resistanceNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, {
           resistance: Utils.toFixed( internalResistance, 1 )
         } );

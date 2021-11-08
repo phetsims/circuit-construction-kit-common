@@ -251,7 +251,7 @@ class WireNode extends CircuitElementNode {
 
     // When the start vertex changes to a different instance (say when vertices are soldered together), unlink the
     // old one and link to the new one.
-    const doUpdateTransform = ( newVertex: Vertex, oldVertex: Vertex ) => {
+    const doUpdateTransform = ( newVertex: Vertex, oldVertex: Vertex | null, property: any ) => {
       oldVertex && oldVertex.positionProperty.unlink( markAsDirty );
       newVertex.positionProperty.link( markAsDirty );
     };

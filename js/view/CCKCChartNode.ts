@@ -362,8 +362,8 @@ class CCKCChartNode extends Node {
     shadedRectangle.addChild( chartNode );
     backgroundNode.addChild( shadedRectangle );
 
-    this.meter.visibleProperty.link( ( visible: boolean ) => this.setVisible( visible ) );
-    this.meter.bodyPositionProperty.link( ( bodyPosition: Vector2 ) => backgroundNode.setCenter( bodyPosition ) );
+    this.meter.visibleProperty.link( visible => this.setVisible( visible ) );
+    this.meter.bodyPositionProperty.link( bodyPosition => backgroundNode.setCenter( bodyPosition ) );
   }
 
   /**

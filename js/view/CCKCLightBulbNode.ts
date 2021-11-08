@@ -262,7 +262,7 @@ class CCKCLightBulbNode extends FixedCircuitElementNode {
         // Light rays are supposed to be behind everything else,
         // see https://github.com/phetsims/circuit-construction-kit-common/issues/161
         circuitLayerNode && circuitLayerNode.removeChildFromBackground( this.rayNodeContainer );
-        viewTypeProperty.unlink( viewListener );
+        viewTypeProperty.unlink( viewListener! );
         this.socketNode.dispose();
         schematicTypeProperty.unlink( updateSchematicType );
       }

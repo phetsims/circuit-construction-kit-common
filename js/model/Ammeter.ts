@@ -18,7 +18,7 @@ import Meter from './Meter.js';
 
 class Ammeter extends Meter {
   readonly currentProperty: Property<number | null>;
-  readonly probePositionProperty: Vector2Property;
+  readonly probePositionProperty: Property<Vector2>;
 
   /**
    * @param {Tandem} tandem
@@ -29,7 +29,7 @@ class Ammeter extends Meter {
 
     // @public {Property.<number|null>} the full-precision reading on the ammeter. It will be formatted for
     // display in the view.  Null means the ammeter is not on a wire.
-    this.currentProperty = new Property( null, {
+    this.currentProperty = new Property<number | null>( null, {
       tandem: tandem.createTandem( 'currentProperty' ),
       units: 'A',
       phetioType: Property.PropertyIO( NullableIO( NumberIO ) )

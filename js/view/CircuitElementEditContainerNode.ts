@@ -26,7 +26,6 @@ import ACVoltage from '../model/ACVoltage.js';
 import Battery from '../model/Battery.js';
 import Capacitor from '../model/Capacitor.js';
 import Circuit from '../model/Circuit.js';
-import CircuitElement from '../model/CircuitElement.js';
 import FixedCircuitElement from '../model/FixedCircuitElement.js';
 import Fuse from '../model/Fuse.js';
 import Inductor from '../model/Inductor.js';
@@ -123,7 +122,7 @@ class CircuitElementEditContainerNode extends Node {
 
     // When the selected element changes, update the displayed controls
     let editNode: Node | null = null;
-    circuit.selectedCircuitElementProperty.link( ( selectedCircuitElement: CircuitElement ) => {
+    circuit.selectedCircuitElementProperty.link( selectedCircuitElement => {
       if ( editNode ) {
         this.hasChild( editNode ) && this.removeChild( editNode );
         if ( editNode !== tapInstructionTextNode && editNode !== trashButton ) {
