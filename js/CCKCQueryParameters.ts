@@ -89,7 +89,7 @@ const CCKCQueryParameters = QueryStringMachine.getAll( {
   // Model capacitors with a series resistor to help linearize the problem
   capacitorResistance: {
     type: 'number',
-    defaultValue: 1E-6
+    defaultValue: 1E-4
   },
 
   fullPrecisionAmmeter: {
