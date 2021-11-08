@@ -17,7 +17,7 @@ import MNAResistor from './mna/MNAResistor.js';
 const ITERATIONS = 250;
 QUnit.module( 'LTACircuit' );
 const dt = 1 / 60;
-const errorThreshold = 1E-2;
+const errorThreshold = 0.05;
 
 let id = 0;
 
@@ -131,6 +131,15 @@ const testVRLCircuitSeries = ( V: number, R: number, L1: number, L2: number, ass
   const circuit = new LTACircuit( [ resistor ], [ battery ], [], [ inductor1, inductor2 ] );
   iterateInductor( circuit, resistor, V, R, Leq, assert );
 };
+const testVRLCircuitParallel = ( V: number, R: number, L1: number, L2: number, assert: Assert ) => {
+  const Leq = 1 / ( 1 / L1 + 1 / L2 );
+  const resistor = new MNAResistor( '1', '2', R );
+  const battery = new LTAResistiveBattery( id++, '0', '1', V, 0 );
+  const inductor1 = new LTAInductor( id++, '2', '0', V, 0.0, L1 );
+  const inductor2 = new LTAInductor( id++, '2', '0', V, 0.0, L2 );
+  const circuit = new LTACircuit( [ resistor ], [ battery ], [], [ inductor1, inductor2 ] );
+  iterateInductor( circuit, resistor, V, R, Leq, assert );
+};
 
 QUnit.test( 'test_RL_Circuit_should_have_correct_behavior', assert => {
   testVRLCircuit( 5, 10, 1, assert );
@@ -143,5 +152,12 @@ QUnit.test( 'Series inductors', assert => {
   testVRLCircuitSeries( 5, 10, 1, 1, assert );
   for ( let i = 0; i < 10; i++ ) {
     testVRLCircuitSeries( 10, 10, 5 * Math.random() + 0.1, 5 * Math.random() + 0.1, assert )// eslint-disable-line
+  }
+} );
+
+QUnit.test( 'Parallel inductors', assert => {
+  testVRLCircuitParallel( 5, 10, 1, 1, assert );
+  for ( let i = 0; i < 10; i++ ) {
+    testVRLCircuitParallel( 10, 10, 5 * Math.random() + 1, 5 * Math.random() + 1, assert )// eslint-disable-line
   }
 } );
