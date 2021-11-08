@@ -103,13 +103,7 @@ QUnit.test( 'test RC Circuit with parallel capacitors', assert => {
   }
 } );
 
-const testVRLCircuit = ( V: number, R: number, L: number, assert: Assert ) => {
-  const resistor = new MNAResistor( '1', '2', R );
-  const battery = new LTAResistiveBattery( id++, '0', '1', V, 0 );
-  const inductor = new LTAInductor( id++, '2', '0', V, 0.0, L );
-  let circuit = new LTACircuit( [ resistor ], [ battery ], [], [ inductor ] );
-
-  // let x = '';
+const iterateInductor = ( circuit: LTACircuit, resistor: MNAResistor, V: number, R: number, L: number, assert: Assert ) => {
   for ( let i = 0; i < ITERATIONS; i++ ) {
     const t = i * dt;
     const solution = circuit.solveItWithSubdivisions( dt );
@@ -117,26 +111,37 @@ const testVRLCircuit = ( V: number, R: number, L: number, assert: Assert ) => {
     const expectedCurrent = V / R * ( 1 - Math.exp( -( t + dt ) * R / L ) );//positive, by definition of MNA.Battery
     const error = Math.abs( current - expectedCurrent );
     assert.ok( error < errorThreshold );
-    // x += `${t}\t${expectedCurrent}\t${current}\t${error}\n`;
     circuit = circuit.updateWithSubdivisions( dt );
   }
-  // console.log( V, R, L );
-  // console.log( x );
-  // console.log();
 };
 
-QUnit.test( 'test_RL_Circuit_should_have_correct_behavior_for_V_5_R_10_L_1', assert => {
+const testVRLCircuit = ( V: number, R: number, L: number, assert: Assert ) => {
+  const resistor = new MNAResistor( '1', '2', R );
+  const battery = new LTAResistiveBattery( id++, '0', '1', V, 0 );
+  const inductor = new LTAInductor( id++, '2', '0', V, 0.0, L );
+  const circuit = new LTACircuit( [ resistor ], [ battery ], [], [ inductor ] );
+  iterateInductor( circuit, resistor, V, R, L, assert );
+};
+const testVRLCircuitSeries = ( V: number, R: number, L1: number, L2: number, assert: Assert ) => {
+  const Leq = L1 + L2;
+  const resistor = new MNAResistor( '1', '2', R );
+  const battery = new LTAResistiveBattery( id++, '0', '1', V, 0 );
+  const inductor1 = new LTAInductor( id++, '2', '3', V, 0.0, L1 );
+  const inductor2 = new LTAInductor( id++, '3', '0', V, 0.0, L2 );
+  const circuit = new LTACircuit( [ resistor ], [ battery ], [], [ inductor1, inductor2 ] );
+  iterateInductor( circuit, resistor, V, R, Leq, assert );
+};
+
+QUnit.test( 'test_RL_Circuit_should_have_correct_behavior', assert => {
   testVRLCircuit( 5, 10, 1, assert );
-} );
-
-QUnit.test( 'test_RL_Circuit_should_have_correct_behavior_for_V_3_R_11_L_2_5', assert => {
   testVRLCircuit( 3, 11, 2.5, assert );
-} );
-
-QUnit.test( 'test_RL_Circuit_should_have_correct_behavior_for_V_7_R_13_L_1E4', assert => {
   testVRLCircuit( 7, 13, 1E4, assert );
+  testVRLCircuit( 7, 13, 1E-1, assert );
 } );
 
-QUnit.test( 'test_RL_Circuit_should_have_correct_behavior_for_V_7_R_13_L_1Eminus1', assert => {
-  testVRLCircuit( 7, 13, 1E-1, assert );
+QUnit.test( 'Series inductors', assert => {
+  testVRLCircuitSeries( 5, 10, 1, 1, assert );
+  for ( let i = 0; i < 10; i++ ) {
+    testVRLCircuitSeries( 10, 10, 5 * Math.random() + 0.1, 5 * Math.random() + 0.1, assert )// eslint-disable-line
+  }
 } );
