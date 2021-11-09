@@ -458,7 +458,7 @@ class CCKCScreenView extends ScreenView {
       this.addChild( stopwatchNode );
 
       // Show the StopwatchNode when the checkbox is checked
-      model.stopwatch.isVisibleProperty.link( ( isVisible: boolean ) => {
+      model.stopwatch.isVisibleProperty.link( isVisible => {
         if ( isVisible && this.stopwatchNodePositionDirty ) {
 
           // Compute bounds lazily now that everything is attached to the scene graph

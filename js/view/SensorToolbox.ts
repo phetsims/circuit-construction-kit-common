@@ -107,7 +107,7 @@ class SensorToolbox extends CCKCPanel {
       isIcon: true
     } );
     const allVoltmetersVisibleProperty = DerivedProperty.and( voltmeterNodes.map( voltmeterNode => voltmeterNode.voltmeter.visibleProperty ) );
-    allVoltmetersVisibleProperty.link( ( visible: boolean ) => voltmeterNodeIcon.setVisible( !visible ) );
+    allVoltmetersVisibleProperty.link( visible => voltmeterNodeIcon.setVisible( !visible ) );
     voltmeterNodeIcon.mutate( {
       scale: TOOLBOX_ICON_HEIGHT * VOLTMETER_ICON_SCALE / Math.max( voltmeterNodeIcon.width, voltmeterNodeIcon.height )
     } );
@@ -120,7 +120,7 @@ class SensorToolbox extends CCKCPanel {
       tandem: tandem.createTandem( 'ammeterToolNode' )
     } );
     const allAmmetersVisibleProperty = DerivedProperty.and( ammeterNodes.map( ammeterNode => ammeterNode.ammeter.visibleProperty ) );
-    allAmmetersVisibleProperty.link( ( visible: boolean ) => ammeterToolNode.setVisible( !visible ) );
+    allAmmetersVisibleProperty.link( visible => ammeterToolNode.setVisible( !visible ) );
     ammeterToolNode.mutate( {
       scale: TOOLBOX_ICON_HEIGHT / Math.max( ammeterToolNode.width, ammeterToolNode.height )
     } );
@@ -227,7 +227,7 @@ class SensorToolbox extends CCKCPanel {
 
         // @ts-ignore
         const iconVisibleProperty = DerivedProperty.and( chartNodes.map( chartNode => chartNode.meter.visibleProperty ) );
-        iconVisibleProperty.link( ( visible: boolean ) => chartNodeIcon.setVisible( !visible ) );
+        iconVisibleProperty.link( visible => chartNodeIcon.setVisible( !visible ) );
         // @ts-ignore
         overlay.addInputListener( createListenerMulti( chartNodes, 'meter' ) );
 

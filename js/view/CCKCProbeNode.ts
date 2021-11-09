@@ -41,7 +41,7 @@ class CCKCProbeNode extends ProbeNode {
       tandem: providedOptions.tandem.createTandem( 'positionProperty' )
     } );
 
-    positionProperty.link( ( p: Vector2 ) => this.setTranslation( p ) );
+    positionProperty.link( p => this.setTranslation( p ) );
 
     visibleBoundsProperty.link( visibleBounds => this.setCenter( visibleBounds.closestPointTo( this.center ) ) );
 
