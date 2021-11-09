@@ -29,15 +29,15 @@ class CCKCOptionsDialogContent extends VBox {
       fontSize: 23
     };
     const schematicStandardRadioButtonGroup = new VerticalAquaRadioButtonGroup<SchematicType>( schematicTypeProperty, [ {
-      node: new Text( circuitConstructionKitCommonStrings.ieee, textOptions ) as unknown as Node,
+      node: new Text( circuitConstructionKitCommonStrings.ieee, textOptions ),
       value: 'ieee',
       tandemName: 'ieeeRadioButton'
     }, {
-      node: new Text( circuitConstructionKitCommonStrings.iec, textOptions ) as unknown as Node,
+      node: new Text( circuitConstructionKitCommonStrings.iec, textOptions ),
       value: 'iec',
       tandemName: 'iecRadioButton'
     }, {
-      node: new Text( circuitConstructionKitCommonStrings.british, textOptions ) as unknown as Node,
+      node: new Text( circuitConstructionKitCommonStrings.british, textOptions ),
       value: 'british',
       tandemName: 'britishRadioButton'
     } ], {
@@ -48,11 +48,11 @@ class CCKCOptionsDialogContent extends VBox {
     } );
 
     const ammeterReadoutRadioButtonGroup = new VerticalAquaRadioButtonGroup<AmmeterReadoutType>( ammeterReadoutTypeProperty, [ {
-      node: new Text( circuitConstructionKitCommonStrings.magnitude, textOptions ) as unknown as Node,
+      node: new Text( circuitConstructionKitCommonStrings.magnitude, textOptions ),
       value: 'magnitude',
       tandemName: 'magnitudeRadioButton'
     }, {
-      node: new Text( circuitConstructionKitCommonStrings.signed, textOptions ) as unknown as Node,
+      node: new Text( circuitConstructionKitCommonStrings.signed, textOptions ),
       value: 'signed',
       tandemName: 'signedRadioButton'
     } ], {
