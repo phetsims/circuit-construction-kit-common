@@ -69,10 +69,14 @@ class SolderNode extends Node {
     circuit.circuitElements.addItemRemovedListener( updateFill );
 
     const updateSolderNodePosition = this.setTranslation.bind( this );
+
+    // @ts-ignore
     vertex.positionProperty.link( updateSolderNodePosition );
 
     // @private (read-only) {function} called by dispose()
     this.disposeSolderNode = () => {
+
+      // @ts-ignore
       vertex.positionProperty.unlink( updateSolderNodePosition );
 
       circuit.vertexGroup.elementCreatedEmitter.removeListener( updateFill );

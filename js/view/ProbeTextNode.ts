@@ -50,7 +50,7 @@ class ProbeTextNode extends VBox {
       fill: Color.WHITE
     } );
 
-    textProperty.link( ( text: string ) => {
+    textProperty.link( text => {
       readout.setText( text );
       if ( text === MathSymbols.NO_VALUE ) {
 

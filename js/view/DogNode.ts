@@ -60,7 +60,7 @@ class DogNode extends ResistorNode {
 
     this.contentNode.boundsProperty.link( () => positionBark() );
 
-    dog.isBarkingProperty.link( ( isBarking: boolean ) => {
+    dog.isBarkingProperty.link( isBarking => {
 
       // Position next to the dog's mouth
       positionBark();

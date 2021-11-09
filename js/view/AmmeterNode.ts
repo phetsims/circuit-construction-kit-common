@@ -156,14 +156,14 @@ class AmmeterNode extends Node {
     };
 
     // When the body position changes, update the body node and the wire
-    ammeter.bodyPositionProperty.link( ( bodyPosition: Vector2 ) => {
+    ammeter.bodyPositionProperty.link( bodyPosition => {
       bodyNode.centerTop = bodyPosition;
       wireBodyPositionProperty.value = bodyNode.centerTop.plusXY( 0, PROBE_CONNECTION_POINT_DY );
       alignProbeToBody();
     } );
 
     // When the probe position changes, update the probe node and the wire
-    ammeter.probePositionProperty.link( ( probePosition: Vector2 ) => {
+    ammeter.probePositionProperty.link( probePosition => {
       this.probeNode.centerTop = probePosition;
       wireProbePositionProperty.value = this.probeNode.centerBottom;
     } );
@@ -199,7 +199,7 @@ class AmmeterNode extends Node {
         targetNode: this
       } );
       bodyNode.addInputListener( this.dragHandler );
-      options.visibleBoundsProperty!.link( ( visibleBounds: Bounds2 ) => {
+      options.visibleBoundsProperty!.link( visibleBounds => {
         const erodedDragBounds = visibleBounds.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
         this.dragHandler!.dragBounds = erodedDragBounds;
         probeDragHandler.dragBounds = erodedDragBounds;

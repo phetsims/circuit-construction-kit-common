@@ -210,7 +210,7 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
 
     schematicNode.addChild( this.leftSchematicHitAreaPath );
     schematicNode.addChild( this.rightSchematicHitAreaPath );
-    capacitor.capacitanceProperty.link( ( capacitance: number ) => {
+    capacitor.capacitanceProperty.link( capacitance => {
 
       // compute proportionality constant based on defaults.
       const k = 0.1 * 0.004;

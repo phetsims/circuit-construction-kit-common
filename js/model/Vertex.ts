@@ -9,6 +9,7 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
+import Property from '../../../axon/js/Property.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
 import merge from '../../../phet-core/js/merge.js';
@@ -31,15 +32,15 @@ type VertexOptions = {
 class Vertex extends PhetioObject {
   readonly index: number;
   private readonly vertexTandem: Tandem;
-  readonly positionProperty: Vector2Property;
-  readonly unsnappedPositionProperty: Vector2Property;
-  readonly voltageProperty: NumberProperty;
-  readonly selectedProperty: BooleanProperty;
-  readonly draggableProperty: BooleanProperty;
-  readonly interactiveProperty: BooleanProperty;
-  readonly attachableProperty: BooleanProperty;
-  readonly blackBoxInterfaceProperty: BooleanProperty;
-  readonly insideTrueBlackBoxProperty: BooleanProperty;
+  readonly positionProperty: Property<Vector2>;
+  readonly unsnappedPositionProperty: Property<Vector2>;
+  readonly voltageProperty: Property<number>;
+  readonly selectedProperty: Property<boolean>;
+  readonly draggableProperty: Property<boolean>;
+  readonly interactiveProperty: Property<boolean>;
+  readonly attachableProperty: Property<boolean>;
+  readonly blackBoxInterfaceProperty: Property<boolean>;
+  readonly insideTrueBlackBoxProperty: Property<boolean>;
   readonly relayerEmitter: Emitter<[]>;
   private readonly vertexSelectedPropertyListener: null;
   isDragged: boolean;

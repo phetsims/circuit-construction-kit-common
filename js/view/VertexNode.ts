@@ -110,7 +110,7 @@ class VertexNode extends Node {
         this.voltageReadoutText!.centerX = 0;
         this.voltageReadoutText!.bottom = -30;
       };
-      vertex.voltageProperty.link( ( voltage: number ) => {
+      vertex.voltageProperty.link( voltage => {
 
         // No need for i18n because this is for debugging only
         const voltageText = `${Utils.toFixed( voltage, 3 )}V`;

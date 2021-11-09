@@ -72,7 +72,7 @@ class CCKCChartNode extends Node {
   private readonly droppedEmitter: Emitter<[]>;
   protected readonly aboveBottomLeft1: DerivedProperty<Vector2>;
   protected readonly aboveBottomLeft2: DerivedProperty<Vector2>;
-  private readonly zoomLevelProperty: NumberProperty;
+  private readonly zoomLevelProperty: Property<number>;
   protected readonly updatePen: () => void;
 
   /**
@@ -228,7 +228,7 @@ class CCKCChartNode extends Node {
       },
       tandem: options.tandem.createTandem( 'zoomButtonGroup' )
     } );
-    this.zoomLevelProperty.link( ( zoomLevel: number ) => {
+    this.zoomLevelProperty.link( zoomLevel => {
       chartTransform.setModelYRange( zoomRanges[ zoomLevel ] );
       verticalGridLineSet.setSpacing( zoomRanges[ zoomLevel ].max / 2 );
       verticalLabelSet.setSpacing( zoomRanges[ zoomLevel ].max / 2 );
@@ -256,7 +256,7 @@ class CCKCChartNode extends Node {
       pen.update();
     };
 
-    timeProperty.link( ( time: number ) => {
+    timeProperty.link( time => {
 
       // Show 4 seconds, plus a lead time of 0.25 sec
       chartTransform.setModelXRange( new Range( time - 4, time + 0.25 ) );

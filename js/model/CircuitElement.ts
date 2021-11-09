@@ -47,7 +47,7 @@ abstract class CircuitElement extends PhetioObject {
   readonly canBeDroppedInToolbox: boolean;
   readonly startVertexProperty: Property<Vertex>;
   readonly endVertexProperty: Property<Vertex>;
-  readonly currentProperty: NumberProperty;
+  readonly currentProperty: Property<number>;
   readonly currentSenseProperty: Property<CurrentSense>;
   readonly interactiveProperty: BooleanProperty;
   readonly insideTrueBlackBoxProperty: BooleanProperty;
@@ -128,7 +128,7 @@ abstract class CircuitElement extends PhetioObject {
     this.currentProperty = new NumberProperty( 0, {
       reentrant: options.isCurrentReentrant
     } );
-    this.currentProperty.link( ( current: number ) => {
+    this.currentProperty.link( current => {
       assert && assert( !isNaN( current ) );
     } );
 

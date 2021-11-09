@@ -8,6 +8,7 @@
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
+import Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import Utils from '../../../dot/js/Utils.js';
 import merge from '../../../phet-core/js/merge.js';
@@ -27,8 +28,8 @@ type SwitchOptions = {
 } & FixedCircuitElementOptions;
 
 class Switch extends FixedCircuitElement {
-  readonly resistanceProperty: NumberProperty;
-  readonly closedProperty: BooleanProperty;
+  readonly resistanceProperty: Property<number>;
+  readonly closedProperty: Property<boolean>;
 
   /**
    * @param {Vertex} startVertex
@@ -56,7 +57,7 @@ class Switch extends FixedCircuitElement {
       tandem: tandem.createTandem( 'closedProperty' )
     } );
 
-    this.closedProperty.link( ( closed: boolean ) => {
+    this.closedProperty.link( closed => {
       this.resistanceProperty.value = closed ? 0 : CCKCConstants.MAX_RESISTANCE;
     } );
   }

@@ -161,7 +161,7 @@ class CircuitElementToolFactory {
       { value: 'schematic', node: schematicIcon }
     ] );
 
-    this.viewTypeProperty.link( ( viewType: CircuitElementViewType ) => {
+    this.viewTypeProperty.link( viewType => {
       lifelikeIcon.visible = viewType === 'lifelike';
       schematicIcon.visible = viewType === 'schematic';
     } );

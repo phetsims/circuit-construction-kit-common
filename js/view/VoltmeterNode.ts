@@ -159,7 +159,7 @@ class VoltmeterNode extends Node {
     );
 
     // When the voltmeter body moves, update the node and wires
-    voltmeter.bodyPositionProperty.link( ( bodyPosition: Vector2 ) => {
+    voltmeter.bodyPositionProperty.link( bodyPosition => {
 
       // Drag the body by the center
       bodyNode.center = bodyPosition;

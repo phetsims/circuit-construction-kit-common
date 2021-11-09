@@ -7,6 +7,7 @@
  */
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
+import Property from '../../../axon/js/Property.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Circuit from './Circuit.js';
@@ -14,7 +15,7 @@ import Resistor, { ResistorOptions } from './Resistor.js';
 import Vertex from './Vertex.js';
 
 class Dog extends Resistor {
-  readonly isBarkingProperty: BooleanProperty;
+  readonly isBarkingProperty: Property<boolean>;
   private lastBarkTime: number;
   private triggerCount: number;
 

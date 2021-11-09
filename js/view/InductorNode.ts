@@ -91,7 +91,7 @@ class InductorNode extends FixedCircuitElementNode {
 
     // Container that has individual wire loops.
     const wireWrapNode = new Node();
-    inductor.inductanceProperty.link( ( inductance: number ) => {
+    inductor.inductanceProperty.link( inductance => {
 
       // Determine the number of loops, including the start and end segments, which are each half.
       const numLoops = Utils.roundSymmetric( Utils.linear( 5, 10, 12, 20, inductance ) );

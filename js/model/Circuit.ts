@@ -573,7 +573,9 @@ class Circuit {
       const distance1 = this.closestDistanceToOtherVertex( vertex );
       this.rotateSingleVertexByAngle( vertex, pivotVertex, -2 * searchAngle );
       const distance2 = this.closestDistanceToOtherVertex( vertex );
-      if ( distance2 <= distance1 ) {
+
+      assert && assert( typeof distance1 === 'number' && typeof distance2 === 'number' );
+      if ( distance2! <= distance1! ) {
 
         // go back to the best spot
         this.rotateSingleVertexByAngle( vertex, pivotVertex, 2 * searchAngle );

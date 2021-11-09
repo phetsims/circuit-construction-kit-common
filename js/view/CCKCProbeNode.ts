@@ -43,7 +43,7 @@ class CCKCProbeNode extends ProbeNode {
 
     positionProperty.link( ( p: Vector2 ) => this.setTranslation( p ) );
 
-    visibleBoundsProperty.link( ( visibleBounds: Bounds2 ) => this.setCenter( visibleBounds.closestPointTo( this.center ) ) );
+    visibleBoundsProperty.link( visibleBounds => this.setCenter( visibleBounds.closestPointTo( this.center ) ) );
 
     this.addInputListener( new DragListener( {
       positionProperty: positionProperty,
