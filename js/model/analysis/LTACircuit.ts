@@ -126,14 +126,19 @@ class LTACircuit {
 
       // In series
       const newNode = 'syntheticNode' + ( syntheticNodeIndex++ );
+      const newNode2 = 'syntheticNode' + ( syntheticNodeIndex++ );
 
       const companionResistance = 2 * ltaInductor.inductance / dt;
       const companionVoltage = -ltaInductor.voltage - companionResistance * ltaInductor.current;
 
       const battery = new MNABattery( ltaInductor.node0, newNode, companionVoltage );
-      const resistor = new MNAResistor( newNode, ltaInductor.node1, companionResistance );
+      const resistor = new MNAResistor( newNode, newNode2, companionResistance );
+      const addedResistor = new MNAResistor( newNode2, ltaInductor.node1, CCKCQueryParameters.inductorResistance );
       companionBatteries.push( battery );
       companionResistors.push( resistor );
+      companionResistors.push( addedResistor );
+
+      ltaInductor.inductorVoltageNode1 = newNode2;
 
       // we need to be able to get the current for this component
       // in series, so current is same through both companion components
@@ -216,7 +221,6 @@ class LTACircuit {
    */
   updateCircuit( solution: LTASolution ) {
     const updatedCapacitors = this.ltaCapacitors.map( ltaCapacitor => {
-      // TODO: This may have something to do with it?  https://github.com/phetsims/circuit-construction-kit-common/issues/758
       return new LTACapacitor(
         ltaCapacitor.id,
         ltaCapacitor.node0,
@@ -226,13 +230,11 @@ class LTACircuit {
         ltaCapacitor.capacitance );
     } );
     const updatedInductors = this.ltaInductors.map( ltaInductor => {
-
-      // TODO: This may have something to do with it? https://github.com/phetsims/circuit-construction-kit-common/issues/758
       return new LTAInductor(
         ltaInductor.id,
         ltaInductor.node0,
         ltaInductor.node1,
-        solution.getVoltage( ltaInductor.node0, ltaInductor.node1 ),
+        solution.getVoltage( ltaInductor.node0, ltaInductor.inductorVoltageNode1! ),
         solution.getCurrentForCompanion( ltaInductor ),
         ltaInductor.inductance
       );

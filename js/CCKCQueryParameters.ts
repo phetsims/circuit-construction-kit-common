@@ -92,6 +92,12 @@ const CCKCQueryParameters = QueryStringMachine.getAll( {
     defaultValue: 1E-4
   },
 
+  // Model inductors with a series resistor to help linearize the problem
+  inductorResistance: {
+    type: 'number',
+    defaultValue: 1E-4
+  },
+
   fullPrecisionAmmeter: {
     type: 'flag'
   },
