@@ -11,7 +11,6 @@ import Matrix3 from '../../../dot/js/Matrix3.js';
 import Shape from '../../../kite/js/Shape.js';
 import merge from '../../../phet-core/js/merge.js';
 import Image from '../../../scenery/js/nodes/Image.js';
-import Node from '../../../scenery/js/nodes/Node.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import Color from '../../../scenery/js/util/Color.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -76,7 +75,7 @@ class BatteryNode extends FixedCircuitElementNode {
   constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, battery: Battery, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: Partial<FixedCircuitElementNodeOptions> ) {
 
     providedOptions = merge( { useHitTestForSensors: true }, providedOptions );
-    const lifelikeNode = new Image( battery.batteryType === 'normal' ? batteryImage : batteryHighImage ) as unknown as Node;
+    const lifelikeNode = new Image( battery.batteryType === 'normal' ? batteryImage : batteryHighImage );
 
     lifelikeNode.mutate( {
       scale: battery.distanceBetweenVertices / lifelikeNode.width
@@ -106,8 +105,8 @@ class BatteryNode extends FixedCircuitElementNode {
  * @public {Array.<Image>}
  */
 BatteryNode.webglSpriteNodes = [
-  new Image( batteryImage ) as unknown as Node,
-  new Image( batteryHighImage ) as unknown as Node
+  new Image( batteryImage ),
+  new Image( batteryHighImage )
 ];
 
 circuitConstructionKitCommon.register( 'BatteryNode', BatteryNode );

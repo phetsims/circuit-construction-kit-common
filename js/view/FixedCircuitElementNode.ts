@@ -210,7 +210,7 @@ class FixedCircuitElementNode extends CircuitElementNode {
       // Show fire for batteries and resistors
       if ( circuitElement.isFlammable ) {
 
-        this.fireNode = new Image( fireImage, { pickable: false, imageOpacity: 0.95 } ) as unknown as Node;
+        this.fireNode = new Image( fireImage, { pickable: false, imageOpacity: 0.95 } );
         this.fireNode.mutate( { scale: this.contentNode.width / this.fireNode.width } );
         this.addChild( this.fireNode );
         if ( screenView ) {
@@ -378,7 +378,7 @@ class FixedCircuitElementNode extends CircuitElementNode {
  * @public {Array.<Image>}
  */
 FixedCircuitElementNode.webglSpriteNodes = [
-  new Image( fireImage ) as unknown as Node
+  new Image( fireImage )
 ];
 
 circuitConstructionKitCommon.register( 'FixedCircuitElementNode', FixedCircuitElementNode );

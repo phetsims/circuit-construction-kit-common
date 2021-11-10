@@ -59,7 +59,7 @@ class FuseNode extends FixedCircuitElementNode {
 
     options = merge( { isIcon: false, useHitTestForSensors: true }, options );
 
-    const fuseImageNode = new Image( fuseImage, { scale: 0.691 } ) as unknown as Node;
+    const fuseImageNode = new Image( fuseImage, { scale: 0.691 } );
     const numberOfZigZags = ( fuseImageNode.width - CAP_WIDTH * 2 ) / HORIZONTAL_ZIG_ZAG_DISTANCE / 2;
 
     // zig-zag shape
@@ -216,7 +216,7 @@ class FuseNode extends FixedCircuitElementNode {
  * @public {Array.<Image>}
  */
 FuseNode.webglSpriteNodes = [
-  new Image( fuseImage ) as unknown as Node
+  new Image( fuseImage )
 ];
 
 circuitConstructionKitCommon.register( 'FuseNode', FuseNode );

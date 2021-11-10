@@ -194,7 +194,7 @@ class CircuitElementToolFactory {
         ( tandem: Tandem, viewTypeProperty: Property<CircuitElementViewType> ) => {
           return viewTypeProperty.value === 'lifelike' ? ( new Image( wireIconImage, {
             tandem: tandem
-          } ) as unknown as Node ) : new Line( 0, 0, 120, 0, {
+          } ) ) : new Line( 0, 0, 120, 0, {
             stroke: Color.BLACK,
             lineWidth: 4.5, // match with other toolbox icons
             tandem: tandem

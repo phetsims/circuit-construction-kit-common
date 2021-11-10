@@ -125,7 +125,7 @@ class VoltmeterNode extends Node {
       scale: SCALE,
       cursor: 'pointer',
       children: [ probeTextNode ]
-    } ) as unknown as Node;
+    } );
 
     /**
      * Creates a Vector2Property with a new Vector2 at the specified position.

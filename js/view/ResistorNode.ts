@@ -88,7 +88,7 @@ class ResistorNode extends FixedCircuitElementNode {
     providedOptions = merge( { isIcon: false, useHitTestForSensors: true }, providedOptions );
 
     // Assigned to instance variable after super()
-    const lifelikeResistorImageNode = new Image( RESISTOR_IMAGE_MAP.get( resistor.resistorType ) ) as unknown as Node;
+    const lifelikeResistorImageNode = new Image( RESISTOR_IMAGE_MAP.get( resistor.resistorType ) );
 
     let updateColorBands: ( ( n: number ) => void ) | null = null;
 
@@ -259,15 +259,15 @@ class ResistorNode extends FixedCircuitElementNode {
  * @public {Array.<Image>}
  */
 ResistorNode.webglSpriteNodes = [
-  new Image( resistorImage ) as unknown as Node,
-  new Image( paperClipImage ) as unknown as Node,
-  new Image( coinImage ) as unknown as Node,
-  new Image( pencilImage ) as unknown as Node,
-  new Image( eraserImage ) as unknown as Node,
-  new Image( handImage ) as unknown as Node,
-  new Image( resistorHighImage ) as unknown as Node,
-  new Image( dogImage ) as unknown as Node,
-  new Image( dollarBillImage ) as unknown as Node
+  new Image( resistorImage ),
+  new Image( paperClipImage ),
+  new Image( coinImage ),
+  new Image( pencilImage ),
+  new Image( eraserImage ),
+  new Image( handImage ),
+  new Image( resistorHighImage ),
+  new Image( dogImage ),
+  new Image( dollarBillImage )
 ];
 
 circuitConstructionKitCommon.register( 'ResistorNode', ResistorNode );

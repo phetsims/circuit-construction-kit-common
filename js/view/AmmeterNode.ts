@@ -112,7 +112,7 @@ class AmmeterNode extends Node {
       scale: SCALE_FACTOR,
       cursor: 'pointer',
       children: [ probeTextNode ]
-    } ) as unknown as Node;
+    } );
 
     const probeNode = new ProbeNode( {
       cursor: 'pointer',

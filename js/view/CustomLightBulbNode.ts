@@ -63,14 +63,14 @@ class CustomLightBulbNode extends Node {
       centerX: 0,
       bottom: 0,
       pickable: false
-    } ) as unknown as Node;
+    } );
 
     const middleNode = new Image( providedOptions.baseOnly ? selectedSocketImage :
                                   selectedMiddleImage, {
       scale: BULB_IMAGE_SCALE,
       centerBottom: backNode.centerBottom,
       pickable: false
-    } ) as unknown as Node;
+    } );
 
     let raysNode = null;
 

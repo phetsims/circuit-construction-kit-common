@@ -144,11 +144,11 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
     const leftWireStub = new Image( wireIconImage, merge( {
       centerX: lifelikeNode.centerX,
       centerY: lifelikeNode.centerY
-    }, wireStubOptions ) ) as unknown as Node;
+    }, wireStubOptions ) );
     const rightWireStub = new Image( wireIconImage, merge( {
       centerX: lifelikeNode.centerX,
       centerY: lifelikeNode.centerY
-    }, wireStubOptions ) ) as unknown as Node;
+    }, wireStubOptions ) );
 
     const schematicPathOptions = {
       stroke: Color.BLACK,
@@ -302,7 +302,7 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
  * Identifies the images used to render this node so they can be pre-populated in the WebGL sprite sheet.
  * @public {Array.<Image>}
  */
-CapacitorCircuitElementNode.webglSpriteNodes = [ new Image( wireIconImage ) as unknown as Node ];
+CapacitorCircuitElementNode.webglSpriteNodes = [ new Image( wireIconImage ) ];
 
 circuitConstructionKitCommon.register( 'CapacitorCircuitElementNode', CapacitorCircuitElementNode );
 export default CapacitorCircuitElementNode;

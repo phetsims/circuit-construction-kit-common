@@ -102,11 +102,11 @@ class CCKCLightBulbNode extends FixedCircuitElementNode {
     if ( filledOptions.isIcon ) {
       lightBulbNode = new Image( lightBulb.highResistance ? lightBulbMiddleHighImage :
                                  lightBulb.real ? lightBulbMiddleRealImage :
-                                 lightBulbMiddleImage, { scale: 0.37 } ) as unknown as Node;
+                                 lightBulbMiddleImage, { scale: 0.37 } );
 
       // tack on the socket
       if ( lightBulb.real ) {
-        lightBulbNode.addChild( new Image( lightBulbFrontRealImage ) as unknown as Node );
+        lightBulbNode.addChild( new Image( lightBulbFrontRealImage ) );
       }
     }
 

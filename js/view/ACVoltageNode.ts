@@ -78,8 +78,8 @@ const createNode = ( schematic: boolean ) => new Node( {
         } ) ]
   ]
 } );
-const schematicNode = createNode( true ).rasterized( { wrap: false, resolution: 2 } ) as unknown as Node;
-const lifelikeNode = createNode( false ).rasterized( { wrap: false, resolution: 2 } ) as unknown as Node;
+const schematicNode = createNode( true ).rasterized( { wrap: false, resolution: 2 } );
+const lifelikeNode = createNode( false ).rasterized( { wrap: false, resolution: 2 } );
 
 // Expand the pointer areas with a defensive copy, see https://github.com/phetsims/circuit-construction-kit-common/issues/310
 schematicNode.mouseArea = Shape.circle(
