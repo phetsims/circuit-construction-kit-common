@@ -111,7 +111,7 @@ class VoltmeterNode extends Node {
     } );
 
     // Displays the voltage reading
-    const voltageReadoutProperty = new DerivedProperty<string>( [ voltmeter.voltageProperty ], ( voltage: number ) =>
+    const voltageReadoutProperty = new DerivedProperty( [ voltmeter.voltageProperty ], ( voltage: number ) =>
       voltage === null ? MathSymbols.NO_VALUE : CCKCUtils.createVoltageReadout( voltage )
     );
 
