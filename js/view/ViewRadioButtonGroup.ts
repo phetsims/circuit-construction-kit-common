@@ -24,7 +24,7 @@ import BatteryNode from './BatteryNode.js';
 const BATTERY_LENGTH = CCKCConstants.BATTERY_LENGTH;
 const SCALE = 0.4;
 
-class ViewRadioButtonGroup extends RectangularRadioButtonGroup {
+class ViewRadioButtonGroup extends RectangularRadioButtonGroup<CircuitElementViewType> {
 
   /**
    * @param {Property.<CircuitElementViewType>} viewTypeProperty - whether to show lifelike or schematic representations
