@@ -22,6 +22,9 @@ import Dog from '../model/Dog.js';
 
 class DogNode extends ResistorNode {
   private readonly barkNode: BarkNode;
+  private readonly isBarkingListener: ( isBarking: any ) => void;
+  private readonly dog: Dog;
+  private readonly boundsListener: () => void;
 
   /**
    * @param {CCKCScreenView|null} screenView - main screen view, null for isIcon
@@ -58,17 +61,26 @@ class DogNode extends ResistorNode {
       }
     };
 
-    this.contentNode.boundsProperty.link( () => positionBark() );
+    this.boundsListener = () => positionBark();
+    this.contentNode.boundsProperty.link( this.boundsListener );
 
-    dog.isBarkingProperty.link( isBarking => {
+    this.dog = dog;
+    this.isBarkingListener = isBarking => {
 
       // Position next to the dog's mouth
       positionBark();
 
       this.barkNode.visible = isBarking;
-    } );
 
-    dog.isBarkingProperty.lazyLink( ( isBarking: boolean ) => isBarking && soundClip.play() );
+      isBarking && soundClip.play();
+    };
+    dog.isBarkingProperty.link( this.isBarkingListener );
+  }
+
+  dispose() {
+    super.dispose();
+    this.dog.isBarkingProperty.unlink( this.isBarkingListener );
+    this.contentNode.boundsProperty.unlink( this.boundsListener );
   }
 }
 
