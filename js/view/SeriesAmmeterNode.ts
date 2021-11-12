@@ -198,6 +198,7 @@ class SeriesAmmeterNode extends FixedCircuitElementNode {
       seriesAmmeter.currentProperty.unlink( updateText );
       seriesAmmeter.startVertexProperty.unlink( updateText );
       seriesAmmeter.endVertexProperty.unlink( updateText );
+      ammeterReadoutTypeProperty.unlink( updateText );
       if ( !this.isIcon ) {
         assert && assert( !!circuitLayerNode );
         if ( circuitLayerNode ) {
