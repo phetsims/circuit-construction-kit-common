@@ -38,7 +38,7 @@ class PhaseShiftControl extends VBox {
     // options for all spinners
     const spinnerOptions = {
       enabledProperty: enabledProperty,
-      deltaValue: 10,
+      deltaValue: 15,
       numberDisplayOptions: {
         align: 'center',
         decimalPlaces: 0,
