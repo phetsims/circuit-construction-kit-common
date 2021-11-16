@@ -149,7 +149,7 @@ class MNASolution {
  * @param {number} b - another number
  * @returns {boolean} true if the numbers are approximately equal
  */
-const approximatelyEquals = ( a: number, b: number ) => Math.abs( a - b ) < 1E-6;
+const approximatelyEquals = ( a: number, b: number ) => Math.abs( a - b ) < 1E-4;
 
 circuitConstructionKitCommon.register( 'MNASolution', MNASolution );
 export default MNASolution;
