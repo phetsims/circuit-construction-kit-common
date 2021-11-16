@@ -36,7 +36,7 @@ class MNASolution {
   }
 
   // Compare two solutions, and provide detailed qunit equal test if equal is provided.
-  approxEquals( modifiedNodalAnalysisSolution: MNASolution, qassert: Assert ) {
+  approxEquals( modifiedNodalAnalysisSolution: MNASolution, qassert: Assert | null ) {
     const keys = Array.from( this.nodeVoltages.keys() );
     const otherKeys = Array.from( modifiedNodalAnalysisSolution.nodeVoltages.keys() );
     const keyDifference = _.difference( keys, otherKeys );
