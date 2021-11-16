@@ -35,17 +35,10 @@ class MNASolution {
     return value;
   }
 
-  /**
-   * Compare two solutions, and provide detailed qunit equal test if equal is provided.  For the AC CCK, this method
-   * will also be used to identify when enough dt-subdivisions have been made in the adaptive timestep integration.
-   * @param {MNASolution} modifiedNodalAnalysisSolution
-   * @param {Object} [qassert] from qunit
-   * @returns {boolean}
-   * @public
-   */
+  // Compare two solutions, and provide detailed qunit equal test if equal is provided.
   approxEquals( modifiedNodalAnalysisSolution: MNASolution, qassert: Assert ) {
-    const keys = _.keys( this.nodeVoltages );
-    const otherKeys = _.keys( modifiedNodalAnalysisSolution.nodeVoltages );
+    const keys = Array.from( this.nodeVoltages.keys() );
+    const otherKeys = Array.from( modifiedNodalAnalysisSolution.nodeVoltages.keys() );
     const keyDifference = _.difference( keys, otherKeys );
     assert && assert( keyDifference.length === 0, 'wrong keys in compared solution' );
     for ( let i = 0; i < keys.length; i++ ) {
