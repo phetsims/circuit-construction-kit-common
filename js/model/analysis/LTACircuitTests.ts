@@ -21,6 +21,11 @@ const errorThreshold = 0.05;
 
 let id = 0;
 
+let worstError = 0;
+
+// @ts-ignore
+// window.string = `{v}  {r}  {c}  {t}  {desiredVoltageAtTPlusDT}  {voltage}  {error}
+// `;
 // Check the values coming from an RC circuit (may be an equivalent capacitance)
 const iterateCapacitor = ( circuit: LTACircuit, resistor: MNAResistor, v: number, r: number, c: number, assert: Assert ) => {
   for ( let i = 0; i < ITERATIONS; i++ ) {
@@ -30,6 +35,16 @@ const iterateCapacitor = ( circuit: LTACircuit, resistor: MNAResistor, v: number
     const voltage = companionSolution!.getVoltage( resistor.nodeId0, resistor.nodeId1 );
     const desiredVoltageAtTPlusDT = -v * Math.exp( -( t + dt ) / r / c );
     const error = Math.abs( voltage - desiredVoltageAtTPlusDT );
+
+    // console.log( error );
+    if ( error > worstError ) {
+      worstError = error;
+      // console.log( 'new worst error: ' + worstError );
+    }
+
+    // @ts-ignore
+    // window.string = window.string + `${v}  ${r}  ${c}  ${t}  ${desiredVoltageAtTPlusDT}  ${voltage}  ${error}
+// `;
     assert.ok( error < errorThreshold ); // sample run indicates largest error is 1.5328E-7
     circuit = circuit.updateWithSubdivisions( dt );
   }
@@ -69,9 +84,14 @@ const testVRCCircuitParallelCapacitors = ( v: number, r: number, c1: number, c2:
 };
 
 // This is for comparison with TestTheveninCapacitorRC
-QUnit.test( 'testVRC991Eminus2', assert => {
-  testVRCCircuit( 9, 9, 1E-2, assert );
-} );
+// QUnit.test( 'testVRC991Eminus2', assert => {
+//
+//   for ( let v = 0; v < 120; v += 10 ) { // esl
+//     for ( let c = 0.05; c <= 0.20; c += 0.05 ) {
+//       testVRCCircuit( v, 10, c, assert );
+//     }
+//   }
+// } );
 
 QUnit.test( 'test RC Circuit should have voltage exponentially decay with T RC for v 5 r 10 c 1E minus2', assert => {
   testVRCCircuit( 5.0, 10.0, 1.0E-2, assert );
