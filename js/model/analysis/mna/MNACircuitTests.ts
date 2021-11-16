@@ -242,3 +242,36 @@ QUnit.test( 'test_resistors_in_parallel_should_have_harmonic_mean_of_resistance'
   const solution = circuit.solve();
   assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
 } );
+
+// Compare to the example at https://www.khanacademy.org/science/electrical-engineering/ee-circuit-analysis-topic/ee-dc-circuit-analysis/a/ee-node-voltage-method
+QUnit.test( 'test-circuit-with-voltage-and-current-sources', assert => {
+  const V1 = 140;
+  const R1 = 20;
+  const R2 = 6;
+  const R3 = 5;
+  const I1 = 18;
+
+  // TODO: Sign error
+  const battery = new MNABattery( 'a', 'c', -V1 );
+  const resistor1 = new MNAResistor( 'a', 'b', R1 );
+  const resistor2 = new MNAResistor( 'b', 'c', R2 );
+  const resistor3 = new MNAResistor( 'b', 'c', R3 );
+
+  // TODO: Sign error
+  const current = new MNACurrent( 'c', 'b', -I1 );
+  const circuit = new MNACircuit( [ battery ], [ resistor1, resistor2, resistor3 ], [ current ] );
+
+  const voltageMap = new Map( [
+    [ 'a', 140 - 140 ],
+    [ 'b', 60 - 140 ],
+    [ 'c', 0 - 140 ]
+  ] );
+
+  const desiredSolution = new MNASolution( voltageMap, new Map<MNACircuitElement, number>( [
+    [ battery, 4.0 ]
+  ] ) );
+  const solution = circuit.solve();
+
+  console.log( solution );
+  assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
+} );
