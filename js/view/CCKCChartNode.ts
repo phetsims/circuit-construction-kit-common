@@ -450,6 +450,7 @@ class CCKCChartNode extends Node {
     this.meter.draggingProbesWithBodyProperty.value = true;
 
     const dragListener = new DragListener( {
+      allowTouchSnag: false, // allow the zoom buttons to be pressed with the mouse
       positionProperty: this.meter.bodyPositionProperty,
       useParentOffset: true,
 
