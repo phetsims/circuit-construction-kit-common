@@ -10,12 +10,6 @@ class LTASolution {
   private readonly mnaSolution: MNASolution;
   private readonly currentCompanions: any;
 
-  /**
-   * @param {LTACircuit} circuit
-   * @param {MNASolution} mnaSolution
-   * @param {{element:MNACircuitElement,getValueForSolution(MNASolution):number}[]} currentCompanions
-   * @constructor
-   */
   constructor( circuit: LTACircuit, mnaSolution: MNASolution, currentCompanions: any ) {
     this.circuit = circuit;
     this.mnaSolution = mnaSolution;
