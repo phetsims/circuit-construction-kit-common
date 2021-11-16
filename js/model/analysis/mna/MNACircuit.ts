@@ -245,8 +245,8 @@ class MNACircuit {
       const node = nodes[ i ];
       const currentTerms: Term[] = [];
 
-      this.getCurrentTerms( node, 'nodeId1', -1, currentTerms );
-      this.getCurrentTerms( node, 'nodeId0', +1, currentTerms );
+      this.getCurrentTerms( node, 'nodeId1', +1, currentTerms );
+      this.getCurrentTerms( node, 'nodeId0', -1, currentTerms );
       equations.push( new Equation( this.getCurrentSourceTotal( node ), currentTerms ) );
     }
 
