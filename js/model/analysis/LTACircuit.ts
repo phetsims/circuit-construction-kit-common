@@ -99,7 +99,7 @@ class LTACircuit {
       // V = Vbattery + Vresistor.  We need to solve for the voltage across the battery to use it in the companion
       // model, so we have Vbattery = V-Vresistor.  The magnitude of the voltage drop across the resistor is given by
       // |V|=|IReq| and sign is unchanged since the conventional current flows from high to low voltage.
-      const companionVoltage = ltaCapacitor.voltage - companionResistance * ltaCapacitor.current;
+      const companionVoltage = companionResistance * ltaCapacitor.current - ltaCapacitor.voltage;
 
       const battery = new MNABattery( ltaCapacitor.node0, newNode1, companionVoltage );
       const resistor = new MNAResistor( newNode1, newNode2, companionResistance );
@@ -129,7 +129,7 @@ class LTACircuit {
       const newNode2 = 'syntheticNode' + ( syntheticNodeIndex++ );
 
       const companionResistance = 2 * ltaInductor.inductance / dt;
-      const companionVoltage = -ltaInductor.voltage - companionResistance * ltaInductor.current;
+      const companionVoltage = ltaInductor.voltage + -companionResistance * ltaInductor.current;
 
       const battery = new MNABattery( ltaInductor.node0, newNode, companionVoltage );
       const resistor = new MNAResistor( newNode, newNode2, companionResistance );
@@ -144,8 +144,7 @@ class LTACircuit {
       // in series, so current is same through both companion components
       currentCompanions.push( {
         element: ltaInductor,
-        // TODO: This sign looks very wrong https://github.com/phetsims/circuit-construction-kit-common/issues/758
-        getValueForSolution: ( solution: MNASolution ) => -solution.getCurrentForResistor( resistor )
+        getValueForSolution: ( solution: MNASolution ) => solution.getCurrentForResistor( resistor )
       } );
     } );
 

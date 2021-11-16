@@ -251,11 +251,13 @@ class MNACircuit {
     }
 
     // For each battery, voltage drop is given
+    // Within the battery, the current flows from low to high potential, so V = -(v1-v0) in this case.
+    // Because the battery moves the current from low voltage to high voltage.
     for ( let i = 0; i < this.batteries.length; i++ ) {
       const battery = this.batteries[ i ];
       equations.push( new Equation( battery.voltage, [
-        new Term( -1, new UnknownVoltage( battery.nodeId0 ) ),
-        new Term( 1, new UnknownVoltage( battery.nodeId1 ) )
+        new Term( 1, new UnknownVoltage( battery.nodeId0 ) ),
+        new Term( -1, new UnknownVoltage( battery.nodeId1 ) )
       ] ) );
     }
 
@@ -408,6 +410,8 @@ class Term {
    * @param {UnknownCurrent|UnknownVoltage} variable - the variable for this term, like the x variable in 7x
    */
   constructor( coefficient: number, variable: UnknownCurrent | UnknownVoltage ) {
+
+    assert && assert( !isNaN( coefficient ), 'coefficient cannot be NaN' );
 
     // @public (read-only) {number} the coefficient for the term, like '7' in 7x
     this.coefficient = coefficient;

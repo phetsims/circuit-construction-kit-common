@@ -208,9 +208,7 @@ class LinearTransientAnalysis {
     ltaInductors.forEach( ltaInductor => {
 
       const inductor = inductorMap.get( ltaInductor )!;
-
-      // TODO: This line is seemingly wrong https://github.com/phetsims/circuit-construction-kit-common/issues/758
-      inductor.currentProperty.value = -circuitResult.getTimeAverageCurrentForCoreModel( ltaInductor );
+      inductor.currentProperty.value = circuitResult.getTimeAverageCurrentForCoreModel( ltaInductor );
       inductor.mnaCurrent = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousCurrentForCoreModel( ltaInductor ) );
       inductor.mnaVoltageDrop = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousVoltageForCoreModel( ltaInductor ) );
       assert && assert( Math.abs( inductor.mnaCurrent ) < 1E100, 'mnaCurrent out of range' );
