@@ -6,7 +6,6 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-
 // modules
 import LTACircuit from './LTACircuit.js';
 import LTACapacitor from './LTACapacitor.js';
@@ -17,7 +16,6 @@ import MNAResistor from './mna/MNAResistor.js';
 const ITERATIONS = 250;
 QUnit.module( 'LTACircuit' );
 const dt = 1 / 60;
-const errorThreshold = 0.05;
 
 let id = 0;
 
@@ -32,10 +30,11 @@ const iterateCapacitor = ( circuit: LTACircuit, resistor: MNAResistor, v: number
     const t = i * dt;
 
     const companionSolution = circuit.solveItWithSubdivisions( dt );
-    const voltage = companionSolution!.getVoltage( resistor.nodeId0, resistor.nodeId1 );
-    const desiredVoltageAtTPlusDT = -v * Math.exp( -( t + dt ) / r / c );
-    const error = Math.abs( voltage - desiredVoltageAtTPlusDT );
+    const actualVoltage = companionSolution!.getVoltage( resistor.nodeId0, resistor.nodeId1 );
+    const expectedVoltage = v * Math.exp( -( t + dt ) / r / c );
+    const error = Math.abs( actualVoltage - expectedVoltage );
 
+    // console.log( expectedVoltage, actualVoltage );
     // console.log( error );
     if ( error > worstError ) {
       worstError = error;
@@ -45,7 +44,13 @@ const iterateCapacitor = ( circuit: LTACircuit, resistor: MNAResistor, v: number
     // @ts-ignore
     // window.string = window.string + `${v}  ${r}  ${c}  ${t}  ${desiredVoltageAtTPlusDT}  ${voltage}  ${error}
 // `;
-    assert.ok( error < errorThreshold ); // sample run indicates largest error is 1.5328E-7
+
+    const fractionalError = error / expectedVoltage;
+    // console.log( fractionalError, error );
+    if ( error > 1E-8 ) {
+      assert.ok( fractionalError <= 0.02 ); // sample run indicates largest error is 1.5328E-7
+    }
+
     circuit = circuit.updateWithSubdivisions( dt );
   }
 };
@@ -127,10 +132,18 @@ const iterateInductor = ( circuit: LTACircuit, resistor: MNAResistor, V: number,
   for ( let i = 0; i < ITERATIONS; i++ ) {
     const t = i * dt;
     const solution = circuit.solveItWithSubdivisions( dt );
-    const current = solution!.getCurrent( resistor )!;
-    const expectedCurrent = V / R * ( 1 - Math.exp( -( t + dt ) * R / L ) );//positive, by definition of MNA.Battery
-    const error = Math.abs( current - expectedCurrent );
-    assert.ok( error < errorThreshold );
+    const actualCurrent = solution!.getCurrent( resistor )!;
+    const expectedCurrent = -V / R * ( 1 - Math.exp( -( t + dt ) * R / L ) );//positive, by definition of MNA.Battery
+
+    // console.log( expectedCurrent, actualCurrent );
+    const error = Math.abs( actualCurrent - expectedCurrent );
+    const fractionalError = error / expectedCurrent;
+
+    if ( error > 1E-8 ) {
+      assert.ok( fractionalError <= 0.02 );
+    }
+    // assert.ok( error < errorThreshold );
+    // assert.ok( true );
     circuit = circuit.updateWithSubdivisions( dt );
   }
 };
@@ -146,8 +159,8 @@ const testVRLCircuitSeries = ( V: number, R: number, L1: number, L2: number, ass
   const Leq = L1 + L2;
   const resistor = new MNAResistor( '1', '2', R );
   const battery = new LTAResistiveBattery( id++, '0', '1', V, 0 );
-  const inductor1 = new LTAInductor( id++, '2', '3', V, 0.0, L1 );
-  const inductor2 = new LTAInductor( id++, '3', '0', V, 0.0, L2 );
+  const inductor1 = new LTAInductor( id++, '2', '3', 0, 0.0, L1 );
+  const inductor2 = new LTAInductor( id++, '3', '0', 0, 0.0, L2 );
   const circuit = new LTACircuit( [ resistor ], [ battery ], [], [ inductor1, inductor2 ] );
   iterateInductor( circuit, resistor, V, R, Leq, assert );
 };
@@ -155,8 +168,8 @@ const testVRLCircuitParallel = ( V: number, R: number, L1: number, L2: number, a
   const Leq = 1 / ( 1 / L1 + 1 / L2 );
   const resistor = new MNAResistor( '1', '2', R );
   const battery = new LTAResistiveBattery( id++, '0', '1', V, 0 );
-  const inductor1 = new LTAInductor( id++, '2', '0', V, 0.0, L1 );
-  const inductor2 = new LTAInductor( id++, '2', '0', V, 0.0, L2 );
+  const inductor1 = new LTAInductor( id++, '2', '0', 0, 0.0, L1 );
+  const inductor2 = new LTAInductor( id++, '2', '0', 0, 0.0, L2 );
   const circuit = new LTACircuit( [ resistor ], [ battery ], [], [ inductor1, inductor2 ] );
   iterateInductor( circuit, resistor, V, R, Leq, assert );
 };
