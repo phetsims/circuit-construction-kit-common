@@ -55,6 +55,7 @@ class LTACircuit {
 
     const companionBatteries: MNABattery[] = [];
     const companionResistors: MNAResistor[] = [];
+    const companionCurrents: MNACurrent[] = [];
     const currentCompanions: { element: CoreModel, getValueForSolution: ( solution: MNASolution ) => number }[] = [];
 
     // Node indices that have been used
@@ -124,34 +125,49 @@ class LTACircuit {
     // See najm page 279 and Pillage page 86
     this.ltaInductors.forEach( ltaInductor => {
 
-      // In series
-      const newNode = 'syntheticNode' + ( syntheticNodeIndex++ );
-      const newNode2 = 'syntheticNode' + ( syntheticNodeIndex++ );
+      // large dt can use the thevenin companion model
+      if ( dt > 1E-6 ) {
 
-      const companionResistance = 2 * ltaInductor.inductance / dt;
-      const companionVoltage = ltaInductor.voltage + -companionResistance * ltaInductor.current;
+        // In series
+        const newNode = 'syntheticNode' + ( syntheticNodeIndex++ );
+        const newNode2 = 'syntheticNode' + ( syntheticNodeIndex++ );
 
-      const battery = new MNABattery( ltaInductor.node0, newNode, companionVoltage );
-      const resistor = new MNAResistor( newNode, newNode2, companionResistance );
-      const addedResistor = new MNAResistor( newNode2, ltaInductor.node1, CCKCQueryParameters.inductorResistance );
-      companionBatteries.push( battery );
-      companionResistors.push( resistor );
-      companionResistors.push( addedResistor );
+        const companionResistance = 2 * ltaInductor.inductance / dt;
+        const companionVoltage = ltaInductor.voltage + -companionResistance * ltaInductor.current;
 
-      ltaInductor.inductorVoltageNode1 = newNode2;
+        const battery = new MNABattery( ltaInductor.node0, newNode, companionVoltage );
+        const resistor = new MNAResistor( newNode, newNode2, companionResistance );
+        const addedResistor = new MNAResistor( newNode2, ltaInductor.node1, CCKCQueryParameters.inductorResistance );
+        companionBatteries.push( battery );
+        companionResistors.push( resistor );
+        companionResistors.push( addedResistor );
 
-      // we need to be able to get the current for this component
-      // in series, so current is same through both companion components
-      currentCompanions.push( {
-        element: ltaInductor,
-        getValueForSolution: ( solution: MNASolution ) => solution.getCurrentForResistor( resistor )
-      } );
+        ltaInductor.inductorVoltageNode1 = newNode2;
+
+        // we need to be able to get the current for this component
+        // in series, so current is same through both companion components
+        currentCompanions.push( {
+          element: ltaInductor,
+          getValueForSolution: ( solution: MNASolution ) => solution.getCurrentForResistor( resistor )
+        } );
+      }
+      else {
+
+        // Low dt has to use norton, to put dt in the numerator
+        const companionCurrent = -dt * ltaInductor.voltage / ltaInductor.inductance + ltaInductor.current;
+        companionCurrents.push( new MNACurrent( ltaInductor.node0, ltaInductor.node1, companionCurrent ) );
+        ltaInductor.inductorVoltageNode1 = ltaInductor.node1;
+
+        currentCompanions.push( {
+          element: ltaInductor,
+          getValueForSolution: ( solution: MNASolution ) => companionCurrent
+        } );
+      }
     } );
 
     const newBatteryList = companionBatteries;
     const newResistorList = [ ...this.ltaResistors, ...companionResistors ];
-    const newCurrentList: MNACurrent[] = []; // Placeholder for if we add other circuit elements in the future
-
+    const newCurrentList = companionCurrents;
     const mnaCircuit = new MNACircuit( newBatteryList, newResistorList, newCurrentList );
 
     const mnaSolution = mnaCircuit.solve();
