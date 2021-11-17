@@ -1,0 +1,9 @@
+khan ee
+v1 a 0 140
+r1 a b 20
+r2 b 0 6
+r3 b 0 5
+i1 0 b 18
+.op
+.print v(a) i(V1)
+.end

@@ -1,0 +1,6 @@
+vr netlist
+V1 a 0 9
+R1 a 0 9
+.op
+.print v(a) i(V1)
+.end

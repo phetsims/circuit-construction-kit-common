@@ -1,0 +1,7 @@
+voltage divider netlist
+V1 a 0 1
+R1 a b 1k
+R2 b 0 2k
+.op
+.print v(a) v(b) i(V1)
+.end

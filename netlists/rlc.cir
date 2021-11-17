@@ -1,0 +1,8 @@
+ir netlist
+v1 0 a 10
+r1 a b 4
+L1 b 0 4mH
+.op
+.tran .001 1.000
+.print i(V1)
+.end
