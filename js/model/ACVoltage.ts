@@ -45,7 +45,7 @@ class ACVoltage extends VoltageSource {
       initialOrientation: 'right',
       voltage: 9.0,
       isFlammable: true,
-      numberOfDecimalPlaces: 1,
+      numberOfDecimalPlaces: 2,
       voltagePropertyOptions: {
         range: new Range( -MAX_VOLTAGE, MAX_VOLTAGE )
       }

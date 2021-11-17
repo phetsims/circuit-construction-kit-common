@@ -282,7 +282,7 @@ class CircuitElementEditContainerNode extends Node {
               circuit,
               selectedCircuitElement,
               Tandem.OPT_OUT, {
-                delta: 0.1
+                delta: 0.01
               }
             ) ];
 
