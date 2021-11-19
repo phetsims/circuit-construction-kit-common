@@ -305,7 +305,7 @@ class CircuitElementEditContainerNode extends Node {
             circuit,
             selectedCircuitElement,
             Tandem.OPT_OUT, {
-              delta: 0.01
+              delta: CCKCQueryParameters.capacitanceStep
             }
           );
 

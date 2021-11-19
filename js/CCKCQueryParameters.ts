@@ -140,6 +140,27 @@ const CCKCQueryParameters = QueryStringMachine.getAll( {
     defaultValue: 3
   },
 
+  capacitanceMin: {
+    type: 'number',
+    defaultValue: 0.05
+  },
+  capacitanceMax: {
+    type: 'number',
+    defaultValue: 0.2
+  },
+  capacitanceStep: {
+    type: 'number',
+    defaultValue: 0.001
+  },
+  capacitanceDefault: {
+    type: 'number',
+    defaultValue: 0.1
+  },
+  capacitorNumberDecimalPlaces: {
+    type: 'number',
+    defaultValue: 2
+  },
+
   minDT: {
     type: 'number',
     defaultValue: 1E-3

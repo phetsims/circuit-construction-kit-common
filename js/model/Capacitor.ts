@@ -14,6 +14,7 @@ import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import DynamicCircuitElement, { DynamicCircuitElementOptions } from './DynamicCircuitElement.js';
 import Vertex from './Vertex.js';
+import CCKCQueryParameters from '../CCKCQueryParameters.js';
 
 type CapacitorOptions = {
   capacitance: number
@@ -30,18 +31,18 @@ class Capacitor extends DynamicCircuitElement {
    */
   constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: Partial<CapacitorOptions> ) {
     const options = merge( {
-      capacitance: CCKCConstants.DEFAULT_CAPACITANCE,
+      capacitance: CCKCQueryParameters.capacitanceDefault,
 
       // The number of decimal places is only used in the view, but we define it in the model as a convenient way to
       // associate the value with the component
-      numberOfDecimalPlaces: 2
+      numberOfDecimalPlaces: CCKCQueryParameters.capacitorNumberDecimalPlaces
     }, providedOptions ) as CapacitorOptions;
 
     super( startVertex, endVertex, CCKCConstants.CAPACITOR_LENGTH, tandem, options );
 
     // @public {Property.<number>} the capacitance in farads
     this.capacitanceProperty = new NumberProperty( options.capacitance, {
-      range: new Range( 0.05, 0.20 ),
+      range: new Range( CCKCQueryParameters.capacitanceMin, CCKCQueryParameters.capacitanceMax ),
       tandem: tandem.createTandem( 'capacitanceProperty' )
     } );
 
