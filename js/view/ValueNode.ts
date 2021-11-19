@@ -103,13 +103,13 @@ class ValueNode extends Panel {
       } );
 
       const resistanceNode = createText( tandem.createTandem( 'resistanceText' ) );
-      const sourceResistanceListener = ( internalResistance: number, lastInternalResistance: number | null ) => {
+      const sourceResistanceListener = ( internalResistance: number, lastInternalResistance: number | null | undefined ) => {
         resistanceNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, {
           resistance: Utils.toFixed( internalResistance, 1 )
         } );
 
         // If the children should change, update them here
-        if ( lastInternalResistance === null || ( internalResistance <= CCKCQueryParameters.batteryMinimumResistance || lastInternalResistance <= CCKCQueryParameters.batteryMinimumResistance ) ) {
+        if ( lastInternalResistance === null || ( internalResistance <= CCKCQueryParameters.batteryMinimumResistance || lastInternalResistance! <= CCKCQueryParameters.batteryMinimumResistance ) ) {
           const desiredChildren = internalResistance > CCKCQueryParameters.batteryMinimumResistance ? [ voltageText, resistanceNode ] : [ voltageText ];
 
           // Only set children if changed

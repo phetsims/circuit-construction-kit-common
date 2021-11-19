@@ -59,7 +59,7 @@ abstract class CircuitElement extends PhetioObject {
   readonly startDragEmitter: Emitter<[ SceneryEvent ]>;
   readonly disposeEmitterCircuitElement: Emitter<[]>;
   private readonly vertexMovedListener: () => void;
-  private readonly linkVertexListener: ( newVertex: Vertex, oldVertex: Vertex | null, property: Property<Vertex> ) => void;
+  private readonly linkVertexListener: ( newVertex: Vertex, oldVertex: Vertex | null | undefined, property: Property<Vertex> ) => void;
   readonly voltageDifferenceProperty: NumberProperty;
   private readonly vertexVoltageListener: () => void;
   chargePathLength: number;
@@ -181,7 +181,9 @@ abstract class CircuitElement extends PhetioObject {
     // @private
     this.vertexVoltageListener = () => this.voltageDifferenceProperty.set( this.computeVoltageDifference() );
 
+    // @ts-ignore
     this.startVertexProperty.link( this.linkVertexListener );
+    // @ts-ignore
     this.endVertexProperty.link( this.linkVertexListener );
 
     // @public (read-only by clients, writable-by-subclasses) {number} the distance the charges must take to get to the
@@ -215,7 +217,7 @@ abstract class CircuitElement extends PhetioObject {
    * @param property
    * @private
    */
-  linkVertex( newVertex: Vertex, oldVertex: Vertex | null, property: Property<Vertex> ) {
+  linkVertex( newVertex: Vertex, oldVertex: Vertex | null | undefined, property: Property<Vertex> ) {
 
     // These guards prevent errors from the bad transient state caused by the Circuit.flip causing the same Vertex
     // to be both start and end at the same time.

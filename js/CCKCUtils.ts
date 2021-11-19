@@ -41,7 +41,7 @@ const CCKCUtils = {
    * @returns {string}
    * @public
    */
-  createCurrentReadout: function( current: number, blackBoxStudy: boolean ) {
+  createCurrentReadout: function( current: number, blackBoxStudy: boolean ):string {
     if ( CCKCQueryParameters.fullPrecisionAmmeter ) {
       return current + '';
     }
