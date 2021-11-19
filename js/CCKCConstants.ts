@@ -21,11 +21,9 @@ const AC_CAROUSEL_SCALE = 1;
 const CCKCConstants = {
 
   // Run a paused clock at this rate, see https://github.com/phetsims/circuit-construction-kit-common/issues/572
+  // and refined in https://github.com/phetsims/circuit-construction-kit-common/issues/772
   // Still need physics to update, like capacitors clearing and electrons updating.  But don't propagate time very far!
-  // dt * 60 times/sec * 60 sec/minute * 60 minutes/hour  * 24 hours/day * 365 days /year
-  // dt = acceptable level = 1E-3 in one year = 0.001
-  // dt = 1E-3/60/60/60/24/365 = 5.284965330627432e-13
-  PAUSED_DT: 5E-13,
+  PAUSED_DT: 1E-6,
 
   // Maximum size for Width or height of icons in the circuit element toolbox or sensor toolbox
   TOOLBOX_ICON_HEIGHT: 31,
