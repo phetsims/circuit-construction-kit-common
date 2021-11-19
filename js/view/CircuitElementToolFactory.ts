@@ -45,6 +45,7 @@ import SwitchNode from './SwitchNode.js';
 import Circuit from '../model/Circuit.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import CircuitElement from '../model/CircuitElement.js';
+import CCKCQueryParameters from '../CCKCQueryParameters.js';
 
 const acSourceString = circuitConstructionKitCommonStrings.acSource;
 const capacitorString = circuitConstructionKitCommonStrings.capacitor;
@@ -381,16 +382,16 @@ class CircuitElementToolFactory {
   }
 
   /**
-   * @param {number} count - the number that can be dragged out at once
    * @returns {CircuitElementToolNode}
    * @public
    */
-  createInductorToolNode( count = 10 ) {
+  createInductorToolNode() {
     const inductorModel = new Inductor(
       new Vertex( Vector2.ZERO ),
       new Vertex( new Vector2( CCKCConstants.INDUCTOR_LENGTH, 0 ) ),
       Tandem.OPTIONAL
     );
+    const count = CCKCQueryParameters.moreInductors ? 10 : 1;
     return this.createCircuitElementToolNode( inductorString, count,
       ( tandem, viewTypeProperty ) => new InductorNode( null, null, inductorModel, viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
         isIcon: true,

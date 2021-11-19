@@ -47,6 +47,13 @@ const CCKCQueryParameters = QueryStringMachine.getAll( {
     type: 'flag'
   },
 
+  // Increases the number of inductors that can be dragged from the toolbox
+  // see https://github.com/phetsims/circuit-construction-kit-common/issues/774
+  moreInductors: {
+    public: true,
+    type: 'flag'
+  },
+
   // Determines which standard is used to display the schematics
   schematicStandard: {
     public: true,
