@@ -102,7 +102,7 @@ class ChargeNode extends Node {
 
     if ( charge.charge > 0 ) {
       this.translation = charge.matrix.getTranslation();
-      this.rotation = charge.matrix.getRotation() + ( current < 0 ? Math.PI : 0 );
+      this.rotation = charge.matrix.getRotation() + ( current > 0 ? Math.PI : 0 );
 
       const opacity = Utils.linear( 0.015, CONVENTIONAL_CHARGE_THRESHOLD, 1, 0, Math.abs( charge.circuitElement.currentProperty.get() ) );
       const clampedOpacity = Utils.clamp( opacity, 0, 1 );

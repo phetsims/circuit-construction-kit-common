@@ -186,7 +186,7 @@ class ChargeAnimator {
       let desiredPosition = lower.distance + neighborSeparation / 2;
       const distanceFromDesiredPosition = Math.abs( desiredPosition - currentPosition );
       const sameDirectionAsCurrent = Math.sign( desiredPosition - currentPosition ) ===
-                                     Math.sign( charge.circuitElement.currentProperty.get() * charge.charge );
+                                     Math.sign( -charge.circuitElement.currentProperty.get() * charge.charge );
 
       // never slow down or run the current backwards
       if ( sameDirectionAsCurrent ) {
@@ -223,7 +223,7 @@ class ChargeAnimator {
   propagate( charge: Charge, dt: number ) {
     const chargePosition = charge.distance;
     assert && assert( _.isNumber( chargePosition ), 'distance along wire should be a number' );
-    const current = charge.circuitElement.currentProperty.get() * charge.charge;
+    const current = -charge.circuitElement.currentProperty.get() * charge.charge;
 
     // Below min current, the charges should remain stationary
     if ( Math.abs( current ) > MINIMUM_CURRENT ) {
@@ -282,7 +282,7 @@ class ChargeAnimator {
     // Keep only those with outgoing current.
     for ( let i = 0; i < adjacentCircuitElements.length; i++ ) {
       const circuitElement = adjacentCircuitElements[ i ];
-      const current = circuitElement.currentProperty.get() * charge.charge;
+      const current = -circuitElement.currentProperty.get() * charge.charge;
       let distance = null;
 
       // The linear algebra solver can result in currents of 1E-12 where it should be zero.  For these cases, don't
