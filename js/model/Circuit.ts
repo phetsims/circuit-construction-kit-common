@@ -859,7 +859,7 @@ class Circuit {
       return null;
     }
     else {
-      return redConnection.voltage - blackConnection.voltage;
+      return blackConnection.voltage - redConnection.voltage;
     }
   }
 

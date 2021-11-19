@@ -252,7 +252,7 @@ class LinearTransientAnalysis {
       // If we already know the voltage from the matrix solution, skip it.
       if ( !solvedVertices.includes( endVertex ) ) {
 
-        const sign = startVertex === circuitElement.startVertexProperty.value ? 1 : -1;
+        const sign = startVertex === circuitElement.endVertexProperty.value ? 1 : -1;
 
         // compute end voltage from start voltage
         if ( circuitElement instanceof Resistor || circuitElement instanceof Wire || circuitElement instanceof LightBulb ||
