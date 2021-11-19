@@ -233,14 +233,14 @@ class LinearTransientAnalysis {
       const voltage = circuitResult.getFinalState().ltaSolution!.getNodeVoltage( vertex.index + '' );
 
       if ( typeof voltage === 'number' ) {
-        vertex.voltageProperty.set( voltage );
+        vertex.voltageProperty.value = voltage;
         solvedVertices.push( vertex );
       }
       else {
 
         // Unconnected vertices like those in the black box may not have an entry in the matrix, so mark them as zero.
         // Other vertices will be visited in the search below.
-        vertex.voltageProperty.set( 0 );
+        vertex.voltageProperty.value = 0;
         unsolvedVertices.push( vertex );
       }
     } );

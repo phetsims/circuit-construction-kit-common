@@ -325,7 +325,7 @@ class VoltmeterNode extends Node {
           const blackConnection = findConnection( blackProbeNode, voltmeter.blackProbePositionProperty.get(), +1 );
           const redConnection = findConnection( redProbeNode, voltmeter.redProbePositionProperty.get(), -1 );
           const voltage = this.circuitLayerNode!.circuit.getVoltageBetweenConnections( redConnection, blackConnection, false );
-          voltmeter.voltageProperty.set( voltage );
+          voltmeter.voltageProperty.value = voltage;
         }
       };
       model!.circuit.circuitChangedEmitter.addListener( updateVoltmeter );
