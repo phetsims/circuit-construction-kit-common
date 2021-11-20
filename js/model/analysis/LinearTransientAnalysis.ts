@@ -233,7 +233,7 @@ class LinearTransientAnalysis {
       const voltage = circuitResult.getFinalState().ltaSolution!.getNodeVoltage( vertex.index + '' );
 
       if ( typeof voltage === 'number' ) {
-        vertex.voltageProperty.value = voltage;
+        vertex.voltageProperty.value = -voltage;
         solvedVertices.push( vertex );
       }
       else {
@@ -252,7 +252,7 @@ class LinearTransientAnalysis {
       // If we already know the voltage from the matrix solution, skip it.
       if ( !solvedVertices.includes( endVertex ) ) {
 
-        const sign = startVertex === circuitElement.endVertexProperty.value ? 1 : -1;
+        const sign = startVertex === circuitElement.startVertexProperty.value ? 1 : -1;
 
         // compute end voltage from start voltage
         if ( circuitElement instanceof Resistor || circuitElement instanceof Wire || circuitElement instanceof LightBulb ||
@@ -270,7 +270,7 @@ class LinearTransientAnalysis {
           solvedVertices.push( endVertex );
         }
         else if ( circuitElement instanceof Capacitor || circuitElement instanceof Inductor ) {
-          endVertex.voltageProperty.value = startVertex.voltageProperty.value + sign * circuitElement.mnaVoltageDrop;
+          endVertex.voltageProperty.value = startVertex.voltageProperty.value - sign * circuitElement.mnaVoltageDrop;
           solvedVertices.push( endVertex );
         }
         else if ( circuitElement instanceof Switch && !circuitElement.closedProperty.value ) {
