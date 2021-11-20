@@ -76,7 +76,7 @@ class Capacitor extends DynamicCircuitElement {
       // const q1 = c1 * v1;
       // const q2 = c2 * v2;
       // console.log( 'q1q2', q1, q2 );
-      this.mnaVoltageDrop = v2;
+      this.mnaVoltageDrop = -v2;
     } );
   }
 
