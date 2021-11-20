@@ -13,7 +13,7 @@ import Property from '../../../axon/js/Property.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
 import merge from '../../../phet-core/js/merge.js';
-import PhetioObject from '../../../tandem/js/PhetioObject.js';
+import PhetioObject, { PhetioObjectOptions } from '../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import IOType from '../../../tandem/js/types/IOType.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -27,6 +27,7 @@ type VertexOptions = {
   interactive: boolean,
   blackBoxInterface: boolean,
   insideTrueBlackBox: boolean,
+  tandem: Tandem
 } & PhetioObjectOptions;
 
 class Vertex extends PhetioObject {

@@ -35,7 +35,8 @@ type CircuitElementOptions = {
   canBeDroppedInToolbox: boolean,
   isCurrentReentrant: boolean,
   interactive: boolean,
-  insideTrueBlackBox: boolean
+  insideTrueBlackBox: boolean,
+  tandem: Tandem
 };
 
 abstract class CircuitElement extends PhetioObject {
