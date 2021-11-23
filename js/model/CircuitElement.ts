@@ -24,6 +24,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Circuit from './Circuit.js';
 import CurrentSense from './CurrentSense.js';
 import Vertex from './Vertex.js';
+import IReadOnlyProperty, { PropertyLinkListener } from '../../../axon/js/IReadOnlyProperty.js';
 
 // variables
 let index = 0;
@@ -60,7 +61,7 @@ abstract class CircuitElement extends PhetioObject {
   readonly startDragEmitter: Emitter<[ SceneryEvent ]>;
   readonly disposeEmitterCircuitElement: Emitter<[]>;
   private readonly vertexMovedListener: () => void;
-  private readonly linkVertexListener: ( newVertex: Vertex, oldVertex: Vertex | null | undefined, property: Property<Vertex> ) => void;
+  private readonly linkVertexListener: PropertyLinkListener<Vertex>;
   readonly voltageDifferenceProperty: NumberProperty;
   private readonly vertexVoltageListener: () => void;
   chargePathLength: number;
@@ -218,7 +219,7 @@ abstract class CircuitElement extends PhetioObject {
    * @param property
    * @private
    */
-  linkVertex( newVertex: Vertex, oldVertex: Vertex | null | undefined, property: Property<Vertex> ) {
+  linkVertex( newVertex: Vertex, oldVertex: Vertex | null, property: IReadOnlyProperty<Vertex> ) {
 
     // These guards prevent errors from the bad transient state caused by the Circuit.flip causing the same Vertex
     // to be both start and end at the same time.
