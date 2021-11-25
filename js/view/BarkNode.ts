@@ -12,7 +12,7 @@ import Path from '../../../scenery/js/nodes/Path.js';
 import commentSolidShape from '../../../sherpa/js/fontawesome-5/commentSolidShape.js';
 import exclamationSolidShape from '../../../sherpa/js/fontawesome-5/exclamationSolidShape.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import Node from '../../../scenery/js/nodes/Node.js';
+import Node, { NodeOptions } from '../../../scenery/js/nodes/Node.js';
 
 class BarkNode extends Node {
 

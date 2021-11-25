@@ -13,7 +13,7 @@ import Vector2 from '../../../dot/js/Vector2.js';
 import merge from '../../../phet-core/js/merge.js';
 import SceneryEvent from '../../../scenery/js/input/SceneryEvent.js';
 import Image from '../../../scenery/js/nodes/Image.js';
-import Node from '../../../scenery/js/nodes/Node.js';
+import Node, { NodeOptions } from '../../../scenery/js/nodes/Node.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import fireImage from '../../images/fire_png.js';
 import CCKCUtils from '../CCKCUtils.js';

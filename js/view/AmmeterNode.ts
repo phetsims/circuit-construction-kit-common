@@ -16,7 +16,7 @@ import ProbeNode from '../../../scenery-phet/js/ProbeNode.js';
 import WireNode from '../../../scenery-phet/js/WireNode.js';
 import DragListener from '../../../scenery/js/listeners/DragListener.js';
 import Image from '../../../scenery/js/nodes/Image.js';
-import Node from '../../../scenery/js/nodes/Node.js';
+import Node, { NodeOptions } from '../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
 import Color from '../../../scenery/js/util/Color.js';
 import Tandem from '../../../tandem/js/Tandem.js';

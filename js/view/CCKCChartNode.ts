@@ -27,7 +27,7 @@ import MagnifyingGlassZoomButtonGroup from '../../../scenery-phet/js/MagnifyingG
 import ShadedRectangle from '../../../scenery-phet/js/ShadedRectangle.js';
 import WireNode from '../../../scenery-phet/js/WireNode.js';
 import DragListener from '../../../scenery/js/listeners/DragListener.js';
-import Node from '../../../scenery/js/nodes/Node.js';
+import Node, { NodeOptions } from '../../../scenery/js/nodes/Node.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import NodeProperty from '../../../scenery/js/util/NodeProperty.js';
 import ButtonNode from '../../../sun/js/buttons/ButtonNode.js';
@@ -97,8 +97,10 @@ class CCKCChartNode extends Node {
 
     super();
 
+    const tandem = options.tandem!;
+
     // @public {Meter}
-    this.meter = new Meter( options.tandem.createTandem( 'meter' ), 0 );
+    this.meter = new Meter( tandem.createTandem( 'meter' ), 0 );
 
     // @protected {ObservableArrayDef.<Vector2|null>}
     this.series = series;
@@ -188,7 +190,7 @@ class CCKCChartNode extends Node {
     // @private
     this.zoomLevelProperty = new NumberProperty( initialZoomIndex, {
       range: new Range( 0, zoomRanges.length - 1 ),
-      tandem: options.tandem.createTandem( 'zoomLevelProperty' )
+      tandem: tandem.createTandem( 'zoomLevelProperty' )
     } );
 
     const gridLineOptions = {
@@ -226,7 +228,7 @@ class CCKCChartNode extends Node {
         xMargin: 3,
         yMargin: 3
       },
-      tandem: options.tandem.createTandem( 'zoomButtonGroup' )
+      tandem: tandem.createTandem( 'zoomButtonGroup' )
     } );
     this.zoomLevelProperty.link( zoomLevel => {
       chartTransform.setModelYRange( zoomRanges[ zoomLevel ] );

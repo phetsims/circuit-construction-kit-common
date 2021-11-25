@@ -22,7 +22,6 @@ import Circuit from '../model/Circuit.js';
 import AlignGroup from '../../../scenery/js/nodes/AlignGroup.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 
-
 type AdvancedAccordionBoxImplementationOptions = {
   showRealBulbsCheckbox: boolean
 };
@@ -71,6 +70,7 @@ class AdvancedAccordionBox extends CCKCAccordionBox {
       titleXSpacing: 0
     } );
 
+    // @ts-ignore TODO: The AccordionBoxOptions in phet-types isn't compatible with Node's NodeOptions
     this.mutate( options );
   }
 }
