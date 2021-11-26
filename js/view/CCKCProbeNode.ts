@@ -8,10 +8,10 @@
 
 import Property from '../../../axon/js/Property.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
-import Node from '../../../scenery/js/nodes/Node.js';
+import { Node } from '../../../scenery/js/imports.js';
 import merge from '../../../phet-core/js/merge.js';
 import ProbeNode from '../../../scenery-phet/js/ProbeNode.js';
-import DragListener from '../../../scenery/js/listeners/DragListener.js';
+import { DragListener } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';

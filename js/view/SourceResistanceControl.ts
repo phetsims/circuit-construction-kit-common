@@ -10,14 +10,14 @@
 
 import Utils from '../../../dot/js/Utils.js';
 import StringUtils from '../../../phetcommon/js/util/StringUtils.js';
-import Text from '../../../scenery/js/nodes/Text.js';
-import VBox from '../../../scenery/js/nodes/VBox.js';
+import { Text } from '../../../scenery/js/imports.js';
+import { VBox } from '../../../scenery/js/imports.js';
 import HSlider from '../../../sun/js/HSlider.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Property from '../../../axon/js/Property.js';
-import AlignGroup from '../../../scenery/js/nodes/AlignGroup.js';
+import { AlignGroup } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 
 const resistanceOhmsSymbolString = circuitConstructionKitCommonStrings.resistanceOhmsSymbol;

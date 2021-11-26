@@ -8,9 +8,9 @@
  */
 
 import merge from '../../../phet-core/js/merge.js';
-import VBox from '../../../scenery/js/nodes/VBox.js';
-import Text from '../../../scenery/js/nodes/Text.js';
-import VStrut from '../../../scenery/js/nodes/VStrut.js';
+import { VBox } from '../../../scenery/js/imports.js';
+import { Text } from '../../../scenery/js/imports.js';
+import { VStrut } from '../../../scenery/js/imports.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -19,7 +19,7 @@ import CCKCCheckbox from './CCKCCheckbox.js';
 import SourceResistanceControl from './SourceResistanceControl.js';
 import WireResistivityControl from './WireResistivityControl.js';
 import Circuit from '../model/Circuit.js';
-import AlignGroup from '../../../scenery/js/nodes/AlignGroup.js';
+import { AlignGroup } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 
 type AdvancedAccordionBoxImplementationOptions = {

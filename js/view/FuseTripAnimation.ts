@@ -10,7 +10,7 @@ import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Shape from '../../../kite/js/Shape.js';
 import Node, { NodeOptions } from '../../../scenery/js/nodes/Node.js';
-import Path from '../../../scenery/js/nodes/Path.js';
+import { Path } from '../../../scenery/js/imports.js';
 import Animation from '../../../twixt/js/Animation.js';
 import Easing from '../../../twixt/js/Easing.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';

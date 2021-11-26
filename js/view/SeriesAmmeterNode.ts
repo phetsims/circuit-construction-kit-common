@@ -7,11 +7,11 @@
  */
 
 import Property from '../../../axon/js/Property.js';
-import Node from '../../../scenery/js/nodes/Node.js';
-import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
-import Text from '../../../scenery/js/nodes/Text.js';
-import VBox from '../../../scenery/js/nodes/VBox.js';
-import Color from '../../../scenery/js/util/Color.js';
+import { Node } from '../../../scenery/js/imports.js';
+import { Rectangle } from '../../../scenery/js/imports.js';
+import { Text } from '../../../scenery/js/imports.js';
+import { VBox } from '../../../scenery/js/imports.js';
+import { Color } from '../../../scenery/js/imports.js';
 import Panel from '../../../sun/js/Panel.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCUtils from '../CCKCUtils.js';

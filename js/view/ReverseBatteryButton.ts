@@ -6,9 +6,9 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import Path from '../../../scenery/js/nodes/Path.js';
-import VBox from '../../../scenery/js/nodes/VBox.js';
-import Color from '../../../scenery/js/util/Color.js';
+import { Path } from '../../../scenery/js/imports.js';
+import { VBox } from '../../../scenery/js/imports.js';
+import { Color } from '../../../scenery/js/imports.js';
 import syncAltSolidString from '../../../sherpa/js/fontawesome-5/syncAltSolidString.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Battery from '../model/Battery.js';

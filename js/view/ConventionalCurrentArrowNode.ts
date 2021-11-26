@@ -7,7 +7,7 @@
  */
 
 import ArrowNode from '../../../scenery-phet/js/ArrowNode.js';
-import Color from '../../../scenery/js/util/Color.js';
+import { Color } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 

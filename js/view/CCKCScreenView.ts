@@ -17,11 +17,11 @@ import PlayPauseButton from '../../../scenery-phet/js/buttons/PlayPauseButton.js
 import ResetAllButton from '../../../scenery-phet/js/buttons/ResetAllButton.js';
 import StopwatchNode from '../../../scenery-phet/js/StopwatchNode.js';
 import TimeControlNode from '../../../scenery-phet/js/TimeControlNode.js';
-import KeyboardUtils from '../../../scenery/js/accessibility/KeyboardUtils.js';
-import AlignBox from '../../../scenery/js/nodes/AlignBox.js';
-import AlignGroup from '../../../scenery/js/nodes/AlignGroup.js';
-import Node from '../../../scenery/js/nodes/Node.js';
-import VBox from '../../../scenery/js/nodes/VBox.js';
+import { KeyboardUtils } from '../../../scenery/js/imports.js';
+import { AlignBox } from '../../../scenery/js/imports.js';
+import { AlignGroup } from '../../../scenery/js/imports.js';
+import { Node } from '../../../scenery/js/imports.js';
+import { VBox } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';

@@ -10,13 +10,13 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Property from '../../../axon/js/Property.js';
-import Node from '../../../scenery/js/nodes/Node.js';
+import { Node } from '../../../scenery/js/imports.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import merge from '../../../phet-core/js/merge.js';
-import AlignGroup from '../../../scenery/js/nodes/AlignGroup.js';
-import Image from '../../../scenery/js/nodes/Image.js';
-import Line from '../../../scenery/js/nodes/Line.js';
-import Color from '../../../scenery/js/util/Color.js';
+import { AlignGroup } from '../../../scenery/js/imports.js';
+import { Image } from '../../../scenery/js/imports.js';
+import { Line } from '../../../scenery/js/imports.js';
+import { Color } from '../../../scenery/js/imports.js';
 import ToggleNode from '../../../sun/js/ToggleNode.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import wireIconImage from '../../images/wire-icon_png.js';

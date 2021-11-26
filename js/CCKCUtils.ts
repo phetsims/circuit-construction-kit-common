@@ -7,7 +7,7 @@
  */
 
 import Utils from '../../dot/js/Utils.js';
-import Node from '../../scenery/js/nodes/Node.js';
+import { Node } from '../../scenery/js/imports.js';
 import StringUtils from '../../phetcommon/js/util/StringUtils.js';
 import CCKCQueryParameters from './CCKCQueryParameters.js';
 import circuitConstructionKitCommonStrings from './circuitConstructionKitCommonStrings.js';

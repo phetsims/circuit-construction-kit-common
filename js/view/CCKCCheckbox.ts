@@ -7,7 +7,7 @@
 
 import merge from '../../../phet-core/js/merge.js';
 import Checkbox from '../../../sun/js/Checkbox.js';
-import Node from '../../../scenery/js/nodes/Node.js';
+import { Node } from '../../../scenery/js/imports.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Property from '../../../axon/js/Property.js';
 

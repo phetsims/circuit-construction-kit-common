@@ -7,7 +7,7 @@
  */
 
 import merge from '../../../phet-core/js/merge.js';
-import Path from '../../../scenery/js/nodes/Path.js';
+import { Path } from '../../../scenery/js/imports.js';
 import trashAltRegularShape from '../../../sherpa/js/fontawesome-5/trashAltRegularShape.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';

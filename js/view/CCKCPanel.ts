@@ -9,7 +9,7 @@
 import merge from '../../../phet-core/js/merge.js';
 import Panel from '../../../sun/js/Panel.js';
 import Tandem from '../../../tandem/js/Tandem.js';
-import Node from '../../../scenery/js/nodes/Node.js';
+import { Node } from '../../../scenery/js/imports.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 

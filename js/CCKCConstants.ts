@@ -9,7 +9,7 @@
 import Dimension2 from '../../dot/js/Dimension2.js';
 import Range from '../../dot/js/Range.js';
 import PhetFont from '../../scenery-phet/js/PhetFont.js';
-import Color from '../../scenery/js/util/Color.js';
+import { Color } from '../../scenery/js/imports.js';
 import CCKCQueryParameters from './CCKCQueryParameters.js';
 import circuitConstructionKitCommon from './circuitConstructionKitCommon.js';
 

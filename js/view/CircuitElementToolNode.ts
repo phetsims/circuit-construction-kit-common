@@ -11,16 +11,16 @@ import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Property from '../../../axon/js/Property.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import merge from '../../../phet-core/js/merge.js';
-import DragListener from '../../../scenery/js/listeners/DragListener.js';
-import Text from '../../../scenery/js/nodes/Text.js';
-import Node from '../../../scenery/js/nodes/Node.js';
-import VBox from '../../../scenery/js/nodes/VBox.js';
+import { DragListener } from '../../../scenery/js/imports.js';
+import { Text } from '../../../scenery/js/imports.js';
+import { Node } from '../../../scenery/js/imports.js';
+import { VBox } from '../../../scenery/js/imports.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Circuit from '../model/Circuit.js';
 import CircuitElement from '../model/CircuitElement.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
-import SceneryEvent from '../../../scenery/js/input/SceneryEvent.js';
+import { SceneryEvent } from '../../../scenery/js/imports.js';
 
 // constants
 const TOOLBOX_ICON_WIDTH = CCKCConstants.TOOLBOX_ICON_WIDTH;

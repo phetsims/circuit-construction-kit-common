@@ -10,7 +10,7 @@
 import Property from '../../../axon/js/Property.js';
 import Utils from '../../../dot/js/Utils.js';
 import StringUtils from '../../../phetcommon/js/util/StringUtils.js';
-import Text from '../../../scenery/js/nodes/Text.js';
+import { Text } from '../../../scenery/js/imports.js';
 import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 

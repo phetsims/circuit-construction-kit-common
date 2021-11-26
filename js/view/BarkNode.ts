@@ -7,8 +7,8 @@
  */
 
 import Vector2 from '../../../dot/js/Vector2.js';
-import HBox from '../../../scenery/js/nodes/HBox.js';
-import Path from '../../../scenery/js/nodes/Path.js';
+import { HBox } from '../../../scenery/js/imports.js';
+import { Path } from '../../../scenery/js/imports.js';
 import commentSolidShape from '../../../sherpa/js/fontawesome-5/commentSolidShape.js';
 import exclamationSolidShape from '../../../sherpa/js/fontawesome-5/exclamationSolidShape.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
