@@ -68,5 +68,5 @@ abstract class DynamicCircuitElement extends FixedCircuitElement {
 }
 
 circuitConstructionKitCommon.register( 'DynamicCircuitElement', DynamicCircuitElement );
-export { DynamicCircuitElementOptions };
+export type { DynamicCircuitElementOptions };
 export default DynamicCircuitElement;

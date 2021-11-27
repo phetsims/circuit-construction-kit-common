@@ -72,5 +72,5 @@ class CCKCAccordionBox extends AccordionBox {
 }
 
 circuitConstructionKitCommon.register( 'CCKCAccordionBox', CCKCAccordionBox );
-export { CCKCAccordionBoxOptions };
+export type { CCKCAccordionBoxOptions };
 export default CCKCAccordionBox;

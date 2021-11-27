@@ -18,4 +18,5 @@ type CircuitElementViewType = ( typeof CircuitElementViewTypeValues )[number];
 circuitConstructionKitCommon.register( 'CircuitElementViewTypeValues', CircuitElementViewTypeValues );
 
 // Export
-export { CircuitElementViewType as default, CircuitElementViewTypeValues };
+export { CircuitElementViewTypeValues };
+export type { CircuitElementViewType as default };

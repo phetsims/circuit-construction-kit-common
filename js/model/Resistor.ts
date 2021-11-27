@@ -199,5 +199,5 @@ Resistor.ResistorIO = new IOType( 'ResistorIO', {
 } );
 
 circuitConstructionKitCommon.register( 'Resistor', Resistor );
-export { ResistorOptions };
+export type { ResistorOptions };
 export default Resistor;

@@ -52,5 +52,5 @@ abstract class FixedCircuitElement extends CircuitElement {
 }
 
 circuitConstructionKitCommon.register( 'FixedCircuitElement', FixedCircuitElement );
-export { FixedCircuitElementOptions };
+export type { FixedCircuitElementOptions };
 export default FixedCircuitElement;

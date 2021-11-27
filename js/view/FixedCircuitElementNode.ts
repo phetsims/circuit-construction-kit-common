@@ -382,5 +382,5 @@ FixedCircuitElementNode.webglSpriteNodes = [
 ];
 
 circuitConstructionKitCommon.register( 'FixedCircuitElementNode', FixedCircuitElementNode );
-export { FixedCircuitElementNodeOptions };
+export type { FixedCircuitElementNodeOptions };
 export default FixedCircuitElementNode;

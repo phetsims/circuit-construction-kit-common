@@ -10,4 +10,5 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 const AmmeterReadoutTypeValues = [ 'magnitude', 'signed' ] as const;
 type AmmeterReadoutType = ( typeof AmmeterReadoutTypeValues )[number];
 circuitConstructionKitCommon.register( 'AmmeterReadoutTypeValues', AmmeterReadoutTypeValues );
-export { AmmeterReadoutType as default, AmmeterReadoutTypeValues };
+export { AmmeterReadoutTypeValues };
+export type { AmmeterReadoutType as default };
