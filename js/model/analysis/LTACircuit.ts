@@ -73,9 +73,7 @@ class LTACircuit {
       // We need to be able to get the current for this component
       currentCompanions.push( {
         element: resistiveBatteryAdapter,
-        getValueForSolution: ( solution: MNASolution ) => {
-          return solution.getSolvedCurrent( idealBattery );
-        }
+        getValueForSolution: ( solution: MNASolution ) => solution.getSolvedCurrent( idealBattery )
       } );
     } );
 
