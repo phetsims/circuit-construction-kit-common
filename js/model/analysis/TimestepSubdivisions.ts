@@ -19,6 +19,8 @@ const MIN_DT = CCKCQueryParameters.minDT;
 //threshold for determining whether 2 states are similar enough; any error less than errorThreshold will be tolerated.
 const ERROR_THRESHOLD = 1E-5;
 
+const searchTimeStep = CCKCQueryParameters.searchTimeStep;
+
 type Steppable<T> = {
 
   // immutable time integration from one state to the next by a time of dt
@@ -51,9 +53,11 @@ class TimestepSubdivisions<T> {
 
       // If the system was highly nonlinear in one region, we may have had very small dt.  If the system is linear
       // afterwards, allow the opportunity to increase dt accordingly.
-      attemptedDT = result.dt * 2;
-      if ( attemptedDT > totalTime - elapsedTime ) {
-        attemptedDT = totalTime - elapsedTime;
+      if ( searchTimeStep ) {
+        attemptedDT = result.dt * 2;
+        if ( attemptedDT > totalTime - elapsedTime ) {
+          attemptedDT = totalTime - elapsedTime;
+        }
       }
     }
     if ( phet.log ) {
@@ -86,17 +90,22 @@ class TimestepSubdivisions<T> {
       return { dt: MIN_DT, state: steppable.update( state, MIN_DT ) };
     }
     else {
-      const a = steppable.update( state, dt );
-      const b1 = halfStepState || steppable.update( state, dt / 2 );
-      const b2 = steppable.update( b1, dt / 2 );
-      const distance = steppable.distance( a, b2 );
-      assert && assert( !isNaN( distance ), 'distance should be numeric' );
-      const errorAcceptable = distance < ERROR_THRESHOLD;
-      if ( errorAcceptable ) {
-        return { dt: dt, state: b2 }; // Use the more precise estimate
+      if ( searchTimeStep ) {
+        const a = steppable.update( state, dt );
+        const b1 = halfStepState || steppable.update( state, dt / 2 );
+        const b2 = steppable.update( b1, dt / 2 );
+        const distance = steppable.distance( a, b2 );
+        assert && assert( !isNaN( distance ), 'distance should be numeric' );
+        const errorAcceptable = distance < ERROR_THRESHOLD;
+        if ( errorAcceptable ) {
+          return { dt: dt, state: b2 }; // Use the more precise estimate
+        }
+        else {
+          return this.search( state, steppable, dt / 2, b1 );
+        }
       }
       else {
-        return this.search( state, steppable, dt / 2, b1 );
+        return { dt: MIN_DT, state: steppable.update( state, MIN_DT ) };
       }
     }
   }

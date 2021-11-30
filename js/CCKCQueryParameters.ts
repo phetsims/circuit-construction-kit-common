@@ -164,6 +164,10 @@ const CCKCQueryParameters = QueryStringMachine.getAll( {
   minDT: {
     type: 'number',
     defaultValue: 1E-3
+  },
+  searchTimeStep: {
+    type: 'boolean',
+    defaultValue: true
   }
 } );
 

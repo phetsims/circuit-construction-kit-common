@@ -34,7 +34,6 @@ class LTASolution {
 
     // For resistors with r>0, Ohm's Law gives the current.  For components with no resistance (like closed switch or
     // 0-resistance battery), the current is given by the matrix solution.
-    // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/758 assertions for this
     if ( element.resistance > 0 ) {
       return this.mnaSolution.getCurrentForResistor( element );
     }
