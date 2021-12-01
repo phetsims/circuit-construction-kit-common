@@ -175,6 +175,10 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
     schematicNode.mouseArea = schematicNode.localBounds.dilated( 2 );
     schematicNode.touchArea = schematicNode.localBounds.dilated( 2 );
 
+    // NOTE: This is backwards, x is somehow vertical
+    lifelikeNode.mouseArea = lifelikeNode.localBounds.erodedX( 30 ).dilatedY( 12 );
+    lifelikeNode.touchArea = lifelikeNode.localBounds.erodedX( 30 ).dilatedY( 12 );
+
     const lifelikeNodeContainer = new Node( {
       children: [ lifelikeNode, leftWireStub, rightWireStub ]
     } );
