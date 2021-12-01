@@ -28,6 +28,7 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import CircuitElementViewType, { CircuitElementViewTypeValues } from './CircuitElementViewType.js';
 import LightBulb from './LightBulb.js';
+import InteractionMode, { InteractionModeValues } from './InteractionMode.js';
 
 type CircuitConstructionKitModelOptions = {
   blackBoxStudy: boolean,
@@ -141,9 +142,10 @@ class CircuitConstructionKitModel {
     } );
 
     // @public {Property.<InteractionMode>} - whether the user is in the CircuitConstructionKitModel.InteractionMode.EXPLORE or CircuitConstructionKitModel.InteractionMode.TEST mode
-    this.modeProperty = new Property<'explore' | 'test'>( 'explore', {
+    this.modeProperty = new Property<InteractionMode>( 'explore', {
       tandem: tandem.createTandem( 'modeProperty' ),
-      phetioType: Property.PropertyIO( StringIO ) // TODO: validValues for studio?
+      validValues: InteractionModeValues,
+      phetioType: Property.PropertyIO( StringIO )
     } );
 
     // When the user manipulates something, hide the readouts, see
