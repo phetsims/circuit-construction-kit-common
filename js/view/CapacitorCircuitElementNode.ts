@@ -298,7 +298,9 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
    * @public
    */
   getHighlightBounds() {
-    return this.contentNode.localBounds.erodedX( 22 ).erodedY( 15 );
+    return this.viewTypeProperty.value === 'lifelike' ?
+           this.contentNode.localBounds.erodedX( 22 ).erodedY( 15 ) :
+           this.contentNode.localBounds.erodedX( 0 ).erodedY( 0 );
   }
 }
 
