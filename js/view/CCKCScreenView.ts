@@ -102,7 +102,7 @@ class CCKCScreenView extends ScreenView {
   readonly sensorToolbox: SensorToolbox;
   private readonly viewRadioButtonGroup: ViewRadioButtonGroup;
   private readonly displayOptionsPanel: DisplayOptionsPanel;
-  private readonly advancedAccordionBox: AdvancedAccordionBox;
+  private readonly advancedAccordionBox: AdvancedAccordionBox | null;
   private stopwatchNodePositionDirty: boolean;
 
   /**
@@ -148,8 +148,9 @@ class CCKCScreenView extends ScreenView {
       model.circuit, this, tandem.createTandem( 'circuitLayerNode' )
     );
 
+    const meterNodesTandem = tandem.createTandem( 'meterNodes' );
     const voltmeterNodes = model.voltmeters.map( voltmeter => {
-      const voltmeterTandem = tandem.createTandem( `voltmeterNode${voltmeter.phetioIndex}` );
+      const voltmeterTandem = meterNodesTandem.createTandem( `voltmeterNode${voltmeter.phetioIndex}` );
       const voltmeterNode = new VoltmeterNode( voltmeter, model, this.circuitLayerNode, voltmeterTandem, {
         showResultsProperty: model.isValueDepictionEnabledProperty,
         visibleBoundsProperty: this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty
@@ -164,7 +165,7 @@ class CCKCScreenView extends ScreenView {
 
     const ammeterNodes = model.ammeters.map( ammeter => {
       const ammeterNode = new AmmeterNode( ammeter, this.circuitLayerNode, {
-        tandem: tandem.createTandem( `ammeterNode${ammeter.phetioIndex}` ), // TODO (phet-io): Group?
+        tandem: meterNodesTandem.createTandem( `ammeterNode${ammeter.phetioIndex}` ),
         showResultsProperty: model.isValueDepictionEnabledProperty,
         visibleBoundsProperty: this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty,
         blackBoxStudy: options.blackBoxStudy
@@ -186,7 +187,7 @@ class CCKCScreenView extends ScreenView {
       const createVoltageChartNode = ( tandemName: string ) => {
         const voltageChartNode = new VoltageChartNode( this.circuitLayerNode, model.circuit.timeProperty,
           this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty, {
-            tandem: tandem.createTandem( tandemName )
+            tandem: meterNodesTandem.createTandem( tandemName )
           }
         );
         voltageChartNode.initializeBodyDragListener( this );
@@ -195,7 +196,7 @@ class CCKCScreenView extends ScreenView {
       const createCurrentChartNode = ( tandemName: string ) => {
         const currentChartNode = new CurrentChartNode( this.circuitLayerNode, model.circuit.timeProperty,
           this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty, {
-            tandem: tandem.createTandem( tandemName )
+            tandem: meterNodesTandem.createTandem( tandemName )
           }
         );
         currentChartNode.initializeBodyDragListener( this );
@@ -265,15 +266,14 @@ class CCKCScreenView extends ScreenView {
       tandem.createTandem( 'displayOptionsPanel' )
     );
 
-    // @private {AdvancedAccordionBox}
-    this.advancedAccordionBox = new AdvancedAccordionBox(
+    this.advancedAccordionBox = options.showAdvancedControls ? new AdvancedAccordionBox(
       model.circuit,
       CONTROL_PANEL_ALIGN_GROUP,
       options.hasACandDCVoltageSources ? sourceResistanceString : batteryResistanceString,
       tandem.createTandem( 'advancedAccordionBox' ), {
         showRealBulbsCheckbox: !options.hasACandDCVoltageSources
       }
-    );
+    ) : null;
 
     this.addChild( this.circuitLayerNodeBackLayer );
 
@@ -296,7 +296,7 @@ class CCKCScreenView extends ScreenView {
     const controlPanelVBox = new VBox( {
       spacing: VERTICAL_MARGIN,
       children: options.showAdvancedControls ?
-        [ this.displayOptionsPanel, this.sensorToolbox, this.advancedAccordionBox ] :
+        [ this.displayOptionsPanel, this.sensorToolbox, this.advancedAccordionBox! ] :
         [ this.displayOptionsPanel, this.sensorToolbox ]
     } );
 
@@ -517,7 +517,7 @@ class CCKCScreenView extends ScreenView {
   reset() {
     this.stopwatchNodePositionDirty = true;
     this.circuitElementToolbox.reset();
-    this.advancedAccordionBox.expandedProperty.reset();
+    this.advancedAccordionBox && this.advancedAccordionBox.expandedProperty.reset();
     this.chartNodes.forEach( chartNode => chartNode.reset() );
   }
 

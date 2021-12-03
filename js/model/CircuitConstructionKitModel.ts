@@ -86,7 +86,8 @@ class CircuitConstructionKitModel {
     } );
 
     // @public (read-only) {Circuit} - contains CircuitElements, Vertices, etc.
-    this.circuit = new Circuit( this.viewTypeProperty, this.addRealBulbsProperty, tandem.createTandem( 'circuit' ), { blackBoxStudy: options.blackBoxStudy } );
+    const circuitTandem = tandem.createTandem( 'circuit' );
+    this.circuit = new Circuit( this.viewTypeProperty, this.addRealBulbsProperty, circuitTandem, { blackBoxStudy: options.blackBoxStudy } );
 
     // @public (read-only) {Voltmeter[]} - created statically and indexed starting at 1 for human-readability for PhET-iO
     const metersTandem = tandem.createTandem( 'meters' );
@@ -197,7 +198,7 @@ class CircuitConstructionKitModel {
     // Broad channel for PhET-iO that signifies a change in the circuit. Wrapper listeners can call get state after circuit
     // changes to obtain the new circuit.
     const circuitChangedEmitter = new Emitter( {
-      tandem: tandem.createTandem( 'circuitChangedEmitter' ),
+      tandem: circuitTandem.createTandem( 'circuitChangedEmitter' ),
       phetioDocumentation: 'Emits when any circuit model parameter or topology has changed'
     } );
 
