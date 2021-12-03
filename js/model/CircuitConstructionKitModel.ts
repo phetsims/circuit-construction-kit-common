@@ -29,6 +29,7 @@ import Bounds2 from '../../../dot/js/Bounds2.js';
 import CircuitElementViewType, { CircuitElementViewTypeValues } from './CircuitElementViewType.js';
 import LightBulb from './LightBulb.js';
 import InteractionMode, { InteractionModeValues } from './InteractionMode.js';
+import ZoomLevel, { ZoomLevelValues } from './ZoomLevel.js';
 
 type CircuitConstructionKitModelOptions = {
   blackBoxStudy: boolean,
@@ -53,6 +54,7 @@ class CircuitConstructionKitModel {
   readonly blackBoxBounds: Bounds2 | null;
   readonly stopwatch: Stopwatch;
   readonly stepEmitter: Emitter<[ number ]>;
+  private readonly zoomProperty: Property<ZoomLevel>;
 
   /**
    * @param {Tandem} tandem
@@ -115,13 +117,27 @@ class CircuitConstructionKitModel {
       tandem: tandem.createTandem( 'showValuesProperty' )
     } );
 
-    // @public {Property.<number>} scaling applied to the circuit node so the user can zoom out and make larger circuits
-    // 0 = zoomed out fully, 1 = zoomed in fully
+    // Scaling applied to the circuit node so the user can zoom out and make larger circuits.
+    // 0 = zoomed out fully, 1 = zoomed in fully.  This NumberProperty is an implementation detail necessary to wire up
+    // to MagnifyingGlassZoomButton
     this.selectedZoomProperty = new NumberProperty( 1, {
-      tandem: tandem.createTandem( 'selectedZoomProperty' ),
       range: new Range( 0, 1 ),
       validValues: [ 0, 1 ],
       phetioDocumentation: 'Zoom level for the sim.  0=zoomed out, 1=zoomed in (magnified)'
+    } );
+
+    // For PhET-iO: Use an enumeration pattern for the API
+    this.zoomProperty = new Property<ZoomLevel>( 'normal', {
+      tandem: tandem.createTandem( 'zoomProperty' ),
+      validValues: ZoomLevelValues,
+      phetioDocumentation: 'Selected zoom level for the simulation',
+      phetioType: Property.PropertyIO( StringIO )
+    } );
+    this.selectedZoomProperty.lazyLink( selectedZoom => {
+      this.zoomProperty.value = selectedZoom === 0 ? 'zoomedOut' : 'normal';
+    } );
+    this.zoomProperty.lazyLink( zoom => {
+      this.selectedZoomProperty.value = zoom === 'zoomedOut' ? 0 : 1;
     } );
 
     // @public (read-only) {Property.<number>} the animated value of the zoom level
