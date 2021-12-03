@@ -204,7 +204,8 @@ class WireNode extends CircuitElementNode {
         startCapParent,
         endCapParent,
         lineNodeParent
-      ]
+      ],
+      tandem: tandem
     } );
 
     // @private {Property.<CircuitElementViewType>}

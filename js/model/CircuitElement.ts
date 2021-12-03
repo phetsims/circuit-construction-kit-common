@@ -478,7 +478,6 @@ abstract class CircuitElement extends PhetioObject {
 
 const VertexReferenceIO = ReferenceIO( Vertex.VertexIO );
 
-// @public {IOType}
 CircuitElement.CircuitElementIO = new IOType( 'CircuitElementIO', {
   valueType: CircuitElement,
   documentation: 'A Circuit Element, such as battery, resistor or wire',

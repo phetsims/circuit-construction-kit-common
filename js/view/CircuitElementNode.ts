@@ -21,6 +21,7 @@ import CircuitElementEditContainerNode from './CircuitElementEditContainerNode.j
 import CCKCScreenView from './CCKCScreenView.js';
 import CircuitLayerNode from './CircuitLayerNode.js';
 import Vertex from '../model/Vertex.js';
+import IOType from '../../../tandem/js/types/IOType.js';
 
 abstract class CircuitElementNode extends Node {
   private readonly useHitTestForSensors: any;
@@ -30,6 +31,7 @@ abstract class CircuitElementNode extends Node {
   private readonly disposeEmitterCircuitElementNode: Emitter<[]>;
   private readonly disposeCircuitElementNode: () => void;
   private dirty: boolean;
+  static CircuitElementNodeIO: IOType;
 
   /**
    * @param {CircuitElement} circuitElement - the CircuitElement to be rendered
@@ -39,7 +41,6 @@ abstract class CircuitElementNode extends Node {
   constructor( circuitElement: CircuitElement, circuit: Circuit | null, providedOptions?: any ) {
 
     providedOptions = merge( {
-
       useHitTestForSensors: false // if true, use the scenery mouse region hit test for fine-grained region. Otherwise, use bounds test.
     }, providedOptions );
 
@@ -48,7 +49,9 @@ abstract class CircuitElementNode extends Node {
       providedOptions = merge( {
         tagName: 'div', // HTML tag name for representative element in the document, see ParallelDOM.js
         focusable: true,
-        focusHighlight: 'invisible' // highlights are drawn by the simulation, invisible is deprecated don't use in future
+        focusHighlight: 'invisible', // highlights are drawn by the simulation, invisible is deprecated don't use in future
+        phetioDynamicElement: true,
+        phetioState: false
       }, providedOptions );
     }
 
@@ -193,7 +196,7 @@ abstract class CircuitElementNode extends Node {
   }
 
 // @public overridden in subclasses
-  abstract updateRender():void;
+  abstract updateRender(): void;
 
   /**
    * Handles when the node is dropped, called by subclass input listener.
