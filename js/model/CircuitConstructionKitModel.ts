@@ -87,22 +87,22 @@ class CircuitConstructionKitModel {
     this.circuit = new Circuit( this.viewTypeProperty, this.addRealBulbsProperty, tandem.createTandem( 'circuit' ), { blackBoxStudy: options.blackBoxStudy } );
 
     // @public (read-only) {Voltmeter[]} - created statically and indexed starting at 1 for human-readability for PhET-iO
+    const metersTandem = tandem.createTandem( 'meters' );
     this.voltmeters = [
-      new Voltmeter( tandem.createTandem( 'voltmeter1' ), 1 ),
-      new Voltmeter( tandem.createTandem( 'voltmeter2' ), 2 )
+      new Voltmeter( metersTandem.createTandem( 'voltmeter1' ), 1 ),
+      new Voltmeter( metersTandem.createTandem( 'voltmeter2' ), 2 )
     ];
 
     // @public (read-only) {Ammeter[]} - created statically and indexed starting at 1 for human-readability for PhET-iO
     this.ammeters = [
-      new Ammeter( tandem.createTandem( 'ammeter1' ), 1 ),
-      new Ammeter( tandem.createTandem( 'ammeter2' ), 2 )
+      new Ammeter( metersTandem.createTandem( 'ammeter1' ), 1 ),
+      new Ammeter( metersTandem.createTandem( 'ammeter2' ), 2 )
     ];
 
-    // @public {BooleanProperty} - changes whether the light bulb brightness and ammeter/voltmeter readouts,
-    // charges, flame, etc. can be seen
     this.isValueDepictionEnabledProperty = new BooleanProperty(
       !CCKCQueryParameters.showDepictValuesToggleButton, {
-        tandem: tandem.createTandem( 'isValueDepictionEnabledProperty' )
+        tandem: tandem.createTandem( 'blackBoxStudy' ).createTandem( 'isValueDepictionEnabledProperty' ),
+        phetioDocumentation: 'whether the light bulb brightness and ammeter/voltmeter readouts, charges, flame, etc. can be seen'
       } );
 
     // @public {BooleanProperty} - true if the labels in the toolbox should be shown
@@ -119,13 +119,13 @@ class CircuitConstructionKitModel {
     // 0 = zoomed out fully, 1 = zoomed in fully
     this.selectedZoomProperty = new NumberProperty( 1, {
       tandem: tandem.createTandem( 'selectedZoomProperty' ),
-      range: new Range( 0, 1 )
+      range: new Range( 0, 1 ),
+      validValues: [ 0, 1 ],
+      phetioDocumentation: 'Zoom level for the sim.  0=zoomed out, 1=zoomed in (magnified)'
     } );
 
     // @public (read-only) {Property.<number>} the animated value of the zoom level
-    this.currentZoomProperty = new NumberProperty( this.selectedZoomProperty.get(), {
-      tandem: tandem.createTandem( 'currentZoomProperty' )
-    } );
+    this.currentZoomProperty = new NumberProperty( this.selectedZoomProperty.get() );
 
     this.selectedZoomProperty.lazyLink( ( newValue: number ) => {
       this.zoomAnimation = new ZoomAnimation( this.currentZoomProperty.get(), newValue, ( delta: number ) => {
@@ -143,9 +143,10 @@ class CircuitConstructionKitModel {
 
     // @public {Property.<InteractionMode>} - whether the user is in the CircuitConstructionKitModel.InteractionMode.EXPLORE or CircuitConstructionKitModel.InteractionMode.TEST mode
     this.modeProperty = new Property<InteractionMode>( 'explore', {
-      tandem: tandem.createTandem( 'modeProperty' ),
+      tandem: tandem.createTandem( 'blackBoxStudy' ).createTandem( 'modeProperty' ),
       validValues: InteractionModeValues,
-      phetioType: Property.PropertyIO( StringIO )
+      phetioType: Property.PropertyIO( StringIO ),
+      phetioDocumentation: 'For Circuit Construction Kit: Black Box Study'
     } );
 
     // When the user manipulates something, hide the readouts, see
@@ -184,7 +185,8 @@ class CircuitConstructionKitModel {
     // Broad channel for PhET-iO that signifies a change in the circuit. Wrapper listeners can call get state after circuit
     // changes to obtain the new circuit.
     const circuitChangedEmitter = new Emitter( {
-      tandem: tandem.createTandem( 'circuitChangedEmitter' )
+      tandem: tandem.createTandem( 'circuitChangedEmitter' ),
+      phetioDocumentation: 'Emits when any circuit model parameter or topology has changed'
     } );
 
     const emitCircuitChanged = () => circuitChangedEmitter.emit();
@@ -212,7 +214,8 @@ class CircuitConstructionKitModel {
 
     // @public - true when the user is holding down the reveal button and the answer (inside the black box) is showing
     this.revealingProperty = new BooleanProperty( options.revealing, {
-      tandem: tandem.createTandem( 'revealingProperty' )
+      tandem: tandem.createTandem( 'blackBoxStudy' ).createTandem( 'revealingProperty' ),
+      phetioDocumentation: 'For Circuit Construction Kit: Black Box Study'
     } );
 
     // @public {Bounds2} - bounds of the black box, if any.  Set by subclass in Black Box Study. Specifically, filled
