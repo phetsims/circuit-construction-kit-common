@@ -51,7 +51,8 @@ abstract class CircuitElementNode extends Node {
         focusable: true,
         focusHighlight: 'invisible', // highlights are drawn by the simulation, invisible is deprecated don't use in future
         phetioDynamicElement: true,
-        phetioState: false
+        phetioState: false,
+        phetioInputEnabledPropertyInstrumented: true
       }, providedOptions );
     }
 
