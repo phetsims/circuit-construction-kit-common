@@ -26,10 +26,10 @@ const CCKCUtils = {
    * Typically show 2 decimal places for current and voltage readouts in the play area, but if it is a smaller value,
    * below 0.02 and 0.001, then it should show 3 decimal places.
    * @public
-   * @param {number} value - the value to be formatted for display
-   * @returns {number} - the number of decimal places to use for the display
+   * @param value - the value to be formatted for display
+   * @returns the number of decimal places to use for the display
    */
-  getNumberOfDecimalPoints: function( value: number ) {
+  getNumberOfDecimalPoints: function( value: number ): number {
     const abs = Math.abs( value );
     return ( abs >= 0 && abs < 0.02 ) ? 3 : 2;
   },
@@ -41,7 +41,7 @@ const CCKCUtils = {
    * @returns {string}
    * @public
    */
-  createCurrentReadout: function( current: number, blackBoxStudy: boolean ):string {
+  createCurrentReadout: function( current: number, blackBoxStudy: boolean ): string {
     if ( CCKCQueryParameters.fullPrecisionAmmeter ) {
       return current + '';
     }
@@ -76,11 +76,10 @@ const CCKCUtils = {
 
   /**
    * Returns a string that adjusts its voltage value.
-   * @param {number} value - voltage value in Volts
-   * @returns {string}
+   * @param value - voltage value in Volts
    * @public
    */
-  createVoltageReadout: function( value: number ) {
+  createVoltageReadout: function( value: number ): string {
     const decimals = this.getNumberOfDecimalPoints( value );
 
     return StringUtils.fillIn( voltageUnitsString, { voltage: Utils.toFixed( value, decimals ) } );
@@ -89,9 +88,9 @@ const CCKCUtils = {
   /**
    * Checks whether a child should be in the scene graph and adds/removes it as necessary.  This is to improve
    * performance so that the DOM only contains displayed items and doesn't try to update invisible ones.
-   * @param {boolean} inSceneGraph - should the child be shown in the scene graph
-   * @param {Node} parent - parent that contains the child in the scene graph
-   * @param {Node} child - child added/removed from scene graph
+   * @param inSceneGraph - should the child be shown in the scene graph
+   * @param parent - parent that contains the child in the scene graph
+   * @param child - child added/removed from scene graph
    * @public
    */
   setInSceneGraph: function( inSceneGraph: boolean, parent: Node, child: Node ) {
@@ -105,11 +104,8 @@ const CCKCUtils = {
 
   /**
    * Clamp the magnitude of a signed number to keep it in range.
-   * @param {number} value
-   * @param {number} magnitude
-   * @returns {number}
    */
-  clampMagnitude( value: number, magnitude = 1E20 ) {
+  clampMagnitude( value: number, magnitude = 1E20 ): number {
     assert && assert( magnitude >= 0, 'magnitude should be non-negative' );
     if ( Math.abs( value ) > magnitude ) {
       return Math.sign( value ) * magnitude;
@@ -119,11 +115,6 @@ const CCKCUtils = {
     }
   },
 
-  /**
-   * Validate a nodeIndex
-   * @param {string|number} nodeIndex
-   * @public
-   */
   validateNodeIndex( nodeIndex: string ) {
     if ( assert ) {
       assert && assert( typeof nodeIndex === 'string' || typeof nodeIndex === 'number', 'nodeIndex must be string or number' );
