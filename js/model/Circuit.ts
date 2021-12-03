@@ -27,7 +27,7 @@ import Capacitor from './Capacitor.js';
 import Charge from './Charge.js';
 import ChargeAnimator from './ChargeAnimator.js';
 import CircuitElement from './CircuitElement.js';
-import CurrentType from './CurrentType.js';
+import CurrentType, { CurrentTypeValues } from './CurrentType.js';
 import Dog from './Dog.js';
 import DynamicCircuitElement from './DynamicCircuitElement.js';
 import FixedCircuitElement from './FixedCircuitElement.js';
@@ -139,6 +139,7 @@ class Circuit {
 
     // @public {Property.<CurrentType>} - whether to show charges or conventional current
     this.currentTypeProperty = new Property( CCKCQueryParameters.currentType, {
+      validValues: CurrentTypeValues,
       tandem: tandem.createTandem( 'currentTypeProperty' ),
       phetioType: Property.PropertyIO( StringIO )
     } );

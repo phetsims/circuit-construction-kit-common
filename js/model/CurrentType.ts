@@ -8,5 +8,10 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-type CurrentType = 'electrons' | 'conventional';
-export default CurrentType;
+import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+
+const CurrentTypeValues = [ 'electrons', 'conventional' ] as const;
+type CurrentType = ( typeof CurrentTypeValues )[number];
+circuitConstructionKitCommon.register( 'CurrentTypeValues', CurrentTypeValues );
+export { CurrentTypeValues };
+export type { CurrentType as default };
