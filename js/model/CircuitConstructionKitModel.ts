@@ -133,12 +133,8 @@ class CircuitConstructionKitModel {
       phetioDocumentation: 'Selected zoom level for the simulation',
       phetioType: Property.PropertyIO( StringIO )
     } );
-    this.selectedZoomProperty.lazyLink( selectedZoom => {
-      this.zoomProperty.value = selectedZoom === 0 ? 'zoomedOut' : 'normal';
-    } );
-    this.zoomProperty.lazyLink( zoom => {
-      this.selectedZoomProperty.value = zoom === 'zoomedOut' ? 0 : 1;
-    } );
+    this.selectedZoomProperty.lazyLink( selectedZoom => this.zoomProperty.set( selectedZoom === 0 ? 'zoomedOut' : 'normal' ) );
+    this.zoomProperty.lazyLink( zoom => this.selectedZoomProperty.set( zoom === 'zoomedOut' ? 0 : 1 ) );
 
     // @public (read-only) {Property.<number>} the animated value of the zoom level
     this.currentZoomProperty = new NumberProperty( this.selectedZoomProperty.get() );
