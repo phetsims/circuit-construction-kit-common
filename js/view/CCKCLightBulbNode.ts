@@ -243,7 +243,7 @@ class CCKCLightBulbNode extends FixedCircuitElementNode {
         this.rayNodeContainer.visible = view === 'lifelike';
       };
       viewTypeProperty.link( viewListener );
-      circuitLayerNode && circuitLayerNode.lightBulbSocketLayer.addChild( this.socketNode );
+      circuitLayerNode && !lightBulb.phetioIsArchetype && circuitLayerNode.lightBulbSocketLayer.addChild( this.socketNode );
 
       // Light rays are supposed to be behind everything else,
       // see https://github.com/phetsims/circuit-construction-kit-common/issues/161

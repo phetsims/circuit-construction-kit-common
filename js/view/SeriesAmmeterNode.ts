@@ -185,7 +185,7 @@ class SeriesAmmeterNode extends FixedCircuitElementNode {
     }
     else {
       assert && assert( !!circuitLayerNode );
-      if ( circuitLayerNode ) {
+      if ( circuitLayerNode && !seriesAmmeter.phetioIsArchetype ) {
         circuitLayerNode.seriesAmmeterNodeReadoutPanelLayer.addChild( this.frontPanelContainer );
       }
     }
