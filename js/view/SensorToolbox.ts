@@ -212,7 +212,7 @@ class SensorToolbox extends CCKCPanel {
     if ( providedOptions.showCharts ) {
       const everything = new Property( Bounds2.EVERYTHING );
 
-      const createChartToolIcon = ( chartNodes: Node[], chartNodeIcon: VoltageChartNode | CurrentChartNode, labelNode: Text ) => {
+      const createChartToolIcon = ( chartNodes: Node[], chartNodeIcon: VoltageChartNode | CurrentChartNode, labelNode: Text, tandem: Tandem ) => {
 
         // Rasterization comes out blurry, instead put an overlay to intercept input events.
         const overlay = Rectangle.bounds( chartNodeIcon.bounds, { fill: 'blue', opacity: 0 } );
@@ -222,7 +222,8 @@ class SensorToolbox extends CCKCPanel {
         } );
         const chartToolIcon = new VBox( {
           spacing: ICON_TEXT_SPACING,
-          children: [ container, labelNode ]
+          children: [ container, labelNode ],
+          tandem: tandem
         } );
 
         // @ts-ignore
@@ -241,11 +242,13 @@ class SensorToolbox extends CCKCPanel {
 
       const voltageChartToolIcon = createChartToolIcon( voltageChartNodes,
         voltageChartNodeIconContents,
-        new Text( voltageChartString, { maxWidth: 60 } )
+        new Text( voltageChartString, { maxWidth: 60 } ),
+        tandem.createTandem( 'voltageChartToolIcon' )
       );
       const currentChartToolIcon = createChartToolIcon( currentChartNodes,
         new CurrentChartNode( circuitLayerNode, new NumberProperty( 0 ), everything, { scale: scale } ),
-        new Text( currentChartString, { maxWidth: 60 } )
+        new Text( currentChartString, { maxWidth: 60 } ),
+        tandem.createTandem( 'currentChartToolIcon' )
       );
       voltageChartToolIcon.centerX = voltmeterToolIcon.centerX;
       currentChartToolIcon.centerX = ammeterToolIcon.centerX;
