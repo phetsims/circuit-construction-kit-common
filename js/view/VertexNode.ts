@@ -45,7 +45,6 @@ const BLACK_CIRCLE_NODE = new Circle( VERTEX_RADIUS, merge( CIRCLE_OPTIONS, {
 class VertexNode extends Node {
   private readonly circuit: Circuit;
   private readonly cutButton: RoundPushButton;
-  private readonly vertexNodeTandem: Tandem;
   private readonly circuitLayerNode: CircuitLayerNode;
   private readonly voltageReadoutText: Text | null;
   private readonly updateReadoutTextPosition: ( () => void ) | null;
@@ -78,7 +77,8 @@ class VertexNode extends Node {
       // keyboard navigation
       tagName: 'div', // HTML tag name for representative element in the document, see ParallelDOM.js
       focusable: true,
-      focusHighlight: 'invisible' // highlights are drawn by the simulation, invisible is deprecated don't use in future
+      focusHighlight: 'invisible', // highlights are drawn by the simulation, invisible is deprecated don't use in future
+      phetioDynamicElement: true
     } );
 
     const circuit = circuitLayerNode.circuit;
@@ -90,11 +90,12 @@ class VertexNode extends Node {
     // @private {RoundPushButton}
     this.cutButton = cutButton;
 
-    // @private {Tandem}
-    this.vertexNodeTandem = tandem;
-
     // @private {CircuitLayerNode}
     this.circuitLayerNode = circuitLayerNode;
+
+    this.addLinkedElement( vertex, {
+      tandem: tandem.createTandem( 'vertex' )
+    } );
 
     // Use a query parameter to turn on node voltage readouts for debugging only.
     // @private {Text} display for debugging only

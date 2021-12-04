@@ -89,7 +89,8 @@ class Vertex extends PhetioObject {
     // @public {NumberProperty} Relative voltage of the node, determined by Circuit.solve
     this.voltageProperty = new NumberProperty( 0, {
       tandem: options.tandem && options.tandem.createTandem( 'voltageProperty' ),
-      units: 'V'
+      units: 'V',
+      phetioReadOnly: true
     } );
 
     // @public {BooleanProperty} - after the user taps on a vertex it becomes selected, highlighting it and showing a

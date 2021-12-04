@@ -441,13 +441,21 @@ class CircuitLayerNode extends Node {
       }
     } );
 
+    const vertexNodeGroup = new PhetioGroup<VertexNode>( ( tandem, vertex: Vertex ) => {
+      return new VertexNode( this, vertex, tandem );
+    }, [ circuit.vertexGroup.archetype ], {
+      phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
+      tandem: tandem.createTandem( 'vertexNodeGroup' ),
+      supportsDynamicState: false
+    } );
+
     // When a Vertex is added to the model, create the corresponding views
     const addVertexNode = ( vertex: Vertex ) => {
       const solderNode = new SolderNode( this, vertex );
       this.solderNodes[ vertex.index ] = solderNode;
       this.solderLayer.addChild( solderNode );
 
-      const vertexNode = new VertexNode( this, vertex, Tandem.OPTIONAL );
+      const vertexNode = vertexNodeGroup.createNextElement( vertex );
       this.vertexNodes[ vertex.index ] = vertexNode;
       this.vertexLayer.addChild( vertexNode );
     };
