@@ -27,7 +27,6 @@ abstract class CircuitElementNode extends Node {
   private readonly useHitTestForSensors: any;
   private readonly circuit: Circuit | null;
   readonly circuitElement: CircuitElement;
-  private readonly dragHandler: null;
   private readonly disposeEmitterCircuitElementNode: Emitter<[]>;
   private readonly disposeCircuitElementNode: () => void;
   private dirty: boolean;
@@ -66,10 +65,6 @@ abstract class CircuitElementNode extends Node {
 
     // @public (read-only) {CircuitElement} - the CircuitElement rendered by this node
     this.circuitElement = circuitElement;
-
-    // @protected {DragListener|null} - Supplied by subclasses so that events can be forwarded from the tool icons or null
-    // if rendering an icon
-    this.dragHandler = null;
 
     // keyboard listener so that delete or backspace deletes the element - must be disposed
     const keyListener = {
