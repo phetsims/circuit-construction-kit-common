@@ -92,6 +92,8 @@ class ResistorNode extends FixedCircuitElementNode {
 
     let updateColorBands: ( ( n: number ) => void ) | null = null;
 
+    let colorBandsNode: null | Node = null;
+
     // Add color bands for the normal resistor
     if ( resistor.resistorType === Resistor.ResistorType.RESISTOR ) {
 
@@ -137,7 +139,7 @@ class ResistorNode extends FixedCircuitElementNode {
       resistor.resistanceProperty.link( updateColorBands );
 
       // Add the color bands to the resistor image
-      const colorBandsNode = new Node( {
+      colorBandsNode = new Node( {
         children: [ ...colorBands, singleColorBand ],
         tandem: tandem.createTandem( 'colorBandsNode' )
       } );
@@ -243,6 +245,7 @@ class ResistorNode extends FixedCircuitElementNode {
       updateColorBands && resistor.resistanceProperty.unlink( updateColorBands );
       lifelikeResistorImageNode.dispose();
       schematicTypeProperty.unlink( updateSchematicType );
+      colorBandsNode && colorBandsNode.dispose();
     };
   }
 

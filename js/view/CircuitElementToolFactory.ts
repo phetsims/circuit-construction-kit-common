@@ -348,7 +348,7 @@ class CircuitElementToolFactory {
       Tandem.OPTIONAL
     );
     return this.createCircuitElementToolNode( fuseString, 10,
-      ( tandem, viewTypeProperty ) => new FuseNode( null, null, fuseModel, viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
+      ( tandem, viewTypeProperty ) => new FuseNode( null, null, fuseModel, viewTypeProperty, tandem.createTandem( 'fuseIcon' ), {
         isIcon: true
       } ),
       circuitElement => circuitElement instanceof Fuse,
@@ -372,7 +372,7 @@ class CircuitElementToolFactory {
       Tandem.OPTIONAL
     );
     return this.createCircuitElementToolNode( capacitorString, count,
-      ( tandem, viewTypeProperty ) => new CapacitorCircuitElementNode( null, null, capacitor, viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
+      ( tandem, viewTypeProperty ) => new CapacitorCircuitElementNode( null, null, capacitor, viewTypeProperty, tandem.createTandem( 'capacitorIcon' ), {
         isIcon: true
       } ),
       circuitElement => circuitElement instanceof Capacitor,
@@ -393,7 +393,7 @@ class CircuitElementToolFactory {
     );
     const count = CCKCQueryParameters.moreInductors ? 10 : 1;
     return this.createCircuitElementToolNode( inductorString, count,
-      ( tandem, viewTypeProperty ) => new InductorNode( null, null, inductorModel, viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
+      ( tandem, viewTypeProperty ) => new InductorNode( null, null, inductorModel, viewTypeProperty, tandem.createTandem( 'inductorIcon' ), {
         isIcon: true,
         scale: 0.75
       } ),

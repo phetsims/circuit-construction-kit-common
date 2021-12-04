@@ -66,6 +66,11 @@ abstract class CircuitElementNode extends Node {
     // @public (read-only) {CircuitElement} - the CircuitElement rendered by this node
     this.circuitElement = circuitElement;
 
+    // Make it easy to get back to circuitElements
+    this.addLinkedElement( circuitElement, {
+      tandem: providedOptions.tandem.createTandem( 'circuitElement' )
+    } );
+
     // keyboard listener so that delete or backspace deletes the element - must be disposed
     const keyListener = {
 
