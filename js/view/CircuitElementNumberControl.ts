@@ -14,7 +14,6 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Circuit from '../model/Circuit.js';
-import FixedCircuitElement from '../model/FixedCircuitElement.js';
 
 // constants
 const NUMBER_CONTROL_ELEMENT_MAX_WIDTH = 115;
@@ -25,15 +24,15 @@ class CircuitElementNumberControl extends NumberControl {
   static NUMBER_CONTROL_ELEMENT_MAX_WIDTH: number;
 
   /**
-   * @param {string} title - text to show as a title
-   * @param {string} valuePattern - pattern for NumberControl to display the value as text
-   * @param {Property.<number>} valueProperty - property this control changes
-   * @param {Circuit} circuit - parent circuit
-   * @param {FixedCircuitElement} circuitElement - the CircuitElement controlled by this UI
-   * @param {Tandem} tandem
-   * @param {Object} [providedOptions]
+   * @param  title - text to show as a title
+   * @param  valuePattern - pattern for NumberControl to display the value as text
+   * @param  valueProperty - property this control changes
+   * @param  circuit - parent circuit
+   * @param  numberOfDecimalPlaces - number of decimal places
+   * @param  tandem
+   * @param  [providedOptions]
    */
-  constructor( title: string, valuePattern: string, valueProperty: NumberProperty, circuit: Circuit, circuitElement: FixedCircuitElement, tandem: Tandem, providedOptions?: any ) {
+  constructor( title: string, valuePattern: string, valueProperty: NumberProperty, circuit: Circuit, numberOfDecimalPlaces: number, tandem: Tandem, providedOptions?: any ) {
 
     assert && assert( !!valueProperty.range, 'Range must be provided' );
 
@@ -53,7 +52,7 @@ class CircuitElementNumberControl extends NumberControl {
       numberDisplayOptions: {
         maxWidth: READOUT_MAX_WIDTH,
         valuePattern: valuePattern,
-        decimalPlaces: circuitElement.numberOfDecimalPlaces,
+        decimalPlaces: numberOfDecimalPlaces,
         textOptions: {
           font: CCKCConstants.DEFAULT_FONT
         }

@@ -148,6 +148,7 @@ class CircuitElementEditContainerNode extends Node {
           // @ts-ignore
           const isHighResistance = selectedCircuitElement.resistorType === Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR ||
                                    selectedCircuitElement instanceof LightBulb && selectedCircuitElement.highResistance;
+
           const resistanceControl = new CircuitElementNumberControl(
             resistanceString,
 
@@ -157,8 +158,8 @@ class CircuitElementEditContainerNode extends Node {
             } ),
             selectedCircuitElement.resistanceProperty,
             circuit,
-            selectedCircuitElement,
-            Tandem.OPT_OUT, {
+            selectedCircuitElement.numberOfDecimalPlaces,
+            tandem.createTandem( 'resistanceControl' ), {
 
               // For the tweakers
               delta: isHighResistance ? HIGH_TWEAKER_DELTA : NORMAL_TWEAKER_DELTA,
@@ -172,6 +173,7 @@ class CircuitElementEditContainerNode extends Node {
               }
             }
           );
+
           editNode = new EditPanel( [
               resistanceControl,
               trashButton
@@ -195,7 +197,7 @@ class CircuitElementEditContainerNode extends Node {
             } ),
             selectedCircuitElement.voltageProperty,
             circuit,
-            selectedCircuitElement,
+            selectedCircuitElement.numberOfDecimalPlaces,
             Tandem.OPT_OUT, {
 
               // For the tweakers
@@ -230,7 +232,7 @@ class CircuitElementEditContainerNode extends Node {
             } ),
             selectedCircuitElement.currentRatingProperty,
             circuit,
-            selectedCircuitElement,
+            selectedCircuitElement.numberOfDecimalPlaces,
             Tandem.OPT_OUT, {
 
               // For the tweakers
@@ -268,7 +270,7 @@ class CircuitElementEditContainerNode extends Node {
               } ),
               selectedCircuitElement.maximumVoltageProperty,
               circuit,
-              selectedCircuitElement,
+              selectedCircuitElement.numberOfDecimalPlaces,
               Tandem.OPT_OUT
             ),
             new CircuitElementNumberControl(
@@ -280,7 +282,7 @@ class CircuitElementEditContainerNode extends Node {
               } ),
               selectedCircuitElement.frequencyProperty,
               circuit,
-              selectedCircuitElement,
+              selectedCircuitElement.numberOfDecimalPlaces,
               Tandem.OPT_OUT, {
                 delta: 0.01
               }
@@ -303,7 +305,7 @@ class CircuitElementEditContainerNode extends Node {
             } ),
             selectedCircuitElement.capacitanceProperty,
             circuit,
-            selectedCircuitElement,
+            selectedCircuitElement.numberOfDecimalPlaces,
             Tandem.OPT_OUT, {
               delta: CCKCQueryParameters.capacitanceStep
             }
@@ -324,7 +326,7 @@ class CircuitElementEditContainerNode extends Node {
             } ),
             selectedCircuitElement.inductanceProperty,
             circuit,
-            selectedCircuitElement,
+            selectedCircuitElement.numberOfDecimalPlaces,
             Tandem.OPT_OUT, {
               delta: CCKCQueryParameters.inductanceStep,
 
