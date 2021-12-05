@@ -230,7 +230,10 @@ class SensorToolbox extends CCKCPanel {
 
         // @ts-ignore
         const iconVisibleProperty = DerivedProperty.and( chartNodes.map( chartNode => chartNode.meter.visibleProperty ) );
-        iconVisibleProperty.link( visible => chartNodeIcon.setVisible( !visible ) );
+        iconVisibleProperty.link( visible => {
+          chartNodeIcon.setVisible( !visible );
+          chartToolIcon.inputEnabledProperty.value = !visible;
+        } );
         // @ts-ignore
         overlay.addInputListener( createListenerMulti( chartNodes, 'meter' ) );
 
