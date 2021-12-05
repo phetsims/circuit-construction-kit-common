@@ -214,6 +214,9 @@ class SensorToolbox extends CCKCPanel {
 
       const createChartToolIcon = ( chartNodes: Node[], chartNodeIcon: VoltageChartNode | CurrentChartNode, labelNode: Text ) => {
 
+        // Alter the visibility of the labels when the labels checkbox is toggled.
+        circuitLayerNode.model.showLabelsProperty.linkAttribute( labelNode, 'visible' );
+
         // Rasterization comes out blurry, instead put an overlay to intercept input events.
         const overlay = Rectangle.bounds( chartNodeIcon.bounds, { fill: 'blue', opacity: 0 } );
         const container = new Node( {
