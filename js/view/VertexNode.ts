@@ -6,15 +6,10 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import dotRandom from '../../../dot/js/dotRandom.js';
 import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import merge from '../../../phet-core/js/merge.js';
-import { KeyboardUtils } from '../../../scenery/js/imports.js';
-import { Circle } from '../../../scenery/js/imports.js';
-import { Node } from '../../../scenery/js/imports.js';
-import { Text } from '../../../scenery/js/imports.js';
-import { Color } from '../../../scenery/js/imports.js';
+import { Circle, Color, KeyboardUtils, Node, SceneryEvent, Text } from '../../../scenery/js/imports.js';
 import RoundPushButton from '../../../sun/js/buttons/RoundPushButton.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -25,6 +20,7 @@ import Circuit from '../model/Circuit.js';
 import Vertex from '../model/Vertex.js';
 import CircuitLayerNode from './CircuitLayerNode.js';
 import CircuitLayerNodeDragListener from './CircuitLayerNodeDragListener.js';
+import DisplayClickToDismissListener from '../../../joist/js/DisplayClickToDismissListener.js';
 
 // constants
 const DISTANCE_TO_CUT_BUTTON = 70; // How far in view coordinates the cut button appears from the vertex node
@@ -204,21 +200,13 @@ class VertexNode extends Node {
 
           vertex.selectedProperty.set( true );
 
-          const clickToDismissListener = {
-            down: ( event: any ) => {
-
-              // When fuzzing, don't click away from the circuit element so eagerly, so that fuzzing has more of a chance to
-              // press the associated controls.
-              if ( phet.chipper.isFuzzEnabled() && dotRandom.nextDouble() < 0.99 ) {
-                return;
-              }
-
-              if ( !_.includes( event.trail.nodes, this ) && !_.includes( event.trail.nodes, cutButton ) ) {
-                vertex.selectedProperty.set( false );
-                this.clearClickListeners();
-              }
+          const dismissListener = ( event: SceneryEvent ) => {
+            if ( !_.includes( event.trail.nodes, this ) && !_.includes( event.trail.nodes, cutButton ) ) {
+              vertex.selectedProperty.set( false );
+              this.clearClickListeners();
             }
           };
+          const clickToDismissListener = new DisplayClickToDismissListener( dismissListener );
           phet.joist.display.addInputListener( clickToDismissListener );
           this.clickToDismissListeners.push( clickToDismissListener );
         }

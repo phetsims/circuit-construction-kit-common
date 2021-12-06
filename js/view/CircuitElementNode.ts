@@ -7,12 +7,9 @@
  */
 
 import Emitter from '../../../axon/js/Emitter.js';
-import dotRandom from '../../../dot/js/dotRandom.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import merge from '../../../phet-core/js/merge.js';
-import { KeyboardUtils } from '../../../scenery/js/imports.js';
-import { SceneryEvent } from '../../../scenery/js/imports.js';
-import { Node } from '../../../scenery/js/imports.js';
+import { KeyboardUtils, Node, SceneryEvent } from '../../../scenery/js/imports.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Circuit from '../model/Circuit.js';
@@ -22,6 +19,7 @@ import CCKCScreenView from './CCKCScreenView.js';
 import CircuitLayerNode from './CircuitLayerNode.js';
 import Vertex from '../model/Vertex.js';
 import IOType from '../../../tandem/js/types/IOType.js';
+import DisplayClickToDismissListener from '../../../joist/js/DisplayClickToDismissListener.js';
 
 abstract class CircuitElementNode extends Node {
   private readonly useHitTestForSensors: any;
@@ -255,34 +253,27 @@ abstract class CircuitElementNode extends Node {
       const disposeListener = () => phet.joist.display.removeInputListener( clickToDismissListener );
 
       // listener for 'click outside to dismiss'
-      const clickToDismissListener = {
+      const dismissListener = ( event: SceneryEvent ) => {
 
-        down: ( event: any ) => {
+        // if the target was in a CircuitElementEditContainerNode, don't dismiss the event because the user was
+        // dragging the slider or pressing the trash button or another control in that panel
+        const trails = event.target.getTrails( ( node: Node ) => {
 
-          // When fuzzing, don't click away from the circuit element so eagerly, so that fuzzing has more of a chance to
-          // press the associated controls.
-          if ( phet.chipper.isFuzzEnabled() && dotRandom.nextDouble() < 0.99 ) {
-            return;
+          // If the user tapped any component in the CircuitElementContainerPanel or on the selected node
+          // allow interaction to proceed normally.  Any other taps will deselect the circuit element
+          return node instanceof CircuitElementEditContainerNode || node === this;
+        } );
+
+        if ( trails.length === 0 ) {
+          phet.joist.display.removeInputListener( clickToDismissListener );
+          if ( this.disposeEmitterCircuitElementNode.hasListener( disposeListener ) ) {
+            this.disposeEmitterCircuitElementNode.removeListener( disposeListener );
           }
-
-          // if the target was in a CircuitElementEditContainerNode, don't dismiss the event because the user was
-          // dragging the slider or pressing the trash button or another control in that panel
-          const trails = event.target.getTrails( ( node: Node ) => {
-
-            // If the user tapped any component in the CircuitElementContainerPanel or on the selected node
-            // allow interaction to proceed normally.  Any other taps will deselect the circuit element
-            return node instanceof CircuitElementEditContainerNode || node === this;
-          } );
-
-          if ( trails.length === 0 ) {
-            phet.joist.display.removeInputListener( clickToDismissListener );
-            if ( this.disposeEmitterCircuitElementNode.hasListener( disposeListener ) ) {
-              this.disposeEmitterCircuitElementNode.removeListener( disposeListener );
-            }
-            circuitLayerNode.circuit.selectedCircuitElementProperty.set( null );
-          }
+          circuitLayerNode.circuit.selectedCircuitElementProperty.set( null );
         }
       };
+
+      const clickToDismissListener = new DisplayClickToDismissListener( dismissListener );
       phet.joist.display.addInputListener( clickToDismissListener );
 
       // If the user deletes the element with the delete button, make sure to detach the display input listener
