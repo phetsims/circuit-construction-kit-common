@@ -157,6 +157,7 @@ class CircuitElementEditContainerNode extends Node {
               resistance: SunConstants.VALUE_NAMED_PLACEHOLDER
             } ),
             selectedCircuitElement.resistanceProperty,
+            selectedCircuitElement.resistanceProperty.range!,
             circuit,
             selectedCircuitElement.numberOfDecimalPlaces,
             tandem.createTandem( 'resistanceControl' ), {
@@ -196,6 +197,7 @@ class CircuitElementEditContainerNode extends Node {
               voltage: SunConstants.VALUE_NAMED_PLACEHOLDER
             } ),
             selectedCircuitElement.voltageProperty,
+            selectedCircuitElement.voltageProperty.range!,
             circuit,
             selectedCircuitElement.numberOfDecimalPlaces,
             Tandem.OPT_OUT, {
@@ -231,6 +233,7 @@ class CircuitElementEditContainerNode extends Node {
               current: SunConstants.VALUE_NAMED_PLACEHOLDER
             } ),
             selectedCircuitElement.currentRatingProperty,
+            selectedCircuitElement.currentRatingProperty.range!,
             circuit,
             selectedCircuitElement.numberOfDecimalPlaces,
             Tandem.OPT_OUT, {
@@ -269,6 +272,7 @@ class CircuitElementEditContainerNode extends Node {
                 voltage: SunConstants.VALUE_NAMED_PLACEHOLDER
               } ),
               selectedCircuitElement.maximumVoltageProperty,
+              selectedCircuitElement.maximumVoltageProperty.range!,
               circuit,
               selectedCircuitElement.numberOfDecimalPlaces,
               Tandem.OPT_OUT
@@ -281,6 +285,7 @@ class CircuitElementEditContainerNode extends Node {
                 frequency: SunConstants.VALUE_NAMED_PLACEHOLDER
               } ),
               selectedCircuitElement.frequencyProperty,
+              selectedCircuitElement.frequencyProperty.range!,
               circuit,
               selectedCircuitElement.numberOfDecimalPlaces,
               Tandem.OPT_OUT, {
@@ -304,6 +309,7 @@ class CircuitElementEditContainerNode extends Node {
               capacitance: SunConstants.VALUE_NAMED_PLACEHOLDER
             } ),
             selectedCircuitElement.capacitanceProperty,
+            selectedCircuitElement.capacitanceProperty.range!,
             circuit,
             selectedCircuitElement.numberOfDecimalPlaces,
             Tandem.OPT_OUT, {
@@ -325,6 +331,7 @@ class CircuitElementEditContainerNode extends Node {
               inductance: SunConstants.VALUE_NAMED_PLACEHOLDER
             } ),
             selectedCircuitElement.inductanceProperty,
+            selectedCircuitElement.inductanceProperty.range!,
             circuit,
             selectedCircuitElement.numberOfDecimalPlaces,
             Tandem.OPT_OUT, {

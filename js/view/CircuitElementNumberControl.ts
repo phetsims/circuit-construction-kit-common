@@ -6,7 +6,8 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import NumberProperty from '../../../axon/js/NumberProperty.js';
+import Range from '../../../dot/js/Range.js';
+import Property from '../../../axon/js/Property.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import merge from '../../../phet-core/js/merge.js';
 import NumberControl from '../../../scenery-phet/js/NumberControl.js';
@@ -24,17 +25,19 @@ class CircuitElementNumberControl extends NumberControl {
   static NUMBER_CONTROL_ELEMENT_MAX_WIDTH: number;
 
   /**
-   * @param  title - text to show as a title
-   * @param  valuePattern - pattern for NumberControl to display the value as text
-   * @param  valueProperty - property this control changes
-   * @param  circuit - parent circuit
-   * @param  numberOfDecimalPlaces - number of decimal places
-   * @param  tandem
-   * @param  [providedOptions]
+   * @param title - text to show as a title
+   * @param valuePattern - pattern for NumberControl to display the value as text
+   * @param valueProperty - property this control changes
+   * @param range
+   * @param circuit - parent circuit
+   * @param numberOfDecimalPlaces - number of decimal places
+   * @param tandem
+   * @param [providedOptions]
    */
-  constructor( title: string, valuePattern: string, valueProperty: NumberProperty, circuit: Circuit, numberOfDecimalPlaces: number, tandem: Tandem, providedOptions?: any ) {
+  constructor( title: string, valuePattern: string, valueProperty: Property<number>, range: Range, circuit: Circuit,
+               numberOfDecimalPlaces: number, tandem: Tandem, providedOptions?: any ) {
 
-    assert && assert( !!valueProperty.range, 'Range must be provided' );
+    assert && assert( !!range, 'Range must be provided' );
 
     // When the user changes any parameter of any circuit element, signify it.
     const valuePropertyListener = () => circuit.componentEditedEmitter.emit();
@@ -42,7 +45,7 @@ class CircuitElementNumberControl extends NumberControl {
     valueProperty.lazyLink( valuePropertyListener );
 
     // Create the controls
-    super( title, valueProperty, valueProperty.range!, merge( {
+    super( title, valueProperty, range, merge( {
 
       // subcomponent options
       titleNodeOptions: {
