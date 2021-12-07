@@ -52,7 +52,7 @@ class VertexNode extends Node {
   private readonly updateSelectedListener: ( selected: boolean ) => void;
   private readonly updateMoveToFront: () => Node;
   private readonly updatePickableListener: ( pickable: boolean | null ) => Node;
-  private readonly clickToDismissListeners: { down: ( event: any ) => void }[];
+  private readonly clickToDismissListeners: DisplayClickToDismissListener[];
   private readonly dragListener: CircuitLayerNodeDragListener;
   private readonly interruptionListener: ( draggable: boolean ) => void;
   private readonly updateVertexNodePositionListener: () => void;
@@ -173,7 +173,7 @@ class VertexNode extends Node {
     let latestPoint: Vector2 | null = null;
     let dragged = false;
 
-    // @private {function[]} - called when the user clicks away from the selected vertex
+    // @private {DisplayClickToDismissListener[]} - called when the user clicks away from the selected vertex
     this.clickToDismissListeners = [];
 
     // @private {DragListener}
@@ -396,7 +396,10 @@ class VertexNode extends Node {
    * @private
    */
   clearClickListeners() {
-    this.clickToDismissListeners.forEach( listener => phet.joist.display.removeInputListener( listener ) );
+    this.clickToDismissListeners.forEach( listener => {
+      phet.joist.display.removeInputListener( listener );
+      listener.dispose();
+    } );
     this.clickToDismissListeners.length = 0;
   }
 

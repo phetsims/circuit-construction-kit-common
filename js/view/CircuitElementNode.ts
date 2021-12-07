@@ -250,7 +250,10 @@ abstract class CircuitElementNode extends Node {
       // @ts-ignore
       this.focus();
 
-      const disposeListener = () => phet.joist.display.removeInputListener( clickToDismissListener );
+      const disposeListener = () => {
+        phet.joist.display.removeInputListener( clickToDismissListener );
+        clickToDismissListener.dispose();
+      };
 
       // listener for 'click outside to dismiss'
       const dismissListener = ( event: SceneryEvent ) => {
@@ -265,7 +268,7 @@ abstract class CircuitElementNode extends Node {
         } );
 
         if ( trails.length === 0 ) {
-          phet.joist.display.removeInputListener( clickToDismissListener );
+          disposeListener();
           if ( this.disposeEmitterCircuitElementNode.hasListener( disposeListener ) ) {
             this.disposeEmitterCircuitElementNode.removeListener( disposeListener );
           }
