@@ -170,8 +170,12 @@ class SensorToolbox extends CCKCPanel {
     } );
 
     // Alter the visibility of the labels when the labels checkbox is toggled.
-    circuitLayerNode.model.showLabelsProperty.linkAttribute( voltmeterText, 'visible' );
-    circuitLayerNode.model.showLabelsProperty.linkAttribute( ammeterText, 'visible' );
+    Property.multilink( [ circuitLayerNode.model.showLabelsProperty, allVoltmetersVisibleProperty ], ( showLabels: boolean, allVoltmetersVisible: boolean ) => {
+      voltmeterText.visible = showLabels && !allVoltmetersVisible;
+    } );
+    Property.multilink( [ circuitLayerNode.model.showLabelsProperty, allAmmetersVisibleProperty ], ( showLabels: boolean, allAmmetersVisible: boolean ) => {
+      ammeterText.visible = showLabels && !allAmmetersVisible;
+    } );
 
     const voltmeterToolIcon = new VBox( {
       spacing: ICON_TEXT_SPACING,
@@ -214,9 +218,6 @@ class SensorToolbox extends CCKCPanel {
 
       const createChartToolIcon = ( chartNodes: Node[], chartNodeIcon: VoltageChartNode | CurrentChartNode, labelNode: Text ) => {
 
-        // Alter the visibility of the labels when the labels checkbox is toggled.
-        circuitLayerNode.model.showLabelsProperty.linkAttribute( labelNode, 'visible' );
-
         // Rasterization comes out blurry, instead put an overlay to intercept input events.
         const overlay = Rectangle.bounds( chartNodeIcon.bounds, { fill: 'blue', opacity: 0 } );
         const container = new Node( {
@@ -229,13 +230,18 @@ class SensorToolbox extends CCKCPanel {
         } );
 
         // @ts-ignore
-        const iconVisibleProperty = DerivedProperty.and( chartNodes.map( chartNode => chartNode.meter.visibleProperty ) );
-        iconVisibleProperty.link( visible => {
-          chartNodeIcon.setVisible( !visible );
-          chartToolIcon.inputEnabledProperty.value = !visible;
+        const allInPlayAreaProperty = DerivedProperty.and( chartNodes.map( chartNode => chartNode.meter.visibleProperty ) );
+        allInPlayAreaProperty.link( allInPlayArea => {
+          chartNodeIcon.setVisible( !allInPlayArea );
+          chartToolIcon.inputEnabledProperty.value = !allInPlayArea;
         } );
         // @ts-ignore
         overlay.addInputListener( createListenerMulti( chartNodes, 'meter' ) );
+
+        // Alter the visibility of the labels when the labels checkbox is toggled.
+        Property.multilink( [ circuitLayerNode.model.showLabelsProperty, allInPlayAreaProperty ], ( showLabels: boolean, allInPlayArea: boolean ) => {
+          labelNode.visible = showLabels && !allInPlayArea;
+        } );
 
         return chartToolIcon;
       };
