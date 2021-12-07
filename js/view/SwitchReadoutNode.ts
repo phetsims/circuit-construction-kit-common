@@ -33,14 +33,13 @@ class SwitchReadoutNode extends Node {
   constructor( circuit: Circuit, circuitSwitch: Switch, tandem: Tandem, trashButton: TrashButton ) {
 
     // Create both texts and display both so they remain aligned as the value changes
-    const closedText = new Text( theSwitchIsClosedString, {
-      fontSize: 24,
-      maxWidth: MAX_TEXT_WIDTH
-    } );
-    const openText = new Text( theSwitchIsOpenString, {
-      fontSize: 24,
-      maxWidth: MAX_TEXT_WIDTH
-    } );
+    const createText = ( string: string ) =>
+      new Text( string, {
+        fontSize: 24,
+        maxWidth: MAX_TEXT_WIDTH
+      } );
+    const closedText = createText( theSwitchIsClosedString );
+    const openText = createText( theSwitchIsOpenString );
 
     const maxWidth = Math.max( closedText.width, openText.width );
 
