@@ -357,7 +357,7 @@ class CircuitElementEditContainerNode extends Node {
       if ( editNode !== null ) {
         this.addChild( editNode );
 
-        if ( editNode === tapInstructionTextNode ) {
+        if ( editNode === tapInstructionTextNode || editNode instanceof SwitchReadoutNode ) {
           this.mouseArea = null;
           this.touchArea = null;
         }
