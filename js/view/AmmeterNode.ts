@@ -93,7 +93,7 @@ class AmmeterNode extends Node {
     );
 
     const currentReadoutProperty = new DerivedProperty( [ ammeter.currentProperty, ammeterReadoutTypeProperty ],
-      ( ( current: number, ammeterReadoutType: AmmeterReadoutType ) => {
+      ( ( current: number | null, ammeterReadoutType: AmmeterReadoutType ) => {
         return CCKCUtils.createCurrentReadout( current, options.blackBoxStudy );
       } ) );
 

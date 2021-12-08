@@ -38,6 +38,7 @@ import CircuitLayerNode from './CircuitLayerNode.js';
 import Property from '../../../axon/js/Property.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import CCKCScreenView from './CCKCScreenView.js';
+import IReadOnlyProperty from '../../../axon/js/IReadOnlyProperty.js';
 
 const oneSecondString = circuitConstructionKitCommonStrings.oneSecond;
 const timeString = circuitConstructionKitCommonStrings.time;
@@ -66,8 +67,8 @@ class CCKCChartNode extends Node {
   private backgroundDragListener: DragListener | null;
   private readonly alignProbesEmitter: Emitter<[]>;
   private readonly droppedEmitter: Emitter<[]>;
-  protected readonly aboveBottomLeft1: DerivedProperty<Vector2>;
-  protected readonly aboveBottomLeft2: DerivedProperty<Vector2>;
+  protected readonly aboveBottomLeft1: IReadOnlyProperty<Vector2>;
+  protected readonly aboveBottomLeft2: IReadOnlyProperty<Vector2>;
   private readonly zoomLevelProperty: Property<number>;
   protected readonly updatePen: () => void;
 
@@ -374,7 +375,7 @@ class CCKCChartNode extends Node {
    * @returns {CCKCProbeNode}
    * @protected
    */
-  addProbeNode( color: string, wireColor: string, dx: number, dy: number, connectionProperty: Property<Vector2>, tandem: Tandem ) {
+  addProbeNode( color: string, wireColor: string, dx: number, dy: number, connectionProperty: IReadOnlyProperty<Vector2>, tandem: Tandem ) {
     const probeNode = new CCKCProbeNode( this, this.visibleBoundsProperty, { color: color, tandem: tandem } );
 
     // Add the wire behind the probe.
