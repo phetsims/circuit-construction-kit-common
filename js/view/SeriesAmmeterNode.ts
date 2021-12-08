@@ -108,6 +108,7 @@ class SeriesAmmeterNode extends FixedCircuitElementNode {
     seriesAmmeter.currentProperty.link( updateText );
     seriesAmmeter.startVertexProperty.lazyLink( updateText );
     seriesAmmeter.endVertexProperty.lazyLink( updateText );
+    seriesAmmeter.currentSenseProperty.lazyLink( updateText );
     ammeterReadoutTypeProperty.lazyLink( updateText );
     circuitLayerNode && circuitLayerNode.circuit.circuitChangedEmitter.addListener( updateText );
 
