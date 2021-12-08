@@ -181,6 +181,7 @@ class Circuit {
         circuitElement.disposeEmitterCircuitElement.addListener( () => circuitElement.lengthProperty!.unlink( updateCharges ) );
       }
       this.markDirty();
+      circuitElement.currentSenseProperty.lazyLink( emitCircuitChanged );
     } );
     this.circuitElements.addItemRemovedListener( circuitElement => {
 
@@ -195,6 +196,7 @@ class Circuit {
 
       circuitElement.getCircuitProperties().forEach( property => property.unlink( markDirtyListener ) );
       this.charges.removeAll( this.getChargesInCircuitElement( circuitElement ) );
+      circuitElement.currentSenseProperty.unlink( emitCircuitChanged );
       this.markDirty();
     } );
 
