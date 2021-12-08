@@ -30,9 +30,8 @@ class Wire extends CircuitElement {
   private readonly wireStub: boolean;
   readonly resistanceProperty: NumberProperty;
   private readonly resistivityProperty: NumberProperty;
-  private wireDirty: boolean;
-  private readonly markWireDirtyListener: () => void;
   readonly lengthProperty: NumberProperty;
+  updateListener: () => void;
 
   /**
    * @param {Vertex} startVertex
@@ -68,16 +67,12 @@ class Wire extends CircuitElement {
     // @public {Property.<number>} - when the length changes layoutCharges must be called
     this.lengthProperty = new NumberProperty( 0 );
 
-    // @private {boolean} - batch changes so that the length doesn't change incrementally when individual vertices move
-    this.wireDirty = true;
+    this.updateListener = () => this.update();
 
-    // @private {function} - When the vertex moves, updates the resistance and charge path length.
-    this.markWireDirtyListener = this.markWireDirty.bind( this );
-
-    this.vertexMovedEmitter.addListener( this.markWireDirtyListener );
+    this.vertexMovedEmitter.addListener( this.updateListener );
 
     // When resistivity changes, update the resistance
-    this.resistivityProperty.link( this.markWireDirtyListener );
+    this.resistivityProperty.link( this.updateListener );
 
     this.update(); // initialize state
   }
@@ -99,31 +94,21 @@ class Wire extends CircuitElement {
    * @public
    */
   update() {
-    if ( this.wireDirty ) {
-      const startPosition = this.startPositionProperty.get();
-      const endPosition = this.endPositionProperty.get();
-      const distanceBetweenVertices = startPosition.distance( endPosition ); // same as view coordinates
-      const modelLength = distanceBetweenVertices * METERS_PER_VIEW_COORDINATE;
-      this.lengthProperty.set( modelLength );
+    const startPosition = this.startPositionProperty.get();
+    const endPosition = this.endPositionProperty.get();
+    const distanceBetweenVertices = startPosition.distance( endPosition ); // same as view coordinates
+    const modelLength = distanceBetweenVertices * METERS_PER_VIEW_COORDINATE;
+    this.lengthProperty.set( modelLength );
 
-      // R = rho * L / A.  Resistance = resistivity * Length / cross sectional area.
-      const resistance = this.resistivityProperty.get() * modelLength / CCKCConstants.WIRE_CROSS_SECTIONAL_AREA;
+    // R = rho * L / A.  Resistance = resistivity * Length / cross sectional area.
+    const resistance = this.resistivityProperty.get() * modelLength / CCKCConstants.WIRE_CROSS_SECTIONAL_AREA;
 
-      const clampedResistance = Math.max( CCKCConstants.MINIMUM_WIRE_RESISTANCE, resistance );
-      assert && assert( !isNaN( clampedResistance ), 'wire resistance should not be NaN' );
-      this.resistanceProperty.set( clampedResistance );
+    const clampedResistance = Math.max( CCKCConstants.MINIMUM_WIRE_RESISTANCE, resistance );
+    assert && assert( !isNaN( clampedResistance ), 'wire resistance should not be NaN' );
+    this.resistanceProperty.set( clampedResistance );
 
-      // Update the charge path length, but don't let it go less than a threshold, see https://github.com/phetsims/circuit-construction-kit-common/issues/405
-      this.chargePathLength = Math.max( distanceBetweenVertices, 1E-6 );
-      this.wireDirty = false;
-    }
-  }
-
-  /**
-   * @private - mark the wire as needing to have its geometry and resistance updated
-   */
-  markWireDirty() {
-    this.wireDirty = true;
+    // Update the charge path length, but don't let it go less than a threshold, see https://github.com/phetsims/circuit-construction-kit-common/issues/405
+    this.chargePathLength = Math.max( distanceBetweenVertices, 1E-6 );
   }
 
   /**
@@ -142,8 +127,8 @@ class Wire extends CircuitElement {
    * @override
    */
   dispose() {
-    this.vertexMovedEmitter.removeListener( this.markWireDirtyListener );
-    this.resistivityProperty.unlink( this.markWireDirtyListener );
+    this.vertexMovedEmitter.removeListener( this.updateListener );
+    this.resistivityProperty.unlink( this.updateListener );
     super.dispose();
   }
 }
