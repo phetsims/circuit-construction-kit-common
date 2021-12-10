@@ -142,6 +142,7 @@ class SensorToolbox extends CCKCPanel {
       return circuit.seriesAmmeterGroup.createNextElement( startVertex, endVertex );
     };
     seriesAmmeterNodeIcon.mutate( { scale: TOOLBOX_ICON_HEIGHT / seriesAmmeterNodeIcon.width } );
+    const MAX_SERIES_AMMETERS = 6;
     const seriesAmmeterToolNode = new CircuitElementToolNode(
       '',
       new BooleanProperty( false ),
@@ -149,7 +150,7 @@ class SensorToolbox extends CCKCPanel {
       circuit,
       point => circuitLayerNode.globalToLocalPoint( point ),
       seriesAmmeterNodeIcon,
-      6,
+      MAX_SERIES_AMMETERS,
       () => circuit.circuitElements.count( circuitElement => circuitElement instanceof SeriesAmmeter ),
       createSeriesAmmeter, {
         touchAreaExpansionLeft: 3,
@@ -158,6 +159,9 @@ class SensorToolbox extends CCKCPanel {
         touchAreaExpansionBottom: 0,
         tandem: tandem.createTandem( 'seriesAmmeterToolNode' )
       } );
+    const allSeriesAmmetersInPlayArea = new DerivedProperty( [ circuit.circuitElements.lengthProperty ], ( ( length: number ) => {
+      return circuit.circuitElements.count( circuitElement => circuitElement instanceof SeriesAmmeter ) === MAX_SERIES_AMMETERS;
+    } ) );
 
     // Labels underneath the sensor tool nodes
     const voltmeterText = new Text( voltmeterString, {
@@ -173,9 +177,19 @@ class SensorToolbox extends CCKCPanel {
     Property.multilink( [ circuitLayerNode.model.showLabelsProperty, allVoltmetersVisibleProperty ], ( showLabels: boolean, allVoltmetersVisible: boolean ) => {
       voltmeterText.visible = showLabels && !allVoltmetersVisible;
     } );
-    Property.multilink( [ circuitLayerNode.model.showLabelsProperty, allAmmetersVisibleProperty ], ( showLabels: boolean, allAmmetersVisible: boolean ) => {
-      ammeterText.visible = showLabels && !allAmmetersVisible;
-    } );
+    Property.multilink( [ circuitLayerNode.model.showLabelsProperty, allAmmetersVisibleProperty, allSeriesAmmetersInPlayArea ],
+      ( showLabels: boolean, allAmmetersInPlayArea: boolean, allSeriesAmmetersInPlayArea: boolean ) => {
+
+        let isAmmeterInToolbox = false;
+        if ( providedOptions.showSeriesAmmeters && !allSeriesAmmetersInPlayArea ) {
+          isAmmeterInToolbox = true;
+        }
+        if ( providedOptions.showNoncontactAmmeters && !allAmmetersInPlayArea ) {
+          isAmmeterInToolbox = true;
+        }
+
+        ammeterText.visible = showLabels && isAmmeterInToolbox;
+      } );
 
     const voltmeterToolIcon = new VBox( {
       spacing: ICON_TEXT_SPACING,
