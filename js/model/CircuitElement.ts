@@ -20,7 +20,6 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import IOType from '../../../tandem/js/types/IOType.js';
 import ReferenceIO from '../../../tandem/js/types/ReferenceIO.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-
 import Circuit from './Circuit.js';
 import CurrentSense from './CurrentSense.js';
 import Vertex from './Vertex.js';
@@ -243,51 +242,6 @@ abstract class CircuitElement extends PhetioObject {
   }
 
   /**
-   * Update the value of currentSenseProperty, see its documentation for details.
-   * @param {number} time
-   * @param {Circuit} circuit
-   * @public
-   */
-  determineSense( time: number, circuit: Circuit ) {
-
-    const current = this.currentProperty.value;
-
-    // Disconnected circuits have a current of exactly 0, so we can use that to determine when to clear the sense
-    const isReadyToClear = current === 0;
-
-    if ( isReadyToClear ) {
-
-      // Reset directionality, and take new directionality when current flows again
-      this.currentSenseProperty.value = 'unspecified';
-    }
-    else if ( this.currentSenseProperty.value === 'unspecified' ) {
-
-      // If there are other circuit elements, match with them.
-      const otherCircuitElements = circuit.circuitElements.filter( c => c !== this && c.currentSenseProperty.value !== 'unspecified' );
-      if ( otherCircuitElements.length === 0 ) {
-
-        // If this is the first circuit element, choose the current sense so the initial readout is positive
-        this.currentSenseProperty.value = getSenseForPositive( current );
-      }
-      else {
-
-        const rootElement = otherCircuitElements[ 0 ];
-
-        const desiredSign = rootElement.currentProperty.value >= 0 && rootElement.currentSenseProperty.value === 'forward' ? 'positive' :
-                            rootElement.currentProperty.value >= 0 && rootElement.currentSenseProperty.value === 'backward' ? 'negative' :
-                            rootElement.currentProperty.value < 0 && rootElement.currentSenseProperty.value === 'forward' ? 'negative' :
-                            rootElement.currentProperty.value < 0 && rootElement.currentSenseProperty.value === 'backward' ? 'positive' :
-                            'error';
-
-        assert && assert( desiredSign !== 'error' );
-        this.currentSenseProperty.value = desiredSign === 'positive' ?
-                                          getSenseForPositive( current ) :
-                                          getSenseForNegative( current );
-      }
-    }
-  }
-
-  /**
    * Steps forward in time
    * @public
    *
@@ -497,13 +451,6 @@ CircuitElement.CircuitElementIO = new IOType( 'CircuitElementIO', {
     ];
   }
 } );
-
-const getSenseForPositive = ( current: number ) => current < 0 ? 'backward' :
-                                                   current > 0 ? 'forward' :
-                                                   'unspecified';
-const getSenseForNegative = ( current: number ) => current < 0 ? 'forward' :
-                                                   current > 0 ? 'backward' :
-                                                   'unspecified';
 
 circuitConstructionKitCommon.register( 'CircuitElement', CircuitElement );
 export type { CircuitElementOptions };
