@@ -54,6 +54,13 @@ const BUMP_AWAY_RADIUS = 20; // If two vertices are too close together after one
 const BATTERY_LENGTH = CCKCConstants.BATTERY_LENGTH;
 const WIRE_LENGTH = CCKCConstants.WIRE_LENGTH;
 
+const getSenseForPositive = ( current: number ) => current < 0 ? 'backward' :
+                                                   current > 0 ? 'forward' :
+                                                   'unspecified';
+const getSenseForNegative = ( current: number ) => current < 0 ? 'forward' :
+                                                   current > 0 ? 'backward' :
+                                                   'unspecified';
+
 const trueFunction = _.constant( true ); // Lower cased so IDEA doesn't think it is a constructor
 
 type CircuitOptions = {
@@ -976,8 +983,7 @@ class Circuit {
       this.circuitChangedEmitter.emit();
     }
 
-    // Update the sense of each CircuitElement after we determined the current values
-    stepElements.forEach( element => element.determineSense( this.timeProperty.value, this ) );
+    this.determineSenses();
 
     // Move the charges.  Do this after the circuit has been solved so the conventional current will have the correct
     // current values.
@@ -1069,6 +1075,133 @@ class Circuit {
    */
   findAllConnectedVertices( vertex: Vertex ) {
     return this.searchVertices( vertex, trueFunction );
+  }
+
+  // Identify current senses for 'unspecified' CircuitElements with a nonzero current
+  determineSenses() {
+
+    // Disconnected circuit elements forget their sense
+    this.circuitElements.forEach( c => {
+      if ( c.currentProperty.value === 0.0 ) {
+        c.currentSenseProperty.value = 'unspecified';
+      }
+    } );
+
+    // console.log( 'about to while' );
+    // let iteration = 0;
+
+    const circuitElementsWithCurrent = this.circuitElements.filter( c => Math.abs( c.currentProperty.value ) > 0 );
+
+    while ( true ) { // eslint-disable-line
+
+      const requiresSense1 = circuitElementsWithCurrent.filter( c => c.currentSenseProperty.value === 'unspecified' );
+      // console.log( 'requires sense1: ' + requiresSense.length );
+      if ( requiresSense1.length === 0 ) {
+        break;
+      }
+      else {
+
+        // Propagate known senses to new circuit elements.
+        this.visitSenses();
+      }
+
+      const requiresSense2 = circuitElementsWithCurrent.filter( c => c.currentSenseProperty.value === 'unspecified' );
+      // console.log( 'requires sense2: ' + requiresSense.length );
+      let assignedSomething = false;
+      if ( requiresSense2.length === 0 ) {
+        break;
+      }
+      else {
+
+        // Match AC Sources so they are in phase
+        const unspecifiedACSources = requiresSense2.filter( r => r instanceof ACVoltage );
+        if ( unspecifiedACSources.length > 0 ) {
+          const unspecifiedACSource = unspecifiedACSources[ 0 ];
+          const roots = this.circuitElements.filter( c => c instanceof ACVoltage && c.currentSenseProperty.value !== 'unspecified' && c !== unspecifiedACSource );
+          if ( roots.length > 0 ) {
+            Circuit.assignSense( unspecifiedACSource, roots[ 0 ] );
+            assignedSomething = true;
+            // console.log( 'iteration: ' + iteration + ', assigned to ac source from another ac source' );
+
+            // Run the next iteration of the loop, which will search out from the newly marked node
+            // TODO: Only search from the newly marked node?
+          }
+        }
+      }
+
+      if ( !assignedSomething ) {
+
+        // TODO: Pick a circuit element that has only 2 neighbors, so it is a series element?
+        const targetElement = requiresSense2[ 0 ];
+        targetElement.currentSenseProperty.value = getSenseForPositive( targetElement.currentProperty.value );
+        assignedSomething = true;
+        // console.log( 'iteration: ' + iteration + ', selected positive for targetElement' + targetElement.tandem.phetioID );
+      }
+
+      // iteration++;
+    }
+  }
+
+  // Assign the sense to an un-sensed circuit element based on matching the sign of a corresponding "root" element.
+  static assignSense( targetElement: CircuitElement, rootElement: CircuitElement ) {
+    const targetElementCurrent = targetElement.currentProperty.value;
+    const rootElementCurrent = rootElement.currentProperty.value;
+    const rootElementSense = rootElement.currentSenseProperty.value;
+    const desiredSign = rootElementCurrent >= 0 && rootElementSense === 'forward' ? 'positive' :
+                        rootElementCurrent >= 0 && rootElementSense === 'backward' ? 'negative' :
+                        rootElementCurrent < 0 && rootElementSense === 'forward' ? 'negative' :
+                        rootElementCurrent < 0 && rootElementSense === 'backward' ? 'positive' :
+                        'error';
+
+    assert && assert( desiredSign !== 'error' );
+    targetElement.currentSenseProperty.value = desiredSign === 'positive' ?
+                                               getSenseForPositive( targetElementCurrent ) :
+                                               getSenseForNegative( targetElementCurrent );
+  }
+
+  // Traverse the circuit, filling in senses to adjacent circuit elements during the traversal
+  visitSenses() {
+
+    const circuitElementsWithSenses = this.circuitElements.filter( c => c.currentSenseProperty.value !== 'unspecified' );
+    if ( circuitElementsWithSenses.length > 0 ) {
+
+      // launch searches from circuit elements with senses
+      const toVisit: Vertex[] = [];
+      circuitElementsWithSenses.forEach( c => toVisit.push( c.startVertexProperty.value, c.endVertexProperty.value ) );
+
+      const visited: Vertex[] = [];
+      while ( toVisit.length > 0 ) {
+        const currentVertex = toVisit.pop() as Vertex;
+        if ( !visited.includes( currentVertex ) ) {
+          const neighborCircuitElements = this.getNeighborCircuitElements( currentVertex );
+          for ( let i = 0; i < neighborCircuitElements.length; i++ ) {
+            const circuitElement = neighborCircuitElements[ i ];
+            const neighborVertex = circuitElement.getOppositeVertex( currentVertex );
+
+            // const highVoltageVertex = circuitElement.startVertexProperty.value.voltageProperty.value > circuitElement.endVertexProperty.value.voltageProperty.value ?
+            //                           circuitElement.startVertexProperty.value : circuitElement.endVertexProperty.value;
+            // const v = highVoltageVertex.voltageProperty.value;
+            //
+            // const neighborsOnTheHighSide = this.getNeighborCircuitElements( highVoltageVertex ).filter( c => c !== circuitElement );
+
+            // choose sense from a neighbor
+            const specifiedNeighbors = neighborCircuitElements.filter( c => c !== circuitElement && c.currentSenseProperty.value !== 'unspecified' );
+
+            if ( circuitElement.currentSenseProperty.value === 'unspecified' && Math.abs( circuitElement.currentProperty.value ) > 0 && specifiedNeighbors.length > 0 ) {
+              Circuit.assignSense( circuitElement, specifiedNeighbors[ 0 ] );
+            }
+
+            // TODO: Stop the search if we crossed a circuit element that already has a sense?
+            if ( !visited.includes( neighborVertex ) ) {
+              toVisit.push( neighborVertex );
+            }
+          }
+        }
+        if ( visited.indexOf( currentVertex ) < 0 ) {
+          visited.push( currentVertex );
+        }
+      }
+    }
   }
 
   /**
