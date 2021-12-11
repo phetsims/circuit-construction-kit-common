@@ -7,7 +7,7 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-
-type CurrentSense = 'forward' | 'backward' | 'unspecified';
-
+const CurrentSenseValues = [ 'forward', 'backward', 'unspecified' ] as const;
+type CurrentSense = typeof CurrentSenseValues[number];
+export { CurrentSenseValues };
 export default CurrentSense;

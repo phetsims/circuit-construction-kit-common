@@ -5,5 +5,7 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-type SchematicType = 'iec' | 'ieee' | 'british';
+const SchematicTypeValues = [ 'iec', 'ieee', 'british' ] as const;
+type SchematicType = typeof SchematicTypeValues[number];
 export default SchematicType;
+export { SchematicTypeValues };

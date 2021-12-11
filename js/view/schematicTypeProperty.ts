@@ -5,12 +5,12 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-import Property from '../../../axon/js/Property.js';
+import StringEnumerationProperty from '../../../axon/js/StringEnumerationProperty.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import SchematicType from './SchematicType.js';
+import SchematicType, { SchematicTypeValues } from './SchematicType.js';
 
-const schematicTypeProperty = new Property<SchematicType>( CCKCQueryParameters.schematicStandard );
+const schematicTypeProperty = new StringEnumerationProperty( SchematicTypeValues, CCKCQueryParameters.schematicStandard as SchematicType );
 
 circuitConstructionKitCommon.register( 'schematicTypeProperty', schematicTypeProperty );
 export default schematicTypeProperty;

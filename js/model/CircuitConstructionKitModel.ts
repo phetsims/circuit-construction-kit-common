@@ -8,6 +8,7 @@
  */
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
+import StringEnumerationProperty from '../../../axon/js/StringEnumerationProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
 import StringIO from '../../../tandem/js/types/StringIO.js';
 import Property from '../../../axon/js/Property.js';
@@ -28,7 +29,7 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import CircuitElementViewType, { CircuitElementViewTypeValues } from './CircuitElementViewType.js';
 import LightBulb from './LightBulb.js';
-import InteractionMode, { InteractionModeValues } from './InteractionMode.js';
+import { InteractionModeValues } from './InteractionMode.js';
 import ZoomLevel, { ZoomLevelValues } from './ZoomLevel.js';
 
 type CircuitConstructionKitModelOptions = {
@@ -128,11 +129,9 @@ class CircuitConstructionKitModel {
     } );
 
     // For PhET-iO: Use an enumeration pattern for the API
-    this.zoomProperty = new Property<ZoomLevel>( 'normal', {
+    this.zoomProperty = new StringEnumerationProperty( ZoomLevelValues, 'normal', {
       tandem: tandem.createTandem( 'zoomProperty' ),
-      validValues: ZoomLevelValues,
-      phetioDocumentation: 'Selected zoom level for the simulation',
-      phetioType: Property.PropertyIO( StringIO )
+      phetioDocumentation: 'Selected zoom level for the simulation'
     } );
     this.selectedZoomProperty.lazyLink( selectedZoom => this.zoomProperty.set( selectedZoom === 0 ? 'zoomedOut' : 'normal' ) );
     this.zoomProperty.lazyLink( zoom => this.selectedZoomProperty.set( zoom === 'zoomedOut' ? 0 : 1 ) );
@@ -155,10 +154,8 @@ class CircuitConstructionKitModel {
     } );
 
     // @public {Property.<InteractionMode>} - whether the user is in the CircuitConstructionKitModel.InteractionMode.EXPLORE or CircuitConstructionKitModel.InteractionMode.TEST mode
-    this.modeProperty = new Property<InteractionMode>( 'explore', {
+    this.modeProperty = new StringEnumerationProperty( InteractionModeValues, 'explore', {
       tandem: tandem.createTandem( 'blackBoxStudy' ).createTandem( 'modeProperty' ),
-      validValues: InteractionModeValues,
-      phetioType: Property.PropertyIO( StringIO ),
       phetioDocumentation: 'For Circuit Construction Kit: Black Box Study'
     } );
 

@@ -10,14 +10,14 @@
  */
 
 import NumberProperty from '../../../axon/js/NumberProperty.js';
-import Property from '../../../axon/js/Property.js';
+import StringEnumerationProperty from '../../../axon/js/StringEnumerationProperty.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import merge from '../../../phet-core/js/merge.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Battery from './Battery.js';
 import CircuitElement from './CircuitElement.js';
-import CircuitElementViewType from './CircuitElementViewType.js';
+import { CircuitElementViewTypeValues } from './CircuitElementViewType.js';
 import LightBulb from './LightBulb.js';
 import Resistor from './Resistor.js';
 import Switch from './Switch.js';
@@ -135,7 +135,7 @@ CircuitStruct.fromStateObject = ( circuit, circuitState, resistivityProperty, ta
       Tandem.OPT_OUT // TODO (black-box-study): a way to set the resistance
     ) );
   }
-  const p = new Property<CircuitElementViewType>( 'lifelike' );
+  const p = new StringEnumerationProperty( CircuitElementViewTypeValues, 'lifelike' );
   for ( let i = 0; i < circuitState.lightBulbs.length; i++ ) {
     options = circuitState.lightBulbs[ i ].options || {};
     circuitStruct.lightBulbs.push( new LightBulb(

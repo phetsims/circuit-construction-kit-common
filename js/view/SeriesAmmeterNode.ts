@@ -6,7 +6,6 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import Property from '../../../axon/js/Property.js';
 import { Node } from '../../../scenery/js/imports.js';
 import { Rectangle } from '../../../scenery/js/imports.js';
 import { Text } from '../../../scenery/js/imports.js';
@@ -24,7 +23,8 @@ import SeriesAmmeter from '../model/SeriesAmmeter.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
 import ammeterReadoutTypeProperty from './ammeterReadoutTypeProperty.js';
-import CircuitElementViewType from '../model/CircuitElementViewType.js';
+import { CircuitElementViewTypeValues } from '../model/CircuitElementViewType.js';
+import StringEnumerationProperty from '../../../axon/js/StringEnumerationProperty.js';
 
 const currentString = circuitConstructionKitCommonStrings.current;
 
@@ -168,7 +168,7 @@ class SeriesAmmeterNode extends FixedCircuitElementNode {
       screenView,
       circuitLayerNode,
       seriesAmmeter,
-      new Property<CircuitElementViewType>( 'lifelike' ),
+      new StringEnumerationProperty( CircuitElementViewTypeValues, 'lifelike' ),
       lifelikeNode,
       new Node( { children: [ lifelikeNode ] } ), // reuse lifelike view for the schematic view
       tandem,
