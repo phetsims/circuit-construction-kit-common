@@ -20,6 +20,7 @@ import CircuitElement from './CircuitElement.js';
 import { CircuitElementViewTypeValues } from './CircuitElementViewType.js';
 import LightBulb from './LightBulb.js';
 import Resistor from './Resistor.js';
+import ResistorType from './ResistorType.js';
 import Switch from './Switch.js';
 import Vertex from './Vertex.js';
 import Wire from './Wire.js';
@@ -131,7 +132,7 @@ CircuitStruct.fromStateObject = ( circuit, circuitState, resistivityProperty, ta
     circuitStruct.resistors.push( new Resistor(
       circuitStruct.vertices[ circuitState.resistors[ i ].startVertex ],
       circuitStruct.vertices[ circuitState.resistors[ i ].endVertex ],
-      Resistor.ResistorType.RESISTOR,
+      ResistorType.RESISTOR,
       Tandem.OPT_OUT // TODO (black-box-study): a way to set the resistance
     ) );
   }

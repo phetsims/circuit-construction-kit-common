@@ -8,41 +8,25 @@
 
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import validate from '../../../axon/js/validate.js';
-import Range from '../../../dot/js/Range.js';
-import Enumeration from '../../../phet-core/js/Enumeration.js';
-import EnumerationIO from '../../../phet-core/js/EnumerationIO.js';
 import merge from '../../../phet-core/js/merge.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import IOType from '../../../tandem/js/types/IOType.js';
-import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitElement from './CircuitElement.js';
 import FixedCircuitElement from './FixedCircuitElement.js';
+import ResistorType from './ResistorType.js';
 import Vertex from './Vertex.js';
+import RichEnumerationIO from '../../../axon/js/RichEnumerationIO.js';
 
 type ResistorOptions = {
   isMetallic: boolean,
   resistorType: any
 };
 
-type ResistorEnumGroup = {
-  RESISTOR: ResistorEnumValue,
-  HIGH_RESISTANCE_RESISTOR: ResistorEnumValue,
-  COIN: ResistorEnumValue,
-  PAPER_CLIP: ResistorEnumValue,
-  PENCIL: ResistorEnumValue,
-  ERASER: ResistorEnumValue,
-  HAND: ResistorEnumValue,
-  DOG: ResistorEnumValue,
-  DOLLAR_BILL: ResistorEnumValue,
-} & Enumeration;
-
 class Resistor extends FixedCircuitElement {
   readonly resistanceProperty: NumberProperty;
   readonly resistorType: any;
   static ResistorIO: IOType;
-  static ResistorType: ResistorEnumGroup;
-  static Resistor: { [ key: string ]: ResistorEnumValue; };
 
   /**
    * @param {Vertex} startVertex
@@ -55,7 +39,7 @@ class Resistor extends FixedCircuitElement {
     const options = merge( {
       isFlammable: true, // All resistors are flammable except for the dog, which automatically disconnects at high current.
       phetioType: Resistor.ResistorIO,
-      numberOfDecimalPlaces: resistorType === Resistor.ResistorType.RESISTOR ? 1 : 0
+      numberOfDecimalPlaces: resistorType === ResistorType.RESISTOR ? 1 : 0
     }, providedOptions ) as ResistorOptions;
 
     assert && assert( !options.hasOwnProperty( 'resistance' ), 'Resistance should be passed through resistorType' );
@@ -99,8 +83,8 @@ class Resistor extends FixedCircuitElement {
    * @public
    */
   isResistanceEditable() {
-    return this.resistorType === Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR ||
-           this.resistorType === Resistor.ResistorType.RESISTOR;
+    return this.resistorType === ResistorType.HIGH_RESISTANCE_RESISTOR ||
+           this.resistorType === ResistorType.RESISTOR;
   }
 
   /**
@@ -114,86 +98,22 @@ class Resistor extends FixedCircuitElement {
   }
 }
 
-/**
- * Values for the ResistorTypeEnum
- */
-class ResistorEnumValue {
-  private readonly defaultResistance: number;
-  private readonly range: Range;
-  private readonly isMetallic: boolean;
-  readonly length: number;
-  private readonly verticalOffset: number;
-
-  /**
-   * @param {number} defaultResistance - default value for resistance, in Ohms
-   * @param {Range} resistanceRange - possible values for the resistance, in Ohms
-   * @param {boolean} isMetallic - whether the item is metallic (non-insulated) and hence can have its value read at any point
-   * @param {number} length
-   * @param {number} [verticalOffset]
-   */
-  constructor( defaultResistance: number, resistanceRange: Range, isMetallic: boolean, length: number, verticalOffset = 0 ) {
-
-    // @public (read-only) {number} - in Ohms
-    this.defaultResistance = defaultResistance;
-
-    // @public (read-only) {Range} - in Ohms
-    this.range = resistanceRange;
-
-    // @public (read-only) {boolean}
-    this.isMetallic = isMetallic;
-
-    // @public (read-only} {number} - in view coordinates
-    this.length = length;
-
-    // @public (read-only) {number} - amount the view is shifted down in view coordinates
-    this.verticalOffset = verticalOffset;
-  }
-
-  /**
-   * Convenience function for creating a fixed-resistance resistor, like a household item.
-   * @param {number} resistance
-   * @param {boolean} isMetallic
-   * @param {number} length
-   * @param {number} [verticalOffset]
-   * @returns {ResistorEnumValue}
-   * @private
-   */
-  static fixed( resistance: number, isMetallic: boolean, length: number, verticalOffset = 0 ) {
-    return new ResistorEnumValue( resistance, new Range( resistance, resistance ), isMetallic, length, verticalOffset );
-  }
-}
-
-// @public {Enumeration} - Enumeration for the different resistor types.
-Resistor.ResistorType = Enumeration.byMap( {
-  RESISTOR: new ResistorEnumValue( 10, new Range( 0, 120 ), false, CCKCConstants.RESISTOR_LENGTH ),
-  HIGH_RESISTANCE_RESISTOR: new ResistorEnumValue( 1000, new Range( 100, 10000 ), false, CCKCConstants.RESISTOR_LENGTH ),
-  COIN: ResistorEnumValue.fixed( 0, true, CCKCConstants.COIN_LENGTH ),
-  PAPER_CLIP: ResistorEnumValue.fixed( 0, true, CCKCConstants.PAPER_CLIP_LENGTH ),
-  PENCIL: ResistorEnumValue.fixed( 25, false, CCKCConstants.PENCIL_LENGTH ),
-  ERASER: ResistorEnumValue.fixed( 1000000000, false, CCKCConstants.ERASER_LENGTH ),
-  HAND: ResistorEnumValue.fixed( 100000, false, CCKCConstants.HAND_LENGTH, 15 ),
-
-  // Adjust the dog so the charges travel along the tail/legs, see https://github.com/phetsims/circuit-construction-kit-common/issues/364
-  DOG: ResistorEnumValue.fixed( 100000, false, CCKCConstants.DOG_LENGTH, -40 ),
-  DOLLAR_BILL: ResistorEnumValue.fixed( 1000000000, false, CCKCConstants.DOLLAR_BILL_LENGTH )
-} ) as unknown as ResistorEnumGroup;
-
 // @public {IOType}
 Resistor.ResistorIO = new IOType( 'ResistorIO', {
   valueType: Resistor,
   supertype: CircuitElement.CircuitElementIO,
   stateSchema: {
-    resistorType: EnumerationIO( Resistor.ResistorType )
+    resistorType: RichEnumerationIO( ResistorType )
   },
   toStateObject: ( resistor: Resistor ) => {
     const stateObject = CircuitElement.CircuitElementIO.toStateObject( resistor );
-    stateObject.resistorType = EnumerationIO( Resistor.ResistorType ).toStateObject( resistor.resistorType );
+    stateObject.resistorType = RichEnumerationIO( ResistorType ).toStateObject( resistor.resistorType );
     return stateObject;
   },
 
   stateToArgsForConstructor( stateObject: any ) {
     const args = CircuitElement.CircuitElementIO.stateToArgsForConstructor( stateObject );
-    args.push( EnumerationIO( Resistor.ResistorType ).fromStateObject( stateObject.resistorType ) );
+    args.push( RichEnumerationIO( ResistorType ).fromStateObject( stateObject.resistorType ) );
     return args;
   }
 } );

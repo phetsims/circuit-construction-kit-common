@@ -47,6 +47,7 @@ import CircuitElementViewType, { CircuitElementViewTypeValues } from '../model/C
 import CircuitElement from '../model/CircuitElement.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import StringEnumerationProperty from '../../../axon/js/StringEnumerationProperty.js';
+import ResistorType from '../model/ResistorType.js';
 
 const acSourceString = circuitConstructionKitCommonStrings.acSource;
 const capacitorString = circuitConstructionKitCommonStrings.capacitor;
@@ -306,7 +307,7 @@ class CircuitElementToolFactory {
   createResistorToolNode( providedOptions?: any ) {
     providedOptions = merge( {
       count: 10,
-      resistorType: Resistor.ResistorType.RESISTOR,
+      resistorType: ResistorType.RESISTOR,
       lifelikeIconHeight: 15,
       schematicIconHeight: 14,
       labelString: resistorString,
@@ -435,7 +436,7 @@ class CircuitElementToolFactory {
   createPaperClipToolNode() {
     return this.createResistorToolNode( {
       count: 1,
-      resistorType: Resistor.ResistorType.PAPER_CLIP,
+      resistorType: ResistorType.PAPER_CLIP,
       tandemName: 'paperClipIcon',
       labelString: paperClipString
     } );
@@ -445,7 +446,7 @@ class CircuitElementToolFactory {
   createCoinToolNode() {
     return this.createResistorToolNode( {
       count: 1,
-      resistorType: Resistor.ResistorType.COIN,
+      resistorType: ResistorType.COIN,
       tandemName: 'coinIcon',
       labelString: coinString,
       lifelikeIconHeight: 30
@@ -456,7 +457,7 @@ class CircuitElementToolFactory {
   createDollarBillToolNode() {
     return this.createResistorToolNode( {
       count: 1,
-      resistorType: Resistor.ResistorType.DOLLAR_BILL,
+      resistorType: ResistorType.DOLLAR_BILL,
       tandemName: 'dollarBillToolNode',
       labelString: dollarBillString,
       lifelikeIconHeight: 22
@@ -467,7 +468,7 @@ class CircuitElementToolFactory {
   createEraserToolNode() {
     return this.createResistorToolNode( {
       count: 1,
-      resistorType: Resistor.ResistorType.ERASER,
+      resistorType: ResistorType.ERASER,
       tandemName: 'eraserToolNode',
       labelString: eraserString,
       lifelikeIconHeight: 17
@@ -478,7 +479,7 @@ class CircuitElementToolFactory {
   createPencilToolNode() {
     return this.createResistorToolNode( {
       count: 1,
-      resistorType: Resistor.ResistorType.PENCIL,
+      resistorType: ResistorType.PENCIL,
       tandemName: 'pencilToolNode',
       labelString: pencilString,
       lifelikeIconHeight: 12
@@ -489,7 +490,7 @@ class CircuitElementToolFactory {
   createHandToolNode() {
     return this.createResistorToolNode( {
       count: 1,
-      resistorType: Resistor.ResistorType.HAND,
+      resistorType: ResistorType.HAND,
       tandemName: 'handToolNode',
       labelString: handString,
       lifelikeIconHeight: 30
@@ -500,7 +501,7 @@ class CircuitElementToolFactory {
   createDogToolNode() {
     return this.createResistorToolNode( {
       count: 1,
-      resistorType: Resistor.ResistorType.DOG,
+      resistorType: ResistorType.DOG,
       tandemName: 'dogToolNode',
       labelString: dogString,
       lifelikeIconHeight: 30
@@ -511,7 +512,7 @@ class CircuitElementToolFactory {
   createHighResistanceResistorToolNode() {
     return this.createResistorToolNode( {
       count: 4,
-      resistorType: Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR,
+      resistorType: ResistorType.HIGH_RESISTANCE_RESISTOR,
       tandemName: 'highResistanceResistorToolNode',
       labelString: resistorString
     } );

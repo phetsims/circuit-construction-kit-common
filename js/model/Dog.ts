@@ -12,6 +12,7 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Circuit from './Circuit.js';
 import Resistor, { ResistorOptions } from './Resistor.js';
+import ResistorType from './ResistorType.js';
 import Vertex from './Vertex.js';
 
 class Dog extends Resistor {
@@ -26,7 +27,7 @@ class Dog extends Resistor {
    * @param {Object} [providedOptions]
    */
   constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: ResistorOptions ) {
-    super( startVertex, endVertex, Resistor.ResistorType.DOG, tandem, providedOptions );
+    super( startVertex, endVertex, ResistorType.DOG, tandem, providedOptions );
 
     // @private - keep track of whether the dog is barking, so we can update the view accordingly
     this.isBarkingProperty = new BooleanProperty( false );

@@ -35,6 +35,7 @@ import FixedCircuitElementNode, { FixedCircuitElementNodeOptions } from './Fixed
 import ResistorColors from './ResistorColors.js';
 import schematicTypeProperty from './schematicTypeProperty.js';
 import SchematicType from './SchematicType.js';
+import ResistorType from '../model/ResistorType.js';
 
 // constants
 
@@ -58,16 +59,16 @@ const SCHEMATIC_PERIOD = 22 * SCHEMATIC_SCALE;
 const SCHEMATIC_STEM_WIDTH = 84 * SCHEMATIC_SCALE;
 const SCHEMATIC_WAVELENGTH = 54 * SCHEMATIC_SCALE;
 
-const RESISTOR_IMAGE_MAP = new Map();
-RESISTOR_IMAGE_MAP.set( Resistor.ResistorType.COIN, coinImage );
-RESISTOR_IMAGE_MAP.set( Resistor.ResistorType.PAPER_CLIP, paperClipImage );
-RESISTOR_IMAGE_MAP.set( Resistor.ResistorType.PENCIL, pencilImage );
-RESISTOR_IMAGE_MAP.set( Resistor.ResistorType.ERASER, eraserImage );
-RESISTOR_IMAGE_MAP.set( Resistor.ResistorType.HAND, handImage );
-RESISTOR_IMAGE_MAP.set( Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR, resistorHighImage );
-RESISTOR_IMAGE_MAP.set( Resistor.ResistorType.RESISTOR, resistorImage );
-RESISTOR_IMAGE_MAP.set( Resistor.ResistorType.DOG, dogImage );
-RESISTOR_IMAGE_MAP.set( Resistor.ResistorType.DOLLAR_BILL, dollarBillImage );
+const RESISTOR_IMAGE_MAP = new Map<ResistorType, HTMLImageElement>();
+RESISTOR_IMAGE_MAP.set( ResistorType.COIN, coinImage );
+RESISTOR_IMAGE_MAP.set( ResistorType.PAPER_CLIP, paperClipImage );
+RESISTOR_IMAGE_MAP.set( ResistorType.PENCIL, pencilImage );
+RESISTOR_IMAGE_MAP.set( ResistorType.ERASER, eraserImage );
+RESISTOR_IMAGE_MAP.set( ResistorType.HAND, handImage );
+RESISTOR_IMAGE_MAP.set( ResistorType.HIGH_RESISTANCE_RESISTOR, resistorHighImage );
+RESISTOR_IMAGE_MAP.set( ResistorType.RESISTOR, resistorImage );
+RESISTOR_IMAGE_MAP.set( ResistorType.DOG, dogImage );
+RESISTOR_IMAGE_MAP.set( ResistorType.DOLLAR_BILL, dollarBillImage );
 
 class ResistorNode extends FixedCircuitElementNode {
   private readonly resistor: Resistor;
@@ -88,14 +89,14 @@ class ResistorNode extends FixedCircuitElementNode {
     providedOptions = merge( { isIcon: false, useHitTestForSensors: true }, providedOptions );
 
     // Assigned to instance variable after super()
-    const lifelikeResistorImageNode = new Image( RESISTOR_IMAGE_MAP.get( resistor.resistorType ) );
+    const lifelikeResistorImageNode = new Image( RESISTOR_IMAGE_MAP.get( resistor.resistorType )! );
 
     let updateColorBands: ( ( n: number ) => void ) | null = null;
 
     let colorBandsNode: null | Node = null;
 
     // Add color bands for the normal resistor
-    if ( resistor.resistorType === Resistor.ResistorType.RESISTOR ) {
+    if ( resistor.resistorType === ResistorType.RESISTOR ) {
 
       // Color bands for resistance > 0
       const colorBands = _.range( 4 ).map( index => {

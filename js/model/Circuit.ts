@@ -45,6 +45,7 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import VoltageConnection from './VoltageConnection.js';
 import StringIO from '../../../tandem/js/types/StringIO.js';
+import ResistorType from './ResistorType.js';
 
 // constants
 const SNAP_RADIUS = 30; // For two vertices to join together, they must be this close, in view coordinates
@@ -384,12 +385,12 @@ class Circuit {
 
     // @public {PhetioGroup}
     this.resistorGroup = new PhetioGroup(
-      ( tandem, startVertex, endVertex, resistorType ) => resistorType === Resistor.ResistorType.DOG ?
+      ( tandem, startVertex, endVertex, resistorType ) => resistorType === ResistorType.DOG ?
                                                           new Dog( startVertex, endVertex, tandem ) :
                                                           new Resistor( startVertex, endVertex, resistorType, tandem ),
       () => {
-        const argumentArray: any[] = createVertices( Resistor.ResistorType.RESISTOR.length );
-        argumentArray.push( Resistor.ResistorType.RESISTOR );
+        const argumentArray: any[] = createVertices( ResistorType.RESISTOR.length );
+        argumentArray.push( ResistorType.RESISTOR );
         return argumentArray;
       }, {
         phetioType: PhetioGroup.PhetioGroupIO( Resistor.ResistorIO ),

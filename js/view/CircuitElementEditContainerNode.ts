@@ -31,6 +31,7 @@ import Fuse from '../model/Fuse.js';
 import Inductor from '../model/Inductor.js';
 import LightBulb from '../model/LightBulb.js';
 import Resistor from '../model/Resistor.js';
+import ResistorType from '../model/ResistorType.js';
 import SeriesAmmeter from '../model/SeriesAmmeter.js';
 import Switch from '../model/Switch.js';
 import Wire from '../model/Wire.js';
@@ -146,7 +147,7 @@ class CircuitElementEditContainerNode extends Node {
         if ( isResistive && selectedCircuitElement.isResistanceEditable() ) {
 
           // @ts-ignore
-          const isHighResistance = selectedCircuitElement.resistorType === Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR ||
+          const isHighResistance = selectedCircuitElement.resistorType === ResistorType.HIGH_RESISTANCE_RESISTOR ||
                                    selectedCircuitElement instanceof LightBulb && selectedCircuitElement.highResistance;
 
           const resistanceControl = new CircuitElementNumberControl(
