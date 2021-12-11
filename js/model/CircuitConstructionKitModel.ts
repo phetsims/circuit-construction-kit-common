@@ -10,7 +10,6 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import StringEnumerationProperty from '../../../axon/js/StringEnumerationProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
-import StringIO from '../../../tandem/js/types/StringIO.js';
 import Property from '../../../axon/js/Property.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Utils from '../../../dot/js/Utils.js';
@@ -75,10 +74,8 @@ class CircuitConstructionKitModel {
     this.zoomAnimation = null;
 
     // @public {Property.<CircuitElementViewType>} - whether to show lifelike or schematic representations
-    this.viewTypeProperty = new Property<CircuitElementViewType>( 'lifelike', {
-      tandem: tandem.createTandem( 'viewTypeProperty' ),
-      validValues: CircuitElementViewTypeValues,
-      phetioType: Property.PropertyIO( StringIO ) // TODO: Validvalues for studio?
+    this.viewTypeProperty = new StringEnumerationProperty( CircuitElementViewTypeValues, 'lifelike', {
+      tandem: tandem.createTandem( 'viewTypeProperty' )
     } );
 
     // @public {Property.<boolean>} - whether the carousel shows real bulbs
