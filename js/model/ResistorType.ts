@@ -53,14 +53,8 @@ class ResistorType {
 
   /**
    * Convenience function for creating a fixed-resistance resistor, like a household item.
-   * @param {number} resistance
-   * @param {boolean} isMetallic
-   * @param {number} length
-   * @param {number} [verticalOffset]
-   * @returns {ResistorEnumValue}
-   * @private
    */
-  static fixed( resistance: number, isMetallic: boolean, length: number, verticalOffset = 0 ) {
+  static fixed( resistance: number, isMetallic: boolean, length: number, verticalOffset = 0 ): ResistorType {
     return new ResistorType( resistance, new Range( resistance, resistance ), isMetallic, length, verticalOffset );
   }
 }
