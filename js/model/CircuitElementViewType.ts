@@ -19,4 +19,4 @@ circuitConstructionKitCommon.register( 'CircuitElementViewTypeValues', CircuitEl
 
 // Export
 export { CircuitElementViewTypeValues };
-export type { CircuitElementViewType as default };
+export default CircuitElementViewType;
