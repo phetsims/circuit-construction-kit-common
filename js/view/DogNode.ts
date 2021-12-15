@@ -10,7 +10,7 @@ import Property from '../../../axon/js/Property.js';
 import SoundClip from '../../../tambo/js/sound-generators/SoundClip.js';
 import soundManager from '../../../tambo/js/soundManager.js';
 import Tandem from '../../../tandem/js/Tandem.js';
-import dogBark_mp3 from '../../sounds/dogBark_mp3.js'; // eslint-disable-line import-resource-variable-suffix
+import dogBark_mp3 from '../../sounds/dogBark_mp3.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import BarkNode from './BarkNode.js';
