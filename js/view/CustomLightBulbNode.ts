@@ -14,12 +14,12 @@ import merge from '../../../phet-core/js/merge.js';
 import LightRaysNode from '../../../scenery-phet/js/LightRaysNode.js';
 import { Image } from '../../../scenery/js/imports.js';
 import { Node } from '../../../scenery/js/imports.js';
-import lightBulbBackImage from '../../images/light-bulb-back_png.js';
-import lightBulbFrontHighImage from '../../images/light-bulb-front-high_png.js';
-import lightBulbFrontRealImage from '../../images/light-bulb-front-real_png.js';
-import lightBulbFrontImage from '../../images/light-bulb-front_png.js';
-import lightBulbMiddleRealImage from '../../mipmaps/light-bulb-middle-real_png.js';
-import lightBulbMiddleImage from '../../mipmaps/light-bulb-middle_png.js';
+import lightBulbBack_png from '../../images/lightBulbBack_png.js';
+import lightBulbFrontHigh_png from '../../images/lightBulbFrontHigh_png.js';
+import lightBulbFrontReal_png from '../../images/lightBulbFrontReal_png.js';
+import lightBulbFront_png from '../../images/lightBulbFront_png.js';
+import lightBulbMiddleReal_png from '../../mipmaps/lightBulbMiddleReal_png.js';
+import lightBulbMiddle_png from '../../mipmaps/lightBulbMiddle_png.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
@@ -51,14 +51,14 @@ class CustomLightBulbNode extends Node {
 
     const baseOnly = providedOptions.baseOnly;
 
-    const selectedSocketImage = providedOptions.highResistance ? lightBulbFrontHighImage :
-                                providedOptions.real ? lightBulbFrontRealImage :
-                                lightBulbFrontImage;
+    const selectedSocketImage = providedOptions.highResistance ? lightBulbFrontHigh_png :
+                                providedOptions.real ? lightBulbFrontReal_png :
+                                lightBulbFront_png;
 
-    const selectedMiddleImage = providedOptions.real ? lightBulbMiddleRealImage :
-                                lightBulbMiddleImage;
+    const selectedMiddleImage = providedOptions.real ? lightBulbMiddleReal_png :
+                                lightBulbMiddle_png;
 
-    const backNode = new Image( providedOptions.baseOnly ? selectedSocketImage : lightBulbBackImage, {
+    const backNode = new Image( providedOptions.baseOnly ? selectedSocketImage : lightBulbBack_png, {
       scale: BULB_IMAGE_SCALE,
       centerX: 0,
       bottom: 0,
@@ -196,10 +196,10 @@ class CustomLightBulbNode extends Node {
  * @public {Array.<Image>}
  */
 CustomLightBulbNode.webglSpriteNodes = [
-  new Image( lightBulbBackImage ),
-  new Image( lightBulbMiddleImage ),
-  new Image( lightBulbFrontImage ),
-  new Image( lightBulbFrontHighImage ) ];
+  new Image( lightBulbBack_png ),
+  new Image( lightBulbMiddle_png ),
+  new Image( lightBulbFront_png ),
+  new Image( lightBulbFrontHigh_png ) ];
 
 circuitConstructionKitCommon.register( 'CustomLightBulbNode', CustomLightBulbNode );
 export default CustomLightBulbNode;

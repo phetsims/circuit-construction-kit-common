@@ -19,7 +19,7 @@ import { Line } from '../../../scenery/js/imports.js';
 import { Color } from '../../../scenery/js/imports.js';
 import ToggleNode from '../../../sun/js/ToggleNode.js';
 import Tandem from '../../../tandem/js/Tandem.js';
-import wireIconImage from '../../images/wire-icon_png.js';
+import wireIcon_png from '../../images/wireIcon_png.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -195,7 +195,7 @@ class CircuitElementToolFactory {
       // Cache a single instance to simplify PhET-iO
       this.wireToolNode = this.createCircuitElementToolNode( wireString, CCKCConstants.NUMBER_OF_WIRES,
         ( tandem: Tandem, viewTypeProperty: Property<CircuitElementViewType> ) => {
-          return viewTypeProperty.value === 'lifelike' ? ( new Image( wireIconImage, {
+          return viewTypeProperty.value === 'lifelike' ? ( new Image( wireIcon_png, {
             tandem: tandem
           } ) ) : new Line( 0, 0, 120, 0, {
             stroke: Color.BLACK,

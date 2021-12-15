@@ -10,8 +10,7 @@ import Property from '../../../axon/js/Property.js';
 import SoundClip from '../../../tambo/js/sound-generators/SoundClip.js';
 import soundManager from '../../../tambo/js/soundManager.js';
 import Tandem from '../../../tandem/js/Tandem.js';
-//TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/702: What is the convention for naming of these?
-import dogBarkSound from '../../sounds/dog-bark_mp3.js';
+import dogBark_mp3 from '../../sounds/dogBark_mp3.js'; // eslint-disable-line import-resource-variable-suffix
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import BarkNode from './BarkNode.js';
@@ -38,7 +37,7 @@ class DogNode extends ResistorNode {
                viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: any ) {
     super( screenView, circuitLayerNode, dog, viewTypeProperty, tandem, providedOptions );
 
-    const soundClip = new SoundClip( dogBarkSound );
+    const soundClip = new SoundClip( dogBark_mp3 );
     soundManager.addSoundGenerator( soundClip );
 
     // @private

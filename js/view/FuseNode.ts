@@ -18,7 +18,7 @@ import { Path } from '../../../scenery/js/imports.js';
 import { Rectangle } from '../../../scenery/js/imports.js';
 import { Color } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
-import fuseImage from '../../images/fuse_png.js';
+import fuse_png from '../../images/fuse_png.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
@@ -59,7 +59,7 @@ class FuseNode extends FixedCircuitElementNode {
 
     options = merge( { isIcon: false, useHitTestForSensors: true }, options );
 
-    const fuseImageNode = new Image( fuseImage, { scale: 0.691 } );
+    const fuseImageNode = new Image( fuse_png, { scale: 0.691 } );
     const numberOfZigZags = ( fuseImageNode.width - CAP_WIDTH * 2 ) / HORIZONTAL_ZIG_ZAG_DISTANCE / 2;
 
     // zig-zag shape
@@ -216,7 +216,7 @@ class FuseNode extends FixedCircuitElementNode {
  * @public {Array.<Image>}
  */
 FuseNode.webglSpriteNodes = [
-  new Image( fuseImage )
+  new Image( fuse_png )
 ];
 
 circuitConstructionKitCommon.register( 'FuseNode', FuseNode );

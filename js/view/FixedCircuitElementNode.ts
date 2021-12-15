@@ -13,7 +13,7 @@ import Vector2 from '../../../dot/js/Vector2.js';
 import merge from '../../../phet-core/js/merge.js';
 import { Image, Node, NodeOptions, SceneryEvent } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
-import fireImage from '../../images/fire_png.js';
+import fire_png from '../../images/fire_png.js';
 import CCKCUtils from '../CCKCUtils.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
@@ -208,7 +208,7 @@ class FixedCircuitElementNode extends CircuitElementNode {
       // Show fire for batteries and resistors
       if ( circuitElement.isFlammable ) {
 
-        this.fireNode = new Image( fireImage, { pickable: false, imageOpacity: 0.95 } );
+        this.fireNode = new Image( fire_png, { pickable: false, imageOpacity: 0.95 } );
         this.fireNode.mutate( { scale: this.contentNode.width / this.fireNode.width } );
         this.addChild( this.fireNode );
         if ( screenView ) {
@@ -283,10 +283,10 @@ class FixedCircuitElementNode extends CircuitElementNode {
 
     // Update the fire transform
     const flameExtent = 0.8;
-    const scale = magnitude / fireImage.width * flameExtent;
+    const scale = magnitude / fire_png.width * flameExtent;
     const flameMargin = ( 1 - flameExtent ) / 2;
     const flameX = magnitude * flameMargin / scale;
-    const flameY = -fireImage.height;
+    const flameY = -fire_png.height;
     matrix.multiplyMatrix( rotationMatrix.setToScale( scale ) )
       .multiplyMatrix( rotationMatrix.setToTranslation( flameX, flameY ) );
     this.fireNode && this.fireNode.setMatrix( matrix );
@@ -376,7 +376,7 @@ class FixedCircuitElementNode extends CircuitElementNode {
  * @public {Array.<Image>}
  */
 FixedCircuitElementNode.webglSpriteNodes = [
-  new Image( fireImage )
+  new Image( fire_png )
 ];
 
 circuitConstructionKitCommon.register( 'FixedCircuitElementNode', FixedCircuitElementNode );

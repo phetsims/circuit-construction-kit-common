@@ -14,8 +14,8 @@ import { Image } from '../../../scenery/js/imports.js';
 import { Path } from '../../../scenery/js/imports.js';
 import { Color } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
-import batteryHighImage from '../../images/battery-high_png.js';
-import batteryImage from '../../images/battery_png.js';
+import batteryHigh_png from '../../images/batteryHigh_png.js';
+import battery_png from '../../images/battery_png.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Battery from '../model/Battery.js';
@@ -75,7 +75,7 @@ class BatteryNode extends FixedCircuitElementNode {
   constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, battery: Battery, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: Partial<FixedCircuitElementNodeOptions> ) {
 
     providedOptions = merge( { useHitTestForSensors: true }, providedOptions );
-    const lifelikeNode = new Image( battery.batteryType === 'normal' ? batteryImage : batteryHighImage );
+    const lifelikeNode = new Image( battery.batteryType === 'normal' ? battery_png : batteryHigh_png );
 
     lifelikeNode.mutate( {
       scale: battery.distanceBetweenVertices / lifelikeNode.width
@@ -105,8 +105,8 @@ class BatteryNode extends FixedCircuitElementNode {
  * @public {Array.<Image>}
  */
 BatteryNode.webglSpriteNodes = [
-  new Image( batteryImage ),
-  new Image( batteryHighImage )
+  new Image( battery_png ),
+  new Image( batteryHigh_png )
 ];
 
 circuitConstructionKitCommon.register( 'BatteryNode', BatteryNode );

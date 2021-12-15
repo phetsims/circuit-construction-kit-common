@@ -18,10 +18,10 @@ import { Image } from '../../../scenery/js/imports.js';
 import { Node } from '../../../scenery/js/imports.js';
 import { Path } from '../../../scenery/js/imports.js';
 import { Color } from '../../../scenery/js/imports.js';
-import lightBulbMiddleHighImage from '../../mipmaps/light-bulb-middle-high_png.js';
-import lightBulbMiddleRealImage from '../../mipmaps/light-bulb-middle-real_png.js';
-import lightBulbFrontRealImage from '../../images/light-bulb-front-real_png.js';
-import lightBulbMiddleImage from '../../mipmaps/light-bulb-middle_png.js';
+import lightBulbMiddleHigh_png from '../../mipmaps/lightBulbMiddleHigh_png.js';
+import lightBulbMiddleReal_png from '../../mipmaps/lightBulbMiddleReal_png.js';
+import lightBulbFrontReal_png from '../../images/lightBulbFrontReal_png.js';
+import lightBulbMiddle_png from '../../mipmaps/lightBulbMiddle_png.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CustomLightBulbNode from './CustomLightBulbNode.js';
@@ -100,13 +100,13 @@ class CCKCLightBulbNode extends FixedCircuitElementNode {
 
     // The isIcon must show the socket as well
     if ( filledOptions.isIcon ) {
-      lightBulbNode = new Image( lightBulb.highResistance ? lightBulbMiddleHighImage :
-                                 lightBulb.real ? lightBulbMiddleRealImage :
-                                 lightBulbMiddleImage, { scale: 0.37 } );
+      lightBulbNode = new Image( lightBulb.highResistance ? lightBulbMiddleHigh_png :
+                                 lightBulb.real ? lightBulbMiddleReal_png :
+                                 lightBulbMiddle_png, { scale: 0.37 } );
 
       // tack on the socket
       if ( lightBulb.real ) {
-        lightBulbNode.addChild( new Image( lightBulbFrontRealImage ) );
+        lightBulbNode.addChild( new Image( lightBulbFrontReal_png ) );
       }
     }
 

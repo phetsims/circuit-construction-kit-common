@@ -18,9 +18,9 @@ import { Image } from '../../../scenery/js/imports.js';
 import { Node } from '../../../scenery/js/imports.js';
 import { Rectangle } from '../../../scenery/js/imports.js';
 import { Color } from '../../../scenery/js/imports.js';
-import probeBlackImage from '../../mipmaps/probe-black_png.js';
-import probeRedImage from '../../mipmaps/probe-red_png.js';
-import voltmeterBodyImage from '../../mipmaps/voltmeter-body_png.js';
+import probeBlack_png from '../../mipmaps/probeBlack_png.js';
+import probeRed_png from '../../mipmaps/probeRed_png.js';
+import voltmeterBody_png from '../../mipmaps/voltmeterBody_png.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import CCKCUtils from '../CCKCUtils.js';
@@ -85,7 +85,7 @@ class VoltmeterNode extends Node {
     const blackProbeNode = new Rectangle( -2, -2, 4, 4, { // the hit area
       fill: CCKCQueryParameters.showVoltmeterSamplePoints ? Color.BLACK : null,
       cursor: 'pointer',
-      children: [ new Image( probeBlackImage, {
+      children: [ new Image( probeBlack_png, {
         scale: PROBE_SCALE,
         rotation: PROBE_ANGLE,
 
@@ -99,7 +99,7 @@ class VoltmeterNode extends Node {
     const redProbeNode = new Rectangle( -2, -2, 4, 4, { // the hit area
       fill: CCKCQueryParameters.showVoltmeterSamplePoints ? Color.RED : null,
       cursor: 'pointer',
-      children: [ new Image( probeRedImage, {
+      children: [ new Image( probeRed_png, {
         scale: PROBE_SCALE,
         rotation: -PROBE_ANGLE,
 
@@ -117,11 +117,11 @@ class VoltmeterNode extends Node {
 
     const probeTextNode = new ProbeTextNode(
       voltageReadoutProperty, providedOptions.showResultsProperty, voltageString, tandem.createTandem( 'probeTextNode' ), {
-        centerX: voltmeterBodyImage[ 0 ].width / 2,
-        centerY: voltmeterBodyImage[ 0 ].height / 2
+        centerX: voltmeterBody_png[ 0 ].width / 2,
+        centerY: voltmeterBody_png[ 0 ].height / 2
       } );
 
-    const bodyNode = new Image( voltmeterBodyImage, {
+    const bodyNode = new Image( voltmeterBody_png, {
       scale: SCALE,
       cursor: 'pointer',
       children: [ probeTextNode ]

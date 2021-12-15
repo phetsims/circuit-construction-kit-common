@@ -16,7 +16,7 @@ import ProbeNode from '../../../scenery-phet/js/ProbeNode.js';
 import WireNode from '../../../scenery-phet/js/WireNode.js';
 import { Color, DragListener, Image, Node, NodeOptions, Rectangle, SceneryEvent } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
-import ammeterBodyImage from '../../images/ammeter-body_png.js';
+import ammeterBody_png from '../../images/ammeterBody_png.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCUtils from '../CCKCUtils.js';
 import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
@@ -99,11 +99,11 @@ class AmmeterNode extends Node {
 
     const probeTextNode = new ProbeTextNode(
       currentReadoutProperty, options.showResultsProperty, currentString, tandem.createTandem( 'probeTextNode' ), {
-        centerX: ammeterBodyImage.width / 2,
-        centerY: ammeterBodyImage.height / 2 + 7 // adjust for the top notch design
+        centerX: ammeterBody_png.width / 2,
+        centerY: ammeterBody_png.height / 2 + 7 // adjust for the top notch design
       } );
 
-    const bodyNode = new Image( ammeterBodyImage, {
+    const bodyNode = new Image( ammeterBody_png, {
       scale: SCALE_FACTOR,
       cursor: 'pointer',
       children: [ probeTextNode ]

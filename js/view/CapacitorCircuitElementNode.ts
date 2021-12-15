@@ -22,7 +22,7 @@ import { Node } from '../../../scenery/js/imports.js';
 import { Path } from '../../../scenery/js/imports.js';
 import { Color } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
-import wireIconImage from '../../images/wire-icon_png.js';
+import wireIcon_png from '../../images/wireIcon_png.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Capacitor from '../model/Capacitor.js';
@@ -141,11 +141,11 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
       circuit.capacitor.plateChargeProperty.set( -q );
     } );
 
-    const leftWireStub = new Image( wireIconImage, merge( {
+    const leftWireStub = new Image( wireIcon_png, merge( {
       centerX: lifelikeNode.centerX,
       centerY: lifelikeNode.centerY
     }, wireStubOptions ) );
-    const rightWireStub = new Image( wireIconImage, merge( {
+    const rightWireStub = new Image( wireIcon_png, merge( {
       centerX: lifelikeNode.centerX,
       centerY: lifelikeNode.centerY
     }, wireStubOptions ) );
@@ -308,7 +308,7 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
  * Identifies the images used to render this node so they can be pre-populated in the WebGL sprite sheet.
  * @public {Array.<Image>}
  */
-CapacitorCircuitElementNode.webglSpriteNodes = [ new Image( wireIconImage ) ];
+CapacitorCircuitElementNode.webglSpriteNodes = [ new Image( wireIcon_png ) ];
 
 circuitConstructionKitCommon.register( 'CapacitorCircuitElementNode', CapacitorCircuitElementNode );
 export default CapacitorCircuitElementNode;

@@ -1,5 +1,5 @@
 {
-  "light-bulb-middle.png": {
+  "lightBulbMiddle.png": {
     "text": [
       "Copyright 2016 University of Colorado Boulder"
     ],
@@ -7,7 +7,7 @@
     "license": "contact phethelp@colorado.edu",
     "notes": "Created by Amy Rouinfar"
   },
-  "light-bulb-middle-icon.png": {
+  "lightBulbMiddleIcon.png": {
     "text": [
       "Copyright 2016 University of Colorado Boulder"
     ],
@@ -15,7 +15,7 @@
     "license": "contact phethelp@colorado.edu",
     "notes": "Created by Amy Rouinfar"
   },
-  "light-bulb-middle-high.png": {
+  "lightBulbMiddleHigh.png": {
     "text": [
       "Copyright 2016 University of Colorado Boulder"
     ],
@@ -23,7 +23,7 @@
     "license": "contact phethelp@colorado.edu",
     "notes": "Created by Amy Rouinfar"
   },
-  "light-bulb-middle-real.png": {
+  "lightBulbMiddleReal.png": {
     "text": [
       "Copyright 2020 University of Colorado Boulder"
     ],
@@ -31,7 +31,7 @@
     "license": "contact phethelp@colorado.edu",
     "notes": "Created by Amy Rouinfar"
   },
-  "probe-red.png": {
+  "probeRed.png": {
     "text": [
       "Copyright 2002-2015 University of Colorado Boulder"
     ],
@@ -39,7 +39,7 @@
     "license": "contact phethelp@colorado.edu",
     "notes": "Created by Bryce Gruneich and Amy Rouinfar"
   },
-  "probe-black.png": {
+  "probeBlack.png": {
     "text": [
       "Copyright 2002-2015 University of Colorado Boulder"
     ],
@@ -47,7 +47,7 @@
     "license": "contact phethelp@colorado.edu",
     "notes": "Created by Bryce Gruneich and Amy Rouinfar"
   },
-  "voltmeter-body.png": {
+  "voltmeterBody.png": {
     "text": [
       "Copyright 2016 University of Colorado Boulder"
     ],

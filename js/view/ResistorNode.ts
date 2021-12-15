@@ -16,15 +16,15 @@ import { Rectangle } from '../../../scenery/js/imports.js';
 import { Color } from '../../../scenery/js/imports.js';
 import { Node } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
-import coinImage from '../../images/coin_png.js';
-import dogImage from '../../images/dog_png.js';
-import dollarBillImage from '../../images/dollar-bill_png.js';
-import eraserImage from '../../images/eraser_png.js';
-import handImage from '../../images/hand_png.js';
-import paperClipImage from '../../images/paper-clip_png.js';
-import pencilImage from '../../images/pencil_png.js';
-import resistorHighImage from '../../images/resistor-high_png.js';
-import resistorImage from '../../images/resistor_png.js';
+import coin_png from '../../images/coin_png.js';
+import dog_png from '../../images/dog_png.js';
+import dollar_png from '../../images/dollar_png.js';
+import eraser_png from '../../images/eraser_png.js';
+import hand_png from '../../images/hand_png.js';
+import paperClip_png from '../../images/paperClip_png.js';
+import pencil_png from '../../images/pencil_png.js';
+import resistorHigh_png from '../../images/resistorHigh_png.js';
+import resistor_png from '../../images/resistor_png.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
@@ -60,15 +60,15 @@ const SCHEMATIC_STEM_WIDTH = 84 * SCHEMATIC_SCALE;
 const SCHEMATIC_WAVELENGTH = 54 * SCHEMATIC_SCALE;
 
 const RESISTOR_IMAGE_MAP = new Map<ResistorType, HTMLImageElement>();
-RESISTOR_IMAGE_MAP.set( ResistorType.COIN, coinImage );
-RESISTOR_IMAGE_MAP.set( ResistorType.PAPER_CLIP, paperClipImage );
-RESISTOR_IMAGE_MAP.set( ResistorType.PENCIL, pencilImage );
-RESISTOR_IMAGE_MAP.set( ResistorType.ERASER, eraserImage );
-RESISTOR_IMAGE_MAP.set( ResistorType.HAND, handImage );
-RESISTOR_IMAGE_MAP.set( ResistorType.HIGH_RESISTANCE_RESISTOR, resistorHighImage );
-RESISTOR_IMAGE_MAP.set( ResistorType.RESISTOR, resistorImage );
-RESISTOR_IMAGE_MAP.set( ResistorType.DOG, dogImage );
-RESISTOR_IMAGE_MAP.set( ResistorType.DOLLAR_BILL, dollarBillImage );
+RESISTOR_IMAGE_MAP.set( ResistorType.COIN, coin_png );
+RESISTOR_IMAGE_MAP.set( ResistorType.PAPER_CLIP, paperClip_png );
+RESISTOR_IMAGE_MAP.set( ResistorType.PENCIL, pencil_png );
+RESISTOR_IMAGE_MAP.set( ResistorType.ERASER, eraser_png );
+RESISTOR_IMAGE_MAP.set( ResistorType.HAND, hand_png );
+RESISTOR_IMAGE_MAP.set( ResistorType.HIGH_RESISTANCE_RESISTOR, resistorHigh_png );
+RESISTOR_IMAGE_MAP.set( ResistorType.RESISTOR, resistor_png );
+RESISTOR_IMAGE_MAP.set( ResistorType.DOG, dog_png );
+RESISTOR_IMAGE_MAP.set( ResistorType.DOLLAR_BILL, dollar_png );
 
 class ResistorNode extends FixedCircuitElementNode {
   private readonly resistor: Resistor;
@@ -266,15 +266,15 @@ class ResistorNode extends FixedCircuitElementNode {
  * @public {Array.<Image>}
  */
 ResistorNode.webglSpriteNodes = [
-  new Image( resistorImage ),
-  new Image( paperClipImage ),
-  new Image( coinImage ),
-  new Image( pencilImage ),
-  new Image( eraserImage ),
-  new Image( handImage ),
-  new Image( resistorHighImage ),
-  new Image( dogImage ),
-  new Image( dollarBillImage )
+  new Image( resistor_png ),
+  new Image( paperClip_png ),
+  new Image( coin_png ),
+  new Image( pencil_png ),
+  new Image( eraser_png ),
+  new Image( hand_png ),
+  new Image( resistorHigh_png ),
+  new Image( dog_png ),
+  new Image( dollar_png )
 ];
 
 circuitConstructionKitCommon.register( 'ResistorNode', ResistorNode );

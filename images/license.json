@@ -1,5 +1,5 @@
 {
-  "ammeter-body.png": {
+  "ammeterBody.png": {
     "text": [
       "Copyright 2016 University of Colorado Boulder"
     ],
@@ -15,7 +15,7 @@
     "license": "contact phethelp@colorado.edu",
     "notes": "Created by Amy Rouinfar"
   },
-  "battery-high.png": {
+  "batteryHigh.png": {
     "text": [
       "Copyright 2017 University of Colorado Boulder"
     ],
@@ -31,7 +31,7 @@
     "license": "contact phethelp@colorado.edu",
     "notes": "Created by Cheryl McCutchan"
   },
-  "dollar-bill.png": {
+  "dollar.png": {
     "text": [
       "Copyright 2017 University of Colorado Boulder"
     ],
@@ -79,7 +79,7 @@
     "license": "contact phethelp@colorado.edu",
     "notes": "Created by Cheryl McCutchan"
   },
-  "light-bulb-back.png": {
+  "lightBulbBack.png": {
     "text": [
       "Copyright 2016 University of Colorado Boulder"
     ],
@@ -87,7 +87,7 @@
     "license": "contact phethelp@colorado.edu",
     "notes": "Created by Amy Rouinfar"
   },
-  "light-bulb-front.png": {
+  "lightBulbFront.png": {
     "text": [
       "Copyright 2016 University of Colorado Boulder"
     ],
@@ -95,7 +95,7 @@
     "license": "contact phethelp@colorado.edu",
     "notes": "Created by Amy Rouinfar"
   },
-  "light-bulb-front-real.png": {
+  "lightBulbFrontReal.png": {
     "text": [
       "Copyright 2020 University of Colorado Boulder"
     ],
@@ -103,7 +103,7 @@
     "license": "contact phethelp@colorado.edu",
     "notes": "Created by Amy Rouinfar"
   },
-  "light-bulb-front-high.png": {
+  "lightBulbFrontHigh.png": {
     "text": [
       "Copyright 2017 University of Colorado Boulder"
     ],
@@ -111,7 +111,7 @@
     "license": "contact phethelp@colorado.edu",
     "notes": "Created by Amy Rouinfar"
   },
-  "paper-clip.png": {
+  "paperClip.png": {
     "text": [
       "Copyright 2017 University of Colorado Boulder"
     ],
@@ -135,7 +135,7 @@
     "license": "contact phethelp@colorado.edu",
     "notes": "Created by Amy Rouinfar"
   },
-  "resistor-high.png": {
+  "resistorHigh.png": {
     "text": [
       "Copyright 2016 University of Colorado Boulder"
     ],
@@ -143,7 +143,7 @@
     "license": "contact phethelp@colorado.edu",
     "notes": "Created by Amy Rouinfar"
   },
-  "wire-icon.png": {
+  "wireIcon.png": {
     "text": [
       "Copyright 2017 University of Colorado Boulder"
     ],
