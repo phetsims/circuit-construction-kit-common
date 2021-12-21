@@ -3,8 +3,9 @@
 import CCKCConstants from '../CCKCConstants.js';
 import Range from '../../../dot/js/Range.js';
 import RichEnumeration from '../../../phet-core/js/RichEnumeration.js';
+import EnumerationValue from '../../../phet-core/js/EnumerationValue.js';
 
-class ResistorType {
+class ResistorType extends EnumerationValue {
 
   static RESISTOR = new ResistorType( 10, new Range( 0, 120 ), false, CCKCConstants.RESISTOR_LENGTH );
   static HIGH_RESISTANCE_RESISTOR = new ResistorType( 1000, new Range( 100, 10000 ), false, CCKCConstants.RESISTOR_LENGTH );
@@ -18,7 +19,7 @@ class ResistorType {
   static DOG = ResistorType.fixed( 100000, false, CCKCConstants.DOG_LENGTH, -40 );
   static DOLLAR_BILL = ResistorType.fixed( 1000000000, false, CCKCConstants.DOLLAR_BILL_LENGTH );
 
-  static enum = new RichEnumeration<ResistorType>( ResistorType );
+  static enumeration = new RichEnumeration<ResistorType>( ResistorType );
 
   private readonly defaultResistance: number;
   private readonly range: Range;
@@ -33,7 +34,8 @@ class ResistorType {
    * @param {number} length
    * @param {number} [verticalOffset]
    */
-  constructor( defaultResistance: number, resistanceRange: Range, isMetallic: boolean, length: number, verticalOffset = 0 ) {
+  private constructor( defaultResistance: number, resistanceRange: Range, isMetallic: boolean, length: number, verticalOffset = 0 ) {
+    super();
 
     // @public (read-only) {number} - in Ohms
     this.defaultResistance = defaultResistance;
