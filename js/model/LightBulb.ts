@@ -127,7 +127,7 @@ class LightBulb extends FixedCircuitElement {
    */
   getPathLength() {
     let pathLength = 0;
-    const samplePoints = this.viewTypeProperty.value === 'lifelike' ? LIFELIKE_SAMPLE_POINTS : SCHEMATIC_SAMPLE_POINTS;
+    const samplePoints = this.viewTypeProperty.value === CircuitElementViewType.LIFELIKE ? LIFELIKE_SAMPLE_POINTS : SCHEMATIC_SAMPLE_POINTS;
     let currentPoint = this.getFilamentPathPoint( 0, Vector2.ZERO, samplePoints );
     for ( let i = 1; i < samplePoints.length; i++ ) {
       const nextPoint = this.getFilamentPathPoint( i, Vector2.ZERO, samplePoints );
@@ -201,7 +201,7 @@ class LightBulb extends FixedCircuitElement {
 
     let previousAccumulatedDistance = 0;
     let accumulatedDistance = 0;
-    const samplePoints = this.viewTypeProperty.value === 'lifelike' ? LIFELIKE_SAMPLE_POINTS : SCHEMATIC_SAMPLE_POINTS;
+    const samplePoints = this.viewTypeProperty.value === CircuitElementViewType.LIFELIKE ? LIFELIKE_SAMPLE_POINTS : SCHEMATIC_SAMPLE_POINTS;
     let currentPoint = this.getFilamentPathPoint( 0, this.startVertexProperty.get().positionProperty.get(), samplePoints );
     for ( let i = 1; i < samplePoints.length; i++ ) {
       const nextPoint = this.getFilamentPathPoint( i, this.startVertexProperty.get().positionProperty.get(), samplePoints );

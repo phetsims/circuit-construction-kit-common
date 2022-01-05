@@ -43,11 +43,11 @@ import InductorNode from './InductorNode.js';
 import ResistorNode from './ResistorNode.js';
 import SwitchNode from './SwitchNode.js';
 import Circuit from '../model/Circuit.js';
-import CircuitElementViewType, { CircuitElementViewTypeValues } from '../model/CircuitElementViewType.js';
+import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import CircuitElement from '../model/CircuitElement.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
-import StringEnumerationProperty from '../../../axon/js/StringEnumerationProperty.js';
 import ResistorType from '../model/ResistorType.js';
+import RichEnumerationProperty from '../../../axon/js/RichEnumerationProperty.js';
 
 const acSourceString = circuitConstructionKitCommonStrings.acSource;
 const capacitorString = circuitConstructionKitCommonStrings.capacitor;
@@ -75,8 +75,8 @@ const SWITCH_LENGTH = CCKCConstants.SWITCH_LENGTH;
 
 // Separate icons are made for schematic/lifelike so they can be aligned
 const iconAlignGroup = new AlignGroup();
-const LIFELIKE_PROPERTY = new StringEnumerationProperty( CircuitElementViewTypeValues, 'lifelike' );
-const SCHEMATIC_PROPERTY = new StringEnumerationProperty( CircuitElementViewTypeValues, 'schematic' );
+const LIFELIKE_PROPERTY = new RichEnumerationProperty( CircuitElementViewType, CircuitElementViewType.LIFELIKE );
+const SCHEMATIC_PROPERTY = new RichEnumerationProperty( CircuitElementViewType, CircuitElementViewType.SCHEMATIC );
 
 class CircuitElementToolFactory {
   private readonly circuit: Circuit;
@@ -160,13 +160,13 @@ class CircuitElementToolFactory {
     const schematicIcon = wrap( createIcon( providedOptions.tandem.createTandem( 'schematicIcon' ), SCHEMATIC_PROPERTY ), providedOptions.schematicIconHeight );
 
     const toggleNode = new ToggleNode( this.viewTypeProperty, [
-      { value: 'lifelike', node: lifelikeIcon },
-      { value: 'schematic', node: schematicIcon }
+      { value: CircuitElementViewType.LIFELIKE, node: lifelikeIcon },
+      { value: CircuitElementViewType.SCHEMATIC, node: schematicIcon }
     ] );
 
     this.viewTypeProperty.link( viewType => {
-      lifelikeIcon.visible = viewType === 'lifelike';
-      schematicIcon.visible = viewType === 'schematic';
+      lifelikeIcon.visible = viewType === CircuitElementViewType.LIFELIKE;
+      schematicIcon.visible = viewType === CircuitElementViewType.SCHEMATIC;
     } );
 
     return new CircuitElementToolNode(
@@ -195,7 +195,7 @@ class CircuitElementToolFactory {
       // Cache a single instance to simplify PhET-iO
       this.wireToolNode = this.createCircuitElementToolNode( wireString, CCKCConstants.NUMBER_OF_WIRES,
         ( tandem: Tandem, viewTypeProperty: Property<CircuitElementViewType> ) => {
-          return viewTypeProperty.value === 'lifelike' ? ( new Image( wireIcon_png, {
+          return viewTypeProperty.value === CircuitElementViewType.LIFELIKE ? ( new Image( wireIcon_png, {
             tandem: tandem
           } ) ) : new Line( 0, 0, 120, 0, {
             stroke: Color.BLACK,

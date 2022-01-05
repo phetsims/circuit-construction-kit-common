@@ -19,6 +19,7 @@ import Charge from '../model/Charge.js';
 import CircuitLayerNode from './CircuitLayerNode.js';
 import ConventionalCurrentArrowNode from './ConventionalCurrentArrowNode.js';
 import CapacitorCircuitElementNode from './CapacitorCircuitElementNode.js';
+import CircuitElementViewType from '../model/CircuitElementViewType.js';
 
 // constants
 const ELECTRON_CHARGE_NODE = new ElectronChargeNode( {
@@ -125,7 +126,7 @@ class ChargeNode extends Node {
         // For unknown reasons, the x and y coordinates are swapped here.  The values were determined empirically.
         let globalClipShape = null;
 
-        const isLifelike = this.circuitLayerNode.model.viewTypeProperty.value === 'lifelike';
+        const isLifelike = this.circuitLayerNode.model.viewTypeProperty.value === CircuitElementViewType.LIFELIKE;
         if ( isLifelike ) {
 
           // For the lifelike view, we clip based on the pseudo-3d effect, so the charges come from "behind" the edge

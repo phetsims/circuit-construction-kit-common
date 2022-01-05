@@ -9,6 +9,7 @@
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import StringEnumerationProperty from '../../../axon/js/StringEnumerationProperty.js';
+import RichEnumerationProperty from '../../../axon/js/RichEnumerationProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
 import Property from '../../../axon/js/Property.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
@@ -26,7 +27,7 @@ import Voltmeter from './Voltmeter.js';
 import ZoomAnimation from './ZoomAnimation.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
-import CircuitElementViewType, { CircuitElementViewTypeValues } from './CircuitElementViewType.js';
+import CircuitElementViewType from './CircuitElementViewType.js';
 import LightBulb from './LightBulb.js';
 import { InteractionModeValues } from './InteractionMode.js';
 import ZoomLevel, { ZoomLevelValues } from './ZoomLevel.js';
@@ -73,8 +74,8 @@ class CircuitConstructionKitModel {
     // @private {ZoomAnimation|null} - animation for the zoom level or null if not animating
     this.zoomAnimation = null;
 
-    // @public {Property.<CircuitElementViewType>} - whether to show lifelike or schematic representations
-    this.viewTypeProperty = new StringEnumerationProperty( CircuitElementViewTypeValues, 'lifelike', {
+    // whether to show lifelike or schematic representations
+    this.viewTypeProperty = new RichEnumerationProperty( CircuitElementViewType, CircuitElementViewType.LIFELIKE, {
       tandem: tandem.createTandem( 'viewTypeProperty' )
     } );
 

@@ -240,7 +240,7 @@ class CCKCLightBulbNode extends FixedCircuitElementNode {
         filledOptions
       );
       viewListener = ( view: CircuitElementViewType ) => {
-        this.rayNodeContainer.visible = view === 'lifelike';
+        this.rayNodeContainer.visible = view === CircuitElementViewType.LIFELIKE;
       };
       viewTypeProperty.link( viewListener );
       circuitLayerNode && !lightBulb.phetioIsArchetype && circuitLayerNode.lightBulbSocketLayer.addChild( this.socketNode );

@@ -266,7 +266,7 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
    */
   frontSideContainsSensorPoint( globalPoint: Vector2 ) {
 
-    if ( this.viewTypeProperty.value === 'lifelike' ) {
+    if ( this.viewTypeProperty.value === CircuitElementViewType.LIFELIKE ) {
       return this.capacitorCircuitElementLifelikeNode.frontSideContainsSensorPoint( globalPoint ) ||
              this.leftWireStub.containsPoint( this.leftWireStub.globalToParentPoint( globalPoint ) );
     }
@@ -283,7 +283,7 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
    */
   backSideContainsSensorPoint( globalPoint: Vector2 ) {
 
-    if ( this.viewTypeProperty.value === 'lifelike' ) {
+    if ( this.viewTypeProperty.value === CircuitElementViewType.LIFELIKE ) {
       return this.capacitorCircuitElementLifelikeNode.backSideContainsSensorPoint( globalPoint ) ||
              this.rightWireStub.containsPoint( this.rightWireStub.globalToParentPoint( globalPoint ) );
     }
@@ -298,7 +298,7 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
    * @public
    */
   getHighlightBounds() {
-    return this.viewTypeProperty.value === 'lifelike' ?
+    return this.viewTypeProperty.value === CircuitElementViewType.LIFELIKE ?
            this.contentNode.localBounds.erodedX( 22 ).erodedY( 15 ) :
            this.contentNode.localBounds.dilatedX( 10 ).dilatedY( 10 );
   }

@@ -52,7 +52,7 @@ type SegmentedNode = {
  * @param {boolean} closed - whether the switch is closed
  * @returns {Node} with leftSegmentNode, rotatingSegmentNode and rightSegmentNode properties (also {Node})
  */
-const createNode = function( viewType: string, fill: Gradient | Color, thickness: number, curveDiameter: number, closed: boolean ) {
+const createNode = function( viewType: CircuitElementViewType, fill: Gradient | Color, thickness: number, curveDiameter: number, closed: boolean ) {
   const edgeRadius = thickness / 2;
 
   const leftSegmentNode = new Rectangle( 0,
@@ -82,7 +82,7 @@ const createNode = function( viewType: string, fill: Gradient | Color, thickness
     x: SWITCH_LENGTH * SWITCH_START,
     fill: fill,
     stroke: Color.BLACK,
-    lineWidth: viewType === 'schematic' ? 0 : 1,
+    lineWidth: viewType === CircuitElementViewType.SCHEMATIC ? 0 : 1,
     pickable: true // This is necessary because we use scenery hit testing for the probe hit testing
   } );
 
@@ -117,7 +117,7 @@ const createNode = function( viewType: string, fill: Gradient | Color, thickness
     children: [ leftSegmentNode, rotatingSegmentNode, rightSegmentNode, lifelikeHinge ]
   } ) as SegmentedNode;
 
-  if ( viewType === 'schematic' ) {
+  if ( viewType === CircuitElementViewType.SCHEMATIC ) {
     node.addChild( new Circle( thickness * 0.6, {
       fill: Color.BLACK,
       stroke: Color.BLACK,
@@ -135,21 +135,21 @@ const createNode = function( viewType: string, fill: Gradient | Color, thickness
 
 // Create all of the images
 const lifelikeOpenNode = createNode(
-  'lifelike', lifelikeGradient, LIFELIKE_DIAMETER, 6, false
+  CircuitElementViewType.LIFELIKE, lifelikeGradient, LIFELIKE_DIAMETER, 6, false
 );
 const lifelikeOpenImage = lifelikeOpenNode.rasterized( { wrap: false } );
 
 const lifelikeClosedNode = createNode(
-  'lifelike', lifelikeGradient, LIFELIKE_DIAMETER, 6, true
+  CircuitElementViewType.LIFELIKE, lifelikeGradient, LIFELIKE_DIAMETER, 6, true
 );
 const lifelikeClosedImage = lifelikeClosedNode.rasterized( { wrap: false } );
 
 const schematicOpenImage = createNode(
-  'schematic', Color.BLACK, CCKCConstants.SCHEMATIC_LINE_WIDTH, 0, false
+  CircuitElementViewType.SCHEMATIC, Color.BLACK, CCKCConstants.SCHEMATIC_LINE_WIDTH, 0, false
 ).rasterized( { wrap: false } );
 
 const schematicClosedImage = createNode(
-  'schematic', Color.BLACK, CCKCConstants.SCHEMATIC_LINE_WIDTH, 0, true
+  CircuitElementViewType.SCHEMATIC, Color.BLACK, CCKCConstants.SCHEMATIC_LINE_WIDTH, 0, true
 ).rasterized( { wrap: false } );
 
 class SwitchNode extends FixedCircuitElementNode {
@@ -216,7 +216,7 @@ class SwitchNode extends FixedCircuitElementNode {
 
     // @private {Node} - For hit testing
     this.lifelikeOpenNode = createNode(
-      'lifelike', lifelikeGradient, LIFELIKE_DIAMETER, 6, false
+      CircuitElementViewType.LIFELIKE, lifelikeGradient, LIFELIKE_DIAMETER, 6, false
     );
 
     // @private {function} - clean up resources when no longer used.

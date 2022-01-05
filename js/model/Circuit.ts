@@ -107,12 +107,6 @@ class Circuit {
   private readonly realLightBulbGroup: PhetioGroup<LightBulb>;
   private readonly groups: PhetioGroup<CircuitElement>[];
 
-  /**
-   * @param {Property.<CircuitElementViewType>} viewTypeProperty
-   * @param {Property.<boolean>} addRealBulbsProperty
-   * @param {Tandem} tandem
-   * @param {Object} [providedOptions]
-   */
   constructor( viewTypeProperty: Property<CircuitElementViewType>, addRealBulbsProperty: Property<boolean>, tandem: Tandem,
                providedOptions?: Partial<CircuitOptions> ) {
 

@@ -367,7 +367,7 @@ class WireNode extends CircuitElementNode {
    */
   updateRender() {
     const view = this.viewTypeProperty.value;
-    if ( view === 'lifelike' ) {
+    if ( view === CircuitElementViewType.LIFELIKE ) {
 
       // determine whether to use the forward or reverse gradient based on the angle
       const startPoint = this.wire.startPositionProperty.get();

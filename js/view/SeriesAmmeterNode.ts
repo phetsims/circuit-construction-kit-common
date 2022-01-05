@@ -23,8 +23,8 @@ import SeriesAmmeter from '../model/SeriesAmmeter.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
 import ammeterReadoutTypeProperty from './ammeterReadoutTypeProperty.js';
-import { CircuitElementViewTypeValues } from '../model/CircuitElementViewType.js';
-import StringEnumerationProperty from '../../../axon/js/StringEnumerationProperty.js';
+import CircuitElementViewType from '../model/CircuitElementViewType.js';
+import RichEnumerationProperty from '../../../axon/js/RichEnumerationProperty.js';
 
 const currentString = circuitConstructionKitCommonStrings.current;
 
@@ -168,7 +168,7 @@ class SeriesAmmeterNode extends FixedCircuitElementNode {
       screenView,
       circuitLayerNode,
       seriesAmmeter,
-      new StringEnumerationProperty( CircuitElementViewTypeValues, 'lifelike' ),
+      new RichEnumerationProperty( CircuitElementViewType, CircuitElementViewType.LIFELIKE ),
       lifelikeNode,
       new Node( { children: [ lifelikeNode ] } ), // reuse lifelike view for the schematic view
       tandem,

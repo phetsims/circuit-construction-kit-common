@@ -10,20 +10,20 @@
  */
 
 import NumberProperty from '../../../axon/js/NumberProperty.js';
-import StringEnumerationProperty from '../../../axon/js/StringEnumerationProperty.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import merge from '../../../phet-core/js/merge.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Battery from './Battery.js';
 import CircuitElement from './CircuitElement.js';
-import { CircuitElementViewTypeValues } from './CircuitElementViewType.js';
 import LightBulb from './LightBulb.js';
 import Resistor from './Resistor.js';
 import ResistorType from './ResistorType.js';
 import Switch from './Switch.js';
 import Vertex from './Vertex.js';
 import Wire from './Wire.js';
+import CircuitElementViewType from './CircuitElementViewType.js';
+import RichEnumerationProperty from '../../../axon/js/RichEnumerationProperty.js';
 
 class CircuitStruct {
   vertices: Vertex[];
@@ -136,7 +136,7 @@ CircuitStruct.fromStateObject = ( circuit, circuitState, resistivityProperty, ta
       Tandem.OPT_OUT // TODO (black-box-study): a way to set the resistance
     ) );
   }
-  const p = new StringEnumerationProperty( CircuitElementViewTypeValues, 'lifelike' );
+  const p = new RichEnumerationProperty( CircuitElementViewType, CircuitElementViewType.LIFELIKE );
   for ( let i = 0; i < circuitState.lightBulbs.length; i++ ) {
     options = circuitState.lightBulbs[ i ].options || {};
     circuitStruct.lightBulbs.push( new LightBulb(

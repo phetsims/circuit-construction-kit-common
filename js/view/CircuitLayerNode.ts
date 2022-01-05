@@ -259,7 +259,7 @@ class CircuitLayerNode extends Node {
     // choose layering for schematic vs lifelike.  HEADS UP, this means circuitLayerNode.addChild() will get overwritten
     // so all nodes must be added as children in the array above.
     screenView.model.viewTypeProperty.link( viewType => {
-      this.children = ( viewType === 'lifelike' ) ? lifelikeLayering : schematicLayering;
+      this.children = ( viewType === CircuitElementViewType.LIFELIKE ) ? lifelikeLayering : schematicLayering;
     } );
 
     // @public {Property.<Bounds2>} the visible bounds in the coordinate frame of the circuit.  Initialized with a

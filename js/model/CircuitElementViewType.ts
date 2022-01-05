@@ -1,5 +1,7 @@
-// Copyright 2021, University of Colorado Boulder
+// Copyright 2021-2022, University of Colorado Boulder
 
+import EnumerationValue from '../../../phet-core/js/EnumerationValue.js';
+import RichEnumeration from '../../../phet-core/js/RichEnumeration.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 /**
@@ -8,15 +10,17 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-// The values
-const CircuitElementViewTypeValues = [ 'lifelike', 'schematic' ] as const;
+class CircuitElementViewType extends EnumerationValue {
+  static LIFELIKE = new CircuitElementViewType();
+  static SCHEMATIC = new CircuitElementViewType();
 
-// The string literal union type
-type CircuitElementViewType = ( typeof CircuitElementViewTypeValues )[number];
+  static enumeration = new RichEnumeration( CircuitElementViewType, {
+    phetioDocumentation: 'Enumeration that determines how the circuit elements are rendered: lifelike or schematic'
+  } );
 
-// Register the values available at runtime.  Note it does not match the filename
-circuitConstructionKitCommon.register( 'CircuitElementViewTypeValues', CircuitElementViewTypeValues );
+  private constructor() { super(); }
+}
 
-// Export
-export { CircuitElementViewTypeValues };
+circuitConstructionKitCommon.register( 'CircuitElementViewType', CircuitElementViewType );
+
 export default CircuitElementViewType;

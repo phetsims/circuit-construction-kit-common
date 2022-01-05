@@ -243,7 +243,7 @@ class FixedCircuitElementNode extends CircuitElementNode {
    * @private
    */
   setViewType( viewType: CircuitElementViewType ) {
-    this.contentNode.children = [ viewType === 'lifelike' ? this.lifelikeNode : this.schematicNode ];
+    this.contentNode.children = [ viewType === CircuitElementViewType.LIFELIKE ? this.lifelikeNode : this.schematicNode ];
 
     // Update the dimensions of the highlight.  For Switches, retain the original bounds (big enough to encapsulate
     // both schematic and lifelike open and closed).
