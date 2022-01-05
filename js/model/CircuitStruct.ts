@@ -136,7 +136,7 @@ CircuitStruct.fromStateObject = ( circuit, circuitState, resistivityProperty, ta
       Tandem.OPT_OUT // TODO (black-box-study): a way to set the resistance
     ) );
   }
-  const p = new RichEnumerationProperty( CircuitElementViewType, CircuitElementViewType.LIFELIKE );
+  const p = new RichEnumerationProperty( CircuitElementViewType.LIFELIKE );
   for ( let i = 0; i < circuitState.lightBulbs.length; i++ ) {
     options = circuitState.lightBulbs[ i ].options || {};
     circuitStruct.lightBulbs.push( new LightBulb(

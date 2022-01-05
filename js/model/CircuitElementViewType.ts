@@ -14,7 +14,7 @@ class CircuitElementViewType extends EnumerationValue {
   static LIFELIKE = new CircuitElementViewType();
   static SCHEMATIC = new CircuitElementViewType();
 
-  static enumeration = new RichEnumeration( CircuitElementViewType, {
+  static enumeration = new RichEnumeration<CircuitElementViewType>( CircuitElementViewType, {
     phetioDocumentation: 'Enumeration that determines how the circuit elements are rendered: lifelike or schematic'
   } );
 

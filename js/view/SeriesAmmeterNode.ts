@@ -168,7 +168,7 @@ class SeriesAmmeterNode extends FixedCircuitElementNode {
       screenView,
       circuitLayerNode,
       seriesAmmeter,
-      new RichEnumerationProperty( CircuitElementViewType, CircuitElementViewType.LIFELIKE ),
+      new RichEnumerationProperty( CircuitElementViewType.LIFELIKE ),
       lifelikeNode,
       new Node( { children: [ lifelikeNode ] } ), // reuse lifelike view for the schematic view
       tandem,

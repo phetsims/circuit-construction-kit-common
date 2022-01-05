@@ -147,7 +147,7 @@ class SensorToolbox extends CCKCPanel {
     const seriesAmmeterToolNode = new CircuitElementToolNode(
       '',
       new BooleanProperty( false ),
-      new RichEnumerationProperty( CircuitElementViewType, CircuitElementViewType.SCHEMATIC ),
+      new RichEnumerationProperty( CircuitElementViewType.SCHEMATIC ),
       circuit,
       point => circuitLayerNode.globalToLocalPoint( point ),
       seriesAmmeterNodeIcon,

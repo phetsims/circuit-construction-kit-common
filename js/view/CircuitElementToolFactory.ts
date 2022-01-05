@@ -75,8 +75,8 @@ const SWITCH_LENGTH = CCKCConstants.SWITCH_LENGTH;
 
 // Separate icons are made for schematic/lifelike so they can be aligned
 const iconAlignGroup = new AlignGroup();
-const LIFELIKE_PROPERTY = new RichEnumerationProperty( CircuitElementViewType, CircuitElementViewType.LIFELIKE );
-const SCHEMATIC_PROPERTY = new RichEnumerationProperty( CircuitElementViewType, CircuitElementViewType.SCHEMATIC );
+const LIFELIKE_PROPERTY = new RichEnumerationProperty( CircuitElementViewType.LIFELIKE );
+const SCHEMATIC_PROPERTY = new RichEnumerationProperty( CircuitElementViewType.SCHEMATIC );
 
 class CircuitElementToolFactory {
   private readonly circuit: Circuit;

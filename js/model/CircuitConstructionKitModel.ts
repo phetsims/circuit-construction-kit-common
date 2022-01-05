@@ -75,7 +75,7 @@ class CircuitConstructionKitModel {
     this.zoomAnimation = null;
 
     // whether to show lifelike or schematic representations
-    this.viewTypeProperty = new RichEnumerationProperty( CircuitElementViewType, CircuitElementViewType.LIFELIKE, {
+    this.viewTypeProperty = new RichEnumerationProperty( CircuitElementViewType.LIFELIKE, {
       tandem: tandem.createTandem( 'viewTypeProperty' )
     } );
 
