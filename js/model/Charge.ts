@@ -13,6 +13,8 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitElement from './CircuitElement.js';
 
 class Charge {
+
+  //the amount of charge
   readonly charge: number;
   circuitElement: CircuitElement;
   distance: number;
@@ -31,7 +33,6 @@ class Charge {
 
     assert && assert( charge === 1 || charge === -1, 'charge should be 1 or -1' );
 
-    // @public (read-only) {number} the amount of charge
     this.charge = charge;
 
     // Validate inputs

@@ -26,14 +26,6 @@ type BatteryOptions = {} & VoltageSourceOptions;
 class Battery extends VoltageSource {
   readonly batteryType: BatteryType;
 
-  /**
-   * @param {Vertex} startVertex - one of the battery vertices
-   * @param {Vertex} endVertex - the other battery vertex
-   * @param {Property.<number>} internalResistanceProperty - the resistance of the battery
-   * @param {BatteryType} batteryType
-   * @param {Tandem} tandem
-   * @param {Object} [providedOptions]
-   */
   constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, batteryType: BatteryType,
                tandem: Tandem, providedOptions?: Partial<BatteryOptions> ) {
     assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );
@@ -48,15 +40,12 @@ class Battery extends VoltageSource {
     }, providedOptions ) as BatteryOptions;
     super( startVertex, endVertex, internalResistanceProperty, BATTERY_LENGTH, tandem, filledOptions );
 
-    // @public (read-only) {string} - track which way the battery "button" (plus side) was facing the initial state so
-    // the user can only create a certain number of "left" or "right" batteries from the toolbox.
     this.initialOrientation = filledOptions.initialOrientation;
 
     // @public (read-only) {BatteryType} - the type of the battery - NORMAL | HIGH_VOLTAGE
     this.batteryType = batteryType;
   }
 
-  // @public
   step( time: number, dt: number, circuit: Circuit ): void {
     // nothing to do
   }

@@ -17,7 +17,11 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Meter from './Meter.js';
 
 class Ammeter extends Meter {
+
+  // the full-precision reading on the ammeter. It will be formatted for display in the view.  Null means the ammeter is not on a wire.
   readonly currentProperty: Property<number | null>;
+
+  // the position of the tip of the probe
   readonly probePositionProperty: Property<Vector2>;
 
   /**
@@ -27,25 +31,18 @@ class Ammeter extends Meter {
   constructor( tandem: Tandem, phetioIndex: number ) {
     super( tandem, phetioIndex );
 
-    // @public {Property.<number|null>} the full-precision reading on the ammeter. It will be formatted for
-    // display in the view.  Null means the ammeter is not on a wire.
     this.currentProperty = new Property<number | null>( null, {
       tandem: tandem.createTandem( 'currentProperty' ),
       units: 'A',
       phetioType: Property.PropertyIO( NullableIO( NumberIO ) )
     } );
 
-    // @public - the position of the tip of the probe
     this.probePositionProperty = new Vector2Property( Vector2.ZERO, {
       tandem: tandem.createTandem( 'probePositionProperty' )
     } );
   }
 
-  /**
-   * Restore the ammeter to its initial conditions
-   * @public
-   * @override
-   */
+  // Restore the ammeter to its initial conditions
   reset() {
     super.reset();
     this.currentProperty.reset();

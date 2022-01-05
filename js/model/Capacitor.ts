@@ -21,6 +21,8 @@ type CapacitorOptions = {
 } & DynamicCircuitElementOptions;
 
 class Capacitor extends DynamicCircuitElement {
+
+  // the capacitance in farads
   readonly capacitanceProperty: NumberProperty;
 
   /**
@@ -40,7 +42,6 @@ class Capacitor extends DynamicCircuitElement {
 
     super( startVertex, endVertex, CCKCConstants.CAPACITOR_LENGTH, tandem, options );
 
-    // @public {Property.<number>} the capacitance in farads
     this.capacitanceProperty = new NumberProperty( options.capacitance, {
       range: new Range( CCKCQueryParameters.capacitanceMin, CCKCQueryParameters.capacitanceMax ),
       tandem: tandem.createTandem( 'capacitanceProperty' )
@@ -80,21 +81,12 @@ class Capacitor extends DynamicCircuitElement {
     } );
   }
 
-  /**
-   * Dispose of this and PhET-iO instrumented children, so they will be unregistered.
-   * @public
-   */
+  // Dispose of this and PhET-iO instrumented children, so they will be unregistered.
   dispose() {
     this.capacitanceProperty.dispose();
     super.dispose();
   }
 
-  /**
-   * Get the Properties that may change the circuit solution, so that the circuit can be re-solved when they change.
-   * @override
-   * @returns {Property.<*>[]}
-   * @public
-   */
   getCircuitProperties() {
     return [ this.capacitanceProperty ];
   }

@@ -27,9 +27,16 @@ const MAX_VOLTAGE = 120;
 type ACVoltageOptions = {} & VoltageSourceOptions;
 
 class ACVoltage extends VoltageSource {
+
+  // the maximum voltage, which can be controlled by the CircuitElementNumberControl
   readonly maximumVoltageProperty: NumberProperty;
+
+  // the frequency of oscillation in Hz
   readonly frequencyProperty: NumberProperty;
+
+  // the phase in degrees
   readonly phaseProperty: NumberProperty;
+
   private time: number;
 
   /**
@@ -52,19 +59,16 @@ class ACVoltage extends VoltageSource {
     }, providedOptions ) as ACVoltageOptions;
     super( startVertex, endVertex, internalResistanceProperty, CCKCConstants.BATTERY_LENGTH, tandem, options );
 
-    // @public {NumberProperty} - the maximum voltage, which can be controlled by the CircuitElementNumberControl
     this.maximumVoltageProperty = new NumberProperty( options.voltage, {
       tandem: tandem.createTandem( 'maximumVoltageProperty' ),
       range: new Range( 0, MAX_VOLTAGE )
     } );
 
-    // @public {NumberProperty} - the frequency of oscillation in Hz
     this.frequencyProperty = new NumberProperty( 0.5, {
       tandem: tandem.createTandem( 'frequencyProperty' ),
       range: new Range( 0.1, 2.0 )
     } );
 
-    // @public (read-only) - the phase in degrees
     this.phaseProperty = new NumberProperty( 0, {
       range: new Range( -180, 180 ),
       tandem: tandem.createTandem( 'phaseProperty' ),
@@ -75,20 +79,12 @@ class ACVoltage extends VoltageSource {
     this.time = 0;
   }
 
-  /**
-   * Get the properties so that the circuit can be solved when changed.
-   * @override
-   * @returns {Property.<*>[]}
-   * @public
-   */
+  // Get the properties so that the circuit can be solved when changed.
   getCircuitProperties() {
     return [ this.frequencyProperty, this.phaseProperty, this.maximumVoltageProperty, ...super.getCircuitProperties() ];
   }
 
-  /**
-   * Dispose of this and PhET-iO instrumented children, so they will be unregistered.
-   * @public
-   */
+  // Dispose of this and PhET-iO instrumented children, so they will be unregistered.
   dispose() {
     this.maximumVoltageProperty.dispose();
     this.frequencyProperty.dispose();
@@ -97,10 +93,9 @@ class ACVoltage extends VoltageSource {
   }
 
   /**
-   * @param {number} time - total elapsed time
-   * @param {number} dt - delta between last frame and current frame
-   * @param {Circuit} circuit
-   * @public
+   * @param time - total elapsed time
+   * @param dt - delta between last frame and current frame
+   * @param circuit
    */
   step( time: number, dt: number, circuit: Circuit ) {
     super.step( time, dt, circuit );

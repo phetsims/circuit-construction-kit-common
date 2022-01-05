@@ -25,7 +25,6 @@ const CCKCUtils = {
   /**
    * Typically show 2 decimal places for current and voltage readouts in the play area, but if it is a smaller value,
    * below 0.02 and 0.001, then it should show 3 decimal places.
-   * @public
    * @param value - the value to be formatted for display
    * @returns the number of decimal places to use for the display
    */
@@ -39,7 +38,6 @@ const CCKCUtils = {
    * @param current - in Amps
    * @param blackBoxStudy
    * @returns {string}
-   * @public
    */
   createCurrentReadout: function( current: number | null, blackBoxStudy: boolean ): string {
     if ( CCKCQueryParameters.fullPrecisionAmmeter ) {
@@ -77,7 +75,6 @@ const CCKCUtils = {
   /**
    * Returns a string that adjusts its voltage value.
    * @param value - voltage value in Volts
-   * @public
    */
   createVoltageReadout: function( value: number ): string {
     const decimals = this.getNumberOfDecimalPoints( value );
@@ -91,7 +88,6 @@ const CCKCUtils = {
    * @param inSceneGraph - should the child be shown in the scene graph
    * @param parent - parent that contains the child in the scene graph
    * @param child - child added/removed from scene graph
-   * @public
    */
   setInSceneGraph: function( inSceneGraph: boolean, parent: Node, child: Node ) {
     if ( inSceneGraph && !parent.hasChild( child ) ) {

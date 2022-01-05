@@ -24,7 +24,13 @@ type VoltageSourceOptions = {
 
 abstract class VoltageSource extends FixedCircuitElement {
   readonly voltageProperty: NumberProperty;
+
+  // the internal resistance of the battery
   readonly internalResistanceProperty: Property<number>;
+
+  // track which way the battery "button" (plus side) was facing the initial state so
+  // the user can only create a certain number of "left" or "right" batteries from the toolbox.
+  // @readonly
   initialOrientation: string; // TODO: enum
 
   /**
@@ -52,11 +58,8 @@ abstract class VoltageSource extends FixedCircuitElement {
     // @public {NumberProperty} - the voltage of the battery in volts
     this.voltageProperty = new NumberProperty( options.voltage, options.voltagePropertyOptions );
 
-    // @public {Property.<number>} the internal resistance of the battery
     this.internalResistanceProperty = internalResistanceProperty;
 
-    // @public (read-only) {string} - track which way the battery "button" (plus side) was facing the initial state so
-    // the user can only create a certain number of "left" or "right" batteries from the toolbox.
     this.initialOrientation = options.initialOrientation;
   }
 
