@@ -1,4 +1,4 @@
-// Copyright 2015-2021, University of Colorado Boulder
+// Copyright 2015-2022, University of Colorado Boulder
 
 /**
  * Renders the view for the SeriesAmmeter, which looks the same in lifelike mode or schematic mode.

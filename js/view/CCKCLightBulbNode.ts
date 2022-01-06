@@ -1,4 +1,4 @@
-// Copyright 2015-2021, University of Colorado Boulder
+// Copyright 2015-2022, University of Colorado Boulder
 
 /**
  * Named CCKCLightBulbNode to avoid collisions with SCENERY_PHET/LightBulbNode. Renders the bulb shape
