@@ -81,9 +81,8 @@ class MNACircuit {
    * Counts the number of unknown currents in the circuit.  There is an unknown current in each battery and
    * 0-resistance resistor.
    * @returns {number}
-   * @private
    */
-  getCurrentCount() {
+  private getCurrentCount() {
     let numberOfResistanceFreeResistors = 0;
     for ( let i = 0; i < this.resistors.length; i++ ) {
       if ( this.resistors[ i ].resistance === 0 ) {

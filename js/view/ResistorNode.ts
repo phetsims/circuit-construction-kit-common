@@ -239,9 +239,6 @@ class ResistorNode extends FixedCircuitElementNode {
     // @protected {Image}
     this.lifelikeResistorImageNode = lifelikeResistorImageNode;
 
-    /**
-     * @private {function} - dispose the resistor node
-     */
     this.disposeResistorNode = () => {
       updateColorBands && resistor.resistanceProperty.unlink( updateColorBands );
       lifelikeResistorImageNode.dispose();

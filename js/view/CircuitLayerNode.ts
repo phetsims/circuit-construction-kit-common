@@ -561,9 +561,8 @@ class CircuitLayerNode extends Node {
    * @param {Vertex[]} vertices
    * @returns {Object|null} Object that indicates the two vertices best suited for connecting as { src: Vertex, dst: Vertex },
    *                        or null if no match is suitable.
-   * @private
    */
-  getBestDropTarget( vertices: Vertex[] ) {
+  private getBestDropTarget( vertices: Vertex[] ) {
     const allDropTargets = this.getAllDropTargets( vertices );
     if ( allDropTargets ) {
       const sorted = _.sortBy( allDropTargets, dropTarget =>
@@ -642,9 +641,8 @@ class CircuitLayerNode extends Node {
    * @param {Vector2} position
    * @param {CircuitElement[]} neighbors
    * @param {Vertex[]} vertices
-   * @private
    */
-  rotateAboutFixedPivot( point: Vector2, vertex: Vertex, okToRotate: boolean, vertexNode: VertexNode, position: Vector2, neighbors: CircuitElement[], vertices: Vertex[] ) {
+  private rotateAboutFixedPivot( point: Vector2, vertex: Vertex, okToRotate: boolean, vertexNode: VertexNode, position: Vector2, neighbors: CircuitElement[], vertices: Vertex[] ) {
 
     // Don't traverse across the black box interface, or it would rotate objects on the other side
     vertices = this.circuit.findAllFixedVertices( vertex, currentVertex => !currentVertex.blackBoxInterfaceProperty.get() );
@@ -926,7 +924,6 @@ class CircuitLayerNode extends Node {
    * voltmeter.
    * @param {Vector2} probePosition - in the local coordinate frame of the CircuitLayerNode
    * @returns {VoltageConnection|null} returns VoltageConnection if connected, otherwise null
-   * @private
    */
   getVoltageConnection( probePosition: Vector2 ): VoltageConnection | null {
 
@@ -1009,9 +1006,8 @@ class CircuitLayerNode extends Node {
    * @param {Node} probeNode
    * @param {Node} layer
    * @returns {number|null}
-   * @private
    */
-  getCurrentInLayer( probeNode: Node, layer: Node ) {
+  private getCurrentInLayer( probeNode: Node, layer: Node ) {
 
     const globalPoint = probeNode.parentToGlobalPoint( probeNode.translation );
 

@@ -169,9 +169,7 @@ class CustomLightBulbNode extends Node {
     this.update();
   }
 
-  /**
-   * @private - update when the brightness changes
-   */
+  // update when the brightness changes
   update() {
     if ( this.visible && !this.baseOnly ) {
       const brightness = this.brightnessProperty.value;

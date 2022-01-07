@@ -240,9 +240,8 @@ class FixedCircuitElementNode extends CircuitElementNode {
   /**
    * Set the view type
    * @param {CircuitElementViewType} viewType
-   * @private
    */
-  setViewType( viewType: CircuitElementViewType ) {
+  private setViewType( viewType: CircuitElementViewType ) {
     this.contentNode.children = [ viewType === CircuitElementViewType.LIFELIKE ? this.lifelikeNode : this.schematicNode ];
 
     // Update the dimensions of the highlight.  For Switches, retain the original bounds (big enough to encapsulate
@@ -294,9 +293,8 @@ class FixedCircuitElementNode extends CircuitElementNode {
 
   /**
    * Move the circuit element node to the front
-   * @private
    */
-  moveFixedCircuitElementNodeToFront() {
+  private moveFixedCircuitElementNodeToFront() {
 
     // Components outside the black box do not move in front of the overlay
     if ( this.circuitElement.interactiveProperty.get() ) {
@@ -310,9 +308,8 @@ class FixedCircuitElementNode extends CircuitElementNode {
   /**
    * Used as a bound callback listener in the constructor to update the highlight visibility
    * @param {CircuitElement|null} circuitElement
-   * @private
    */
-  setSelectedCircuitElement( circuitElement: CircuitElement | null ) {
+  private setSelectedCircuitElement( circuitElement: CircuitElement | null ) {
     if ( this.highlightNode ) {
       const visible = ( circuitElement === this.circuitElement );
       CCKCUtils.setInSceneGraph( visible, this.circuitLayerNode!.highlightLayer, this.highlightNode );
@@ -351,13 +348,12 @@ class FixedCircuitElementNode extends CircuitElementNode {
   }
 
   /**
-   * Hide or show the fire depending on various parameters
+   * Hide or show the fire depending on various parameters, for listener bind.
    * @param {number} current
    * @param {number} resistance
    * @param {boolean} isValueDepictionEnabled
-   * @private - for listener bind
    */
-  updateFireVisible( current: number, resistance: number, isValueDepictionEnabled: boolean ) {
+  private updateFireVisible( current: number, resistance: number, isValueDepictionEnabled: boolean ) {
     this.fireNode!.visible = isFireShown( current, isValueDepictionEnabled ) && resistance >= 1E-8;
   }
 

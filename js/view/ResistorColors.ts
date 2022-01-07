@@ -47,7 +47,6 @@ const ResistorColors = {
    * Get the color table entries for the specified resistance.
    * @param {number} resistance
    * @returns {Object[]} entries from the color table
-   * @private
    */
   getEntries: function( resistance: number ) {
     assert && assert( resistance >= 0, 'resistance should be non-negative' );

@@ -315,7 +315,6 @@ class WireNode extends CircuitElementNode {
 
     /**
      * Move the wire element to the back of the view when connected to another circuit element
-     * @private
      */
     const moveToBack = () => {
 
