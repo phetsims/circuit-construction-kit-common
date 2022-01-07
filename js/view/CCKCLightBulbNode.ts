@@ -220,7 +220,7 @@ class CCKCLightBulbNode extends FixedCircuitElementNode {
       filledOptions
     );
 
-    // @private {Node} - node that contains the light rays so they can be easily positioned
+    // node that contains the light rays so they can be easily positioned
     this.rayNodeContainer = new Node( {
 
       // @ts-ignore
@@ -230,7 +230,7 @@ class CCKCLightBulbNode extends FixedCircuitElementNode {
     let viewListener: ( ( view: CircuitElementViewType ) => void ) | null = null;
     if ( circuitLayerNode ) {
 
-      // @private - Render the socket node in the front
+      // Render the socket node in the front
       this.socketNode = new LightBulbSocketNode(
         screenView,
         circuitLayerNode,
@@ -253,7 +253,6 @@ class CCKCLightBulbNode extends FixedCircuitElementNode {
       this.socketNode = null;
     }
 
-    // @private {function}
     this.disposeCircuitConstructionKitLightBulbNode = () => {
       updateBrightness.dispose();
       if ( this.socketNode ) {

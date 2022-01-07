@@ -109,16 +109,13 @@ class CircuitLayerNode extends Node {
   constructor( circuit: Circuit, screenView: CCKCScreenView, tandem: Tandem ) {
     super();
 
-    // @private {Property.<CircuitElementViewType>}
     this.viewTypeProperty = screenView.model.viewTypeProperty;
-
-    // @public (read-only) {CircuitConstructionKitModel}
     this.model = screenView.model;
 
-    // @private (read-only) {Property.<Bounds2>} - the part of the screen that can be seen in view coordinates
+    // the part of the screen that can be seen in view coordinates
     this.visibleBoundsProperty = screenView.visibleBoundsProperty;
 
-    // @private {Node} - the layer behind the control panels
+    // the layer behind the control panels
     this.circuitLayerNodeBackLayer = screenView.circuitLayerNodeBackLayer;
 
     // @public {Node} - CircuitElementNodes add highlights directly to this layer when they are constructed

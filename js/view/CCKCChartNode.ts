@@ -102,20 +102,15 @@ class CCKCChartNode extends Node {
     // @protected {ObservableArrayDef.<Vector2|null>}
     this.series = series;
 
-    // @private {CircuitLayerNode}
     this.circuitLayerNode = circuitLayerNode;
-
-    // @private
     this.timeProperty = timeProperty;
-
-    // @private
     this.visibleBoundsProperty = visibleBoundsProperty;
 
-    // @public (read-only) {Node} - shows the background for the chart.  Any attached probes or other
+    // shows the background for the chart.  Any attached probes or other
     // supplemental nodes should not be children of the backgroundNode if they need to translate independently.
     this.backgroundNode = backgroundNode;
 
-    // @private {DragListener|null} - set in initializeBodyDragListener
+    // set in initializeBodyDragListener
     this.backgroundDragListener = null;
 
     this.addChild( this.backgroundNode );
@@ -184,7 +179,6 @@ class CCKCChartNode extends Node {
     ];
     const initialZoomIndex = zoomRanges.findIndex( e => e.equals( options.defaultZoomLevel ) );
 
-    // @private
     this.zoomLevelProperty = new NumberProperty( initialZoomIndex, {
       range: new Range( 0, zoomRanges.length - 1 ),
       tandem: tandem.createTandem( 'zoomLevelProperty' )

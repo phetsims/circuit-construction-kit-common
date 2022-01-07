@@ -202,11 +202,9 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
     // @public (read-only) {Node} - for clipping in ChargeNode
     this.capacitorCircuitElementSchematicNode = schematicNode;
 
-    // @private {Image}
     this.leftWireStub = leftWireStub;
     this.rightWireStub = rightWireStub;
 
-    // @private {Path}
     this.leftSchematicPath = leftSchematicPath;
     this.rightSchematicPath = rightSchematicPath;
     this.leftSchematicHitAreaPath = new Path( leftSchematicShape, schematicPathHitAreaOptions );
@@ -230,7 +228,6 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
       rightWireStub.clipArea = bottomPlateCenterToGlobal.transformed( rightWireStub.getGlobalToLocalMatrix() );
     } );
 
-    // @private
     this.disposeCapacitorCircuitElementNode = () => {
       capacitanceVoltageListener.dispose();
       lifelikeNode.dispose();

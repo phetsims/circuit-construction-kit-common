@@ -71,7 +71,7 @@ class CircuitConstructionKitModel {
       blackBoxStudy: false
     }, providedOptions ) as CircuitConstructionKitModelOptions;
 
-    // @private {ZoomAnimation|null} - animation for the zoom level or null if not animating
+    // animation for the zoom level or null if not animating
     this.zoomAnimation = null;
 
     // whether to show lifelike or schematic representations
@@ -254,9 +254,8 @@ class CircuitConstructionKitModel {
   /**
    * Step forward one step, whether automatically or when the step button is pressed.
    * @param {number} dt
-   * @private
    */
-  stepOnce( dt: number ) {
+  private stepOnce( dt: number ) {
 
     // Only move charges if the simulation is not paused.
     this.isValueDepictionEnabledProperty.value && this.circuit.step( dt );

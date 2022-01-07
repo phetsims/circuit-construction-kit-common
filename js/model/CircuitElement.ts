@@ -168,10 +168,10 @@ abstract class CircuitElement extends PhetioObject {
     // @public (read-only) {Emitter} - indicate when the circuit element has been disposed
     this.disposeEmitterCircuitElement = new Emitter();
 
-    // @private {function} - Signify that a Vertex moved
+    // Signify that a Vertex moved
     this.vertexMovedListener = this.emitVertexMoved.bind( this );
 
-    // @private {function} - stored for disposal
+    // stored for disposal
     this.linkVertexListener = this.linkVertex.bind( this );
 
     this.startPositionProperty.link( this.vertexMovedListener );
@@ -180,7 +180,6 @@ abstract class CircuitElement extends PhetioObject {
     // @public - named so it doesn't collide with the specified voltageProperty in Battery or ACVoltage
     this.voltageDifferenceProperty = new NumberProperty( this.computeVoltageDifference() );
 
-    // @private
     this.vertexVoltageListener = () => this.voltageDifferenceProperty.set( this.computeVoltageDifference() );
 
     // @ts-ignore
@@ -205,9 +204,8 @@ abstract class CircuitElement extends PhetioObject {
   /**
    * Determine the voltage difference between end vertex and start vertex
    * @returns {number}
-   * @private
    */
-  computeVoltageDifference() {
+  private computeVoltageDifference() {
     return this.endVertexProperty.value.voltageProperty.value -
            this.startVertexProperty.value.voltageProperty.value;
   }
@@ -217,9 +215,8 @@ abstract class CircuitElement extends PhetioObject {
    * @param newVertex - the new vertex
    * @param oldVertex - the previous vertex
    * @param property
-   * @private
    */
-  linkVertex( newVertex: Vertex, oldVertex: Vertex | null, property: IReadOnlyProperty<Vertex> ) {
+  private linkVertex( newVertex: Vertex, oldVertex: Vertex | null, property: IReadOnlyProperty<Vertex> ) {
 
     // These guards prevent errors from the bad transient state caused by the Circuit.flip causing the same Vertex
     // to be both start and end at the same time.
@@ -273,9 +270,8 @@ abstract class CircuitElement extends PhetioObject {
 
   /**
    * Signify that a vertex has moved.
-   * @private
    */
-  emitVertexMoved() {
+  private emitVertexMoved() {
 
     // We are (hopefully!) in the middle of updating both vertices and we (hopefully!) will receive another callback
     // shortly with the correct values for both startPosition and endPosition

@@ -58,14 +58,13 @@ class MNACircuit {
     // @public {number} - the number of nodes in the set
     this.nodeCount = _.size( this.nodeSet );
 
-    // @private {number[]} the node indices
+    // the node indices
     this.nodes = _.values( this.nodeSet );
   }
 
   /**
    * Returns a string representation of the circuit for debugging.
    * @returns {string}
-   * @private
    */
   toString() {
     if ( assert ) { // stripped out for builds
@@ -97,9 +96,8 @@ class MNACircuit {
   /**
    * Gets the number of variables for the system, one for each voltage and one for each current.
    * @returns {number}
-   * @private
    */
-  getNumVars() {
+  private getNumVars() {
     return this.nodeCount + this.getCurrentCount();
   }
 
@@ -108,9 +106,8 @@ class MNACircuit {
    *
    * @param {number} nodeIndex - the node at which to compute current sources
    * @returns {number}
-   * @private
    */
-  getCurrentSourceTotal( nodeIndex: string ) {
+  private getCurrentSourceTotal( nodeIndex: string ) {
     let currentSourceTotal = 0.0;
     for ( let i = 0; i < this.currentSources.length; i++ ) {
       const currentSource = this.currentSources[ i ];
@@ -134,9 +131,8 @@ class MNACircuit {
    * @param {string} side - 'nodeId0' for outgoing current or 'nodeId1' for incoming current
    * @param {number} sign - 1 for incoming current and -1 for outgoing current
    * @param {Term[]} nodeTerms - to accumulate the result
-   * @private
    */
-  getCurrentTerms( node: string, side: 'nodeId0' | 'nodeId1', sign: number, nodeTerms: Term[] ) {
+  private getCurrentTerms( node: string, side: 'nodeId0' | 'nodeId1', sign: number, nodeTerms: Term[] ) {
     assert && CCKCUtils.validateNodeIndex( node );
 
     // Each battery introduces an unknown current through the battery
@@ -171,9 +167,8 @@ class MNACircuit {
   /**
    * Selects one node for each connected component to have the reference voltage of 0 volts.
    * @returns {number[]} - the node IDs selected for references
-   * @private
    */
-  getReferenceNodeIds() {
+  private getReferenceNodeIds() {
 
     // The nodes which need to be visited.
     const toVisit = _.values( this.nodeSet );
@@ -198,9 +193,8 @@ class MNACircuit {
    * Finds all nodes connected (by any path) to the given node
    * @param {string} node
    * @returns {string[]}
-   * @private
    */
-  getConnectedNodeIds( node: string ) {
+  private getConnectedNodeIds( node: string ) {
     const visited = [];
     const toVisit: string[] = [ node ];
 
@@ -226,9 +220,8 @@ class MNACircuit {
    * Returns an array of Equation instances that will be solved as a linear algebra problem to find the unknown
    * variables of the circuit.
    * @returns {Equation[]}
-   * @private
    */
-  getEquations() {
+  private getEquations() {
     const equations = [];
 
     // Reference node in each connected circuit element has a voltage of 0.0
@@ -278,9 +271,8 @@ class MNACircuit {
   /**
    * Gets an array of the unknown currents in the circuit.
    * @returns {Array}
-   * @private
    */
-  getUnknownCurrents() {
+  private getUnknownCurrents() {
     const unknownCurrents: UnknownCurrent[] = [];
 
     // Each battery has an unknown current

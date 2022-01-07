@@ -74,9 +74,8 @@ class TimestepSubdivisions<T> {
    * @param {number} dt        the initial value to use for dt
    * @param {Object} halfStepState - efficiently reuse value from parent call, instead of recomputing it.
    * @returns {number} the selected timestep that has acceptable error or meets the minimum allowed
-   * @private
    */
-  search( state: T, steppable: Steppable<T>, dt: number, halfStepState: T | null ): { dt: number, state: T } {
+  private search( state: T, steppable: Steppable<T>, dt: number, halfStepState: T | null ): { dt: number, state: T } {
 
     if ( dt === CCKCConstants.PAUSED_DT ) {
 

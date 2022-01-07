@@ -94,31 +94,12 @@ class CircuitElementToolFactory {
    * @param {Tandem} parentTandem - parent tandem for the created tool nodes
    */
   constructor( circuit: Circuit, showLabelsProperty: Property<boolean>, viewTypeProperty: Property<CircuitElementViewType>, globalToCircuitLayerNodePoint: ( v: Vector2 ) => Vector2, parentTandem: Tandem ) {
-    // @public
     this.circuit = circuit;
     this.showLabelsProperty = showLabelsProperty;
     this.viewTypeProperty = viewTypeProperty;
     this.globalToCircuitLayerNodePoint = globalToCircuitLayerNodePoint;
-
-    // @private
     this.parentTandem = parentTandem;
-
     this.wireToolNode = null;
-  }
-
-  /**
-   * Returns a function which counts the number of circuit elements (not counting those in the true black box).
-   * @param {function} predicate - CircuitElement => boolean
-   * @returns {function} a no-arg function that returns the {number} of CircuitElements of the specified type
-   * @private
-   */
-  createCounter( predicate: ( c: CircuitElement ) => boolean ) {
-    return () =>
-      this.circuit.circuitElements.filter( circuitElement =>
-
-        // Count according to the predicate, but don't count elements inside the true black box
-        predicate( circuitElement ) && !circuitElement.insideTrueBlackBoxProperty.get()
-      ).length;
   }
 
   /**
@@ -134,9 +115,8 @@ class CircuitElementToolFactory {
    *                                 - in the center of the socket
    * @param {Object} [providedOptions]
    * @returns {CircuitElementToolNode}
-   * @private
    */
-  createCircuitElementToolNode( labelString: string, count: number, createIcon: ( t: Tandem, p: Property<CircuitElementViewType> ) => Node,
+  private createCircuitElementToolNode( labelString: string, count: number, createIcon: ( t: Tandem, p: Property<CircuitElementViewType> ) => Node,
                                 predicate: ( circuitElement: CircuitElement ) => boolean, createElement: any, providedOptions?: any ) {
 
     assert && assert( Number.isInteger( count ), 'count should be an integer' );
@@ -183,6 +163,20 @@ class CircuitElementToolFactory {
         additionalProperty: providedOptions.additionalProperty
       }
     );
+  }
+
+  /**
+   * Returns a function which counts the number of circuit elements (not counting those in the true black box).
+   * @param {function} predicate - CircuitElement => boolean
+   * @returns {function} a no-arg function that returns the {number} of CircuitElements of the specified type
+   */
+  private createCounter( predicate: ( c: CircuitElement ) => boolean ) {
+    return () =>
+      this.circuit.circuitElements.filter( circuitElement =>
+
+        // Count according to the predicate, but don't count elements inside the true black box
+        predicate( circuitElement ) && !circuitElement.insideTrueBlackBoxProperty.get()
+      ).length;
   }
 
   /**

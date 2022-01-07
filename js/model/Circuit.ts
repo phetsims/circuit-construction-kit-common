@@ -90,7 +90,11 @@ class Circuit {
   readonly componentEditedEmitter: Emitter<[]>;
   readonly vertexGroup: PhetioGroup<Vertex>;
   readonly selectedCircuitElementProperty: Property<CircuitElement | null>;
+
+  // whether physical characteristics have changed and warrant solving for currents and voltages
   dirty: boolean;
+
+  // Actions that will be invoked during the step function
   private readonly stepActions: ( () => void )[];
   readonly wireGroup: PhetioGroup<Wire>;
   readonly batteryGroup: PhetioGroup<Battery>;
@@ -292,7 +296,6 @@ class Circuit {
       }
     } );
 
-    // @private {function[]} - Actions that will be invoked during the step function
     this.stepActions = [];
 
     // When any vertex is dropped, check it and its neighbors for overlap.  If any overlap, move them apart.
@@ -462,7 +465,6 @@ class Circuit {
         tandem: tandem.createTandem( 'realLightBulbGroup' )
       } );
 
-    // @private {Array.<PhetioGroup>}
     this.groups = [
       this.wireGroup,
       this.batteryGroup,
@@ -478,8 +480,6 @@ class Circuit {
       this.highResistanceLightBulbGroup,
       this.seriesAmmeterGroup
     ];
-
-    // @private {boolean} - whether physical characteristics have changed and warrant solving for currents and voltages
     this.dirty = false;
   }
 
@@ -499,7 +499,6 @@ class Circuit {
    * @param {Vector2} position - the position of the center of the CircuitElement
    * @param {number} length - the distance between the vertices
    * @returns {Vertex[]} with 2 elements
-   * @private
    */
   createVertexPairArray( position: Vector2, length: number ) {
     return [
@@ -512,9 +511,8 @@ class Circuit {
    * Create a Vertex at the specified position, convenience function for creating the vertices for CircuitElements.
    * @param {Vector2} position - the position of the Vertex in view = model coordinates
    * @returns {Vertex}
-   * @private
    */
-  createVertex( position: Vector2 ) {
+  private createVertex( position: Vector2 ) {
     return this.vertexGroup.createNextElement( position );
   }
 
@@ -522,9 +520,8 @@ class Circuit {
    * When over Vertex is released or bumped over another Vertex, rotate one away so it doesn't appear connected.
    * @param {Vertex} v1
    * @param {Vertex} v2
-   * @private
    */
-  moveVerticesApart( v1: Vertex, v2: Vertex ) {
+  private moveVerticesApart( v1: Vertex, v2: Vertex ) {
     const v1Neighbors = this.getNeighboringVertices( v1 );
     const v2Neighbors = this.getNeighboringVertices( v2 );
 
@@ -553,9 +550,8 @@ class Circuit {
    *
    * @param {Vertex} vertex - the vertex to rotate
    * @param {Vertex} pivotVertex - the vertex to rotate about
-   * @private
    */
-  bumpAwaySingleVertex( vertex: Vertex, pivotVertex: Vertex ) {
+  private bumpAwaySingleVertex( vertex: Vertex, pivotVertex: Vertex ) {
     const distance = vertex.positionProperty.value.distance( pivotVertex.positionProperty.value );
 
     // If the vertices are too close, they must be translated away
@@ -597,9 +593,8 @@ class Circuit {
    * @param {Vertex} vertex - the vertex which will be rotated
    * @param {Vertex} pivotVertex - the origin about which the vertex will rotate
    * @param {number} deltaAngle - angle in radians to rotate
-   * @private
    */
-  rotateSingleVertexByAngle( vertex: Vertex, pivotVertex: Vertex, deltaAngle: number ) {
+  private rotateSingleVertexByAngle( vertex: Vertex, pivotVertex: Vertex, deltaAngle: number ) {
     const position = vertex.positionProperty.get();
     const pivotPosition = pivotVertex.positionProperty.get();
 
@@ -615,9 +610,8 @@ class Circuit {
    * Determine the distance to the closest Vertex
    * @param {Vertex} vertex
    * @returns {number} - distance to nearest other Vertex in view coordinates
-   * @private
    */
-  closestDistanceToOtherVertex( vertex: Vertex ) {
+  private closestDistanceToOtherVertex( vertex: Vertex ) {
     let closestDistance = null;
     for ( let i = 0; i < this.vertexGroup.count; i++ ) {
       const v = this.vertexGroup.getElement( i );
@@ -766,9 +760,8 @@ class Circuit {
    *
    * @param {Vertex} mainVertex - the vertex whose group will be translated
    * @param {Vector2} delta - the vector by which to move the vertex group
-   * @private
    */
-  translateVertexGroup( mainVertex: Vertex, delta: Vector2 ) {
+  private translateVertexGroup( mainVertex: Vertex, delta: Vector2 ) {
     const vertexArray = this.findAllFixedVertices( mainVertex );
 
     for ( let j = 0; j < vertexArray.length; j++ ) {
@@ -785,9 +778,8 @@ class Circuit {
    * Returns true if the given vertex has a fixed connection to a black box interface vertex.
    * @param {Vertex} vertex
    * @returns {boolean}
-   * @private
    */
-  hasFixedConnectionToBlackBoxInterfaceVertex( vertex: Vertex ) {
+  private hasFixedConnectionToBlackBoxInterfaceVertex( vertex: Vertex ) {
     const fixedVertices = this.findAllFixedVertices( vertex );
     return _.some( fixedVertices, fixedVertex => fixedVertex.blackBoxInterfaceProperty.get() );
   }
@@ -806,9 +798,8 @@ class Circuit {
   /**
    * When removing a CircuitElement, also remove its start/end Vertex if it can be removed.
    * @param {Vertex} vertex
-   * @private
    */
-  removeVertexIfOrphaned( vertex: Vertex ) {
+  private removeVertexIfOrphaned( vertex: Vertex ) {
     if (
       this.getNeighborCircuitElements( vertex ).length === 0 &&
       !vertex.blackBoxInterfaceProperty.get() &&
@@ -1004,9 +995,8 @@ class Circuit {
    * @param {Vertex} a
    * @param {Vertex} b
    * @returns {boolean}
-   * @private
    */
-  isVertexAdjacent( a: Vertex, b: Vertex ) {
+  private isVertexAdjacent( a: Vertex, b: Vertex ) {
 
     // A vertex cannot be adjacent to itself.
     if ( a === b ) {
@@ -1021,9 +1011,8 @@ class Circuit {
    * @param {Vertex} vertex
    * @param {CircuitElement[]} circuitElements - the group of CircuitElements within which to look for neighbors
    * @returns {Vertex[]}
-   * @private
    */
-  getNeighborVerticesInGroup( vertex: Vertex, circuitElements: CircuitElement[] ) {
+  private getNeighborVerticesInGroup( vertex: Vertex, circuitElements: CircuitElement[] ) {
     const neighbors = [];
     for ( let i = 0; i < circuitElements.length; i++ ) {
       const circuitElement = circuitElements[ i ];
@@ -1038,7 +1027,6 @@ class Circuit {
    * Get an array of all the vertices adjacent to the specified Vertex.
    * @param {Vertex} vertex - the vertex to get neighbors for
    * @returns {Vertex[]}
-   * @private
    */
   getNeighboringVertices( vertex: Vertex ) {
     const neighborCircuitElements = this.getNeighborCircuitElements( vertex );
@@ -1048,9 +1036,8 @@ class Circuit {
   /**
    * Marks all connected circuit elements as dirty (so electrons will be layed out again), called when any wire length is changed.
    * @param {Vertex} vertex
-   * @private
    */
-  markAllConnectedCircuitElementsDirty( vertex: Vertex ) {
+  private markAllConnectedCircuitElementsDirty( vertex: Vertex ) {
     const allConnectedVertices = this.findAllConnectedVertices( vertex );
 
     // This is called many times while dragging a wire vertex, so for loops (as opposed to functional style) are used
@@ -1200,9 +1187,8 @@ class Circuit {
    * @param {function} okToVisit - (startVertex:Vertex,circuitElement:CircuitElement,endVertex:Vertex)=>boolean, rule
    *                             - that determines which vertices are OK to visit
    * @returns {Vertex[]}
-   * @private
    */
-  searchVertices( vertex: Vertex, okToVisit: ( a: Vertex, c: CircuitElement, b: Vertex ) => boolean ) {
+  private searchVertices( vertex: Vertex, okToVisit: ( a: Vertex, c: CircuitElement, b: Vertex ) => boolean ) {
 
     const fixedVertices = [];
     const toVisit: Vertex[] = [ vertex ];

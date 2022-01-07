@@ -25,12 +25,6 @@ class Capacitor extends DynamicCircuitElement {
   // the capacitance in farads
   readonly capacitanceProperty: NumberProperty;
 
-  /**
-   * @param {Vertex} startVertex
-   * @param {Vertex} endVertex
-   * @param {Tandem} tandem
-   * @param {Object} [providedOptions]
-   */
   constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: Partial<CapacitorOptions> ) {
     const options = merge( {
       capacitance: CCKCQueryParameters.capacitanceDefault,

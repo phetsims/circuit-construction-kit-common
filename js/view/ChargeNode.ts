@@ -59,20 +59,18 @@ class ChargeNode extends Node {
       children: [ child ]
     } );
 
-    // @private - to look up the CapacitorNode for clipping
+    // to look up the CapacitorNode for clipping
     this.circuitLayerNode = circuitLayerNode;
 
     // @public (read-only) {Charge} - the model depicted by this node
     this.charge = charge;
 
-    // @private
     this.outsideOfBlackBoxProperty = new BooleanProperty( false );
 
-    // @private {function} - Update the visibility accordingly.  A multilink will not work because the charge
-    // circuitElement changes.
+    // Update the visibility accordingly.  A multilink will not work because the charge circuitElement changes.
     this.updateVisibleListener = this.updateVisible.bind( this );
 
-    // @private {function} - When the model position changes, update the node position.
+    // When the model position changes, update the node position.
     this.updateTransformListener = () => this.updateTransform();
     charge.changedEmitter.addListener( this.updateTransformListener );
     charge.visibleProperty.link( this.updateVisibleListener );
@@ -94,9 +92,7 @@ class ChargeNode extends Node {
     super.dispose();
   }
 
-  /**
-   * @private - update the transform of the charge node
-   */
+  // update the transform of the charge node
   updateTransform() {
     const charge = this.charge;
     const current = charge.circuitElement.currentProperty.get();
@@ -155,9 +151,6 @@ class ChargeNode extends Node {
     }
   }
 
-  /**
-   * @private - update the visibility
-   */
   updateVisible() {
     this.visible = this.charge.visibleProperty.get() &&
                    this.outsideOfBlackBoxProperty.get();

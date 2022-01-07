@@ -55,10 +55,9 @@ abstract class CircuitElementNode extends Node {
 
     super( providedOptions );
 
-    // @private - see above
     this.useHitTestForSensors = providedOptions.useHitTestForSensors;
 
-    // @private (read-only) {Circuit|null} - the circuit which the element can be removed from or null for icons
+    // the circuit which the element can be removed from or null for icons
     this.circuit = circuit;
 
     // @public (read-only) {CircuitElement} - the CircuitElement rendered by this node
@@ -92,7 +91,6 @@ abstract class CircuitElementNode extends Node {
     };
     this.addInputListener( keyListener );
 
-    // @private
     this.disposeEmitterCircuitElementNode = new Emitter();
 
     this.updateOpacityOnInteractiveChange();
@@ -105,7 +103,6 @@ abstract class CircuitElementNode extends Node {
       // @ts-ignore
     const startDragListener = ( event: SceneryEvent ) => this.dragListener.down( event );
 
-    // @private {function} - for disposal
     this.disposeCircuitElementNode = () => {
 
       // remove the keyboard listener
@@ -117,8 +114,7 @@ abstract class CircuitElementNode extends Node {
 
     circuitElement.startDragEmitter.addListener( startDragListener );
 
-    // @private {boolean} - Flag to indicate when updating view is necessary, in order to avoid duplicate work when both
-    // vertices move
+    // Flag to indicate when updating view is necessary, in order to avoid duplicate work when both vertices move
     this.dirty = true;
     this.disposeEmitterCircuitElementNode.addListener( () => circuitElement.startDragEmitter.removeListener( startDragListener ) );
   }

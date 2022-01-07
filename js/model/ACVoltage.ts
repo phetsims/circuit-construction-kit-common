@@ -40,11 +40,11 @@ class ACVoltage extends VoltageSource {
   private time: number;
 
   /**
-   * @param {Vertex} startVertex - one of the battery vertices
-   * @param {Vertex} endVertex - the other battery vertex
-   * @param {Property.<number>} internalResistanceProperty - the resistance of the battery
-   * @param {Tandem} tandem
-   * @param {Object} [providedOptions]
+   * @param startVertex - one of the battery vertices
+   * @param endVertex - the other battery vertex
+   * @param internalResistanceProperty - the resistance of the battery
+   * @param tandem
+   * @param [providedOptions]
    */
   constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, tandem: Tandem, providedOptions?: Partial<ACVoltageOptions> ) {
     assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );
@@ -75,7 +75,6 @@ class ACVoltage extends VoltageSource {
       units: MathSymbols.DEGREES
     } );
 
-    // @private
     this.time = 0;
   }
 

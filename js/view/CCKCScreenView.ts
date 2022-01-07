@@ -93,7 +93,7 @@ class CCKCScreenView extends ScreenView {
   readonly model: CircuitConstructionKitModel;
   readonly circuitLayerNodeBackLayer: Node;
   private readonly circuitLayerNode: CircuitLayerNode;
-  private readonly chartNodes: CurrentChartNode[];
+  private readonly chartNodes: ( VoltageChartNode | CurrentChartNode )[];
   private readonly voltageChartNode1: VoltageChartNode | null;
   private readonly voltageChartNode2: VoltageChartNode | null;
   private readonly currentChartNode1: CurrentChartNode | null;
@@ -140,7 +140,7 @@ class CCKCScreenView extends ScreenView {
 
     // TODO (black-box-study): change background color to gray when isValueDepictionEnabledProperty goes false
 
-    // @private - contains parts of the circuit that should be shown behind the controls
+    // contains parts of the circuit that should be shown behind the controls
     this.circuitLayerNodeBackLayer = new Node();
 
     // @public (read-only) {CircuitLayerNode} - the circuit node
@@ -178,7 +178,6 @@ class CCKCScreenView extends ScreenView {
       return ammeterNode;
     } );
 
-    // @private {Array.<CurrentChartNode>}
     this.chartNodes = [];
 
     // Optionally initialize the chart nodes
@@ -203,27 +202,23 @@ class CCKCScreenView extends ScreenView {
         return currentChartNode;
       };
 
-      // @private {CurrentChartNode}
       this.voltageChartNode1 = createVoltageChartNode( 'voltageChartNode1' );
       this.voltageChartNode2 = createVoltageChartNode( 'voltageChartNode2' );
 
-      // @private {CurrentChartNode}
       this.currentChartNode1 = createCurrentChartNode( 'currentChartNode1' );
       this.currentChartNode2 = createCurrentChartNode( 'currentChartNode2' );
 
-      // @ts-ignore
       this.chartNodes.push( this.voltageChartNode1, this.voltageChartNode2, this.currentChartNode1, this.currentChartNode2 );
     }
     else {
       this.voltageChartNode1 = null;
       this.voltageChartNode2 = null;
 
-      // @private {CurrentChartNode}
       this.currentChartNode1 = null;
       this.currentChartNode2 = null;
     }
 
-    // @public (read-only) {CircuitElementToolbox} - Toolbox from which CircuitElements can be dragged
+    // Toolbox from which CircuitElements can be dragged
     this.circuitElementToolbox = new CircuitElementToolbox(
       model.viewTypeProperty,
       circuitElementToolNodes,
@@ -245,7 +240,6 @@ class CCKCScreenView extends ScreenView {
         showCharts: options.showCharts
       } );
 
-    // @private {ViewRadioButtonGroup}
     this.viewRadioButtonGroup = new ViewRadioButtonGroup(
       model.viewTypeProperty,
       tandem.createTandem( 'viewRadioButtonGroup' ), {
@@ -440,7 +434,7 @@ class CCKCScreenView extends ScreenView {
       this.step( 1 / 60 );
     } );
 
-    // @private - note whether the stopwatch should be repositioned when selected.  Otherwise it remembers its position
+    // note whether the stopwatch should be repositioned when selected.  Otherwise it remembers its position
     this.stopwatchNodePositionDirty = true;
 
     // @public - the StopwatchNode

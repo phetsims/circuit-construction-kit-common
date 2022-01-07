@@ -22,13 +22,11 @@ class CircuitDebugLayer extends Node {
     this.rebuild();
   }
 
-  // @public
   step() {
     this.rebuild();
   }
 
-  // @private
-  rebuild() {
+  private rebuild() {
     this.removeAllChildren();
     this.circuitLayerNode.circuit.circuitElements.forEach( circuitElement => {
       const start = circuitElement.startVertexProperty.value.positionProperty.value;

@@ -37,7 +37,6 @@ class LTACircuit {
                ltaCapacitors: LTACapacitor[],
                ltaInductors: LTAInductor[] ) {
 
-    // @private
     this.ltaResistors = ltaResistors;
     this.ltaBatteries = ltaBatteries;
     this.ltaCapacitors = ltaCapacitors;
@@ -176,16 +175,14 @@ class LTACircuit {
   /**
    * @param {number} dt
    * @returns {LTAStateSet}
-   * @private
    */
-  solveWithSubdivisions2( dt: number ) {
+  private solveWithSubdivisions2( dt: number ) {
     return this.solveWithSubdivisions( new TimestepSubdivisions(), dt );
   }
 
   /**
    * @param {number} dt
    * @returns {LTACircuit}
-   * @private
    */
   updateWithSubdivisions( dt: number ) {
     return this.solveWithSubdivisions2( dt ).getFinalState().ltaCircuit;

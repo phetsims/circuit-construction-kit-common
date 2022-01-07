@@ -74,7 +74,6 @@ class CircuitElementToolbox extends HBox {
       children: [ pageControl, carousel ]
     } );
 
-    // @private {Carousel}
     this.carousel = carousel;
   }
 

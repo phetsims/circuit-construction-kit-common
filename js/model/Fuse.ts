@@ -59,7 +59,7 @@ class Fuse extends FixedCircuitElement {
     // see https://github.com/phetsims/circuit-construction-kit-common/issues/480#issuecomment-483430822
     this.resistanceProperty = new NumberProperty( CCKCConstants.MINIMUM_RESISTANCE );
 
-    // @private {number} - time in seconds the current rating has been exceeded
+    // time in seconds the current rating has been exceeded
     this.timeCurrentRatingExceeded = 0;
   }
 

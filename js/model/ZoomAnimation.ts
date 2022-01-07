@@ -26,15 +26,9 @@ class ZoomAnimation {
    * @param {function} zoomCallback
    */
   constructor( initialZoom: number, targetZoom: number, zoomCallback: ( delta: number ) => void ) {
-
-    // @private {Easing}
     this.easing = Easing.CUBIC_IN_OUT;
-
-    // @private {number}
     this.ratio = 0;
     this.totalDelta = targetZoom - initialZoom;
-
-    // @private {function}
     this.zoomCallback = zoomCallback;
   }
 

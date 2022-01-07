@@ -24,10 +24,6 @@ class Ammeter extends Meter {
   // the position of the tip of the probe
   readonly probePositionProperty: Property<Vector2>;
 
-  /**
-   * @param {Tandem} tandem
-   * @param {number} phetioIndex
-   */
   constructor( tandem: Tandem, phetioIndex: number ) {
     super( tandem, phetioIndex );
 

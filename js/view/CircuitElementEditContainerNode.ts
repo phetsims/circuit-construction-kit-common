@@ -411,8 +411,6 @@ class EditPanel extends Panel {
       yMargin: 10,
       cornerRadius: 10
     } );
-
-    // @private
     this.hbox = hbox;
   }
 

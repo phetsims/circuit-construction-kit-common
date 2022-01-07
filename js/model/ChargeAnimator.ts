@@ -45,9 +45,6 @@ type CircuitElementPosition = {
 
 /**
  * Gets the absolute value of the current in a circuit element.
- * @param {CircuitElement} circuitElement
- * @returns {number}
- * @constructor
  */
 const CURRENT_MAGNITUDE = function( circuitElement: CircuitElement ) {
   return Math.abs( circuitElement.currentProperty.get() );
@@ -56,23 +53,15 @@ const CURRENT_MAGNITUDE = function( circuitElement: CircuitElement ) {
 class ChargeAnimator {
   private readonly charges: ObservableArray<Charge>;
   private readonly circuit: Circuit;
+
+  // factor that reduces the overall propagator speed when maximum speed is exceeded
   private scale: number;
   readonly timeScaleRunningAverage: RunningAverage;
   readonly timeScaleProperty: NumberProperty;
 
-  /**
-   * @param {Circuit} circuit
-   * @constructor
-   */
   constructor( circuit: Circuit ) {
-
-    // @private (read-only) {ObservableArrayDef.<Charge>} - the Charge instances
     this.charges = circuit.charges;
-
-    // @private (read-only) {Circuit} - the Circuit
     this.circuit = circuit;
-
-    // @private (read-only) {number} - factor that reduces the overall propagator speed when maximum speed is exceeded
     this.scale = 1;
 
     // @public {RunningAverage} - a running average over last time steps as a smoothing step
@@ -94,8 +83,7 @@ class ChargeAnimator {
 
   /**
    * Update the position of the charges based on the circuit currents
-   * @param {number} dt - elapsed time in seconds
-   * @public
+   * @param dt - elapsed time in seconds
    */
   step( dt: number ) {
 
@@ -141,10 +129,9 @@ class ChargeAnimator {
 
   /**
    * Make the charges repel each other so they don't bunch up.
-   * @param {number} dt - the elapsed time in seconds
-   * @private
+   * @param dt - the elapsed time in seconds
    */
-  equalizeAll( dt: number ) {
+  private equalizeAll( dt: number ) {
 
     // Update them in a stochastic order to avoid systematic sources of error building up.
     const indices = dotRandom.shuffle( _.range( this.charges.length ) );
@@ -163,11 +150,10 @@ class ChargeAnimator {
   /**
    * Adjust the charge so it is more closely centered between its neighbors.  This prevents charges from getting
    * too bunched up.
-   * @param {Charge} charge - the charge to adjust
-   * @param {number} dt - seconds
-   * @private
+   * @param charge - the charge to adjust
+   * @param dt - seconds
    */
-  equalizeCharge( charge: Charge, dt: number ) {
+  private equalizeCharge( charge: Charge, dt: number ) {
 
     const circuitElementCharges = this.circuit.getChargesInCircuitElement( charge.circuitElement );
 
@@ -216,11 +202,10 @@ class ChargeAnimator {
 
   /**
    * Move the charge forward in time by the specified amount.
-   * @param {Charge} charge - the charge to update
-   * @param {number} dt - elapsed time in seconds
-   * @private
+   * @param charge - the charge to update
+   * @param dt - elapsed time in seconds
    */
-  propagate( charge: Charge, dt: number ) {
+  private propagate( charge: Charge, dt: number ) {
     const chargePosition = charge.distance;
     assert && assert( _.isNumber( chargePosition ), 'distance along wire should be a number' );
     const current = -charge.circuitElement.currentProperty.get() * charge.charge;
@@ -270,9 +255,8 @@ class ChargeAnimator {
    * @param {Vertex} vertex - vertex the charge is passing by
    * @param {number} depth - number of recursive calls
    * @returns {Object[]}
-   * @private
    */
-  getPositions( charge: Charge, overshoot: number, vertex: Vertex, depth: number ) {
+  private getPositions( charge: Charge, overshoot: number, vertex: Vertex, depth: number ) {
 
     const circuit = this.circuit;
 

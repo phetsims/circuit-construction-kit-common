@@ -24,10 +24,10 @@ class Charge {
   readonly disposeEmitterCharge: Emitter<[]>;
 
   /**
-   * @param {CircuitElement} circuitElement - the circuit element the charge is in.
-   * @param {number} distance - how far along the circuit element it has traveled (in screen coordinates)
-   * @param {Property.<boolean>} visibleProperty - whether the charge should be shown.
-   * @param {number} charge - +1 for conventional current and -1 for electrons
+   * @param circuitElement - the circuit element the charge is in.
+   * @param distance - how far along the circuit element it has traveled (in screen coordinates)
+   * @param visibleProperty - whether the charge should be shown.
+   * @param charge - +1 for conventional current and -1 for electrons
    */
   constructor( circuitElement: CircuitElement, distance: number, visibleProperty: Property<boolean>, charge: number ) {
 

@@ -102,10 +102,9 @@ class LightBulb extends FixedCircuitElement {
              new Range( 0, 120 )
     } );
 
-    // @private (read-only) {Vector2} the vector between the vertices
+    // the vector between the vertices
     this.vertexDelta = endVertex.positionProperty.get().minus( startVertex.positionProperty.get() );
 
-    // @private
     this.viewTypeProperty = viewTypeProperty;
 
     // Fill in the chargePathLength
@@ -123,9 +122,8 @@ class LightBulb extends FixedCircuitElement {
   /**
    * Determine the path length by measuring the segments.
    * @returns {number}
-   * @private
    */
-  getPathLength() {
+  private getPathLength() {
     let pathLength = 0;
     const samplePoints = this.viewTypeProperty.value === CircuitElementViewType.LIFELIKE ? LIFELIKE_SAMPLE_POINTS : SCHEMATIC_SAMPLE_POINTS;
     let currentPoint = this.getFilamentPathPoint( 0, Vector2.ZERO, samplePoints );
@@ -163,9 +161,8 @@ class LightBulb extends FixedCircuitElement {
    * @param {Vector2} origin
    * @param {Vector2[]} samplePoints - the array of points to use for sampling
    * @returns {Vector2}
-   * @private
    */
-  getFilamentPathPoint( index: number, origin: Vector2, samplePoints: Vector2[] ) {
+  private getFilamentPathPoint( index: number, origin: Vector2, samplePoints: Vector2[] ) {
     const point = samplePoints[ index ];
 
     const startPoint = samplePoints[ 0 ];

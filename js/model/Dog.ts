@@ -29,10 +29,10 @@ class Dog extends Resistor {
   constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: ResistorOptions ) {
     super( startVertex, endVertex, ResistorType.DOG, tandem, providedOptions );
 
-    // @private - keep track of whether the dog is barking, so we can update the view accordingly
+    // keep track of whether the dog is barking, so we can update the view accordingly
     this.isBarkingProperty = new BooleanProperty( false );
 
-    // @private - time since last bark, to determine whether the bark has ended
+    // time since last bark, to determine whether the bark has ended
     this.lastBarkTime = 0;
 
     // @private - When connecting a voltage source (without completing the circuit), there is one frame where there is an unbalanced

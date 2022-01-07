@@ -68,9 +68,8 @@ class MNASolution {
   /**
    * For equality testing, make sure all of the specified elements and currents match ours
    * @param {MNASolution} modifiedNodalAnalysisSolution
-   * @private
    */
-  hasAllCurrents( modifiedNodalAnalysisSolution: MNASolution ) {
+  private hasAllCurrents( modifiedNodalAnalysisSolution: MNASolution ) {
     const keys = Array.from( modifiedNodalAnalysisSolution.elements.keys() );
     for ( let i = 0; i < keys.length; i++ ) {
       const element = keys[ i ];
@@ -85,9 +84,8 @@ class MNASolution {
    * Returns true if this solution has an element that matches the provided element.
    * @param {Object} element
    * @returns {boolean}
-   * @private
    */
-  hasMatchingElement( element: MNACircuitElement ) {
+  private hasMatchingElement( element: MNACircuitElement ) {
     const elements = Array.from( this.elements.keys() );
     for ( let i = 0; i < elements.length; i++ ) {
       const proposedElement = elements[ i ];
@@ -133,9 +131,8 @@ class MNASolution {
    * Returns the voltage across a circuit element.
    * @param {Object} element - a circuit element with {nodeId1:{number},node2:{number}}
    * @returns {number} - the voltage
-   * @private
    */
-  getVoltage( element: MNACircuitElement ) {
+  private getVoltage( element: MNACircuitElement ) {
     const voltage = this.nodeVoltages.get( element.nodeId1 )! - this.nodeVoltages.get( element.nodeId0 )!;
     assert && assert( !isNaN( voltage ) );
     return voltage;

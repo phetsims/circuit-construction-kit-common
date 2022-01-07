@@ -75,7 +75,6 @@ class CCKCOptionsDialogContent extends VBox {
       ]
     } );
 
-    // @private {function}
     this.disposeCCKCOptionsDialogContent = () => schematicStandardRadioButtonGroup.dispose();
   }
 

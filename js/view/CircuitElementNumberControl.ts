@@ -78,7 +78,6 @@ class CircuitElementNumberControl extends NumberControl {
       tandem: Tandem.OPTIONAL
     }, providedOptions ) );
 
-    // @private {function} - for disposal
     this.disposeCircuitElementNumberControl = () => valueProperty.unlink( valuePropertyListener );
   }
 
