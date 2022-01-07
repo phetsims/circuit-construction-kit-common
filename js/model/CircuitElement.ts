@@ -377,9 +377,8 @@ abstract class CircuitElement extends PhetioObject {
 
   /**
    * Updates the given matrix with the position and angle at the specified position along the element.
-   * @param {number} distanceAlongWire - the scalar distance from one endpoint to another.
-   * @param {Matrix3} matrix to be updated with the position and angle, so that garbage isn't created each time
-   * @public
+   * @param distanceAlongWire - the scalar distance from one endpoint to another.
+   * @param matrix to be updated with the position and angle, so that garbage isn't created each time
    */
   updateMatrixForPoint( distanceAlongWire: number, matrix: Matrix3 ) {
     const startPosition = this.startPositionProperty.get();

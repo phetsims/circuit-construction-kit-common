@@ -63,7 +63,6 @@ class Charge {
 
   /**
    * After updating the circuit element and/or distance traveled, update the 2d position and direction.
-   * @public
    */
   updatePositionAndAngle() {
     assert && assert( !isNaN( this.distance ), 'charge position was not a number' );
@@ -73,10 +72,7 @@ class Charge {
     this.changedEmitter.emit();
   }
 
-  /**
-   * Dispose the charge when it will never be used again.
-   * @public
-   */
+  // Dispose the charge when it will never be used again.
   dispose() {
     this.disposeEmitterCharge.emit();
     this.disposeEmitterCharge.removeAllListeners();

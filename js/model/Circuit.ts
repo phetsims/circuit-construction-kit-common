@@ -483,10 +483,6 @@ class Circuit {
     this.dirty = false;
   }
 
-  /**
-   * @param {CircuitElement} circuitElement
-   * @public
-   */
   disposeCircuitElement( circuitElement: CircuitElement ) {
     this.circuitElements.remove( circuitElement );
 
@@ -535,10 +531,7 @@ class Circuit {
     }
   }
 
-  /**
-   * Update the position of all charges.
-   * @public
-   */
+  // Update the position of all charges.
   relayoutAllCharges() {
     this.circuitElements.forEach( circuitElement => {circuitElement.chargeLayoutDirty = true;} );
     this.layoutChargesInDirtyCircuitElements();
@@ -625,10 +618,7 @@ class Circuit {
     return closestDistance;
   }
 
-  /**
-   * Remove all elements from the circuit.
-   * @public
-   */
+  // Remove all elements from the circuit.
   clear() {
 
     this.selectedCircuitElementProperty.reset();
@@ -660,8 +650,7 @@ class Circuit {
 
   /**
    * Split the Vertex into separate vertices.
-   * @param {Vertex} vertex - the vertex to be cut.
-   * @public
+   * @param vertex - the vertex to be cut.
    */
   cutVertex( vertex: Vertex ) {
 
@@ -786,11 +775,8 @@ class Circuit {
 
   /**
    * Returns true if the CircuitElement is not connected to any other CircuitElement.
-   * @param {CircuitElement} circuitElement
-   * @returns {boolean}
-   * @public
    */
-  isSingle( circuitElement: CircuitElement ) {
+  isSingle( circuitElement: CircuitElement ): boolean {
     return this.getNeighborCircuitElements( circuitElement.startVertexProperty.get() ).length === 1 &&
            this.getNeighborCircuitElements( circuitElement.endVertexProperty.get() ).length === 1;
   }
@@ -813,7 +799,6 @@ class Circuit {
    * Get all of the CircuitElements that contain the given Vertex.
    * @param {Vertex} vertex
    * @returns {CircuitElement[]}
-   * @public
    */
   getNeighborCircuitElements( vertex: Vertex ) {
     return this.circuitElements.filter( circuitElement => circuitElement.containsVertex( vertex ) );
@@ -821,11 +806,9 @@ class Circuit {
 
   /**
    * Gets the number of CircuitElements connected to the specified Vertex
-   * @param {Vertex} vertex
-   * @returns {number}
-   * @public
+   * @param vertex
    */
-  countCircuitElements( vertex: Vertex ) {
+  countCircuitElements( vertex: Vertex ): number {
     return this.circuitElements.count( circuitElement => circuitElement.containsVertex( vertex ) );
   }
 
@@ -835,10 +818,8 @@ class Circuit {
    * @param {VoltageConnection} blackConnection
    * @param {boolean} revealing - whether the black box is in "reveal" model
    * @returns {number|null}
-   *
-   * @public
    */
-  getVoltageBetweenConnections( redConnection: VoltageConnection | null, blackConnection: VoltageConnection | null, revealing: boolean ) {
+  getVoltageBetweenConnections( redConnection: VoltageConnection | null, blackConnection: VoltageConnection | null, revealing: boolean ): number | null {
 
     if ( redConnection === null || blackConnection === null ) {
       return null;
@@ -866,12 +847,8 @@ class Circuit {
   /**
    * Determines whether the specified Vertices are electrically connected through any arbitrary connections.  An
    * open switch breaks the connection.
-   * @param {Vertex} vertex1
-   * @param {Vertex} vertex2
-   * @returns {boolean}
-   * @public
    */
-  areVerticesElectricallyConnected( vertex1: Vertex, vertex2: Vertex ) {
+  areVerticesElectricallyConnected( vertex1: Vertex, vertex2: Vertex ): boolean {
     const connectedVertices = this.searchVertices( vertex1, ( startVertex, circuitElement ) => {
 
         // If the circuit element has a closed property (like a Switch), it is only OK to traverse if the element is
@@ -892,19 +869,13 @@ class Circuit {
   /**
    * When some physical characteristic has changed, we must recompute the voltages and currents.  Mark as
    * dirty and compute in step if anything has changed.
-   * @public
    */
-  markDirty() {
+  markDirty(): void {
     this.dirty = true;
   }
 
-  /**
-   * Connect the vertices, merging oldVertex into vertex1 and deleting oldVertex
-   * @param {Vertex} targetVertex
-   * @param {Vertex} oldVertex
-   * @public
-   */
-  connect( targetVertex: Vertex, oldVertex: Vertex ) {
+  // Connect the vertices, merging oldVertex into vertex1 and deleting oldVertex
+  connect( targetVertex: Vertex, oldVertex: Vertex ): void {
     assert && assert( targetVertex.attachableProperty.get() && oldVertex.attachableProperty.get(),
       'both vertices should be attachable' );
 
@@ -933,7 +904,6 @@ class Circuit {
   /**
    * Move forward in time
    * @param {number} dt - the elapsed time in seconds
-   * @public
    */
   step( dt: number ) {
 
@@ -983,7 +953,6 @@ class Circuit {
    * When a circuit element is marked as dirty (such as when it changed length or moved), it needs to have
    * the charges repositioned, so they will be equally spaced internally and spaced well compared to neighbor
    * elements.
-   * @public
    */
   layoutChargesInDirtyCircuitElements() {
     this.circuitElements.forEach( circuitElement => this.layoutCharges( circuitElement ) );
@@ -1056,7 +1025,6 @@ class Circuit {
   /**
    * Find the subgraph where all vertices are connected by any kind of CircuitElements
    * @param {Vertex} vertex
-   * @public
    */
   findAllConnectedVertices( vertex: Vertex ) {
     return this.searchVertices( vertex, trueFunction );
@@ -1227,13 +1195,8 @@ class Circuit {
     return _.uniq( fixedVertices );
   }
 
-  /**
-   * Returns true if the circuit element is in a loop with a voltage source
-   * @param {CircuitElement} circuitElement
-   * @returns {boolean}
-   * @public
-   */
-  isInLoop( circuitElement: CircuitElement ) {
+  // Returns true if the circuit element is in a loop with a voltage source
+  isInLoop( circuitElement: CircuitElement ): boolean {
 
     // Special case for when we are asking if an open Switch is in a loop.  Open switches
     // cannot be in a loop since their vertices are not directly connected.  Note the search
@@ -1288,11 +1251,8 @@ class Circuit {
 
   /**
    * Get the charges that are in the specified circuit element.
-   * @param {CircuitElement} circuitElement
-   * @returns {Charge[]}
-   * @public
    */
-  getChargesInCircuitElement( circuitElement: CircuitElement ) {
+  getChargesInCircuitElement( circuitElement: CircuitElement ): Charge[] {
     return this.charges.filter( charge => charge.circuitElement === circuitElement );
   }
 
@@ -1301,10 +1261,8 @@ class Circuit {
    * @param {Vertex} vertex
    * @param {function} [okToVisit] - (startVertex:Vertex,circuitElement:CircuitElement,endVertex:Vertex)=>boolean,
    *                               - rule that determines which vertices are OK to visit
-   * @returns {Vertex[]}
-   * @public
    */
-  findAllFixedVertices( vertex: Vertex, okToVisit: ( ( a: Vertex, c: CircuitElement, b: Vertex ) => boolean ) = e => true ) {
+  findAllFixedVertices( vertex: Vertex, okToVisit: ( ( a: Vertex, c: CircuitElement, b: Vertex ) => boolean ) = e => true ): Vertex[] {
     return this.searchVertices( vertex, ( startVertex: Vertex, circuitElement: CircuitElement, endVertex: Vertex ) => {
       if ( okToVisit ) {
         return circuitElement instanceof FixedCircuitElement && okToVisit( startVertex, circuitElement, endVertex );
@@ -1315,11 +1273,7 @@ class Circuit {
     } );
   }
 
-  /**
-   * Returns the selected Vertex or null if none is selected
-   * @returns {Vertex|null}
-   * @public
-   */
+  // Returns the selected Vertex or null if none is selected
   getSelectedVertex(): Vertex | null {
     const selectedVertex = _.find( this.vertexGroup.getArray(), vertex => vertex.selectedProperty.get() );
     return ( selectedVertex || null ) as ( Vertex | null );
@@ -1331,10 +1285,9 @@ class Circuit {
    * @param {Vertex} vertex - the dragged vertex
    * @param {InteractionMode} mode - the application mode Circuit.InteractionMode.TEST | Circuit.InteractionMode.EXPLORE
    * @param {Bounds2|undefined} blackBoxBounds - the bounds of the black box, if there is one
-   * @returns {Vertex|null} - the vertex it will be able to connect to, if dropped or null if no connection is available
-   * @public
+   * @returns - the vertex it will be able to connect to, if dropped or null if no connection is available
    */
-  getDropTarget( vertex: Vertex, mode: InteractionMode, blackBoxBounds: Bounds2 | null ) { // TODO Enum for InteractionMode
+  getDropTarget( vertex: Vertex, mode: InteractionMode, blackBoxBounds: Bounds2 | null ): Vertex | null { // TODO Enum for InteractionMode
 
     if ( mode === 'test' ) {
       assert && assert( blackBoxBounds, 'bounds should be provided for build mode' );
@@ -1497,11 +1450,8 @@ class Circuit {
   /**
    * Due to numerical floating point errors, current may not be exactly conserved.  But we don't want to show electrons
    * moving in some part of a loop but not others, so we manually enforce current conservation at each vertex.
-   * @param {Vertex} vertex
-   * @param {CircuitElement[]} locked
-   * @public
    */
-  conserveCurrent( vertex: Vertex, locked: CircuitElement[] ) {
+  conserveCurrent( vertex: Vertex, locked: CircuitElement[] ): void {
     // the sum of currents flowing into the vertex should be 0
     const neighbors = this.getNeighborCircuitElements( vertex );
     let sum = 0;
@@ -1528,9 +1478,8 @@ class Circuit {
   /**
    * Flip the given CircuitElement
    * @param {CircuitElement} circuitElement - the circuit element to flip
-   * @public
    */
-  flip( circuitElement: CircuitElement ) {
+  flip( circuitElement: CircuitElement ): void {
     const startVertex = circuitElement.startVertexProperty.value;
     const endVertex = circuitElement.endVertexProperty.value;
     circuitElement.startVertexProperty.value = endVertex;
@@ -1550,9 +1499,8 @@ class Circuit {
   /**
    * Creates and positions charges in the specified circuit element.
    * @param {CircuitElement} circuitElement - the circuit element within which the charges will be updated
-   * @public
    */
-  layoutCharges( circuitElement: CircuitElement ) {
+  layoutCharges( circuitElement: CircuitElement ): void {
 
     // Avoid unnecessary work to improve performance
     if ( circuitElement.chargeLayoutDirty ) {

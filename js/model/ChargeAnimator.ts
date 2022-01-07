@@ -72,10 +72,7 @@ class ChargeAnimator {
     this.timeScaleProperty = new NumberProperty( 1, { range: new Range( 0, 1 ) } );
   }
 
-  /**
-   * Restores to the initial state
-   * @public
-   */
+  // Restores to the initial state
   reset() {
     this.timeScaleProperty.reset();
     this.timeScaleRunningAverage.clear();
