@@ -69,13 +69,6 @@ abstract class CircuitElement extends PhetioObject {
   static CircuitElementIO: IOType;
   readonly lengthProperty: Property<number> | undefined;
 
-  /**
-   * @param {Vertex} startVertex
-   * @param {Vertex} endVertex
-   * @param {number} chargePathLength
-   * @param {Tandem} tandem
-   * @param {Object} [providedOptions]
-   */
   constructor( startVertex: Vertex, endVertex: Vertex, chargePathLength: number, tandem: Tandem, providedOptions?: Partial<CircuitElementOptions> ) {
     assert && assert( startVertex !== endVertex, 'startVertex cannot be the same as endVertex' );
     assert && assert( typeof chargePathLength === 'number', 'charge path length should be a number' );
