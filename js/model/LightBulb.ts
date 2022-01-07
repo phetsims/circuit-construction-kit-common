@@ -109,19 +109,13 @@ class LightBulb extends FixedCircuitElement {
     this.chargePathLength = this.getPathLength();
   }
 
-  /**
-   * Updates the charge path length when the view changes between lifelike/schematic
-   * @public
-   */
+  // Updates the charge path length when the view changes between lifelike/schematic
   updatePathLength() {
     this.chargePathLength = this.getPathLength();
   }
 
-  /**
-   * Determine the path length by measuring the segments.
-   * @returns {number}
-   */
-  private getPathLength() {
+  // Determine the path length by measuring the segments.
+  private getPathLength(): number {
     let pathLength = 0;
     const samplePoints = this.viewTypeProperty.value === CircuitElementViewType.LIFELIKE ? LIFELIKE_SAMPLE_POINTS : SCHEMATIC_SAMPLE_POINTS;
     let currentPoint = LightBulb.getFilamentPathPoint( 0, Vector2.ZERO, samplePoints );
@@ -142,10 +136,7 @@ class LightBulb extends FixedCircuitElement {
     return true;
   }
 
-  /**
-   * Dispose of this and PhET-iO instrumented children, so they will be unregistered.
-   * @public
-   */
+  // Dispose of this and PhET-iO instrumented children, so they will be unregistered.
   dispose() {
     this.resistanceProperty.dispose();
     super.dispose();
@@ -158,9 +149,8 @@ class LightBulb extends FixedCircuitElement {
    * @param {number} index
    * @param {Vector2} origin
    * @param {Vector2[]} samplePoints - the array of points to use for sampling
-   * @returns {Vector2}
    */
-  private static getFilamentPathPoint( index: number, origin: Vector2, samplePoints: Vector2[] ) {
+  private static getFilamentPathPoint( index: number, origin: Vector2, samplePoints: Vector2[] ): Vector2 {
     const point = samplePoints[ index ];
 
     const startPoint = samplePoints[ 0 ];
@@ -176,7 +166,6 @@ class LightBulb extends FixedCircuitElement {
    * Get the properties so that the circuit can be solved when changed.
    * @override
    * @returns {Property.<*>[]}
-   * @public
    */
   getCircuitProperties() {
     return [ this.resistanceProperty ];
@@ -187,8 +176,6 @@ class LightBulb extends FixedCircuitElement {
    *
    * @param {number} distanceAlongWire - how far along the bulb's length the charge has traveled
    * @param {Matrix3} matrix to be updated with the position and angle, so that garbage isn't created each time
-   * @override
-   * @public
    */
   updateMatrixForPoint( distanceAlongWire: number, matrix: Matrix3 ) {
 
