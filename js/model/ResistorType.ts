@@ -19,7 +19,7 @@ class ResistorType extends EnumerationValue {
   static DOG = ResistorType.fixed( 100000, false, CCKCConstants.DOG_LENGTH, -40 );
   static DOLLAR_BILL = ResistorType.fixed( 1000000000, false, CCKCConstants.DOLLAR_BILL_LENGTH );
 
-  static enumeration = new RichEnumeration<ResistorType>( ResistorType );
+  static enumeration = new RichEnumeration( ResistorType );
 
   private readonly defaultResistance: number;
   private readonly range: Range;
@@ -34,7 +34,7 @@ class ResistorType extends EnumerationValue {
    * @param {number} length
    * @param {number} [verticalOffset]
    */
-  private constructor( defaultResistance: number, resistanceRange: Range, isMetallic: boolean, length: number, verticalOffset = 0 ) {
+  constructor( defaultResistance: number, resistanceRange: Range, isMetallic: boolean, length: number, verticalOffset = 0 ) {
     super();
 
     // @public (read-only) {number} - in Ohms
