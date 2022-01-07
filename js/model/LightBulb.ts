@@ -232,30 +232,12 @@ class LightBulb extends FixedCircuitElement {
   static REAL_BULB_COLD_RESISTANCE = 10;
 }
 
-/**
- * Create a LightBulb at the specified position
- * @param {Vertex} startVertex
- * @param {Vertex} endVertex
- * @param {Circuit} circuit
- * @param {number} resistance
- * @param {Property.<CircuitElementViewType>} viewTypeProperty
- * @param {Tandem} tandem
- * @param {Object} [options]
- * @returns {LightBulb}
- * @public
- */
+// Create a LightBulb at the specified position
 LightBulb.createAtPosition = ( startVertex, endVertex, circuit, resistance, viewTypeProperty, tandem, options ) => {
   options = merge( { icon: false }, options );
   return new LightBulb( startVertex, endVertex, resistance, viewTypeProperty, tandem, options );
 };
 
-/**
- * @param {Vector2} position
- * @param {Circuit} circuit
- * @param {boolean} icon=false
- * @returns {Object.<{startVertex:Vertex, endVertex:Vertex}>}
- * @public
- */
 LightBulb.createVertexPair = ( position, circuit, icon = false ) => {
 
   const translation = new Vector2( 19, 10 );
