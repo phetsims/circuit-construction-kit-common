@@ -60,12 +60,13 @@ class LightBulb extends FixedCircuitElement {
   readonly real: boolean;
   readonly highResistance: boolean;
   readonly resistanceProperty: NumberProperty;
-  private readonly vertexDelta: Vector2;
   private readonly viewTypeProperty: Property<CircuitElementViewType>;
 
   // TODO: improve types
   static createAtPosition: ( startVertex: Vertex, endVertex: Vertex, circuit: Circuit, resistance: number, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: any ) => LightBulb;
   static createVertexPair: ( position: Vector2, circuit: Circuit, icon?: boolean ) => { startVertex: Vertex; endVertex: Vertex; };
+  static createSamplePoints: ( position: Vector2 ) => [ Vector2, Vector2 ];
+  static vertexDelta: Vector2;
 
   /**
    * @param {Vertex} startVertex - the side Vertex
@@ -102,9 +103,6 @@ class LightBulb extends FixedCircuitElement {
              new Range( 0, 120 )
     } );
 
-    // the vector between the vertices
-    this.vertexDelta = endVertex.positionProperty.get().minus( startVertex.positionProperty.get() );
-
     this.viewTypeProperty = viewTypeProperty;
 
     // Fill in the chargePathLength
@@ -126,9 +124,9 @@ class LightBulb extends FixedCircuitElement {
   private getPathLength() {
     let pathLength = 0;
     const samplePoints = this.viewTypeProperty.value === CircuitElementViewType.LIFELIKE ? LIFELIKE_SAMPLE_POINTS : SCHEMATIC_SAMPLE_POINTS;
-    let currentPoint = this.getFilamentPathPoint( 0, Vector2.ZERO, samplePoints );
+    let currentPoint = LightBulb.getFilamentPathPoint( 0, Vector2.ZERO, samplePoints );
     for ( let i = 1; i < samplePoints.length; i++ ) {
-      const nextPoint = this.getFilamentPathPoint( i, Vector2.ZERO, samplePoints );
+      const nextPoint = LightBulb.getFilamentPathPoint( i, Vector2.ZERO, samplePoints );
       pathLength += nextPoint.distance( currentPoint );
       currentPoint = nextPoint;
     }
@@ -162,14 +160,14 @@ class LightBulb extends FixedCircuitElement {
    * @param {Vector2[]} samplePoints - the array of points to use for sampling
    * @returns {Vector2}
    */
-  private getFilamentPathPoint( index: number, origin: Vector2, samplePoints: Vector2[] ) {
+  private static getFilamentPathPoint( index: number, origin: Vector2, samplePoints: Vector2[] ) {
     const point = samplePoints[ index ];
 
     const startPoint = samplePoints[ 0 ];
     const endPoint = samplePoints[ samplePoints.length - 1 ];
 
-    const x = Utils.linear( startPoint.x, endPoint.x, origin.x, origin.x + this.vertexDelta.x, point.x );
-    const y = Utils.linear( startPoint.y, endPoint.y, origin.y, origin.y + this.vertexDelta.y, point.y );
+    const x = Utils.linear( startPoint.x, endPoint.x, origin.x, origin.x + LightBulb.vertexDelta.x, point.x );
+    const y = Utils.linear( startPoint.y, endPoint.y, origin.y, origin.y + LightBulb.vertexDelta.y, point.y );
 
     return new Vector2( x, y );
   }
@@ -199,9 +197,9 @@ class LightBulb extends FixedCircuitElement {
     let previousAccumulatedDistance = 0;
     let accumulatedDistance = 0;
     const samplePoints = this.viewTypeProperty.value === CircuitElementViewType.LIFELIKE ? LIFELIKE_SAMPLE_POINTS : SCHEMATIC_SAMPLE_POINTS;
-    let currentPoint = this.getFilamentPathPoint( 0, this.startVertexProperty.get().positionProperty.get(), samplePoints );
+    let currentPoint = LightBulb.getFilamentPathPoint( 0, this.startVertexProperty.get().positionProperty.get(), samplePoints );
     for ( let i = 1; i < samplePoints.length; i++ ) {
-      const nextPoint = this.getFilamentPathPoint( i, this.startVertexProperty.get().positionProperty.get(), samplePoints );
+      const nextPoint = LightBulb.getFilamentPathPoint( i, this.startVertexProperty.get().positionProperty.get(), samplePoints );
       accumulatedDistance += nextPoint.distance( currentPoint );
 
       // Find what segment the charge is in
@@ -214,7 +212,7 @@ class LightBulb extends FixedCircuitElement {
         // rotate the point about the start vertex
         const startPoint = this.startPositionProperty.get();
         const vertexDelta = this.endPositionProperty.get().minus( startPoint );
-        const relativeAngle = vertexDelta.angle - this.vertexDelta.angle;
+        const relativeAngle = vertexDelta.angle - LightBulb.vertexDelta.angle;
         const position = positionAlongSegment.rotatedAboutPoint( startPoint, relativeAngle );
         const angle = nextPoint.minus( currentPoint ).angle;
 
@@ -238,8 +236,7 @@ LightBulb.createAtPosition = ( startVertex, endVertex, circuit, resistance, view
   return new LightBulb( startVertex, endVertex, resistance, viewTypeProperty, tandem, options );
 };
 
-LightBulb.createVertexPair = ( position, circuit, icon = false ) => {
-
+LightBulb.createSamplePoints = ( position: Vector2 ): [ Vector2, Vector2 ] => {
   const translation = new Vector2( 19, 10 );
 
   // Connect at the side and bottom
@@ -248,11 +245,20 @@ LightBulb.createVertexPair = ( position, circuit, icon = false ) => {
   // Position the vertices so the light bulb is upright
   const endPoint = startPoint.plus( Vector2.createPolar( DISTANCE_BETWEEN_VERTICES, -Math.PI / 4 ) );
 
+  return [ startPoint, endPoint ];
+};
+
+LightBulb.createVertexPair = ( position, circuit, icon = false ) => {
+  const points = LightBulb.createSamplePoints( position );
+
   // start vertex is at the bottom
-  const startVertex = icon ? new Vertex( startPoint ) : circuit.vertexGroup.createNextElement( startPoint );
-  const endVertex = icon ? new Vertex( endPoint ) : circuit.vertexGroup.createNextElement( endPoint );
+  const startVertex = icon ? new Vertex( points[ 0 ] ) : circuit.vertexGroup.createNextElement( points[ 0 ] );
+  const endVertex = icon ? new Vertex( points[ 1 ] ) : circuit.vertexGroup.createNextElement( points[ 1 ] );
   return { startVertex: startVertex, endVertex: endVertex };
 };
+
+const samplePoints = LightBulb.createSamplePoints( Vector2.ZERO );
+LightBulb.vertexDelta = samplePoints[ 1 ].minus( samplePoints[ 0 ] );
 
 circuitConstructionKitCommon.register( 'LightBulb', LightBulb );
 export default LightBulb;
