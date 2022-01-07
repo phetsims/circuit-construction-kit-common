@@ -1640,7 +1640,7 @@ class Circuit {
   }
 }
 
-// @public {Enumeration} - Enumeration for the different types of interaction:
+// @public {EnumerationDeprecated} - Enumeration for the different types of interaction:
 // EXPLORE (used for open-ended exploration)
 // TEST (when testing out a black box circuit)
 type InteractionMode = 'explore' | 'test';
