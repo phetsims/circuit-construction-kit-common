@@ -88,10 +88,46 @@ class CircuitElementEditContainerNode extends Node {
       showPhaseShiftControl: false
     }, providedOptions );
 
+    // Create reusable components that will get assembled into a panel for the selected circuit element
     const trashButton = new TrashButton( circuit, tandem.createTandem( 'trashButton' ) );
     const resetFuseButton = new ResetFuseButton( circuit, tandem.createTandem( 'resetFuseButton' ) );
     const clearDynamicsButton = new ClearDynamicsButton( circuit, tandem.createTandem( 'clearDynamicsButton' ) );
     const reverseBatteryButton = new ReverseBatteryButton( circuit, tandem.createTandem( 'reverseBatteryButton' ) );
+
+    // Cannot use DynamicProperty.derivedProperty since the selected circuit element isn't always a Fuse
+    const selectedFuseRatingProperty = new Property<number>( Fuse.DEFAULT_CURRENT_RATING, {} );
+    selectedFuseRatingProperty.link( fuseRating => {
+      if ( circuit.selectedCircuitElementProperty.value && circuit.selectedCircuitElementProperty.value instanceof Fuse ) {
+        circuit.selectedCircuitElementProperty.value.currentRatingProperty.value = fuseRating;
+      }
+    } );
+
+    // When the value of a fuse changes, say from PhET-iO, we propagate it back to the control
+    const fuseListener = ( currentRating: number ) => selectedFuseRatingProperty.set( currentRating );
+    circuit.selectedCircuitElementProperty.link( ( selectedCircuitElement, priorCircuitElement ) => {
+      priorCircuitElement instanceof Fuse && priorCircuitElement.currentRatingProperty.unlink( fuseListener );
+      selectedCircuitElement instanceof Fuse && selectedCircuitElement.currentRatingProperty.link( fuseListener );
+    } );
+    const fuseCurrentRatingControl = new CircuitElementNumberControl( currentRatingString,
+
+      // Adapter to take from {{named}} to {{value}} for usage in common code
+      StringUtils.fillIn( currentUnitsString, {
+        current: SunConstants.VALUE_NAMED_PLACEHOLDER
+      } ),
+      selectedFuseRatingProperty,
+      Fuse.RANGE,
+      circuit,
+      1, // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/513 Eliminate numberOfDecimalPlaces: 1 from Fuse and places like it
+      Tandem.OPT_OUT, {
+
+        // For the tweakers
+        delta: NORMAL_TWEAKER_DELTA,
+
+        sliderOptions: {
+          constrainValue: ( value: number ) => Utils.roundToInterval( value, 0.5 )
+        }
+      }
+    );
 
     const tapInstructionTextNode = new Text( tapCircuitElementToEditString, {
       fontSize: 24,
@@ -227,27 +263,6 @@ class CircuitElementEditContainerNode extends Node {
           );
         }
         else if ( isFuse ) {
-          const fuseCurrentRatingControl = new CircuitElementNumberControl( currentRatingString,
-
-            // Adapter to take from {{named}} to {{value}} for usage in common code
-            StringUtils.fillIn( currentUnitsString, {
-              current: SunConstants.VALUE_NAMED_PLACEHOLDER
-            } ),
-            selectedCircuitElement.currentRatingProperty,
-            selectedCircuitElement.currentRatingProperty.range!,
-            circuit,
-            selectedCircuitElement.numberOfDecimalPlaces,
-            Tandem.OPT_OUT, {
-
-              // For the tweakers
-              delta: NORMAL_TWEAKER_DELTA,
-
-              sliderOptions: {
-                constrainValue: ( value: number ) => Utils.roundToInterval( value, 0.5 )
-              }
-            }
-          );
-
           editNode = new EditPanel( [
               resetFuseButton,
               fuseCurrentRatingControl,
@@ -256,6 +271,8 @@ class CircuitElementEditContainerNode extends Node {
           );
         }
         else if ( isSwitch ) {
+
+          // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/513 should this be instrumented?
           editNode = new SwitchReadoutNode( circuit, selectedCircuitElement, Tandem.OPT_OUT, trashButton );
         }
         else if ( isSeriesAmmeter || isWire ) {

@@ -39,7 +39,7 @@ class Fuse extends FixedCircuitElement {
     const options = merge( {
       resistance: CCKCConstants.MINIMUM_RESISTANCE,
       fuseLength: CCKCConstants.RESISTOR_LENGTH, // Same length as a resistor
-      currentRating: 4, // Amps
+      currentRating: Fuse.DEFAULT_CURRENT_RATING, // Amps
       isCurrentReentrant: true, // Changing the current can trip a fuse, which changes the current
       numberOfDecimalPlaces: 1
     }, providedOptions ) as FuseOptions;
@@ -48,7 +48,8 @@ class Fuse extends FixedCircuitElement {
 
     // @public {Property.<number>} the current at which the fuse trips, in amps
     this.currentRatingProperty = new NumberProperty( options.currentRating, {
-      range: new Range( 0.5, 20 )
+      range: Fuse.RANGE,
+      tandem: tandem.createTandem( 'currentRatingProperty' )
     } );
 
     // @public {Property.<boolean>} - true if the fuse is tripped
@@ -61,6 +62,11 @@ class Fuse extends FixedCircuitElement {
 
     // time in seconds the current rating has been exceeded
     this.timeCurrentRatingExceeded = 0;
+  }
+
+  dispose() {
+    super.dispose();
+    this.currentRatingProperty.dispose();
   }
 
   /**
@@ -112,6 +118,9 @@ class Fuse extends FixedCircuitElement {
   getCircuitProperties() {
     return [ this.resistanceProperty, this.isTrippedProperty ];
   }
+
+  static RANGE = new Range( 0.5, 20 );
+  static DEFAULT_CURRENT_RATING = 4;
 }
 
 circuitConstructionKitCommon.register( 'Fuse', Fuse );
