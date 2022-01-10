@@ -145,7 +145,9 @@ class CCKCScreenView extends ScreenView {
 
     // @public (read-only) {CircuitLayerNode} - the circuit node
     this.circuitLayerNode = new CircuitLayerNode(
-      model.circuit, this, tandem.createTandem( 'circuitLayerNode' )
+
+      // TODO: Note the discrepancy between circuitNode and circuitLayerNode, see https://github.com/phetsims/circuit-construction-kit-common/issues/513
+      model.circuit, this, tandem.createTandem( 'circuitNode' )
     );
 
     const meterNodesTandem = tandem.createTandem( 'meterNodes' );
