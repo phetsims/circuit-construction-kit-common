@@ -31,11 +31,10 @@ class CircuitElementNumberControl extends NumberControl {
    * @param range
    * @param circuit - parent circuit
    * @param numberOfDecimalPlaces - number of decimal places
-   * @param tandem
    * @param [providedOptions]
    */
   constructor( title: string, valuePattern: string, valueProperty: Property<number>, range: Range, circuit: Circuit,
-               numberOfDecimalPlaces: number, tandem: Tandem, providedOptions?: any ) {
+               numberOfDecimalPlaces: number, providedOptions?: any ) {
 
     assert && assert( !!range, 'Range must be provided' );
 
@@ -44,8 +43,7 @@ class CircuitElementNumberControl extends NumberControl {
 
     valueProperty.lazyLink( valuePropertyListener );
 
-    // Create the controls
-    super( title, valueProperty, range, merge( {
+    const options = merge( {
 
       // subcomponent options
       titleNodeOptions: {
@@ -70,13 +68,9 @@ class CircuitElementNumberControl extends NumberControl {
         thumbSize: new Dimension2( 10, 20 ),
         trackSize: new Dimension2( 120, 4 )
       },
-
-      // Trick the NumberControl into thinking it and its children do not need to be instrumented
-      // This prevents it from ending up in the state.  Luckily somehow, it still works properly
-      // in the state wrapper, probably from this code being called anyways from when the circuit element
-      // is selected.
-      tandem: Tandem.OPTIONAL
-    }, providedOptions ) );
+      tandem: Tandem.OPT_OUT
+    }, providedOptions );
+    super( title, valueProperty, range, options );
 
     this.disposeCircuitElementNumberControl = () => valueProperty.unlink( valuePropertyListener );
   }

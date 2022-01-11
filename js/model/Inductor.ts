@@ -25,6 +25,9 @@ type InductorOptions = {
 
 class Inductor extends DynamicCircuitElement {
   readonly inductanceProperty: NumberProperty;
+  static INDUCTANCE_DEFAULT = CCKCQueryParameters.inductanceDefault;
+  static INDUCTANCE_RANGE = new Range( CCKCQueryParameters.inductanceMin, CCKCQueryParameters.inductanceMax );
+  static INDUCTANCE_NUMBER_OF_DECIMAL_PLACES = CCKCQueryParameters.inductorNumberDecimalPlaces;
 
   /**
    * @param {Vertex} startVertex
@@ -34,15 +37,15 @@ class Inductor extends DynamicCircuitElement {
    */
   constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: Partial<InductorOptions> ) {
     const options = merge( {
-      inductance: CCKCQueryParameters.inductanceDefault,
-      numberOfDecimalPlaces: CCKCQueryParameters.inductorNumberDecimalPlaces
+      inductance: Inductor.INDUCTANCE_DEFAULT,
+      numberOfDecimalPlaces: Inductor.INDUCTANCE_NUMBER_OF_DECIMAL_PLACES
     }, providedOptions ) as InductorOptions;
 
     super( startVertex, endVertex, INDUCTOR_LENGTH, tandem, options );
 
     // @public {Property.<number>} the inductance in Henries
     this.inductanceProperty = new NumberProperty( options.inductance, {
-      range: new Range( CCKCQueryParameters.inductanceMin, CCKCQueryParameters.inductanceMax ),
+      range: Inductor.INDUCTANCE_RANGE,
       tandem: tandem.createTandem( 'inductanceProperty' )
     } );
   }

@@ -131,8 +131,10 @@ class CircuitElementEditContainerNode extends Node {
       createSingletonAdapterProperty( Fuse.DEFAULT_CURRENT_RATING, Fuse, circuit, ( c: Fuse ) => c.currentRatingProperty ),
       Fuse.RANGE,
       circuit,
-      1, // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/513 Eliminate numberOfDecimalPlaces: 1 from Fuse and places like it
-      Tandem.OPT_OUT, {
+
+      // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/513 Eliminate numberOfDecimalPlaces: 1 from Fuse and places like it
+      1, {
+        tandem: Tandem.OPT_OUT,
         delta: NORMAL_TWEAKER_DELTA, // For the tweakers
         sliderOptions: {
           constrainValue: ( value: number ) => Utils.roundToInterval( value, 0.5 )
@@ -147,9 +149,27 @@ class CircuitElementEditContainerNode extends Node {
       createSingletonAdapterProperty( Capacitor.CAPACITANCE_DEFAULT, Capacitor, circuit, ( c: Capacitor ) => c.capacitanceProperty ),
       Capacitor.CAPACITANCE_RANGE,
       circuit,
-      Capacitor.NUMBER_OF_DECIMAL_PLACES,
-      Tandem.OPT_OUT, {
+      Capacitor.NUMBER_OF_DECIMAL_PLACES, {
+        tandem: Tandem.OPT_OUT,
         delta: CCKCQueryParameters.capacitanceStep
+      }
+    );
+
+    const inductanceControl = new CircuitElementNumberControl( inductanceString,
+      StringUtils.fillIn( inductanceUnitsString, {
+        inductance: SunConstants.VALUE_NAMED_PLACEHOLDER
+      } ),
+      createSingletonAdapterProperty( Inductor.INDUCTANCE_DEFAULT, Inductor, circuit, ( c: Inductor ) => c.inductanceProperty ),
+      Inductor.INDUCTANCE_RANGE,
+      circuit,
+      Inductor.INDUCTANCE_NUMBER_OF_DECIMAL_PLACES, {
+        tandem: tandem.createTandem( 'inductanceNumberControl' ),
+        delta: CCKCQueryParameters.inductanceStep,
+
+        // For dragging the slider knob
+        sliderOptions: {
+          constrainValue: ( value: number ) => Utils.roundToInterval( value, 0.1 )
+        }
       }
     );
 
@@ -220,8 +240,8 @@ class CircuitElementEditContainerNode extends Node {
             selectedCircuitElement.resistanceProperty,
             selectedCircuitElement.resistanceProperty.range!,
             circuit,
-            selectedCircuitElement.numberOfDecimalPlaces,
-            tandem.createTandem( 'resistanceControl' ), {
+            selectedCircuitElement.numberOfDecimalPlaces, {
+              tandem: Tandem.OPT_OUT,
 
               // For the tweakers
               delta: isHighResistance ? HIGH_TWEAKER_DELTA : NORMAL_TWEAKER_DELTA,
@@ -260,8 +280,8 @@ class CircuitElementEditContainerNode extends Node {
             selectedCircuitElement.voltageProperty,
             selectedCircuitElement.voltageProperty.range!,
             circuit,
-            selectedCircuitElement.numberOfDecimalPlaces,
-            Tandem.OPT_OUT, {
+            selectedCircuitElement.numberOfDecimalPlaces, {
+              tandem: Tandem.OPT_OUT,
 
               // For the tweakers
               delta: selectedCircuitElement.batteryType === 'high-voltage' ? HIGH_TWEAKER_DELTA : NORMAL_TWEAKER_DELTA,
@@ -329,8 +349,8 @@ class CircuitElementEditContainerNode extends Node {
               selectedCircuitElement.frequencyProperty,
               selectedCircuitElement.frequencyProperty.range!,
               circuit,
-              selectedCircuitElement.numberOfDecimalPlaces,
-              Tandem.OPT_OUT, {
+              selectedCircuitElement.numberOfDecimalPlaces, {
+                tandem: Tandem.OPT_OUT,
                 delta: 0.01
               }
             ) ];
@@ -351,25 +371,6 @@ class CircuitElementEditContainerNode extends Node {
           ] );
         }
         else if ( isInductor ) {
-          const inductanceControl = new CircuitElementNumberControl( inductanceString,
-
-            // Adapter to take from {{named}} to {{value}} for usage in common code
-            StringUtils.fillIn( inductanceUnitsString, {
-              inductance: SunConstants.VALUE_NAMED_PLACEHOLDER
-            } ),
-            selectedCircuitElement.inductanceProperty,
-            selectedCircuitElement.inductanceProperty.range!,
-            circuit,
-            selectedCircuitElement.numberOfDecimalPlaces,
-            Tandem.OPT_OUT, {
-              delta: CCKCQueryParameters.inductanceStep,
-
-              // For dragging the slider knob
-              sliderOptions: {
-                constrainValue: ( value: number ) => Utils.roundToInterval( value, 0.1 )
-              }
-            }
-          );
           editNode = new EditPanel( [
               clearDynamicsButton,
               inductanceControl,
