@@ -124,14 +124,13 @@ class CircuitElementEditContainerNode extends Node {
     const reverseBatteryButton = new ReverseBatteryButton( circuit, tandem.createTandem( 'reverseBatteryButton' ) );
 
     // For PhET-iO, NumberControls are created statically on startup and switch between which CircuitElement it controls.
-    const selectedFuseRatingProperty = createSingletonAdapterProperty( Fuse.DEFAULT_CURRENT_RATING, Fuse, circuit, ( c: Fuse ) => c.currentRatingProperty );
     const fuseCurrentRatingControl = new CircuitElementNumberControl( currentRatingString,
 
       // Adapter to take from {{named}} to {{value}} for usage in common code
       StringUtils.fillIn( currentUnitsString, {
         current: SunConstants.VALUE_NAMED_PLACEHOLDER
       } ),
-      selectedFuseRatingProperty,
+      createSingletonAdapterProperty( Fuse.DEFAULT_CURRENT_RATING, Fuse, circuit, ( c: Fuse ) => c.currentRatingProperty ),
       Fuse.RANGE,
       circuit,
       1, // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/513 Eliminate numberOfDecimalPlaces: 1 from Fuse and places like it
