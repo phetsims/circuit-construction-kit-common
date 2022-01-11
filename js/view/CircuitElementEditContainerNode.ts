@@ -115,6 +115,8 @@ class CircuitElementEditContainerNode extends Node {
     const clearDynamicsButton = new ClearDynamicsButton( circuit, tandem.createTandem( 'clearDynamicsButton' ) );
     const reverseBatteryButton = new ReverseBatteryButton( circuit, tandem.createTandem( 'reverseBatteryButton' ) );
 
+    const switchReadoutNode = new SwitchReadoutNode( circuit, tandem.createTandem( 'switchReadoutNode' ), trashButton );
+
     // For PhET-iO, NumberControls are created statically on startup and switch between which CircuitElement it controls.
     const fuseCurrentRatingControl = new CircuitElementNumberControl( currentRatingString,
 
@@ -250,7 +252,7 @@ class CircuitElementEditContainerNode extends Node {
     circuit.selectedCircuitElementProperty.link( selectedCircuitElement => {
       if ( editNode ) {
         this.hasChild( editNode ) && this.removeChild( editNode );
-        if ( editNode !== tapInstructionTextNode && editNode !== trashButton ) {
+        if ( editNode !== tapInstructionTextNode && editNode !== trashButton && editNode !== switchReadoutNode ) {
           editNode.dispose();
         }
       }
@@ -299,7 +301,7 @@ class CircuitElementEditContainerNode extends Node {
         else if ( selectedCircuitElement instanceof Switch ) {
 
           // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/513 should this be instrumented?
-          editNode = new SwitchReadoutNode( circuit, selectedCircuitElement, Tandem.OPT_OUT, trashButton );
+          editNode = switchReadoutNode;
         }
         else if ( selectedCircuitElement instanceof SeriesAmmeter || selectedCircuitElement instanceof Wire ) {
 

@@ -14,6 +14,7 @@ import Circuit from '../model/Circuit.js';
 import Switch from '../model/Switch.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import TrashButton from './TrashButton.js';
+import CircuitElement from '../model/CircuitElement.js';
 
 const theSwitchIsClosedString = circuitConstructionKitCommonStrings.theSwitchIsClosed;
 const theSwitchIsOpenString = circuitConstructionKitCommonStrings.theSwitchIsOpen;
@@ -22,15 +23,7 @@ const theSwitchIsOpenString = circuitConstructionKitCommonStrings.theSwitchIsOpe
 const MAX_TEXT_WIDTH = 300;
 
 class SwitchReadoutNode extends Node {
-  private readonly disposeSwitchReadoutNode: () => void;
-
-  /**
-   * @param {Circuit} circuit - the circuit from which the switch can be removed when the trash button is pressed
-   * @param {Switch} circuitSwitch - the switch
-   * @param {Tandem} tandem
-   * @param {TrashButton} trashButton
-   */
-  constructor( circuit: Circuit, circuitSwitch: Switch, tandem: Tandem, trashButton: TrashButton ) {
+  constructor( circuit: Circuit, tandem: Tandem, trashButton: TrashButton ) {
 
     // Create both texts and display both so they remain aligned as the value changes
     const createText = ( string: string ) =>
@@ -47,7 +40,12 @@ class SwitchReadoutNode extends Node {
       closedText.visible = closed;
       openText.visible = !closed;
     };
-    circuitSwitch.closedProperty.link( closedListener );
+
+    // This is reused across all switches
+    circuit.selectedCircuitElementProperty.link( ( newCircuitElement: CircuitElement | null, oldCircuitElement: CircuitElement | null ) => {
+      oldCircuitElement instanceof Switch && oldCircuitElement.closedProperty.unlink( closedListener );
+      newCircuitElement instanceof Switch && newCircuitElement.closedProperty.link( closedListener );
+    } );
 
     // Show a trash button to the right of the text
     trashButton.mutate( {
@@ -58,18 +56,6 @@ class SwitchReadoutNode extends Node {
     super( {
       children: [ closedText, openText, trashButton ]
     } );
-
-    // @private {function}
-    this.disposeSwitchReadoutNode = () => circuitSwitch.closedProperty.unlink( closedListener );
-  }
-
-  /**
-   * @public - dispose when no longer used
-   * @override
-   */
-  dispose() {
-    this.disposeSwitchReadoutNode();
-    super.dispose();
   }
 }
 
