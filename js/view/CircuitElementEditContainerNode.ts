@@ -134,7 +134,7 @@ class CircuitElementEditContainerNode extends Node {
 
       // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/513 Eliminate numberOfDecimalPlaces: 1 from Fuse and places like it
       1, {
-        tandem: Tandem.OPT_OUT,
+        tandem: tandem.createTandem( 'currentRatingControl' ),
         delta: NORMAL_TWEAKER_DELTA, // For the tweakers
         sliderOptions: {
           constrainValue: ( value: number ) => Utils.roundToInterval( value, 0.5 )
@@ -150,7 +150,7 @@ class CircuitElementEditContainerNode extends Node {
       Capacitor.CAPACITANCE_RANGE,
       circuit,
       Capacitor.NUMBER_OF_DECIMAL_PLACES, {
-        tandem: Tandem.OPT_OUT,
+        tandem: tandem.createTandem( 'capacitanceNumberControl' ),
         delta: CCKCQueryParameters.capacitanceStep
       }
     );
