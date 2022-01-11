@@ -231,7 +231,7 @@ class CircuitElementEditContainerNode extends Node {
       if ( selectedCircuitElement ) {
 
         if ( selectedCircuitElement instanceof Resistor && selectedCircuitElement.isResistanceEditable() ) {
-          const isHighResistance = selectedCircuitElement instanceof Resistor && selectedCircuitElement.resistorType === ResistorType.HIGH_RESISTANCE_RESISTOR;
+          const isHighResistance = selectedCircuitElement.resistorType === ResistorType.HIGH_RESISTANCE_RESISTOR;
           editNode = new EditPanel( [
             isHighResistance ? highResistanceNumberControl : resistanceNumberControl,
             trashButton
@@ -240,9 +240,8 @@ class CircuitElementEditContainerNode extends Node {
 
         // Real bulb has no resistance control
         else if ( selectedCircuitElement instanceof LightBulb && !selectedCircuitElement.real ) {
-          const isHighResistance = selectedCircuitElement instanceof LightBulb && selectedCircuitElement.highResistance;
           editNode = new EditPanel( [
-              isHighResistance ? lightBulbHighResistanceNumberControl : lightBulbResistanceNumberControl,
+              selectedCircuitElement.highResistance ? lightBulbHighResistanceNumberControl : lightBulbResistanceNumberControl,
               trashButton
             ]
           );

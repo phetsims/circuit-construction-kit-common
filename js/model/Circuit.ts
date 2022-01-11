@@ -369,7 +369,7 @@ class Circuit {
     }, () => createVertices( BATTERY_LENGTH ), {
       phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
       tandem: tandem.createTandem( 'highVoltageBatteryGroup' ),
-      phetioDynamicElementName: 'battery'
+      phetioDynamicElementName: 'highVoltageBattery'
     } );
 
     // @public {PhetioGroup}
