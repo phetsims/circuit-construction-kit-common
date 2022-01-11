@@ -24,20 +24,23 @@ class Capacitor extends DynamicCircuitElement {
 
   // the capacitance in farads
   readonly capacitanceProperty: NumberProperty;
+  static CAPACITANCE_RANGE = new Range( CCKCQueryParameters.capacitanceMin, CCKCQueryParameters.capacitanceMax );
+  static NUMBER_OF_DECIMAL_PLACES = CCKCQueryParameters.capacitorNumberDecimalPlaces;
+  static CAPACITANCE_DEFAULT = CCKCQueryParameters.capacitanceDefault;
 
   constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: Partial<CapacitorOptions> ) {
     const options = merge( {
-      capacitance: CCKCQueryParameters.capacitanceDefault,
+      capacitance: Capacitor.CAPACITANCE_DEFAULT,
 
       // The number of decimal places is only used in the view, but we define it in the model as a convenient way to
       // associate the value with the component
-      numberOfDecimalPlaces: CCKCQueryParameters.capacitorNumberDecimalPlaces
+      numberOfDecimalPlaces: Capacitor.NUMBER_OF_DECIMAL_PLACES
     }, providedOptions ) as CapacitorOptions;
 
     super( startVertex, endVertex, CCKCConstants.CAPACITOR_LENGTH, tandem, options );
 
     this.capacitanceProperty = new NumberProperty( options.capacitance, {
-      range: new Range( CCKCQueryParameters.capacitanceMin, CCKCQueryParameters.capacitanceMax ),
+      range: Capacitor.CAPACITANCE_RANGE,
       tandem: tandem.createTandem( 'capacitanceProperty' )
     } );
 

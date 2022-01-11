@@ -125,8 +125,6 @@ class CircuitElementEditContainerNode extends Node {
 
     // For PhET-iO, NumberControls are created statically on startup and switch between which CircuitElement it controls.
     const fuseCurrentRatingControl = new CircuitElementNumberControl( currentRatingString,
-
-      // Adapter to take from {{named}} to {{value}} for usage in common code
       StringUtils.fillIn( currentUnitsString, {
         current: SunConstants.VALUE_NAMED_PLACEHOLDER
       } ),
@@ -135,13 +133,23 @@ class CircuitElementEditContainerNode extends Node {
       circuit,
       1, // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/513 Eliminate numberOfDecimalPlaces: 1 from Fuse and places like it
       Tandem.OPT_OUT, {
-
-        // For the tweakers
-        delta: NORMAL_TWEAKER_DELTA,
-
+        delta: NORMAL_TWEAKER_DELTA, // For the tweakers
         sliderOptions: {
           constrainValue: ( value: number ) => Utils.roundToInterval( value, 0.5 )
         }
+      }
+    );
+
+    const capacitorEditControl = new CircuitElementNumberControl( capacitanceString,
+      StringUtils.fillIn( capacitanceUnitsString, {
+        capacitance: SunConstants.VALUE_NAMED_PLACEHOLDER
+      } ),
+      createSingletonAdapterProperty( Capacitor.CAPACITANCE_DEFAULT, Capacitor, circuit, ( c: Capacitor ) => c.capacitanceProperty ),
+      Capacitor.CAPACITANCE_RANGE,
+      circuit,
+      Capacitor.NUMBER_OF_DECIMAL_PLACES,
+      Tandem.OPT_OUT, {
+        delta: CCKCQueryParameters.capacitanceStep
       }
     );
 
@@ -336,21 +344,6 @@ class CircuitElementEditContainerNode extends Node {
           editNode = new EditPanel( children );
         }
         else if ( isCapacitor ) {
-          const capacitorEditControl = new CircuitElementNumberControl( capacitanceString,
-
-            // Adapter to take from {{named}} to {{value}} for usage in common code
-            StringUtils.fillIn( capacitanceUnitsString, {
-              capacitance: SunConstants.VALUE_NAMED_PLACEHOLDER
-            } ),
-            selectedCircuitElement.capacitanceProperty,
-            selectedCircuitElement.capacitanceProperty.range!,
-            circuit,
-            selectedCircuitElement.numberOfDecimalPlaces,
-            Tandem.OPT_OUT, {
-              delta: CCKCQueryParameters.capacitanceStep
-            }
-          );
-
           editNode = new EditPanel( [
             clearDynamicsButton,
             capacitorEditControl,
