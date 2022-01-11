@@ -182,6 +182,35 @@ class CircuitElementEditContainerNode extends Node {
     const highResistanceNumberControl = createHighResistanceNumberControl( 'highResistanceNumberControl', Resistor );
     const lightBulbHighResistanceNumberControl = createHighResistanceNumberControl( 'lightBulbHighResistanceNumberControl', LightBulb );
 
+    const voltageNumberControl = new CircuitElementNumberControl( voltageString,
+      StringUtils.fillIn( voltageVoltsValuePatternString, { voltage: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
+      createSingletonAdapterProperty( Battery.VOLTAGE_DEFAULT, Battery, circuit, ( c: Battery ) => c.voltageProperty ),
+      Battery.VOLTAGE_RANGE,
+      circuit,
+      Battery.VOLTAGE_DECIMAL_PLACES, {
+        tandem: tandem.createTandem( 'voltageNumberControl' ),
+        delta: NORMAL_TWEAKER_DELTA,
+        sliderOptions: { // For dragging the slider knob
+          constrainValue: ( value: number ) => Utils.roundToInterval( value, NORMAL_SLIDER_KNOB_DELTA )
+        },
+        numberDisplayOptions: { decimalPlaces: Battery.VOLTAGE_DECIMAL_PLACES },
+        phetioState: false
+      } );
+    const highVoltageNumberControl = new CircuitElementNumberControl( voltageString,
+      StringUtils.fillIn( voltageVoltsValuePatternString, { voltage: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
+      createSingletonAdapterProperty( Battery.HIGH_VOLTAGE_DEFAULT, Battery, circuit, ( c: Battery ) => c.voltageProperty ),
+      Battery.HIGH_VOLTAGE_RANGE,
+      circuit,
+      Battery.HIGH_VOLTAGE_DECIMAL_PLACES, {
+        tandem: tandem.createTandem( 'highVoltageNumberControl' ),
+        delta: HIGH_TWEAKER_DELTA,
+        sliderOptions: { // For dragging the slider knob
+          constrainValue: ( value: number ) => Utils.roundToInterval( value, HIGH_SLIDER_KNOB_DELTA )
+        },
+        numberDisplayOptions: { decimalPlaces: Battery.HIGH_VOLTAGE_DECIMAL_PLACES },
+        phetioState: false
+      } );
+
     const tapInstructionTextNode = new Text( tapCircuitElementToEditString, {
       fontSize: 24,
       maxWidth: 300,
@@ -252,38 +281,9 @@ class CircuitElementEditContainerNode extends Node {
           editNode = trashButton;
         }
         else if ( selectedCircuitElement instanceof Battery ) {
-          const knobDelta = selectedCircuitElement.batteryType === 'high-voltage' ?
-                            HIGH_SLIDER_KNOB_DELTA : NORMAL_SLIDER_KNOB_DELTA;
-          const circuitElementEditNode = new CircuitElementNumberControl(
-            voltageString,
-            StringUtils.fillIn( voltageVoltsValuePatternString, {
-              voltage: SunConstants.VALUE_NAMED_PLACEHOLDER
-            } ),
-            selectedCircuitElement.voltageProperty,
-            selectedCircuitElement.voltageProperty.range!,
-            circuit,
-            selectedCircuitElement.numberOfDecimalPlaces, {
-              tandem: Tandem.OPT_OUT,
-
-              // For the tweakers
-              delta: selectedCircuitElement.batteryType === 'high-voltage' ? HIGH_TWEAKER_DELTA : NORMAL_TWEAKER_DELTA,
-
-              // For dragging the slider knob
-              sliderOptions: {
-                constrainValue: ( value: number ) => Utils.roundToInterval( value, knobDelta )
-              },
-              numberDisplayOptions: {
-                decimalPlaces: selectedCircuitElement.numberOfDecimalPlaces
-              },
-              phetioState: false
-            }
-          );
-
           editNode = new EditPanel( [
-
-              // Batteries can be reversed
-              reverseBatteryButton,
-              circuitElementEditNode,
+              reverseBatteryButton, // Batteries can be reversed
+              selectedCircuitElement.batteryType === 'high-voltage' ? highVoltageNumberControl : voltageNumberControl,
               trashButton
             ]
           );

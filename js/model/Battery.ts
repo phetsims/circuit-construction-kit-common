@@ -25,17 +25,23 @@ type BatteryOptions = {} & VoltageSourceOptions;
 
 class Battery extends VoltageSource {
   readonly batteryType: BatteryType;
+  static VOLTAGE_DEFAULT = 9.0;
+  static VOLTAGE_RANGE = new Range( 0, 120 );
+  static VOLTAGE_DECIMAL_PLACES = 1;
+  static HIGH_VOLTAGE_DEFAULT = 1000;
+  static HIGH_VOLTAGE_RANGE = new Range( 100, 100000 );
+  static HIGH_VOLTAGE_DECIMAL_PLACES = 0;
 
   constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, batteryType: BatteryType,
                tandem: Tandem, providedOptions?: Partial<BatteryOptions> ) {
     assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );
     const filledOptions = merge( {
       initialOrientation: 'right',
-      voltage: 9.0,
+      voltage: Battery.VOLTAGE_DEFAULT,
       isFlammable: true,
-      numberOfDecimalPlaces: batteryType === 'normal' ? 1 : 0,
+      numberOfDecimalPlaces: batteryType === 'normal' ? Battery.VOLTAGE_DECIMAL_PLACES : Battery.HIGH_VOLTAGE_DECIMAL_PLACES,
       voltagePropertyOptions: {
-        range: batteryType === 'normal' ? new Range( 0, 120 ) : new Range( 100, 100000 )
+        range: batteryType === 'normal' ? Battery.VOLTAGE_RANGE : Battery.HIGH_VOLTAGE_RANGE
       }
     }, providedOptions ) as BatteryOptions;
     super( startVertex, endVertex, internalResistanceProperty, BATTERY_LENGTH, tandem, filledOptions );
