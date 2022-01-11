@@ -127,13 +127,9 @@ class CircuitElementEditContainerNode extends Node {
     const fuseCurrentRatingControl = new CircuitElementNumberControl( currentRatingString,
 
       // Adapter to take from {{named}} to {{value}} for usage in common code
-      StringUtils.fillIn( currentUnitsString, {
-        current: SunConstants.VALUE_NAMED_PLACEHOLDER
-      } ),
+      StringUtils.fillIn( currentUnitsString, { current: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
       createSingletonAdapterProperty( Fuse.DEFAULT_CURRENT_RATING, Fuse, circuit, ( c: Fuse ) => c.currentRatingProperty ),
-      Fuse.RANGE,
-      circuit,
-
+      Fuse.RANGE, circuit,
       // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/513 Eliminate numberOfDecimalPlaces: 1 from Fuse and places like it
       1, {
         tandem: tandem.createTandem( 'currentRatingControl' ),
@@ -144,25 +140,17 @@ class CircuitElementEditContainerNode extends Node {
       } );
 
     const capacitorEditControl = new CircuitElementNumberControl( capacitanceString,
-      StringUtils.fillIn( capacitanceUnitsString, {
-        capacitance: SunConstants.VALUE_NAMED_PLACEHOLDER
-      } ),
+      StringUtils.fillIn( capacitanceUnitsString, { capacitance: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
       createSingletonAdapterProperty( Capacitor.CAPACITANCE_DEFAULT, Capacitor, circuit, ( c: Capacitor ) => c.capacitanceProperty ),
-      Capacitor.CAPACITANCE_RANGE,
-      circuit,
-      Capacitor.NUMBER_OF_DECIMAL_PLACES, {
+      Capacitor.CAPACITANCE_RANGE, circuit, Capacitor.NUMBER_OF_DECIMAL_PLACES, {
         tandem: tandem.createTandem( 'capacitanceNumberControl' ),
         delta: CCKCQueryParameters.capacitanceStep
       } );
 
     const inductanceControl = new CircuitElementNumberControl( inductanceString,
-      StringUtils.fillIn( inductanceUnitsString, {
-        inductance: SunConstants.VALUE_NAMED_PLACEHOLDER
-      } ),
+      StringUtils.fillIn( inductanceUnitsString, { inductance: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
       createSingletonAdapterProperty( Inductor.INDUCTANCE_DEFAULT, Inductor, circuit, ( c: Inductor ) => c.inductanceProperty ),
-      Inductor.INDUCTANCE_RANGE,
-      circuit,
-      Inductor.INDUCTANCE_NUMBER_OF_DECIMAL_PLACES, {
+      Inductor.INDUCTANCE_RANGE, circuit, Inductor.INDUCTANCE_NUMBER_OF_DECIMAL_PLACES, {
         tandem: tandem.createTandem( 'inductanceNumberControl' ),
         delta: CCKCQueryParameters.inductanceStep,
 
