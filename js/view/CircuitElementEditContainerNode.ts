@@ -66,6 +66,8 @@ const GET_LAYOUT_POSITION = ( visibleBounds: Bounds2, centerX: number ) => {
   };
 };
 
+// So we can pass classes as types for instanceof checks, I've been using https://www.typescriptlang.org/docs/handbook/mixins.html
+// as a reference for how to create this type
 type GConstructor<T = {}> = new ( ...args: any[] ) => T;
 
 const NORMAL_SLIDER_KNOB_DELTA = 1;
