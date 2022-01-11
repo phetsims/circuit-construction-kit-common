@@ -230,15 +230,6 @@ class CircuitElementEditContainerNode extends Node {
 
       if ( selectedCircuitElement ) {
 
-        const isBattery = selectedCircuitElement instanceof Battery;
-        const isFuse = selectedCircuitElement instanceof Fuse;
-        const isWire = selectedCircuitElement instanceof Wire;
-        const isSwitch = selectedCircuitElement instanceof Switch;
-        const isSeriesAmmeter = selectedCircuitElement instanceof SeriesAmmeter;
-        const isACSource = selectedCircuitElement instanceof ACVoltage;
-        const isCapacitor = selectedCircuitElement instanceof Capacitor;
-        const isInductor = selectedCircuitElement instanceof Inductor;
-
         if ( selectedCircuitElement instanceof Resistor && selectedCircuitElement.isResistanceEditable() ) {
           const isHighResistance = selectedCircuitElement instanceof Resistor && selectedCircuitElement.resistorType === ResistorType.HIGH_RESISTANCE_RESISTOR;
           editNode = new EditPanel( [
@@ -261,7 +252,7 @@ class CircuitElementEditContainerNode extends Node {
           // Just show a trash button for non-editable resistors which are household items and for real bulbs
           editNode = trashButton;
         }
-        else if ( isBattery ) {
+        else if ( selectedCircuitElement instanceof Battery ) {
           const knobDelta = selectedCircuitElement.batteryType === 'high-voltage' ?
                             HIGH_SLIDER_KNOB_DELTA : NORMAL_SLIDER_KNOB_DELTA;
           const circuitElementEditNode = new CircuitElementNumberControl(
@@ -298,7 +289,7 @@ class CircuitElementEditContainerNode extends Node {
             ]
           );
         }
-        else if ( isFuse ) {
+        else if ( selectedCircuitElement instanceof Fuse ) {
           editNode = new EditPanel( [
               resetFuseButton,
               fuseCurrentRatingControl,
@@ -306,17 +297,17 @@ class CircuitElementEditContainerNode extends Node {
             ]
           );
         }
-        else if ( isSwitch ) {
+        else if ( selectedCircuitElement instanceof Switch ) {
 
           // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/513 should this be instrumented?
           editNode = new SwitchReadoutNode( circuit, selectedCircuitElement, Tandem.OPT_OUT, trashButton );
         }
-        else if ( isSeriesAmmeter || isWire ) {
+        else if ( selectedCircuitElement instanceof SeriesAmmeter || selectedCircuitElement instanceof Wire ) {
 
           // Just show a trash button
           editNode = trashButton;
         }
-        else if ( isACSource ) {
+        else if ( selectedCircuitElement instanceof ACVoltage ) {
           const children: Node[] = [
             new CircuitElementNumberControl(
               voltageString,
@@ -351,14 +342,14 @@ class CircuitElementEditContainerNode extends Node {
           children.push( trashButton );
           editNode = new EditPanel( children );
         }
-        else if ( isCapacitor ) {
+        else if ( selectedCircuitElement instanceof Capacitor ) {
           editNode = new EditPanel( [
             clearDynamicsButton,
             capacitorEditControl,
             trashButton
           ] );
         }
-        else if ( isInductor ) {
+        else if ( selectedCircuitElement instanceof Inductor ) {
           editNode = new EditPanel( [
               clearDynamicsButton,
               inductanceControl,
