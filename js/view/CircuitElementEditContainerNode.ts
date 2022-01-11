@@ -175,7 +175,8 @@ class CircuitElementEditContainerNode extends Node {
 
     const tapInstructionTextNode = new Text( tapCircuitElementToEditString, {
       fontSize: 24,
-      maxWidth: 300
+      maxWidth: 300,
+      tandem: tandem.createTandem( 'tapInstructionTextNode' )
     } );
 
     // Only show the instructions if there is a circuit element in the play area, so students don't try to tap
