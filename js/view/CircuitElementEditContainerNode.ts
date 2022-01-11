@@ -101,14 +101,6 @@ const createSingletonAdapterProperty = <T extends CircuitElement>(
 
 class CircuitElementEditContainerNode extends Node {
 
-  /**
-   * @param {Circuit} circuit - the circuit model
-   * @param {Property.<Bounds2>} visibleBoundsProperty - the visible bounds in view coordinates
-   * @param {Property.<InteractionMode>} modeProperty
-   * @param {Property.<Number>} playAreaCenterXProperty
-   * @param {Tandem} tandem
-   * @param {Object} [providedOptions]
-   */
   constructor( circuit: Circuit, visibleBoundsProperty: Property<Bounds2>, modeProperty: Property<'explore' | 'test'>, playAreaCenterXProperty: Property<number>, tandem: Tandem, providedOptions?: any ) {
 
     super();
@@ -404,9 +396,6 @@ class CircuitElementEditContainerNode extends Node {
  * HBox with standardized options
  */
 class EditHBox extends HBox {
-  /**
-   * @param {Array.<Node>} children
-   */
   constructor( children: Node[] ) {
     super( {
       spacing: 25,
@@ -437,7 +426,6 @@ class EditPanel extends Panel {
     this.hbox = hbox;
   }
 
-  // @public
   dispose() {
     this.hbox.dispose();
     super.dispose();
