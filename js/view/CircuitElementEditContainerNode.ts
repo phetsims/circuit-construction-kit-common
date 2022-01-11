@@ -42,6 +42,7 @@ import ResetFuseButton from './ResetFuseButton.js';
 import ReverseBatteryButton from './ReverseBatteryButton.js';
 import SwitchReadoutNode from './SwitchReadoutNode.js';
 import TrashButton from './TrashButton.js';
+import CircuitElement from '../model/CircuitElement.js';
 
 const capacitanceString = circuitConstructionKitCommonStrings.capacitance;
 const capacitanceUnitsString = circuitConstructionKitCommonStrings.capacitanceUnits;
@@ -65,10 +66,36 @@ const GET_LAYOUT_POSITION = ( visibleBounds: Bounds2, centerX: number ) => {
   };
 };
 
+type GConstructor<T = {}> = new ( ...args: any[] ) => T;
+
 const NORMAL_SLIDER_KNOB_DELTA = 1;
 const HIGH_SLIDER_KNOB_DELTA = 100;
 const NORMAL_TWEAKER_DELTA = 0.1;
 const HIGH_TWEAKER_DELTA = 10;
+
+// TODO: Consider moving this into CircuitElementNumberControl once we have built them all, see https://github.com/phetsims/circuit-construction-kit-common/issues/797
+const createSingletonAdapterProperty = <T extends CircuitElement>(
+  initialValue: number,
+  CircuitElementType: GConstructor<T>,
+  circuit: Circuit,
+  getter: ( circuitElement: T ) => Property<number> ) => {
+
+  // Cannot use DynamicProperty.derivedProperty since the selected circuit element isn't always a Fuse
+  const singletonAdapterProperty = new Property( initialValue, {} );
+  singletonAdapterProperty.link( fuseRating => {
+    if ( circuit.selectedCircuitElementProperty.value && circuit.selectedCircuitElementProperty.value instanceof CircuitElementType ) {
+      getter( circuit.selectedCircuitElementProperty.value ).value = fuseRating;
+    }
+  } );
+
+  // When the value in the model changes, say from PhET-iO, we propagate it back to the control
+  const modelListener = ( currentRating: number ) => singletonAdapterProperty.set( currentRating );
+  circuit.selectedCircuitElementProperty.link( ( newCircuitElement, oldCircuitElement ) => {
+    oldCircuitElement instanceof CircuitElementType && getter( oldCircuitElement ).unlink( modelListener );
+    newCircuitElement instanceof CircuitElementType && getter( newCircuitElement ).link( modelListener );
+  } );
+  return singletonAdapterProperty;
+};
 
 class CircuitElementEditContainerNode extends Node {
 
@@ -94,20 +121,8 @@ class CircuitElementEditContainerNode extends Node {
     const clearDynamicsButton = new ClearDynamicsButton( circuit, tandem.createTandem( 'clearDynamicsButton' ) );
     const reverseBatteryButton = new ReverseBatteryButton( circuit, tandem.createTandem( 'reverseBatteryButton' ) );
 
-    // Cannot use DynamicProperty.derivedProperty since the selected circuit element isn't always a Fuse
-    const selectedFuseRatingProperty = new Property<number>( Fuse.DEFAULT_CURRENT_RATING, {} );
-    selectedFuseRatingProperty.link( fuseRating => {
-      if ( circuit.selectedCircuitElementProperty.value && circuit.selectedCircuitElementProperty.value instanceof Fuse ) {
-        circuit.selectedCircuitElementProperty.value.currentRatingProperty.value = fuseRating;
-      }
-    } );
-
-    // When the value of a fuse changes, say from PhET-iO, we propagate it back to the control
-    const fuseListener = ( currentRating: number ) => selectedFuseRatingProperty.set( currentRating );
-    circuit.selectedCircuitElementProperty.link( ( selectedCircuitElement, priorCircuitElement ) => {
-      priorCircuitElement instanceof Fuse && priorCircuitElement.currentRatingProperty.unlink( fuseListener );
-      selectedCircuitElement instanceof Fuse && selectedCircuitElement.currentRatingProperty.link( fuseListener );
-    } );
+    // For PhET-iO, NumberControls are created statically on startup and switch between which CircuitElement it controls.
+    const selectedFuseRatingProperty = createSingletonAdapterProperty( Fuse.DEFAULT_CURRENT_RATING, Fuse, circuit, ( c: Fuse ) => c.currentRatingProperty );
     const fuseCurrentRatingControl = new CircuitElementNumberControl( currentRatingString,
 
       // Adapter to take from {{named}} to {{value}} for usage in common code
