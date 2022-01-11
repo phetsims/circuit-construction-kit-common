@@ -21,8 +21,8 @@ class ResistorType extends EnumerationValue {
 
   static enumeration = new RichEnumeration( ResistorType );
 
-  private readonly defaultResistance: number;
-  private readonly range: Range;
+  readonly defaultResistance: number;
+  readonly range: Range;
   private readonly isMetallic: boolean;
   readonly length: number;
   private readonly verticalOffset: number;

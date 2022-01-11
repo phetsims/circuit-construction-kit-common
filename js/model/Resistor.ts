@@ -27,6 +27,8 @@ class Resistor extends FixedCircuitElement {
   readonly resistanceProperty: NumberProperty;
   readonly resistorType: any;
   static ResistorIO: IOType;
+  static RESISTANCE_DECIMAL_PLACES = 1;
+  static HIGH_RESISTANCE_DECIMAL_PLACES = 0;
 
   /**
    * @param {Vertex} startVertex

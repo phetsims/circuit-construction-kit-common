@@ -125,6 +125,8 @@ class CircuitElementEditContainerNode extends Node {
 
     // For PhET-iO, NumberControls are created statically on startup and switch between which CircuitElement it controls.
     const fuseCurrentRatingControl = new CircuitElementNumberControl( currentRatingString,
+
+      // Adapter to take from {{named}} to {{value}} for usage in common code
       StringUtils.fillIn( currentUnitsString, {
         current: SunConstants.VALUE_NAMED_PLACEHOLDER
       } ),
@@ -139,8 +141,7 @@ class CircuitElementEditContainerNode extends Node {
         sliderOptions: {
           constrainValue: ( value: number ) => Utils.roundToInterval( value, 0.5 )
         }
-      }
-    );
+      } );
 
     const capacitorEditControl = new CircuitElementNumberControl( capacitanceString,
       StringUtils.fillIn( capacitanceUnitsString, {
@@ -152,8 +153,7 @@ class CircuitElementEditContainerNode extends Node {
       Capacitor.NUMBER_OF_DECIMAL_PLACES, {
         tandem: tandem.createTandem( 'capacitanceNumberControl' ),
         delta: CCKCQueryParameters.capacitanceStep
-      }
-    );
+      } );
 
     const inductanceControl = new CircuitElementNumberControl( inductanceString,
       StringUtils.fillIn( inductanceUnitsString, {
@@ -170,8 +170,37 @@ class CircuitElementEditContainerNode extends Node {
         sliderOptions: {
           constrainValue: ( value: number ) => Utils.roundToInterval( value, 0.1 )
         }
-      }
-    );
+      } );
+
+    type GConstructor<T> = new ( ...args: any[] ) => T;
+
+    const createResistanceNumberControl = ( tandemName: string, CircuitElementType: GConstructor<LightBulb | Resistor> ) => new CircuitElementNumberControl( resistanceString,
+      StringUtils.fillIn( resistanceOhmsValuePatternString, { resistance: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
+      createSingletonAdapterProperty( ResistorType.RESISTOR.defaultResistance, CircuitElementType, circuit, ( c: LightBulb | Resistor ) => c.resistanceProperty ),
+      ResistorType.RESISTOR.range, circuit, Resistor.RESISTANCE_DECIMAL_PLACES, {
+        tandem: tandem.createTandem( tandemName ),
+        delta: NORMAL_TWEAKER_DELTA,
+        sliderOptions: {
+          constrainValue: ( value: number ) => Utils.roundToInterval( value, NORMAL_SLIDER_KNOB_DELTA ) // For dragging the slider knob
+        },
+        numberDisplayOptions: { decimalPlaces: Resistor.RESISTANCE_DECIMAL_PLACES }
+      } );
+    const createHighResistanceNumberControl = ( tandemName: string, CircuitElementType: GConstructor<LightBulb | Resistor> ) => new CircuitElementNumberControl( resistanceString,
+      StringUtils.fillIn( resistanceOhmsValuePatternString, { resistance: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
+      createSingletonAdapterProperty( ResistorType.HIGH_RESISTANCE_RESISTOR.defaultResistance, CircuitElementType, circuit, ( c: LightBulb | Resistor ) => c.resistanceProperty ),
+      ResistorType.HIGH_RESISTANCE_RESISTOR.range, circuit, Resistor.HIGH_RESISTANCE_DECIMAL_PLACES, {
+        tandem: tandem.createTandem( tandemName ),
+        delta: HIGH_TWEAKER_DELTA,
+        sliderOptions: {
+          constrainValue: ( value: number ) => Utils.roundToInterval( value, HIGH_SLIDER_KNOB_DELTA ) // For dragging the slider knob
+        },
+        numberDisplayOptions: { decimalPlaces: Resistor.HIGH_RESISTANCE_DECIMAL_PLACES }
+      } );
+
+    const resistanceNumberControl = createResistanceNumberControl( 'resistanceNumberControl', Resistor );
+    const lightBulbResistanceNumberControl = createResistanceNumberControl( 'lightBulbResistanceNumberControl', LightBulb );
+    const highResistanceNumberControl = createHighResistanceNumberControl( 'highResistanceNumberControl', Resistor );
+    const lightBulbHighResistanceNumberControl = createHighResistanceNumberControl( 'lightBulbHighResistanceNumberControl', LightBulb );
 
     const tapInstructionTextNode = new Text( tapCircuitElementToEditString, {
       fontSize: 24,
@@ -220,7 +249,7 @@ class CircuitElementEditContainerNode extends Node {
       editNode = null;
 
       if ( selectedCircuitElement ) {
-        const isResistive = selectedCircuitElement instanceof Resistor || ( selectedCircuitElement instanceof LightBulb && !selectedCircuitElement.real );
+
         const isBattery = selectedCircuitElement instanceof Battery;
         const isFuse = selectedCircuitElement instanceof Fuse;
         const isWire = selectedCircuitElement instanceof Wire;
@@ -230,45 +259,24 @@ class CircuitElementEditContainerNode extends Node {
         const isCapacitor = selectedCircuitElement instanceof Capacitor;
         const isInductor = selectedCircuitElement instanceof Inductor;
 
-        if ( isResistive && selectedCircuitElement.isResistanceEditable() ) {
-
-          // @ts-ignore
-          const isHighResistance = selectedCircuitElement.resistorType === ResistorType.HIGH_RESISTANCE_RESISTOR ||
-                                   selectedCircuitElement instanceof LightBulb && selectedCircuitElement.highResistance;
-
-          const resistanceControl = new CircuitElementNumberControl(
-            resistanceString,
-
-            // Adapter to take from {{named}} to {{value}} for usage in common code
-            StringUtils.fillIn( resistanceOhmsValuePatternString, {
-              resistance: SunConstants.VALUE_NAMED_PLACEHOLDER
-            } ),
-            selectedCircuitElement.resistanceProperty,
-            selectedCircuitElement.resistanceProperty.range!,
-            circuit,
-            selectedCircuitElement.numberOfDecimalPlaces, {
-              tandem: Tandem.OPT_OUT,
-
-              // For the tweakers
-              delta: isHighResistance ? HIGH_TWEAKER_DELTA : NORMAL_TWEAKER_DELTA,
-
-              // For dragging the slider knob
-              sliderOptions: {
-                constrainValue: ( value: number ) => Utils.roundToInterval( value, isHighResistance ? HIGH_SLIDER_KNOB_DELTA : NORMAL_SLIDER_KNOB_DELTA )
-              },
-              numberDisplayOptions: {
-                decimalPlaces: selectedCircuitElement.numberOfDecimalPlaces
-              }
-            }
-          );
-
+        if ( selectedCircuitElement instanceof Resistor && selectedCircuitElement.isResistanceEditable() ) {
+          const isHighResistance = selectedCircuitElement instanceof Resistor && selectedCircuitElement.resistorType === ResistorType.HIGH_RESISTANCE_RESISTOR;
           editNode = new EditPanel( [
-              resistanceControl,
+            isHighResistance ? highResistanceNumberControl : resistanceNumberControl,
+            trashButton
+          ] );
+        }
+
+        // Real bulb has no resistance control
+        else if ( selectedCircuitElement instanceof LightBulb && !selectedCircuitElement.real ) {
+          const isHighResistance = selectedCircuitElement instanceof LightBulb && selectedCircuitElement.highResistance;
+          editNode = new EditPanel( [
+              isHighResistance ? lightBulbHighResistanceNumberControl : lightBulbResistanceNumberControl,
               trashButton
             ]
           );
         }
-        else if ( isResistive || ( selectedCircuitElement instanceof LightBulb && selectedCircuitElement.real ) ) {
+        else if ( selectedCircuitElement instanceof Resistor || ( selectedCircuitElement instanceof LightBulb && selectedCircuitElement.real ) ) {
 
           // Just show a trash button for non-editable resistors which are household items and for real bulbs
           editNode = trashButton;
@@ -278,8 +286,6 @@ class CircuitElementEditContainerNode extends Node {
                             HIGH_SLIDER_KNOB_DELTA : NORMAL_SLIDER_KNOB_DELTA;
           const circuitElementEditNode = new CircuitElementNumberControl(
             voltageString,
-
-            // Adapter to take from {{named}} to {{value}} for usage in common code
             StringUtils.fillIn( voltageVoltsValuePatternString, {
               voltage: SunConstants.VALUE_NAMED_PLACEHOLDER
             } ),
@@ -334,8 +340,6 @@ class CircuitElementEditContainerNode extends Node {
           const children: Node[] = [
             new CircuitElementNumberControl(
               voltageString,
-
-              // Adapter to take from {{named}} to {{value}} for usage in common code
               StringUtils.fillIn( voltageVoltsValuePatternString, {
                 voltage: SunConstants.VALUE_NAMED_PLACEHOLDER
               } ),
@@ -347,8 +351,6 @@ class CircuitElementEditContainerNode extends Node {
             ),
             new CircuitElementNumberControl(
               frequencyString,
-
-              // Adapter to take from {{named}} to {{value}} for usage in common code
               StringUtils.fillIn( frequencyHzValuePatternString, {
                 frequency: SunConstants.VALUE_NAMED_PLACEHOLDER
               } ),
