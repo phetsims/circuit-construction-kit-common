@@ -16,7 +16,7 @@ import CircuitElement from './CircuitElement.js';
 import FixedCircuitElement from './FixedCircuitElement.js';
 import ResistorType from './ResistorType.js';
 import Vertex from './Vertex.js';
-import RichEnumerationIO from '../../../axon/js/RichEnumerationIO.js';
+import EnumerationIO from '../../../tandem/js/types/EnumerationIO.js';
 
 type ResistorOptions = {
   isMetallic: boolean,
@@ -105,17 +105,17 @@ Resistor.ResistorIO = new IOType( 'ResistorIO', {
   valueType: Resistor,
   supertype: CircuitElement.CircuitElementIO,
   stateSchema: {
-    resistorType: RichEnumerationIO( ResistorType )
+    resistorType: EnumerationIO( ResistorType )
   },
   toStateObject: ( resistor: Resistor ) => {
     const stateObject = CircuitElement.CircuitElementIO.toStateObject( resistor );
-    stateObject.resistorType = RichEnumerationIO( ResistorType ).toStateObject( resistor.resistorType );
+    stateObject.resistorType = EnumerationIO( ResistorType ).toStateObject( resistor.resistorType );
     return stateObject;
   },
 
   stateToArgsForConstructor( stateObject: any ) {
     const args = CircuitElement.CircuitElementIO.stateToArgsForConstructor( stateObject );
-    args.push( RichEnumerationIO( ResistorType ).fromStateObject( stateObject.resistorType ) );
+    args.push( EnumerationIO( ResistorType ).fromStateObject( stateObject.resistorType ) );
     return args;
   }
 } );
