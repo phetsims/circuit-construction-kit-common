@@ -9,7 +9,7 @@
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import StringEnumerationProperty from '../../../axon/js/StringEnumerationProperty.js';
-import RichEnumerationProperty from '../../../axon/js/RichEnumerationProperty.js';
+import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
 import Property from '../../../axon/js/Property.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
@@ -75,7 +75,7 @@ class CircuitConstructionKitModel {
     this.zoomAnimation = null;
 
     // whether to show lifelike or schematic representations
-    this.viewTypeProperty = new RichEnumerationProperty( CircuitElementViewType.LIFELIKE, {
+    this.viewTypeProperty = new EnumerationProperty( CircuitElementViewType.LIFELIKE, {
       tandem: tandem.createTandem( 'viewTypeProperty' )
     } );
 

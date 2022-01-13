@@ -23,7 +23,7 @@ import Switch from './Switch.js';
 import Vertex from './Vertex.js';
 import Wire from './Wire.js';
 import CircuitElementViewType from './CircuitElementViewType.js';
-import RichEnumerationProperty from '../../../axon/js/RichEnumerationProperty.js';
+import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 
 class CircuitStruct {
   vertices: Vertex[];
@@ -136,7 +136,7 @@ CircuitStruct.fromStateObject = ( circuit, circuitState, resistivityProperty, ta
       Tandem.OPT_OUT // TODO (black-box-study): a way to set the resistance
     ) );
   }
-  const p = new RichEnumerationProperty( CircuitElementViewType.LIFELIKE );
+  const p = new EnumerationProperty( CircuitElementViewType.LIFELIKE );
   for ( let i = 0; i < circuitState.lightBulbs.length; i++ ) {
     options = circuitState.lightBulbs[ i ].options || {};
     circuitStruct.lightBulbs.push( new LightBulb(

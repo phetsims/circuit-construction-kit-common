@@ -47,7 +47,7 @@ import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import CircuitElement from '../model/CircuitElement.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import ResistorType from '../model/ResistorType.js';
-import RichEnumerationProperty from '../../../axon/js/RichEnumerationProperty.js';
+import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 
 const acSourceString = circuitConstructionKitCommonStrings.acSource;
 const capacitorString = circuitConstructionKitCommonStrings.capacitor;
@@ -75,8 +75,8 @@ const SWITCH_LENGTH = CCKCConstants.SWITCH_LENGTH;
 
 // Separate icons are made for schematic/lifelike so they can be aligned
 const iconAlignGroup = new AlignGroup();
-const LIFELIKE_PROPERTY = new RichEnumerationProperty( CircuitElementViewType.LIFELIKE );
-const SCHEMATIC_PROPERTY = new RichEnumerationProperty( CircuitElementViewType.SCHEMATIC );
+const LIFELIKE_PROPERTY = new EnumerationProperty( CircuitElementViewType.LIFELIKE );
+const SCHEMATIC_PROPERTY = new EnumerationProperty( CircuitElementViewType.SCHEMATIC );
 
 class CircuitElementToolFactory {
   private readonly circuit: Circuit;

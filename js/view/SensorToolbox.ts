@@ -40,7 +40,7 @@ import { AlignGroup } from '../../../scenery/js/imports.js';
 import CircuitLayerNode from './CircuitLayerNode.js';
 import { SceneryEvent } from '../../../scenery/js/imports.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
-import RichEnumerationProperty from '../../../axon/js/RichEnumerationProperty.js';
+import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 
 const ammetersString = circuitConstructionKitCommonStrings.ammeters;
 const ammeterString = circuitConstructionKitCommonStrings.ammeter;
@@ -147,7 +147,7 @@ class SensorToolbox extends CCKCPanel {
     const seriesAmmeterToolNode = new CircuitElementToolNode(
       '',
       new BooleanProperty( false ),
-      new RichEnumerationProperty( CircuitElementViewType.SCHEMATIC ),
+      new EnumerationProperty( CircuitElementViewType.SCHEMATIC ),
       circuit,
       point => circuitLayerNode.globalToLocalPoint( point ),
       seriesAmmeterNodeIcon,

@@ -2,7 +2,7 @@
 
 import CCKCConstants from '../CCKCConstants.js';
 import Range from '../../../dot/js/Range.js';
-import RichEnumeration from '../../../phet-core/js/RichEnumeration.js';
+import Enumeration from '../../../phet-core/js/Enumeration.js';
 import EnumerationValue from '../../../phet-core/js/EnumerationValue.js';
 
 class ResistorType extends EnumerationValue {
@@ -19,7 +19,7 @@ class ResistorType extends EnumerationValue {
   static DOG = ResistorType.fixed( 100000, false, CCKCConstants.DOG_LENGTH, -40 );
   static DOLLAR_BILL = ResistorType.fixed( 1000000000, false, CCKCConstants.DOLLAR_BILL_LENGTH );
 
-  static enumeration = new RichEnumeration( ResistorType );
+  static enumeration = new Enumeration( ResistorType );
 
   readonly defaultResistance: number;
   readonly range: Range;
