@@ -68,6 +68,10 @@ abstract class CircuitElement extends PhetioObject {
   circuitElementDisposed: boolean;
   static CircuitElementIO: IOType;
   readonly lengthProperty: Property<number> | undefined;
+  readonly isEditableProperty: BooleanProperty;
+  readonly isDisposableProperty: BooleanProperty;
+  isValueDisplayableProperty: BooleanProperty;
+  isMovableProperty: BooleanProperty;
 
   constructor( startVertex: Vertex, endVertex: Vertex, chargePathLength: number, tandem: Tandem, providedOptions?: Partial<CircuitElementOptions> ) {
     assert && assert( startVertex !== endVertex, 'startVertex cannot be the same as endVertex' );
@@ -192,6 +196,27 @@ abstract class CircuitElement extends PhetioObject {
     // See https://github.com/phetsims/circuit-construction-kit-common/issues/418
     this.circuitElementDisposed = false;
     this.lengthProperty = undefined;
+
+    // PhET-iO-specific Properties
+    this.isEditableProperty = new BooleanProperty( true, {
+      tandem: tandem.createTandem( 'isEditableProperty' ),
+      phetioDocumentation: 'Whether the CircuitElement can have its numerical characteristics changed by the user'
+    } );
+
+    this.isDisposableProperty = new BooleanProperty( true, {
+      tandem: tandem.createTandem( 'isDisposableProperty' ),
+      phetioDocumentation: 'Whether the CircuitElement can be disposed. Set this to false to make the CircuitElement persisent'
+    } );
+
+    this.isValueDisplayableProperty = new BooleanProperty( true, {
+      tandem: tandem.createTandem( 'isValueDisplayableProperty' ),
+      phetioDocumentation: 'Whether the CircuitElement\'s value can be displayed when the "values" checkbox is selected'
+    } );
+
+    this.isMovableProperty = new BooleanProperty( true, {
+      tandem: tandem.createTandem( 'isMovableProperty' ),
+      phetioDocumentation: 'Whether the CircuitElement\'s can be moved by dragging itself or neighboring circuit elements'
+    } );
   }
 
   /**
@@ -305,6 +330,11 @@ abstract class CircuitElement extends PhetioObject {
     if ( endVoltageProperty.hasListener( this.vertexVoltageListener ) ) {
       endVoltageProperty.unlink( this.vertexVoltageListener );
     }
+
+    this.isEditableProperty.dispose();
+    this.isDisposableProperty.dispose();
+    this.isValueDisplayableProperty.dispose();
+    this.isMovableProperty.dispose();
 
     super.dispose();
   }

@@ -11,13 +11,14 @@ import Property from '../../../axon/js/Property.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import merge from '../../../phet-core/js/merge.js';
 import NumberControl from '../../../scenery-phet/js/NumberControl.js';
+import { HBox } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Circuit from '../model/Circuit.js';
 
-class CircuitElementNumberControl extends NumberControl {
-  private readonly disposeCircuitElementNumberControl: () => void;
+// Extend HBox so an invisible parent will auto-layout (not leave a blank hole)
+class CircuitElementNumberControl extends HBox {
   static NUMBER_CONTROL_ELEMENT_MAX_WIDTH = 115;
 
   constructor( title: string, valuePattern: string, valueProperty: Property<number>, range: Range, circuit: Circuit,
@@ -52,14 +53,22 @@ class CircuitElementNumberControl extends NumberControl {
       },
       tandem: Tandem.OPT_OUT
     }, providedOptions );
-    super( title, valueProperty, range, options );
+    const numberControl = new NumberControl( title, valueProperty, range, options );
 
-    this.disposeCircuitElementNumberControl = () => valueProperty.unlink( valuePropertyListener );
+    // Use the "nested node" pattern to support multiple gates for making the control visible.  The numberControl itself
+    // can be made invisible by phet-io customization (to hide all instances), and individual circuit elements
+    // change the visibility of the parent.
+    const updateVisibility = ( isEditable: boolean ) => this.setVisible( isEditable );
+    circuit.selectedCircuitElementProperty.link( ( newCircuitElement, oldCircuitElement ) => {
+      newCircuitElement && newCircuitElement.isEditableProperty.link( updateVisibility );
+      oldCircuitElement && oldCircuitElement.isEditableProperty.unlink( updateVisibility );
+    } );
+
+    super( { children: [ numberControl ] } );
   }
 
   dispose() {
-    super.dispose();
-    this.disposeCircuitElementNumberControl();
+    assert && assert( 'Should not be disposed' );
   }
 }
 

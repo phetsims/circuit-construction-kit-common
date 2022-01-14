@@ -82,7 +82,7 @@ const createSingletonAdapterProperty = <T extends CircuitElement>(
   circuit: Circuit,
   getter: ( circuitElement: T ) => Property<number> ) => {
 
-  // Cannot use DynamicProperty.derivedProperty since the selected circuit element isn't always a Fuse
+  // Cannot use DynamicProperty.derivedProperty since the selected circuit element isn't always the right subtype of CircuitElement
   const singletonAdapterProperty = new Property( initialValue, {} );
   singletonAdapterProperty.link( fuseRating => {
     if ( circuit.selectedCircuitElementProperty.value && circuit.selectedCircuitElementProperty.value instanceof CircuitElementType ) {
@@ -403,9 +403,6 @@ class EditHBox extends HBox {
 class EditPanel extends Panel {
   private readonly hbox: EditHBox;
 
-  /**
-   * @param {Array.<Node>} children
-   */
   constructor( children: Node[] ) {
     const hbox = new EditHBox( children );
     super( hbox, {
