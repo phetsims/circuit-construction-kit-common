@@ -33,7 +33,6 @@ type CircuitElementOptions = {
   isFlammable: boolean,
   isMetallic: boolean,
   isSizeChangedOnViewChange: boolean,
-  canBeDroppedInToolbox: boolean,
   isCurrentReentrant: boolean,
   interactive: boolean,
   insideTrueBlackBox: boolean,
@@ -46,7 +45,6 @@ abstract class CircuitElement extends PhetioObject {
   readonly isFlammable: boolean;
   readonly isMetallic: boolean;
   readonly isSizeChangedOnViewChange: boolean;
-  readonly canBeDroppedInToolbox: boolean;
   readonly startVertexProperty: Property<Vertex>;
   readonly endVertexProperty: Property<Vertex>;
   readonly currentProperty: Property<number>;
@@ -79,7 +77,6 @@ abstract class CircuitElement extends PhetioObject {
     assert && assert( chargePathLength > 0, 'charge path length must be positive' );
 
     const options = merge( {
-      canBeDroppedInToolbox: true, // In the CCK: Basics intro screen, CircuitElements can't be dropped into the toolbox
       interactive: true, // In CCK: Black Box Study, CircuitElements in the black box cannot be manipulated
       isSizeChangedOnViewChange: true,
       insideTrueBlackBox: false,
@@ -111,9 +108,6 @@ abstract class CircuitElement extends PhetioObject {
     // @public (read-only) {boolean} - whether the size changes when changing from lifelike/schematic, used to determine
     // whether the highlight region should be changed.  True for everything except the switch.
     this.isSizeChangedOnViewChange = options.isSizeChangedOnViewChange;
-
-    // @public (read-only) {number} - whether it is possible to drop the CircuitElement in the toolbox
-    this.canBeDroppedInToolbox = options.canBeDroppedInToolbox;
 
     // @public {Property.<Vertex>} - the Vertex at the origin of the CircuitElement, may change when CircuitElements are
     // connected

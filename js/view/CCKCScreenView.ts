@@ -145,7 +145,6 @@ class CCKCScreenView extends ScreenView {
 
     // @public (read-only) {CircuitLayerNode} - the circuit node
     this.circuitLayerNode = new CircuitLayerNode(
-
       // TODO: Note the discrepancy between circuitNode and circuitLayerNode, see https://github.com/phetsims/circuit-construction-kit-common/issues/513
       model.circuit, this, tandem.createTandem( 'circuitNode' )
     );
@@ -536,7 +535,7 @@ class CCKCScreenView extends ScreenView {
     const globalMidpoint = circuitElementNode.localToGlobalPoint( circuitElement.getMidpoint() );
     const overToolbox = toolbox.globalBounds.containsPoint( globalMidpoint );
 
-    return isSingle && overToolbox && circuitElement.canBeDroppedInToolbox;
+    return isSingle && overToolbox && circuitElement.isDisposableProperty.value;
   }
 }
 

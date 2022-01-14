@@ -13,7 +13,6 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Circuit from '../model/Circuit.js';
 import Switch from '../model/Switch.js';
 import Tandem from '../../../tandem/js/Tandem.js';
-import TrashButton from './TrashButton.js';
 import CircuitElement from '../model/CircuitElement.js';
 
 const theSwitchIsClosedString = circuitConstructionKitCommonStrings.theSwitchIsClosed;
@@ -23,7 +22,7 @@ const theSwitchIsOpenString = circuitConstructionKitCommonStrings.theSwitchIsOpe
 const MAX_TEXT_WIDTH = 300;
 
 class SwitchReadoutNode extends Node {
-  constructor( circuit: Circuit, tandem: Tandem, trashButton: TrashButton ) {
+  constructor( circuit: Circuit, tandem: Tandem, trashButton: Node ) {
 
     // Create both texts and display both so they remain aligned as the value changes
     const createText = ( string: string ) =>

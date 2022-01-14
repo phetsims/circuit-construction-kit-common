@@ -111,11 +111,22 @@ class CircuitElementEditContainerNode extends Node {
 
     // Create reusable components that will get assembled into a panel for the selected circuit element
     const trashButton = new TrashButton( circuit, tandem.createTandem( 'trashButton' ) );
+    const trashButtonContainer = new HBox( { children: [ trashButton ] } ); // Use the "nested node" pattern for gated visibilty
+
     const resetFuseButton = new ResetFuseButton( circuit, tandem.createTandem( 'resetFuseButton' ) );
     const clearDynamicsButton = new ClearDynamicsButton( circuit, tandem.createTandem( 'clearDynamicsButton' ) );
     const reverseBatteryButton = new ReverseBatteryButton( circuit, tandem.createTandem( 'reverseBatteryButton' ) );
+    const switchReadoutNode = new SwitchReadoutNode( circuit, tandem.createTandem( 'switchReadoutNode' ), trashButtonContainer );
 
-    const switchReadoutNode = new SwitchReadoutNode( circuit, tandem.createTandem( 'switchReadoutNode' ), trashButton );
+    const listener = ( isDisposable: boolean ) => trashButtonContainer.setVisible( isDisposable );
+
+    // TODO: Can we use DynamicProperty for this part?  But DynamicProperty probably cannot handle cases like subtypes,
+    // where Battery has isReversableProperty but not all CircuitElements do.  But maybe we should add support for that
+    // in DynamicProperty?
+    circuit.selectedCircuitElementProperty.link( ( newCircuitElement, oldCircuitElement ) => {
+      newCircuitElement && newCircuitElement.isDisposableProperty.link( listener );
+      oldCircuitElement && oldCircuitElement.isDisposableProperty.unlink( listener );
+    } );
 
     // For PhET-iO, NumberControls are created statically on startup and switch between which CircuitElement it controls.
     const fuseCurrentRatingControl = new CircuitElementNumberControl( currentRatingString,
@@ -252,7 +263,7 @@ class CircuitElementEditContainerNode extends Node {
     circuit.selectedCircuitElementProperty.link( selectedCircuitElement => {
       if ( editNode ) {
         this.hasChild( editNode ) && this.removeChild( editNode );
-        if ( editNode !== tapInstructionTextNode && editNode !== trashButton && editNode !== switchReadoutNode ) {
+        if ( editNode !== tapInstructionTextNode && editNode !== trashButtonContainer && editNode !== switchReadoutNode ) {
           editNode.dispose();
         }
       }
@@ -265,7 +276,7 @@ class CircuitElementEditContainerNode extends Node {
           const isHighResistance = selectedCircuitElement.resistorType === ResistorType.HIGH_RESISTANCE_RESISTOR;
           editNode = new EditPanel( [
             isHighResistance ? highResistanceNumberControl : resistanceNumberControl,
-            trashButton
+            trashButtonContainer
           ] );
         }
 
@@ -273,20 +284,20 @@ class CircuitElementEditContainerNode extends Node {
         else if ( selectedCircuitElement instanceof LightBulb && !selectedCircuitElement.real ) {
           editNode = new EditPanel( [
               selectedCircuitElement.highResistance ? lightBulbHighResistanceNumberControl : lightBulbResistanceNumberControl,
-              trashButton
+              trashButtonContainer
             ]
           );
         }
         else if ( selectedCircuitElement instanceof Resistor || ( selectedCircuitElement instanceof LightBulb && selectedCircuitElement.real ) ) {
 
           // Just show a trash button for non-editable resistors which are household items and for real bulbs
-          editNode = trashButton;
+          editNode = trashButtonContainer;
         }
         else if ( selectedCircuitElement instanceof Battery ) {
           editNode = new EditPanel( [
               reverseBatteryButton, // Batteries can be reversed
               selectedCircuitElement.batteryType === 'high-voltage' ? highVoltageNumberControl : voltageNumberControl,
-              trashButton
+              trashButtonContainer
             ]
           );
         }
@@ -294,7 +305,7 @@ class CircuitElementEditContainerNode extends Node {
           editNode = new EditPanel( [
               resetFuseButton,
               fuseCurrentRatingControl,
-              trashButton
+              trashButtonContainer
             ]
           );
         }
@@ -306,7 +317,7 @@ class CircuitElementEditContainerNode extends Node {
         else if ( selectedCircuitElement instanceof SeriesAmmeter || selectedCircuitElement instanceof Wire ) {
 
           // Just show a trash button
-          editNode = trashButton;
+          editNode = trashButtonContainer;
         }
         else if ( selectedCircuitElement instanceof ACVoltage ) {
           const children: Node[] = [
@@ -340,21 +351,21 @@ class CircuitElementEditContainerNode extends Node {
               tandem: Tandem.OPT_OUT
             } ) );
           }
-          children.push( trashButton );
+          children.push( trashButtonContainer );
           editNode = new EditPanel( children );
         }
         else if ( selectedCircuitElement instanceof Capacitor ) {
           editNode = new EditPanel( [
             clearDynamicsButton,
             capacitorEditControl,
-            trashButton
+            trashButtonContainer
           ] );
         }
         else if ( selectedCircuitElement instanceof Inductor ) {
           editNode = new EditPanel( [
               clearDynamicsButton,
               inductanceControl,
-              trashButton
+              trashButtonContainer
             ]
           );
         }

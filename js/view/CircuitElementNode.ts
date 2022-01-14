@@ -84,7 +84,10 @@ abstract class CircuitElementNode extends Node {
           // Only permit deletion when not being dragged, see https://github.com/phetsims/circuit-construction-kit-common/issues/414
           if ( !circuitElement.startVertexProperty.value.isDragged && !circuitElement.endVertexProperty.value.isDragged ) {
 
-            circuit!.disposeCircuitElement( circuitElement );
+            // Only permit deletion if the circuit element is marked as disposable
+            if ( circuitElement.isDisposableProperty.value ) {
+              circuit!.disposeCircuitElement( circuitElement );
+            }
           }
         }
       }
