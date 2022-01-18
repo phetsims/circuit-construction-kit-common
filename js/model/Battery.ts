@@ -35,7 +35,7 @@ class Battery extends VoltageSource {
   constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, batteryType: BatteryType,
                tandem: Tandem, providedOptions?: BatteryOptions ) {
     assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );
-    const filledOptions = optionize<{}, VoltageSourceOptions, BatteryOptions, 'initialOrientation'>( {
+    const filledOptions = optionize<{}, VoltageSourceOptions, 'initialOrientation'>( {
       initialOrientation: 'right',
       voltage: Battery.VOLTAGE_DEFAULT,
       isFlammable: true,
