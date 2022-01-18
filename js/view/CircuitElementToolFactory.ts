@@ -117,7 +117,7 @@ class CircuitElementToolFactory {
    * @returns {CircuitElementToolNode}
    */
   private createCircuitElementToolNode( labelString: string, count: number, createIcon: ( t: Tandem, p: Property<CircuitElementViewType> ) => Node,
-                                predicate: ( circuitElement: CircuitElement ) => boolean, createElement: any, providedOptions?: any ) {
+                                        predicate: ( circuitElement: CircuitElement ) => boolean, createElement: any, providedOptions?: any ) {
 
     assert && assert( Number.isInteger( count ), 'count should be an integer' );
 
@@ -525,7 +525,8 @@ class CircuitElementToolFactory {
           new NumberProperty( 0 ),
           'high-voltage',
           Tandem.OPTIONAL, {
-            voltage: 1000
+            voltage: 1000,
+            numberOfDecimalPlaces: Battery.HIGH_VOLTAGE_DECIMAL_PLACES
           }
         ), viewTypeProperty, tandem.createTandem( 'highVoltageBatteryToolNode' ), { isIcon: true } ),
       circuitElement => circuitElement instanceof Battery &&

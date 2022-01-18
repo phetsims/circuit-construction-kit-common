@@ -364,7 +364,8 @@ class Circuit {
     this.highVoltageBatteryGroup = new PhetioGroup( ( tandem, startVertex, endVertex ) => {
       return new Battery( startVertex, endVertex, this.sourceResistanceProperty, 'high-voltage',
         tandem, {
-          voltage: 1000
+          voltage: 1000,
+          numberOfDecimalPlaces: Battery.HIGH_VOLTAGE_DECIMAL_PLACES
         } );
     }, () => createVertices( BATTERY_LENGTH ), {
       phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),

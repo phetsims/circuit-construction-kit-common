@@ -7,6 +7,7 @@
  */
 
 import NumberProperty from '../../../axon/js/NumberProperty.js';
+import Range from '../../../dot/js/Range.js';
 import Property from '../../../axon/js/Property.js';
 import merge from '../../../phet-core/js/merge.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -15,10 +16,11 @@ import FixedCircuitElement, { FixedCircuitElementOptions } from './FixedCircuitE
 import Vertex from './Vertex.js';
 
 type VoltageSourceOptions = {
-  initialOrientation: string, // TODO: enum
-  voltage: number,
-  voltagePropertyOptions: {
-    tandem: Tandem
+  initialOrientation?: string, // TODO: enum
+  voltage?: number,
+  voltagePropertyOptions?: {
+    range?: Range;
+    tandem?: Tandem
   }
 } & FixedCircuitElementOptions;
 
@@ -41,8 +43,7 @@ abstract class VoltageSource extends FixedCircuitElement {
    * @param {Tandem} tandem
    * @param {Object} [providedOptions]
    */
-  constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, length: number, tandem: Tandem,
-               providedOptions?: Partial<VoltageSourceOptions> ) {
+  constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, length: number, tandem: Tandem, providedOptions?: VoltageSourceOptions ) {
     assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );
     const options = merge( {
       initialOrientation: 'right',
@@ -52,7 +53,7 @@ abstract class VoltageSource extends FixedCircuitElement {
       voltagePropertyOptions: {
         tandem: tandem.createTandem( 'voltageProperty' )
       }
-    }, providedOptions ) as VoltageSourceOptions;
+    }, providedOptions );
     super( startVertex, endVertex, length, tandem, options );
 
     // @public {NumberProperty} - the voltage of the battery in volts

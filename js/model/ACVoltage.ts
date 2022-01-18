@@ -9,7 +9,7 @@
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Property from '../../../axon/js/Property.js';
 import Range from '../../../dot/js/Range.js';
-import merge from '../../../phet-core/js/merge.js';
+import optionize from '../../../phet-core/js/optionize.js';
 import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -24,7 +24,9 @@ import { VoltageSourceOptions } from './VoltageSource.js';
 // The maximum amplitude of the oscillating voltage
 const MAX_VOLTAGE = 120;
 
-type ACVoltageOptions = {} & VoltageSourceOptions;
+type ACVoltageSelfOptions = {
+};
+type ACVoltageOptions = ACVoltageSelfOptions & VoltageSourceOptions;
 
 class ACVoltage extends VoltageSource {
 
@@ -39,24 +41,19 @@ class ACVoltage extends VoltageSource {
 
   private time: number;
 
-  /**
-   * @param startVertex - one of the battery vertices
-   * @param endVertex - the other battery vertex
-   * @param internalResistanceProperty - the resistance of the battery
-   * @param tandem
-   * @param [providedOptions]
-   */
-  constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, tandem: Tandem, providedOptions?: Partial<ACVoltageOptions> ) {
+  constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, tandem: Tandem, providedOptions?: ACVoltageOptions ) {
     assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );
-    const options = merge( {
+
+    const options = optionize<ACVoltageSelfOptions, VoltageSourceOptions, ACVoltageOptions, 'voltage' | 'initialOrientation'>()( {
       initialOrientation: 'right',
       voltage: 9.0,
       isFlammable: true,
       numberOfDecimalPlaces: 2,
       voltagePropertyOptions: {
-        range: new Range( -MAX_VOLTAGE, MAX_VOLTAGE )
+        range: new Range( -MAX_VOLTAGE, MAX_VOLTAGE ),
+        tandem: Tandem.REQUIRED
       }
-    }, providedOptions ) as ACVoltageOptions;
+    }, providedOptions );
     super( startVertex, endVertex, internalResistanceProperty, CCKCConstants.BATTERY_LENGTH, tandem, options );
 
     this.maximumVoltageProperty = new NumberProperty( options.voltage, {

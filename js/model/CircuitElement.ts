@@ -13,9 +13,8 @@ import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import Vector2 from '../../../dot/js/Vector2.js';
-import merge from '../../../phet-core/js/merge.js';
 import { SceneryEvent } from '../../../scenery/js/imports.js';
-import PhetioObject from '../../../tandem/js/PhetioObject.js';
+import PhetioObject, { PhetioObjectOptions } from '../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import IOType from '../../../tandem/js/types/IOType.js';
 import ReferenceIO from '../../../tandem/js/types/ReferenceIO.js';
@@ -25,19 +24,21 @@ import CurrentSense, { CurrentSenseValues } from './CurrentSense.js';
 import Vertex from './Vertex.js';
 import IReadOnlyProperty, { PropertyLinkListener } from '../../../axon/js/IReadOnlyProperty.js';
 import StringEnumerationProperty from '../../../axon/js/StringEnumerationProperty.js';
+import optionize from '../../../phet-core/js/optionize.js';
 
 // variables
 let index = 0;
 
-type CircuitElementOptions = {
-  isFlammable: boolean,
-  isMetallic: boolean,
-  isSizeChangedOnViewChange: boolean,
-  isCurrentReentrant: boolean,
-  interactive: boolean,
-  insideTrueBlackBox: boolean,
-  tandem: Tandem
+type CircuitElementSelfOptions = {
+  isFlammable?: boolean,
+  isMetallic?: boolean,
+  isSizeChangedOnViewChange?: boolean,
+  isCurrentReentrant?: boolean,
+  interactive?: boolean,
+  insideTrueBlackBox?: boolean
 };
+
+type CircuitElementOptions = CircuitElementSelfOptions & PhetioObjectOptions;
 
 abstract class CircuitElement extends PhetioObject {
   readonly id: number;
@@ -71,12 +72,12 @@ abstract class CircuitElement extends PhetioObject {
   isValueDisplayableProperty: BooleanProperty;
   isMovableProperty: BooleanProperty;
 
-  constructor( startVertex: Vertex, endVertex: Vertex, chargePathLength: number, tandem: Tandem, providedOptions?: Partial<CircuitElementOptions> ) {
+  constructor( startVertex: Vertex, endVertex: Vertex, chargePathLength: number, tandem: Tandem, providedOptions?: CircuitElementOptions ) {
     assert && assert( startVertex !== endVertex, 'startVertex cannot be the same as endVertex' );
     assert && assert( typeof chargePathLength === 'number', 'charge path length should be a number' );
     assert && assert( chargePathLength > 0, 'charge path length must be positive' );
 
-    const options = merge( {
+    const options = optionize<CircuitElementSelfOptions, PhetioObjectOptions, CircuitElementOptions>()( {
       interactive: true, // In CCK: Black Box Study, CircuitElements in the black box cannot be manipulated
       isSizeChangedOnViewChange: true,
       insideTrueBlackBox: false,
@@ -86,7 +87,7 @@ abstract class CircuitElement extends PhetioObject {
       isCurrentReentrant: false,
       phetioDynamicElement: true,
       phetioType: CircuitElement.CircuitElementIO
-    }, providedOptions ) as CircuitElementOptions;
+    }, providedOptions );
 
     super( options );
 

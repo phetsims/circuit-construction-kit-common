@@ -123,7 +123,8 @@ CircuitStruct.fromStateObject = ( circuit, circuitState, resistivityProperty, ta
       new NumberProperty( 0 ),
       'normal', // TODO (black-box-study): save/restore battery type
       Tandem.OPT_OUT, {
-        voltage: circuitState.batteries[ i ].voltage
+        voltage: circuitState.batteries[ i ].voltage,
+        numberOfDecimalPlaces: Battery.VOLTAGE_DECIMAL_PLACES
       }
     ) );
   }

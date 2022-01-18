@@ -8,7 +8,7 @@
 
 import Property from '../../../axon/js/Property.js';
 import Range from '../../../dot/js/Range.js';
-import merge from '../../../phet-core/js/merge.js';
+import optionize from '../../../phet-core/js/optionize.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -33,9 +33,9 @@ class Battery extends VoltageSource {
   static HIGH_VOLTAGE_DECIMAL_PLACES = 0;
 
   constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, batteryType: BatteryType,
-               tandem: Tandem, providedOptions?: Partial<BatteryOptions> ) {
+               tandem: Tandem, providedOptions?: BatteryOptions ) {
     assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );
-    const filledOptions = merge( {
+    const filledOptions = optionize<{}, VoltageSourceOptions, BatteryOptions, 'initialOrientation'>()( {
       initialOrientation: 'right',
       voltage: Battery.VOLTAGE_DEFAULT,
       isFlammable: true,
@@ -43,7 +43,7 @@ class Battery extends VoltageSource {
       voltagePropertyOptions: {
         range: batteryType === 'normal' ? Battery.VOLTAGE_RANGE : Battery.HIGH_VOLTAGE_RANGE
       }
-    }, providedOptions ) as BatteryOptions;
+    }, providedOptions );
     super( startVertex, endVertex, internalResistanceProperty, BATTERY_LENGTH, tandem, filledOptions );
 
     this.initialOrientation = filledOptions.initialOrientation;
