@@ -24,8 +24,7 @@ import { VoltageSourceOptions } from './VoltageSource.js';
 // The maximum amplitude of the oscillating voltage
 const MAX_VOLTAGE = 120;
 
-type ACVoltageSelfOptions = {
-};
+type ACVoltageSelfOptions = {};
 type ACVoltageOptions = ACVoltageSelfOptions & VoltageSourceOptions;
 
 class ACVoltage extends VoltageSource {
@@ -44,7 +43,7 @@ class ACVoltage extends VoltageSource {
   constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, tandem: Tandem, providedOptions?: ACVoltageOptions ) {
     assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );
 
-    const options = optionize<ACVoltageSelfOptions, VoltageSourceOptions, ACVoltageOptions, 'voltage' | 'initialOrientation'>()( {
+    const options = optionize<ACVoltageSelfOptions, VoltageSourceOptions, ACVoltageOptions, 'voltage' | 'initialOrientation'>( {
       initialOrientation: 'right',
       voltage: 9.0,
       isFlammable: true,
