@@ -233,7 +233,14 @@ class ValueNode extends Panel {
       tandem: tandem,
       cornerRadius: 3,
       xMargin: 3,
-      yMargin: 1
+      yMargin: 1,
+      visiblePropertyOptions: {
+        phetioReadOnly: true // controlled by the CircuitElement.isValueDisplayableProperty
+      }
+    } );
+
+    circuitElement.isValueDisplayableProperty.link( isValueDisplayable => {
+      this.visible = isValueDisplayable;
     } );
 
     const matrix = Matrix3.identity();
