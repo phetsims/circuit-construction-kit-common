@@ -49,8 +49,7 @@ class ACVoltage extends VoltageSource {
       isFlammable: true,
       numberOfDecimalPlaces: 2,
       voltagePropertyOptions: {
-        range: new Range( -MAX_VOLTAGE, MAX_VOLTAGE ),
-        tandem: Tandem.REQUIRED
+        range: new Range( -MAX_VOLTAGE, MAX_VOLTAGE )
       }
     }, providedOptions );
     super( startVertex, endVertex, internalResistanceProperty, CCKCConstants.BATTERY_LENGTH, tandem, options );

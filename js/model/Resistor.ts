@@ -17,6 +17,7 @@ import FixedCircuitElement from './FixedCircuitElement.js';
 import ResistorType from './ResistorType.js';
 import Vertex from './Vertex.js';
 import EnumerationIO from '../../../tandem/js/types/EnumerationIO.js';
+import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 
 type ResistorOptions = {
   isMetallic: boolean,
@@ -24,11 +25,16 @@ type ResistorOptions = {
 };
 
 class Resistor extends FixedCircuitElement {
+
+  // the resistance in ohms
   readonly resistanceProperty: NumberProperty;
-  readonly resistorType: any;
+
+  readonly resistorType: ResistorType;
+
   static ResistorIO: IOType;
   static RESISTANCE_DECIMAL_PLACES = 1;
   static HIGH_RESISTANCE_DECIMAL_PLACES = 0;
+  isColorCodeVisibleProperty: BooleanProperty;
 
   /**
    * @param {Vertex} startVertex
@@ -61,12 +67,16 @@ class Resistor extends FixedCircuitElement {
 
     assert && assert( typeof this.resistorType.isMetallic === 'boolean' );
 
-    // @public {Property.<number>} the resistance in ohms
     this.resistanceProperty = new NumberProperty( resistorType.defaultResistance, {
       tandem: tandem.createTandem( 'resistanceProperty' ),
 
       // Specify the Property range for seamless PhET-iO interoperation
       range: this.resistorType.range
+    } );
+
+    this.isColorCodeVisibleProperty = new BooleanProperty( true, {
+      tandem: tandem.createTandem( 'isColorCodeVisibleProperty' ),
+      phetioDocumentation: 'Whether the view can display the resistor color code bands'
     } );
   }
 

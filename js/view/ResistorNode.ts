@@ -141,8 +141,10 @@ class ResistorNode extends FixedCircuitElementNode {
 
       // Add the color bands to the resistor image
       colorBandsNode = new Node( {
-        children: [ ...colorBands, singleColorBand ],
-        tandem: tandem.createTandem( 'colorBandsNode' )
+        children: [ ...colorBands, singleColorBand ]
+      } );
+      resistor.isColorCodeVisibleProperty.link( isColorCodeVisible => {
+        colorBandsNode!.visible = isColorCodeVisible;
       } );
       lifelikeResistorImageNode.addChild( colorBandsNode );
     }

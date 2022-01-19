@@ -23,9 +23,9 @@ class ResistorType extends EnumerationValue {
 
   readonly defaultResistance: number;
   readonly range: Range;
-  private readonly isMetallic: boolean;
+  readonly isMetallic: boolean;
   readonly length: number;
-  private readonly verticalOffset: number;
+  readonly verticalOffset: number;
 
   /**
    * @param {number} defaultResistance - default value for resistance, in Ohms
