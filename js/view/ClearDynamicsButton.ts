@@ -10,7 +10,7 @@ import Matrix3 from '../../../dot/js/Matrix3.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Shape from '../../../kite/js/Shape.js';
 import BannedNode from '../../../scenery-phet/js/BannedNode.js';
-import { Node } from '../../../scenery/js/imports.js';
+import { HBox, Node } from '../../../scenery/js/imports.js';
 import { Path } from '../../../scenery/js/imports.js';
 import { Color } from '../../../scenery/js/imports.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -18,6 +18,7 @@ import DynamicCircuitElement from '../model/DynamicCircuitElement.js';
 import CCKCRoundPushButton from './CCKCRoundPushButton.js';
 import Circuit from '../model/Circuit.js';
 import Tandem from '../../../tandem/js/Tandem.js';
+import CircuitElement from '../model/CircuitElement.js';
 
 // constants
 const SCALE = 0.032;
@@ -25,7 +26,7 @@ const SCALE = 0.032;
 // @ts-ignore
 const SHAPE_MATRIX = Matrix3.createFromPool( SCALE, 0, 0, 0, -SCALE, 0, 0, 0, 1 ); // to create a unity-scale icon
 
-class ClearDynamicsButton extends CCKCRoundPushButton {
+class ClearDynamicsButton extends HBox {
 
   /**
    * @param {Circuit} circuit
@@ -41,7 +42,7 @@ class ClearDynamicsButton extends CCKCRoundPushButton {
       center: Vector2.ZERO
     } );
 
-    super( {
+    const button = new CCKCRoundPushButton( {
       touchAreaDilation: 5, // radius dilation for touch area
       content: new Node( {
         children: [
@@ -59,6 +60,19 @@ class ClearDynamicsButton extends CCKCRoundPushButton {
         }
       },
       tandem: tandem
+    } );
+
+    super( { children: [ button ] } );
+
+    const isClearableListener = ( isClearable: boolean ) => {
+      this.visible = isClearable;
+    };
+
+    // This is reused across all batteries.  The button itself can be hidden by PhET-iO customization, but the parent
+    // node is another gate for the visibility.
+    circuit.selectedCircuitElementProperty.link( ( newCircuitElement: CircuitElement | null, oldCircuitElement: CircuitElement | null ) => {
+      oldCircuitElement instanceof DynamicCircuitElement && oldCircuitElement.isClearableProperty.unlink( isClearableListener );
+      newCircuitElement instanceof DynamicCircuitElement && newCircuitElement.isClearableProperty.link( isClearableListener );
     } );
   }
 
