@@ -6,6 +6,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Property from '../../../axon/js/Property.js';
 import Range from '../../../dot/js/Range.js';
 import optionize from '../../../phet-core/js/optionize.js';
@@ -31,6 +32,7 @@ class Battery extends VoltageSource {
   static HIGH_VOLTAGE_DEFAULT = 1000;
   static HIGH_VOLTAGE_RANGE = new Range( 100, 100000 );
   static HIGH_VOLTAGE_DECIMAL_PLACES = 0;
+  isReversibleProperty: BooleanProperty;
 
   constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, batteryType: BatteryType,
                tandem: Tandem, providedOptions?: BatteryOptions ) {
@@ -50,6 +52,10 @@ class Battery extends VoltageSource {
 
     // @public (read-only) {BatteryType} - the type of the battery - NORMAL | HIGH_VOLTAGE
     this.batteryType = batteryType;
+
+    this.isReversibleProperty = new BooleanProperty( true, {
+      tandem: tandem.createTandem( 'isReversibleProperty' )
+    } );
   }
 
   step( time: number, dt: number, circuit: Circuit ): void {

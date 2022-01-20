@@ -55,6 +55,8 @@ class CircuitElementNumberControl extends HBox {
     }, providedOptions );
     const numberControl = new NumberControl( title, valueProperty, range, options );
 
+    super( { children: [ numberControl ] } );
+
     // Use the "nested node" pattern to support multiple gates for making the control visible.  The numberControl itself
     // can be made invisible by phet-io customization (to hide all instances), and individual circuit elements
     // change the visibility of the parent.
@@ -63,8 +65,6 @@ class CircuitElementNumberControl extends HBox {
       newCircuitElement && newCircuitElement.isEditableProperty.link( updateVisibility );
       oldCircuitElement && oldCircuitElement.isEditableProperty.unlink( updateVisibility );
     } );
-
-    super( { children: [ numberControl ] } );
   }
 
   dispose() {

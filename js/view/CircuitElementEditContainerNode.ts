@@ -329,8 +329,9 @@ class CircuitElementEditContainerNode extends Node {
               selectedCircuitElement.maximumVoltageProperty,
               selectedCircuitElement.maximumVoltageProperty.range!,
               circuit,
-              selectedCircuitElement.numberOfDecimalPlaces,
-              Tandem.OPT_OUT
+              selectedCircuitElement.numberOfDecimalPlaces, {
+                tandem: Tandem.OPT_OUT
+              }
             ),
             new CircuitElementNumberControl(
               frequencyString,

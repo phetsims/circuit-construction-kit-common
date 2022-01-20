@@ -6,7 +6,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import { Path } from '../../../scenery/js/imports.js';
+import { HBox, Path } from '../../../scenery/js/imports.js';
 import { VBox } from '../../../scenery/js/imports.js';
 import { Color } from '../../../scenery/js/imports.js';
 import syncAltSolidString from '../../../sherpa/js/fontawesome-5/syncAltSolidString.js';
@@ -15,11 +15,12 @@ import Battery from '../model/Battery.js';
 import CCKCRoundPushButton from './CCKCRoundPushButton.js';
 import Circuit from '../model/Circuit.js';
 import Tandem from '../../../tandem/js/Tandem.js';
+import CircuitElement from '../model/CircuitElement.js';
 
 // constants
 const ARROW_ICON_SCALE = 0.035;
 
-class ReverseBatteryButton extends CCKCRoundPushButton {
+class ReverseBatteryButton extends HBox {
 
   /**
    * @param {Circuit} circuit - the circuit that contains the battery
@@ -43,7 +44,7 @@ class ReverseBatteryButton extends CCKCRoundPushButton {
     const topShapeString = `M${syncAltSolidStringParts[ 1 ]}`;
     const bottomShapeString = `M${syncAltSolidStringParts[ 2 ]}`;
 
-    super( {
+    const child = new CCKCRoundPushButton( {
         touchAreaDilation: 5, // radius dilation for touch area
         content: new VBox( {
           spacing: 3,
@@ -74,6 +75,19 @@ class ReverseBatteryButton extends CCKCRoundPushButton {
         tandem: tandem
       }
     );
+
+    const isReversibleListener = ( isReversible: boolean ) => {
+      this.visible = isReversible;
+    };
+
+    // This is reused across all batteries.  The button itself can be hidden by PhET-iO customization, but the parent
+    // node is another gate for the visibility.
+    circuit.selectedCircuitElementProperty.link( ( newCircuitElement: CircuitElement | null, oldCircuitElement: CircuitElement | null ) => {
+      oldCircuitElement instanceof Battery && oldCircuitElement.isReversibleProperty.unlink( isReversibleListener );
+      newCircuitElement instanceof Battery && newCircuitElement.isReversibleProperty.link( isReversibleListener );
+    } );
+
+    super( { children: [ child ] } );
   }
 
   // @public
