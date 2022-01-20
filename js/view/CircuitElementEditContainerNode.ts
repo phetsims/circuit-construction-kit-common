@@ -38,7 +38,7 @@ import Wire from '../model/Wire.js';
 import CircuitElementNumberControl from './CircuitElementNumberControl.js';
 import ClearDynamicsButton from './ClearDynamicsButton.js';
 import PhaseShiftControl from './PhaseShiftControl.js';
-import ResetFuseButton from './ResetFuseButton.js';
+import RepairFuseButton from './RepairFuseButton.js';
 import ReverseBatteryButton from './ReverseBatteryButton.js';
 import SwitchReadoutNode from './SwitchReadoutNode.js';
 import TrashButton from './TrashButton.js';
@@ -113,9 +113,12 @@ class CircuitElementEditContainerNode extends Node {
     const trashButton = new TrashButton( circuit, tandem.createTandem( 'trashButton' ) );
     const trashButtonContainer = new HBox( { children: [ trashButton ] } ); // Use the "nested node" pattern for gated visibilty
 
-    const resetFuseButton = new ResetFuseButton( circuit, tandem.createTandem( 'resetFuseButton' ) );
-    const clearDynamicsButton = new ClearDynamicsButton( circuit, tandem.createTandem( 'clearDynamicsButton' ) );
-    const reverseBatteryButton = new ReverseBatteryButton( circuit, tandem.createTandem( 'reverseBatteryButton' ) );
+    // TODO: Should this be named repairButton or repairFuseButton? https://github.com/phetsims/circuit-construction-kit-common/issues/797
+    const repairFuseButton = new RepairFuseButton( circuit, tandem.createTandem( 'repairButton' ) );
+    const clearDynamicsButton = new ClearDynamicsButton( circuit, tandem.createTandem( 'clearButton' ) );
+
+    // TODO: Should this be named reverseButton or reverseBatteryButton? https://github.com/phetsims/circuit-construction-kit-common/issues/797
+    const reverseBatteryButton = new ReverseBatteryButton( circuit, tandem.createTandem( 'reverseButton' ) );
     const switchReadoutNode = new SwitchReadoutNode( circuit, tandem.createTandem( 'switchReadoutNode' ), trashButtonContainer );
 
     const listener = ( isDisposable: boolean ) => trashButtonContainer.setVisible( isDisposable );
@@ -303,7 +306,7 @@ class CircuitElementEditContainerNode extends Node {
         }
         else if ( selectedCircuitElement instanceof Fuse ) {
           editNode = new EditPanel( [
-              resetFuseButton,
+              repairFuseButton,
               fuseCurrentRatingControl,
               trashButtonContainer
             ]

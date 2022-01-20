@@ -28,6 +28,7 @@ class Fuse extends FixedCircuitElement {
   readonly isTrippedProperty: BooleanProperty;
   readonly resistanceProperty: NumberProperty;
   private timeCurrentRatingExceeded: number;
+  isRepairableProperty: BooleanProperty;
 
   /**
    * @param {Vertex} startVertex
@@ -62,6 +63,10 @@ class Fuse extends FixedCircuitElement {
 
     // time in seconds the current rating has been exceeded
     this.timeCurrentRatingExceeded = 0;
+
+    this.isRepairableProperty = new BooleanProperty( true, {
+      tandem: tandem.createTandem( 'isRepairableProperty' )
+    } );
   }
 
   dispose() {
