@@ -6,6 +6,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Property from '../../../axon/js/Property.js';
 import Range from '../../../dot/js/Range.js';
@@ -39,6 +40,8 @@ class ACVoltage extends VoltageSource {
   readonly phaseProperty: NumberProperty;
 
   private time: number;
+  isPhaseEditableProperty: BooleanProperty;
+  isFrequencyEditableProperty: BooleanProperty;
 
   constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, tandem: Tandem, providedOptions?: ACVoltageOptions ) {
     assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );
@@ -68,6 +71,14 @@ class ACVoltage extends VoltageSource {
       range: new Range( -180, 180 ),
       tandem: tandem.createTandem( 'phaseProperty' ),
       units: MathSymbols.DEGREES
+    } );
+
+    this.isPhaseEditableProperty = new BooleanProperty( true, {
+      tandem: tandem.createTandem( 'isPhaseEditableProperty' )
+    } );
+
+    this.isFrequencyEditableProperty = new BooleanProperty( true, {
+      tandem: tandem.createTandem( 'isFrequencyEditableProperty' )
     } );
 
     this.time = 0;

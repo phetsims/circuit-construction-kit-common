@@ -227,6 +227,10 @@ class CircuitElementEditContainerNode extends Node {
         phetioState: false
       } );
 
+    const phaseShiftControl = new PhaseShiftControl( createSingletonAdapterProperty( 0, ACVoltage, circuit, ( c: ACVoltage ) => c.phaseProperty ), circuit, {
+      tandem: tandem.createTandem( 'phaseShiftControl' )
+    } );
+
     const tapInstructionTextNode = new Text( tapCircuitElementToEditString, {
       fontSize: 24,
       maxWidth: 300,
@@ -351,9 +355,7 @@ class CircuitElementEditContainerNode extends Node {
             ) ];
 
           if ( providedOptions.showPhaseShiftControl ) {
-            children.push( new PhaseShiftControl( selectedCircuitElement, {
-              tandem: Tandem.OPT_OUT
-            } ) );
+            children.push( phaseShiftControl );
           }
           children.push( trashButtonContainer );
           editNode = new EditPanel( children );

@@ -17,16 +17,14 @@ import NumberSpinner from '../../../sun/js/NumberSpinner.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
-import ACVoltage from '../model/ACVoltage.js';
 import CircuitElementNumberControl from './CircuitElementNumberControl.js';
+import CircuitElement from '../model/CircuitElement.js';
+import Circuit from '../model/Circuit.js';
+import ACVoltage from '../model/ACVoltage.js';
 
 class PhaseShiftControl extends VBox {
 
-  /**
-   * @param {ACVoltage} acVoltage
-   * @param {Object} [providedOptions]
-   */
-  constructor( acVoltage: ACVoltage, providedOptions?: any ) {
+  constructor( phaseProperty: Property<number>, circuit: Circuit, providedOptions?: any ) {
     providedOptions = merge( {
       spacing: 7
     }, providedOptions );
@@ -60,9 +58,20 @@ class PhaseShiftControl extends VBox {
       maxWidth: CircuitElementNumberControl.NUMBER_CONTROL_ELEMENT_MAX_WIDTH
     } );
 
-    const numberSpinner = new NumberSpinner( acVoltage.phaseProperty, valueRangeProperty, spinnerOptions );
+    const numberSpinner = new NumberSpinner( phaseProperty, valueRangeProperty, spinnerOptions );
     providedOptions.children = [ title, numberSpinner ];
     super( providedOptions );
+
+    const isPhaseEditableListener = ( isPhaseEditable: boolean ) => {
+      this.visible = isPhaseEditable;
+    };
+
+    // This is reused across all instances. The control itself can be hidden by PhET-iO customization, but the parent
+    // node is another gate for the visibility.
+    circuit.selectedCircuitElementProperty.link( ( newCircuitElement: CircuitElement | null, oldCircuitElement: CircuitElement | null ) => {
+      oldCircuitElement instanceof ACVoltage && oldCircuitElement.isPhaseEditableProperty.unlink( isPhaseEditableListener );
+      newCircuitElement instanceof ACVoltage && newCircuitElement.isPhaseEditableProperty.link( isPhaseEditableListener );
+    } );
   }
 }
 
