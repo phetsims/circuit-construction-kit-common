@@ -112,11 +112,17 @@ abstract class CircuitElement extends PhetioObject {
 
     // @public {Property.<Vertex>} - the Vertex at the origin of the CircuitElement, may change when CircuitElements are
     // connected
-    this.startVertexProperty = new Property( startVertex );
+    this.startVertexProperty = new Property( startVertex, {
+      phetioType: Property.PropertyIO( Vertex.VertexIO ),
+      tandem: tandem.createTandem( 'startVertexProperty' )
+    } );
 
     // @public {Property.<Vertex>} - the Vertex at the end of the CircuitElement, may change when CircuitElements are
     // connected
-    this.endVertexProperty = new Property( endVertex );
+    this.endVertexProperty = new Property( endVertex, {
+      phetioType: Property.PropertyIO( Vertex.VertexIO ),
+      tandem: tandem.createTandem( 'endVertexProperty' )
+    } );
 
     // @public {NumberProperty} - the flowing current, in amps.
     this.currentProperty = new NumberProperty( 0, {
@@ -330,6 +336,8 @@ abstract class CircuitElement extends PhetioObject {
     this.isDisposableProperty.dispose();
     this.isValueDisplayableProperty.dispose();
     this.isMovableProperty.dispose();
+    this.startVertexProperty.dispose();
+    this.endVertexProperty.dispose();
 
     super.dispose();
   }
