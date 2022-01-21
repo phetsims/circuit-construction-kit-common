@@ -106,7 +106,9 @@ class Vertex extends PhetioObject {
 
     // @public {BooleanProperty} - Vertices on the black box interface persist between build/investigate, and cannot be
     // moved/deleted
-    this.draggableProperty = new BooleanProperty( options.draggable );
+    this.draggableProperty = new BooleanProperty( options.draggable, {
+      tandem: options.tandem && options.tandem.createTandem( 'draggableProperty' )
+    } );
 
     // @public {BooleanProperty} - Black box interface vertices can be interactive (tap to select) without being
     // draggable
@@ -160,6 +162,8 @@ class Vertex extends PhetioObject {
     this.positionProperty.dispose();
     this.voltageProperty.dispose();
     this.selectedProperty.dispose();
+    this.draggableProperty.dispose();
+    this.isCuttableProperty.dispose();
     super.dispose();
   }
 }

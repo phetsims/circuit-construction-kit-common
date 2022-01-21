@@ -241,7 +241,7 @@ class CircuitElementEditContainerNode extends Node {
       circuit,
       2, {
         tandem: tandem.createTandem( 'voltageControl' ),
-        getAdditionalVisibilityProperties: ( c: ACVoltage ) => [ c.isVoltageEditableProperty ]
+        getAdditionalVisibilityProperties: ( c: ACVoltage ) => c.isVoltageEditableProperty ? [ c.isVoltageEditableProperty ] : []
       }
     );
 
@@ -256,7 +256,7 @@ class CircuitElementEditContainerNode extends Node {
       2, {
         tandem: tandem.createTandem( 'frequencyControl' ),
         delta: 0.01,
-        getAdditionalVisibilityProperties: ( c: ACVoltage ) => [ c.isFrequencyEditableProperty ]
+        getAdditionalVisibilityProperties: ( c: ACVoltage ) => c.isFrequencyEditableProperty ? [ c.isFrequencyEditableProperty ] : []
       }
     );
 
