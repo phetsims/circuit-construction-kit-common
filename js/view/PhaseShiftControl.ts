@@ -21,6 +21,7 @@ import CircuitElementNumberControl from './CircuitElementNumberControl.js';
 import CircuitElement from '../model/CircuitElement.js';
 import Circuit from '../model/Circuit.js';
 import ACVoltage from '../model/ACVoltage.js';
+import Multilink from '../../../axon/js/Multilink.js';
 
 class PhaseShiftControl extends VBox {
 
@@ -62,15 +63,19 @@ class PhaseShiftControl extends VBox {
     providedOptions.children = [ title, numberSpinner ];
     super( providedOptions );
 
-    const isPhaseEditableListener = ( isPhaseEditable: boolean ) => {
-      this.visible = isPhaseEditable;
+    const listener = ( isPhaseEditable: boolean, isEditable: boolean ) => {
+      this.visible = isPhaseEditable && isEditable;
     };
+
+    let multilink: Multilink<[ boolean, boolean ]> | null = null;
 
     // This is reused across all instances. The control itself can be hidden by PhET-iO customization, but the parent
     // node is another gate for the visibility.
     circuit.selectedCircuitElementProperty.link( ( newCircuitElement: CircuitElement | null, oldCircuitElement: CircuitElement | null ) => {
-      oldCircuitElement instanceof ACVoltage && oldCircuitElement.isPhaseEditableProperty.unlink( isPhaseEditableListener );
-      newCircuitElement instanceof ACVoltage && newCircuitElement.isPhaseEditableProperty.link( isPhaseEditableListener );
+      oldCircuitElement instanceof ACVoltage && multilink && Property.unmultilink( multilink );
+      if ( newCircuitElement instanceof ACVoltage ) {
+        multilink = Property.multilink( [ newCircuitElement.isPhaseEditableProperty, newCircuitElement.isEditableProperty ], listener );
+      }
     } );
   }
 }
