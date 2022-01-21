@@ -231,13 +231,12 @@ class CircuitElementEditContainerNode extends Node {
       tandem: tandem.createTandem( 'phaseShiftControl' )
     } );
 
-    // TODO: Is this supposed to oscillate at runtime?  Does this set the value or the amplitude? https://github.com/phetsims/circuit-construction-kit-common/issues/797
     const acVoltageControl = new CircuitElementNumberControl(
       voltageString,
       StringUtils.fillIn( voltageVoltsValuePatternString, {
         voltage: SunConstants.VALUE_NAMED_PLACEHOLDER
       } ),
-      createSingletonAdapterProperty( 9, ACVoltage, circuit, ( circuitElement: ACVoltage ) => circuitElement.voltageProperty ),
+      createSingletonAdapterProperty( 9, ACVoltage, circuit, ( circuitElement: ACVoltage ) => circuitElement.maximumVoltageProperty ),
       ACVoltage.VOLTAGE_RANGE,
       circuit,
       2, {
