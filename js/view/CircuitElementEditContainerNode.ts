@@ -236,12 +236,27 @@ class CircuitElementEditContainerNode extends Node {
       StringUtils.fillIn( voltageVoltsValuePatternString, {
         voltage: SunConstants.VALUE_NAMED_PLACEHOLDER
       } ),
-      createSingletonAdapterProperty( 9, ACVoltage, circuit, ( circuitElement: ACVoltage ) => circuitElement.maximumVoltageProperty ),
-      ACVoltage.VOLTAGE_RANGE,
+      createSingletonAdapterProperty( 9, ACVoltage, circuit, circuitElement => circuitElement.maximumVoltageProperty ),
+      ACVoltage.MAX_VOLTAGE_RANGE,
       circuit,
       2, {
         tandem: tandem.createTandem( 'voltageControl' ),
         getAdditionalVisibilityProperties: ( c: ACVoltage ) => [ c.isVoltageEditableProperty ]
+      }
+    );
+
+    const acFrequencyControl = new CircuitElementNumberControl(
+      frequencyString,
+      StringUtils.fillIn( frequencyHzValuePatternString, {
+        frequency: SunConstants.VALUE_NAMED_PLACEHOLDER
+      } ),
+      createSingletonAdapterProperty( ACVoltage.DEFAULT_FREQUENCY, ACVoltage, circuit, circuitElement => circuitElement.frequencyProperty ),
+      ACVoltage.FREQUENCY_RANGE,
+      circuit,
+      2, {
+        tandem: tandem.createTandem( 'frequencyControl' ),
+        delta: 0.01,
+        getAdditionalVisibilityProperties: ( c: ACVoltage ) => [ c.isFrequencyEditableProperty ]
       }
     );
 
@@ -343,19 +358,8 @@ class CircuitElementEditContainerNode extends Node {
         else if ( selectedCircuitElement instanceof ACVoltage ) {
           const children: Node[] = [
             acVoltageControl,
-            new CircuitElementNumberControl(
-              frequencyString,
-              StringUtils.fillIn( frequencyHzValuePatternString, {
-                frequency: SunConstants.VALUE_NAMED_PLACEHOLDER
-              } ),
-              selectedCircuitElement.frequencyProperty,
-              selectedCircuitElement.frequencyProperty.range!,
-              circuit,
-              selectedCircuitElement.numberOfDecimalPlaces, {
-                tandem: Tandem.OPT_OUT,
-                delta: 0.01
-              }
-            ) ];
+            acFrequencyControl
+          ];
 
           if ( providedOptions.showPhaseShiftControl ) {
             children.push( phaseShiftControl );

@@ -43,7 +43,10 @@ class ACVoltage extends VoltageSource {
   isPhaseEditableProperty: BooleanProperty;
   isFrequencyEditableProperty: BooleanProperty;
   isVoltageEditableProperty: BooleanProperty;
-  static VOLTAGE_RANGE: Range = new Range( -MAX_VOLTAGE, MAX_VOLTAGE );
+  static VOLTAGE_RANGE = new Range( -MAX_VOLTAGE, MAX_VOLTAGE );
+  static DEFAULT_FREQUENCY = 0.5;
+  static FREQUENCY_RANGE = new Range( 0.1, 2.0 );
+  static MAX_VOLTAGE_RANGE = new Range( 0, MAX_VOLTAGE );
 
   constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, tandem: Tandem, providedOptions?: ACVoltageOptions ) {
     assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );
@@ -61,12 +64,12 @@ class ACVoltage extends VoltageSource {
 
     this.maximumVoltageProperty = new NumberProperty( options.voltage, {
       tandem: tandem.createTandem( 'maximumVoltageProperty' ),
-      range: new Range( 0, MAX_VOLTAGE )
+      range: ACVoltage.MAX_VOLTAGE_RANGE
     } );
 
-    this.frequencyProperty = new NumberProperty( 0.5, {
+    this.frequencyProperty = new NumberProperty( ACVoltage.DEFAULT_FREQUENCY, {
       tandem: tandem.createTandem( 'frequencyProperty' ),
-      range: new Range( 0.1, 2.0 )
+      range: ACVoltage.FREQUENCY_RANGE
     } );
 
     this.phaseProperty = new NumberProperty( 0, {
