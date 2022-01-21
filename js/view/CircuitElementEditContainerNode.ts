@@ -231,6 +231,21 @@ class CircuitElementEditContainerNode extends Node {
       tandem: tandem.createTandem( 'phaseShiftControl' )
     } );
 
+    // TODO: Is this supposed to oscillate at runtime?  Does this set the value or the amplitude? https://github.com/phetsims/circuit-construction-kit-common/issues/797
+    const acVoltageControl = new CircuitElementNumberControl(
+      voltageString,
+      StringUtils.fillIn( voltageVoltsValuePatternString, {
+        voltage: SunConstants.VALUE_NAMED_PLACEHOLDER
+      } ),
+      createSingletonAdapterProperty( 9, ACVoltage, circuit, ( circuitElement: ACVoltage ) => circuitElement.voltageProperty ),
+      ACVoltage.VOLTAGE_RANGE,
+      circuit,
+      2, {
+        tandem: tandem.createTandem( 'voltageControl' ),
+        getAdditionalVisibilityProperties: ( c: ACVoltage ) => [ c.isVoltageEditableProperty ]
+      }
+    );
+
     const tapInstructionTextNode = new Text( tapCircuitElementToEditString, {
       fontSize: 24,
       maxWidth: 300,
@@ -328,18 +343,7 @@ class CircuitElementEditContainerNode extends Node {
         }
         else if ( selectedCircuitElement instanceof ACVoltage ) {
           const children: Node[] = [
-            new CircuitElementNumberControl(
-              voltageString,
-              StringUtils.fillIn( voltageVoltsValuePatternString, {
-                voltage: SunConstants.VALUE_NAMED_PLACEHOLDER
-              } ),
-              selectedCircuitElement.maximumVoltageProperty,
-              selectedCircuitElement.maximumVoltageProperty.range!,
-              circuit,
-              selectedCircuitElement.numberOfDecimalPlaces, {
-                tandem: Tandem.OPT_OUT
-              }
-            ),
+            acVoltageControl,
             new CircuitElementNumberControl(
               frequencyString,
               StringUtils.fillIn( frequencyHzValuePatternString, {

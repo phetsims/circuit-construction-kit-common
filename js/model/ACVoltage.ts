@@ -42,6 +42,8 @@ class ACVoltage extends VoltageSource {
   private time: number;
   isPhaseEditableProperty: BooleanProperty;
   isFrequencyEditableProperty: BooleanProperty;
+  isVoltageEditableProperty: BooleanProperty;
+  static VOLTAGE_RANGE: Range = new Range( -MAX_VOLTAGE, MAX_VOLTAGE );
 
   constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, tandem: Tandem, providedOptions?: ACVoltageOptions ) {
     assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );
@@ -52,7 +54,7 @@ class ACVoltage extends VoltageSource {
       isFlammable: true,
       numberOfDecimalPlaces: 2,
       voltagePropertyOptions: {
-        range: new Range( -MAX_VOLTAGE, MAX_VOLTAGE )
+        range: ACVoltage.VOLTAGE_RANGE
       }
     }, providedOptions );
     super( startVertex, endVertex, internalResistanceProperty, CCKCConstants.BATTERY_LENGTH, tandem, options );
@@ -73,12 +75,18 @@ class ACVoltage extends VoltageSource {
       units: MathSymbols.DEGREES
     } );
 
+
+    // These more specific Properties are ANDed with isEditableProperty, so it works as another gate.
     this.isPhaseEditableProperty = new BooleanProperty( true, {
       tandem: tandem.createTandem( 'isPhaseEditableProperty' )
     } );
 
     this.isFrequencyEditableProperty = new BooleanProperty( true, {
       tandem: tandem.createTandem( 'isFrequencyEditableProperty' )
+    } );
+
+    this.isVoltageEditableProperty = new BooleanProperty( true, {
+      tandem: tandem.createTandem( 'isVoltageEditableProperty' )
     } );
 
     this.time = 0;

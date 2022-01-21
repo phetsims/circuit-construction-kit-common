@@ -16,6 +16,8 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Circuit from '../model/Circuit.js';
+import CircuitElement from '../model/CircuitElement.js';
+import ACVoltage from '../model/ACVoltage.js';
 
 // Extend HBox so an invisible parent will auto-layout (not leave a blank hole)
 class CircuitElementNumberControl extends HBox {
@@ -51,7 +53,8 @@ class CircuitElementNumberControl extends HBox {
         thumbSize: new Dimension2( 10, 20 ),
         trackSize: new Dimension2( 120, 4 )
       },
-      tandem: Tandem.OPT_OUT
+      tandem: Tandem.OPT_OUT,
+      getAdditionalVisibilityProperties: () => {return [];}
     }, providedOptions );
     const numberControl = new NumberControl( title, valueProperty, range, options );
 
@@ -60,10 +63,20 @@ class CircuitElementNumberControl extends HBox {
     // Use the "nested node" pattern to support multiple gates for making the control visible.  The numberControl itself
     // can be made invisible by phet-io customization (to hide all instances), and individual circuit elements
     // change the visibility of the parent.
-    const updateVisibility = ( isEditable: boolean ) => this.setVisible( isEditable );
-    circuit.selectedCircuitElementProperty.link( ( newCircuitElement, oldCircuitElement ) => {
-      newCircuitElement && newCircuitElement.isEditableProperty.link( updateVisibility );
-      oldCircuitElement && oldCircuitElement.isEditableProperty.unlink( updateVisibility );
+
+    // Combine all proprty gates via AND
+    const listener = ( ...isEditable: boolean[] ) => this.setVisible( !isEditable.includes( false ) );
+
+    let multilink: any = null;
+
+    // This is reused across all instances. The control itself can be hidden by PhET-iO customization, but the parent
+    // node is another gate for the visibility.
+    circuit.selectedCircuitElementProperty.link( ( newCircuitElement: CircuitElement | null, oldCircuitElement: CircuitElement | null ) => {
+      oldCircuitElement instanceof ACVoltage && multilink && Property.unmultilink( multilink );
+      if ( newCircuitElement ) {
+        const otherGates = options.getAdditionalVisibilityProperties( newCircuitElement );
+        multilink = Property.multilink( [ newCircuitElement.isEditableProperty, ...otherGates ], listener );
+      }
     } );
   }
 
