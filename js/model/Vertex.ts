@@ -47,6 +47,7 @@ class Vertex extends PhetioObject {
   isDragged: boolean;
   static VertexIO: IOType;
   outerWireStub: boolean;
+  isCuttableProperty: BooleanProperty;
 
   /**
    * @param {Vector2} position - position in view coordinates
@@ -135,6 +136,10 @@ class Vertex extends PhetioObject {
 
     // @public {boolean} - for black box study
     this.outerWireStub = false;
+
+    this.isCuttableProperty = new BooleanProperty( true, {
+      tandem: options.tandem.createTandem( 'isCuttableProperty' )
+    } );
   }
 
   /**

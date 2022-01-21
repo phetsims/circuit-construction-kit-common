@@ -49,7 +49,7 @@ class VertexNode extends Node {
   private readonly highlightNode: Circle;
   private readonly keyListener: { keydown: ( event: any ) => void; };
   private readonly updateStrokeListener: () => void;
-  private readonly updateSelectedListener: ( selected: boolean ) => void;
+  private readonly updateSelectedListener: () => void;
   private readonly updateMoveToFront: () => Node;
   private readonly updatePickableListener: ( pickable: boolean | null ) => Node;
   private readonly clickToDismissListeners: DisplayClickToDismissListener[];
@@ -160,6 +160,7 @@ class VertexNode extends Node {
     // @private {function}
     this.updateSelectedListener = this.updateSelected.bind( this );
     vertex.selectedProperty.link( this.updateSelectedListener );
+    vertex.isCuttableProperty.link( this.updateSelectedListener );
 
     // @private {function}
     this.updateMoveToFront = this.moveToFront.bind( this );
@@ -293,9 +294,9 @@ class VertexNode extends Node {
 
   /**
    * Update whether the vertex is shown as selected.
-   * @param {boolean} selected
    */
-  private updateSelected( selected: boolean ) {
+  private updateSelected() {
+    const selected = this.vertex.selectedProperty.value;
     const neighborCircuitElements = this.circuit.getNeighborCircuitElements( this.vertex );
 
     if ( selected ) {
@@ -311,7 +312,7 @@ class VertexNode extends Node {
     }
     CCKCUtils.setInSceneGraph( selected, this.circuitLayerNode.highlightLayer, this.highlightNode );
     const numberConnections = neighborCircuitElements.length;
-    CCKCUtils.setInSceneGraph( selected, this.circuitLayerNode.buttonLayer, this.cutButton );
+    CCKCUtils.setInSceneGraph( selected && this.vertex.isCuttableProperty.value, this.circuitLayerNode.buttonLayer, this.cutButton );
     selected && this.updateCutButtonPosition();
 
     // Show a disabled button as a cue that the vertex could be cuttable, but it isn't right now.
