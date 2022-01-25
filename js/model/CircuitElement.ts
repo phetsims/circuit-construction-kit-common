@@ -116,14 +116,16 @@ abstract class CircuitElement extends PhetioObject {
     // connected
     this.startVertexProperty = new Property( startVertex, {
       phetioType: Property.PropertyIO( Vertex.VertexIO ),
-      tandem: tandem.createTandem( 'startVertexProperty' )
+      tandem: tandem.createTandem( 'startVertexProperty' ),
+      phetioState: false
     } );
 
     // @public {Property.<Vertex>} - the Vertex at the end of the CircuitElement, may change when CircuitElements are
     // connected
     this.endVertexProperty = new Property( endVertex, {
       phetioType: Property.PropertyIO( Vertex.VertexIO ),
-      tandem: tandem.createTandem( 'endVertexProperty' )
+      tandem: tandem.createTandem( 'endVertexProperty' ),
+      phetioState: false
     } );
 
     // @public {NumberProperty} - the flowing current, in amps.
