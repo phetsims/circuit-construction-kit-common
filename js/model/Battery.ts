@@ -61,6 +61,11 @@ class Battery extends VoltageSource {
   step( time: number, dt: number, circuit: Circuit ): void {
     // nothing to do
   }
+
+  dispose() {
+    this.isReversibleProperty.dispose();
+    super.dispose();
+  }
 }
 
 circuitConstructionKitCommon.register( 'Battery', Battery );

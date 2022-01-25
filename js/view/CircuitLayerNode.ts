@@ -337,11 +337,18 @@ class CircuitLayerNode extends Node {
           tandem: tandem.createTandem( 'wireNodeGroup' ),
           supportsDynamicState: false
         } ) );
-    initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Battery, this.fixedCircuitElementLayer,
+    initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Battery && e.batteryType === 'normal', this.fixedCircuitElementLayer,
       new PhetioGroup( ( tandem: Tandem, circuitElement: CircuitElement ) => new BatteryNode( screenView, this, circuitElement as Battery, this.model.viewTypeProperty, tandem ),
         () => [ this.circuit.batteryGroup.archetype ], {
           phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
           tandem: tandem.createTandem( 'batteryNodeGroup' ),
+          supportsDynamicState: false
+        } ) );
+    initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Battery && e.batteryType === 'high-voltage', this.fixedCircuitElementLayer,
+      new PhetioGroup( ( tandem: Tandem, circuitElement: CircuitElement ) => new BatteryNode( screenView, this, circuitElement as Battery, this.model.viewTypeProperty, tandem ),
+        () => [ this.circuit.batteryGroup.archetype ], {
+          phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
+          tandem: tandem.createTandem( 'highVoltageBatteryNodeGroup' ),
           supportsDynamicState: false
         } ) );
     initializeCircuitElementType( ( e: CircuitElement ) => e instanceof LightBulb, this.fixedCircuitElementLayer,
