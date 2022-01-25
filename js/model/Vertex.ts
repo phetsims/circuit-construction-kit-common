@@ -170,6 +170,7 @@ class Vertex extends PhetioObject {
     this.selectedProperty.dispose();
     this.draggableProperty.dispose();
     this.isCuttableProperty.dispose();
+    this.labelTextProperty.dispose();
     super.dispose();
   }
 }
