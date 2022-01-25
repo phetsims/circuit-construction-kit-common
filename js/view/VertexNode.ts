@@ -9,7 +9,7 @@
 import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import merge from '../../../phet-core/js/merge.js';
-import { Circle, Color, KeyboardUtils, Node, SceneryEvent, Text } from '../../../scenery/js/imports.js';
+import { Circle, Color, KeyboardUtils, Node, SceneryEvent, Text, VBox } from '../../../scenery/js/imports.js';
 import RoundPushButton from '../../../sun/js/buttons/RoundPushButton.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -42,8 +42,8 @@ class VertexNode extends Node {
   private readonly circuit: Circuit;
   private readonly cutButton: RoundPushButton;
   private readonly circuitLayerNode: CircuitLayerNode;
-  private readonly voltageReadoutText: Text | null;
-  private readonly updateReadoutTextPosition: ( () => void ) | null;
+  private readonly vertexLabelNode: VBox;
+  private readonly updateReadoutTextPosition: ( () => void );
   private readonly vertex: Vertex;
   startOffset: Vector2 | null;
   private readonly highlightNode: Circle;
@@ -95,32 +95,51 @@ class VertexNode extends Node {
 
     // Use a query parameter to turn on node voltage readouts for debugging only.
     // @private {Text} display for debugging only
-    this.voltageReadoutText = null;
-    if ( CCKCQueryParameters.vertexDisplay ) {
-      this.voltageReadoutText = new Text( '', {
-        fontSize: 14,
-        pickable: false
-      } );
 
-      // @private {function} for debugging
-      this.updateReadoutTextPosition = () => {
-        this.voltageReadoutText!.centerX = 0;
-        this.voltageReadoutText!.bottom = -30;
-      };
+    const customLabelText = new Text( '', {
+      fontSize: 22,
+      pickable: false
+    } );
+    const voltageReadout = new Text( '', {
+      fontSize: 14,
+      pickable: false
+    } );
+    const children = [
+      customLabelText
+    ];
+
+    if ( CCKCQueryParameters.vertexDisplay ) {
+      children.push( voltageReadout );
+    }
+
+    this.vertexLabelNode = new VBox( {
+      children: children,
+      maxWidth: 50
+    } );
+
+    // @private {function} for debugging
+    this.updateReadoutTextPosition = () => {
+      this.vertexLabelNode.centerX = 0;
+      this.vertexLabelNode.bottom = -30;
+    };
+
+    if ( CCKCQueryParameters.vertexDisplay ) {
       vertex.voltageProperty.link( voltage => {
 
         // No need for i18n because this is for debugging only
         const voltageText = `${Utils.toFixed( voltage, 3 )}V`;
-        this.voltageReadoutText!.setText( `${vertex.index} @ ${voltageText}` );
+        voltageReadout.setText( `${vertex.index} @ ${voltageText}` );
         assert && assert( this.updateReadoutTextPosition );
         if ( this.updateReadoutTextPosition ) {
           this.updateReadoutTextPosition();
         }
       } );
     }
-    else {
-      this.updateReadoutTextPosition = null;
-    }
+
+    vertex.labelTextProperty.link( labelText => {
+      customLabelText.text = labelText;
+      this.updateReadoutTextPosition();
+    } );
 
     // @public (read-only) {Vertex} - the vertex associated with this node
     this.vertex = vertex;
@@ -330,7 +349,7 @@ class VertexNode extends Node {
 
       const desiredChild = this.circuit.countCircuitElements( this.vertex ) > 1 ? BLACK_CIRCLE_NODE : RED_CIRCLE_NODE;
       if ( this.getChildAt( 0 ) !== desiredChild ) {
-        this.children = this.voltageReadoutText ? [ desiredChild, this.voltageReadoutText ] : [ desiredChild ];
+        this.children = this.vertexLabelNode ? [ desiredChild, this.vertexLabelNode ] : [ desiredChild ];
       }
       this.visible = this.vertex.attachableProperty.get();
     }

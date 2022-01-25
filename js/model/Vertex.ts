@@ -10,6 +10,7 @@ import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Property from '../../../axon/js/Property.js';
+import StringProperty from '../../../axon/js/StringProperty.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
 import merge from '../../../phet-core/js/merge.js';
@@ -48,6 +49,7 @@ class Vertex extends PhetioObject {
   static VertexIO: IOType;
   outerWireStub: boolean;
   isCuttableProperty: BooleanProperty;
+  labelTextProperty: StringProperty;
 
   /**
    * @param {Vector2} position - position in view coordinates
@@ -141,6 +143,10 @@ class Vertex extends PhetioObject {
 
     this.isCuttableProperty = new BooleanProperty( true, {
       tandem: options.tandem.createTandem( 'isCuttableProperty' )
+    } );
+
+    this.labelTextProperty = new StringProperty( '', {
+      tandem: options.tandem.createTandem( 'labelTextProperty' )
     } );
   }
 
