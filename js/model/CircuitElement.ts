@@ -25,6 +25,7 @@ import Vertex from './Vertex.js';
 import IReadOnlyProperty, { PropertyLinkListener } from '../../../axon/js/IReadOnlyProperty.js';
 import StringEnumerationProperty from '../../../axon/js/StringEnumerationProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
+import StringProperty from '../../../axon/js/StringProperty.js';
 
 // variables
 let index = 0;
@@ -71,6 +72,7 @@ abstract class CircuitElement extends PhetioObject {
   readonly isDisposableProperty: BooleanProperty;
   isValueDisplayableProperty: BooleanProperty;
   isMovableProperty: BooleanProperty;
+  labelTextProperty: StringProperty;
 
   constructor( startVertex: Vertex, endVertex: Vertex, chargePathLength: number, tandem: Tandem, providedOptions?: CircuitElementOptions ) {
     assert && assert( startVertex !== endVertex, 'startVertex cannot be the same as endVertex' );
@@ -218,6 +220,11 @@ abstract class CircuitElement extends PhetioObject {
       tandem: tandem.createTandem( 'isMovableProperty' ),
       phetioDocumentation: 'Whether the CircuitElement\'s can be moved by dragging itself or neighboring circuit elements'
     } );
+
+    this.labelTextProperty = new StringProperty( '', {
+      tandem: tandem.createTandem( 'labelTextProperty' ),
+      phetioDocumentation: 'Shows a custom text label next to the circuit element'
+    } );
   }
 
   /**
@@ -338,6 +345,7 @@ abstract class CircuitElement extends PhetioObject {
     this.isMovableProperty.dispose();
     this.startVertexProperty.dispose();
     this.endVertexProperty.dispose();
+    this.labelTextProperty.dispose();
 
     super.dispose();
   }

@@ -26,7 +26,6 @@ import RoundPushButton from '../../../sun/js/buttons/RoundPushButton.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import CircuitDebugLayer from './CircuitDebugLayer.js';
-import CCKCUtils from '../CCKCUtils.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import ACVoltage from '../model/ACVoltage.js';
 import Battery from '../model/Battery.js';
@@ -305,12 +304,10 @@ class CircuitLayerNode extends Node {
               Tandem.OPTIONAL
             );
 
-            const updateShowValues = ( showValues: boolean ) => CCKCUtils.setInSceneGraph( showValues, this.valueLayer, valueNode );
-            this.model.showValuesProperty.link( updateShowValues );
+            this.valueLayer.addChild( valueNode );
 
             circuitElement.disposeEmitterCircuitElement.addListener( () => {
-              this.model.showValuesProperty.unlink( updateShowValues );
-              CCKCUtils.setInSceneGraph( false, this.valueLayer, valueNode );
+              this.valueLayer.removeChild( valueNode );
               valueNode.dispose();
             } );
           }

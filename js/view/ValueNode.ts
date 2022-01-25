@@ -125,7 +125,6 @@ class ValueNode extends Panel {
         circuitElement.voltageProperty.unlink( voltageListener );
         sourceResistanceProperty.unlink( sourceResistanceListener );
       } );
-      contentNode.maxWidth = 100;
     }
 
     else if ( circuitElement instanceof Resistor ||
@@ -141,7 +140,6 @@ class ValueNode extends Panel {
       };
       circuitElement.resistanceProperty.link( linkResistance );
       disposeEmitterValueNode.addListener( () => circuitElement.resistanceProperty.unlink( linkResistance ) );
-      contentNode.maxWidth = 100;
     }
     else if ( circuitElement instanceof Capacitor ) {
       contentNode = createText( tandem.createTandem( 'capacitorText' ) );
@@ -156,7 +154,6 @@ class ValueNode extends Panel {
       };
       circuitElement.capacitanceProperty.link( linkCapacitance );
       disposeEmitterValueNode.addListener( () => circuitElement.capacitanceProperty.unlink( linkCapacitance ) );
-      contentNode.maxWidth = 100;
     }
     else if ( circuitElement instanceof Inductor ) {
       contentNode = createText( tandem.createTandem( 'inductorText' ) );
@@ -169,7 +166,6 @@ class ValueNode extends Panel {
       };
       circuitElement.inductanceProperty.link( linkInductance );
       disposeEmitterValueNode.addListener( () => circuitElement.inductanceProperty.unlink( linkInductance ) );
-      contentNode.maxWidth = 100;
     }
     else if ( circuitElement instanceof Switch ) {
 
@@ -189,7 +185,6 @@ class ValueNode extends Panel {
       };
       circuitElement.resistanceProperty.link( updateResistance );
       disposeEmitterValueNode.addListener( () => circuitElement.resistanceProperty.unlink( updateResistance ) );
-      contentNode.maxWidth = 100;
     }
     else if ( circuitElement instanceof Fuse ) {
       contentNode = createRichText( tandem.createTandem( 'fuseText' ), {
@@ -209,7 +204,6 @@ class ValueNode extends Panel {
         }
       );
       disposeEmitterValueNode.addListener( () => multilink.dispose() );
-      contentNode.maxWidth = 100;
     }
     else {
       throw new Error( `ValueNode cannot be shown for ${circuitElement.constructor.name}` );
@@ -226,6 +220,14 @@ class ValueNode extends Panel {
       contentNode = new VBox( { children: [ contentNode, text ] } );
     }
 
+    const customLabelNode = new Text( '', { font: FONT } );
+    contentNode = new VBox( {
+      children: [
+        customLabelNode,
+        contentNode
+      ],
+      maxWidth: 130
+    } );
 
     super( contentNode, {
       stroke: null,
@@ -247,30 +249,33 @@ class ValueNode extends Panel {
 
     updatePosition = () => {
 
-      // Only update position when the value is displayed
-      if ( showValuesProperty.get() ) {
+      const customLabelText = circuitElement.labelTextProperty.value;
+      customLabelNode.text = customLabelText;
+      customLabelNode.visible = customLabelText.length > 0;
 
-        // For a light bulb, choose the part of the filament in the top center for the label, see
-        // https://github.com/phetsims/circuit-construction-kit-common/issues/325
-        const distance = circuitElement instanceof LightBulb ? 0.56 : 0.5;
+      // For a light bulb, choose the part of the filament in the top center for the label, see
+      // https://github.com/phetsims/circuit-construction-kit-common/issues/325
+      const distance = circuitElement instanceof LightBulb ? 0.56 : 0.5;
 
-        // The label partially overlaps the component to make it clear which label goes with which component
-        circuitElement.updateMatrixForPoint( circuitElement.chargePathLength * distance, matrix );
-        const delta = Vector2.createPolar( VERTICAL_OFFSET, matrix.rotation + 3 * Math.PI / 2 );
-        this.center = matrix.translation.plus( delta ); // above light bulb
-      }
+      // The label partially overlaps the component to make it clear which label goes with which component
+      circuitElement.updateMatrixForPoint( circuitElement.chargePathLength * distance, matrix );
+      const delta = Vector2.createPolar( VERTICAL_OFFSET, matrix.rotation + 3 * Math.PI / 2 );
+      this.centerBottom = matrix.translation.plus( delta.timesScalar( 0.8 ) );
     };
 
     circuitElement.vertexMovedEmitter.addListener( updatePosition );
+
     updatePosition();
     showValuesProperty.link( updatePosition );
     viewTypeProperty.link( updatePosition );
+    circuitElement.labelTextProperty.link( updatePosition );
 
     // @private {function}
     this.disposeValueNode = () => {
       circuitElement.vertexMovedEmitter.removeListener( updatePosition );
       showValuesProperty.unlink( updatePosition );
       viewTypeProperty.unlink( updatePosition );
+      circuitElement.labelTextProperty.unlink( updatePosition );
       disposeEmitterValueNode.emit();
     };
   }
