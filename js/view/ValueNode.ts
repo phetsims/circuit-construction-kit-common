@@ -82,8 +82,8 @@ class ValueNode extends Panel {
   constructor( sourceResistanceProperty: Property<number>, circuitElement: CircuitElement, showValuesProperty: Property<boolean>, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem ) {
     const disposeEmitterValueNode = new Emitter();
 
-    let contentNode: any;
-    let updatePosition: any = null;
+    let readoutValueNode: any;
+    let update: any = null;
     if ( circuitElement instanceof VoltageSource ) {
 
       const voltageText = createText( tandem.createTandem( 'voltageText' ) );
@@ -92,12 +92,12 @@ class ValueNode extends Panel {
         voltageText.text = StringUtils.fillIn( voltageUnitsString, {
           voltage: Utils.toFixed( voltage, circuitElement.numberOfDecimalPlaces )
         } );
-        updatePosition && updatePosition();
+        update && update();
       };
       circuitElement.voltageProperty.link( voltageListener );
 
       // Battery readouts shows voltage and internal resistance if it is nonzero
-      contentNode = new VBox( {
+      readoutValueNode = new VBox( {
         align: 'right',
         children: [ voltageText ]
       } );
@@ -113,11 +113,11 @@ class ValueNode extends Panel {
           const desiredChildren = internalResistance > CCKCQueryParameters.batteryMinimumResistance ? [ voltageText, resistanceNode ] : [ voltageText ];
 
           // Only set children if changed
-          if ( contentNode.getChildrenCount() !== desiredChildren.length ) {
-            contentNode.children = desiredChildren;
+          if ( readoutValueNode.getChildrenCount() !== desiredChildren.length ) {
+            readoutValueNode.children = desiredChildren;
           }
         }
-        updatePosition && updatePosition();
+        update && update();
       };
       sourceResistanceProperty.link( sourceResistanceListener );
 
@@ -129,40 +129,40 @@ class ValueNode extends Panel {
 
     else if ( circuitElement instanceof Resistor ||
               circuitElement instanceof LightBulb ) {
-      contentNode = createText( tandem.createTandem( 'resistanceText' ) );
+      readoutValueNode = createText( tandem.createTandem( 'resistanceText' ) );
 
       // Items like the hand and dog and high resistance resistor shouldn't show ".0"
       const linkResistance = ( resistance: number ) => {
-        contentNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, {
+        readoutValueNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, {
           resistance: Utils.toFixed( resistance, circuitElement.numberOfDecimalPlaces )
         } );
-        updatePosition && updatePosition();
+        update && update();
       };
       circuitElement.resistanceProperty.link( linkResistance );
       disposeEmitterValueNode.addListener( () => circuitElement.resistanceProperty.unlink( linkResistance ) );
     }
     else if ( circuitElement instanceof Capacitor ) {
-      contentNode = createText( tandem.createTandem( 'capacitorText' ) );
+      readoutValueNode = createText( tandem.createTandem( 'capacitorText' ) );
 
       // Items like the hand and dog and high resistance resistor shouldn't show ".0"
       const linkCapacitance = ( capacitance: number ) => {
 
-        contentNode.text = StringUtils.fillIn( capacitanceFaradsSymbolString, {
+        readoutValueNode.text = StringUtils.fillIn( capacitanceFaradsSymbolString, {
           resistance: Utils.toFixed( capacitance, circuitElement.numberOfDecimalPlaces )
         } );
-        updatePosition && updatePosition();
+        update && update();
       };
       circuitElement.capacitanceProperty.link( linkCapacitance );
       disposeEmitterValueNode.addListener( () => circuitElement.capacitanceProperty.unlink( linkCapacitance ) );
     }
     else if ( circuitElement instanceof Inductor ) {
-      contentNode = createText( tandem.createTandem( 'inductorText' ) );
+      readoutValueNode = createText( tandem.createTandem( 'inductorText' ) );
 
       const linkInductance = ( inductance: number ) => {
-        contentNode.text = StringUtils.fillIn( inductanceHenriesSymbolString, {
+        readoutValueNode.text = StringUtils.fillIn( inductanceHenriesSymbolString, {
           resistance: Utils.toFixed( inductance, circuitElement.numberOfDecimalPlaces )
         } );
-        updatePosition && updatePosition();
+        update && update();
       };
       circuitElement.inductanceProperty.link( linkInductance );
       disposeEmitterValueNode.addListener( () => circuitElement.inductanceProperty.unlink( linkInductance ) );
@@ -170,10 +170,10 @@ class ValueNode extends Panel {
     else if ( circuitElement instanceof Switch ) {
 
       // Make it easier to read the infinity symbol, see https://github.com/phetsims/circuit-construction-kit-dc/issues/135
-      contentNode = createRichText( tandem.createTandem( 'switchText' ) );
+      readoutValueNode = createRichText( tandem.createTandem( 'switchText' ) );
 
       const updateResistance = ( resistance: number ) => {
-        contentNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, {
+        readoutValueNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, {
 
           // Using a serif font makes the infinity symbol look less lopsided
           resistance: resistance > 100000 ? infinitySpan : '0'
@@ -181,26 +181,26 @@ class ValueNode extends Panel {
 
         // Account for the switch open and close geometry for positioning the label.  When the switch is open
         // the label must be higher
-        updatePosition && updatePosition();
+        update && update();
       };
       circuitElement.resistanceProperty.link( updateResistance );
       disposeEmitterValueNode.addListener( () => circuitElement.resistanceProperty.unlink( updateResistance ) );
     }
     else if ( circuitElement instanceof Fuse ) {
-      contentNode = createRichText( tandem.createTandem( 'fuseText' ), {
+      readoutValueNode = createRichText( tandem.createTandem( 'fuseText' ), {
         align: 'right'
       } );
       const multilink = Property.multilink( [ circuitElement.resistanceProperty, circuitElement.currentRatingProperty ],
         ( resistance: number, currentRating: number ) => {
           const milliOhmString = resistance === CCKCConstants.MAX_RESISTANCE ? infinitySpan :
                                  Utils.toFixed( resistance * 1000, circuitElement.numberOfDecimalPlaces );
-          contentNode.text = StringUtils.fillIn( fuseValueString, {
+          readoutValueNode.text = StringUtils.fillIn( fuseValueString, {
 
             // Convert to milli
             resistance: milliOhmString,
             currentRating: Utils.toFixed( currentRating, circuitElement.numberOfDecimalPlaces )
           } );
-          updatePosition && updatePosition();
+          update && update();
         }
       );
       disposeEmitterValueNode.addListener( () => multilink.dispose() );
@@ -209,7 +209,7 @@ class ValueNode extends Panel {
       throw new Error( `ValueNode cannot be shown for ${circuitElement.constructor.name}` );
     }
 
-    assert && assert( contentNode, 'Content node should be defined' );
+    assert && assert( readoutValueNode, 'Content node should be defined' );
 
     if ( CCKCQueryParameters.showCurrents ) {
       const text = new Text( '' );
@@ -217,14 +217,14 @@ class ValueNode extends Panel {
         text.text = sense.toString() + ', ' + current.toFixed( 4 );// eslint-disable-line
       } );
 
-      contentNode = new VBox( { children: [ contentNode, text ] } );
+      readoutValueNode = new VBox( { children: [ readoutValueNode, text ] } );
     }
 
     const customLabelNode = new Text( '', { font: FONT } );
-    contentNode = new VBox( {
+    const contentNode = new VBox( {
       children: [
         customLabelNode,
-        contentNode
+        readoutValueNode
       ],
       maxWidth: 130
     } );
@@ -247,7 +247,9 @@ class ValueNode extends Panel {
 
     const matrix = Matrix3.identity();
 
-    updatePosition = () => {
+    update = () => {
+
+      readoutValueNode.visible = showValuesProperty.value;
 
       const customLabelText = circuitElement.labelTextProperty.value;
       customLabelNode.text = customLabelText;
@@ -263,19 +265,19 @@ class ValueNode extends Panel {
       this.centerBottom = matrix.translation.plus( delta.timesScalar( 0.8 ) );
     };
 
-    circuitElement.vertexMovedEmitter.addListener( updatePosition );
+    circuitElement.vertexMovedEmitter.addListener( update );
 
-    updatePosition();
-    showValuesProperty.link( updatePosition );
-    viewTypeProperty.link( updatePosition );
-    circuitElement.labelTextProperty.link( updatePosition );
+    update();
+    showValuesProperty.link( update );
+    viewTypeProperty.link( update );
+    circuitElement.labelTextProperty.link( update );
 
     // @private {function}
     this.disposeValueNode = () => {
-      circuitElement.vertexMovedEmitter.removeListener( updatePosition );
-      showValuesProperty.unlink( updatePosition );
-      viewTypeProperty.unlink( updatePosition );
-      circuitElement.labelTextProperty.unlink( updatePosition );
+      circuitElement.vertexMovedEmitter.removeListener( update );
+      showValuesProperty.unlink( update );
+      viewTypeProperty.unlink( update );
+      circuitElement.labelTextProperty.unlink( update );
       disposeEmitterValueNode.emit();
     };
   }
