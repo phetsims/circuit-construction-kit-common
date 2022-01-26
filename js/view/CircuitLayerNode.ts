@@ -320,7 +320,7 @@ class CircuitLayerNode extends Node {
 
           const circuitElementNode = this.getCircuitElementNode( circuitElement );
           layer.removeChild( circuitElementNode );
-          circuitElementNode.dispose();
+          phetioGroup.disposeElement( circuitElementNode );
 
           delete this.circuitElementNodeMap[ circuitElement.id ];
         }
