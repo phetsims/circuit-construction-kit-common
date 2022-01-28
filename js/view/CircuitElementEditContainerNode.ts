@@ -43,6 +43,8 @@ import ReverseBatteryButton from './ReverseBatteryButton.js';
 import SwitchReadoutNode from './SwitchReadoutNode.js';
 import TrashButton from './TrashButton.js';
 import CircuitElement from '../model/CircuitElement.js';
+import InteractionMode from '../model/InteractionMode.js';
+import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 
 const capacitanceString = circuitConstructionKitCommonStrings.capacitance;
 const capacitanceUnitsString = circuitConstructionKitCommonStrings.capacitanceUnits;
@@ -101,7 +103,7 @@ const createSingletonAdapterProperty = <T extends CircuitElement>(
 
 class CircuitElementEditContainerNode extends Node {
 
-  constructor( circuit: Circuit, visibleBoundsProperty: Property<Bounds2>, modeProperty: Property<'explore' | 'test'>, playAreaCenterXProperty: Property<number>, tandem: Tandem, providedOptions?: any ) {
+  constructor( circuit: Circuit, visibleBoundsProperty: Property<Bounds2>, modeProperty: EnumerationProperty<InteractionMode>, playAreaCenterXProperty: Property<number>, tandem: Tandem, providedOptions?: any ) {
 
     super();
 

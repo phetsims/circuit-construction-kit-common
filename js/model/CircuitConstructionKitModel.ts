@@ -8,7 +8,6 @@
  */
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
-import StringEnumerationProperty from '../../../axon/js/StringEnumerationProperty.js';
 import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
 import Property from '../../../axon/js/Property.js';
@@ -29,7 +28,7 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import CircuitElementViewType from './CircuitElementViewType.js';
 import LightBulb from './LightBulb.js';
-import { InteractionModeValues } from './InteractionMode.js';
+import InteractionMode from './InteractionMode.js';
 import ZoomLevel from './ZoomLevel.js';
 
 type CircuitConstructionKitModelOptions = {
@@ -50,7 +49,7 @@ class CircuitConstructionKitModel {
   readonly selectedZoomProperty: NumberProperty;
   readonly currentZoomProperty: NumberProperty;
   readonly isPlayingProperty: BooleanProperty;
-  readonly modeProperty: Property<'explore' | 'test'>; // TODO: enum
+  readonly modeProperty: EnumerationProperty<InteractionMode>;
   readonly revealingProperty: BooleanProperty;
   readonly blackBoxBounds: Bounds2 | null;
   readonly stopwatch: Stopwatch;
@@ -153,7 +152,7 @@ class CircuitConstructionKitModel {
     } );
 
     // @public {Property.<InteractionMode>} - whether the user is in the CircuitConstructionKitModel.InteractionMode.EXPLORE or CircuitConstructionKitModel.InteractionMode.TEST mode
-    this.modeProperty = new StringEnumerationProperty( InteractionModeValues, 'explore', {
+    this.modeProperty = new EnumerationProperty( InteractionMode.EXPLORE, {
       tandem: blackBoxStudyTandem.createTandem( 'modeProperty' ),
       phetioDocumentation: 'For Circuit Construction Kit: Black Box Study'
     } );

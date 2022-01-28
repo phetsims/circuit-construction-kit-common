@@ -46,6 +46,7 @@ import Bounds2 from '../../../dot/js/Bounds2.js';
 import VoltageConnection from './VoltageConnection.js';
 import StringIO from '../../../tandem/js/types/StringIO.js';
 import ResistorType from './ResistorType.js';
+import InteractionMode from './InteractionMode.js';
 
 // constants
 const SNAP_RADIUS = 30; // For two vertices to join together, they must be this close, in view coordinates
@@ -1290,7 +1291,7 @@ class Circuit {
    */
   getDropTarget( vertex: Vertex, mode: InteractionMode, blackBoxBounds: Bounds2 | null ): Vertex | null { // TODO Enum for InteractionMode
 
-    if ( mode === 'test' ) {
+    if ( mode === InteractionMode.TEST ) {
       assert && assert( blackBoxBounds, 'bounds should be provided for build mode' );
     }
 
@@ -1385,7 +1386,7 @@ class Circuit {
     // TODO (black-box-study): integrate rule (9) with the other rules above
     // (9) When in Black Box "build" mode (i.e. building inside the black box), a vertex user cannot connect to
     // a black box interface vertex if its other vertices would be outside of the black box.  See #136
-    if ( mode === 'test' ) {
+    if ( mode === InteractionMode.TEST ) {
       const boxBounds = blackBoxBounds as Bounds2;
       const fixedVertices2 = this.findAllFixedVertices( vertex );
       candidateVertices = candidateVertices.filter( candidateVertex => {
@@ -1574,11 +1575,6 @@ class Circuit {
     this.selectedCircuitElementProperty.reset();
   }
 }
-
-// @public {EnumerationDeprecated} - Enumeration for the different types of interaction:
-// EXPLORE (used for open-ended exploration)
-// TEST (when testing out a black box circuit)
-type InteractionMode = 'explore' | 'test';
 
 circuitConstructionKitCommon.register( 'Circuit', Circuit );
 export default Circuit;
