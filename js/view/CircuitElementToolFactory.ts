@@ -431,7 +431,7 @@ class CircuitElementToolFactory {
     return this.createResistorToolNode( {
       count: 1,
       resistorType: ResistorType.PAPER_CLIP,
-      tandemName: 'paperClipIcon',
+      tandemName: 'paperClipToolNode',
       labelString: paperClipString
     } );
   }
@@ -441,7 +441,7 @@ class CircuitElementToolFactory {
     return this.createResistorToolNode( {
       count: 1,
       resistorType: ResistorType.COIN,
-      tandemName: 'coinIcon',
+      tandemName: 'coinToolNode',
       labelString: coinString,
       lifelikeIconHeight: 30
     } );
