@@ -14,7 +14,9 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import FixedCircuitElement, { FixedCircuitElementOptions } from './FixedCircuitElement.js';
 import Vertex from './Vertex.js';
-import PowerProperty from './PowerProperty.js';
+import PowerDissipatedProperty from './PowerDissipatedProperty.js';
+import DerivedProperty from '../../../axon/js/DerivedProperty.js';
+import NumberIO from '../../../tandem/js/types/NumberIO.js';
 
 type VoltageSourceOptions = {
   initialOrientation?: string, // TODO: enum
@@ -35,7 +37,8 @@ abstract class VoltageSource extends FixedCircuitElement {
   // the user can only create a certain number of "left" or "right" batteries from the toolbox.
   // @readonly
   initialOrientation: string; // TODO: enum
-  powerProperty: PowerProperty;
+  powerDissipatedProperty: PowerDissipatedProperty;
+  powerGeneratedProperty: DerivedProperty<number, [ current: number, voltage: number ]>;
 
   /**
    * @param {Vertex} startVertex - one of the battery vertices
@@ -63,11 +66,13 @@ abstract class VoltageSource extends FixedCircuitElement {
 
     this.internalResistanceProperty = internalResistanceProperty;
 
-    this.powerProperty = new PowerProperty( this.currentProperty, internalResistanceProperty, tandem.createTandem( 'powerProperty' ) );
-    // Property.multilink( [ this.currentProperty, internalResistanceProperty, this.voltageProperty, this.voltageDifferenceProperty ], ( i, r, v, vd ) => {
-    //   console.log( 'iv=' + i * v + ', iir=' + i * i * r + ', iv2=' + i * vd );
-    // iv = i*voltageDifference
-    // } );
+    this.powerDissipatedProperty = new PowerDissipatedProperty( this.currentProperty, internalResistanceProperty, tandem.createTandem( 'powerDissipatedProperty' ) );
+    this.powerGeneratedProperty = new DerivedProperty(
+      [ this.currentProperty, this.voltageProperty ],
+      ( current, voltage ) => Math.abs( current * voltage ), {
+        tandem: tandem.createTandem( 'powerGeneratedProperty' ),
+        phetioType: DerivedProperty.DerivedPropertyIO( NumberIO )
+      } );
 
     this.initialOrientation = options.initialOrientation;
   }
@@ -78,7 +83,7 @@ abstract class VoltageSource extends FixedCircuitElement {
    */
   dispose() {
     this.voltageProperty.dispose();
-    this.powerProperty.dispose();
+    this.powerDissipatedProperty.dispose();
     super.dispose();
   }
 

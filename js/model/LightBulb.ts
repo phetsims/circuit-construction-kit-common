@@ -19,7 +19,7 @@ import Circuit from './Circuit.js';
 import CircuitElementViewType from './CircuitElementViewType.js';
 import FixedCircuitElement, { FixedCircuitElementOptions } from './FixedCircuitElement.js';
 import Vertex from './Vertex.js';
-import PowerProperty from './PowerProperty.js';
+import PowerDissipatedProperty from './PowerDissipatedProperty.js';
 
 // constants
 
@@ -68,7 +68,7 @@ class LightBulb extends FixedCircuitElement {
   static createVertexPair: ( position: Vector2, circuit: Circuit, icon?: boolean ) => { startVertex: Vertex; endVertex: Vertex; };
   static createSamplePoints: ( position: Vector2 ) => [ Vector2, Vector2 ];
   static vertexDelta: Vector2;
-  private readonly powerProperty: PowerProperty;
+  private readonly powerDissipatedProperty: PowerDissipatedProperty;
 
   /**
    * @param {Vertex} startVertex - the side Vertex
@@ -105,7 +105,7 @@ class LightBulb extends FixedCircuitElement {
              new Range( 0, 120 )
     } );
 
-    this.powerProperty = new PowerProperty( this.currentProperty, this.resistanceProperty, tandem.createTandem( 'powerProperty' ) );
+    this.powerDissipatedProperty = new PowerDissipatedProperty( this.currentProperty, this.resistanceProperty, tandem.createTandem( 'powerDissipatedProperty' ) );
 
     this.viewTypeProperty = viewTypeProperty;
 
@@ -143,7 +143,7 @@ class LightBulb extends FixedCircuitElement {
   // Dispose of this and PhET-iO instrumented children, so they will be unregistered.
   dispose() {
     this.resistanceProperty.dispose();
-    this.powerProperty.dispose();
+    this.powerDissipatedProperty.dispose();
     super.dispose();
   }
 

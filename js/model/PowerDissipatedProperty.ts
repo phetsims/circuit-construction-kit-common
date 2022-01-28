@@ -6,7 +6,7 @@ import Property from '../../../axon/js/Property.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import NumberIO from '../../../tandem/js/types/NumberIO.js';
 
-class PowerProperty extends DerivedProperty<number, [ number, number ]> {
+class PowerDissipatedProperty extends DerivedProperty<number, [ number, number ]> {
   constructor( currentProperty: Property<number>, resistanceProperty: Property<number>, tandem: Tandem ) {
     super(
       [ currentProperty, resistanceProperty ],
@@ -19,4 +19,4 @@ class PowerProperty extends DerivedProperty<number, [ number, number ]> {
   }
 }
 
-export default PowerProperty;
+export default PowerDissipatedProperty;

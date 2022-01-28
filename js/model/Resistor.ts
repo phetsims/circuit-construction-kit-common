@@ -18,7 +18,7 @@ import ResistorType from './ResistorType.js';
 import Vertex from './Vertex.js';
 import EnumerationIO from '../../../tandem/js/types/EnumerationIO.js';
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
-import PowerProperty from './PowerProperty.js';
+import PowerDissipatedProperty from './PowerDissipatedProperty.js';
 
 type ResistorOptions = {
   isMetallic: boolean,
@@ -36,7 +36,7 @@ class Resistor extends FixedCircuitElement {
   static RESISTANCE_DECIMAL_PLACES = 1;
   static HIGH_RESISTANCE_DECIMAL_PLACES = 0;
   isColorCodeVisibleProperty: BooleanProperty;
-  private readonly powerProperty: PowerProperty;
+  private readonly powerDissipatedProperty: PowerDissipatedProperty;
 
   /**
    * @param {Vertex} startVertex
@@ -76,7 +76,7 @@ class Resistor extends FixedCircuitElement {
       range: this.resistorType.range
     } );
 
-    this.powerProperty = new PowerProperty( this.currentProperty, this.resistanceProperty, tandem.createTandem( 'powerProperty' ) );
+    this.powerDissipatedProperty = new PowerDissipatedProperty( this.currentProperty, this.resistanceProperty, tandem.createTandem( 'powerDissipatedProperty' ) );
 
     this.isColorCodeVisibleProperty = new BooleanProperty( true, {
       tandem: tandem.createTandem( 'isColorCodeVisibleProperty' ),
@@ -90,7 +90,7 @@ class Resistor extends FixedCircuitElement {
    */
   dispose() {
     this.resistanceProperty.dispose();
-    this.powerProperty.dispose();
+    this.powerDissipatedProperty.dispose();
     this.isColorCodeVisibleProperty.dispose();
     super.dispose();
   }
