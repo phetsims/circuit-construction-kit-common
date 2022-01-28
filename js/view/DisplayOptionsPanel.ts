@@ -81,11 +81,11 @@ class DisplayOptionsPanel extends CCKCPanel {
     } );
 
     const currentTypeRadioButtonGroup = new VerticalAquaRadioButtonGroup<CurrentType>( currentTypeProperty, [ {
-      value: 'electrons',
+      value: CurrentType.ELECTRONS,
       node: electronsBox,
       tandemName: 'electronsRadioButton'
     }, {
-      value: 'conventional',
+      value: CurrentType.CONVENTIONAL,
       node: conventionalBox,
       tandemName: 'conventionalRadioButton'
     }

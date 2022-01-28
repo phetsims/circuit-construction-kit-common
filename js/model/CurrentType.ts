@@ -1,17 +1,19 @@
-// Copyright 2017-2021, University of Colorado Boulder
+// Copyright 2021-2022, University of Colorado Boulder
+
+import Enumeration from '../../../phet-core/js/Enumeration.js';
+import EnumerationValue from '../../../phet-core/js/EnumerationValue.js';
+import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 /**
  * Enumeration for how to render the current: electrons or conventional (arrows).
- * Because of how this file is used in the model and query parameter file, it must be declared separately
- * to avoid circular module loading errors.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
+class CurrentType extends EnumerationValue {
+  static ELECTRONS = new CurrentType();
+  static CONVENTIONAL = new CurrentType();
+  static enumeration = new Enumeration( CurrentType );
+}
 
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-
-const CurrentTypeValues = [ 'electrons', 'conventional' ] as const;
-type CurrentType = ( typeof CurrentTypeValues )[number];
-circuitConstructionKitCommon.register( 'CurrentTypeValues', CurrentTypeValues );
-export { CurrentTypeValues };
-export type { CurrentType as default };
+circuitConstructionKitCommon.register( 'CurrentType', CurrentType );
+export default CurrentType;

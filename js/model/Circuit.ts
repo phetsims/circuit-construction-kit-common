@@ -27,7 +27,7 @@ import Capacitor from './Capacitor.js';
 import Charge from './Charge.js';
 import ChargeAnimator from './ChargeAnimator.js';
 import CircuitElement from './CircuitElement.js';
-import CurrentType, { CurrentTypeValues } from './CurrentType.js';
+import CurrentType from './CurrentType.js';
 import Dog from './Dog.js';
 import DynamicCircuitElement from './DynamicCircuitElement.js';
 import FixedCircuitElement from './FixedCircuitElement.js';
@@ -44,10 +44,10 @@ import CircuitElementViewType from './CircuitElementViewType.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import VoltageConnection from './VoltageConnection.js';
-import StringIO from '../../../tandem/js/types/StringIO.js';
 import ResistorType from './ResistorType.js';
 import InteractionMode from './InteractionMode.js';
 import CurrentSense from './CurrentSense.js';
+import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 
 // constants
 const SNAP_RADIUS = 30; // For two vertices to join together, they must be this close, in view coordinates
@@ -150,10 +150,9 @@ class Circuit {
     this.charges = createObservableArray();
 
     // @public {Property.<CurrentType>} - whether to show charges or conventional current
-    this.currentTypeProperty = new Property( CCKCQueryParameters.currentType, {
-      validValues: CurrentTypeValues,
-      tandem: tandem.parentTandem.createTandem( 'currentTypeProperty' ),
-      phetioType: Property.PropertyIO( StringIO )
+    this.currentTypeProperty = new EnumerationProperty( CCKCQueryParameters.currentType === 'electrons' ?
+                                                        CurrentType.ELECTRONS : CurrentType.CONVENTIONAL, {
+      tandem: tandem.parentTandem.createTandem( 'currentTypeProperty' )
     } );
 
     // When the current type changes, mark everything as dirty and relayout charges
@@ -1532,7 +1531,7 @@ class Circuit {
                                ( firstChargePosition + lastChargePosition ) / 2 :
                                i * spacing + offset;
 
-        const desiredCharge = this.currentTypeProperty.get() === 'electrons' ? -1 : +1;
+        const desiredCharge = this.currentTypeProperty.get() === CurrentType.ELECTRONS ? -1 : +1;
 
         if ( charges.length > 0 &&
              charges[ 0 ].charge === desiredCharge &&

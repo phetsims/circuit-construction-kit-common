@@ -17,13 +17,9 @@ const CCKCQueryParameters = QueryStringMachine.getAll( {
   // For Black Box Study & PhET-iO, selects whether to show electrons or conventional current
   currentType: {
     public: true,
-    type: 'custom',
+    type: 'string',
     defaultValue: 'electrons',
-    validValues: [ 'electrons', 'conventional' ], // TODO: duplicated
-    parse: ( string: string ) =>
-      string === 'electrons' ? 'electrons' :  // TODO: this became odd after string literal union enum
-      string === 'conventional' ? 'conventional' :
-      string // Will error out in validValues check
+    validValues: [ 'electrons', 'conventional' ]
   },
 
   // Whether the current is initially displayed
