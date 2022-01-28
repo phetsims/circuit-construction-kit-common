@@ -93,7 +93,8 @@ class Vertex extends PhetioObject {
     this.voltageProperty = new NumberProperty( 0, {
       tandem: options.tandem && options.tandem.createTandem( 'voltageProperty' ),
       units: 'V',
-      phetioReadOnly: true
+      phetioReadOnly: true,
+      phetioHighFrequency: true
     } );
 
     // @public {BooleanProperty} - after the user taps on a vertex it becomes selected, highlighting it and showing a
