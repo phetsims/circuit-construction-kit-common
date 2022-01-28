@@ -120,8 +120,12 @@ class CCKCLightBulbNode extends FixedCircuitElementNode {
     }, filledOptions ) as FixedCircuitElementNodeOptions;
 
     // Schematic creation begins here.
-    const endPosition = lightBulb.endPositionProperty.get();
-    const startPosition = lightBulb.startPositionProperty.get();
+
+    // In order to support phet-io customization at an angle, we must use the normalized (upright) positions.
+    const normalizedPoints = LightBulb.createSamplePoints( lightBulb.startPositionProperty.get() );
+    const startPosition = normalizedPoints[ 0 ];
+    const endPosition = normalizedPoints[ 1 ];
+
     const delta = endPosition.minus( startPosition );
 
     const rightLeadX = delta.x;
