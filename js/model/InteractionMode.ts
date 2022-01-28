@@ -1,4 +1,4 @@
-// Copyright 2021, University of Colorado Boulder
+// Copyright 2021-2022, University of Colorado Boulder
 // @author Sam Reid (PhET Interactive Simulations)
 const InteractionModeValues = [ 'explore', 'test' ] as const;
 type InteractionMode = typeof InteractionModeValues[number];
