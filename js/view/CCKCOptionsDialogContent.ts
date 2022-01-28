@@ -49,11 +49,11 @@ class CCKCOptionsDialogContent extends VBox {
 
     const ammeterReadoutRadioButtonGroup = new VerticalAquaRadioButtonGroup<AmmeterReadoutType>( ammeterReadoutTypeProperty, [ {
       node: new Text( circuitConstructionKitCommonStrings.magnitude, textOptions ),
-      value: 'magnitude',
+      value: AmmeterReadoutType.MAGNITUDE,
       tandemName: 'magnitudeRadioButton'
     }, {
       node: new Text( circuitConstructionKitCommonStrings.signed, textOptions ),
-      value: 'signed',
+      value: AmmeterReadoutType.SIGNED,
       tandemName: 'signedRadioButton'
     } ], {
       tandem: tandem.createTandem( 'ammeterReadoutRadioButtonGroup' ),

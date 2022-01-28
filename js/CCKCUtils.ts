@@ -14,6 +14,7 @@ import circuitConstructionKitCommonStrings from './circuitConstructionKitCommonS
 import circuitConstructionKitCommon from './circuitConstructionKitCommon.js';
 import ammeterReadoutTypeProperty from './view/ammeterReadoutTypeProperty.js';
 import MathSymbols from '../../scenery-phet/js/MathSymbols.js';
+import AmmeterReadoutType from './model/AmmeterReadoutType.js';
 
 const currentUnitsString = circuitConstructionKitCommonStrings.currentUnits;
 const voltageUnitsString = circuitConstructionKitCommonStrings.voltageUnits;
@@ -53,17 +54,17 @@ const CCKCUtils = {
       if ( current === null ) {
         return MathSymbols.NO_VALUE;
       }
-      else if ( ammeterReadoutType === 'magnitude' && Math.abs( current ) > max ) {
+      else if ( ammeterReadoutType === AmmeterReadoutType.MAGNITUDE && Math.abs( current ) > max ) {
         return maxString;
       }
-      else if ( ammeterReadoutType === 'signed' && current > max ) {
+      else if ( ammeterReadoutType === AmmeterReadoutType.SIGNED && current > max ) {
         return maxString;
       }
-      else if ( ammeterReadoutType === 'signed' && current < -max ) {
+      else if ( ammeterReadoutType === AmmeterReadoutType.SIGNED && current < -max ) {
         return minString;
       }
       else {
-        const signedCurrent = ammeterReadoutTypeProperty.value === 'magnitude' ? Math.abs( current ) : current;
+        const signedCurrent = ammeterReadoutTypeProperty.value === AmmeterReadoutType.MAGNITUDE ? Math.abs( current ) : current;
         const decimals = this.getNumberOfDecimalPoints( signedCurrent );
 
         // Show 3 decimal places so that current can still be seen with a glowing high-resistance bulb

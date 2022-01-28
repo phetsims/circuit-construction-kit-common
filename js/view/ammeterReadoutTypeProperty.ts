@@ -5,13 +5,13 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-import StringEnumerationProperty from '../../../axon/js/StringEnumerationProperty.js';
+import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import AmmeterReadoutType, { AmmeterReadoutTypeValues } from '../model/AmmeterReadoutType.js';
+import AmmeterReadoutType from '../model/AmmeterReadoutType.js';
 
-const ammeterReadoutTypeProperty = new StringEnumerationProperty( AmmeterReadoutTypeValues, CCKCQueryParameters.ammeterReadout as AmmeterReadoutType, {
+const ammeterReadoutTypeProperty = new EnumerationProperty( CCKCQueryParameters.ammeterReadout === 'magnitude' ? AmmeterReadoutType.MAGNITUDE : AmmeterReadoutType.SIGNED, {
   tandem: Tandem.GENERAL_VIEW.createTandem( 'ammeterReadoutTypeProperty' )
 } );
 

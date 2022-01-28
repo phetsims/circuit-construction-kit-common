@@ -1,5 +1,7 @@
 // Copyright 2021, University of Colorado Boulder
 
+import Enumeration from '../../../phet-core/js/Enumeration.js';
+import EnumerationValue from '../../../phet-core/js/EnumerationValue.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 /**
@@ -7,8 +9,11 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-const AmmeterReadoutTypeValues = [ 'magnitude', 'signed' ] as const;
-type AmmeterReadoutType = ( typeof AmmeterReadoutTypeValues )[number];
-circuitConstructionKitCommon.register( 'AmmeterReadoutTypeValues', AmmeterReadoutTypeValues );
-export { AmmeterReadoutTypeValues };
-export type { AmmeterReadoutType as default };
+class AmmeterReadoutType extends EnumerationValue {
+  static MAGNITUDE = new AmmeterReadoutType();
+  static SIGNED = new AmmeterReadoutType();
+  static enumeration = new Enumeration( AmmeterReadoutType );
+}
+
+circuitConstructionKitCommon.register( 'AmmeterReadoutType', AmmeterReadoutType );
+export default AmmeterReadoutType;
