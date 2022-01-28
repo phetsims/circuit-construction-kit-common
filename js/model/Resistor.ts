@@ -18,6 +18,7 @@ import ResistorType from './ResistorType.js';
 import Vertex from './Vertex.js';
 import EnumerationIO from '../../../tandem/js/types/EnumerationIO.js';
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
+import PowerProperty from './PowerProperty.js';
 
 type ResistorOptions = {
   isMetallic: boolean,
@@ -35,6 +36,7 @@ class Resistor extends FixedCircuitElement {
   static RESISTANCE_DECIMAL_PLACES = 1;
   static HIGH_RESISTANCE_DECIMAL_PLACES = 0;
   isColorCodeVisibleProperty: BooleanProperty;
+  private readonly powerProperty: PowerProperty;
 
   /**
    * @param {Vertex} startVertex
@@ -73,6 +75,8 @@ class Resistor extends FixedCircuitElement {
       // Specify the Property range for seamless PhET-iO interoperation
       range: this.resistorType.range
     } );
+
+    this.powerProperty = new PowerProperty( this.currentProperty, this.resistanceProperty, tandem.createTandem( 'powerProperty' ) );
 
     this.isColorCodeVisibleProperty = new BooleanProperty( true, {
       tandem: tandem.createTandem( 'isColorCodeVisibleProperty' ),
