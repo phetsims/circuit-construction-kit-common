@@ -56,11 +56,7 @@ class CircuitConstructionKitModel {
   readonly stepEmitter: Emitter<[ number ]>;
   private readonly zoomProperty: EnumerationProperty<ZoomLevel>;
 
-  /**
-   * @param {Tandem} tandem
-   * @param {Object} [providedOptions]
-   */
-  constructor( tandem: Tandem, providedOptions?: Partial<CircuitConstructionKitModelOptions> ) {
+  constructor( includeACElements: boolean, tandem: Tandem, providedOptions?: Partial<CircuitConstructionKitModelOptions> ) {
 
     const options = merge( {
 

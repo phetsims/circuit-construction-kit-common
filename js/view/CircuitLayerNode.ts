@@ -374,7 +374,7 @@ class CircuitLayerNode extends Node {
       new PhetioGroup( ( tandem: Tandem, circuitElement: CircuitElement ) => new CapacitorCircuitElementNode( screenView, this, circuitElement as Capacitor, this.model.viewTypeProperty, tandem ),
         () => [ this.circuit.capacitorGroup.archetype ], {
           phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
-          tandem: tandem.createTandem( 'capacitorNodeGroup' ),
+          tandem: circuit.includeACElements ? tandem.createTandem( 'capacitorNodeGroup' ) : Tandem.OPT_OUT,
           supportsDynamicState: false
         } ) );
     initializeCircuitElementType( ( e: CircuitElement ) => e instanceof SeriesAmmeter, this.fixedCircuitElementLayer,
@@ -395,7 +395,7 @@ class CircuitLayerNode extends Node {
       new PhetioGroup( ( tandem: Tandem, circuitElement: CircuitElement ) => new ACVoltageNode( screenView, this, circuitElement as ACVoltage, this.model.viewTypeProperty, tandem ),
         () => [ this.circuit.acVoltageGroup.archetype ], {
           phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
-          tandem: tandem.createTandem( 'acVoltageNodeGroup' ),
+          tandem: circuit.includeACElements ? tandem.createTandem( 'acVoltageNodeGroup' ) : Tandem.OPT_OUT,
           supportsDynamicState: false
         } ) );
     initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Fuse, this.fixedCircuitElementLayer,
@@ -409,7 +409,7 @@ class CircuitLayerNode extends Node {
       new PhetioGroup( ( tandem: Tandem, circuitElement: CircuitElement ) => new InductorNode( screenView, this, circuitElement as Inductor, this.model.viewTypeProperty, tandem ),
         () => [ this.circuit.inductorGroup.archetype ], {
           phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
-          tandem: tandem.createTandem( 'inductorNodeGroup' ),
+          tandem: circuit.includeACElements ? tandem.createTandem( 'inductorNodeGroup' ) : Tandem.OPT_OUT,
           supportsDynamicState: false
         } ) );
 

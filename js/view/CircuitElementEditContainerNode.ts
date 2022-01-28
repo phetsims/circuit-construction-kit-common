@@ -153,7 +153,7 @@ class CircuitElementEditContainerNode extends Node {
       StringUtils.fillIn( capacitanceUnitsString, { capacitance: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
       createSingletonAdapterProperty( Capacitor.CAPACITANCE_DEFAULT, Capacitor, circuit, ( c: Capacitor ) => c.capacitanceProperty ),
       Capacitor.CAPACITANCE_RANGE, circuit, Capacitor.NUMBER_OF_DECIMAL_PLACES, {
-        tandem: tandem.createTandem( 'capacitanceNumberControl' ),
+        tandem: circuit.includeACElements ? tandem.createTandem( 'capacitanceNumberControl' ) : Tandem.OPT_OUT,
         delta: CCKCQueryParameters.capacitanceStep
       } );
 
@@ -161,7 +161,7 @@ class CircuitElementEditContainerNode extends Node {
       StringUtils.fillIn( inductanceUnitsString, { inductance: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
       createSingletonAdapterProperty( Inductor.INDUCTANCE_DEFAULT, Inductor, circuit, ( c: Inductor ) => c.inductanceProperty ),
       Inductor.INDUCTANCE_RANGE, circuit, Inductor.INDUCTANCE_NUMBER_OF_DECIMAL_PLACES, {
-        tandem: tandem.createTandem( 'inductanceNumberControl' ),
+        tandem: circuit.includeACElements ? tandem.createTandem( 'inductanceNumberControl' ) : Tandem.OPT_OUT,
         delta: CCKCQueryParameters.inductanceStep,
 
         // For dragging the slider knob
@@ -242,7 +242,7 @@ class CircuitElementEditContainerNode extends Node {
       ACVoltage.MAX_VOLTAGE_RANGE,
       circuit,
       2, {
-        tandem: tandem.createTandem( 'voltageControl' ),
+        tandem: circuit.includeACElements ? tandem.createTandem( 'acVoltageControl' ) : Tandem.OPT_OUT,
         getAdditionalVisibilityProperties: ( c: ACVoltage ) => c.isVoltageEditableProperty ? [ c.isVoltageEditableProperty ] : []
       }
     );

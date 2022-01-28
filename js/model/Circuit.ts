@@ -70,7 +70,8 @@ const getSenseForNegative = ( current: number ) => current < 0 ? CurrentSense.FO
 const trueFunction = _.constant( true ); // Lower cased so IDEA doesn't think it is a constructor
 
 type CircuitOptions = {
-  blackBoxStudy: boolean
+  blackBoxStudy: boolean,
+  includeACElements: boolean
 };
 
 type Pair = { v1: Vertex, v2: Vertex };
@@ -112,6 +113,7 @@ class Circuit {
   readonly lightBulbGroup: PhetioGroup<LightBulb>;
   private readonly realLightBulbGroup: PhetioGroup<LightBulb>;
   private readonly groups: PhetioGroup<CircuitElement>[];
+  readonly includeACElements: boolean;
 
   constructor( viewTypeProperty: Property<CircuitElementViewType>, addRealBulbsProperty: Property<boolean>, tandem: Tandem,
                providedOptions?: Partial<CircuitOptions> ) {
@@ -121,6 +123,8 @@ class Circuit {
     this.addRealBulbsProperty = addRealBulbsProperty;
 
     const options = merge( { blackBoxStudy: false }, providedOptions ) as CircuitOptions;
+
+    this.includeACElements = options.includeACElements;
 
     // @public {Object}
     this.blackBoxStudy = options.blackBoxStudy;
@@ -379,7 +383,7 @@ class Circuit {
       return new ACVoltage( startVertex, endVertex, this.sourceResistanceProperty, tandem );
     }, () => createVertices( CCKCConstants.AC_VOLTAGE_LENGTH ), {
       phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
-      tandem: tandem.createTandem( 'acVoltageGroup' )
+      tandem: options.includeACElements ? tandem.createTandem( 'acVoltageGroup' ) : Tandem.OPT_OUT
     } );
 
     // @public {PhetioGroup}
@@ -429,7 +433,7 @@ class Circuit {
       ( tandem, startVertex, endVertex ) => new Capacitor( startVertex, endVertex, tandem ),
       () => createVertices( CCKCConstants.CAPACITOR_LENGTH ), {
         phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
-        tandem: tandem.createTandem( 'capacitorGroup' )
+        tandem: options.includeACElements ? tandem.createTandem( 'capacitorGroup' ) : Tandem.OPT_OUT
       } );
 
     // @public {PhetioGroup}
@@ -437,7 +441,7 @@ class Circuit {
       ( tandem, startVertex, endVertex ) => new Inductor( startVertex, endVertex, tandem ),
       () => createVertices( CCKCConstants.INDUCTOR_LENGTH ), {
         phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
-        tandem: tandem.createTandem( 'inductorGroup' )
+        tandem: options.includeACElements ? tandem.createTandem( 'inductorGroup' ) : Tandem.OPT_OUT
       } );
 
     // @public {PhetioGroup}
