@@ -101,9 +101,10 @@ class CircuitConstructionKitModel {
       new Ammeter( metersTandem.createTandem( 'ammeter2' ), 2 )
     ];
 
+    const blackBoxStudyTandem = options.blackBoxStudy ? tandem.createTandem( 'blackBoxStudy' ) : Tandem.OPT_OUT;
     this.isValueDepictionEnabledProperty = new BooleanProperty(
       !CCKCQueryParameters.showDepictValuesToggleButton, {
-        tandem: tandem.createTandem( 'blackBoxStudy' ).createTandem( 'isValueDepictionEnabledProperty' ),
+        tandem: blackBoxStudyTandem.createTandem( 'isValueDepictionEnabledProperty' ),
         phetioDocumentation: 'whether the light bulb brightness and ammeter/voltmeter readouts, charges, flame, etc. can be seen'
       } );
 
@@ -153,7 +154,7 @@ class CircuitConstructionKitModel {
 
     // @public {Property.<InteractionMode>} - whether the user is in the CircuitConstructionKitModel.InteractionMode.EXPLORE or CircuitConstructionKitModel.InteractionMode.TEST mode
     this.modeProperty = new StringEnumerationProperty( InteractionModeValues, 'explore', {
-      tandem: tandem.createTandem( 'blackBoxStudy' ).createTandem( 'modeProperty' ),
+      tandem: blackBoxStudyTandem.createTandem( 'modeProperty' ),
       phetioDocumentation: 'For Circuit Construction Kit: Black Box Study'
     } );
 
@@ -222,7 +223,7 @@ class CircuitConstructionKitModel {
 
     // @public - true when the user is holding down the reveal button and the answer (inside the black box) is showing
     this.revealingProperty = new BooleanProperty( options.revealing, {
-      tandem: tandem.createTandem( 'blackBoxStudy' ).createTandem( 'revealingProperty' ),
+      tandem: blackBoxStudyTandem.createTandem( 'revealingProperty' ),
       phetioDocumentation: 'For Circuit Construction Kit: Black Box Study'
     } );
 
