@@ -11,10 +11,8 @@ import ElectronChargeNode from '../../../scenery-phet/js/ElectronChargeNode.js';
 import { AlignBox } from '../../../scenery/js/imports.js';
 import { AlignGroup } from '../../../scenery/js/imports.js';
 import { HBox } from '../../../scenery/js/imports.js';
-import { Node } from '../../../scenery/js/imports.js';
 import { Text } from '../../../scenery/js/imports.js';
 import { VBox } from '../../../scenery/js/imports.js';
-import AquaRadioButton from '../../../sun/js/AquaRadioButton.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -25,6 +23,7 @@ import Property from '../../../axon/js/Property.js';
 import Stopwatch from '../../../scenery-phet/js/Stopwatch.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CurrentType from '../model/CurrentType.js';
+import VerticalAquaRadioButtonGroup from '../../../sun/js/VerticalAquaRadioButtonGroup.js';
 
 const conventionalString = circuitConstructionKitCommonStrings.conventional;
 const electronsString = circuitConstructionKitCommonStrings.electrons;
@@ -58,22 +57,11 @@ class DisplayOptionsPanel extends CCKCPanel {
   constructor( alignGroup: AlignGroup, showCurrentProperty: Property<boolean>, currentTypeProperty: Property<CurrentType>, showValuesProperty: Property<boolean>, showLabelsProperty: Property<boolean>,
                stopwatch: Stopwatch, showStopwatchCheckbox: boolean, tandem: Tandem ) {
 
-    /**
-     * Create an AquaRadioButton for the specified kind of current
-     * @param {CurrentType} currentType
-     * @param {Node} node - the Node to display in the button
-     * @param {Tandem} tandem
-     * @returns {AquaRadioButton}
-     */
-    const createRadioButton = ( currentType: CurrentType, node: Node, tandem: Tandem ) => new AquaRadioButton( currentTypeProperty, currentType, node, {
-      radius: 7,
-      tandem: tandem
-    } );
-
     const textIconSpacing = 11;
 
     // Align the Electrons/Conventional text and radio buttons
     const currentTypeRadioButtonLabelGroup = new AlignGroup();
+
     const electronsBox = new HBox( {
       children: [
         currentTypeRadioButtonLabelGroup.createBox( new Text( electronsString, TEXT_OPTIONS ), BOX_ALIGNMENT ),
@@ -83,6 +71,7 @@ class DisplayOptionsPanel extends CCKCPanel {
       ],
       spacing: textIconSpacing
     } );
+
     const conventionalBox = new HBox( {
       children: [
         currentTypeRadioButtonLabelGroup.createBox( new Text( conventionalString, TEXT_OPTIONS ), BOX_ALIGNMENT ),
@@ -91,13 +80,22 @@ class DisplayOptionsPanel extends CCKCPanel {
       spacing: textIconSpacing
     } );
 
-    const electronsRadioButton = createRadioButton( 'electrons', electronsBox, tandem.createTandem( 'electronsRadioButton' ) );
-    const conventionalRadioButton = createRadioButton( 'conventional', conventionalBox, tandem.createTandem( 'conventionalRadioButton' ) );
+    const currentTypeRadioButtonGroup = new VerticalAquaRadioButtonGroup<CurrentType>( currentTypeProperty, [ {
+      value: 'electrons',
+      node: electronsBox,
+      tandemName: 'electronsRadioButton'
+    }, {
+      value: 'conventional',
+      node: conventionalBox,
+      tandemName: 'conventionalRadioButton'
+    }
+    ], {
+      tandem: tandem.createTandem( 'currentTypeRadioButtonGroup' ),
+      spacing: 6
+    } );
 
     // Gray out current view options when current is not selected.
-    showCurrentProperty.linkAttribute( electronsRadioButton, 'enabled' );
-    showCurrentProperty.linkAttribute( conventionalRadioButton, 'enabled' );
-
+    showCurrentProperty.linkAttribute( currentTypeRadioButtonGroup, 'enabled' );
 
     const showLabelsCheckbox = new CCKCCheckbox( new Text( labelsString, TEXT_OPTIONS ), showLabelsProperty, {
       tandem: tandem.createTandem( 'labelsCheckbox' )
@@ -123,15 +121,8 @@ class DisplayOptionsPanel extends CCKCPanel {
           new CCKCCheckbox( new Text( showCurrentString, TEXT_OPTIONS ), showCurrentProperty, {
             tandem: tandem.createTandem( 'showCurrentCheckbox' )
           } ),
-          new AlignBox(
-            new VBox( {
-              align: 'left',
-              spacing: 6,
-              children: [
-                electronsRadioButton,
-                conventionalRadioButton
-              ]
-            } ), {
+          new AlignBox( // TODO: is alignbox needed here?
+            currentTypeRadioButtonGroup, {
               leftMargin: LEFT_MARGIN
             }
           )
