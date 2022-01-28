@@ -1,4 +1,4 @@
-// Copyright 2021, University of Colorado Boulder
+// Copyright 2022, University of Colorado Boulder
 // @author Sam Reid (PhET Interactive Simulations)
 
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
