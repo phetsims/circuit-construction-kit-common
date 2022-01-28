@@ -90,6 +90,8 @@ class Resistor extends FixedCircuitElement {
    */
   dispose() {
     this.resistanceProperty.dispose();
+    this.powerProperty.dispose();
+    this.isColorCodeVisibleProperty.dispose();
     super.dispose();
   }
 

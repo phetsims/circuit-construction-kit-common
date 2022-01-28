@@ -78,6 +78,7 @@ abstract class VoltageSource extends FixedCircuitElement {
    */
   dispose() {
     this.voltageProperty.dispose();
+    this.powerProperty.dispose();
     super.dispose();
   }
 
