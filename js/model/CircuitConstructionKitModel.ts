@@ -30,7 +30,7 @@ import Bounds2 from '../../../dot/js/Bounds2.js';
 import CircuitElementViewType from './CircuitElementViewType.js';
 import LightBulb from './LightBulb.js';
 import { InteractionModeValues } from './InteractionMode.js';
-import ZoomLevel, { ZoomLevelValues } from './ZoomLevel.js';
+import ZoomLevel from './ZoomLevel.js';
 
 type CircuitConstructionKitModelOptions = {
   blackBoxStudy: boolean,
@@ -55,7 +55,7 @@ class CircuitConstructionKitModel {
   readonly blackBoxBounds: Bounds2 | null;
   readonly stopwatch: Stopwatch;
   readonly stepEmitter: Emitter<[ number ]>;
-  private readonly zoomProperty: Property<ZoomLevel>;
+  private readonly zoomProperty: EnumerationProperty<ZoomLevel>;
 
   /**
    * @param {Tandem} tandem
@@ -128,12 +128,12 @@ class CircuitConstructionKitModel {
     } );
 
     // For PhET-iO: Use an enumeration pattern for the API
-    this.zoomProperty = new StringEnumerationProperty( ZoomLevelValues, 'normal', {
+    this.zoomProperty = new EnumerationProperty( ZoomLevel.NORMAL, {
       tandem: tandem.createTandem( 'zoomProperty' ),
       phetioDocumentation: 'Selected zoom level for the simulation'
     } );
-    this.selectedZoomProperty.lazyLink( selectedZoom => this.zoomProperty.set( selectedZoom === 0 ? 'zoomedOut' : 'normal' ) );
-    this.zoomProperty.lazyLink( zoom => this.selectedZoomProperty.set( zoom === 'zoomedOut' ? 0 : 1 ) );
+    this.selectedZoomProperty.lazyLink( selectedZoom => this.zoomProperty.set( selectedZoom === 0 ? ZoomLevel.ZOOMED_OUT : ZoomLevel.NORMAL ) );
+    this.zoomProperty.lazyLink( zoom => this.selectedZoomProperty.set( zoom === ZoomLevel.ZOOMED_OUT ? 0 : 1 ) );
 
     // @public (read-only) {Property.<number>} the animated value of the zoom level
     this.currentZoomProperty = new NumberProperty( this.selectedZoomProperty.get() );
