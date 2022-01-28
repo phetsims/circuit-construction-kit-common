@@ -47,6 +47,7 @@ import VoltageConnection from './VoltageConnection.js';
 import StringIO from '../../../tandem/js/types/StringIO.js';
 import ResistorType from './ResistorType.js';
 import InteractionMode from './InteractionMode.js';
+import CurrentSense from './CurrentSense.js';
 
 // constants
 const SNAP_RADIUS = 30; // For two vertices to join together, they must be this close, in view coordinates
@@ -57,14 +58,14 @@ const BATTERY_LENGTH = CCKCConstants.BATTERY_LENGTH;
 const WIRE_LENGTH = CCKCConstants.WIRE_LENGTH;
 
 // Determine what sense a circuit element should have to create an overall positive readout, given the specified current
-const getSenseForPositive = ( current: number ) => current < 0 ? 'backward' :
-                                                   current > 0 ? 'forward' :
-                                                   'unspecified';
+const getSenseForPositive = ( current: number ) => current < 0 ? CurrentSense.BACKWARD :
+                                                   current > 0 ? CurrentSense.FORWARD :
+                                                   CurrentSense.UNSPECIFIED;
 
 // Determine what sense a circuit element should have to create an overall negative readout, given the specified current
-const getSenseForNegative = ( current: number ) => current < 0 ? 'forward' :
-                                                   current > 0 ? 'backward' :
-                                                   'unspecified';
+const getSenseForNegative = ( current: number ) => current < 0 ? CurrentSense.FORWARD :
+                                                   current > 0 ? CurrentSense.BACKWARD :
+                                                   CurrentSense.UNSPECIFIED;
 
 const trueFunction = _.constant( true ); // Lower cased so IDEA doesn't think it is a constructor
 
@@ -1032,13 +1033,13 @@ class Circuit {
     return this.searchVertices( vertex, trueFunction );
   }
 
-  // Identify current senses for 'unspecified' CircuitElements with a nonzero current
+  // Identify current senses for CurrentSense.UNSPECIFIED CircuitElements with a nonzero current
   determineSenses() {
 
     // Disconnected circuit elements forget their sense
     this.circuitElements.forEach( c => {
       if ( c.currentProperty.value === 0.0 ) {
-        c.currentSenseProperty.value = 'unspecified';
+        c.currentSenseProperty.value = CurrentSense.UNSPECIFIED;
       }
     } );
 
@@ -1048,7 +1049,7 @@ class Circuit {
     // After assigning a sense, revisit the circuit to propagate senses.  Break out of the loop when no more work can be done
     while ( true ) { // eslint-disable-line
 
-      const requiresSenseBeforeVisit = circuitElementsWithCurrent.filter( c => c.currentSenseProperty.value === 'unspecified' );
+      const requiresSenseBeforeVisit = circuitElementsWithCurrent.filter( c => c.currentSenseProperty.value === CurrentSense.UNSPECIFIED );
       if ( requiresSenseBeforeVisit.length === 0 ) {
         break;
       }
@@ -1056,7 +1057,7 @@ class Circuit {
       // Propagate known senses to new circuit elements.
       this.propagateSenses();
 
-      const requiresSenseAfterVisit = circuitElementsWithCurrent.filter( c => c.currentSenseProperty.value === 'unspecified' );
+      const requiresSenseAfterVisit = circuitElementsWithCurrent.filter( c => c.currentSenseProperty.value === CurrentSense.UNSPECIFIED );
 
       if ( requiresSenseAfterVisit.length === 0 ) {
         break;
@@ -1068,7 +1069,7 @@ class Circuit {
       const unspecifiedACSources = requiresSenseAfterVisit.filter( r => r instanceof ACVoltage );
       if ( unspecifiedACSources.length > 0 ) {
         const unspecifiedACSource = unspecifiedACSources[ 0 ];
-        const referenceElements = this.circuitElements.filter( c => c instanceof ACVoltage && c.currentSenseProperty.value !== 'unspecified' && c !== unspecifiedACSource );
+        const referenceElements = this.circuitElements.filter( c => c instanceof ACVoltage && c.currentSenseProperty.value !== CurrentSense.UNSPECIFIED && c !== unspecifiedACSource );
         if ( referenceElements.length > 0 ) {
           Circuit.assignSense( unspecifiedACSource, referenceElements[ 0 ] );
           wasSenseAssigned = true;
@@ -1090,14 +1091,14 @@ class Circuit {
 
   // Assign the sense to an un-sensed circuit element based on matching the sign of a corresponding reference element.
   static assignSense( targetElement: CircuitElement, referenceElement: CircuitElement ) {
-    assert && assert( targetElement.currentSenseProperty.value === 'unspecified', 'target should have an unspecified sense' );
+    assert && assert( targetElement.currentSenseProperty.value === CurrentSense.UNSPECIFIED, 'target should have an unspecified sense' );
     const targetElementCurrent = targetElement.currentProperty.value;
     const referenceElementCurrent = referenceElement.currentProperty.value;
     const referenceElementSense = referenceElement.currentSenseProperty.value;
-    const desiredSign = referenceElementCurrent >= 0 && referenceElementSense === 'forward' ? 'positive' :
-                        referenceElementCurrent >= 0 && referenceElementSense === 'backward' ? 'negative' :
-                        referenceElementCurrent < 0 && referenceElementSense === 'forward' ? 'negative' :
-                        referenceElementCurrent < 0 && referenceElementSense === 'backward' ? 'positive' :
+    const desiredSign = referenceElementCurrent >= 0 && referenceElementSense === CurrentSense.FORWARD ? 'positive' :
+                        referenceElementCurrent >= 0 && referenceElementSense === CurrentSense.BACKWARD ? 'negative' :
+                        referenceElementCurrent < 0 && referenceElementSense === CurrentSense.FORWARD ? 'negative' :
+                        referenceElementCurrent < 0 && referenceElementSense === CurrentSense.BACKWARD ? 'positive' :
                         'error';
 
     assert && assert( desiredSign !== 'error' );
@@ -1109,7 +1110,7 @@ class Circuit {
   // Traverse the circuit, filling in senses to adjacent circuit elements during the traversal
   propagateSenses() {
 
-    const circuitElementsWithSenses = this.circuitElements.filter( c => c.currentSenseProperty.value !== 'unspecified' );
+    const circuitElementsWithSenses = this.circuitElements.filter( c => c.currentSenseProperty.value !== CurrentSense.UNSPECIFIED );
     if ( circuitElementsWithSenses.length > 0 ) {
 
       // launch searches from circuit elements with known senses
@@ -1128,12 +1129,12 @@ class Circuit {
             const circuitElement = neighborCircuitElements[ i ];
             const neighborVertex = circuitElement.getOppositeVertex( vertex );
 
-            if ( circuitElement.currentSenseProperty.value === 'unspecified' && circuitElement.currentProperty.value !== 0.0 ) {
+            if ( circuitElement.currentSenseProperty.value === CurrentSense.UNSPECIFIED && circuitElement.currentProperty.value !== 0.0 ) {
 
               // choose sense from a neighbor. We discussed that we may need to be more selective in choosing the reference
               // neighbor, such as choosing the high voltage side's highest voltage neighbor.  However, we didn't see a
               // case where that was necessary yet.
-              const specifiedNeighbors = neighborCircuitElements.filter( c => c !== circuitElement && c.currentSenseProperty.value !== 'unspecified' );
+              const specifiedNeighbors = neighborCircuitElements.filter( c => c !== circuitElement && c.currentSenseProperty.value !== CurrentSense.UNSPECIFIED );
               if ( specifiedNeighbors.length > 0 ) {
                 Circuit.assignSense( circuitElement, specifiedNeighbors[ 0 ] );
               }
@@ -1487,9 +1488,9 @@ class Circuit {
     circuitElement.startVertexProperty.value = endVertex;
     circuitElement.endVertexProperty.value = startVertex;
 
-    const flipped = circuitElement.currentSenseProperty.value === 'forward' ? 'backward' :
-                    circuitElement.currentSenseProperty.value === 'backward' ? 'forward' :
-                    'unspecified';
+    const flipped = circuitElement.currentSenseProperty.value === CurrentSense.FORWARD ? CurrentSense.BACKWARD :
+                    circuitElement.currentSenseProperty.value === CurrentSense.BACKWARD ? CurrentSense.FORWARD :
+                    CurrentSense.UNSPECIFIED;
     circuitElement.currentSenseProperty.value = flipped;
 
     // Layout the charges in the circuitElement but nowhere else, since that creates a discontinuity in the motion

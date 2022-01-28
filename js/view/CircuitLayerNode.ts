@@ -65,6 +65,7 @@ import CircuitElement from '../model/CircuitElement.js';
 import Vertex from '../model/Vertex.js';
 import CircuitConstructionKitModel from '../model/CircuitConstructionKitModel.js';
 import PhetioGroup from '../../../tandem/js/PhetioGroup.js';
+import CurrentSense from '../model/CurrentSense.js';
 
 // constants
 
@@ -1025,7 +1026,7 @@ class CircuitLayerNode extends Node {
         // see https://github.com/phetsims/circuit-construction-kit-common/issues/418
         if ( !circuitElementNode.circuitElement.circuitElementDisposed && circuitElementNode.containsSensorPoint( globalPoint ) ) {
           let rawCurrent = circuitElementNode.circuitElement.currentProperty.get();
-          if ( circuitElementNode.circuitElement.currentSenseProperty.value === 'backward' ) {
+          if ( circuitElementNode.circuitElement.currentSenseProperty.value === CurrentSense.BACKWARD ) {
             rawCurrent = -rawCurrent;
           }
           return rawCurrent;

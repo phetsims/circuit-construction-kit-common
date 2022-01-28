@@ -25,6 +25,7 @@ import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
 import ammeterReadoutTypeProperty from './ammeterReadoutTypeProperty.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
+import CurrentSense from '../model/CurrentSense.js';
 
 const currentString = circuitConstructionKitCommonStrings.current;
 
@@ -93,7 +94,7 @@ class SeriesAmmeterNode extends FixedCircuitElementNode {
 
         if ( startConnection && endConnection ) {
 
-          const sign = seriesAmmeter.currentSenseProperty.value === 'backward' ? -1 : +1;
+          const sign = seriesAmmeter.currentSenseProperty.value === CurrentSense.BACKWARD ? -1 : +1;
           readout = CCKCUtils.createCurrentReadout( seriesAmmeter.currentProperty.get() * sign, false );
         }
       }

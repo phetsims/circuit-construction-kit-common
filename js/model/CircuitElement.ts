@@ -20,12 +20,12 @@ import IOType from '../../../tandem/js/types/IOType.js';
 import ReferenceIO from '../../../tandem/js/types/ReferenceIO.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Circuit from './Circuit.js';
-import CurrentSense, { CurrentSenseValues } from './CurrentSense.js';
+import CurrentSense from './CurrentSense.js';
 import Vertex from './Vertex.js';
 import IReadOnlyProperty, { PropertyLinkListener } from '../../../axon/js/IReadOnlyProperty.js';
-import StringEnumerationProperty from '../../../axon/js/StringEnumerationProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import StringProperty from '../../../axon/js/StringProperty.js';
+import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 
 // variables
 let index = 0;
@@ -138,7 +138,7 @@ abstract class CircuitElement extends PhetioObject {
 
     // we assign the directionality based on the initial current direction, so the initial current is always positive.
     // see https://github.com/phetsims/circuit-construction-kit-common/issues/508
-    this.currentSenseProperty = new StringEnumerationProperty( CurrentSenseValues, 'unspecified' );
+    this.currentSenseProperty = new EnumerationProperty( CurrentSense.UNSPECIFIED );
 
     // @public (read-only) {BooleanProperty} - true if the CircuitElement can be edited and dragged
     this.interactiveProperty = new BooleanProperty( options.interactive );
