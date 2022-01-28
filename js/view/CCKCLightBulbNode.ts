@@ -199,10 +199,10 @@ class CCKCLightBulbNode extends FixedCircuitElementNode {
 
     const updateSchematicType = ( schematicType: SchematicType ) => {
       if ( filledOptions.isIcon ) {
-        schematicNode.shape = schematicType === 'ieee' ? ieeeShapeIcon : iecShapeIcon;
+        schematicNode.shape = schematicType === SchematicType.IEEE ? ieeeShapeIcon : iecShapeIcon;
       }
       else {
-        schematicNode.shape = schematicType === 'ieee' ? ieeeShapeWithLeads : iecShapeWithLeads;
+        schematicNode.shape = schematicType === SchematicType.IEEE ? ieeeShapeWithLeads : iecShapeWithLeads;
       }
     };
     schematicTypeProperty.link( updateSchematicType );

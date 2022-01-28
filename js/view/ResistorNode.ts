@@ -209,7 +209,7 @@ class ResistorNode extends FixedCircuitElementNode {
     } );
 
     const updateSchematicType = ( schematicType: SchematicType ) => {
-      schematicNode.shape = schematicType === 'ieee' ? ieeeSchematicShape :
+      schematicNode.shape = schematicType === SchematicType.IEEE ? ieeeSchematicShape :
                             iecSchematicShape;
     };
     schematicTypeProperty.link( updateSchematicType );

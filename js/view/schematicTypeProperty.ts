@@ -5,13 +5,15 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-import StringEnumerationProperty from '../../../axon/js/StringEnumerationProperty.js';
+import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import SchematicType, { SchematicTypeValues } from './SchematicType.js';
+import SchematicType from './SchematicType.js';
 
-const schematicTypeProperty = new StringEnumerationProperty( SchematicTypeValues, CCKCQueryParameters.schematicStandard as SchematicType, {
+const schematicTypeProperty = new EnumerationProperty( CCKCQueryParameters.schematicStandard === 'ieee' ? SchematicType.IEEE :
+                                                       CCKCQueryParameters.schematicStandard === 'ieee' ? SchematicType.IEC :
+                                                       SchematicType.BRITISH, {
   tandem: Tandem.GENERAL_VIEW.createTandem( 'schematicTypeProperty' )
 } );
 
