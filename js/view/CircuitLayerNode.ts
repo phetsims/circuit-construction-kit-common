@@ -346,7 +346,7 @@ class CircuitLayerNode extends Node {
       new PhetioGroup( ( tandem: Tandem, circuitElement: CircuitElement ) => new BatteryNode( screenView, this, circuitElement as Battery, this.model.viewTypeProperty, tandem ),
         () => [ this.circuit.batteryGroup.archetype ], {
           phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
-          tandem: tandem.createTandem( 'highVoltageBatteryNodeGroup' ),
+          tandem: circuit.includeLabElements ? tandem.createTandem( 'highVoltageBatteryNodeGroup' ) : Tandem.OPT_OUT,
           supportsDynamicState: false
         } ) );
     initializeCircuitElementType( ( e: CircuitElement ) => e instanceof LightBulb, this.fixedCircuitElementLayer,
@@ -381,7 +381,7 @@ class CircuitLayerNode extends Node {
       new PhetioGroup( ( tandem: Tandem, circuitElement: CircuitElement ) => new SeriesAmmeterNode( screenView, this, circuitElement as SeriesAmmeter, tandem ),
         () => [ this.circuit.seriesAmmeterGroup.archetype ], {
           phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
-          tandem: tandem.createTandem( 'seriesAmmeterNodeGroup' ),
+          tandem: circuit.includeLabElements ? tandem.createTandem( 'seriesAmmeterNodeGroup' ) : Tandem.OPT_OUT,
           supportsDynamicState: false
         } ) );
     initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Switch, this.fixedCircuitElementLayer,

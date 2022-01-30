@@ -135,13 +135,13 @@ class Circuit {
     // @public {NumberProperty} - All wires share the same resistivity, which is defined by
     // resistance = resistivity * length. On the Lab Screen, there is a wire resistivity control
     this.wireResistivityProperty = new NumberProperty( CCKCConstants.DEFAULT_RESISTIVITY, {
-      tandem: tandem.parentTandem.createTandem( 'wireResistivityProperty' )
+      tandem: this.includeLabElements ? tandem.parentTandem.createTandem( 'wireResistivityProperty' ) : Tandem.OPT_OUT
     } );
 
     // @public {NumberProperty} - All batteries share a single internal resistance value, which can be edited with
     // a control on the Lab Screen
     this.sourceResistanceProperty = new NumberProperty( CCKCConstants.DEFAULT_BATTERY_RESISTANCE, {
-      tandem: tandem.parentTandem.createTandem( 'sourceResistanceProperty' )
+      tandem: this.includeLabElements ? tandem.parentTandem.createTandem( 'sourceResistanceProperty' ) : Tandem.OPT_OUT
     } );
 
     // @public {ObservableArrayDef.<CircuitElement>} - The different types of CircuitElement the circuit may
@@ -377,7 +377,7 @@ class Circuit {
         } );
     }, () => createVertices( BATTERY_LENGTH ), {
       phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
-      tandem: tandem.createTandem( 'highVoltageBatteryGroup' ),
+      tandem: this.includeLabElements ? tandem.createTandem( 'highVoltageBatteryGroup' ) : Tandem.OPT_OUT,
       phetioDynamicElementName: 'highVoltageBattery'
     } );
 
@@ -416,7 +416,7 @@ class Circuit {
       ( tandem, startVertex, endVertex ) => new SeriesAmmeter( startVertex, endVertex, tandem ),
       () => createVertices( CCKCConstants.SERIES_AMMETER_LENGTH ), {
         phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
-        tandem: tandem.createTandem( 'seriesAmmeterGroup' )
+        tandem: this.includeLabElements ? tandem.createTandem( 'seriesAmmeterGroup' ) : Tandem.OPT_OUT
       } );
 
     // @public {PhetioGroup}
@@ -428,7 +428,7 @@ class Circuit {
           } );
       }, () => createVertices( 100 ), {
         phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
-        tandem: tandem.createTandem( 'highResistanceLightBulbGroup' )
+        tandem: this.includeLabElements ? tandem.createTandem( 'highResistanceLightBulbGroup' ) : Tandem.OPT_OUT
       } );
 
     // @public {PhetioGroup}
@@ -471,7 +471,7 @@ class Circuit {
         } );
       }, () => createVertices( 100 ), {
         phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
-        tandem: tandem.createTandem( 'realLightBulbGroup' )
+        tandem: this.includeLabElements ? tandem.createTandem( 'realLightBulbGroup' ) : Tandem.OPT_OUT
       } );
 
     this.groups = [

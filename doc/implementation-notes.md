@@ -95,3 +95,15 @@ This document was adapted from the [Implementation Notes for Function Builder](h
 ## Unit Tests
 This simulation provides 60+ unit tests to ensure accuracy of the model for a variety of circuit topologies, please
 test by launching localhost/circuit-construction-kit-common/circuit-construction-kit-common-tests.html
+
+### PhET-iO
+In order to filter unwanted items from the studio tree, we use a pattern like:
+
+```ts
+    this.addRealBulbsProperty = new BooleanProperty( CCKCQueryParameters.addRealBulbs, {
+      tandem: includeLabElements ? tandem.createTandem( 'addRealBulbsProperty' ) : Tandem.OPT_OUT
+    } );
+```
+
+This gives the simplicity of being able to create and wire up everything eagerly, but excluding sim- or screen-specific 
+items as necessary.

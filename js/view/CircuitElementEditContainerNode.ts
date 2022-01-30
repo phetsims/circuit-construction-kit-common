@@ -187,7 +187,7 @@ class CircuitElementEditContainerNode extends Node {
       StringUtils.fillIn( resistanceOhmsValuePatternString, { resistance: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
       createSingletonAdapterProperty( ResistorType.HIGH_RESISTANCE_RESISTOR.defaultResistance, CircuitElementType, circuit, ( c: LightBulb | Resistor ) => c.resistanceProperty ),
       ResistorType.HIGH_RESISTANCE_RESISTOR.range, circuit, Resistor.HIGH_RESISTANCE_DECIMAL_PLACES, {
-        tandem: tandem.createTandem( tandemName ),
+        tandem: circuit.includeLabElements ? tandem.createTandem( tandemName ) : Tandem.OPT_OUT,
         delta: HIGH_TWEAKER_DELTA,
         sliderOptions: {
           constrainValue: ( value: number ) => Utils.roundToInterval( value, HIGH_SLIDER_KNOB_DELTA ) // For dragging the slider knob
@@ -220,7 +220,7 @@ class CircuitElementEditContainerNode extends Node {
       Battery.HIGH_VOLTAGE_RANGE,
       circuit,
       Battery.HIGH_VOLTAGE_DECIMAL_PLACES, {
-        tandem: tandem.createTandem( 'highVoltageNumberControl' ),
+        tandem: circuit.includeLabElements ? tandem.createTandem( 'highVoltageNumberControl' ) : Tandem.OPT_OUT,
         delta: HIGH_TWEAKER_DELTA,
         sliderOptions: { // For dragging the slider knob
           constrainValue: ( value: number ) => Utils.roundToInterval( value, HIGH_SLIDER_KNOB_DELTA )

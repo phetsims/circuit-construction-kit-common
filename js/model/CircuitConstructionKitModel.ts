@@ -76,7 +76,7 @@ class CircuitConstructionKitModel {
 
     // @public {Property.<boolean>} - whether the carousel shows real bulbs
     this.addRealBulbsProperty = new BooleanProperty( CCKCQueryParameters.addRealBulbs, {
-      tandem: tandem.createTandem( 'addRealBulbsProperty' )
+      tandem: includeLabElements ? tandem.createTandem( 'addRealBulbsProperty' ) : Tandem.OPT_OUT
     } );
 
     // @public (read-only) {Circuit} - contains CircuitElements, Vertices, etc.
