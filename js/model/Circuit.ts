@@ -71,7 +71,8 @@ const trueFunction = _.constant( true ); // Lower cased so IDEA doesn't think it
 
 type CircuitOptions = {
   blackBoxStudy: boolean,
-  includeACElements: boolean
+  includeACElements: boolean,
+  includeLabElements: boolean
 };
 
 type Pair = { v1: Vertex, v2: Vertex };
@@ -114,6 +115,7 @@ class Circuit {
   private readonly realLightBulbGroup: PhetioGroup<LightBulb>;
   private readonly groups: PhetioGroup<CircuitElement>[];
   readonly includeACElements: boolean;
+  readonly includeLabElements: boolean;
 
   constructor( viewTypeProperty: Property<CircuitElementViewType>, addRealBulbsProperty: Property<boolean>, tandem: Tandem,
                providedOptions?: Partial<CircuitOptions> ) {
@@ -125,6 +127,7 @@ class Circuit {
     const options = merge( { blackBoxStudy: false }, providedOptions ) as CircuitOptions;
 
     this.includeACElements = options.includeACElements;
+    this.includeLabElements = options.includeLabElements;
 
     // @public {Object}
     this.blackBoxStudy = options.blackBoxStudy;

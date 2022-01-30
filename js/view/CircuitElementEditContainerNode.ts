@@ -230,7 +230,7 @@ class CircuitElementEditContainerNode extends Node {
       } );
 
     const phaseShiftControl = new PhaseShiftControl( createSingletonAdapterProperty( 0, ACVoltage, circuit, ( c: ACVoltage ) => c.phaseProperty ), circuit, {
-      tandem: tandem.createTandem( 'phaseShiftControl' )
+      tandem: circuit.includeACElements ? tandem.createTandem( 'phaseShiftControl' ) : Tandem.OPT_OUT
     } );
 
     const acVoltageControl = new CircuitElementNumberControl(
@@ -256,7 +256,7 @@ class CircuitElementEditContainerNode extends Node {
       ACVoltage.FREQUENCY_RANGE,
       circuit,
       2, {
-        tandem: tandem.createTandem( 'frequencyControl' ),
+        tandem: circuit.includeACElements ? tandem.createTandem( 'frequencyControl' ) : Tandem.OPT_OUT,
         delta: 0.01,
         getAdditionalVisibilityProperties: ( c: ACVoltage ) => c.isFrequencyEditableProperty ? [ c.isFrequencyEditableProperty ] : []
       }

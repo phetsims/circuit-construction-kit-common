@@ -56,7 +56,7 @@ class CircuitConstructionKitModel {
   readonly stepEmitter: Emitter<[ number ]>;
   private readonly zoomProperty: EnumerationProperty<ZoomLevel>;
 
-  constructor( includeACElements: boolean, tandem: Tandem, providedOptions?: Partial<CircuitConstructionKitModelOptions> ) {
+  constructor( includeACElements: boolean, includeLabElements: boolean, tandem: Tandem, providedOptions?: Partial<CircuitConstructionKitModelOptions> ) {
 
     const options = merge( {
 
@@ -81,7 +81,11 @@ class CircuitConstructionKitModel {
 
     // @public (read-only) {Circuit} - contains CircuitElements, Vertices, etc.
     const circuitTandem = tandem.createTandem( 'circuit' );
-    this.circuit = new Circuit( this.viewTypeProperty, this.addRealBulbsProperty, circuitTandem, { blackBoxStudy: options.blackBoxStudy } );
+    this.circuit = new Circuit( this.viewTypeProperty, this.addRealBulbsProperty, circuitTandem, {
+      blackBoxStudy: options.blackBoxStudy,
+      includeLabElements: includeLabElements,
+      includeACElements: includeACElements
+    } );
 
     // @public (read-only) {Voltmeter[]} - created statically and indexed starting at 1 for human-readability for PhET-iO
     const metersTandem = tandem.createTandem( 'meters' );
@@ -143,7 +147,7 @@ class CircuitConstructionKitModel {
 
     // @public (read-only) {Property.<number>} True if the simulation is playing, controlled by the TimeControlNode
     this.isPlayingProperty = new BooleanProperty( true, {
-      tandem: tandem.createTandem( 'isPlayingProperty' ),
+      tandem: includeACElements ? tandem.createTandem( 'isPlayingProperty' ) : Tandem.OPT_OUT,
       phetioFeatured: true
     } );
 
@@ -228,7 +232,7 @@ class CircuitConstructionKitModel {
 
     // @public
     this.stopwatch = new Stopwatch( {
-      tandem: tandem.createTandem( 'stopwatch' )
+      tandem: includeACElements ? tandem.createTandem( 'stopwatch' ) : Tandem.OPT_OUT
     } );
 
     // @public {Emitter.<number>} - Indicates when the model has updated, some views need to update accordingly
