@@ -7,7 +7,7 @@
  */
 
 import NumberProperty from '../../../axon/js/NumberProperty.js';
-import merge from '../../../phet-core/js/merge.js';
+import optionize from '../../../phet-core/js/optionize.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -21,10 +21,11 @@ import Vertex from './Vertex.js';
 // coordinates.
 const METERS_PER_VIEW_COORDINATE = 0.0005;
 
-type WireOptions = {
-  wireStub: boolean
-  isMetallic: boolean
-} & CircuitElementOptions;
+type WireSelfOptions = {
+  wireStub?: boolean
+};
+
+type WireOptions = WireSelfOptions & CircuitElementOptions;
 
 class Wire extends CircuitElement {
   private readonly wireStub: boolean;
@@ -33,21 +34,14 @@ class Wire extends CircuitElement {
   readonly lengthProperty: NumberProperty;
   updateListener: () => void;
 
-  /**
-   * @param {Vertex} startVertex
-   * @param {Vertex} endVertex
-   * @param {Property.<number>} resistivityProperty
-   * @param {Tandem} tandem
-   * @param {Object} [providedOptions]
-   */
-  constructor( startVertex: Vertex, endVertex: Vertex, resistivityProperty: NumberProperty, tandem: Tandem, providedOptions?: Partial<WireOptions> ) {
+  constructor( startVertex: Vertex, endVertex: Vertex, resistivityProperty: NumberProperty, tandem: Tandem, providedOptions?: WireOptions ) {
     assert && assert( typeof resistivityProperty !== 'number', 'property should not be a number' );
     assert && assert( !startVertex.isDisposed, 'vertex should not be disposed' );
     assert && assert( !endVertex.isDisposed, 'vertex should not be disposed' );
-    const options = merge( {
+    const options = optionize<WireOptions, WireSelfOptions, CircuitElementOptions>( {
       wireStub: false,
       isMetallic: true
-    }, providedOptions ) as WireOptions;
+    }, providedOptions );
     const chargePathLength = startVertex.positionProperty.get().distance( endVertex.positionProperty.get() );
     super( startVertex, endVertex, chargePathLength, tandem, options );
 
