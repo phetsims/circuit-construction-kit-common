@@ -13,16 +13,13 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import FixedCircuitElement, { FixedCircuitElementOptions } from './FixedCircuitElement.js';
 import Vertex from './Vertex.js';
 
-class SeriesAmmeter extends FixedCircuitElement {
-   readonly resistanceProperty: NumberProperty;
+type SeriesAmmeterSelfOptions = {};
+type SeriesAmmeterOptions = SeriesAmmeterSelfOptions & FixedCircuitElementOptions;
 
-  /**
-   * @param {Vertex} startVertex
-   * @param {Vertex} endVertex
-   * @param {Tandem} tandem
-   * @param {Object} [providedOptions]
-   */
-  constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: Partial<FixedCircuitElementOptions> ) {
+class SeriesAmmeter extends FixedCircuitElement {
+  readonly resistanceProperty: NumberProperty;
+
+  constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: SeriesAmmeterOptions ) {
     super( startVertex, endVertex, CCKCConstants.SERIES_AMMETER_LENGTH, tandem, providedOptions );
 
     // @public (read-only) {Property.<number>} the resistance in ohms.  A constant, but modeled as a property for

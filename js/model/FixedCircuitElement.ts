@@ -8,33 +8,31 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import merge from '../../../phet-core/js/merge.js';
+import optionize from '../../../phet-core/js/optionize.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitElement, { CircuitElementOptions } from './CircuitElement.js';
 import Vertex from './Vertex.js';
 
-type FixedCircuitElementOptions = {
-  numberOfDecimalPlaces: number
-} & CircuitElementOptions;
+type FixedCircuitElementSelfOptions = {
+  numberOfDecimalPlaces?: number
+};
+type FixedCircuitElementOptions = FixedCircuitElementSelfOptions & CircuitElementOptions;
 
 abstract class FixedCircuitElement extends CircuitElement {
   readonly numberOfDecimalPlaces: number;
   readonly distanceBetweenVertices: number;
   private readonly isFixedCircuitElement: boolean;
 
-  /**
-   * @param {Vertex} startVertex
-   * @param {Vertex} endVertex
-   * @param {number} chargePathLength - the distance the charges travel (in view coordinates), see CircuitElement.js
-   * @param {Tandem} tandem
-   * @param {Object} [providedOptions]
-   */
-  constructor( startVertex: Vertex, endVertex: Vertex, chargePathLength: number, tandem: Tandem, providedOptions?: Partial<FixedCircuitElementOptions> ) {
+  constructor( startVertex: Vertex,
+               endVertex: Vertex,
+               chargePathLength: number, // the distance the charges travel (in view coordinates), see CircuitElement.js
+               tandem: Tandem,
+               providedOptions?: FixedCircuitElementOptions ) {
 
-    const options = merge( {
+    const options = optionize<FixedCircuitElementOptions, FixedCircuitElementSelfOptions, CircuitElementOptions>( {
       numberOfDecimalPlaces: 1
-    }, providedOptions ) as FixedCircuitElementOptions;
+    }, providedOptions );
 
     // Super constructor
     super( startVertex, endVertex, chargePathLength, tandem, options );

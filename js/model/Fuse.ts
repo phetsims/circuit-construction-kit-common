@@ -10,7 +10,7 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Range from '../../../dot/js/Range.js';
-import merge from '../../../phet-core/js/merge.js';
+import optionize from '../../../phet-core/js/optionize.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -18,10 +18,12 @@ import Circuit from './Circuit.js';
 import FixedCircuitElement, { FixedCircuitElementOptions } from './FixedCircuitElement.js';
 import Vertex from './Vertex.js';
 
-type FuseOptions = {
-  fuseLength: number
-  currentRating: number
-} & FixedCircuitElementOptions;
+type FuseSelfOptions = {
+  fuseLength?: number
+  currentRating?: number
+};
+
+type FuseOptions = FuseSelfOptions & FixedCircuitElementOptions;
 
 class Fuse extends FixedCircuitElement {
   readonly currentRatingProperty: NumberProperty;
@@ -30,20 +32,13 @@ class Fuse extends FixedCircuitElement {
   private timeCurrentRatingExceeded: number;
   isRepairableProperty: BooleanProperty;
 
-  /**
-   * @param {Vertex} startVertex
-   * @param {Vertex} endVertex
-   * @param {Tandem} tandem
-   * @param {Object} [providedOptions]
-   */
-  constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: Partial<FuseOptions> ) {
-    const options = merge( {
-      resistance: CCKCConstants.MINIMUM_RESISTANCE,
+  constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: FuseOptions ) {
+    const options = optionize<FuseOptions, FuseSelfOptions, FixedCircuitElementOptions>( {
       fuseLength: CCKCConstants.RESISTOR_LENGTH, // Same length as a resistor
       currentRating: Fuse.DEFAULT_CURRENT_RATING, // Amps
       isCurrentReentrant: true, // Changing the current can trip a fuse, which changes the current
       numberOfDecimalPlaces: 1
-    }, providedOptions ) as FuseOptions;
+    }, providedOptions );
 
     super( startVertex, endVertex, options.fuseLength, tandem, options );
 

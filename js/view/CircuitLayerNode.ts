@@ -330,7 +330,7 @@ class CircuitLayerNode extends Node {
 
     initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Wire, this.wireLayer,
       new PhetioGroup( ( tandem: Tandem, circuitElement: CircuitElement ) => new WireNode( screenView, this, circuitElement as Wire, this.model.viewTypeProperty, tandem ),
-        () => [ this.circuit.acVoltageGroup.archetype ], {
+        () => [ this.circuit.wireGroup.archetype ], {
           phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
           tandem: tandem.createTandem( 'wireNodeGroup' ),
           supportsDynamicState: false
@@ -349,11 +349,18 @@ class CircuitLayerNode extends Node {
           tandem: circuit.includeLabElements ? tandem.createTandem( 'highVoltageBatteryNodeGroup' ) : Tandem.OPT_OUT,
           supportsDynamicState: false
         } ) );
-    initializeCircuitElementType( ( e: CircuitElement ) => e instanceof LightBulb, this.fixedCircuitElementLayer,
+    initializeCircuitElementType( ( e: CircuitElement ) => e instanceof LightBulb && !e.highResistance, this.fixedCircuitElementLayer,
       new PhetioGroup( ( tandem: Tandem, circuitElement: CircuitElement ) => new CCKCLightBulbNode( screenView, this, circuitElement as LightBulb, this.model.isValueDepictionEnabledProperty, this.model.viewTypeProperty, tandem ),
         () => [ this.circuit.lightBulbGroup.archetype ], {
           phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
           tandem: tandem.createTandem( 'lightBulbNodeGroup' ),
+          supportsDynamicState: false
+        } ) );
+    initializeCircuitElementType( ( e: CircuitElement ) => e instanceof LightBulb && e.highResistance, this.fixedCircuitElementLayer,
+      new PhetioGroup( ( tandem: Tandem, circuitElement: CircuitElement ) => new CCKCLightBulbNode( screenView, this, circuitElement as LightBulb, this.model.isValueDepictionEnabledProperty, this.model.viewTypeProperty, tandem ),
+        () => [ this.circuit.lightBulbGroup.archetype ], {
+          phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
+          tandem: tandem.createTandem( 'highResistanceLightBulbNodeGroup' ),
           supportsDynamicState: false
         } ) );
     initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Resistor, this.fixedCircuitElementLayer,
