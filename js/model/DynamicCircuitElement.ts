@@ -13,7 +13,8 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import FixedCircuitElement, { FixedCircuitElementOptions } from './FixedCircuitElement.js';
 import Vertex from './Vertex.js';
 
-type DynamicCircuitElementOptions = {} & FixedCircuitElementOptions;
+type DynamicCircuitElementSelfOptions = {};
+type DynamicCircuitElementOptions = DynamicCircuitElementSelfOptions & FixedCircuitElementOptions;
 
 // This class should not be instantiated directly, instead subclasses should provide implementations for getCircuitProperties
 // and the subclasses should be used instead.
@@ -23,15 +24,7 @@ abstract class DynamicCircuitElement extends FixedCircuitElement {
   readonly clearEmitter: Emitter<[]>;
   isClearableProperty: BooleanProperty;
 
-  /**
-   * @param {Vertex} startVertex
-   * @param {Vertex} endVertex
-   * @param {number} length
-   * @param {Tandem} tandem
-   * @param {Object} [providedOptions]
-   */
-
-  constructor( startVertex: Vertex, endVertex: Vertex, length: number, tandem: Tandem, providedOptions?: Partial<DynamicCircuitElementOptions> ) {
+  constructor( startVertex: Vertex, endVertex: Vertex, length: number, tandem: Tandem, providedOptions?: DynamicCircuitElementOptions ) {
     super( startVertex, endVertex, length, tandem, providedOptions );
 
     // @public {number} - value of the voltage drop set and read by the modified nodal analysis.  This is in addition
@@ -65,10 +58,6 @@ abstract class DynamicCircuitElement extends FixedCircuitElement {
     this.clearEmitter.emit();
   }
 
-  /**
-   * @public
-   * @override
-   */
   dispose() {
     this.clearEmitter.dispose();
     super.dispose();

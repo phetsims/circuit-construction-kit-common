@@ -8,22 +8,23 @@
 
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import validate from '../../../axon/js/validate.js';
-import merge from '../../../phet-core/js/merge.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import IOType from '../../../tandem/js/types/IOType.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitElement from './CircuitElement.js';
-import FixedCircuitElement from './FixedCircuitElement.js';
+import FixedCircuitElement, { FixedCircuitElementOptions } from './FixedCircuitElement.js';
 import ResistorType from './ResistorType.js';
 import Vertex from './Vertex.js';
 import EnumerationIO from '../../../tandem/js/types/EnumerationIO.js';
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import PowerDissipatedProperty from './PowerDissipatedProperty.js';
+import optionize from '../../../phet-core/js/optionize.js';
 
-type ResistorOptions = {
-  isMetallic: boolean,
-  resistorType: any
+type ResistorSelfOptions = {
+  isMetallic: boolean;
+  resistorType: any;
 };
+type ResistorOptions = ResistorSelfOptions & FixedCircuitElementOptions;
 
 class Resistor extends FixedCircuitElement {
 
@@ -45,12 +46,12 @@ class Resistor extends FixedCircuitElement {
    * @param {Tandem} tandem
    * @param {Object} [providedOptions]
    */
-  constructor( startVertex: Vertex, endVertex: Vertex, resistorType: any, tandem: Tandem, providedOptions?: Partial<ResistorOptions> ) {
-    const options = merge( {
+  constructor( startVertex: Vertex, endVertex: Vertex, resistorType: any, tandem: Tandem, providedOptions?: ResistorOptions ) {
+    const options = optionize<ResistorOptions, ResistorSelfOptions, FixedCircuitElementOptions>( {
       isFlammable: true, // All resistors are flammable except for the dog, which automatically disconnects at high current.
       phetioType: Resistor.ResistorIO,
       numberOfDecimalPlaces: resistorType === ResistorType.RESISTOR ? 1 : 0
-    }, providedOptions ) as ResistorOptions;
+    }, providedOptions );
 
     assert && assert( !options.hasOwnProperty( 'resistance' ), 'Resistance should be passed through resistorType' );
 

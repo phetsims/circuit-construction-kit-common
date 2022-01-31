@@ -20,6 +20,7 @@ import CircuitElementViewType from './CircuitElementViewType.js';
 import FixedCircuitElement, { FixedCircuitElementOptions } from './FixedCircuitElement.js';
 import Vertex from './Vertex.js';
 import PowerDissipatedProperty from './PowerDissipatedProperty.js';
+import optionize from '../../../phet-core/js/optionize.js';
 
 // constants
 
@@ -52,10 +53,12 @@ const SCHEMATIC_SAMPLE_POINTS = [
   new Vector2( 0.89, 1.474 )                                            // bottom right
 ];
 
-type LightBulbOptions = {
-  highResistance: boolean
-  real: boolean
-} & FixedCircuitElementOptions;
+type LightBulbSelfOptions = {
+  highResistance?: boolean;
+  real?: boolean;
+};
+
+type LightBulbOptions = LightBulbSelfOptions & FixedCircuitElementOptions;
 
 class LightBulb extends FixedCircuitElement {
   readonly real: boolean;
@@ -70,19 +73,15 @@ class LightBulb extends FixedCircuitElement {
   static vertexDelta: Vector2;
   private readonly powerDissipatedProperty: PowerDissipatedProperty;
 
-  /**
-   * @param {Vertex} startVertex - the side Vertex
-   * @param {Vertex} endVertex - the bottom Vertex
-   * @param {number} resistance - in ohms
-   * @param {Property.<CircuitElementViewType>} viewTypeProperty
-   * @param {Tandem} tandem
-   * @param {Object} [providedOptions]
-   */
-  constructor( startVertex: Vertex, endVertex: Vertex, resistance: number, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: Partial<LightBulbOptions> ) {
-    const filledOptions = merge( {
+  constructor(
+    startVertex: Vertex, // side
+    endVertex: Vertex, // bottom
+    resistance: number,
+    viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: LightBulbOptions ) {
+    const filledOptions = optionize<LightBulbOptions, LightBulbSelfOptions, FixedCircuitElementOptions>( {
       highResistance: false,
       real: false
-    }, providedOptions ) as LightBulbOptions;
+    }, providedOptions );
     assert && assert( !filledOptions.hasOwnProperty( 'numberOfDecimalPlaces' ), 'supplied by LightBulb' );
     filledOptions.numberOfDecimalPlaces = filledOptions.highResistance ? 0 : 1;
 
