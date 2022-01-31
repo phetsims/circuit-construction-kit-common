@@ -135,13 +135,13 @@ class Circuit {
     // @public {NumberProperty} - All wires share the same resistivity, which is defined by
     // resistance = resistivity * length. On the Lab Screen, there is a wire resistivity control
     this.wireResistivityProperty = new NumberProperty( CCKCConstants.DEFAULT_RESISTIVITY, {
-      tandem: this.includeLabElements ? tandem.parentTandem.createTandem( 'wireResistivityProperty' ) : Tandem.OPT_OUT
+      tandem: tandem.parentTandem.createTandem( 'wireResistivityProperty' )
     } );
 
     // @public {NumberProperty} - All batteries share a single internal resistance value, which can be edited with
     // a control on the Lab Screen
     this.sourceResistanceProperty = new NumberProperty( CCKCConstants.DEFAULT_BATTERY_RESISTANCE, {
-      tandem: this.includeLabElements ? tandem.parentTandem.createTandem( 'sourceResistanceProperty' ) : Tandem.OPT_OUT
+      tandem: tandem.parentTandem.createTandem( 'sourceResistanceProperty' )
     } );
 
     // @public {ObservableArrayDef.<CircuitElement>} - The different types of CircuitElement the circuit may

@@ -360,7 +360,7 @@ class CircuitLayerNode extends Node {
       new PhetioGroup( ( tandem: Tandem, circuitElement: CircuitElement ) => new CCKCLightBulbNode( screenView, this, circuitElement as LightBulb, this.model.isValueDepictionEnabledProperty, this.model.viewTypeProperty, tandem ),
         () => [ this.circuit.lightBulbGroup.archetype ], {
           phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
-          tandem: tandem.createTandem( 'highResistanceLightBulbNodeGroup' ),
+          tandem: circuit.includeLabElements ? tandem.createTandem( 'highResistanceLightBulbNodeGroup' ) : Tandem.OPT_OUT,
           supportsDynamicState: false
         } ) );
     initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Resistor, this.fixedCircuitElementLayer,

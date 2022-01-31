@@ -133,9 +133,10 @@ class SensorToolbox extends CCKCPanel {
       new Vertex( new Vector2( CCKCConstants.SERIES_AMMETER_LENGTH, 0 ) ),
       Tandem.OPTIONAL
     );
-    const seriesAmmeterNodeIcon = new SeriesAmmeterNode( null, null, seriesAmmeterIcon, tandem.createTandem( 'seriesAmmeterNodeIcon' ), {
-      isIcon: true
-    } );
+    const seriesAmmeterNodeIcon = new SeriesAmmeterNode( null, null, seriesAmmeterIcon,
+      circuit.includeLabElements ? tandem.createTandem( 'seriesAmmeterNodeIcon' ) : Tandem.OPT_OUT, {
+        isIcon: true
+      } );
     const createSeriesAmmeter = ( position: Vector2 ) => {
       const halfLength = CCKCConstants.SERIES_AMMETER_LENGTH / 2;
       const startVertex = circuit.vertexGroup.createNextElement( position.plusXY( -halfLength, 0 ) );
@@ -158,7 +159,7 @@ class SensorToolbox extends CCKCPanel {
         touchAreaExpansionTop: 15,
         touchAreaExpansionRight: 3,
         touchAreaExpansionBottom: 0,
-        tandem: tandem.createTandem( 'seriesAmmeterToolNode' )
+        tandem: circuit.includeLabElements ? tandem.createTandem( 'seriesAmmeterToolNode' ) : Tandem.OPT_OUT
       } );
     const allSeriesAmmetersInPlayArea = new DerivedProperty( [ circuit.circuitElements.lengthProperty ], ( ( length: number ) => {
       return circuit.circuitElements.count( circuitElement => circuitElement instanceof SeriesAmmeter ) === MAX_SERIES_AMMETERS;
