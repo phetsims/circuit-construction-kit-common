@@ -71,7 +71,6 @@ abstract class CircuitElement extends PhetioObject {
   readonly isEditableProperty: BooleanProperty;
   readonly isDisposableProperty: BooleanProperty;
   isValueDisplayableProperty: BooleanProperty;
-  isMovableProperty: BooleanProperty;
   labelTextProperty: StringProperty;
 
   constructor( startVertex: Vertex, endVertex: Vertex, chargePathLength: number, tandem: Tandem, providedOptions?: CircuitElementOptions ) {
@@ -218,11 +217,6 @@ abstract class CircuitElement extends PhetioObject {
       phetioDocumentation: 'Whether the CircuitElement\'s value can be displayed when the "values" checkbox is selected'
     } );
 
-    this.isMovableProperty = new BooleanProperty( true, {
-      tandem: tandem.createTandem( 'isMovableProperty' ),
-      phetioDocumentation: 'Whether the CircuitElement\'s can be moved by dragging itself or neighboring circuit elements'
-    } );
-
     this.labelTextProperty = new StringProperty( '', {
       tandem: tandem.createTandem( 'labelTextProperty' ),
       phetioDocumentation: 'Shows a custom text label next to the circuit element'
@@ -344,7 +338,6 @@ abstract class CircuitElement extends PhetioObject {
     this.isEditableProperty.dispose();
     this.isDisposableProperty.dispose();
     this.isValueDisplayableProperty.dispose();
-    this.isMovableProperty.dispose();
     this.startVertexProperty.dispose();
     this.endVertexProperty.dispose();
     this.labelTextProperty.dispose();
