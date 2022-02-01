@@ -766,7 +766,7 @@ class Circuit {
       const vertex = vertexArray[ j ];
 
       // Only translate vertices that are movable and not connected to the black box interface by FixedLength elements
-      if ( vertex.draggableProperty.get() && !this.hasFixedConnectionToBlackBoxInterfaceVertex( vertex ) ) {
+      if ( vertex.isDraggableProperty.get() && !this.hasFixedConnectionToBlackBoxInterfaceVertex( vertex ) ) {
         vertex.setPosition( vertex.positionProperty.value.plus( delta ) );
       }
     }
@@ -905,8 +905,8 @@ class Circuit {
       // Inherit non-defaults
 
       // If either vertex was non-draggable, the resultant vertex should be non-draggable
-      if ( !oldVertex.draggableProperty.value ) {
-        targetVertex.draggableProperty.value = oldVertex.draggableProperty.value;
+      if ( !oldVertex.isDraggableProperty.value ) {
+        targetVertex.isDraggableProperty.value = oldVertex.isDraggableProperty.value;
       }
 
       // If either vertex was non-cuttable, the resultant vertex should be non-cuttable

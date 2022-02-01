@@ -241,7 +241,7 @@ class VertexNode extends Node {
 
     // @private {function} When Vertex becomes undraggable, interrupt the input listener
     this.interruptionListener = this.setDraggable.bind( this );
-    vertex.draggableProperty.lazyLink( this.interruptionListener );
+    vertex.isDraggableProperty.lazyLink( this.interruptionListener );
 
     // Don't permit dragging by the scissors or highlight
     this.addInputListener( this.dragListener );
@@ -289,7 +289,7 @@ class VertexNode extends Node {
     this.dragListener.dispose();
     this.removeInputListener( this.dragListener );
 
-    vertex.draggableProperty.unlink( this.interruptionListener );
+    vertex.isDraggableProperty.unlink( this.interruptionListener );
     super.dispose();
   }
 
@@ -335,7 +335,7 @@ class VertexNode extends Node {
     selected && this.updateCutButtonPosition();
 
     // Show a disabled button as a cue that the vertex could be cuttable, but it isn't right now.
-    const isConnectedBlackBoxVertex = numberConnections === 1 && !this.vertex.draggableProperty.get();
+    const isConnectedBlackBoxVertex = numberConnections === 1 && !this.vertex.isDraggableProperty.get();
     this.cutButton.enabled = numberConnections > 1 || isConnectedBlackBoxVertex;
   }
 

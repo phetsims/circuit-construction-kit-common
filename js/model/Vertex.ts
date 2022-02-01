@@ -38,7 +38,7 @@ class Vertex extends PhetioObject {
   readonly unsnappedPositionProperty: Property<Vector2>;
   readonly voltageProperty: Property<number>;
   readonly isSelectedProperty: Property<boolean>;
-  readonly draggableProperty: Property<boolean>;
+  readonly isDraggableProperty: Property<boolean>;
   readonly interactiveProperty: Property<boolean>;
   readonly attachableProperty: Property<boolean>;
   readonly blackBoxInterfaceProperty: Property<boolean>;
@@ -109,8 +109,8 @@ class Vertex extends PhetioObject {
 
     // @public {BooleanProperty} - Vertices on the black box interface persist between build/investigate, and cannot be
     // moved/deleted
-    this.draggableProperty = new BooleanProperty( options.draggable, {
-      tandem: options.tandem && options.tandem.createTandem( 'draggableProperty' )
+    this.isDraggableProperty = new BooleanProperty( options.draggable, {
+      tandem: options.tandem && options.tandem.createTandem( 'isDraggableProperty' )
     } );
 
     // @public {BooleanProperty} - Black box interface vertices can be interactive (tap to select) without being
@@ -169,7 +169,7 @@ class Vertex extends PhetioObject {
     this.positionProperty.dispose();
     this.voltageProperty.dispose();
     this.isSelectedProperty.dispose();
-    this.draggableProperty.dispose();
+    this.isDraggableProperty.dispose();
     this.isCuttableProperty.dispose();
     this.labelTextProperty.dispose();
     super.dispose();
