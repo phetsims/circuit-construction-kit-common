@@ -901,6 +901,24 @@ class Circuit {
           circuitElement.connectedEmitter.emit();
         }
       } );
+
+      // Inherit non-defaults
+
+      // If either vertex was non-draggable, the resultant vertex should be non-draggable
+      if ( !oldVertex.draggableProperty.value ) {
+        targetVertex.draggableProperty.value = oldVertex.draggableProperty.value;
+      }
+
+      // If either vertex was non-cuttable, the resultant vertex should be non-cuttable
+      if ( !oldVertex.isCuttableProperty.value ) {
+        targetVertex.isCuttableProperty.value = oldVertex.isCuttableProperty.value;
+      }
+
+      // If the dragged vertex had no label, take the label of the replaced vertex
+      if ( targetVertex.labelTextProperty.value === '' ) {
+        targetVertex.labelTextProperty.value = oldVertex.labelTextProperty.value;
+      }
+
       this.vertexGroup.disposeElement( oldVertex );
       assert && assert( !oldVertex.positionProperty.hasListeners(), 'Removed vertex should not have any listeners' );
       this.markDirty();
