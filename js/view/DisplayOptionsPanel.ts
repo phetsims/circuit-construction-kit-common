@@ -37,7 +37,7 @@ const TEXT_OPTIONS = {
   fontSize: CCKCConstants.FONT_SIZE,
   maxWidth: 120
 };
-const BOX_ALIGNMENT = { xAlign: 'left' };
+const BOX_ALIGNMENT = { xAlign: 'left' as const };
 const SPACING = 10;
 const LEFT_MARGIN = 30;
 
