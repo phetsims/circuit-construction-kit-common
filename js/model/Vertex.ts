@@ -37,7 +37,7 @@ class Vertex extends PhetioObject {
   readonly positionProperty: Property<Vector2>;
   readonly unsnappedPositionProperty: Property<Vector2>;
   readonly voltageProperty: Property<number>;
-  readonly selectedProperty: Property<boolean>;
+  readonly isSelectedProperty: Property<boolean>;
   readonly draggableProperty: Property<boolean>;
   readonly interactiveProperty: Property<boolean>;
   readonly attachableProperty: Property<boolean>;
@@ -100,8 +100,8 @@ class Vertex extends PhetioObject {
     // @public {BooleanProperty} - after the user taps on a vertex it becomes selected, highlighting it and showing a
     // 'cut' button. Multiple vertices can be selected on an iPad, unlike CircuitElements, which can only have one
     // vertex selected at a time.
-    this.selectedProperty = new BooleanProperty( false, {
-      tandem: options.tandem && options.tandem.createTandem( 'selectedProperty' )
+    this.isSelectedProperty = new BooleanProperty( false, {
+      tandem: options.tandem && options.tandem.createTandem( 'isSelectedProperty' )
     } );
 
     // Some of the following properties overlap.  For example, if 'insideTrueBlackBox' is true, then the interactive
@@ -168,7 +168,7 @@ class Vertex extends PhetioObject {
   dispose() {
     this.positionProperty.dispose();
     this.voltageProperty.dispose();
-    this.selectedProperty.dispose();
+    this.isSelectedProperty.dispose();
     this.draggableProperty.dispose();
     this.isCuttableProperty.dispose();
     this.labelTextProperty.dispose();

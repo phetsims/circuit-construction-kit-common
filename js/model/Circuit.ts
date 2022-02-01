@@ -262,14 +262,14 @@ class Circuit {
         if ( selected ) {
           this.vertexGroup.forEach( v => {
             if ( v !== vertex ) {
-              v.selectedProperty.set( false );
+              v.isSelectedProperty.set( false );
             }
           } );
           this.selectedCircuitElementProperty.set( null );
         }
       };
       vertex.vertexSelectedPropertyListener = vertexSelectedPropertyListener;
-      vertex.selectedProperty.link( vertexSelectedPropertyListener );
+      vertex.isSelectedProperty.link( vertexSelectedPropertyListener );
     } );
 
     // Stop watching the vertex positions for updating the voltmeter and ammeter
@@ -282,7 +282,7 @@ class Circuit {
       // More sanity checks for the listeners
       assert && assert( !vertex.positionProperty.hasListener( emitCircuitChanged ), 'Listener should be removed' );
 
-      vertex.selectedProperty.unlink( vertex.vertexSelectedPropertyListener );
+      vertex.isSelectedProperty.unlink( vertex.vertexSelectedPropertyListener );
       vertex.vertexSelectedPropertyListener = null;
     } );
 
@@ -290,7 +290,7 @@ class Circuit {
     // highlighted, and shows additional controls at the bottom of the screen. When the sim launches or when the user
     // taps away from a selected circuit element, the selection is `null`.  Once this simulation is instrumented
     // for a11y, the focus property can be used to track this. Note that vertex selection is done via
-    // Vertex.selectedProperty.  These strategies can be unified when we work on a11y.
+    // Vertex.isSelectedProperty.  These strategies can be unified when we work on a11y.
     this.selectedCircuitElementProperty = new Property<CircuitElement | null>( null, {
       tandem: tandem.createTandem( 'selectedCircuitElementProperty' ),
       phetioType: Property.PropertyIO( NullableIO( ReferenceIO( CircuitElement.CircuitElementIO ) ) )
@@ -300,7 +300,7 @@ class Circuit {
 
       // When a circuit element is selected, deselect all the vertices
       if ( selectedCircuitElement ) {
-        this.vertexGroup.forEach( vertex => vertex.selectedProperty.set( false ) );
+        this.vertexGroup.forEach( vertex => vertex.isSelectedProperty.set( false ) );
       }
     } );
 
@@ -1302,7 +1302,7 @@ class Circuit {
 
   // Returns the selected Vertex or null if none is selected
   getSelectedVertex(): Vertex | null {
-    const selectedVertex = _.find( this.vertexGroup.getArray(), vertex => vertex.selectedProperty.get() );
+    const selectedVertex = _.find( this.vertexGroup.getArray(), vertex => vertex.isSelectedProperty.get() );
     return ( selectedVertex || null ) as ( Vertex | null );
   }
 
