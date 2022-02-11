@@ -49,7 +49,9 @@ class Fuse extends FixedCircuitElement {
     } );
 
     // @public {Property.<boolean>} - true if the fuse is tripped
-    this.isTrippedProperty = new BooleanProperty( false );
+    this.isTrippedProperty = new BooleanProperty( false, {
+      tandem: tandem.createTandem( 'isTrippedProperty' )
+    } );
 
     // @public {Property.<number>} the resistance in ohms.  Computed in step() as a function of isTrippedProperty and
     // currentRatingProperty.  Computed in step instead of as a DerivedProperty to avoid a re-entrant loop,
@@ -67,6 +69,8 @@ class Fuse extends FixedCircuitElement {
   dispose() {
     super.dispose();
     this.currentRatingProperty.dispose();
+    this.isRepairableProperty.dispose();
+    this.isTrippedProperty.dispose();
   }
 
   /**
