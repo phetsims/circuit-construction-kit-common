@@ -238,7 +238,8 @@ class ValueNode extends Panel {
       yMargin: 1,
       visiblePropertyOptions: {
         phetioReadOnly: true // controlled by the CircuitElement.isValueDisplayableProperty
-      }
+      },
+      pickable: false
     } );
 
     circuitElement.isValueDisplayableProperty.link( isValueDisplayable => {
