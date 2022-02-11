@@ -437,7 +437,10 @@ class CircuitLayerNode extends Node {
       content: cutIcon,
       xMargin: 10,
       yMargin: 10,
-      tandem: tandem.createTandem( 'cutButton' )
+      tandem: tandem.createTandem( 'cutButton' ),
+      enabledPropertyOptions: {
+        phetioReadOnly: true
+      }
     } );
     this.cutButton.addListener( () => {
       const selectedVertex = circuit.getSelectedVertex();
