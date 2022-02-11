@@ -44,7 +44,7 @@ class Vertex extends PhetioObject {
   readonly blackBoxInterfaceProperty: Property<boolean>;
   readonly insideTrueBlackBoxProperty: Property<boolean>;
   readonly relayerEmitter: Emitter<[]>;
-  private readonly vertexSelectedPropertyListener: null;
+  vertexSelectedPropertyListener: ( ( selected: boolean ) => void ) | null;
   isDragged: boolean;
   static VertexIO: IOType;
   outerWireStub: boolean;

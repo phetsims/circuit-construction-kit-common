@@ -107,10 +107,10 @@ class Circuit {
   readonly resistorGroup: PhetioGroup<Resistor>;
   readonly fuseGroup: PhetioGroup<Fuse>;
   readonly seriesAmmeterGroup: PhetioGroup<SeriesAmmeter>;
-  readonly highResistanceLightBulbGroup: PhetioGroup<LightBulb>
+  readonly highResistanceLightBulbGroup: PhetioGroup<LightBulb>;
   readonly capacitorGroup: PhetioGroup<Capacitor>;
   readonly inductorGroup: PhetioGroup<Inductor>;
-  readonly switchGroup: PhetioGroup<Switch>
+  readonly switchGroup: PhetioGroup<Switch>;
   readonly lightBulbGroup: PhetioGroup<LightBulb>;
   private readonly realLightBulbGroup: PhetioGroup<LightBulb>;
   private readonly groups: PhetioGroup<CircuitElement>[];
@@ -282,7 +282,7 @@ class Circuit {
       // More sanity checks for the listeners
       assert && assert( !vertex.positionProperty.hasListener( emitCircuitChanged ), 'Listener should be removed' );
 
-      vertex.isSelectedProperty.unlink( vertex.vertexSelectedPropertyListener );
+      vertex.isSelectedProperty.unlink( vertex.vertexSelectedPropertyListener! );
       vertex.vertexSelectedPropertyListener = null;
     } );
 
@@ -346,13 +346,13 @@ class Circuit {
 
     // Create vertices for the API validated/baseline circuit elements.  These are not present in the vertexGroup and
     // hence not transmitted in the state.
-    const createVertices = ( length: number ) => {
+    const createVertices: ( l: number ) => [ Vertex, Vertex ] = ( length: number ) => {
       const startPosition = new Vector2( -1000, 0 );
       return [ new Vertex( startPosition ), new Vertex( startPosition.plusXY( length, 0 ) ) ];
     };
 
     // @public {PhetioGroup}
-    this.wireGroup = new PhetioGroup( ( tandem, startVertex, endVertex ) => {
+    this.wireGroup = new PhetioGroup<Wire, Vertex, Vertex>( ( tandem, startVertex, endVertex ) => {
       return new Wire( startVertex, endVertex, this.wireResistivityProperty, tandem );
     }, () => createVertices( WIRE_LENGTH ), {
       phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
@@ -360,7 +360,7 @@ class Circuit {
     } );
 
     // @public {PhetioGroup}
-    this.batteryGroup = new PhetioGroup( ( tandem, startVertex, endVertex ) => {
+    this.batteryGroup = new PhetioGroup<Battery, Vertex, Vertex>( ( tandem, startVertex, endVertex ) => {
       return new Battery( startVertex, endVertex, this.sourceResistanceProperty, 'normal',
         tandem );
     }, () => createVertices( BATTERY_LENGTH ), {
@@ -390,10 +390,12 @@ class Circuit {
     } );
 
     // @public {PhetioGroup}
-    this.resistorGroup = new PhetioGroup(
+    this.resistorGroup = new PhetioGroup<Resistor, Vertex, Vertex, ResistorType>(
       ( tandem, startVertex, endVertex, resistorType ) => resistorType === ResistorType.DOG ?
                                                           new Dog( startVertex, endVertex, tandem ) :
                                                           new Resistor( startVertex, endVertex, resistorType, tandem ),
+
+      // @ts-ignore
       () => {
         const argumentArray: any[] = createVertices( ResistorType.RESISTOR.length );
         argumentArray.push( ResistorType.RESISTOR );
@@ -474,19 +476,33 @@ class Circuit {
         tandem: this.includeLabElements ? tandem.createTandem( 'realLightBulbGroup' ) : Tandem.OPT_OUT
       } );
 
+    // @ts-ignore
     this.groups = [
+      // @ts-ignore
       this.wireGroup,
+      // @ts-ignore
       this.batteryGroup,
+      // @ts-ignore
       this.highVoltageBatteryGroup,
+      // @ts-ignore
       this.acVoltageGroup,
+      // @ts-ignore
       this.resistorGroup,
+      // @ts-ignore
       this.fuseGroup,
+      // @ts-ignore
       this.capacitorGroup,
+      // @ts-ignore
       this.inductorGroup,
+      // @ts-ignore
       this.switchGroup,
+      // @ts-ignore
       this.lightBulbGroup,
+      // @ts-ignore
       this.realLightBulbGroup,
+      // @ts-ignore
       this.highResistanceLightBulbGroup,
+      // @ts-ignore
       this.seriesAmmeterGroup
     ];
     this.dirty = false;
