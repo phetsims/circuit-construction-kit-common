@@ -82,21 +82,22 @@ const createSingletonAdapterProperty = <T extends CircuitElement>(
   initialValue: number,
   CircuitElementType: GConstructor<T>,
   circuit: Circuit,
-  getter: ( circuitElement: T ) => Property<number> ) => {
+  getter: ( circuitElement: T ) => Property<number>,
+  predicate: ( element: T ) => boolean = () => true ) => {
 
   // Cannot use DynamicProperty.derivedProperty since the selected circuit element isn't always the right subtype of CircuitElement
   const singletonAdapterProperty = new Property( initialValue, {} );
-  singletonAdapterProperty.link( fuseRating => {
+  singletonAdapterProperty.link( value => {
     if ( circuit.selectedCircuitElementProperty.value && circuit.selectedCircuitElementProperty.value instanceof CircuitElementType ) {
-      getter( circuit.selectedCircuitElementProperty.value ).value = fuseRating;
+      getter( circuit.selectedCircuitElementProperty.value ).value = value;
     }
   } );
 
   // When the value in the model changes, say from PhET-iO, we propagate it back to the control
   const modelListener = ( currentRating: number ) => singletonAdapterProperty.set( currentRating );
   circuit.selectedCircuitElementProperty.link( ( newCircuitElement, oldCircuitElement ) => {
-    oldCircuitElement instanceof CircuitElementType && getter( oldCircuitElement ).unlink( modelListener );
-    newCircuitElement instanceof CircuitElementType && getter( newCircuitElement ).link( modelListener );
+    oldCircuitElement instanceof CircuitElementType && predicate( oldCircuitElement ) && getter( oldCircuitElement ).unlink( modelListener );
+    newCircuitElement instanceof CircuitElementType && predicate( newCircuitElement ) && getter( newCircuitElement ).link( modelListener );
   } );
   return singletonAdapterProperty;
 };
@@ -174,7 +175,11 @@ class CircuitElementEditContainerNode extends Node {
 
     const createResistanceNumberControl = ( tandemName: string, CircuitElementType: GConstructor<LightBulb | Resistor> ) => new CircuitElementNumberControl( resistanceString,
       StringUtils.fillIn( resistanceOhmsValuePatternString, { resistance: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
-      createSingletonAdapterProperty( ResistorType.RESISTOR.defaultResistance, CircuitElementType, circuit, ( c: LightBulb | Resistor ) => c.resistanceProperty ),
+      createSingletonAdapterProperty( ResistorType.RESISTOR.defaultResistance, CircuitElementType, circuit, ( c: LightBulb | Resistor ) => c.resistanceProperty,
+        ( c: LightBulb | Resistor ) =>
+          ( c instanceof LightBulb && !c.highResistance ) ||
+          ( c instanceof Resistor && c.resistorType !== ResistorType.HIGH_RESISTANCE_RESISTOR )
+      ),
       ResistorType.RESISTOR.range, circuit, Resistor.RESISTANCE_DECIMAL_PLACES, {
         tandem: tandem.createTandem( tandemName ),
         delta: NORMAL_TWEAKER_DELTA,
@@ -185,7 +190,11 @@ class CircuitElementEditContainerNode extends Node {
       } );
     const createHighResistanceNumberControl = ( tandemName: string, CircuitElementType: GConstructor<LightBulb | Resistor> ) => new CircuitElementNumberControl( resistanceString,
       StringUtils.fillIn( resistanceOhmsValuePatternString, { resistance: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
-      createSingletonAdapterProperty( ResistorType.HIGH_RESISTANCE_RESISTOR.defaultResistance, CircuitElementType, circuit, ( c: LightBulb | Resistor ) => c.resistanceProperty ),
+      createSingletonAdapterProperty( ResistorType.HIGH_RESISTANCE_RESISTOR.defaultResistance, CircuitElementType, circuit, ( c: LightBulb | Resistor ) => c.resistanceProperty,
+        ( c: LightBulb | Resistor ) =>
+          ( c instanceof LightBulb && c.highResistance ) ||
+          ( c instanceof Resistor && c.resistorType === ResistorType.HIGH_RESISTANCE_RESISTOR )
+      ),
       ResistorType.HIGH_RESISTANCE_RESISTOR.range, circuit, Resistor.HIGH_RESISTANCE_DECIMAL_PLACES, {
         tandem: circuit.includeLabElements ? tandem.createTandem( tandemName ) : Tandem.OPT_OUT,
         delta: HIGH_TWEAKER_DELTA,
@@ -202,7 +211,7 @@ class CircuitElementEditContainerNode extends Node {
 
     const voltageNumberControl = new CircuitElementNumberControl( voltageString,
       StringUtils.fillIn( voltageVoltsValuePatternString, { voltage: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
-      createSingletonAdapterProperty( Battery.VOLTAGE_DEFAULT, Battery, circuit, ( c: Battery ) => c.voltageProperty ),
+      createSingletonAdapterProperty( Battery.VOLTAGE_DEFAULT, Battery, circuit, ( c: Battery ) => c.voltageProperty, ( c: Battery ) => c.batteryType === 'normal' ),
       Battery.VOLTAGE_RANGE,
       circuit,
       Battery.VOLTAGE_DECIMAL_PLACES, {
@@ -211,12 +220,11 @@ class CircuitElementEditContainerNode extends Node {
         sliderOptions: { // For dragging the slider knob
           constrainValue: ( value: number ) => Utils.roundToInterval( value, NORMAL_SLIDER_KNOB_DELTA )
         },
-        numberDisplayOptions: { decimalPlaces: Battery.VOLTAGE_DECIMAL_PLACES },
-        phetioState: false
+        numberDisplayOptions: { decimalPlaces: Battery.VOLTAGE_DECIMAL_PLACES }
       } );
     const highVoltageNumberControl = new CircuitElementNumberControl( voltageString,
       StringUtils.fillIn( voltageVoltsValuePatternString, { voltage: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
-      createSingletonAdapterProperty( Battery.HIGH_VOLTAGE_DEFAULT, Battery, circuit, ( c: Battery ) => c.voltageProperty ),
+      createSingletonAdapterProperty( Battery.HIGH_VOLTAGE_DEFAULT, Battery, circuit, ( c: Battery ) => c.voltageProperty, ( c: Battery ) => c.batteryType === 'high-voltage' ),
       Battery.HIGH_VOLTAGE_RANGE,
       circuit,
       Battery.HIGH_VOLTAGE_DECIMAL_PLACES, {
@@ -225,8 +233,7 @@ class CircuitElementEditContainerNode extends Node {
         sliderOptions: { // For dragging the slider knob
           constrainValue: ( value: number ) => Utils.roundToInterval( value, HIGH_SLIDER_KNOB_DELTA )
         },
-        numberDisplayOptions: { decimalPlaces: Battery.HIGH_VOLTAGE_DECIMAL_PLACES },
-        phetioState: false
+        numberDisplayOptions: { decimalPlaces: Battery.HIGH_VOLTAGE_DECIMAL_PLACES }
       } );
 
     const phaseShiftControl = new PhaseShiftControl( createSingletonAdapterProperty( 0, ACVoltage, circuit, ( c: ACVoltage ) => c.phaseProperty ), circuit, {
