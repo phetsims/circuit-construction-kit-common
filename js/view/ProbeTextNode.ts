@@ -50,9 +50,11 @@ class ProbeTextNode extends VBox {
       fill: Color.WHITE
     } );
 
-    textProperty.link( text => {
-      readout.setText( text );
-      if ( text === MathSymbols.NO_VALUE ) {
+    textProperty.link( text => readout.setText( text ) );
+
+    // Text bounds is not updated eagerly, so wait for the bounds to change for layout
+    readout.boundsProperty.link( bounds => {
+      if ( readout.text === MathSymbols.NO_VALUE ) {
 
         // --- is centered
         readout.centerX = textBox.centerX;
