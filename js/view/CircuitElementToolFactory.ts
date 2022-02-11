@@ -285,7 +285,7 @@ class CircuitElementToolFactory {
       circuitElement => circuitElement instanceof LightBulb && !circuitElement.highResistance,
       ( position: Vector2 ) => {
         const vertexPair = LightBulb.createVertexPair( position, this.circuit );
-        return lightBulbGroup.createNextElement( vertexPair.startVertex, vertexPair.endVertex, CCKCConstants.DEFAULT_RESISTANCE );
+        return lightBulbGroup.createNextElement( vertexPair.startVertex, vertexPair.endVertex );
       }, {
         tandem: this.parentTandem.createTandem( tandemName ),
         additionalProperty: addRealBulbsProperty || new BooleanProperty( true ),

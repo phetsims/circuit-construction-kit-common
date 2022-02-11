@@ -92,7 +92,7 @@ class Circuit {
   readonly circuitChangedEmitter: Emitter<[]>;
   readonly vertexDroppedEmitter: Emitter<[ Vertex ]>;
   readonly componentEditedEmitter: Emitter<[]>;
-  readonly vertexGroup: PhetioGroup<Vertex>;
+  readonly vertexGroup: PhetioGroup<Vertex, [ Vector2 ]>;
   readonly selectedCircuitElementProperty: Property<CircuitElement | null>;
 
   // whether physical characteristics have changed and warrant solving for currents and voltages
@@ -100,19 +100,19 @@ class Circuit {
 
   // Actions that will be invoked during the step function
   private readonly stepActions: ( () => void )[];
-  readonly wireGroup: PhetioGroup<Wire>;
-  readonly batteryGroup: PhetioGroup<Battery>;
-  readonly highVoltageBatteryGroup: PhetioGroup<Battery>;
-  readonly acVoltageGroup: PhetioGroup<ACVoltage>;
-  readonly resistorGroup: PhetioGroup<Resistor>;
-  readonly fuseGroup: PhetioGroup<Fuse>;
-  readonly seriesAmmeterGroup: PhetioGroup<SeriesAmmeter>;
-  readonly highResistanceLightBulbGroup: PhetioGroup<LightBulb>;
-  readonly capacitorGroup: PhetioGroup<Capacitor>;
-  readonly inductorGroup: PhetioGroup<Inductor>;
-  readonly switchGroup: PhetioGroup<Switch>;
-  readonly lightBulbGroup: PhetioGroup<LightBulb>;
-  private readonly realLightBulbGroup: PhetioGroup<LightBulb>;
+  readonly wireGroup: PhetioGroup<Wire, [ Vertex, Vertex ]>;
+  readonly batteryGroup: PhetioGroup<Battery, [ Vertex, Vertex ]>;
+  readonly highVoltageBatteryGroup: PhetioGroup<Battery, [ Vertex, Vertex ]>;
+  readonly acVoltageGroup: PhetioGroup<ACVoltage, [ Vertex, Vertex ]>;
+  readonly resistorGroup: PhetioGroup<Resistor, [ Vertex, Vertex, ResistorType ]>;
+  readonly fuseGroup: PhetioGroup<Fuse, [ Vertex, Vertex ]>;
+  readonly seriesAmmeterGroup: PhetioGroup<SeriesAmmeter, [ Vertex, Vertex ]>;
+  readonly highResistanceLightBulbGroup: PhetioGroup<LightBulb, [ Vertex, Vertex ]>;
+  readonly capacitorGroup: PhetioGroup<Capacitor, [ Vertex, Vertex ]>;
+  readonly inductorGroup: PhetioGroup<Inductor, [ Vertex, Vertex ]>;
+  readonly switchGroup: PhetioGroup<Switch, [ Vertex, Vertex ]>;
+  readonly lightBulbGroup: PhetioGroup<LightBulb, [ Vertex, Vertex ]>;
+  private readonly realLightBulbGroup: PhetioGroup<LightBulb, [ Vertex, Vertex ]>;
   private readonly groups: PhetioGroup<CircuitElement>[];
   readonly includeACElements: boolean;
   readonly includeLabElements: boolean;
@@ -352,7 +352,7 @@ class Circuit {
     };
 
     // @public {PhetioGroup}
-    this.wireGroup = new PhetioGroup<Wire, Vertex, Vertex>( ( tandem, startVertex, endVertex ) => {
+    this.wireGroup = new PhetioGroup( ( tandem, startVertex, endVertex ) => {
       return new Wire( startVertex, endVertex, this.wireResistivityProperty, tandem );
     }, () => createVertices( WIRE_LENGTH ), {
       phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
@@ -360,7 +360,7 @@ class Circuit {
     } );
 
     // @public {PhetioGroup}
-    this.batteryGroup = new PhetioGroup<Battery, Vertex, Vertex>( ( tandem, startVertex, endVertex ) => {
+    this.batteryGroup = new PhetioGroup( ( tandem, startVertex, endVertex ) => {
       return new Battery( startVertex, endVertex, this.sourceResistanceProperty, 'normal',
         tandem );
     }, () => createVertices( BATTERY_LENGTH ), {
@@ -390,7 +390,7 @@ class Circuit {
     } );
 
     // @public {PhetioGroup}
-    this.resistorGroup = new PhetioGroup<Resistor, Vertex, Vertex, ResistorType>(
+    this.resistorGroup = new PhetioGroup(
       ( tandem, startVertex, endVertex, resistorType ) => resistorType === ResistorType.DOG ?
                                                           new Dog( startVertex, endVertex, tandem ) :
                                                           new Resistor( startVertex, endVertex, resistorType, tandem ),
@@ -521,7 +521,7 @@ class Circuit {
    * @param {number} length - the distance between the vertices
    * @returns {Vertex[]} with 2 elements
    */
-  createVertexPairArray( position: Vector2, length: number ) {
+  createVertexPairArray( position: Vector2, length: number ): [ Vertex, Vertex ] {
     return [
       this.createVertex( position.plusXY( -length / 2, 0 ) ),
       this.createVertex( position.plusXY( length / 2, 0 ) )
