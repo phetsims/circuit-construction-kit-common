@@ -130,7 +130,7 @@ class DisplayOptionsPanel extends CCKCPanel {
       } ),
       showLabelsCheckbox,
       showValuesCheckbox,
-      ...( showStopwatchCheckbox ? [ stopwatchCheckbox ] : [] )
+      ...( showStopwatchCheckbox ? [ stopwatchCheckbox! ] : [] )
     ];
 
     super( alignGroup.createBox( new VBox( {
