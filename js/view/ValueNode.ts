@@ -242,15 +242,11 @@ class ValueNode extends Panel {
       pickable: false
     } );
 
-    circuitElement.isValueDisplayableProperty.link( isValueDisplayable => {
-      this.visible = isValueDisplayable;
-    } );
-
     const matrix = Matrix3.identity();
 
     update = () => {
 
-      readoutValueNode.visible = showValuesProperty.value;
+      readoutValueNode.visible = showValuesProperty.value && circuitElement.isValueDisplayableProperty.value;
 
       const customLabelText = circuitElement.labelTextProperty.value;
       customLabelNode.text = customLabelText;
@@ -267,6 +263,7 @@ class ValueNode extends Panel {
     };
 
     circuitElement.vertexMovedEmitter.addListener( update );
+    circuitElement.isValueDisplayableProperty.link( update );
 
     update();
     showValuesProperty.link( update );
