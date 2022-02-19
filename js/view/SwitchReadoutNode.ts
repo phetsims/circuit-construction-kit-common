@@ -29,7 +29,10 @@ class SwitchReadoutNode extends Node {
       new Text( string, {
         fontSize: 24,
         maxWidth: MAX_TEXT_WIDTH,
-        tandem: tandem
+        tandem: tandem,
+        visiblePropertyOptions: {
+          phetioReadOnly: true
+        }
       } );
     const closedText = createText( theSwitchIsClosedString, tandem.createTandem( 'closedTextNode' ) );
     const openText = createText( theSwitchIsOpenString, tandem.createTandem( 'openTextNode' ) );
