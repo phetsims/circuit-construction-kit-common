@@ -234,7 +234,7 @@ class AmmeterNode extends Node {
    * @param {SceneryEvent} event
    * @public
    */
-  startDrag( event: SceneryEvent ) {
+  startDrag( event: SceneryEvent<MouseEvent | TouchEvent | PointerEvent> ) {
     this.dragHandler && this.dragHandler.press( event );
   }
 }

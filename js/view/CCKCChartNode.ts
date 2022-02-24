@@ -26,7 +26,7 @@ import Orientation from '../../../phet-core/js/Orientation.js';
 import MagnifyingGlassZoomButtonGroup from '../../../scenery-phet/js/MagnifyingGlassZoomButtonGroup.js';
 import ShadedRectangle from '../../../scenery-phet/js/ShadedRectangle.js';
 import WireNode from '../../../scenery-phet/js/WireNode.js';
-import { DragListener, Node, NodeOptions, NodeProperty, SceneryEvent, Text } from '../../../scenery/js/imports.js';
+import { DragListener, Node, NodeOptions, NodeProperty, PressListenerEvent, Text } from '../../../scenery/js/imports.js';
 import ButtonNode from '../../../sun/js/buttons/ButtonNode.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -422,7 +422,7 @@ class CCKCChartNode extends Node {
    * @param {SceneryEvent} event
    * @public
    */
-  startDrag( event: SceneryEvent ) {
+  startDrag( event: PressListenerEvent ) {
 
     // Forward the event to the drag listener
     this.backgroundDragListener && this.backgroundDragListener.press( event );
