@@ -442,10 +442,13 @@ class CCKCChartNode extends Node {
     this.meter.visibleProperty.value = false;
     this.meter.draggingProbesWithBodyProperty.value = true;
 
+    const dragBoundsProperty = new Property<Bounds2 | null>( null );
+
     const dragListener = new DragListener( {
       allowTouchSnag: false, // allow the zoom buttons to be pressed with the mouse
       positionProperty: this.meter.bodyPositionProperty,
       useParentOffset: true,
+      dragBoundsProperty: dragBoundsProperty,
 
       // adds support for zoomed coordinate frame, see
       // https://github.com/phetsims/circuit-construction-kit-common/issues/301
@@ -483,8 +486,8 @@ class CCKCChartNode extends Node {
     const update = () => {
       const bounds = screenView.visibleBoundsProperty.value.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
       const globalBounds = screenView.localToGlobalBounds( bounds );
-      dragListener.dragBounds = this.globalToParentBounds( globalBounds );
-      this.meter.bodyPositionProperty.value = dragListener.dragBounds.closestPointTo( this.meter.bodyPositionProperty.value );
+      dragBoundsProperty.value = this.globalToParentBounds( globalBounds );
+      this.meter.bodyPositionProperty.value = dragBoundsProperty.value.closestPointTo( this.meter.bodyPositionProperty.value );
     };
     screenView.visibleBoundsProperty.link( update );
 

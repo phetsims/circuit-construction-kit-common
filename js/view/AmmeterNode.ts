@@ -169,11 +169,16 @@ class AmmeterNode extends Node {
       ammeter.visibleProperty.linkAttribute( this, 'visible' );
       ammeter.visibleProperty.link( alignProbeToBody );
 
+      const erodedDragBoundsProperty = new DerivedProperty( [ options.visibleBoundsProperty! ], visibleBounds => {
+        return visibleBounds.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
+      } );
+
       const probeDragHandler = new DragListener( {
         positionProperty: ammeter.probePositionProperty,
         useParentOffset: true,
         tandem: tandem.createTandem( 'probeDragHandler' ),
-        start: () => this.moveToFront()
+        start: () => this.moveToFront(),
+        dragBoundsProperty: erodedDragBoundsProperty
       } );
 
       // @public (read-only) {MovableDragHandler} - so events can be forwarded from the toolbox
@@ -191,13 +196,12 @@ class AmmeterNode extends Node {
 
         // adds support for zoomed coordinate frame, see
         // https://github.com/phetsims/circuit-construction-kit-common/issues/301
-        targetNode: this
+        targetNode: this,
+
+        dragBoundsProperty: erodedDragBoundsProperty
       } );
       bodyNode.addInputListener( this.dragHandler );
-      options.visibleBoundsProperty!.link( visibleBounds => {
-        const erodedDragBounds = visibleBounds.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
-        this.dragHandler!.dragBounds = erodedDragBounds;
-        probeDragHandler.dragBounds = erodedDragBounds;
+      erodedDragBoundsProperty.link( erodedDragBounds => {
         ammeter.bodyPositionProperty.value = erodedDragBounds.closestPointTo( ammeter.bodyPositionProperty.value );
         ammeter.probePositionProperty.value = erodedDragBounds.closestPointTo( ammeter.probePositionProperty.value );
       } );

@@ -243,10 +243,10 @@ class VoltmeterNode extends Node {
         const probeDragListener = new DragListener( {
           positionProperty: positionProperty,
           start: () => this.moveToFront(),
-          tandem: tandem.createTandem( 'probeDragListener' )
-        } );
-        providedOptions.visibleBoundsProperty.link( ( visibleBounds: Bounds2 ) => {
-          probeDragListener.dragBounds = visibleBounds.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
+          tandem: tandem.createTandem( 'probeDragListener' ),
+          dragBoundsProperty: new DerivedProperty( [ providedOptions.visibleBoundsProperty ], ( visibleBounds: Bounds2 ) => {
+            return visibleBounds.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
+          } )
         } );
         return probeDragListener;
       };
@@ -257,12 +257,17 @@ class VoltmeterNode extends Node {
       this.redProbeNode.addInputListener( redProbeDragListener );
       this.blackProbeNode.addInputListener( blackProbeDragListener );
 
+      const erodedBoundsProperty = new DerivedProperty( [ providedOptions.visibleBoundsProperty ], ( visibleBounds: Bounds2 ) => {
+        return visibleBounds.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
+      } );
+
       // @public (read-only) {MovableDragHandler} - so events can be forwarded from the toolbox
       this.dragHandler = new DragListener( {
 
         positionProperty: voltmeter.bodyPositionProperty,
         tandem: tandem.createTandem( 'dragHandler' ),
         useParentOffset: true,
+        dragBoundsProperty: erodedBoundsProperty,
         start: ( event: any ) => {
           this.moveToFront();
         },
@@ -277,10 +282,7 @@ class VoltmeterNode extends Node {
         // https://github.com/phetsims/circuit-construction-kit-common/issues/301
         targetNode: this
       } );
-      providedOptions.visibleBoundsProperty.link( ( visibleBounds: Bounds2 ) => {
-        const erodedBounds = visibleBounds.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
-        this.dragHandler!.dragBounds = erodedBounds;
-
+      erodedBoundsProperty.link( ( erodedBounds: Bounds2 ) => {
         voltmeter.redProbePositionProperty.set( erodedBounds.closestPointTo( voltmeter.redProbePositionProperty.value ) );
         voltmeter.blackProbePositionProperty.set( erodedBounds.closestPointTo( voltmeter.blackProbePositionProperty.value ) );
         voltmeter.bodyPositionProperty.set( erodedBounds.closestPointTo( voltmeter.bodyPositionProperty.value ) );
