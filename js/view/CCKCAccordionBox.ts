@@ -9,11 +9,12 @@
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import merge from '../../../phet-core/js/merge.js';
+import optionize from '../../../phet-core/js/optionize.js';
 import { HBox } from '../../../scenery/js/imports.js';
 import { Node } from '../../../scenery/js/imports.js';
 import { HStrut } from '../../../scenery/js/imports.js';
 import { Text } from '../../../scenery/js/imports.js';
-import AccordionBox from '../../../sun/js/AccordionBox.js';
+import AccordionBox, { AccordionBoxOptions } from '../../../sun/js/AccordionBox.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -21,21 +22,25 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 // constants
 const BUTTON_MARGIN = 8;
 
-type CCKCAccordionBoxOptions = {
-  strutWidth: number
-} & AccordionBoxOptions;
+type SelfOptions = {
+  strutWidth?: number
+};
+type CCKCAccordionBoxOptions = SelfOptions & AccordionBoxOptions;
 
 class CCKCAccordionBox extends AccordionBox {
 
   /**
-   * @param {Node} content - the content to display in the accordion box when it is expanded
-   * @param {string} title - the text to display in the title bar
-   * @param {Tandem} tandem
-   * @param {Object} [providedOptions]
+   * @param content - the content to display in the accordion box when it is expanded
+   * @param title - the text to display in the title bar
+   * @param tandem
+   * @param [providedOptions]
    */
-  constructor( content: Node, title: string, tandem: Tandem, providedOptions?: Partial<CCKCAccordionBoxOptions> ) {
+  constructor( content: Node, title: string, tandem: Tandem, providedOptions?: CCKCAccordionBoxOptions ) {
 
-    providedOptions = providedOptions || {};
+    const options = optionize<CCKCAccordionBoxOptions, SelfOptions, AccordionBoxOptions>( {
+      strutWidth: 10
+    }, providedOptions );
+
     super( content, merge( {
       fill: CCKCConstants.PANEL_COLOR,
       cornerRadius: CCKCConstants.CORNER_RADIUS,
@@ -58,7 +63,7 @@ class CCKCAccordionBox extends AccordionBox {
       },
       titleNode: new HBox( {
         children: [
-          new HStrut( providedOptions.strutWidth || 10 ),
+          new HStrut( options.strutWidth ),
           new Text( title, {
             fontSize: CCKCConstants.FONT_SIZE,
             maxWidth: 175,
@@ -67,7 +72,7 @@ class CCKCAccordionBox extends AccordionBox {
         ]
       } ),
       tandem: tandem
-    }, providedOptions ) );
+    }, options ) );
   }
 }
 

@@ -7,10 +7,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import merge from '../../../phet-core/js/merge.js';
-import { VBox } from '../../../scenery/js/imports.js';
-import { Text } from '../../../scenery/js/imports.js';
-import { VStrut } from '../../../scenery/js/imports.js';
+import { AlignGroup, Text, VBox, VStrut } from '../../../scenery/js/imports.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -19,13 +16,13 @@ import CCKCCheckbox from './CCKCCheckbox.js';
 import SourceResistanceControl from './SourceResistanceControl.js';
 import WireResistivityControl from './WireResistivityControl.js';
 import Circuit from '../model/Circuit.js';
-import { AlignGroup } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
+import optionize from '../../../phet-core/js/optionize.js';
 
-type AdvancedAccordionBoxImplementationOptions = {
-  showRealBulbsCheckbox: boolean
+type SelfOptions = {
+  showRealBulbsCheckbox?: boolean
 };
-type AdvancedAccordionBoxOptions = AdvancedAccordionBoxImplementationOptions & CCKCAccordionBoxOptions;
+type AdvancedAccordionBoxOptions = SelfOptions & CCKCAccordionBoxOptions;
 
 class AdvancedAccordionBox extends CCKCAccordionBox {
 
@@ -36,11 +33,11 @@ class AdvancedAccordionBox extends CCKCAccordionBox {
    * @param {Tandem} tandem
    * @param {Object} [providedOptions]
    */
-  constructor( circuit: Circuit, alignGroup: AlignGroup, batteryResistanceControlString: string, tandem: Tandem, providedOptions?: Partial<AdvancedAccordionBoxOptions> ) {
+  constructor( circuit: Circuit, alignGroup: AlignGroup, batteryResistanceControlString: string, tandem: Tandem, providedOptions?: AdvancedAccordionBoxOptions ) {
 
-    const options = merge( {
+    const options = optionize<AdvancedAccordionBoxOptions, SelfOptions, CCKCAccordionBox>( {
       showRealBulbsCheckbox: true
-    }, providedOptions ) as Required<AdvancedAccordionBoxImplementationOptions>;
+    }, providedOptions );
 
     const titleConfig = {
       fontSize: CCKCConstants.FONT_SIZE,
@@ -70,7 +67,6 @@ class AdvancedAccordionBox extends CCKCAccordionBox {
       titleXSpacing: 0
     } );
 
-    // @ts-ignore TODO: The AccordionBoxOptions in phet-types isn't compatible with Node's NodeOptions
     this.mutate( options );
   }
 }
