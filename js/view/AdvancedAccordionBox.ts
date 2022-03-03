@@ -1,4 +1,4 @@
-// Copyright 2020-2021, University of Colorado Boulder
+// Copyright 2020-2022, University of Colorado Boulder
 
 /**
  * Advanced control panel that appears in "Lab" screens which allows the user to adjust the resistivity of wires
