@@ -8,7 +8,7 @@
 
 import Property from '../../../axon/js/Property.js';
 import Vector2 from '../../../dot/js/Vector2.js';
-import Shape from '../../../kite/js/Shape.js';
+import { Shape } from '../../../kite/js/imports.js';
 import { FireListener } from '../../../scenery/js/imports.js';
 import { Circle } from '../../../scenery/js/imports.js';
 import { Node } from '../../../scenery/js/imports.js';

@@ -9,7 +9,7 @@
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Utils from '../../../dot/js/Utils.js';
-import Shape from '../../../kite/js/Shape.js';
+import { Shape } from '../../../kite/js/imports.js';
 import ElectronChargeNode from '../../../scenery-phet/js/ElectronChargeNode.js';
 import { Node } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';

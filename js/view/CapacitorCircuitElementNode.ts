@@ -11,7 +11,7 @@ import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Property from '../../../axon/js/Property.js';
 import Bounds3 from '../../../dot/js/Bounds3.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
-import Shape from '../../../kite/js/Shape.js';
+import { Shape } from '../../../kite/js/imports.js';
 import merge from '../../../phet-core/js/merge.js';
 import Orientation from '../../../phet-core/js/Orientation.js';
 import CapacitorConstants from '../../../scenery-phet/js/capacitor/CapacitorConstants.js';
