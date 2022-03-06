@@ -150,7 +150,7 @@ const CCKCQueryParameters = QueryStringMachine.getAll( {
   },
   capacitanceStep: {
     type: 'number',
-    defaultValue: 0.001
+    defaultValue: 0.01
   },
   capacitanceDefault: {
     type: 'number',

@@ -305,7 +305,11 @@ class CircuitElementEditContainerNode extends Node {
             circuit,
             selectedCircuitElement,
             Tandem.OPT_OUT, {
-              delta: CCKCQueryParameters.capacitanceStep
+              delta: CCKCQueryParameters.capacitanceStep,
+              // For dragging the slider knob
+              sliderOptions: {
+                constrainValue: ( value: number ) => Utils.roundToInterval( value, CCKCQueryParameters.capacitanceStep )
+              }
             }
           );
 
