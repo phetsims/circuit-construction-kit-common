@@ -155,7 +155,11 @@ class CircuitElementEditContainerNode extends Node {
       createSingletonAdapterProperty( Capacitor.CAPACITANCE_DEFAULT, Capacitor, circuit, ( c: Capacitor ) => c.capacitanceProperty ),
       Capacitor.CAPACITANCE_RANGE, circuit, Capacitor.NUMBER_OF_DECIMAL_PLACES, {
         tandem: circuit.includeACElements ? tandem.createTandem( 'capacitanceNumberControl' ) : Tandem.OPT_OUT,
-        delta: CCKCQueryParameters.capacitanceStep
+        delta: CCKCQueryParameters.capacitanceStep,
+        // For dragging the slider knob
+        sliderOptions: {
+          constrainValue: ( value: number ) => Utils.roundToInterval( value, CCKCQueryParameters.capacitanceStep )
+        }
       } );
 
     const inductanceControl = new CircuitElementNumberControl( inductanceString,
