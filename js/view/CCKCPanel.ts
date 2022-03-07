@@ -7,7 +7,7 @@
  */
 
 import merge from '../../../phet-core/js/merge.js';
-import Panel from '../../../sun/js/Panel.js';
+import Panel, { PanelOptions } from '../../../sun/js/Panel.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import { Node } from '../../../scenery/js/imports.js';
 import CCKCConstants from '../CCKCConstants.js';
