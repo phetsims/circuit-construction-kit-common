@@ -210,7 +210,7 @@ class VertexNode extends Node {
         dragged = true;
         circuitLayerNode.dragVertex( event.pointer.point, vertex, true );
       },
-      end: ( event: any ) => {
+      end: () => {
 
         // The vertex can only connect to something if it was actually moved.
         circuitLayerNode.endDrag( vertex, dragged );

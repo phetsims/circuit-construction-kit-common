@@ -188,7 +188,7 @@ class FixedCircuitElementNode extends CircuitElementNode {
             dragged = true;
           }
         },
-        end: ( event: SceneryEvent ) =>
+        end: () =>
           this.endDrag( this.contentNode, [ circuitElement.endVertexProperty.get() ], screenView as CCKCScreenView, circuitLayerNode,
             initialPoint!, latestPoint!, dragged ),
         tandem: tandem.createTandem( 'dragListener' )
