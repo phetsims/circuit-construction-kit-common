@@ -39,21 +39,24 @@ class AdvancedAccordionBox extends CCKCAccordionBox {
       showRealBulbsCheckbox: true
     }, providedOptions );
 
-    const titleConfig = {
+    const TEXT_OPTIONS = {
       fontSize: CCKCConstants.FONT_SIZE,
       maxWidth: 120
     }; // Factor out titles
     const children = [
-      new WireResistivityControl( circuit.wireResistivityProperty, alignGroup, titleConfig, tandem.createTandem( 'wireResistivityControl' ) ),
+      new WireResistivityControl( circuit.wireResistivityProperty, alignGroup, TEXT_OPTIONS, tandem.createTandem( 'wireResistivityControl' ) ),
       new VStrut( 10 ),
-      new SourceResistanceControl( circuit.sourceResistanceProperty, alignGroup, batteryResistanceControlString, titleConfig, tandem.createTandem( 'sourceResistanceControl' ) )
+      new SourceResistanceControl( circuit.sourceResistanceProperty, alignGroup, batteryResistanceControlString, TEXT_OPTIONS, tandem.createTandem( 'sourceResistanceControl' ) )
     ];
 
     if ( options.showRealBulbsCheckbox ) {
+      const addRealBulbsCheckboxTandem = tandem.createTandem( 'addRealBulbsCheckbox' );
       children.push(
         new VStrut( 20 ),
-        new CCKCCheckbox( new Text( circuitConstructionKitCommonStrings.addRealBulbs, titleConfig ), circuit.addRealBulbsProperty, {
-          tandem: tandem.createTandem( 'addRealBulbsCheckbox' )
+        new CCKCCheckbox( new Text( circuitConstructionKitCommonStrings.addRealBulbs, _.merge( {
+          tandem: addRealBulbsCheckboxTandem.createTandem( 'label' )
+        }, TEXT_OPTIONS ) ), circuit.addRealBulbsProperty, {
+          tandem: addRealBulbsCheckboxTandem
         } )
       );
     }

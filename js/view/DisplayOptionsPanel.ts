@@ -33,10 +33,6 @@ const stopwatchString = circuitConstructionKitCommonStrings.stopwatch;
 const valuesString = circuitConstructionKitCommonStrings.values;
 
 // constants
-const TEXT_OPTIONS = {
-  fontSize: CCKCConstants.FONT_SIZE,
-  maxWidth: 120
-};
 const BOX_ALIGNMENT = { xAlign: 'left' as const };
 const SPACING = 10;
 const LEFT_MARGIN = 30;
@@ -45,14 +41,14 @@ class DisplayOptionsPanel extends CCKCPanel {
   readonly stopwatchCheckbox: CCKCCheckbox | null;
 
   /**
-   * @param {AlignGroup} alignGroup - box for aligning with other controls
-   * @param {Property.<boolean>} showCurrentProperty - true if current should be shown
-   * @param {Property.<boolean>} currentTypeProperty - true if current should be shown as electrons or conventional
-   * @param {Property.<boolean>} showValuesProperty - true if values should be shown
-   * @param {Property.<boolean>} showLabelsProperty - true if toolbox labels should be shown
-   * @param {Stopwatch} stopwatch
-   * @param {boolean} showStopwatchCheckbox - true if stopwatch should be shown
-   * @param {Tandem} tandem
+   * @param alignGroup - box for aligning with other controls
+   * @param showCurrentProperty - true if current should be shown
+   * @param currentTypeProperty - true if current should be shown as electrons or conventional
+   * @param showValuesProperty - true if values should be shown
+   * @param showLabelsProperty - true if toolbox labels should be shown
+   * @param stopwatch
+   * @param showStopwatchCheckbox - true if stopwatch should be shown
+   * @param tandem
    */
   constructor( alignGroup: AlignGroup, showCurrentProperty: Property<boolean>, currentTypeProperty: Property<CurrentType>, showValuesProperty: Property<boolean>, showLabelsProperty: Property<boolean>,
                stopwatch: Stopwatch, showStopwatchCheckbox: boolean, tandem: Tandem ) {
@@ -62,9 +58,21 @@ class DisplayOptionsPanel extends CCKCPanel {
     // Align the Electrons/Conventional text and radio buttons
     const currentTypeRadioButtonLabelGroup = new AlignGroup();
 
+    // Create an instrumented label
+    const createLabel = ( string: string, parentTandem: Tandem ) => new Text( string, {
+      tandem: parentTandem.createTandem( 'label' ),
+      fontSize: CCKCConstants.FONT_SIZE,
+      maxWidth: 120
+    } );
+
+    const currentTypeRadioButtonGroupTandem = tandem.createTandem( 'currentTypeRadioButtonGroup' );
+
+    const ELECTRONS_RADIO_BUTTON_TANDEM = 'electronsRadioButton';
+    const CONVENTIONAL_RADIO_BUTTON_TANDEM = 'conventionalRadioButton';
+
     const electronsBox = new HBox( {
       children: [
-        currentTypeRadioButtonLabelGroup.createBox( new Text( electronsString, TEXT_OPTIONS ), BOX_ALIGNMENT ),
+        currentTypeRadioButtonLabelGroup.createBox( createLabel( electronsString, currentTypeRadioButtonGroupTandem.createTandem( ELECTRONS_RADIO_BUTTON_TANDEM ) ), BOX_ALIGNMENT ),
 
         // Match the size to the play area electrons, see https://github.com/phetsims/circuit-construction-kit-dc/issues/154
         new ElectronChargeNode( { scale: 0.75 } )
@@ -74,7 +82,7 @@ class DisplayOptionsPanel extends CCKCPanel {
 
     const conventionalBox = new HBox( {
       children: [
-        currentTypeRadioButtonLabelGroup.createBox( new Text( conventionalString, TEXT_OPTIONS ), BOX_ALIGNMENT ),
+        currentTypeRadioButtonLabelGroup.createBox( createLabel( conventionalString, currentTypeRadioButtonGroupTandem.createTandem( CONVENTIONAL_RADIO_BUTTON_TANDEM ) ), BOX_ALIGNMENT ),
         new ConventionalCurrentArrowNode( tandem.createTandem( 'arrowNode' ) )
       ],
       spacing: textIconSpacing
@@ -83,34 +91,38 @@ class DisplayOptionsPanel extends CCKCPanel {
     const currentTypeRadioButtonGroup = new VerticalAquaRadioButtonGroup<CurrentType>( currentTypeProperty, [ {
       value: CurrentType.ELECTRONS,
       node: electronsBox,
-      tandemName: 'electronsRadioButton'
+      tandemName: ELECTRONS_RADIO_BUTTON_TANDEM
     }, {
       value: CurrentType.CONVENTIONAL,
       node: conventionalBox,
-      tandemName: 'conventionalRadioButton'
+      tandemName: CONVENTIONAL_RADIO_BUTTON_TANDEM
     }
     ], {
-      tandem: tandem.createTandem( 'currentTypeRadioButtonGroup' ),
+      tandem: currentTypeRadioButtonGroupTandem,
       spacing: 6
     } );
 
     // Gray out current view options when current is not selected.
     showCurrentProperty.linkAttribute( currentTypeRadioButtonGroup, 'enabled' );
 
-    const showLabelsCheckbox = new CCKCCheckbox( new Text( labelsString, TEXT_OPTIONS ), showLabelsProperty, {
-      tandem: tandem.createTandem( 'labelsCheckbox' )
+    const labelsCheckboxTandem = tandem.createTandem( 'labelsCheckbox' );
+    const showLabelsCheckbox = new CCKCCheckbox( createLabel( labelsString, labelsCheckboxTandem ), showLabelsProperty, {
+      tandem: labelsCheckboxTandem
     } );
-    const showValuesCheckbox = new CCKCCheckbox( new Text( valuesString, TEXT_OPTIONS ), showValuesProperty, {
-      tandem: tandem.createTandem( 'valuesCheckbox' )
+    const valuesCheckboxTandem = tandem.createTandem( 'valuesCheckbox' );
+    const showValuesCheckbox = new CCKCCheckbox( createLabel( valuesString, valuesCheckboxTandem ), showValuesProperty, {
+      tandem: valuesCheckboxTandem
     } );
 
     let stopwatchCheckbox = null;
     if ( showStopwatchCheckbox ) {
-      stopwatchCheckbox = new CCKCCheckbox( new Text( stopwatchString, TEXT_OPTIONS ), stopwatch.isVisibleProperty, {
-        tandem: tandem.createTandem( 'stopwatchCheckbox' )
+      const stopwatchCheckboxTandem = tandem.createTandem( 'stopwatchCheckbox' );
+      stopwatchCheckbox = new CCKCCheckbox( createLabel( stopwatchString, stopwatchCheckboxTandem ), stopwatch.isVisibleProperty, {
+        tandem: stopwatchCheckboxTandem
       } );
     }
 
+    const showCurrentCheckboxTandem = tandem.createTandem( 'showCurrentCheckbox' );
     const children = [
 
       // Show Current and sub-checkboxes
@@ -118,8 +130,8 @@ class DisplayOptionsPanel extends CCKCPanel {
         align: 'left',
         spacing: 8,
         children: [
-          new CCKCCheckbox( new Text( showCurrentString, TEXT_OPTIONS ), showCurrentProperty, {
-            tandem: tandem.createTandem( 'showCurrentCheckbox' )
+          new CCKCCheckbox( createLabel( showCurrentString, showCurrentCheckboxTandem ), showCurrentProperty, {
+            tandem: showCurrentCheckboxTandem
           } ),
           new AlignBox( // TODO: is alignbox needed here?
             currentTypeRadioButtonGroup, {
