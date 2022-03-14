@@ -39,6 +39,7 @@ import Property from '../../../axon/js/Property.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import CCKCScreenView from './CCKCScreenView.js';
 import IReadOnlyProperty from '../../../axon/js/IReadOnlyProperty.js';
+import { ObservableArray } from '../../../axon/js/createObservableArray.js';
 
 const oneSecondString = circuitConstructionKitCommonStrings.oneSecond;
 const timeString = circuitConstructionKitCommonStrings.time;

@@ -7,6 +7,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import { ObservableArray } from '../../../axon/js/createObservableArray.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
 import Range from '../../../dot/js/Range.js';

@@ -10,7 +10,7 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
-import createObservableArray from '../../../axon/js/createObservableArray.js';
+import createObservableArray, { ObservableArray } from '../../../axon/js/createObservableArray.js';
 import Property from '../../../axon/js/Property.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
 import Vector2 from '../../../dot/js/Vector2.js';
