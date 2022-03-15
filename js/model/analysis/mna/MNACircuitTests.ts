@@ -355,7 +355,6 @@ QUnit.test( 'netlist: ir', assert => {
 //   const circuit = new MNACircuit( [ battery ], [ resistor, myResistor ], [] );
 //   // iterateInductor( circuit, resistor, V, R, L, assert );
 //   const x = circuit.solve();
-//   debugger;
 // };
 //
 // findOperatingPointForLRCircuit( 5, 10, 1 );
