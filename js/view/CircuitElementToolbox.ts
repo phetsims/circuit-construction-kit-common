@@ -83,7 +83,7 @@ class CircuitElementToolbox extends HBox {
    * @public
    */
   reset() {
-    this.carousel.reset( { animationEnabled: false } );
+    this.carousel.reset();
   }
 }
 
