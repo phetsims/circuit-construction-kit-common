@@ -70,7 +70,7 @@ class CCKCChartNode extends Node {
   private readonly droppedEmitter: Emitter<[]>;
   protected readonly aboveBottomLeft1: IReadOnlyProperty<Vector2>;
   protected readonly aboveBottomLeft2: IReadOnlyProperty<Vector2>;
-  private readonly zoomLevelProperty: Property<number>;
+  private readonly zoomLevelProperty: NumberProperty;
   protected readonly updatePen: () => void;
 
   /**
