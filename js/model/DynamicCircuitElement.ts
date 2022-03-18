@@ -60,6 +60,7 @@ abstract class DynamicCircuitElement extends FixedCircuitElement {
 
   dispose() {
     this.clearEmitter.dispose();
+    this.isClearableProperty.dispose();
     super.dispose();
   }
 }
