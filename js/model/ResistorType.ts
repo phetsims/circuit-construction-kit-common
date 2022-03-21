@@ -4,6 +4,7 @@ import CCKCConstants from '../CCKCConstants.js';
 import Range from '../../../dot/js/Range.js';
 import Enumeration from '../../../phet-core/js/Enumeration.js';
 import EnumerationValue from '../../../phet-core/js/EnumerationValue.js';
+import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 export default class ResistorType extends EnumerationValue {
 
@@ -60,4 +61,5 @@ export default class ResistorType extends EnumerationValue {
     return new ResistorType( resistance, new Range( resistance, resistance ), isMetallic, length, verticalOffset );
   }
 }
-// TODO: register namespace
+
+circuitConstructionKitCommon.register( 'ResistorType', ResistorType );

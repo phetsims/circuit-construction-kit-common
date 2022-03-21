@@ -3,6 +3,7 @@ import LTACircuit from './LTACircuit.js';
 import MNASolution from './mna/MNASolution.js';
 import CoreModel from './CoreModel.js';
 import MNAResistor from './mna/MNAResistor.js';
+import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 
 // TODO: Docs
 export default class LTASolution {
@@ -55,4 +56,4 @@ export default class LTASolution {
   }
 }
 
-// TODO: register namespace
+circuitConstructionKitCommon.register( 'LTASolution', LTASolution );

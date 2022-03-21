@@ -10,6 +10,7 @@ import ScreenView from '../../../../joist/js/ScreenView.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import { Path } from '../../../../scenery/js/imports.js';
 import BarkNode from '../BarkNode.js';
+import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 
 // Constants for the resistor
 const SCHEMATIC_SCALE = 0.54;
@@ -233,4 +234,4 @@ export default class CCKCDemoScreenView extends ScreenView {
   }
 }
 
-// TODO: register namespace
+circuitConstructionKitCommon.register( 'CCKCDemoScreenView', CCKCDemoScreenView );

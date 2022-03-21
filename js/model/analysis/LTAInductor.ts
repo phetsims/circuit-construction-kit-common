@@ -1,5 +1,6 @@
 // Copyright 2021, University of Colorado Boulder
 import DynamicCoreModel from './DynamicCoreModel.js';
+import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 
 export default class LTAInductor extends DynamicCoreModel {
   readonly inductance: number;
@@ -15,4 +16,5 @@ export default class LTAInductor extends DynamicCoreModel {
     this.inductorVoltageNode1 = null;
   }
 }
-// TODO: register namespace
+
+circuitConstructionKitCommon.register( 'LTAInductor', LTAInductor );
