@@ -1,11 +1,13 @@
 // Copyright 2021, University of Colorado Boulder
 
+import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
+
 /**
  * Something with a companion model.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-class CoreModel {
+export default class CoreModel {
   readonly node0: string;
   readonly node1: string;
   readonly id: number; // for equality testing
@@ -16,5 +18,4 @@ class CoreModel {
     this.node1 = node1;
   }
 }
-
-export default CoreModel;
+circuitConstructionKitCommon.register( 'CoreModel', CoreModel );

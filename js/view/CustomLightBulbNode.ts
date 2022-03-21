@@ -26,7 +26,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 // constants
 const BULB_IMAGE_SCALE = 0.125;
 
-class CustomLightBulbNode extends Node {
+export default class CustomLightBulbNode extends Node {
   private readonly baseOnly: boolean;
   private readonly backNode: Node;
   private readonly raysNode: LightRaysNode | null;
@@ -200,4 +200,3 @@ CustomLightBulbNode.webglSpriteNodes = [
   new Image( lightBulbFrontHigh_png ) ];
 
 circuitConstructionKitCommon.register( 'CustomLightBulbNode', CustomLightBulbNode );
-export default CustomLightBulbNode;

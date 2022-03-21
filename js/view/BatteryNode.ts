@@ -61,7 +61,7 @@ schematicNode.centerY = 0;
 schematicNode.mouseArea = schematicNode.bounds.shiftedY( schematicNode.height / 2 );
 schematicNode.touchArea = schematicNode.bounds.shiftedY( schematicNode.height / 2 );
 
-class BatteryNode extends FixedCircuitElementNode {
+export default class BatteryNode extends FixedCircuitElementNode {
   private readonly battery: Battery;
 
   /**
@@ -110,4 +110,3 @@ BatteryNode.webglSpriteNodes = [
 ];
 
 circuitConstructionKitCommon.register( 'BatteryNode', BatteryNode );
-export default BatteryNode;

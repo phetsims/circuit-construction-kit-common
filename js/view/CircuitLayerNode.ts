@@ -74,7 +74,7 @@ import CurrentSense from '../model/CurrentSense.js';
 // leave in all of the WebGL code in case we have performance problems on a platform that require WebGL to be restored?
 const RENDERER = 'svg';
 
-class CircuitLayerNode extends Node {
+export default class CircuitLayerNode extends Node {
   private readonly viewTypeProperty: Property<CircuitElementViewType>;
   readonly model: CircuitConstructionKitModel;
   private readonly visibleBoundsProperty: Property<Bounds2>;
@@ -1064,4 +1064,3 @@ class CircuitLayerNode extends Node {
 }
 
 circuitConstructionKitCommon.register( 'CircuitLayerNode', CircuitLayerNode );
-export default CircuitLayerNode;

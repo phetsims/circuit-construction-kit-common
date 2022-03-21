@@ -25,7 +25,7 @@ type FuseSelfOptions = {
 
 type FuseOptions = FuseSelfOptions & FixedCircuitElementOptions;
 
-class Fuse extends FixedCircuitElement {
+export default class Fuse extends FixedCircuitElement {
   readonly currentRatingProperty: NumberProperty;
   readonly isTrippedProperty: BooleanProperty;
   readonly resistanceProperty: NumberProperty;
@@ -128,4 +128,3 @@ class Fuse extends FixedCircuitElement {
 }
 
 circuitConstructionKitCommon.register( 'Fuse', Fuse );
-export default Fuse;

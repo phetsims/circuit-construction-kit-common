@@ -14,7 +14,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 // constants
 const ARROW_LENGTH = 23; // length of the arrow in view coordinates
 
-class ConventionalCurrentArrowNode extends ArrowNode {
+export default class ConventionalCurrentArrowNode extends ArrowNode {
 
   /**
    * @param {Tandem} tandem
@@ -36,4 +36,3 @@ class ConventionalCurrentArrowNode extends ArrowNode {
 }
 
 circuitConstructionKitCommon.register( 'ConventionalCurrentArrowNode', ConventionalCurrentArrowNode );
-export default ConventionalCurrentArrowNode;

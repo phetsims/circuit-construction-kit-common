@@ -23,7 +23,7 @@ import Circuit from '../model/Circuit.js';
 import ACVoltage from '../model/ACVoltage.js';
 import Multilink from '../../../axon/js/Multilink.js';
 
-class PhaseShiftControl extends VBox {
+export default class PhaseShiftControl extends VBox {
 
   constructor( phaseProperty: Property<number>, circuit: Circuit, providedOptions?: any ) {
     providedOptions = merge( {
@@ -81,4 +81,3 @@ class PhaseShiftControl extends VBox {
 }
 
 circuitConstructionKitCommon.register( 'PhaseShiftControl', PhaseShiftControl );
-export default PhaseShiftControl;

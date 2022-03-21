@@ -16,7 +16,7 @@ import NumberIO from '../../../tandem/js/types/NumberIO.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Meter from './Meter.js';
 
-class Voltmeter extends Meter {
+export default class Voltmeter extends Meter {
   readonly voltageProperty: Property<number | null>;
   readonly redProbePositionProperty: Vector2Property;
   readonly blackProbePositionProperty: Vector2Property;
@@ -60,4 +60,3 @@ class Voltmeter extends Meter {
 }
 
 circuitConstructionKitCommon.register( 'Voltmeter', Voltmeter );
-export default Voltmeter;

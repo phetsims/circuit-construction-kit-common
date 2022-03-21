@@ -52,7 +52,7 @@ const CONTROL_POINT_X = 30;
 const CONTROL_POINT_Y1 = 15;
 const CONTROL_POINT_Y2 = 60;
 
-class VoltmeterNode extends Node {
+export default class VoltmeterNode extends Node {
   private readonly circuitLayerNode: CircuitLayerNode | null;
   readonly voltmeter: Voltmeter;
   private readonly redProbeNode: Rectangle;
@@ -360,4 +360,3 @@ class VoltmeterNode extends Node {
 VoltmeterNode.PROBE_ANGLE = PROBE_ANGLE;
 
 circuitConstructionKitCommon.register( 'VoltmeterNode', VoltmeterNode );
-export default VoltmeterNode;

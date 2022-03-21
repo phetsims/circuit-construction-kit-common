@@ -12,7 +12,7 @@ import commentSolidShape from '../../../sherpa/js/fontawesome-5/commentSolidShap
 import exclamationSolidShape from '../../../sherpa/js/fontawesome-5/exclamationSolidShape.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
-class BarkNode extends Node {
+export default class BarkNode extends Node {
 
   /**
    * @param {Object} [providedOptions]
@@ -56,4 +56,3 @@ class BarkNode extends Node {
 }
 
 circuitConstructionKitCommon.register( 'BarkNode', BarkNode );
-export default BarkNode;

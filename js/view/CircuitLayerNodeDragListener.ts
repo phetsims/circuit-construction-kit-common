@@ -11,7 +11,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Vertex from '../model/Vertex.js';
 import CircuitLayerNode from './CircuitLayerNode.js';
 
-class CircuitLayerNodeDragListener extends DragListener {
+export default class CircuitLayerNodeDragListener extends DragListener {
   private readonly circuitLayerNode: CircuitLayerNode;
   private readonly vertexGetters: ( () => Vertex )[];
 
@@ -60,4 +60,3 @@ class CircuitLayerNodeDragListener extends DragListener {
 }
 
 circuitConstructionKitCommon.register( 'CircuitLayerNodeDragListener', CircuitLayerNodeDragListener );
-export default CircuitLayerNodeDragListener;

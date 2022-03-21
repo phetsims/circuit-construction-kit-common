@@ -69,7 +69,7 @@ const createRichText = ( tandem: Tandem, providedOptions?: any ) => new RichText
 
 const infinitySpan = '<span style="font-size: 26px; font-family: serif;"><b>∞</b></span>';
 
-class ValueNode extends Panel {
+export default class ValueNode extends Panel {
   private readonly disposeValueNode: () => void;
 
   /**
@@ -291,4 +291,3 @@ class ValueNode extends Panel {
 }
 
 circuitConstructionKitCommon.register( 'ValueNode', ValueNode );
-export default ValueNode;

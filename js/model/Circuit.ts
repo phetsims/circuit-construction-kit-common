@@ -77,7 +77,7 @@ type CircuitOptions = {
 
 type Pair = { v1: Vertex; v2: Vertex };
 
-class Circuit {
+export default class Circuit {
   private readonly viewTypeProperty: Property<CircuitElementViewType>;
   readonly addRealBulbsProperty: Property<boolean>;
   private readonly blackBoxStudy: boolean;
@@ -1615,4 +1615,3 @@ class Circuit {
 }
 
 circuitConstructionKitCommon.register( 'Circuit', Circuit );
-export default Circuit;

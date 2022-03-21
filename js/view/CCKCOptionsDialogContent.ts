@@ -17,7 +17,7 @@ import SchematicType from './SchematicType.js';
 import AmmeterReadoutType from '../model/AmmeterReadoutType.js';
 import ammeterReadoutTypeProperty from './ammeterReadoutTypeProperty.js';
 
-class CCKCOptionsDialogContent extends VBox {
+export default class CCKCOptionsDialogContent extends VBox {
   private readonly disposeCCKCOptionsDialogContent: () => void;
 
   /**
@@ -86,4 +86,3 @@ class CCKCOptionsDialogContent extends VBox {
 }
 
 circuitConstructionKitCommon.register( 'CCKCOptionsDialogContent', CCKCOptionsDialogContent );
-export default CCKCOptionsDialogContent;

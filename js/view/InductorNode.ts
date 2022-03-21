@@ -53,7 +53,7 @@ const LIFELIKE_PATH_FILL_STYLES = new LineStyles( {
   lineJoin: 'round'
 } );
 
-class InductorNode extends FixedCircuitElementNode {
+export default class InductorNode extends FixedCircuitElementNode {
   private readonly inductor: Inductor;
 
   /**
@@ -168,4 +168,3 @@ class InductorNode extends FixedCircuitElementNode {
 InductorNode.webglSpriteNodes = [];
 
 circuitConstructionKitCommon.register( 'InductorNode', InductorNode );
-export default InductorNode;

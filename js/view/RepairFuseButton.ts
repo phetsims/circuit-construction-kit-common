@@ -18,7 +18,7 @@ import Fuse from '../model/Fuse.js';
 import CCKCRoundPushButton from './CCKCRoundPushButton.js';
 import CircuitElement from '../model/CircuitElement.js';
 
-class RepairFuseButton extends HBox {
+export default class RepairFuseButton extends HBox {
 
   /**
    * @param {Circuit} circuit
@@ -77,4 +77,3 @@ class RepairFuseButton extends HBox {
 }
 
 circuitConstructionKitCommon.register( 'RepairFuseButton', RepairFuseButton );
-export default RepairFuseButton;

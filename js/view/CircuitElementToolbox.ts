@@ -24,7 +24,7 @@ import CircuitElementToolNode from './CircuitElementToolNode.js';
 // This specifies the spacing between items and also the space before and after the first and last items
 const CAROUSEL_ITEM_SPACING = 11;
 
-class CircuitElementToolbox extends HBox {
+export default class CircuitElementToolbox extends HBox {
   readonly carousel: Carousel;
 
   /**
@@ -88,4 +88,3 @@ class CircuitElementToolbox extends HBox {
 }
 
 circuitConstructionKitCommon.register( 'CircuitElementToolbox', CircuitElementToolbox );
-export default CircuitElementToolbox;

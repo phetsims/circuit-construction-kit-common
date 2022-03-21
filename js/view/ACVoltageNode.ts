@@ -90,7 +90,7 @@ schematicNode.touchArea = schematicNode.mouseArea;
 
 type ACVoltageNodeOptions = {} & FixedCircuitElementNodeOptions;
 
-class ACVoltageNode extends FixedCircuitElementNode {
+export default class ACVoltageNode extends FixedCircuitElementNode {
   private readonly acSource: ACVoltage;
 
   /**
@@ -135,4 +135,3 @@ class ACVoltageNode extends FixedCircuitElementNode {
 ACVoltageNode.webglSpriteNodes = [ schematicNode, lifelikeNode ];
 
 circuitConstructionKitCommon.register( 'ACVoltageNode', ACVoltageNode );
-export default ACVoltageNode;

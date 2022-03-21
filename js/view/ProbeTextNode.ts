@@ -21,7 +21,7 @@ import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
 // constants
 const TEXT_BOX_WIDTH = 140;
 
-class ProbeTextNode extends VBox {
+export default class ProbeTextNode extends VBox {
 
   /**
    * @param {Property.<string>} textProperty - the text that should be displayed
@@ -86,4 +86,3 @@ class ProbeTextNode extends VBox {
 }
 
 circuitConstructionKitCommon.register( 'ProbeTextNode', ProbeTextNode );
-export default ProbeTextNode;

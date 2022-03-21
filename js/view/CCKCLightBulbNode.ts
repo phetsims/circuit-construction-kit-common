@@ -58,7 +58,7 @@ const toBrightness = ( multiplier: number, power: number ) => {
   return Math.log( 1 + power * multiplier ) * maximumBrightness / Math.log( 1 + maximumPower * multiplier );
 };
 
-class CCKCLightBulbNode extends FixedCircuitElementNode {
+export default class CCKCLightBulbNode extends FixedCircuitElementNode {
   private readonly rayNodeContainer: Node;
   private readonly disposeCircuitConstructionKitLightBulbNode: () => void;
   private readonly socketNode: LightBulbSocketNode | null;
@@ -316,4 +316,3 @@ class CCKCLightBulbNode extends FixedCircuitElementNode {
 }
 
 circuitConstructionKitCommon.register( 'CCKCLightBulbNode', CCKCLightBulbNode );
-export default CCKCLightBulbNode;

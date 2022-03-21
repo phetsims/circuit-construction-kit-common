@@ -15,7 +15,7 @@ type Element = {
  * The distinction between instantaneous and average currents/voltages is made because we need to maintain the correct
  * dynamics (using instantaneous solutions) but also to show intermediate states (using the average results), see #2270.
  */
-class LTAStateSet {
+export default class LTAStateSet {
 
   private readonly resultSet: Element[];
 
@@ -97,5 +97,3 @@ class LTAStateSet {
 }
 
 circuitConstructionKitCommon.register( 'LTAStateSet', LTAStateSet );
-
-export default LTAStateSet;

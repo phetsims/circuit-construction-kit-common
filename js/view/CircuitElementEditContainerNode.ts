@@ -102,7 +102,7 @@ const createSingletonAdapterProperty = <T extends CircuitElement>(
   return singletonAdapterProperty;
 };
 
-class CircuitElementEditContainerNode extends Node {
+export default class CircuitElementEditContainerNode extends Node {
 
   constructor( circuit: Circuit, visibleBoundsProperty: Property<Bounds2>, modeProperty: EnumerationProperty<InteractionMode>, playAreaCenterXProperty: Property<number>, tandem: Tandem, providedOptions?: any ) {
 
@@ -459,4 +459,3 @@ class EditPanel extends Panel {
 }
 
 circuitConstructionKitCommon.register( 'CircuitElementEditContainerNode', CircuitElementEditContainerNode );
-export default CircuitElementEditContainerNode;

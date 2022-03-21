@@ -22,7 +22,7 @@ import Tandem from '../../../tandem/js/Tandem.js';
 
 const resistanceOhmsSymbolString = circuitConstructionKitCommonStrings.resistanceOhmsSymbol;
 
-class SourceResistanceControl extends VBox {
+export default class SourceResistanceControl extends VBox {
 
   /**
    * @param {Property.<number>} sourceResistanceProperty - axon Property for the internal resistance of all Batteries
@@ -75,4 +75,3 @@ class SourceResistanceControl extends VBox {
 }
 
 circuitConstructionKitCommon.register( 'SourceResistanceControl', SourceResistanceControl );
-export default SourceResistanceControl;

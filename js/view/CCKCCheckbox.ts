@@ -14,7 +14,7 @@ import Property from '../../../axon/js/Property.js';
 // constants
 const BOX_WIDTH = 16;
 
-class CCKCCheckbox extends Checkbox {
+export default class CCKCCheckbox extends Checkbox {
 
   /**
    * @param {Node} content
@@ -29,4 +29,3 @@ class CCKCCheckbox extends Checkbox {
 }
 
 circuitConstructionKitCommon.register( 'CCKCCheckbox', CCKCCheckbox );
-export default CCKCCheckbox;

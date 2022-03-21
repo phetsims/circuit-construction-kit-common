@@ -9,7 +9,7 @@
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Vertex from './Vertex.js';
 
-class VoltageConnection {
+export default class VoltageConnection {
   readonly vertex: Vertex;
   readonly voltage: number;
 
@@ -28,4 +28,3 @@ class VoltageConnection {
 }
 
 circuitConstructionKitCommon.register( 'VoltageConnection', VoltageConnection );
-export default VoltageConnection;

@@ -70,7 +70,7 @@ RESISTOR_IMAGE_MAP.set( ResistorType.RESISTOR, resistor_png );
 RESISTOR_IMAGE_MAP.set( ResistorType.DOG, dog_png );
 RESISTOR_IMAGE_MAP.set( ResistorType.DOLLAR_BILL, dollar_png );
 
-class ResistorNode extends FixedCircuitElementNode {
+export default class ResistorNode extends FixedCircuitElementNode {
   private readonly resistor: Resistor;
   private readonly lifelikeResistorImageNode: Node;
   private readonly disposeResistorNode: () => void;
@@ -277,4 +277,3 @@ ResistorNode.webglSpriteNodes = [
 ];
 
 circuitConstructionKitCommon.register( 'ResistorNode', ResistorNode );
-export default ResistorNode;

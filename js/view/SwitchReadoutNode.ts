@@ -21,7 +21,7 @@ const theSwitchIsOpenString = circuitConstructionKitCommonStrings.theSwitchIsOpe
 // constants
 const MAX_TEXT_WIDTH = 300;
 
-class SwitchReadoutNode extends Node {
+export default class SwitchReadoutNode extends Node {
   constructor( circuit: Circuit, tandem: Tandem, trashButton: Node ) {
 
     // Create both texts and display both so they remain aligned as the value changes
@@ -70,4 +70,3 @@ class SwitchReadoutNode extends Node {
 }
 
 circuitConstructionKitCommon.register( 'SwitchReadoutNode', SwitchReadoutNode );
-export default SwitchReadoutNode;

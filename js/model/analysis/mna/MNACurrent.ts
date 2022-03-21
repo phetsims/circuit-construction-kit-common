@@ -1,8 +1,9 @@
 // Copyright 2021, University of Colorado Boulder
 
 import MNACircuitElement from './MNACircuitElement.js';
+import circuitConstructionKitCommon from '../../../circuitConstructionKitCommon.js';
 
-class MNACurrent extends MNACircuitElement {
+export default class MNACurrent extends MNACircuitElement {
   readonly current: number;
 
   constructor( nodeId0: string, nodeId1: string, current: number ) {
@@ -10,5 +11,4 @@ class MNACurrent extends MNACircuitElement {
     this.current = current;
   }
 }
-
-export default MNACurrent;
+circuitConstructionKitCommon.register( 'MNACurrent', MNACurrent );

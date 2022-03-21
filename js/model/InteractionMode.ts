@@ -7,11 +7,10 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 /**
  * @author Sam Reid (PhET Interactive Simulations)
  */
-class InteractionMode extends EnumerationValue {
+export default class InteractionMode extends EnumerationValue {
   static EXPLORE = new InteractionMode();
   static TEST = new InteractionMode();
   static enumeration = new Enumeration( InteractionMode );
 }
 
 circuitConstructionKitCommon.register( 'InteractionMode', InteractionMode );
-export default InteractionMode;

@@ -62,7 +62,7 @@ const SCHEMATIC_SCALE = CCKCConstants.CAPACITOR_LENGTH / WIDTH;
 leftSchematicShape = leftSchematicShape.transformed( Matrix3.scale( SCHEMATIC_SCALE, SCHEMATIC_SCALE ) );
 rightSchematicShape = rightSchematicShape.transformed( Matrix3.scale( SCHEMATIC_SCALE, SCHEMATIC_SCALE ) );
 
-class CapacitorCircuitElementNode extends FixedCircuitElementNode {
+export default class CapacitorCircuitElementNode extends FixedCircuitElementNode {
   private readonly capacitor: Capacitor;
   readonly capacitorCircuitElementLifelikeNode: CapacitorNode;
   readonly capacitorCircuitElementSchematicNode: Node;
@@ -308,4 +308,3 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
 CapacitorCircuitElementNode.webglSpriteNodes = [ new Image( wireIcon_png ) ];
 
 circuitConstructionKitCommon.register( 'CapacitorCircuitElementNode', CapacitorCircuitElementNode );
-export default CapacitorCircuitElementNode;

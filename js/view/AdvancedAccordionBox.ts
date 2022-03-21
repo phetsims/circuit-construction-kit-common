@@ -24,7 +24,7 @@ type SelfOptions = {
 };
 type AdvancedAccordionBoxOptions = SelfOptions & CCKCAccordionBoxOptions;
 
-class AdvancedAccordionBox extends CCKCAccordionBox {
+export default class AdvancedAccordionBox extends CCKCAccordionBox {
 
   /**
    * @param {Circuit} circuit
@@ -75,4 +75,3 @@ class AdvancedAccordionBox extends CCKCAccordionBox {
 }
 
 circuitConstructionKitCommon.register( 'AdvancedAccordionBox', AdvancedAccordionBox );
-export default AdvancedAccordionBox;

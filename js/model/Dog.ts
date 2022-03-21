@@ -15,7 +15,7 @@ import Resistor, { ResistorOptions } from './Resistor.js';
 import ResistorType from './ResistorType.js';
 import Vertex from './Vertex.js';
 
-class Dog extends Resistor {
+export default class Dog extends Resistor {
   readonly isBarkingProperty: Property<boolean>;
   private lastBarkTime: number;
   private triggerCount: number;
@@ -76,4 +76,3 @@ class Dog extends Resistor {
 }
 
 circuitConstructionKitCommon.register( 'Dog', Dog );
-export default Dog;

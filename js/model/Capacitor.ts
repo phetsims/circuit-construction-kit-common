@@ -20,7 +20,7 @@ type CapacitorOptions = {
   capacitance: number;
 } & DynamicCircuitElementOptions;
 
-class Capacitor extends DynamicCircuitElement {
+export default class Capacitor extends DynamicCircuitElement {
 
   // the capacitance in farads
   readonly capacitanceProperty: NumberProperty;
@@ -90,5 +90,3 @@ class Capacitor extends DynamicCircuitElement {
 }
 
 circuitConstructionKitCommon.register( 'Capacitor', Capacitor );
-
-export default Capacitor;

@@ -22,7 +22,7 @@ const SOLDER_RADIUS = 11.2;
 // {Image} raster created by init() for WebGL usage
 const CIRCLE_NODE = new Circle( SOLDER_RADIUS, { fill: SOLDER_COLOR } ).rasterized( { wrap: false } );
 
-class SolderNode extends Node {
+export default class SolderNode extends Node {
   readonly vertex: Vertex;
   private readonly startOffset: Vector2 | null;
   private readonly disposeSolderNode: () => void;
@@ -111,4 +111,3 @@ SolderNode.webglSpriteNodes = [ CIRCLE_NODE ];
 SolderNode.SOLDER_RADIUS = SOLDER_RADIUS;
 
 circuitConstructionKitCommon.register( 'SolderNode', SolderNode );
-export default SolderNode;

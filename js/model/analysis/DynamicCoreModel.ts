@@ -1,6 +1,7 @@
 // Copyright 2021, University of Colorado Boulder
 
 import CoreModel from './CoreModel.js';
+import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 
 /**
  * For capacitors and inductors, includes the voltage and current from prior calculation,
@@ -8,7 +9,7 @@ import CoreModel from './CoreModel.js';
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-class DynamicCoreModel extends CoreModel {
+export default class DynamicCoreModel extends CoreModel {
   readonly voltage: number; // the voltage drop v1-v0
   readonly current: number; // the conventional current as it moves from node 0 to node 1
 
@@ -19,4 +20,4 @@ class DynamicCoreModel extends CoreModel {
   }
 }
 
-export default DynamicCoreModel;
+circuitConstructionKitCommon.register( 'DynamicCoreModel', DynamicCoreModel );

@@ -152,7 +152,7 @@ const schematicClosedImage = createNode(
   CircuitElementViewType.SCHEMATIC, Color.BLACK, CCKCConstants.SCHEMATIC_LINE_WIDTH, 0, true
 ).rasterized( { wrap: false } );
 
-class SwitchNode extends FixedCircuitElementNode {
+export default class SwitchNode extends FixedCircuitElementNode {
   readonly circuitSwitch: Switch;
   private readonly lifelikeOpenNode: Node;
   private readonly disposeSwitchNode: () => void;
@@ -287,4 +287,3 @@ class SwitchNode extends FixedCircuitElementNode {
 }
 
 circuitConstructionKitCommon.register( 'SwitchNode', SwitchNode );
-export default SwitchNode;

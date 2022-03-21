@@ -78,7 +78,7 @@ const iconAlignGroup = new AlignGroup();
 const LIFELIKE_PROPERTY = new EnumerationProperty( CircuitElementViewType.LIFELIKE );
 const SCHEMATIC_PROPERTY = new EnumerationProperty( CircuitElementViewType.SCHEMATIC );
 
-class CircuitElementToolFactory {
+export default class CircuitElementToolFactory {
   private readonly circuit: Circuit;
   private readonly showLabelsProperty: Property<boolean>;
   private readonly viewTypeProperty: Property<CircuitElementViewType>;
@@ -575,4 +575,3 @@ class CircuitElementToolFactory {
 }
 
 circuitConstructionKitCommon.register( 'CircuitElementToolFactory', CircuitElementToolFactory );
-export default CircuitElementToolFactory;

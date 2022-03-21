@@ -19,7 +19,7 @@ type FixedCircuitElementSelfOptions = {
 };
 type FixedCircuitElementOptions = FixedCircuitElementSelfOptions & CircuitElementOptions;
 
-abstract class FixedCircuitElement extends CircuitElement {
+export default abstract class FixedCircuitElement extends CircuitElement {
   readonly numberOfDecimalPlaces: number;
   readonly distanceBetweenVertices: number;
   private readonly isFixedCircuitElement: boolean;
@@ -51,4 +51,3 @@ abstract class FixedCircuitElement extends CircuitElement {
 
 circuitConstructionKitCommon.register( 'FixedCircuitElement', FixedCircuitElement );
 export type { FixedCircuitElementOptions };
-export default FixedCircuitElement;

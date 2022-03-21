@@ -23,7 +23,7 @@ import FixedCircuitElementNode, { FixedCircuitElementNodeOptions } from './Fixed
 // constants
 const SCRATCH_MATRIX = new Matrix3();
 
-class LightBulbSocketNode extends FixedCircuitElementNode {
+export default class LightBulbSocketNode extends FixedCircuitElementNode {
 
   /**
    * @param {CCKCScreenView|null} screenView - main screen view, null for icon
@@ -81,4 +81,3 @@ class LightBulbSocketNode extends FixedCircuitElementNode {
 }
 
 circuitConstructionKitCommon.register( 'LightBulbSocketNode', LightBulbSocketNode );
-export default LightBulbSocketNode;

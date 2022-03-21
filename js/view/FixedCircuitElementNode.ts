@@ -48,7 +48,7 @@ type FixedCircuitElementNodeOptions = {
   showHighlight: boolean;
 } & NodeOptions;// TODO: & CircuitElementNodeOptions
 
-class FixedCircuitElementNode extends CircuitElementNode {
+export default class FixedCircuitElementNode extends CircuitElementNode {
   private readonly lifelikeNode: Node;
   private readonly schematicNode: Node;
   isIcon: boolean;
@@ -377,4 +377,3 @@ FixedCircuitElementNode.webglSpriteNodes = [
 
 circuitConstructionKitCommon.register( 'FixedCircuitElementNode', FixedCircuitElementNode );
 export type { FixedCircuitElementNodeOptions };
-export default FixedCircuitElementNode;

@@ -21,7 +21,7 @@ import CCKCProbeNode from './CCKCProbeNode.js';
 
 const currentWithUnitsString = circuitConstructionKitCommonStrings.currentWithUnits;
 
-class CurrentChartNode extends CCKCChartNode {
+export default class CurrentChartNode extends CCKCChartNode {
   private readonly probeNode1: CCKCProbeNode;
   private lastStepTime: number | null;
 
@@ -87,4 +87,3 @@ class CurrentChartNode extends CCKCChartNode {
 }
 
 circuitConstructionKitCommon.register( 'CurrentChartNode', CurrentChartNode );
-export default CurrentChartNode;

@@ -17,7 +17,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 
-class CCKCProbeNode extends ProbeNode {
+export default class CCKCProbeNode extends ProbeNode {
 
   /**
    * @param {Node} node container node which should move to front on press
@@ -56,4 +56,3 @@ class CCKCProbeNode extends ProbeNode {
 }
 
 circuitConstructionKitCommon.register( 'CCKCProbeNode', CCKCProbeNode );
-export default CCKCProbeNode;

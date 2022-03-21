@@ -27,7 +27,7 @@ type SelfOptions = {
 };
 type CCKCAccordionBoxOptions = SelfOptions & AccordionBoxOptions;
 
-class CCKCAccordionBox extends AccordionBox {
+export default class CCKCAccordionBox extends AccordionBox {
 
   /**
    * @param content - the content to display in the accordion box when it is expanded
@@ -78,4 +78,3 @@ class CCKCAccordionBox extends AccordionBox {
 
 circuitConstructionKitCommon.register( 'CCKCAccordionBox', CCKCAccordionBox );
 export type { CCKCAccordionBoxOptions };
-export default CCKCAccordionBox;

@@ -20,7 +20,7 @@ import CircuitElement from '../model/CircuitElement.js';
 // constants
 const ARROW_ICON_SCALE = 0.035;
 
-class ReverseBatteryButton extends HBox {
+export default class ReverseBatteryButton extends HBox {
 
   /**
    * @param {Circuit} circuit - the circuit that contains the battery
@@ -97,4 +97,3 @@ class ReverseBatteryButton extends HBox {
 }
 
 circuitConstructionKitCommon.register( 'ReverseBatteryButton', ReverseBatteryButton );
-export default ReverseBatteryButton;

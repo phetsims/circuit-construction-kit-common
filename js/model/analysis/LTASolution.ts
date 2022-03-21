@@ -4,7 +4,8 @@ import MNASolution from './mna/MNASolution.js';
 import CoreModel from './CoreModel.js';
 import MNAResistor from './mna/MNAResistor.js';
 
-class LTASolution {
+// TODO: Docs
+export default class LTASolution {
 
   private readonly circuit: LTACircuit;
   private readonly mnaSolution: MNASolution;
@@ -54,4 +55,4 @@ class LTASolution {
   }
 }
 
-export default LTASolution;
+// TODO: register namespace

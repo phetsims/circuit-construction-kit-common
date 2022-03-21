@@ -40,7 +40,7 @@ const SPLIT_DX = 8; // in view coordinates, half the distance of the split part 
 const VERTICAL_GLASS_MARGIN = 3;
 const DEFAULT_GLASS_FILL = '#c3dbfd';
 
-class FuseNode extends FixedCircuitElementNode {
+export default class FuseNode extends FixedCircuitElementNode {
   private readonly fuse: Fuse;
   private readonly disposeFuseNode: () => void;
 
@@ -220,4 +220,3 @@ FuseNode.webglSpriteNodes = [
 ];
 
 circuitConstructionKitCommon.register( 'FuseNode', FuseNode );
-export default FuseNode;

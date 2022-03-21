@@ -13,7 +13,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 // constants
 const ZOOM_ANIMATION_TIME = 0.35; // seconds
 
-class ZoomAnimation {
+export default class ZoomAnimation {
 
   private readonly easing: Easing;
   private ratio: number;
@@ -56,4 +56,3 @@ class ZoomAnimation {
 }
 
 circuitConstructionKitCommon.register( 'ZoomAnimation', ZoomAnimation );
-export default ZoomAnimation;

@@ -16,7 +16,7 @@ import NumberIO from '../../../tandem/js/types/NumberIO.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Meter from './Meter.js';
 
-class Ammeter extends Meter {
+export default class Ammeter extends Meter {
 
   // the full-precision reading on the ammeter. It will be formatted for display in the view.  Null means the ammeter is not on a wire.
   readonly currentProperty: Property<number | null>;
@@ -47,4 +47,3 @@ class Ammeter extends Meter {
 }
 
 circuitConstructionKitCommon.register( 'Ammeter', Ammeter );
-export default Ammeter;

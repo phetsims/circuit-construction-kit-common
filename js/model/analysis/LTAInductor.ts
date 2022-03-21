@@ -1,7 +1,7 @@
 // Copyright 2021, University of Colorado Boulder
 import DynamicCoreModel from './DynamicCoreModel.js';
 
-class LTAInductor extends DynamicCoreModel {
+export default class LTAInductor extends DynamicCoreModel {
   readonly inductance: number;
   inductorVoltageNode1: string | null;
 
@@ -15,5 +15,4 @@ class LTAInductor extends DynamicCoreModel {
     this.inductorVoltageNode1 = null;
   }
 }
-
-export default LTAInductor;
+// TODO: register namespace

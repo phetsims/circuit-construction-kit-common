@@ -16,7 +16,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 const animationSpeedLimitReachedString = circuitConstructionKitCommonStrings.animationSpeedLimitReached;
 
-class ChargeSpeedThrottlingReadoutNode extends Text {
+export default class ChargeSpeedThrottlingReadoutNode extends Text {
 
   /**
    * @param {Property.<number>} timeScaleProperty - the fractional rate of time passage (1.0 = full speed)
@@ -46,4 +46,3 @@ class ChargeSpeedThrottlingReadoutNode extends Text {
 }
 
 circuitConstructionKitCommon.register( 'ChargeSpeedThrottlingReadoutNode', ChargeSpeedThrottlingReadoutNode );
-export default ChargeSpeedThrottlingReadoutNode;

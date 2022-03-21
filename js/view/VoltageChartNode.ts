@@ -29,7 +29,7 @@ const voltageWithUnitsString = circuitConstructionKitCommonStrings.voltageWithUn
 const SERIES_1_COLOR = '#ec3223';
 const SERIES_2_COLOR = CCKCConstants.CHART_SERIES_COLOR;
 
-class VoltageChartNode extends CCKCChartNode {
+export default class VoltageChartNode extends CCKCChartNode {
   private readonly probeNode1: CCKCProbeNode;
   private readonly probeNode2: CCKCProbeNode;
   private lastStepTime: number | null;
@@ -113,4 +113,3 @@ class VoltageChartNode extends CCKCChartNode {
 }
 
 circuitConstructionKitCommon.register( 'VoltageChartNode', VoltageChartNode );
-export default VoltageChartNode;

@@ -20,7 +20,7 @@ import CircuitElement from '../model/CircuitElement.js';
 import ACVoltage from '../model/ACVoltage.js';
 
 // Extend HBox so an invisible parent will auto-layout (not leave a blank hole)
-class CircuitElementNumberControl extends HBox {
+export default class CircuitElementNumberControl extends HBox {
   static NUMBER_CONTROL_ELEMENT_MAX_WIDTH = 115;
 
   constructor( title: string, valuePattern: string, valueProperty: Property<number>, range: Range, circuit: Circuit,
@@ -86,4 +86,3 @@ class CircuitElementNumberControl extends HBox {
 }
 
 circuitConstructionKitCommon.register( 'CircuitElementNumberControl', CircuitElementNumberControl );
-export default CircuitElementNumberControl;

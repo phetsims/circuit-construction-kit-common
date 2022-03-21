@@ -37,7 +37,7 @@ const BOX_ALIGNMENT = { xAlign: 'left' as const };
 const SPACING = 10;
 const LEFT_MARGIN = 30;
 
-class DisplayOptionsPanel extends CCKCPanel {
+export default class DisplayOptionsPanel extends CCKCPanel {
   readonly stopwatchCheckbox: CCKCCheckbox | null;
 
   /**
@@ -175,4 +175,3 @@ class DisplayOptionsPanel extends CCKCPanel {
 }
 
 circuitConstructionKitCommon.register( 'DisplayOptionsPanel', DisplayOptionsPanel );
-export default DisplayOptionsPanel;

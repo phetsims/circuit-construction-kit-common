@@ -50,7 +50,7 @@ type AmmeterNodeOptions = {
   tandem: Tandem;
 } & NodeOptions;
 
-class AmmeterNode extends Node {
+export default class AmmeterNode extends Node {
   private readonly probeNode: ProbeNode;
   readonly ammeter: Ammeter;
   private readonly dragHandler: DragListener | null;
@@ -244,4 +244,3 @@ class AmmeterNode extends Node {
 }
 
 circuitConstructionKitCommon.register( 'AmmeterNode', AmmeterNode );
-export default AmmeterNode;

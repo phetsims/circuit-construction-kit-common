@@ -21,7 +21,8 @@ const SCHEMATIC_WAVELENGTH = 54 * SCHEMATIC_SCALE;
 // The height from the vertex to the center of the light bulb schematic circle
 const LEAD_Y = -73;
 
-class CCKCDemoScreenView extends ScreenView {
+export default class CCKCDemoScreenView extends ScreenView {
+
   /**
    * @param {Object} [providedOptions]
    */
@@ -232,4 +233,4 @@ class CCKCDemoScreenView extends ScreenView {
   }
 }
 
-export default CCKCDemoScreenView;
+// TODO: register namespace

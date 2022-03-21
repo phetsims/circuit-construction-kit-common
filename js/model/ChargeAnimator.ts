@@ -51,7 +51,7 @@ const CURRENT_MAGNITUDE = function( circuitElement: CircuitElement ) {
   return Math.abs( circuitElement.currentProperty.get() );
 };
 
-class ChargeAnimator {
+export default class ChargeAnimator {
   private readonly charges: ObservableArray<Charge>;
   private readonly circuit: Circuit;
 
@@ -341,4 +341,3 @@ class ChargeAnimator {
 }
 
 circuitConstructionKitCommon.register( 'ChargeAnimator', ChargeAnimator );
-export default ChargeAnimator;

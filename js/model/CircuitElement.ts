@@ -42,7 +42,7 @@ type CircuitElementSelfOptions = {
 
 type CircuitElementOptions = CircuitElementSelfOptions & PhetioObjectOptions;
 
-abstract class CircuitElement extends PhetioObject {
+export default abstract class CircuitElement extends PhetioObject {
   readonly id: number;
   private readonly creationTime: number;
   readonly isFlammable: boolean;
@@ -479,4 +479,3 @@ CircuitElement.CircuitElementIO = new IOType( 'CircuitElementIO', {
 
 circuitConstructionKitCommon.register( 'CircuitElement', CircuitElement );
 export type { CircuitElementOptions };
-export default CircuitElement;

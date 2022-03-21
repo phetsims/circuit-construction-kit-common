@@ -14,7 +14,7 @@ import Animation from '../../../twixt/js/Animation.js';
 import Easing from '../../../twixt/js/Easing.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
-class FuseTripAnimation extends Node {
+export default class FuseTripAnimation extends Node {
 
   /**
    * @param {Object} [providedOptions]
@@ -70,4 +70,3 @@ class FuseTripAnimation extends Node {
 }
 
 circuitConstructionKitCommon.register( 'FuseTripAnimation', FuseTripAnimation );
-export default FuseTripAnimation;

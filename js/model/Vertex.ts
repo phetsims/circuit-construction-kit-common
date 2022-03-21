@@ -31,7 +31,7 @@ type VertexOptions = {
   tandem: Tandem;
 } & PhetioObjectOptions;
 
-class Vertex extends PhetioObject {
+export default class Vertex extends PhetioObject {
   readonly index: number;
   private readonly vertexTandem: Tandem;
   readonly positionProperty: Property<Vector2>;
@@ -187,4 +187,3 @@ Vertex.VertexIO = new IOType( 'VertexIO', {
 } );
 
 circuitConstructionKitCommon.register( 'Vertex', Vertex );
-export default Vertex;

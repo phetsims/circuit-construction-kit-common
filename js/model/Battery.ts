@@ -24,7 +24,7 @@ const BATTERY_LENGTH = CCKCConstants.BATTERY_LENGTH;
 
 type BatteryOptions = {} & VoltageSourceOptions;
 
-class Battery extends VoltageSource {
+export default class Battery extends VoltageSource {
   readonly batteryType: BatteryType;
   static VOLTAGE_DEFAULT = 9.0;
   static VOLTAGE_RANGE = new Range( 0, 120 );
@@ -69,4 +69,3 @@ class Battery extends VoltageSource {
 }
 
 circuitConstructionKitCommon.register( 'Battery', Battery );
-export default Battery;

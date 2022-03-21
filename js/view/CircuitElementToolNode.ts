@@ -25,7 +25,7 @@ import { SceneryEvent } from '../../../scenery/js/imports.js';
 // constants
 const TOOLBOX_ICON_WIDTH = CCKCConstants.TOOLBOX_ICON_WIDTH;
 
-class CircuitElementToolNode extends VBox {
+export default class CircuitElementToolNode extends VBox {
 
   /**
    * @param {string} labelText
@@ -120,4 +120,3 @@ class CircuitElementToolNode extends VBox {
 }
 
 circuitConstructionKitCommon.register( 'CircuitElementToolNode', CircuitElementToolNode );
-export default CircuitElementToolNode;

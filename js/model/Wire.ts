@@ -27,7 +27,7 @@ type WireSelfOptions = {
 
 type WireOptions = WireSelfOptions & CircuitElementOptions;
 
-class Wire extends CircuitElement {
+export default class Wire extends CircuitElement {
   private readonly wireStub: boolean;
   readonly resistanceProperty: NumberProperty;
   private readonly resistivityProperty: NumberProperty;
@@ -128,4 +128,3 @@ class Wire extends CircuitElement {
 }
 
 circuitConstructionKitCommon.register( 'Wire', Wire );
-export default Wire;

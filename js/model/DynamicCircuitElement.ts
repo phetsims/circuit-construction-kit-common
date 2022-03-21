@@ -18,7 +18,7 @@ type DynamicCircuitElementOptions = DynamicCircuitElementSelfOptions & FixedCirc
 
 // This class should not be instantiated directly, instead subclasses should provide implementations for getCircuitProperties
 // and the subclasses should be used instead.
-abstract class DynamicCircuitElement extends FixedCircuitElement {
+export default abstract class DynamicCircuitElement extends FixedCircuitElement {
   mnaVoltageDrop: number;
   mnaCurrent: number;
   readonly clearEmitter: Emitter<[]>;
@@ -67,4 +67,3 @@ abstract class DynamicCircuitElement extends FixedCircuitElement {
 
 circuitConstructionKitCommon.register( 'DynamicCircuitElement', DynamicCircuitElement );
 export type { DynamicCircuitElementOptions };
-export default DynamicCircuitElement;

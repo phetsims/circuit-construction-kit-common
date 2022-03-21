@@ -11,7 +11,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-class CurrentSense extends EnumerationValue {
+export default class CurrentSense extends EnumerationValue {
   static FORWARD = new CurrentSense();
   static BACKWARD = new CurrentSense();
   static UNSPECIFIED = new CurrentSense();
@@ -19,4 +19,3 @@ class CurrentSense extends EnumerationValue {
 }
 
 circuitConstructionKitCommon.register( 'CurrentSense', CurrentSense );
-export default CurrentSense;

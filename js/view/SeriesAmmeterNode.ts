@@ -55,7 +55,7 @@ const blackBorder = createPanel( {
   lineWidth: 2.4
 } );
 
-class SeriesAmmeterNode extends FixedCircuitElementNode {
+export default class SeriesAmmeterNode extends FixedCircuitElementNode {
   private readonly frontPanelContainer: Node;
   private readonly disposeSeriesAmmeterNode: () => void;
 
@@ -235,4 +235,3 @@ class SeriesAmmeterNode extends FixedCircuitElementNode {
 }
 
 circuitConstructionKitCommon.register( 'SeriesAmmeterNode', SeriesAmmeterNode );
-export default SeriesAmmeterNode;

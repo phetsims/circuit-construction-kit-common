@@ -23,7 +23,7 @@ type InductorOptions = {
   inductance: number;
 } & DynamicCircuitElementOptions;
 
-class Inductor extends DynamicCircuitElement {
+export default class Inductor extends DynamicCircuitElement {
   readonly inductanceProperty: NumberProperty;
   static INDUCTANCE_DEFAULT = CCKCQueryParameters.inductanceDefault;
   static INDUCTANCE_RANGE = new Range( CCKCQueryParameters.inductanceMin, CCKCQueryParameters.inductanceMax );
@@ -71,4 +71,3 @@ class Inductor extends DynamicCircuitElement {
 }
 
 circuitConstructionKitCommon.register( 'Inductor', Inductor );
-export default Inductor;

@@ -11,7 +11,7 @@ import PhetColorScheme from '../../../scenery-phet/js/PhetColorScheme.js';
 import RoundPushButton from '../../../sun/js/buttons/RoundPushButton.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
-class CCKCRoundPushButton extends RoundPushButton {
+export default class CCKCRoundPushButton extends RoundPushButton {
 
   /**
    * @param {Object} [providedOptions]
@@ -26,4 +26,3 @@ class CCKCRoundPushButton extends RoundPushButton {
 }
 
 circuitConstructionKitCommon.register( 'CCKCRoundPushButton', CCKCRoundPushButton );
-export default CCKCRoundPushButton;

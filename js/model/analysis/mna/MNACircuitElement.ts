@@ -10,7 +10,7 @@
 import CCKCUtils from '../../../CCKCUtils.js';
 import circuitConstructionKitCommon from '../../../circuitConstructionKitCommon.js';
 
-class MNACircuitElement {
+export default class MNACircuitElement {
   readonly nodeId0: string; // index of the start node
   readonly nodeId1: string; // index of the end node
 
@@ -43,4 +43,3 @@ class MNACircuitElement {
 }
 
 circuitConstructionKitCommon.register( 'MNACircuitElement', MNACircuitElement );
-export default MNACircuitElement;

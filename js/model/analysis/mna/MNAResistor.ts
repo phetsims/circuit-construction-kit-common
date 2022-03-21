@@ -1,8 +1,9 @@
 // Copyright 2021, University of Colorado Boulder
 
 import MNACircuitElement from './MNACircuitElement.js';
+import circuitConstructionKitCommon from '../../../circuitConstructionKitCommon.js';
 
-class MNAResistor extends MNACircuitElement {
+export default class MNAResistor extends MNACircuitElement {
   resistance: number;
 
   constructor( nodeId0: string, nodeId1: string, resistance: number ) {
@@ -11,4 +12,4 @@ class MNAResistor extends MNACircuitElement {
   }
 }
 
-export default MNAResistor;
+circuitConstructionKitCommon.register( 'MNAResistor', MNAResistor );

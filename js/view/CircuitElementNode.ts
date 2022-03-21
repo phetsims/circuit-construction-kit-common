@@ -21,7 +21,7 @@ import Vertex from '../model/Vertex.js';
 import IOType from '../../../tandem/js/types/IOType.js';
 import DisplayClickToDismissListener from '../../../joist/js/DisplayClickToDismissListener.js';
 
-abstract class CircuitElementNode extends Node {
+export default abstract class CircuitElementNode extends Node {
   private readonly useHitTestForSensors: any;
   private readonly circuit: Circuit | null;
   readonly circuitElement: CircuitElement;
@@ -292,4 +292,3 @@ abstract class CircuitElementNode extends Node {
 }
 
 circuitConstructionKitCommon.register( 'CircuitElementNode', CircuitElementNode );
-export default CircuitElementNode;

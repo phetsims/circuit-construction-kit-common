@@ -26,7 +26,7 @@ type ResistorSelfOptions = {
 };
 type ResistorOptions = ResistorSelfOptions & FixedCircuitElementOptions;
 
-class Resistor extends FixedCircuitElement {
+export default class Resistor extends FixedCircuitElement {
 
   // the resistance in ohms
   readonly resistanceProperty: NumberProperty;
@@ -139,4 +139,3 @@ Resistor.ResistorIO = new IOType( 'ResistorIO', {
 
 circuitConstructionKitCommon.register( 'Resistor', Resistor );
 export type { ResistorOptions };
-export default Resistor;

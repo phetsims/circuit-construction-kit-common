@@ -38,7 +38,7 @@ const BLACK_CIRCLE_NODE = new Circle( VERTEX_RADIUS, merge( CIRCLE_OPTIONS, {
   stroke: Color.BLACK
 } ) ).rasterized( { wrap: false } );
 
-class VertexNode extends Node {
+export default class VertexNode extends Node {
   private readonly circuit: Circuit;
   private readonly cutButton: RoundPushButton;
   private readonly circuitLayerNode: CircuitLayerNode;
@@ -435,4 +435,3 @@ VertexNode.webglSpriteNodes = [
   BLACK_CIRCLE_NODE, RED_CIRCLE_NODE
 ];
 circuitConstructionKitCommon.register( 'VertexNode', VertexNode );
-export default VertexNode;

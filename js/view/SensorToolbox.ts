@@ -53,7 +53,7 @@ const TOOLBOX_ICON_HEIGHT = 53;
 const VOLTMETER_ICON_SCALE = 1.4;
 const ICON_TEXT_SPACING = 3; // distance in view coordinates from the isIcon to the text below the isIcon
 
-class SensorToolbox extends CCKCPanel {
+export default class SensorToolbox extends CCKCPanel {
 
   /**
    * @param {AlignGroup} alignGroup - for alignment with other controls
@@ -298,4 +298,3 @@ class SensorToolbox extends CCKCPanel {
 }
 
 circuitConstructionKitCommon.register( 'SensorToolbox', SensorToolbox );
-export default SensorToolbox;

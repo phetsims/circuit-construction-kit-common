@@ -2,7 +2,7 @@
 import LTACircuit from './LTACircuit.js';
 import LTASolution from './LTASolution.js';
 
-class LTAState {
+export default class LTAState {
   readonly ltaCircuit: LTACircuit;
   readonly ltaSolution: LTASolution | null;
   private solution: LTASolution | null;
@@ -44,4 +44,4 @@ class LTAState {
   }
 }
 
-export default LTAState;
+// TODO: Register namespace

@@ -12,7 +12,7 @@ import Matrix3 from '../../../dot/js/Matrix3.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitElement from './CircuitElement.js';
 
-class Charge {
+export default class Charge {
 
   //the amount of charge
   readonly charge: number;
@@ -81,4 +81,3 @@ class Charge {
 }
 
 circuitConstructionKitCommon.register( 'Charge', Charge );
-export default Charge;

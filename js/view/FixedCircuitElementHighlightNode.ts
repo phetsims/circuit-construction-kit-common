@@ -14,7 +14,7 @@ import FixedCircuitElementNode from './FixedCircuitElementNode.js';
 // constants
 const CORNER_RADIUS = 8; // in view coordinates
 
-class FixedCircuitElementHighlightNode extends Rectangle {
+export default class FixedCircuitElementHighlightNode extends Rectangle {
 
   /**
    * @param {FixedCircuitElementNode} fixedCircuitElementNode
@@ -45,4 +45,3 @@ class FixedCircuitElementHighlightNode extends Rectangle {
 }
 
 circuitConstructionKitCommon.register( 'FixedCircuitElementHighlightNode', FixedCircuitElementHighlightNode );
-export default FixedCircuitElementHighlightNode;

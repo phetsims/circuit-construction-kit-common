@@ -28,7 +28,7 @@ const TICK_LABEL_TEXT_OPTIONS = { fontSize: 12, maxWidth: 45 };
 // Chosen so that current through battery+long wire+long wire+resistor would match prior version, see https://github.com/phetsims/circuit-construction-kit-common/issues/553
 const MAX_RESISTIVITY = 0.0168;
 
-class WireResistivityControl extends VBox {
+export default class WireResistivityControl extends VBox {
 
   /**
    * @param {Property.<number>} wireResistivityProperty
@@ -60,4 +60,3 @@ class WireResistivityControl extends VBox {
 }
 
 circuitConstructionKitCommon.register( 'WireResistivityControl', WireResistivityControl );
-export default WireResistivityControl;

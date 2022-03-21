@@ -19,7 +19,7 @@ import CircuitLayerNode from './CircuitLayerNode.js';
 import ResistorNode from './ResistorNode.js';
 import Dog from '../model/Dog.js';
 
-class DogNode extends ResistorNode {
+export default class DogNode extends ResistorNode {
   private readonly barkNode: BarkNode;
   private readonly isBarkingListener: ( isBarking: any ) => void;
   private readonly dog: Dog;
@@ -84,4 +84,3 @@ class DogNode extends ResistorNode {
 }
 
 circuitConstructionKitCommon.register( 'DogNode', DogNode );
-export default DogNode;

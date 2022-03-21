@@ -5,7 +5,7 @@ import Range from '../../../dot/js/Range.js';
 import Enumeration from '../../../phet-core/js/Enumeration.js';
 import EnumerationValue from '../../../phet-core/js/EnumerationValue.js';
 
-class ResistorType extends EnumerationValue {
+export default class ResistorType extends EnumerationValue {
 
   static RESISTOR = new ResistorType( 10, new Range( 0, 120 ), false, CCKCConstants.RESISTOR_LENGTH );
   static HIGH_RESISTANCE_RESISTOR = new ResistorType( 1000, new Range( 100, 10000 ), false, CCKCConstants.RESISTOR_LENGTH );
@@ -60,5 +60,4 @@ class ResistorType extends EnumerationValue {
     return new ResistorType( resistance, new Range( resistance, resistance ), isMetallic, length, verticalOffset );
   }
 }
-
-export default ResistorType;
+// TODO: register namespace

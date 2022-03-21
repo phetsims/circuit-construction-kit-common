@@ -23,7 +23,7 @@ import MNABattery from './MNABattery.js';
 import MNAResistor from './MNAResistor.js';
 import MNACurrent from './MNACurrent.js';
 
-class MNACircuit {
+export default class MNACircuit {
   private readonly batteries: MNABattery[];
   private readonly resistors: MNAResistor[];
   private readonly currentSources: MNACurrent[];
@@ -553,6 +553,3 @@ x=\n${x.transpose().toString()}
 
   return debugInfo;
 };
-
-
-export default MNACircuit;

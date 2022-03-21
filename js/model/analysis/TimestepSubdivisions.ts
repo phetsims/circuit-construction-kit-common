@@ -30,7 +30,7 @@ type Steppable<T> = {
   distance: ( a: T, b: T ) => number;
 };
 
-class TimestepSubdivisions<T> {
+export default class TimestepSubdivisions<T> {
 
   /**
    * @param {Object} originalState
@@ -111,4 +111,3 @@ class TimestepSubdivisions<T> {
 }
 
 circuitConstructionKitCommon.register( 'TimestepSubdivisions', TimestepSubdivisions );
-export default TimestepSubdivisions;

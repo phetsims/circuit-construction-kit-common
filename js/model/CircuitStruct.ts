@@ -25,7 +25,7 @@ import Wire from './Wire.js';
 import CircuitElementViewType from './CircuitElementViewType.js';
 import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 
-class CircuitStruct {
+export default class CircuitStruct {
   vertices: Vertex[];
   wires: Wire[];
   resistors: Resistor[];
@@ -162,4 +162,3 @@ CircuitStruct.fromStateObject = ( circuit, circuitState, resistivityProperty, ta
 };
 
 circuitConstructionKitCommon.register( 'CircuitStruct', CircuitStruct );
-export default CircuitStruct;

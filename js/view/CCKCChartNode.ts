@@ -58,7 +58,7 @@ type CCKCChartNodeOptions = {
   defaultZoomLevel: number;
 } & NodeOptions;
 
-class CCKCChartNode extends Node {
+export default class CCKCChartNode extends Node {
   protected readonly meter: Meter;
   protected readonly series: ObservableArray<Vector2 | null>;
   protected readonly circuitLayerNode: CircuitLayerNode;
@@ -499,4 +499,3 @@ class CCKCChartNode extends Node {
 }
 
 circuitConstructionKitCommon.register( 'CCKCChartNode', CCKCChartNode );
-export default CCKCChartNode;

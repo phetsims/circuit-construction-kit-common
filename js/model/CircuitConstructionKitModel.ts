@@ -36,7 +36,7 @@ type CircuitConstructionKitModelOptions = {
   revealing: boolean;
 };
 
-class CircuitConstructionKitModel {
+export default class CircuitConstructionKitModel {
   private zoomAnimation: ZoomAnimation | null;
   readonly viewTypeProperty: Property<CircuitElementViewType>;
   private readonly addRealBulbsProperty: BooleanProperty;
@@ -315,4 +315,3 @@ class CircuitConstructionKitModel {
 }
 
 circuitConstructionKitCommon.register( 'CircuitConstructionKitModel', CircuitConstructionKitModel );
-export default CircuitConstructionKitModel;

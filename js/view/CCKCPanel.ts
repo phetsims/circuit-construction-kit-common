@@ -13,7 +13,7 @@ import { Node } from '../../../scenery/js/imports.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
-class CCKCPanel extends Panel {
+export default class CCKCPanel extends Panel {
 
   /**
    * @param {Node} content - what will appear in the panel
@@ -34,4 +34,3 @@ class CCKCPanel extends Panel {
 }
 
 circuitConstructionKitCommon.register( 'CCKCPanel', CCKCPanel );
-export default CCKCPanel;

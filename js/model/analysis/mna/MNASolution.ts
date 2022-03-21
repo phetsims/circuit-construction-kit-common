@@ -10,7 +10,7 @@ import circuitConstructionKitCommon from '../../../circuitConstructionKitCommon.
 import MNACircuitElement from './MNACircuitElement.js';
 import MNAResistor from './MNAResistor.js';
 
-class MNASolution {
+export default class MNASolution {
 
   private readonly nodeVoltages: Map<string, number>;
   private readonly elements: Map<MNACircuitElement, number>; // circuit elements in the solution
@@ -149,4 +149,3 @@ class MNASolution {
 const approximatelyEquals = ( a: number, b: number ) => Math.abs( a - b ) < 1E-4;
 
 circuitConstructionKitCommon.register( 'MNASolution', MNASolution );
-export default MNASolution;

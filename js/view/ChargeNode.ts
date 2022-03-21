@@ -38,7 +38,7 @@ const ARROW_NODE = new ConventionalCurrentArrowNode( Tandem.GLOBAL_VIEW.createTa
 // Below this amperage, no conventional current will be rendered.
 const CONVENTIONAL_CHARGE_THRESHOLD = 1E-6;
 
-class ChargeNode extends Node {
+export default class ChargeNode extends Node {
   private readonly circuitLayerNode: CircuitLayerNode;
   private readonly charge: Charge;
   private readonly outsideOfBlackBoxProperty: BooleanProperty;
@@ -164,4 +164,3 @@ class ChargeNode extends Node {
 ChargeNode.webglSpriteNodes = [ ELECTRON_CHARGE_NODE, ARROW_NODE ];
 
 circuitConstructionKitCommon.register( 'ChargeNode', ChargeNode );
-export default ChargeNode;

@@ -89,7 +89,7 @@ type CCKCScreenViewOptions = {
   hasACandDCVoltageSources: boolean;
 };
 
-class CCKCScreenView extends ScreenView {
+export default class CCKCScreenView extends ScreenView {
   readonly model: CircuitConstructionKitModel;
   readonly circuitLayerNodeBackLayer: Node;
   private readonly circuitLayerNode: CircuitLayerNode;
@@ -540,4 +540,3 @@ class CCKCScreenView extends ScreenView {
 }
 
 circuitConstructionKitCommon.register( 'CCKCScreenView', CCKCScreenView );
-export default CCKCScreenView;

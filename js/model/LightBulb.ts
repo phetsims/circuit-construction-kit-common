@@ -60,7 +60,7 @@ type LightBulbSelfOptions = {
 
 type LightBulbOptions = LightBulbSelfOptions & FixedCircuitElementOptions;
 
-class LightBulb extends FixedCircuitElement {
+export default class LightBulb extends FixedCircuitElement {
   readonly real: boolean;
   readonly highResistance: boolean;
   readonly resistanceProperty: NumberProperty;
@@ -252,4 +252,3 @@ const samplePoints = LightBulb.createSamplePoints( Vector2.ZERO );
 LightBulb.vertexDelta = samplePoints[ 1 ].minus( samplePoints[ 0 ] );
 
 circuitConstructionKitCommon.register( 'LightBulb', LightBulb );
-export default LightBulb;

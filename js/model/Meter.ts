@@ -15,7 +15,7 @@ import Vector2Property from '../../../dot/js/Vector2Property.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
-class Meter {
+export default class Meter {
   phetioIndex: number;
   readonly visibleProperty: Property<boolean>;
   readonly bodyPositionProperty: Property<Vector2>;
@@ -62,4 +62,3 @@ class Meter {
 }
 
 circuitConstructionKitCommon.register( 'Meter', Meter );
-export default Meter;

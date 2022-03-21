@@ -16,7 +16,7 @@ import Vertex from './Vertex.js';
 type SeriesAmmeterSelfOptions = {};
 type SeriesAmmeterOptions = SeriesAmmeterSelfOptions & FixedCircuitElementOptions;
 
-class SeriesAmmeter extends FixedCircuitElement {
+export default class SeriesAmmeter extends FixedCircuitElement {
   readonly resistanceProperty: NumberProperty;
 
   constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: SeriesAmmeterOptions ) {
@@ -41,4 +41,3 @@ class SeriesAmmeter extends FixedCircuitElement {
 }
 
 circuitConstructionKitCommon.register( 'SeriesAmmeter', SeriesAmmeter );
-export default SeriesAmmeter;

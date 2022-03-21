@@ -26,7 +26,7 @@ import CoreModel from './CoreModel.js';
 
 type DistanceParams = { getCharacteristicArray: () => number[] };
 
-class LTACircuit {
+export default class LTACircuit {
   private readonly ltaResistors: MNAResistor[];
   private readonly ltaBatteries: LTAResistiveBattery[];
   readonly ltaCapacitors: LTACapacitor[];
@@ -253,4 +253,3 @@ const euclideanDistance = ( x: number[], y: number[] ) => {
 };
 
 circuitConstructionKitCommon.register( 'LTACircuit', LTACircuit );
-export default LTACircuit;

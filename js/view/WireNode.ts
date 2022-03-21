@@ -144,7 +144,7 @@ const getTouchArea = ( wire: Wire ) => {
   return Shape.lineSegment( touchAreaStart, touchAreaEnd ).getStrokedShape( TOUCH_AREA_LINE_STYLES );
 };
 
-class WireNode extends CircuitElementNode {
+export default class WireNode extends CircuitElementNode {
   private readonly viewTypeProperty: Property<CircuitElementViewType>;
   private readonly circuitLayerNode: CircuitLayerNode | null;
   private readonly wire: Wire;
@@ -442,4 +442,3 @@ WireNode.webglSpriteNodes = [
 ];
 
 circuitConstructionKitCommon.register( 'WireNode', WireNode );
-export default WireNode;

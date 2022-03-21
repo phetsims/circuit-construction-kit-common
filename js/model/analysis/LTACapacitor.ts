@@ -1,7 +1,9 @@
 // Copyright 2021, University of Colorado Boulder
 import DynamicCoreModel from './DynamicCoreModel.js';
 
-class LTACapacitor extends DynamicCoreModel {
+import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
+
+export default class LTACapacitor extends DynamicCoreModel {
   capacitorVoltageNode1: string | null;
   capacitance: number;
 
@@ -14,4 +16,4 @@ class LTACapacitor extends DynamicCoreModel {
   }
 }
 
-export default LTACapacitor;
+circuitConstructionKitCommon.register( 'LTACapacitor', LTACapacitor );

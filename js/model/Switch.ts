@@ -28,7 +28,7 @@ type SwitchSelfOptions = {
 };
 type SwitchOptions = SwitchSelfOptions & FixedCircuitElementOptions;
 
-class Switch extends FixedCircuitElement {
+export default class Switch extends FixedCircuitElement {
   readonly resistanceProperty: Property<number>;
   readonly closedProperty: Property<boolean>;
 
@@ -115,4 +115,3 @@ class Switch extends FixedCircuitElement {
 }
 
 circuitConstructionKitCommon.register( 'Switch', Switch );
-export default Switch;

@@ -10,7 +10,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-class CircuitElementViewType extends EnumerationValue {
+export default class CircuitElementViewType extends EnumerationValue {
   static LIFELIKE = new CircuitElementViewType();
   static SCHEMATIC = new CircuitElementViewType();
 
@@ -20,5 +20,3 @@ class CircuitElementViewType extends EnumerationValue {
 }
 
 circuitConstructionKitCommon.register( 'CircuitElementViewType', CircuitElementViewType );
-
-export default CircuitElementViewType;

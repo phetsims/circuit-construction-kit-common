@@ -36,7 +36,7 @@ const TIMESTEP_SUBDIVISIONS = new TimestepSubdivisions<LTAState>();
 
 let id = 0;
 
-class LinearTransientAnalysis {
+export default class LinearTransientAnalysis {
 
   /**
    * Solves the system with Modified Nodal Analysis, and apply the results back to the Circuit.
@@ -316,4 +316,3 @@ class LinearTransientAnalysis {
 }
 
 circuitConstructionKitCommon.register( 'LinearTransientAnalysis', LinearTransientAnalysis );
-export default LinearTransientAnalysis;

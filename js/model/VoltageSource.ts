@@ -27,7 +27,7 @@ type VoltageSourceOptions = {
   };
 } & FixedCircuitElementOptions;
 
-abstract class VoltageSource extends FixedCircuitElement {
+export default abstract class VoltageSource extends FixedCircuitElement {
   readonly voltageProperty: NumberProperty;
 
   // the internal resistance of the battery
@@ -101,4 +101,3 @@ abstract class VoltageSource extends FixedCircuitElement {
 
 circuitConstructionKitCommon.register( 'VoltageSource', VoltageSource );
 export type { VoltageSourceOptions };
-export default VoltageSource;

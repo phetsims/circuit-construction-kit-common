@@ -14,7 +14,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitLayerNode from './CircuitLayerNode.js';
 import CurrentSense from '../model/CurrentSense.js';
 
-class CircuitDebugLayer extends Node {
+export default class CircuitDebugLayer extends Node {
   private readonly circuitLayerNode: CircuitLayerNode;
 
   constructor( circuitLayerNode: CircuitLayerNode ) {
@@ -84,4 +84,3 @@ class CircuitDebugLayer extends Node {
 }
 
 circuitConstructionKitCommon.register( 'CircuitDebugLayer', CircuitDebugLayer );
-export default CircuitDebugLayer;

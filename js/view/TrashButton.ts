@@ -15,7 +15,7 @@ import CCKCRoundPushButton from './CCKCRoundPushButton.js';
 import Circuit from '../model/Circuit.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 
-class TrashButton extends CCKCRoundPushButton {
+export default class TrashButton extends CCKCRoundPushButton {
 
   /**
    * @param {Circuit} circuit - the circuit from which the CircuitElement can be removed
@@ -52,4 +52,3 @@ class TrashButton extends CCKCRoundPushButton {
 }
 
 circuitConstructionKitCommon.register( 'TrashButton', TrashButton );
-export default TrashButton;

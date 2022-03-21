@@ -28,7 +28,7 @@ const MAX_VOLTAGE = 120;
 type ACVoltageSelfOptions = {};
 type ACVoltageOptions = ACVoltageSelfOptions & VoltageSourceOptions;
 
-class ACVoltage extends VoltageSource {
+export default class ACVoltage extends VoltageSource {
 
   // the maximum voltage, which can be controlled by the CircuitElementNumberControl
   readonly maximumVoltageProperty: NumberProperty;
@@ -121,4 +121,3 @@ class ACVoltage extends VoltageSource {
 }
 
 circuitConstructionKitCommon.register( 'ACVoltage', ACVoltage );
-export default ACVoltage;
