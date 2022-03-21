@@ -23,10 +23,10 @@ const SWITCH_LENGTH = CCKCConstants.SWITCH_LENGTH;
 const SWITCH_START = CCKCConstants.SWITCH_START;
 const SWITCH_END = CCKCConstants.SWITCH_END;
 
-type SwitchSelfOptions = {
+type SelfOptions = {
   closed?: boolean;
 };
-type SwitchOptions = SwitchSelfOptions & FixedCircuitElementOptions;
+type SwitchOptions = SelfOptions & FixedCircuitElementOptions;
 
 export default class Switch extends FixedCircuitElement {
   readonly resistanceProperty: Property<number>;
@@ -40,7 +40,7 @@ export default class Switch extends FixedCircuitElement {
    */
   constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: SwitchOptions ) {
 
-    const options = optionize<SwitchOptions, SwitchSelfOptions, FixedCircuitElementOptions>( {
+    const options = optionize<SwitchOptions, SelfOptions, FixedCircuitElementOptions>( {
       closed: false,
 
       // Use the bounding box of the open lifelike switch to show bounds for all combinations of open/closed x lifelike/schematic

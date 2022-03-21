@@ -53,12 +53,12 @@ const SCHEMATIC_SAMPLE_POINTS = [
   new Vector2( 0.89, 1.474 )                                            // bottom right
 ];
 
-type LightBulbSelfOptions = {
+type SelfOptions = {
   highResistance?: boolean;
   real?: boolean;
 };
 
-type LightBulbOptions = LightBulbSelfOptions & FixedCircuitElementOptions;
+type LightBulbOptions = SelfOptions & FixedCircuitElementOptions;
 
 export default class LightBulb extends FixedCircuitElement {
   readonly real: boolean;
@@ -78,7 +78,7 @@ export default class LightBulb extends FixedCircuitElement {
     endVertex: Vertex, // bottom
     resistance: number,
     viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: LightBulbOptions ) {
-    const filledOptions = optionize<LightBulbOptions, LightBulbSelfOptions, FixedCircuitElementOptions>( {
+    const filledOptions = optionize<LightBulbOptions, SelfOptions, FixedCircuitElementOptions>( {
       highResistance: false,
       real: false
     }, providedOptions );

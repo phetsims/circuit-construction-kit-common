@@ -13,8 +13,8 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import FixedCircuitElement, { FixedCircuitElementOptions } from './FixedCircuitElement.js';
 import Vertex from './Vertex.js';
 
-type SeriesAmmeterSelfOptions = {};
-type SeriesAmmeterOptions = SeriesAmmeterSelfOptions & FixedCircuitElementOptions;
+type SelfOptions = {};
+type SeriesAmmeterOptions = SelfOptions & FixedCircuitElementOptions;
 
 export default class SeriesAmmeter extends FixedCircuitElement {
   readonly resistanceProperty: NumberProperty;

@@ -31,16 +31,16 @@ import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 // variables
 let index = 0;
 
-type CircuitElementSelfOptions = {
-  isFlammable?: boolean;
-  isMetallic?: boolean;
-  isSizeChangedOnViewChange?: boolean;
-  isCurrentReentrant?: boolean;
-  interactive?: boolean;
-  insideTrueBlackBox?: boolean;
+type SelfOptions = {
+  isFlammable?: boolean,
+  isMetallic?: boolean,
+  isSizeChangedOnViewChange?: boolean,
+  isCurrentReentrant?: boolean,
+  interactive?: boolean,
+  insideTrueBlackBox?: boolean
 };
 
-export type CircuitElementOptions = CircuitElementSelfOptions & PhetioObjectOptions;
+export type CircuitElementOptions = SelfOptions & PhetioObjectOptions;
 
 export default abstract class CircuitElement extends PhetioObject {
   readonly id: number;
@@ -79,7 +79,7 @@ export default abstract class CircuitElement extends PhetioObject {
     assert && assert( typeof chargePathLength === 'number', 'charge path length should be a number' );
     assert && assert( chargePathLength > 0, 'charge path length must be positive' );
 
-    const options = optionize<CircuitElementOptions, CircuitElementSelfOptions, PhetioObjectOptions>( {
+    const options = optionize<CircuitElementOptions, SelfOptions, PhetioObjectOptions>( {
       interactive: true, // In CCK: Black Box Study, CircuitElements in the black box cannot be manipulated
       isSizeChangedOnViewChange: true,
       insideTrueBlackBox: false,

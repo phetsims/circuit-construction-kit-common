@@ -13,8 +13,8 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import FixedCircuitElement, { FixedCircuitElementOptions } from './FixedCircuitElement.js';
 import Vertex from './Vertex.js';
 
-type DynamicCircuitElementSelfOptions = {};
-export type DynamicCircuitElementOptions = DynamicCircuitElementSelfOptions & FixedCircuitElementOptions;
+type SelfOptions = {};
+export type DynamicCircuitElementOptions = SelfOptions & FixedCircuitElementOptions;
 
 // This class should not be instantiated directly, instead subclasses should provide implementations for getCircuitProperties
 // and the subclasses should be used instead.

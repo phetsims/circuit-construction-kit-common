@@ -14,10 +14,10 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitElement, { CircuitElementOptions } from './CircuitElement.js';
 import Vertex from './Vertex.js';
 
-type FixedCircuitElementSelfOptions = {
-  numberOfDecimalPlaces?: number;
+type SelfOptions = {
+  numberOfDecimalPlaces?: number
 };
-export type FixedCircuitElementOptions = FixedCircuitElementSelfOptions & CircuitElementOptions;
+export type FixedCircuitElementOptions = SelfOptions & CircuitElementOptions;
 
 export default abstract class FixedCircuitElement extends CircuitElement {
   readonly numberOfDecimalPlaces: number;
@@ -30,7 +30,7 @@ export default abstract class FixedCircuitElement extends CircuitElement {
                tandem: Tandem,
                providedOptions?: FixedCircuitElementOptions ) {
 
-    const options = optionize<FixedCircuitElementOptions, FixedCircuitElementSelfOptions, CircuitElementOptions>( {
+    const options = optionize<FixedCircuitElementOptions, SelfOptions, CircuitElementOptions>( {
       numberOfDecimalPlaces: 1
     }, providedOptions );
 

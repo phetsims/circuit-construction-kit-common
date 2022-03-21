@@ -18,12 +18,12 @@ import Circuit from './Circuit.js';
 import FixedCircuitElement, { FixedCircuitElementOptions } from './FixedCircuitElement.js';
 import Vertex from './Vertex.js';
 
-type FuseSelfOptions = {
-  fuseLength?: number;
-  currentRating?: number;
+type SelfOptions = {
+  fuseLength?: number
+  currentRating?: number
 };
 
-type FuseOptions = FuseSelfOptions & FixedCircuitElementOptions;
+type FuseOptions = SelfOptions & FixedCircuitElementOptions;
 
 export default class Fuse extends FixedCircuitElement {
   readonly currentRatingProperty: NumberProperty;
@@ -33,7 +33,7 @@ export default class Fuse extends FixedCircuitElement {
   isRepairableProperty: BooleanProperty;
 
   constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: FuseOptions ) {
-    const options = optionize<FuseOptions, FuseSelfOptions, FixedCircuitElementOptions>( {
+    const options = optionize<FuseOptions, SelfOptions, FixedCircuitElementOptions>( {
       fuseLength: CCKCConstants.RESISTOR_LENGTH, // Same length as a resistor
       currentRating: Fuse.DEFAULT_CURRENT_RATING, // Amps
       isCurrentReentrant: true, // Changing the current can trip a fuse, which changes the current

@@ -21,11 +21,11 @@ import Vertex from './Vertex.js';
 // coordinates.
 const METERS_PER_VIEW_COORDINATE = 0.0005;
 
-type WireSelfOptions = {
-  wireStub?: boolean;
+type SelfOptions = {
+  wireStub?: boolean
 };
 
-type WireOptions = WireSelfOptions & CircuitElementOptions;
+type WireOptions = SelfOptions & CircuitElementOptions;
 
 export default class Wire extends CircuitElement {
   private readonly wireStub: boolean;
@@ -38,7 +38,7 @@ export default class Wire extends CircuitElement {
     assert && assert( typeof resistivityProperty !== 'number', 'property should not be a number' );
     assert && assert( !startVertex.isDisposed, 'vertex should not be disposed' );
     assert && assert( !endVertex.isDisposed, 'vertex should not be disposed' );
-    const options = optionize<WireOptions, WireSelfOptions, CircuitElementOptions>( {
+    const options = optionize<WireOptions, SelfOptions, CircuitElementOptions>( {
       wireStub: false,
       isMetallic: true
     }, providedOptions );
