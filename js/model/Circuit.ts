@@ -1330,7 +1330,7 @@ class Circuit {
    * @param {Bounds2|undefined} blackBoxBounds - the bounds of the black box, if there is one
    * @returns - the vertex it will be able to connect to, if dropped or null if no connection is available
    */
-  getDropTarget( vertex: Vertex, mode: InteractionMode, blackBoxBounds: Bounds2 | null ): Vertex | null { // TODO Enum for InteractionMode
+  getDropTarget( vertex: Vertex, mode: InteractionMode, blackBoxBounds: Bounds2 | null ): Vertex | null {
 
     if ( mode === InteractionMode.TEST ) {
       assert && assert( blackBoxBounds, 'bounds should be provided for build mode' );
