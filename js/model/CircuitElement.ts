@@ -26,6 +26,7 @@ import IReadOnlyProperty, { PropertyLinkListener } from '../../../axon/js/IReadO
 import optionize from '../../../phet-core/js/optionize.js';
 import StringProperty from '../../../axon/js/StringProperty.js';
 import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
+import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 
 // variables
 let index = 0;
@@ -436,7 +437,7 @@ abstract class CircuitElement extends PhetioObject {
    * @returns {Property.<*>[]}
    * @public
    */
-  abstract getCircuitProperties(): Property<any>[] // TODO: parameter
+  abstract getCircuitProperties(): Property<IntentionalAny>[]
 
   /**
    * Get the midpoint between the vertices.  Used for dropping circuit elements into the toolbox.

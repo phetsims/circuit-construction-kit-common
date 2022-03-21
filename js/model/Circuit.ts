@@ -395,11 +395,8 @@ class Circuit {
                                                           new Dog( startVertex, endVertex, tandem ) :
                                                           new Resistor( startVertex, endVertex, resistorType, tandem ),
 
-      // @ts-ignore
       () => {
-        const argumentArray: any[] = createVertices( ResistorType.RESISTOR.length );
-        argumentArray.push( ResistorType.RESISTOR );
-        return argumentArray;
+        return [ ...createVertices( ResistorType.RESISTOR.length ), ResistorType.RESISTOR ];
       }, {
         phetioType: PhetioGroup.PhetioGroupIO( Resistor.ResistorIO ),
         tandem: tandem.createTandem( 'resistorGroup' )
