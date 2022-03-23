@@ -20,7 +20,7 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import optionize from '../../../phet-core/js/optionize.js';
 
 type SelfOptions = {
-  showRealBulbsCheckbox?: boolean
+  showRealBulbsCheckbox?: boolean;
 };
 type AdvancedAccordionBoxOptions = SelfOptions & CCKCAccordionBoxOptions;
 

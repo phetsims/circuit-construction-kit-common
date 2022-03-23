@@ -31,12 +31,12 @@ import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 let index = 0;
 
 type CircuitElementSelfOptions = {
-  isFlammable?: boolean,
-  isMetallic?: boolean,
-  isSizeChangedOnViewChange?: boolean,
-  isCurrentReentrant?: boolean,
-  interactive?: boolean,
-  insideTrueBlackBox?: boolean
+  isFlammable?: boolean;
+  isMetallic?: boolean;
+  isSizeChangedOnViewChange?: boolean;
+  isCurrentReentrant?: boolean;
+  interactive?: boolean;
+  insideTrueBlackBox?: boolean;
 };
 
 type CircuitElementOptions = CircuitElementSelfOptions & PhetioObjectOptions;

@@ -24,10 +24,10 @@ const searchTimeStep = CCKCQueryParameters.searchTimeStep;
 type Steppable<T> = {
 
   // immutable time integration from one state to the next by a time of dt
-  update: ( state: T, dt: number ) => T,
+  update: ( state: T, dt: number ) => T;
 
   // determine how much two states differ
-  distance: ( a: T, b: T ) => number
+  distance: ( a: T, b: T ) => number;
 };
 
 class TimestepSubdivisions<T> {
@@ -42,7 +42,7 @@ class TimestepSubdivisions<T> {
   stepInTimeWithHistory( originalState: T, steppable: Steppable<T>, totalTime: number ) {
     let state = originalState;
     let elapsedTime = 0.0;
-    const states: { dt: number, state: T }[] = [];
+    const states: { dt: number; state: T }[] = [];
     let attemptedDT = totalTime;
     while ( elapsedTime < totalTime ) {
 
@@ -75,7 +75,7 @@ class TimestepSubdivisions<T> {
    * @param {Object} halfStepState - efficiently reuse value from parent call, instead of recomputing it.
    * @returns {number} the selected timestep that has acceptable error or meets the minimum allowed
    */
-  private search( state: T, steppable: Steppable<T>, dt: number, halfStepState: T | null ): { dt: number, state: T } {
+  private search( state: T, steppable: Steppable<T>, dt: number, halfStepState: T | null ): { dt: number; state: T } {
 
     if ( dt === CCKCConstants.PAUSED_DT ) {
 

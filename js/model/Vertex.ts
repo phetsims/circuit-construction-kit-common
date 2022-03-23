@@ -23,12 +23,12 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 let counter = 0;
 
 type VertexOptions = {
-  draggable: boolean,
-  attachable: boolean,
-  interactive: boolean,
-  blackBoxInterface: boolean,
-  insideTrueBlackBox: boolean,
-  tandem: Tandem
+  draggable: boolean;
+  attachable: boolean;
+  interactive: boolean;
+  blackBoxInterface: boolean;
+  insideTrueBlackBox: boolean;
+  tandem: Tandem;
 } & PhetioObjectOptions;
 
 class Vertex extends PhetioObject {

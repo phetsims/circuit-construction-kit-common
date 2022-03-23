@@ -47,7 +47,7 @@ class VertexNode extends Node {
   private readonly vertex: Vertex;
   startOffset: Vector2 | null;
   private readonly highlightNode: Circle;
-  private readonly keyListener: { keydown: ( event: any ) => void; };
+  private readonly keyListener: { keydown: ( event: any ) => void };
   private readonly updateStrokeListener: () => void;
   private readonly updateSelectedListener: () => void;
   private readonly updateMoveToFront: () => Node;

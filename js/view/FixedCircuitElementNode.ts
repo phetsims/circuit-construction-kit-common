@@ -44,8 +44,8 @@ const isFireShown = ( current: number, isValueDepictionEnabled: boolean ) =>
   Math.abs( current ) >= FIRE_THRESHOLD && isValueDepictionEnabled;
 
 type FixedCircuitElementNodeOptions = {
-  isIcon: boolean,
-  showHighlight: boolean
+  isIcon: boolean;
+  showHighlight: boolean;
 } & NodeOptions;// TODO: & CircuitElementNodeOptions
 
 class FixedCircuitElementNode extends CircuitElementNode {

@@ -6,8 +6,8 @@ import CoreModel from './CoreModel.js';
 import MNAResistor from './mna/MNAResistor.js';
 
 type Element = {
-  dt: number
-  state: LTAState
+  dt: number;
+  state: LTAState;
 };
 
 /**

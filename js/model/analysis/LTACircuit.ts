@@ -24,7 +24,7 @@ import MNAResistor from './mna/MNAResistor.js';
 import MNACurrent from './mna/MNACurrent.js';
 import CoreModel from './CoreModel.js';
 
-type DistanceParams = { getCharacteristicArray: () => number[]; };
+type DistanceParams = { getCharacteristicArray: () => number[] };
 
 class LTACircuit {
   private readonly ltaResistors: MNAResistor[];
@@ -55,7 +55,7 @@ class LTACircuit {
     const companionBatteries: MNABattery[] = [];
     const companionResistors: MNAResistor[] = [];
     const companionCurrents: MNACurrent[] = [];
-    const currentCompanions: { element: CoreModel, getValueForSolution: ( solution: MNASolution ) => number }[] = [];
+    const currentCompanions: { element: CoreModel; getValueForSolution: ( solution: MNASolution ) => number }[] = [];
 
     // Node indices that have been used
     let syntheticNodeIndex = 0;
@@ -163,7 +163,7 @@ class LTACircuit {
    */
   solveWithSubdivisions( timestepSubdivisions: TimestepSubdivisions<LTAState>, dt: number ) {
     const steppable = {
-      update: ( a: { update: ( dt: number ) => LTAState; }, dt: number ) => a.update( dt ),
+      update: ( a: { update: ( dt: number ) => LTAState }, dt: number ) => a.update( dt ),
       distance: ( a: DistanceParams, b: DistanceParams ) => euclideanDistance( a.getCharacteristicArray(), b.getCharacteristicArray() )
     };
 

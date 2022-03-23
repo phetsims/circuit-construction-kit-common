@@ -55,7 +55,7 @@ const WIRE_LINE_WIDTH = 3;
 const MAX_AXIS_LABEL_WIDTH = 120;
 
 type CCKCChartNodeOptions = {
-  defaultZoomLevel: number
+  defaultZoomLevel: number;
 } & NodeOptions;
 
 class CCKCChartNode extends Node {

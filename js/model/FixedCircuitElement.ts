@@ -15,7 +15,7 @@ import CircuitElement, { CircuitElementOptions } from './CircuitElement.js';
 import Vertex from './Vertex.js';
 
 type FixedCircuitElementSelfOptions = {
-  numberOfDecimalPlaces?: number
+  numberOfDecimalPlaces?: number;
 };
 type FixedCircuitElementOptions = FixedCircuitElementSelfOptions & CircuitElementOptions;
 

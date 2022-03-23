@@ -20,7 +20,7 @@ import Vertex from './Vertex.js';
 const INDUCTOR_LENGTH = CCKCConstants.INDUCTOR_LENGTH;
 
 type InductorOptions = {
-  inductance: number
+  inductance: number;
 } & DynamicCircuitElementOptions;
 
 class Inductor extends DynamicCircuitElement {

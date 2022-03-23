@@ -23,7 +23,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 const BUTTON_MARGIN = 8;
 
 type SelfOptions = {
-  strutWidth?: number
+  strutWidth?: number;
 };
 type CCKCAccordionBoxOptions = SelfOptions & AccordionBoxOptions;
 

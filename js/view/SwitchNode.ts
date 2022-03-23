@@ -40,9 +40,9 @@ const lifelikeGradient = new LinearGradient( 0, -lifelikeNodeThickness / 2, 0, l
   .addColorStop( 1, '#b56351' );
 
 type SegmentedNode = {
-  leftSegmentNode: Node,
-  rightSegmentNode: Node,
-  rotatingSegmentNode: Node
+  leftSegmentNode: Node;
+  rightSegmentNode: Node;
+  rotatingSegmentNode: Node;
 } & Node;
 /**
  * @param {CircuitElementViewType} viewType

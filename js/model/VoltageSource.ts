@@ -19,12 +19,12 @@ import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import NumberIO from '../../../tandem/js/types/NumberIO.js';
 
 type VoltageSourceOptions = {
-  initialOrientation?: string, // TODO: enum
-  voltage?: number,
+  initialOrientation?: string; // TODO: enum
+  voltage?: number;
   voltagePropertyOptions?: {
     range?: Range;
-    tandem?: Tandem
-  }
+    tandem?: Tandem;
+  };
 } & FixedCircuitElementOptions;
 
 abstract class VoltageSource extends FixedCircuitElement {

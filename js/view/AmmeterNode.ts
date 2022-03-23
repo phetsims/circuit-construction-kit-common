@@ -43,11 +43,11 @@ const SCALE_FACTOR = 0.5;
 // unsigned measurements for the circles on the voltmeter body image, for where the probe wires connect
 const PROBE_CONNECTION_POINT_DY = 8;
 type AmmeterNodeOptions = {
-  isIcon: boolean,
-  visibleBoundsProperty: Property<Bounds2> | null,
-  showResultsProperty: BooleanProperty,
-  blackBoxStudy: boolean,
-  tandem: Tandem
+  isIcon: boolean;
+  visibleBoundsProperty: Property<Bounds2> | null;
+  showResultsProperty: BooleanProperty;
+  blackBoxStudy: boolean;
+  tandem: Tandem;
 } & NodeOptions;
 
 class AmmeterNode extends Node {

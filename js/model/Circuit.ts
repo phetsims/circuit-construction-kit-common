@@ -70,12 +70,12 @@ const getSenseForNegative = ( current: number ) => current < 0 ? CurrentSense.FO
 const trueFunction = _.constant( true ); // Lower cased so IDEA doesn't think it is a constructor
 
 type CircuitOptions = {
-  blackBoxStudy: boolean,
-  includeACElements: boolean,
-  includeLabElements: boolean
+  blackBoxStudy: boolean;
+  includeACElements: boolean;
+  includeLabElements: boolean;
 };
 
-type Pair = { v1: Vertex, v2: Vertex };
+type Pair = { v1: Vertex; v2: Vertex };
 
 class Circuit {
   private readonly viewTypeProperty: Property<CircuitElementViewType>;

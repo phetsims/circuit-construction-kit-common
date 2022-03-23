@@ -507,7 +507,7 @@ class Equation {
    * @param {function} getColumn - (UnknownCurrent|UnknownVoltage) => number
    * @public
    */
-  stamp( row: number, a: Matrix, z: Matrix, getColumn: { ( unknown: UnknownCurrent | UnknownVoltage ): number; ( arg0: UnknownCurrent | UnknownVoltage ): any; } ) {
+  stamp( row: number, a: Matrix, z: Matrix, getColumn: { ( unknown: UnknownCurrent | UnknownVoltage ): number; ( arg0: UnknownCurrent | UnknownVoltage ): any } ) {
 
     // Set the equation's value into the solution matrix
     z.set( row, 0, this.value );

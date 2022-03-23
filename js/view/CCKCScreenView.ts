@@ -74,19 +74,19 @@ document.addEventListener( 'keydown', event => {
 } );
 
 type CCKCScreenViewOptions = {
-  showResetAllButton: boolean,
+  showResetAllButton: boolean;
 
-  circuitElementToolboxOptions: any,
+  circuitElementToolboxOptions: any;
 
-  showSeriesAmmeters: boolean,
-  showTimeControls: boolean,
-  showNoncontactAmmeters: boolean,
-  showAdvancedControls: boolean,
-  showCharts: boolean,
-  blackBoxStudy: boolean,
-  showStopwatchCheckbox: boolean,
-  showPhaseShiftControl: boolean,
-  hasACandDCVoltageSources: boolean
+  showSeriesAmmeters: boolean;
+  showTimeControls: boolean;
+  showNoncontactAmmeters: boolean;
+  showAdvancedControls: boolean;
+  showCharts: boolean;
+  blackBoxStudy: boolean;
+  showStopwatchCheckbox: boolean;
+  showPhaseShiftControl: boolean;
+  hasACandDCVoltageSources: boolean;
 };
 
 class CCKCScreenView extends ScreenView {

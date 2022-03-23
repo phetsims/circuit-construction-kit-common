@@ -17,7 +17,7 @@ import Vertex from './Vertex.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 
 type CapacitorOptions = {
-  capacitance: number
+  capacitance: number;
 } & DynamicCircuitElementOptions;
 
 class Capacitor extends DynamicCircuitElement {

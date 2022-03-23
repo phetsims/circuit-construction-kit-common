@@ -39,9 +39,9 @@ const SPEED_SCALE = 25;
 const MAX_DT = 1 / 30;
 
 type CircuitElementPosition = {
-  circuitElement: CircuitElement,
-  distance: number,
-  distanceToClosestElectron: number
+  circuitElement: CircuitElement;
+  distance: number;
+  distanceToClosestElectron: number;
 };
 
 /**

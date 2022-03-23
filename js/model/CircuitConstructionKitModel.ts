@@ -32,8 +32,8 @@ import InteractionMode from './InteractionMode.js';
 import ZoomLevel from './ZoomLevel.js';
 
 type CircuitConstructionKitModelOptions = {
-  blackBoxStudy: boolean,
-  revealing: boolean
+  blackBoxStudy: boolean;
+  revealing: boolean;
 };
 
 class CircuitConstructionKitModel {
