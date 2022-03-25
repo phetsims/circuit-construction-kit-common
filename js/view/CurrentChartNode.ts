@@ -55,11 +55,10 @@ export default class CurrentChartNode extends CCKCChartNode {
 
   /**
    * Records data and displays it on the chart
-   * @param {number} time - total elapsed time in seconds
-   * @param {number} dt - delta time since last update
-   * @public
+   * @param time - total elapsed time in seconds
+   * @param dt - delta time since last update
    */
-  step( time: number, dt: number ) {
+  step( time: number, dt: number ): void {
     if ( this.meter.visibleProperty.value ) {
       const current = this.circuitLayerNode.getCurrent( this.probeNode1 );
       this.series.push( current === null ? null : new Vector2( time, current || 0 ) );
@@ -72,8 +71,7 @@ export default class CurrentChartNode extends CCKCChartNode {
     this.lastStepTime = time;
   }
 
-  // @public
-  sampleLatestValue() {
+  sampleLatestValue(): void {
 
     this.series.pop();
     const current = this.circuitLayerNode.getCurrent( this.probeNode1 );

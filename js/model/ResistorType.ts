@@ -22,10 +22,17 @@ export default class ResistorType extends EnumerationValue {
 
   static enumeration = new Enumeration( ResistorType );
 
+  // In ohms
   readonly defaultResistance: number;
+
+  // In ohms
   readonly range: Range;
   readonly isMetallic: boolean;
+
+  // in view coordinates
   readonly length: number;
+
+  // amount the view is shifted down in view coordinates
   readonly verticalOffset: number;
 
   /**
@@ -38,19 +45,10 @@ export default class ResistorType extends EnumerationValue {
   constructor( defaultResistance: number, resistanceRange: Range, isMetallic: boolean, length: number, verticalOffset = 0 ) {
     super();
 
-    // @public (read-only) {number} - in Ohms
     this.defaultResistance = defaultResistance;
-
-    // @public (read-only) {Range} - in Ohms
     this.range = resistanceRange;
-
-    // @public (read-only) {boolean}
     this.isMetallic = isMetallic;
-
-    // @public (read-only} {number} - in view coordinates
     this.length = length;
-
-    // @public (read-only) {number} - amount the view is shifted down in view coordinates
     this.verticalOffset = verticalOffset;
   }
 

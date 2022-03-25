@@ -43,30 +43,79 @@ type SelfOptions = {
 export type CircuitElementOptions = SelfOptions & PhetioObjectOptions;
 
 export default abstract class CircuitElement extends PhetioObject {
+
+  // unique identifier for looking up corresponding views
   readonly id: number;
+
+  // track the time of creation so it can't be dropped in the toolbox for 0.5 seconds see https://github.com/phetsims/circuit-construction-kit-common/issues/244
   private readonly creationTime: number;
+
+  // flammable circuit elements can catch on fire
   readonly isFlammable: boolean;
+
+  // metallic circuit elements behave like exposed wires--sensor values can be read directly on the resistor. For
+  // instance, coins and paper clips and wires are metallic and can have their values read directly.
   readonly isMetallic: boolean;
+
+  // whether the size changes when changing from lifelike/schematic, used to determine whether the highlight region
+  // should be changed.  True for everything except the switch.
   readonly isSizeChangedOnViewChange: boolean;
+
+  // the Vertex at the origin of the CircuitElement, may change when CircuitElements are connected
   readonly startVertexProperty: Property<Vertex>;
+
+  // the Vertex at the end of the CircuitElement, may change when CircuitElements are connected
   readonly endVertexProperty: Property<Vertex>;
+
+  // the flowing current, in amps.
   readonly currentProperty: Property<number>;
   readonly currentSenseProperty: Property<CurrentSense>;
+
+  // true if the CircuitElement can be edited and dragged
   readonly interactiveProperty: BooleanProperty;
+
+  // whether the circuit element is inside the true black box, not inside the user-created black box, on the interface
+  // or outside of the black box
   readonly insideTrueBlackBoxProperty: BooleanProperty;
+
+  // true if the charge layout must be updated (each element is visited every frame to check this)
   chargeLayoutDirty: boolean;
+
+  // indicate when this CircuitElement has been connected to another CircuitElement
   readonly connectedEmitter: Emitter<[]>;
+
+  // indicate when an adjacent Vertex has moved to front, so that the corresponding Node can move to front too
   readonly vertexSelectedEmitter: Emitter<[]>;
+
+  // indicate when either Vertex has moved
   readonly vertexMovedEmitter: Emitter<[]>;
+
+  // indicate when the CircuitElement has been moved to the front in z-ordering
   readonly moveToFrontEmitter: Emitter<[]>;
+
+  // indicate when the circuit element has started being dragged, when it is created in the toolbox
   readonly startDragEmitter: Emitter<[ SceneryEvent ]>;
+
+  // indicate when the circuit element has been disposed
   readonly disposeEmitterCircuitElement: Emitter<[]>;
   private readonly vertexMovedListener: () => void;
   private readonly linkVertexListener: PropertyLinkListener<Vertex>;
+
+  // named so it doesn't collide with the specified voltageProperty in Battery or ACVoltage
   readonly voltageDifferenceProperty: NumberProperty;
   private readonly vertexVoltageListener: () => void;
+
+  // (read-only by clients, writable-by-subclasses) {number} the distance the charges must take to get to the other side
+  // of the component. This is typically the distance between vertices, but not for light bulbs.  This value is constant,
+  // except for (a) wires which can have their length changed and (b) LightBulbs whose path length changes when switching
+  // between LIFELIKE |SCHEMATIC
   chargePathLength: number;
+
+  // The ammeter update is called after items are disposed but before corresponding views are disposed, so we must
+  // take care not to display current for any items that are pending deletion.
+  // See https://github.com/phetsims/circuit-construction-kit-common/issues/418
   circuitElementDisposed: boolean;
+
   static CircuitElementIO: IOType;
   readonly lengthProperty: Property<number> | undefined;
   readonly isEditableProperty: BooleanProperty;
@@ -93,42 +142,24 @@ export default abstract class CircuitElement extends PhetioObject {
 
     super( options );
 
-    // @public (read-only) {number} unique identifier for looking up corresponding views
     this.id = index++;
-
-    // @public (read-only) {number} track the time of creation so it can't be dropped in the toolbox for 0.5 seconds
-    // see https://github.com/phetsims/circuit-construction-kit-common/issues/244
     this.creationTime = phet.joist.elapsedTime;
-
-    // @public (read-only) {boolean} flammable circuit elements can catch on fire
     this.isFlammable = options.isFlammable;
-
-    // @public (read-only) {boolean} metallic circuit elements behave like exposed wires--sensor values can be read
-    // directly on the resistor. For instance, coins and paper clips and wires are metallic and can have their values
-    // read directly.
     this.isMetallic = options.isMetallic;
-
-    // @public (read-only) {boolean} - whether the size changes when changing from lifelike/schematic, used to determine
-    // whether the highlight region should be changed.  True for everything except the switch.
     this.isSizeChangedOnViewChange = options.isSizeChangedOnViewChange;
 
-    // @public {Property.<Vertex>} - the Vertex at the origin of the CircuitElement, may change when CircuitElements are
-    // connected
     this.startVertexProperty = new Property( startVertex, {
       phetioType: Property.PropertyIO( Vertex.VertexIO ),
       tandem: tandem.createTandem( 'startVertexProperty' ),
       phetioState: false
     } );
 
-    // @public {Property.<Vertex>} - the Vertex at the end of the CircuitElement, may change when CircuitElements are
-    // connected
     this.endVertexProperty = new Property( endVertex, {
       phetioType: Property.PropertyIO( Vertex.VertexIO ),
       tandem: tandem.createTandem( 'endVertexProperty' ),
       phetioState: false
     } );
 
-    // @public {NumberProperty} - the flowing current, in amps.
     this.currentProperty = new NumberProperty( 0, {
       reentrant: options.isCurrentReentrant
     } );
@@ -140,34 +171,14 @@ export default abstract class CircuitElement extends PhetioObject {
     // see https://github.com/phetsims/circuit-construction-kit-common/issues/508
     this.currentSenseProperty = new EnumerationProperty( CurrentSense.UNSPECIFIED );
 
-    // @public (read-only) {BooleanProperty} - true if the CircuitElement can be edited and dragged
     this.interactiveProperty = new BooleanProperty( options.interactive );
-
-    // @public {BooleanProperty} - whether the circuit element is inside the true black box, not inside the user-created
-    // black box, on the interface or outside of the black box
     this.insideTrueBlackBoxProperty = new BooleanProperty( options.insideTrueBlackBox );
-
-    // @public {boolean} - true if the charge layout must be updated (each element is visited every frame to check this)
     this.chargeLayoutDirty = true;
-
-    // @public (read-only) {Emitter} - indicate when this CircuitElement has been connected to another CircuitElement
     this.connectedEmitter = new Emitter();
-
-    // @public (read-only) {Emitter} - indicate when the CircuitElement has been moved to the front in z-ordering
     this.moveToFrontEmitter = new Emitter();
-
-    // @public (read-only) {Emitter} - indicate when an adjacent Vertex has moved to front, so that the corresponding
-    // Node can move to front too
     this.vertexSelectedEmitter = new Emitter();
-
-    // @public (read-only) {Emitter} - indicate when either Vertex has moved
     this.vertexMovedEmitter = new Emitter();
-
-    // @public (read-only) {Emitter} - indicate when the circuit element has started being dragged, when it is created
-    // in the toolbox
     this.startDragEmitter = new Emitter( { parameters: [ { valueType: SceneryEvent } ] } );
-
-    // @public (read-only) {Emitter} - indicate when the circuit element has been disposed
     this.disposeEmitterCircuitElement = new Emitter();
 
     // Signify that a Vertex moved
@@ -179,7 +190,6 @@ export default abstract class CircuitElement extends PhetioObject {
     this.startPositionProperty.link( this.vertexMovedListener );
     this.endPositionProperty.link( this.vertexMovedListener );
 
-    // @public - named so it doesn't collide with the specified voltageProperty in Battery or ACVoltage
     this.voltageDifferenceProperty = new NumberProperty( this.computeVoltageDifference() );
 
     this.vertexVoltageListener = () => this.voltageDifferenceProperty.set( this.computeVoltageDifference() );
@@ -188,17 +198,7 @@ export default abstract class CircuitElement extends PhetioObject {
     this.startVertexProperty.link( this.linkVertexListener );
     // @ts-ignore
     this.endVertexProperty.link( this.linkVertexListener );
-
-    // @public (read-only by clients, writable-by-subclasses) {number} the distance the charges must take to get to the
-    // other side of the component. This is typically the distance between vertices, but not for light bulbs.  This
-    // value is constant, except for (a) wires which can have their length changed and (b) LightBulbs whose path
-    // length changes when switching between LIFELIKE |SCHEMATIC
     this.chargePathLength = chargePathLength;
-
-    // @public {boolean}
-    // The ammeter update is called after items are disposed but before corresponding views are disposed, so we must
-    // take care not to display current for any items that are pending deletion.
-    // See https://github.com/phetsims/circuit-construction-kit-common/issues/418
     this.circuitElementDisposed = false;
     this.lengthProperty = undefined;
 
@@ -264,30 +264,21 @@ export default abstract class CircuitElement extends PhetioObject {
 
   /**
    * Steps forward in time
-   * @public
-   *
-   * @param {number} time
-   * @param {number} dt
-   * @param {Circuit} circuit
    */
   step( time: number, dt: number, circuit: Circuit ) {
   }
 
   /**
    * Convenience method to get the start vertex position Property
-   * @returns {Property.<Vector2>}
-   * @public
    */
-  get startPositionProperty() {
+  get startPositionProperty(): Property<Vector2> {
     return this.startVertexProperty.get().positionProperty;
   }
 
   /**
    * Convenience method to get the end vertex position Property
-   * @returns {Property.<Vector2>}
-   * @public
    */
-  get endPositionProperty() {
+  get endPositionProperty(): Property<Vector2> {
     return this.endVertexProperty.get().positionProperty;
   }
 
@@ -309,9 +300,8 @@ export default abstract class CircuitElement extends PhetioObject {
 
   /**
    * Release resources associated with this CircuitElement, called when it will no longer be used.
-   * @public
    */
-  dispose() {
+  dispose(): void {
     assert && assert( !this.circuitElementDisposed, 'circuit element was already disposed' );
     this.circuitElementDisposed = true;
 
@@ -348,11 +338,10 @@ export default abstract class CircuitElement extends PhetioObject {
 
   /**
    * Replace one of the vertices with a new one, when CircuitElements are connected.
-   * @param {Vertex} oldVertex - the vertex which will be replaced.
-   * @param {Vertex} newVertex - the vertex which will take the place of oldVertex.
-   * @public
+   * @param oldVertex - the vertex which will be replaced.
+   * @param newVertex - the vertex which will take the place of oldVertex.
    */
-  replaceVertex( oldVertex: Vertex, newVertex: Vertex ) {
+  replaceVertex( oldVertex: Vertex, newVertex: Vertex ): void {
     const startVertex = this.startVertexProperty.get();
     const endVertex = this.endVertexProperty.get();
 
@@ -371,10 +360,8 @@ export default abstract class CircuitElement extends PhetioObject {
 
   /**
    * Gets the Vertex on the opposite side of the specified Vertex
-   * @param {Vertex} vertex
-   * @public
    */
-  getOppositeVertex( vertex: Vertex ) {
+  getOppositeVertex( vertex: Vertex ): Vertex {
     assert && assert( this.containsVertex( vertex ), 'Missing vertex' );
     if ( this.startVertexProperty.get() === vertex ) {
       return this.endVertexProperty.get();
@@ -386,22 +373,15 @@ export default abstract class CircuitElement extends PhetioObject {
 
   /**
    * Returns whether this CircuitElement contains the specified Vertex as its startVertex or endVertex.
-   * @param {Vertex} vertex - the vertex to check for
-   * @returns {boolean}
-   * @public
    */
-  containsVertex( vertex: Vertex ) {
+  containsVertex( vertex: Vertex ): boolean {
     return this.startVertexProperty.get() === vertex || this.endVertexProperty.get() === vertex;
   }
 
   /**
    * Returns true if this CircuitElement contains both Vertex instances.
-   * @param {Vertex} vertex1
-   * @param {Vertex} vertex2
-   * @returns {boolean}
-   * @public
    */
-  containsBothVertices( vertex1: Vertex, vertex2: Vertex ) {
+  containsBothVertices( vertex1: Vertex, vertex2: Vertex ): boolean {
     return this.containsVertex( vertex1 ) && this.containsVertex( vertex2 );
   }
 
@@ -423,35 +403,26 @@ export default abstract class CircuitElement extends PhetioObject {
 
   /**
    * Returns true if this CircuitElement contains the specified scalar position.
-   * @param {number} scalarPosition
-   * @returns {boolean}
-   * @public
    */
-  containsScalarPosition( scalarPosition: number ) {
+  containsScalarPosition( scalarPosition: number ): boolean {
     return scalarPosition >= 0 && scalarPosition <= this.chargePathLength;
   }
 
   /**
    * Get all Property instances that influence the circuit dynamics.
-   * @abstract must be specified by the subclass
-   * @returns {Property.<*>[]}
-   * @public
    */
   abstract getCircuitProperties(): Property<IntentionalAny>[]
 
   /**
    * Get the midpoint between the vertices.  Used for dropping circuit elements into the toolbox.
-   * @returns {Vector2}
-   * @public
    */
-  getMidpoint() {
+  getMidpoint(): Vector2 {
     const start = this.startVertexProperty.value.positionProperty.get();
     const end = this.endVertexProperty.value.positionProperty.get();
     return start.average( end );
   }
 
-  // @public
-  toVertexString() {
+  toVertexString(): string {
     return `${this.startVertexProperty.value.index} -> ${this.endVertexProperty.value.index}`;
   }
 }

@@ -57,10 +57,9 @@ export default class LightBulbSocketNode extends FixedCircuitElementNode {
 
   /**
    * Multiple updates may happen per frame, they are batched and updated once in the view step to improve performance.
-   * @override
-   * @public - CCKCLightBulbNode calls updateRender for its child socket node
+   * CCKCLightBulbNode calls updateRender for its child socket node
    */
-  updateRender() {
+  updateRender(): void {
     const startPosition = this.circuitElement.startPositionProperty.get();
     const endPosition = this.circuitElement.endPositionProperty.get();
     const angle = endPosition.minus( startPosition ).angle + Math.PI / 4;
@@ -71,10 +70,8 @@ export default class LightBulbSocketNode extends FixedCircuitElementNode {
 
   /**
    * Maintain the opacity of the brightness lines while changing the opacity of the light bulb itself.
-   * @override
-   * @public
    */
-  updateOpacityOnInteractiveChange() {
+  updateOpacityOnInteractiveChange(): void {
 
     // TODO (black-box-study): Make the light bulb images look faded out.
   }

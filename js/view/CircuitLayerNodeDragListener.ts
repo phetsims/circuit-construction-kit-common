@@ -31,16 +31,14 @@ export default class CircuitLayerNodeDragListener extends DragListener {
   /**
    * Overrides press to add a side effect to mutate Vertex.isDragging.  Cannot use canStartPress instead due to this side
    * effect.
-   * @param {SceneryEvent} event
-   * @param {Node} [targetNode] - If provided, will take the place of the targetNode for this call. Useful for
+   * @param event
+   * @param [targetNode] - If provided, will take the place of the targetNode for this call. Useful for
    *                              forwarded presses.
-   * @param {function} [callback] - to be run at the end of the function, but only on success
+   * @param [callback] - to be run at the end of the function, but only on success
    * @returns {boolean}
-   * @public
-   * @override
    */
   // @ts-ignore
-  press( event: SceneryEvent, targetNode: Node | undefined, callback: () => void ) {
+  press( event: SceneryEvent, targetNode: Node | undefined, callback: () => void ): boolean {
 
     const vertices = this.vertexGetters.map( vertexGetter => vertexGetter() );
 

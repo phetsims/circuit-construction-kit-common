@@ -79,10 +79,8 @@ export default class CircuitElementToolbox extends HBox {
 
   /**
    * Resets the toolbox.
-   * @override
-   * @public
    */
-  reset() {
+  reset(): void {
     this.carousel.reset();
   }
 }

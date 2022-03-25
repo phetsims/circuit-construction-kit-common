@@ -39,20 +39,45 @@ type CircuitConstructionKitModelOptions = {
 export default class CircuitConstructionKitModel {
   private zoomAnimation: ZoomAnimation | null;
   readonly viewTypeProperty: Property<CircuitElementViewType>;
+
+  // whether the carousel shows real bulbs
   private readonly addRealBulbsProperty: BooleanProperty;
+
+  // contains CircuitElements, Vertices, etc.
   readonly circuit: Circuit;
+
+  // created statically and indexed starting at 1 for human-readability for PhET-iO
   readonly voltmeters: Voltmeter[];
+
+  // created statically and indexed starting at 1 for human-readability for PhET-iO
   readonly ammeters: Ammeter[];
   readonly isValueDepictionEnabledProperty: BooleanProperty;
+
+  // true if the labels in the toolbox should be shown
   readonly showLabelsProperty: BooleanProperty;
+
+  // true if the values in the toolbox should be shown
   readonly showValuesProperty: BooleanProperty;
   readonly selectedZoomProperty: NumberProperty;
+
+  // the animated value of the zoom level
   readonly currentZoomProperty: NumberProperty;
+
+  // True if the simulation is playing, controlled by the TimeControlNode
   readonly isPlayingProperty: BooleanProperty;
+
+  // whether the user is in the CircuitConstructionKitModel.InteractionMode.EXPLORE or CircuitConstructionKitModel.InteractionMode.TEST mode
   readonly modeProperty: EnumerationProperty<InteractionMode>;
+
+  // true when the user is holding down the reveal button and the answer (inside the black box) is showing
   readonly revealingProperty: BooleanProperty;
+
+  // bounds of the black box, if any.  Set by subclass in Black Box Study. Specifically, filled in by the
+  // BlackBoxSceneView after the black box node is created and positioned
   readonly blackBoxBounds: Bounds2 | null;
   readonly stopwatch: Stopwatch;
+
+  // Indicates when the model has updated, some views need to update accordingly
   readonly stepEmitter: Emitter<[ number ]>;
   private readonly zoomProperty: EnumerationProperty<ZoomLevel>;
 
@@ -74,12 +99,10 @@ export default class CircuitConstructionKitModel {
       tandem: tandem.createTandem( 'viewTypeProperty' )
     } );
 
-    // @public {Property.<boolean>} - whether the carousel shows real bulbs
     this.addRealBulbsProperty = new BooleanProperty( CCKCQueryParameters.addRealBulbs, {
       tandem: includeLabElements ? tandem.createTandem( 'addRealBulbsProperty' ) : Tandem.OPT_OUT
     } );
 
-    // @public (read-only) {Circuit} - contains CircuitElements, Vertices, etc.
     const circuitTandem = tandem.createTandem( 'circuit' );
     this.circuit = new Circuit( this.viewTypeProperty, this.addRealBulbsProperty, circuitTandem, {
       blackBoxStudy: options.blackBoxStudy,
@@ -87,14 +110,12 @@ export default class CircuitConstructionKitModel {
       includeACElements: includeACElements
     } );
 
-    // @public (read-only) {Voltmeter[]} - created statically and indexed starting at 1 for human-readability for PhET-iO
     const metersTandem = tandem.createTandem( 'meters' );
     this.voltmeters = [
       new Voltmeter( metersTandem.createTandem( 'voltmeter1' ), 1 ),
       new Voltmeter( metersTandem.createTandem( 'voltmeter2' ), 2 )
     ];
 
-    // @public (read-only) {Ammeter[]} - created statically and indexed starting at 1 for human-readability for PhET-iO
     this.ammeters = [
       new Ammeter( metersTandem.createTandem( 'ammeter1' ), 1 ),
       new Ammeter( metersTandem.createTandem( 'ammeter2' ), 2 )
@@ -107,12 +128,10 @@ export default class CircuitConstructionKitModel {
         phetioDocumentation: 'whether the light bulb brightness and ammeter/voltmeter readouts, charges, flame, etc. can be seen'
       } );
 
-    // @public {BooleanProperty} - true if the labels in the toolbox should be shown
     this.showLabelsProperty = new BooleanProperty( true, {
       tandem: tandem.createTandem( 'showLabelsProperty' )
     } );
 
-    // @public {BooleanProperty} - true if the labels in the toolbox should be shown
     this.showValuesProperty = new BooleanProperty( false, {
       tandem: tandem.createTandem( 'showValuesProperty' )
     } );
@@ -134,7 +153,6 @@ export default class CircuitConstructionKitModel {
     this.selectedZoomProperty.lazyLink( selectedZoom => this.zoomProperty.set( selectedZoom === 0 ? ZoomLevel.ZOOMED_OUT : ZoomLevel.NORMAL ) );
     this.zoomProperty.lazyLink( zoom => this.selectedZoomProperty.set( zoom === ZoomLevel.ZOOMED_OUT ? 0 : 1 ) );
 
-    // @public (read-only) {Property.<number>} the animated value of the zoom level
     this.currentZoomProperty = new NumberProperty( this.selectedZoomProperty.get() );
 
     this.selectedZoomProperty.lazyLink( ( newValue: number ) => {
@@ -145,13 +163,11 @@ export default class CircuitConstructionKitModel {
       } );
     } );
 
-    // @public (read-only) {Property.<number>} True if the simulation is playing, controlled by the TimeControlNode
     this.isPlayingProperty = new BooleanProperty( true, {
       tandem: includeACElements ? tandem.createTandem( 'isPlayingProperty' ) : Tandem.OPT_OUT,
       phetioFeatured: true
     } );
 
-    // @public {Property.<InteractionMode>} - whether the user is in the CircuitConstructionKitModel.InteractionMode.EXPLORE or CircuitConstructionKitModel.InteractionMode.TEST mode
     this.modeProperty = new EnumerationProperty( InteractionMode.EXPLORE, {
       tandem: blackBoxStudyTandem.createTandem( 'modeProperty' ),
       phetioDocumentation: 'For Circuit Construction Kit: Black Box Study'
@@ -220,30 +236,22 @@ export default class CircuitConstructionKitModel {
       this.circuit.relayoutAllCharges();
     } );
 
-    // @public - true when the user is holding down the reveal button and the answer (inside the black box) is showing
     this.revealingProperty = new BooleanProperty( options.revealing, {
       tandem: blackBoxStudyTandem.createTandem( 'revealingProperty' ),
       phetioDocumentation: 'For Circuit Construction Kit: Black Box Study'
     } );
 
-    // @public {Bounds2} - bounds of the black box, if any.  Set by subclass in Black Box Study. Specifically, filled
-    // in by the BlackBoxSceneView after the black box node is created and positioned
     this.blackBoxBounds = null;
 
-    // @public
     this.stopwatch = new Stopwatch( {
       tandem: includeACElements ? tandem.createTandem( 'stopwatch' ) : Tandem.OPT_OUT
     } );
 
-    // @public {Emitter.<number>} - Indicates when the model has updated, some views need to update accordingly
     this.stepEmitter = new Emitter( {
       parameters: [ { valueType: 'number' } ]
     } );
   }
 
-  /**
-   * @public
-   */
   stepSingleStep() {
 
     // 6/60 = 0.1 second, run over multiple steps to maintain smooth curves in the charts
@@ -265,8 +273,7 @@ export default class CircuitConstructionKitModel {
 
   /**
    * Update the circuit and zoom level when the simulation clock steps.
-   * @param {number} dt - elapsed time in seconds
-   * @public
+   * @param dt - elapsed time in seconds
    */
   step( dt: number ) {
 
@@ -292,7 +299,6 @@ export default class CircuitConstructionKitModel {
 
   /**
    * Reset the circuit.
-   * @public
    */
   reset() {
     this.isValueDepictionEnabledProperty.reset();

@@ -135,7 +135,6 @@ export default class CCKCScreenView extends ScreenView {
 
     super( { tandem: tandem } );
 
-    // @public (read-only) {CircuitConstructionKitModel}
     this.model = model;
 
     // TODO (black-box-study): change background color to gray when isValueDepictionEnabledProperty goes false
@@ -143,7 +142,6 @@ export default class CCKCScreenView extends ScreenView {
     // contains parts of the circuit that should be shown behind the controls
     this.circuitLayerNodeBackLayer = new Node();
 
-    // @public (read-only) {CircuitLayerNode} - the circuit node
     this.circuitLayerNode = new CircuitLayerNode(
       // TODO: Note the discrepancy between circuitNode and circuitLayerNode, see https://github.com/phetsims/circuit-construction-kit-common/issues/513
       model.circuit, this, tandem.createTandem( 'circuitNode' )
@@ -438,7 +436,6 @@ export default class CCKCScreenView extends ScreenView {
     // note whether the stopwatch should be repositioned when selected.  Otherwise it remembers its position
     this.stopwatchNodePositionDirty = true;
 
-    // @public - the StopwatchNode
     if ( options.showStopwatchCheckbox ) {
       const stopwatchNode = new StopwatchNode( model.stopwatch, {
         dragBoundsProperty: this.visibleBoundsProperty,
@@ -473,11 +470,8 @@ export default class CCKCScreenView extends ScreenView {
 
   /**
    * Called from model steps
-   * @public
-   *
-   * @param {number} dt
    */
-  stepOnce( dt: number ) {
+  stepOnce( dt: number ): void {
 
     // If the step is large, it probably means that the screen was hidden for a while, so just ignore it.
     // see https://github.com/phetsims/circuit-construction-kit-common/issues/476
@@ -490,10 +484,9 @@ export default class CCKCScreenView extends ScreenView {
 
   /**
    * Move forward in time by the specified dt
-   * @param {number} dt - seconds
-   * @public
+   * @param dt - seconds
    */
-  step( dt: number ) {
+  step( dt: number ): void {
 
     // noting from the main step
     this.circuitLayerNode.step();
@@ -507,9 +500,8 @@ export default class CCKCScreenView extends ScreenView {
 
   /**
    * Overrideable stub for resetting
-   * @public
    */
-  reset() {
+  reset(): void {
     this.stopwatchNodePositionDirty = true;
     this.circuitElementToolbox.reset();
     this.advancedAccordionBox && this.advancedAccordionBox.expandedProperty.reset();
@@ -518,11 +510,8 @@ export default class CCKCScreenView extends ScreenView {
 
   /**
    * Return true if and only if the CircuitElementNode can be dropped in the toolbox.
-   * @param {CircuitElementNode} circuitElementNode
-   * @returns {boolean}
-   * @public
    */
-  canNodeDropInToolbox( circuitElementNode: CircuitElementNode ) {
+  canNodeDropInToolbox( circuitElementNode: CircuitElementNode ): boolean {
     const circuitElement = circuitElementNode.circuitElement;
 
     // Only single (unconnected) elements can be dropped into the toolbox

@@ -61,8 +61,14 @@ type SelfOptions = {
 type LightBulbOptions = SelfOptions & FixedCircuitElementOptions;
 
 export default class LightBulb extends FixedCircuitElement {
+
+  // true if R is a function of current. Not an enum because in the future we may have a real high resistance bulb.
   readonly real: boolean;
+
+  // true if the light bulb is a high resistance light bulb
   readonly highResistance: boolean;
+
+  // the resistance of the light bulb which can be edited with the UI
   readonly resistanceProperty: NumberProperty;
   private readonly viewTypeProperty: Property<CircuitElementViewType>;
 
@@ -88,15 +94,8 @@ export default class LightBulb extends FixedCircuitElement {
     // getPathLength not available yet, so use a nonzero charge path length then override.
     super( startVertex, endVertex, 1, tandem, filledOptions );
 
-    // @public (read-only) {boolean} - true if R is constant, false if R is a function of current
-
-    // @public {boolean} - Not an enum because in the future we may have a real high resistance bulb.
     this.real = filledOptions.real;
-
-    // @public (read-only) {boolean} - true if the light bulb is a high resistance light bulb
     this.highResistance = filledOptions.highResistance;
-
-    // @public {Property.<number>} - the resistance of the light bulb which can be edited with the UI
     this.resistanceProperty = new NumberProperty( resistance, {
       tandem: tandem.createTandem( 'resistanceProperty' ),
       range: filledOptions.highResistance ? new Range( 100, 10000 ) :
@@ -132,10 +131,8 @@ export default class LightBulb extends FixedCircuitElement {
 
   /**
    * Returns true because all light bulbs can have their resistance changed.
-   * @returns {boolean}
-   * @public
    */
-  isResistanceEditable() {
+  isResistanceEditable():boolean {
     return true;
   }
 

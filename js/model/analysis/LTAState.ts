@@ -13,12 +13,7 @@ export default class LTAState {
     this.solution = null;
   }
 
-  /**
-   * @param {number} dt
-   * @returns {LTAState}
-   * @public
-   */
-  update( dt: number ) {
+  update( dt: number ): LTAState {
     this.solution = this.ltaCircuit.solvePropagate( dt );
     const newCircuit = this.ltaCircuit.updateCircuit( this.solution );
     return new LTAState( newCircuit, this.solution );
@@ -27,10 +22,8 @@ export default class LTAState {
   /**
    * Returns an array of characteristic measurements from the solution, in order to determine whether more subdivisions
    * are needed in the timestep.
-   * @returns {number[]}
-   * @public
    */
-  getCharacteristicArray() {
+  getCharacteristicArray(): number[] {
 
     // The solution has been applied to the this.dynamicCircuit, so we can read values from it
     const currents = [];

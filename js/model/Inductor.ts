@@ -7,6 +7,7 @@
  */
 
 import NumberProperty from '../../../axon/js/NumberProperty.js';
+import Property from '../../../axon/js/Property.js';
 import Range from '../../../dot/js/Range.js';
 import merge from '../../../phet-core/js/merge.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -24,6 +25,8 @@ type InductorOptions = {
 } & DynamicCircuitElementOptions;
 
 export default class Inductor extends DynamicCircuitElement {
+
+  // the inductance in Henries
   readonly inductanceProperty: NumberProperty;
   static INDUCTANCE_DEFAULT = CCKCQueryParameters.inductanceDefault;
   static INDUCTANCE_RANGE = new Range( CCKCQueryParameters.inductanceMin, CCKCQueryParameters.inductanceMax );
@@ -43,7 +46,6 @@ export default class Inductor extends DynamicCircuitElement {
 
     super( startVertex, endVertex, INDUCTOR_LENGTH, tandem, options );
 
-    // @public {Property.<number>} the inductance in Henries
     this.inductanceProperty = new NumberProperty( options.inductance, {
       range: Inductor.INDUCTANCE_RANGE,
       tandem: tandem.createTandem( 'inductanceProperty' )
@@ -52,20 +54,16 @@ export default class Inductor extends DynamicCircuitElement {
 
   /**
    * Dispose of this and PhET-iO instrumented children, so they will be unregistered.
-   * @public
    */
-  dispose() {
+  dispose(): void {
     this.inductanceProperty.dispose();
     super.dispose();
   }
 
   /**
    * Get the properties so that the circuit can be solved when changed.
-   * @override
-   * @returns {Property.<*>[]}
-   * @public
    */
-  getCircuitProperties() {
+  getCircuitProperties(): Property<any>[] {
     return [ this.inductanceProperty ];
   }
 }

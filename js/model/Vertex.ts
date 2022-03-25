@@ -32,24 +32,58 @@ type VertexOptions = {
 } & PhetioObjectOptions;
 
 export default class Vertex extends PhetioObject {
+
+  // Index counter for hashing in CircuitLayerNode.  Also useful for debugging and can be shown with ?vertexDisplay=index
   readonly index: number;
   private readonly vertexTandem: Tandem;
+
+  // position of the vertex
   readonly positionProperty: Property<Vector2>;
+
+  // where the vertex would be if it hadn't snapped to a proposed connection
   readonly unsnappedPositionProperty: Property<Vector2>;
+
+  // Relative voltage of the node, determined by Circuit.solve
   readonly voltageProperty: Property<number>;
+
+  // after the user taps on a vertex it becomes selected, highlighting it and showing a 'cut' button. Multiple vertices
+  // can be selected on an iPad, unlike CircuitElements, which can only have one vertex selected at a time.
   readonly isSelectedProperty: Property<boolean>;
+
+  // Some of the following properties overlap.  For example, if 'insideTrueBlackBox' is true, then the interactive
+  // flag will be set to false when the circuit is in Circuit.InteractionMode.TEST mode.
+
+  // Vertices on the black box interface persist between build/investigate, and cannot be moved/deleted
   readonly isDraggableProperty: Property<boolean>;
+
+  // Black box interface vertices can be interactive (tap to select) without being draggable
   readonly interactiveProperty: Property<boolean>;
+
+  // whether the Vertex can be dragged or moved by dragging another part of the circuit must be observable.  When two
+  // vertices are joined in Circuit.connect, non-interactivity propagates
   readonly attachableProperty: Property<boolean>;
+
+  // whether the vertex is on the edge of a black box.  This means it cannot be deleted, but it can be attached to
   readonly blackBoxInterfaceProperty: Property<boolean>;
+
+  // whether the vertex is inside the true black box, not inside the user-created black box, on the interface or outside of the black box
   readonly insideTrueBlackBoxProperty: Property<boolean>;
+
+  // indicate when the vertex has been moved to the front in z-ordering and layering in the view must be updated
   readonly relayerEmitter: Emitter<[]>;
+
+  // added by Circuit.js so that listeners can be removed when vertices are removed
   vertexSelectedPropertyListener: ( ( selected: boolean ) => void ) | null;
+
+  // Whether the vertex is being actively dragged.
   isDragged: boolean;
-  static VertexIO: IOType;
+
+  // for black box study
   outerWireStub: boolean;
   isCuttableProperty: BooleanProperty;
   labelTextProperty: StringProperty;
+
+  static VertexIO: IOType;
 
   /**
    * @param {Vector2} position - position in view coordinates
@@ -70,26 +104,20 @@ export default class Vertex extends PhetioObject {
 
     super( options );
 
-    // @public (readonly) {number} - Index counter for hashing in CircuitLayerNode.  Also useful for debugging and can be shown
-    // with ?vertexDisplay=index
     this.index = counter++;
 
-    // @public (read-only) {Tandem}
     this.vertexTandem = options.tandem;
 
-    // @public - position of the vertex
     this.positionProperty = new Vector2Property( position, {
       tandem: options.tandem && options.tandem.createTandem( 'positionProperty' ),
       useDeepEquality: true,
       isValidValue: ( position: Vector2 ) => position.isFinite()
     } );
 
-    // @public - where the vertex would be if it hadn't snapped to a proposed connection
     this.unsnappedPositionProperty = new Vector2Property( position, {
       isValidValue: ( position: Vector2 ) => position.isFinite()
     } );
 
-    // @public {NumberProperty} Relative voltage of the node, determined by Circuit.solve
     this.voltageProperty = new NumberProperty( 0, {
       tandem: options.tandem && options.tandem.createTandem( 'voltageProperty' ),
       units: 'V',
@@ -97,49 +125,21 @@ export default class Vertex extends PhetioObject {
       phetioHighFrequency: true
     } );
 
-    // @public {BooleanProperty} - after the user taps on a vertex it becomes selected, highlighting it and showing a
-    // 'cut' button. Multiple vertices can be selected on an iPad, unlike CircuitElements, which can only have one
-    // vertex selected at a time.
     this.isSelectedProperty = new BooleanProperty( false, {
       tandem: options.tandem && options.tandem.createTandem( 'isSelectedProperty' )
     } );
 
-    // Some of the following properties overlap.  For example, if 'insideTrueBlackBox' is true, then the interactive
-    // flag will be set to false when the circuit is in Circuit.InteractionMode.TEST mode.
-
-    // @public {BooleanProperty} - Vertices on the black box interface persist between build/investigate, and cannot be
-    // moved/deleted
     this.isDraggableProperty = new BooleanProperty( options.draggable, {
       tandem: options.tandem && options.tandem.createTandem( 'isDraggableProperty' )
     } );
 
-    // @public {BooleanProperty} - Black box interface vertices can be interactive (tap to select) without being
-    // draggable
     this.interactiveProperty = new BooleanProperty( options.interactive );
-
-    // @public {BooleanProperty} - whether the Vertex can be dragged or moved by dragging another part of the circuit
-    // must be observable.  When two vertices are joined in Circuit.connect, non-interactivity propagates
     this.attachableProperty = new BooleanProperty( options.attachable );
-
-    // @public (read-only) {BooleanProperty} - whether the vertex is on the edge of a black box.  This means it cannot
-    // be deleted, but it can be attached to
     this.blackBoxInterfaceProperty = new BooleanProperty( options.blackBoxInterface );
-
-    // @public {BooleanProperty} - whether the vertex is inside the true black box, not inside the
-    // user-created black box, on the interface or outside of the black box
     this.insideTrueBlackBoxProperty = new BooleanProperty( options.insideTrueBlackBox );
-
-    // @public {Emitter} - indicate when the vertex has been moved to the front in z-ordering and layering in the
-    // view must be updated
     this.relayerEmitter = new Emitter();
-
-    // @public {function|null} - added by Circuit.js so that listeners can be removed when vertices are removed
     this.vertexSelectedPropertyListener = null;
-
-    // @public {boolean} - Whether the vertex is being actively dragged.
     this.isDragged = false;
-
-    // @public {boolean} - for black box study
     this.outerWireStub = false;
 
     this.isCuttableProperty = new BooleanProperty( true, {
@@ -153,19 +153,16 @@ export default class Vertex extends PhetioObject {
 
   /**
    * Called when vertices are cut.
-   * @param {Vector2} position
-   * @public
    */
-  setPosition( position: Vector2 ) {
+  setPosition( position: Vector2 ): void {
     this.positionProperty.set( position );
     this.unsnappedPositionProperty.set( position );
   }
 
   /**
    * Dispose of this and PhET-iO instrumented children, so they will be unregistered.
-   * @public
    */
-  dispose() {
+  dispose(): void {
     this.positionProperty.dispose();
     this.voltageProperty.dispose();
     this.isSelectedProperty.dispose();

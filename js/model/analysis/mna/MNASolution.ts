@@ -12,22 +12,15 @@ import MNAResistor from './MNAResistor.js';
 
 export default class MNASolution {
 
+  // the solved node voltages. keys are {number} indicating the node id, values are {number} for the voltage at the node
   private readonly nodeVoltages: Map<string, number>;
   private readonly elements: Map<MNACircuitElement, number>; // circuit elements in the solution
 
-  /**
-   * @param {Object} nodeVoltages - see below
-   * @param {MNACircuitElement[]} elements
-   */
   constructor( nodeVoltages: Map<string, number>, elements: Map<MNACircuitElement, number> ) {
-
-    // @public (read-only) {Object} - the solved node voltages.
-    // keys are {number} indicating the node id, values are {number} for the voltage at the node
     this.nodeVoltages = nodeVoltages;
     this.elements = elements;
   }
 
-  // @public
   getSolvedCurrent( circuitElement: MNACircuitElement ): number {
     assert && assert( this.elements.has( circuitElement ) );
     const value = this.elements.get( circuitElement )!;
@@ -100,11 +93,8 @@ export default class MNASolution {
 
   /**
    * Use Ohm's law to compute the current for a resistor with resistance>0
-   * @param {Object} resistor
-   * @returns {number}
-   * @public
    */
-  getCurrentForResistor( resistor: MNAResistor ) {
+  getCurrentForResistor( resistor: MNAResistor ): number {
     assert && assert( resistor.resistance > 0, 'resistor must have resistance to use Ohms Law' );
 
     // To help understand the minus sign here:
@@ -119,11 +109,8 @@ export default class MNASolution {
 
   /**
    * Returns the voltage of the specified node.
-   * @param {string} nodeIndex - the index of the node
-   * @returns {number} the voltage of the node
-   * @public
    */
-  getNodeVoltage( nodeIndex: string ) {
+  getNodeVoltage( nodeIndex: string ): number {
     return this.nodeVoltages.get( nodeIndex )!;
   }
 

@@ -40,11 +40,8 @@ export default class LinearTransientAnalysis {
 
   /**
    * Solves the system with Modified Nodal Analysis, and apply the results back to the Circuit.
-   * @param {Circuit} circuit
-   * @param {number} dt
-   * @public
    */
-  static solveModifiedNodalAnalysis( circuit: Circuit, dt: number ) {
+  static solveModifiedNodalAnalysis( circuit: Circuit, dt: number ): void {
 
     const ltaBatteries = [];
     const ltaResistors = [];

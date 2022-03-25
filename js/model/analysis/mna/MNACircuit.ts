@@ -27,8 +27,14 @@ export default class MNACircuit {
   private readonly batteries: MNABattery[];
   private readonly resistors: MNAResistor[];
   private readonly currentSources: MNACurrent[];
+
+  // the list of all the elements for ease of access
   private readonly elements: MNACircuitElement[];
+
+  // an object with index for all keys that have a node in the circuit, such as: {0:0, 1:1, 2:2, 7:7}
   private readonly nodeSet: { [ key: string ]: string };
+
+  // the number of nodes in the set
   private readonly nodeCount: number;
   private readonly nodes: string[];
 
@@ -40,12 +46,8 @@ export default class MNACircuit {
     this.batteries = batteries;
     this.resistors = resistors;
     this.currentSources = currentSources;
-
-    // @public (read-only) {MNACircuitElement[]} - the list of all the elements for ease of access
     this.elements = [ ...this.batteries, ...this.resistors, ...this.currentSources ];
 
-    // @public (read-only) {Object} - an object with index for all keys that have a node in the circuit, such as:
-    // {0:0, 1:1, 2:2, 7:7}
     this.nodeSet = {};
     for ( let k = 0; k < this.elements.length; k++ ) {
       const element = this.elements[ k ];
@@ -55,7 +57,6 @@ export default class MNACircuit {
       this.nodeSet[ element.nodeId1 ] = element.nodeId1;
     }
 
-    // @public {number} - the number of nodes in the set
     this.nodeCount = _.size( this.nodeSet );
 
     // the node indices
@@ -290,10 +291,8 @@ export default class MNACircuit {
 
   /**
    * Solves for all unknown currents and voltages in the circuit.
-   * @returns {MNASolution}
-   * @public
    */
-  solve() {
+  solve(): MNASolution {
     const equations = this.getEquations();
     const unknownCurrents = this.getUnknownCurrents();
     const unknownVoltages = this.nodes.map( node => new UnknownVoltage( node ) );
@@ -393,7 +392,11 @@ const batteryToString = ( battery: MNABattery ) =>
   `node${battery.nodeId0} -> node${battery.nodeId1} @ ${battery.voltage} Volts`;
 
 class Term {
+
+  // the coefficient for the term, like '7' in 7x
   readonly coefficient: number;
+
+  // the variable for the term, like the x variable in 7x
   readonly variable: UnknownCurrent | UnknownVoltage;
 
   /**
@@ -404,19 +407,14 @@ class Term {
 
     assert && assert( !isNaN( coefficient ), 'coefficient cannot be NaN' );
 
-    // @public (read-only) {number} the coefficient for the term, like '7' in 7x
     this.coefficient = coefficient;
-
-    // @public (read-only) {UnknownCurrent|UnknownVoltage} the variable for the term, like the x variable in 7x
     this.variable = variable;
   }
 
   /**
    * Returns a string representation for debugging.
-   * @returns {string}
-   * @public
    */
-  toTermString() {
+  toTermString(): string {
     const prefix = this.coefficient === 1 ? '' :
                    this.coefficient === -1 ? '-' :
                    `${this.coefficient}*`;
@@ -433,20 +431,16 @@ class UnknownCurrent {
 
   /**
    * Returns the name of the term for debugging.
-   * @returns {string}
-   * @public
    */
-  toTermName() {
+  toTermName(): string {
     return `I${this.element.nodeId0}_${this.element.nodeId1}`;
   }
 
   /**
    * Two UnknownCurrents are equal if the refer to the same element.
-   * @param {UnknownCurrent} other - an UnknownCurrent to compare with this one
-   * @returns {boolean}
-   * @public
+   * @param other - an UnknownCurrent to compare with this one
    */
-  equals( other: UnknownCurrent ) {
+  equals( other: UnknownCurrent ): boolean {
     return other.element === this.element;
   }
 }
@@ -461,20 +455,16 @@ class UnknownVoltage {
 
   /**
    * Returns a string variable name for this term, for debugging.
-   * @returns {string}
-   * @public
    */
-  toTermName() {
+  toTermName(): string {
     return `V${this.node}`;
   }
 
   /**
    * Two UnknownVoltages are equal if they refer to the same node.
-   * @param {UnknownVoltage} other - another object to compare with this one
-   * @returns {boolean}
-   * @public
+   * @param other - another object to compare with this one
    */
-  equals( other: UnknownVoltage ) {
+  equals( other: UnknownVoltage ): boolean {
     return other.node === this.node;
   }
 }
@@ -501,13 +491,12 @@ class Equation {
 
   /**
    * Enter this Equation into the given Matrices for solving the system.
-   * @param {number} row - the index of the row for this equation
-   * @param {Matrix} a - the matrix of coefficients in Ax=z
-   * @param {Matrix} z - the matrix on the right hand side in Ax=z
-   * @param {function} getColumn - (UnknownCurrent|UnknownVoltage) => number
-   * @public
+   * @param row - the index of the row for this equation
+   * @param a - the matrix of coefficients in Ax=z
+   * @param z - the matrix on the right hand side in Ax=z
+   * @param getColumn - (UnknownCurrent|UnknownVoltage) => number
    */
-  stamp( row: number, a: Matrix, z: Matrix, getColumn: { ( unknown: UnknownCurrent | UnknownVoltage ): number; ( arg0: UnknownCurrent | UnknownVoltage ): any } ) {
+  stamp( row: number, a: Matrix, z: Matrix, getColumn: { ( unknown: UnknownCurrent | UnknownVoltage ): number; ( arg0: UnknownCurrent | UnknownVoltage ): any; } ): void {
 
     // Set the equation's value into the solution matrix
     z.set( row, 0, this.value );
@@ -523,10 +512,8 @@ class Equation {
 
   /**
    * Returns a string representation for debugging.
-   * @returns {string}
-   * @public
    */
-  toString() {
+  toString(): string {
     const termList = [];
     for ( let i = 0; i < this.terms.length; i++ ) {
       termList.push( this.terms[ i ].toTermString() );

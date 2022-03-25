@@ -13,7 +13,14 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 // See https://en.wikipedia.org/wiki/Electronic_color_code#Resistor_color-coding
 // Tolerances below gold were eliminated to reduce variance in the tolerance band, see
 // https://github.com/phetsims/circuit-construction-kit-dc/issues/10
-const colorTable = [
+type Entry = {
+  name: string;
+  significantFigure: number | null;
+  multiplier: number | null;
+  tolerance: number | null;
+  color: Color | null;
+};
+const colorTable: Entry[] = [
   { name: 'none', significantFigure: null, multiplier: null, tolerance: 20, color: null },
   { name: 'pink', significantFigure: null, multiplier: -3, tolerance: null, color: new Color( 255, 105, 180 ) },
   { name: 'silver', significantFigure: null, multiplier: -2, tolerance: 10, color: new Color( 192, 192, 192 ) },
@@ -105,21 +112,15 @@ const ResistorColors = {
 
   /**
    * For debugging and testing, get the human-readable color names.
-   * @param {number} resistance
-   * @returns {string[]}
-   * @public
    */
-  getColorNames: function( resistance: number ) {
+  getColorNames: function( resistance: number ): string[] {
     return _.map( this.getEntries( resistance ), 'name' );
   },
 
   /**
    * Return the colors for the given resistance
-   * @param {number} resistance
-   * @returns {Object[]}
-   * @public
    */
-  getColorArray: function( resistance: number ) {
+  getColorArray: function( resistance: number ): ( Color | null )[] {
     return _.map( this.getEntries( resistance ), 'color' );
   }
 };

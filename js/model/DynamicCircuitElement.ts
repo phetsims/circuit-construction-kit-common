@@ -19,25 +19,23 @@ export type DynamicCircuitElementOptions = SelfOptions & FixedCircuitElementOpti
 // This class should not be instantiated directly, instead subclasses should provide implementations for getCircuitProperties
 // and the subclasses should be used instead.
 export default abstract class DynamicCircuitElement extends FixedCircuitElement {
+
+  // value of the voltage drop set and read by the modified nodal analysis.  This is in addition to the typical voltage calculation which is based on vertices.
   mnaVoltageDrop: number;
+
+  // value of the current set and read by the modified nodal analysis.  This is an instantaneous value based on the
+  // throughput computation at the final timestep, as opposed to the currentProperty.value which takes a time average
+  // across the values, so we can show transient spikes, see https://phet.unfuddle.com/a#/projects/9404/tickets/by_number/2270?cycle=true
   mnaCurrent: number;
+
+  // For listening only
   readonly clearEmitter: Emitter<[]>;
   isClearableProperty: BooleanProperty;
 
   constructor( startVertex: Vertex, endVertex: Vertex, length: number, tandem: Tandem, providedOptions?: DynamicCircuitElementOptions ) {
     super( startVertex, endVertex, length, tandem, providedOptions );
-
-    // @public {number} - value of the voltage drop set and read by the modified nodal analysis.  This is in addition
-    // to the typical voltage calculation which is based on vertices.
     this.mnaVoltageDrop = 0;
-
-    // @public {number} - value of the current set and read by the modified nodal analysis.  This is an instantaneous
-    // value based on the throughput computation at the final timestep, as opposed to the currentProperty.value which
-    // takes a time average across the values, so we can show transient spikes,
-    // see https://phet.unfuddle.com/a#/projects/9404/tickets/by_number/2270?cycle=true
     this.mnaCurrent = 0;
-
-    // @public (listen-only)
     this.clearEmitter = new Emitter();
 
     this.isClearableProperty = new BooleanProperty( true, {
@@ -49,9 +47,8 @@ export default abstract class DynamicCircuitElement extends FixedCircuitElement 
   /**
    * Reset the dynamic variable for the modified nodal analysis solver. This has the effect of clearing the
    * electric field (capacitor) or clearing the magnetic field (inductor)
-   * @public
    */
-  clear() {
+  clear(): void {
     assert && assert( this.isClearableProperty.value, 'isClearable must be true when clear() is called' );
     this.mnaVoltageDrop = 0;
     this.mnaCurrent = 0;

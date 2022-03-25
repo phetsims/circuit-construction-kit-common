@@ -19,6 +19,7 @@ import EnumerationIO from '../../../tandem/js/types/EnumerationIO.js';
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import PowerDissipatedProperty from './PowerDissipatedProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
+import Property from '../../../axon/js/Property.js';
 
 type SelfOptions = {
   isMetallic: boolean;
@@ -59,13 +60,11 @@ export default class Resistor extends FixedCircuitElement {
     // @ts-ignore
     validate( resistorType, { valueType: Resistor.ResistorType } );
 
-    // @public (read-only)
     assert && assert( !options.hasOwnProperty( 'isMetallic' ), 'isMetallic is given by the resistorType' );
     options.isMetallic = resistorType.isMetallic;
 
     super( startVertex, endVertex, resistorType.length, tandem, options );
 
-    // @public (read-only) {Resistor.ResistorType} indicates one of ResistorType values
     this.resistorType = resistorType;
 
     assert && assert( typeof this.resistorType.isMetallic === 'boolean' );
@@ -87,9 +86,8 @@ export default class Resistor extends FixedCircuitElement {
 
   /**
    * Dispose of this and PhET-iO instrumented children, so they will be unregistered.
-   * @public
    */
-  dispose() {
+  dispose(): void {
     this.resistanceProperty.dispose();
     this.powerDissipatedProperty.dispose();
     this.isColorCodeVisibleProperty.dispose();
@@ -98,26 +96,20 @@ export default class Resistor extends FixedCircuitElement {
 
   /**
    * Returns true if the resistance is editable.  Household item resistance is not editable.
-   * @returns {boolean}
-   * @public
    */
-  isResistanceEditable() {
+  isResistanceEditable(): boolean {
     return this.resistorType === ResistorType.HIGH_RESISTANCE_RESISTOR ||
            this.resistorType === ResistorType.RESISTOR;
   }
 
   /**
    * Get the properties so that the circuit can be solved when changed.
-   * @override
-   * @returns {Property.<*>[]}
-   * @public
    */
-  getCircuitProperties() {
+  getCircuitProperties(): Property<any>[] {
     return [ this.resistanceProperty ];
   }
 }
 
-// @public {IOType}
 Resistor.ResistorIO = new IOType( 'ResistorIO', {
   valueType: Resistor,
   supertype: CircuitElement.CircuitElementIO,

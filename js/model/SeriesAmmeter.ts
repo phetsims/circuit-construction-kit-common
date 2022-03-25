@@ -7,6 +7,7 @@
  */
 
 import NumberProperty from '../../../axon/js/NumberProperty.js';
+import Property from '../../../axon/js/Property.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -17,23 +18,19 @@ type SelfOptions = {};
 type SeriesAmmeterOptions = SelfOptions & FixedCircuitElementOptions;
 
 export default class SeriesAmmeter extends FixedCircuitElement {
+
+  // the resistance in ohms.  A constant, but modeled as a property for uniformity with other resistive elements.
   readonly resistanceProperty: NumberProperty;
 
   constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: SeriesAmmeterOptions ) {
     super( startVertex, endVertex, CCKCConstants.SERIES_AMMETER_LENGTH, tandem, providedOptions );
-
-    // @public (read-only) {Property.<number>} the resistance in ohms.  A constant, but modeled as a property for
-    // uniformity with other resistive elements.
     this.resistanceProperty = new NumberProperty( 0 );
   }
 
   /**
    * Get the properties so that the circuit can be solved when changed.
-   * @override
-   * @returns {Property.<*>[]}
-   * @public
    */
-  getCircuitProperties() {
+  getCircuitProperties(): Property<any>[] {
 
     // No internal parameters that can change the circuit
     return [];

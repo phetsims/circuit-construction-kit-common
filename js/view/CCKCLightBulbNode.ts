@@ -296,20 +296,16 @@ export default class CCKCLightBulbNode extends FixedCircuitElementNode {
 
   /**
    * Dispose when no longer used.
-   * @public
-   * @override
    */
-  dispose() {
+  dispose(): void {
     this.disposeCircuitConstructionKitLightBulbNode();
     super.dispose();
   }
 
   /**
    * Maintain the opacity of the brightness lines while changing the opacity of the light bulb itself.
-   * @override
-   * @public
    */
-  updateOpacityOnInteractiveChange() {
+  updateOpacityOnInteractiveChange(): void {
 
     // TODO (black-box-study): Make the light bulb images look faded out.
   }

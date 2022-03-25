@@ -24,11 +24,8 @@ export default class MNACircuitElement {
 
   /**
    * Determine if the element contains the given node id
-   * @param {string} nodeId
-   * @returns {boolean}
-   * @public
    */
-  containsNodeId( nodeId: string ) {
+  containsNodeId( nodeId: string ): boolean {
     return this.nodeId0 === nodeId || this.nodeId1 === nodeId;
   }
 

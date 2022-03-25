@@ -57,19 +57,18 @@ export default class ChargeAnimator {
 
   // factor that reduces the overall propagator speed when maximum speed is exceeded
   private scale: number;
+
+  // a running average over last time steps as a smoothing step
   readonly timeScaleRunningAverage: RunningAverage;
+
+  // how much the time should be slowed, 1 is full speed, 0.5 is running at half speed, etc.
   readonly timeScaleProperty: NumberProperty;
 
   constructor( circuit: Circuit ) {
     this.charges = circuit.charges;
     this.circuit = circuit;
     this.scale = 1;
-
-    // @public {RunningAverage} - a running average over last time steps as a smoothing step
     this.timeScaleRunningAverage = new RunningAverage( 30 );
-
-    // @public (read-only) {NumberProperty} - how much the time should be slowed, 1 is full speed, 0.5 is running at
-    // half speed, etc.
     this.timeScaleProperty = new NumberProperty( 1, { range: new Range( 0, 1 ) } );
   }
 

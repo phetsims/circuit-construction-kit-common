@@ -33,10 +33,10 @@ export default class ZoomAnimation {
   }
 
   /**
-   * @param {number} dt - elapsed time in seconds
-   * @public
+   * @param dt - elapsed time in seconds
+   * TODO: Explain return value
    */
-  step( dt: number ) {
+  step( dt: number ): number {
     const oldRatio = this.ratio;
 
     if ( oldRatio < 1 ) {

@@ -52,7 +52,11 @@ type AmmeterNodeOptions = {
 
 export default class AmmeterNode extends Node {
   private readonly probeNode: ProbeNode;
+
+  // the model associated with this view
   readonly ammeter: Ammeter;
+
+  // so events can be forwarded from the toolbox
   private readonly dragHandler: DragListener | null;
 
   /**
@@ -133,10 +137,7 @@ export default class AmmeterNode extends Node {
 
     super( options );
 
-    // @public (read-only) {ProbeNode}
     this.probeNode = probeNode;
-
-    // @public (read-only) {Ammeter} - the model associated with this view
     this.ammeter = ammeter;
 
     const alignProbeToBody = () => {
@@ -181,7 +182,6 @@ export default class AmmeterNode extends Node {
         dragBoundsProperty: erodedDragBoundsProperty
       } );
 
-      // @public (read-only) {MovableDragHandler} - so events can be forwarded from the toolbox
       this.dragHandler = new DragListener( {
         useParentOffset: true,
         positionProperty: ammeter.bodyPositionProperty,
@@ -235,10 +235,8 @@ export default class AmmeterNode extends Node {
 
   /**
    * Forward a drag from the toolbox to the play area node.
-   * @param {SceneryEvent} event
-   * @public
    */
-  startDrag( event: SceneryEvent<MouseEvent | TouchEvent | PointerEvent> ) {
+  startDrag( event: SceneryEvent<MouseEvent | TouchEvent | PointerEvent> ): void {
     this.dragHandler && this.dragHandler.press( event );
   }
 }

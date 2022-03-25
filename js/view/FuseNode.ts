@@ -173,7 +173,6 @@ export default class FuseNode extends FixedCircuitElementNode {
 
     super( screenView, circuitLayerNode, fuse, viewTypeProperty, lifelikeFuseNode, schematicNode, tandem, options );
 
-    // @public (read-only) {Fuse} the fuse depicted by this node
     this.fuse = fuse;
 
     // Update the look when the fuse is tripped
@@ -200,12 +199,7 @@ export default class FuseNode extends FixedCircuitElementNode {
     };
   }
 
-  /**
-   * Dispose the FuseNode when it will no longer be used.
-   * @public
-   * @override
-   */
-  dispose() {
+  dispose(): void {
     this.disposeFuseNode();
     super.dispose();
   }
@@ -213,7 +207,6 @@ export default class FuseNode extends FixedCircuitElementNode {
 
 /**
  * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
- * @public {Array.<Image>}
  */
 FuseNode.webglSpriteNodes = [
   new Image( fuse_png )

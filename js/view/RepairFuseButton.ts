@@ -70,8 +70,7 @@ export default class RepairFuseButton extends HBox {
     super( { children: [ button ] } );
   }
 
-  // @public
-  dispose() {
+  dispose(): void {
     assert && assert( false, 'should not be disposed' );
   }
 }

@@ -280,11 +280,7 @@ export default class ValueNode extends Panel {
     };
   }
 
-  /**
-   * @public - dispose when no longer used
-   * @override
-   */
-  dispose() {
+  dispose(): void {
     super.dispose();
     this.disposeValueNode();
   }

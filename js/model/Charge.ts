@@ -16,11 +16,23 @@ export default class Charge {
 
   //the amount of charge
   readonly charge: number;
+
+  // the CircuitElement the Charge is in, changed by Charge.updatePositionAndAngle
   circuitElement: CircuitElement;
+
+  // the distance the charge has traveled in its CircuitElement in view coordinates
   distance: number;
+
+  // rotation and translation for the charge
   readonly matrix: Matrix3;
+
+  // whether the charge should be displayed
   readonly visibleProperty: Property<boolean>;
+
+  // Indicate when the position and/or angle changed
   readonly changedEmitter: Emitter<[]>;
+
+  // Send notifications when the charge is disposed, so the view can be disposed
   readonly disposeEmitterCharge: Emitter<[]>;
 
   /**
@@ -40,22 +52,11 @@ export default class Charge {
     assert && assert( distance >= 0, 'charge was below the origin of the circuit element' );
     assert && assert( circuitElement.containsScalarPosition( distance ), 'charge was not within the circuit element' );
 
-    // @public (read-only) {CircuitElement} - the CircuitElement the Charge is in, changed by Charge.updatePositionAndAngle
     this.circuitElement = circuitElement;
-
-    // @public (read-only) {number} - the distance the charge has traveled in its CircuitElement in view coordinates
     this.distance = distance;
-
-    // @public (read-only) {Matrix3} - rotation and translation for the charge
     this.matrix = Matrix3.identity();
-
-    // @public (read-only) {Property.<boolean>} - whether the charge should be displayed
     this.visibleProperty = visibleProperty;
-
-    // @public (read-only) {Emitter} Indicate when the position and/or angle changed
     this.changedEmitter = new Emitter();
-
-    // @public (read-only) {Emitter} send notifications when the charge is disposed, so the view can be disposed.
     this.disposeEmitterCharge = new Emitter();
 
     this.updatePositionAndAngle();

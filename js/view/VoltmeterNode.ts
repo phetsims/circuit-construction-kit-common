@@ -57,6 +57,8 @@ export default class VoltmeterNode extends Node {
   readonly voltmeter: Voltmeter;
   private readonly redProbeNode: Rectangle;
   private readonly blackProbeNode: Rectangle;
+
+  // so events can be forwarded from the toolbox
   private readonly dragHandler: DragListener | null;
   static PROBE_ANGLE: number;
 
@@ -218,13 +220,8 @@ export default class VoltmeterNode extends Node {
     // @private {CircuitLayerNode}
     this.circuitLayerNode = circuitLayerNode;
 
-    // @public (read-only) {Voltmeter} - the model
     this.voltmeter = voltmeter;
-
-    // @public (read-only) {Rectangle} - the red probe node
     this.redProbeNode = redProbeNode;
-
-    // @public (read-only) {Rectangle} - the black probe node
     this.blackProbeNode = blackProbeNode;
 
     // For the real version (not the icon), add drag listeners and update visibility
@@ -261,7 +258,6 @@ export default class VoltmeterNode extends Node {
         return visibleBounds.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
       } );
 
-      // @public (read-only) {MovableDragHandler} - so events can be forwarded from the toolbox
       this.dragHandler = new DragListener( {
 
         positionProperty: voltmeter.bodyPositionProperty,
@@ -348,15 +344,12 @@ export default class VoltmeterNode extends Node {
 
   /**
    * Forward a drag from the toolbox to the play area node.
-   * @param {SceneryEvent} event
-   * @public
    */
-  startDrag( event: any ) {
+  startDrag( event: any ): void {
     this.dragHandler!.press( event );
   }
 }
 
-// @public {number}
 VoltmeterNode.PROBE_ANGLE = PROBE_ANGLE;
 
 circuitConstructionKitCommon.register( 'VoltmeterNode', VoltmeterNode );

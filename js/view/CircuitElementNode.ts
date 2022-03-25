@@ -59,8 +59,6 @@ export default abstract class CircuitElementNode extends Node {
 
     // the circuit which the element can be removed from or null for icons
     this.circuit = circuit;
-
-    // @public (read-only) {CircuitElement} - the CircuitElement rendered by this node
     this.circuitElement = circuitElement;
 
     // Make it easy to get back to circuitElements
@@ -124,27 +122,23 @@ export default abstract class CircuitElementNode extends Node {
 
   /**
    * Mark dirty to batch changes, so that update can be done once in view step, if necessary
-   * @public
    */
-  markAsDirty() {
+  markAsDirty(): void {
     this.dirty = true;
   }
 
   /**
    * Dispose resources when no longer used.
-   * @public
-   * @override
    */
-  dispose() {
+  dispose(): void {
     this.disposeCircuitElementNode();
     super.dispose();
   }
 
   /**
    * When interactivity changes, update the opacity.  Overridden.
-   * @public
    */
-  updateOpacityOnInteractiveChange() {
+  updateOpacityOnInteractiveChange(): void {
 
     // TODO (black-box-study): Replace this with grayscale if we keep it
     // TODO (black-box-study): @jonathonolson said: I've wished for a scenery-level grayscale/etc. filter. Let me know when you get close to doing this.
@@ -158,11 +152,8 @@ export default abstract class CircuitElementNode extends Node {
 
   /**
    * Returns true if the node hits the sensor at the given point.
-   * @param {Vector2} globalPoint
-   * @returns {boolean}
-   * @public
    */
-  containsSensorPoint( globalPoint: Vector2 ) {
+  containsSensorPoint( globalPoint: Vector2 ): boolean {
 
     const localPoint = this.globalToParentPoint( globalPoint );
 
@@ -182,10 +173,9 @@ export default abstract class CircuitElementNode extends Node {
   }
 
   /**
-   * @public - called during the view step
-   * @override
+   * called during the view step
    */
-  step() {
+  step(): void {
     if ( this.dirty ) {
 
       this.updateRender();
@@ -193,19 +183,17 @@ export default abstract class CircuitElementNode extends Node {
     }
   }
 
-// @public overridden in subclasses
   abstract updateRender(): void;
 
   /**
    * Handles when the node is dropped, called by subclass input listener.
-   * @param {Node} node - the node the input listener is attached to
-   * @param {Vertex[]} vertices - the vertices that are dragged
-   * @param {CCKCScreenView} screenView - the main screen view, null for icon
-   * @param {CircuitLayerNode} circuitLayerNode
-   * @param {Vector2} initialPoint
-   * @param {Vector2} latestPoint
-   * @param {boolean} dragged
-   * @public
+   * @param node - the node the input listener is attached to
+   * @param vertices - the vertices that are dragged
+   * @param screenView - the main screen view, null for icon
+   * @param circuitLayerNode
+   * @param initialPoint
+   * @param latestPoint
+   * @param dragged
    */
   endDrag( node: Node, vertices: Vertex[], screenView: CCKCScreenView, circuitLayerNode: CircuitLayerNode, initialPoint: Vector2, latestPoint: Vector2, dragged: boolean ) {
     const circuitElement = this.circuitElement;
@@ -234,12 +222,8 @@ export default abstract class CircuitElementNode extends Node {
 
   /**
    * On tap events, select the CircuitElement (if it is close enough to the tap)
-   * @param {CircuitLayerNode} circuitLayerNode
-   * @param {Vector2} startPoint
-   * @param {Vector2|null} latestPoint
-   * @public
    */
-  selectCircuitElementNodeWhenNear( circuitLayerNode: CircuitLayerNode, startPoint: Vector2, latestPoint: Vector2 | null ) {
+  selectCircuitElementNodeWhenNear( circuitLayerNode: CircuitLayerNode, startPoint: Vector2, latestPoint: Vector2 | null ): void {
 
     if ( !this.circuitElement.isDisposed && latestPoint && latestPoint.distance( startPoint ) < CCKCConstants.TAP_THRESHOLD ) {
 

@@ -34,10 +34,8 @@ export default class FixedCircuitElementHighlightNode extends Rectangle {
 
   /**
    * Update the dimensions of the highlight, called on startup and when components change from lifelike/schematic.
-   * @param {FixedCircuitElementNode} fixedCircuitElementNode
-   * @public
    */
-  recomputeBounds( fixedCircuitElementNode: FixedCircuitElementNode ) {
+  recomputeBounds( fixedCircuitElementNode: FixedCircuitElementNode ): void {
 
     // This is called rarely and hence the extra allocation is OK
     this.setRectBounds( fixedCircuitElementNode.getHighlightBounds() );

@@ -79,24 +79,57 @@ export default class CircuitLayerNode extends Node {
   readonly model: CircuitConstructionKitModel;
   private readonly visibleBoundsProperty: Property<Bounds2>;
   private readonly circuitLayerNodeBackLayer: Node;
+
+  // CircuitElementNodes add highlights directly to this layer when they are constructed
   readonly highlightLayer: Node;
+
+  // SeriesAmmeterNodes add to this layer when they are constructed
+  // Shows the front panel of SeriesAmmeterNodes (which shows the current readout) so the charges look like they
+  // flow through.
   readonly seriesAmmeterNodeReadoutPanelLayer: Node;
+
+  // layer for vertex buttons
   readonly buttonLayer: Node;
+
+  // layer for "show values"
   private readonly valueLayer: Node;
+
+  // layer for light rays, since it cannot be rendered in WebGL
   private readonly lightRaysLayer: Node;
+
+  // layer that contains the wires
   private readonly wireLayer: Node;
+
+  // layer that shows the solder joints
   private readonly solderLayer: Node;
+
+  // layer that shows the Vertex instances
   private readonly vertexLayer: Node;
+
+  // contains FixedCircuitElements
   private readonly fixedCircuitElementLayer: Node;
+
+  // CCKCLightBulbNode calls addChild/removeChild to add sockets to the front layer
   readonly lightBulbSocketLayer: Node;
+
+  // layer that shows the Charge instances
   private readonly chargeLayer: Node;
+
+  // layer that shows the Voltmeter and Ammeter (but not the SeriesAmmeter, which is shown in the fixedCircuitElementLayer)
   readonly sensorLayer: Node;
   private readonly beforeCircuitElementsLayer: Node;
   private readonly afterCircuitElementsLayer: Node;
+
+  // the visible bounds in the coordinate frame of the circuit.  Initialized with a placeholder value until it is filled
+  // in by CCKCScreenView (after attached to a parent)
   readonly visibleBoundsInCircuitCoordinateFrameProperty: Property<Bounds2>;
+
+  // the Circuit model depicted by this view
   readonly circuit: Circuit;
   private readonly circuitElementNodeMap: { [ key: number ]: CircuitElementNode };
   private readonly solderNodes: { [ key: number ]: SolderNode };
+
+  // Map of Vertex.index => VertexNode
   private readonly vertexNodes: { [ key: number ]: VertexNode };
   readonly cutButton: RoundPushButton;
   private readonly circuitDebugLayer: CircuitDebugLayer | null;
@@ -118,24 +151,16 @@ export default class CircuitLayerNode extends Node {
     // the layer behind the control panels
     this.circuitLayerNodeBackLayer = screenView.circuitLayerNodeBackLayer;
 
-    // @public {Node} - CircuitElementNodes add highlights directly to this layer when they are constructed
     this.highlightLayer = new Node();
 
-    // @public {Node} - SeriesAmmeterNodes add to this layer when they are constructed
-    // Shows the front panel of SeriesAmmeterNodes (which shows the current readout) so the charges look like they
-    // flow through.
     this.seriesAmmeterNodeReadoutPanelLayer = new Node();
 
-    // @public {Node} - layer for vertex buttons
     this.buttonLayer = new Node();
 
-    // @public {Node} - layer for "show values"
     this.valueLayer = new Node();
 
-    // @public {Node} - layer for light rays, since it cannot be rendered in WebGL
     this.lightRaysLayer = new Node();
 
-    // @public {Node} - layer that contains the wires
     this.wireLayer = new Node( {
       renderer: RENDERER,
 
@@ -146,7 +171,6 @@ export default class CircuitLayerNode extends Node {
       } ) ]
     } );
 
-    // @public {Node} - layer that shows the solder joints
     this.solderLayer = new Node( {
       renderer: RENDERER,
 
@@ -157,7 +181,6 @@ export default class CircuitLayerNode extends Node {
       } ) ]
     } );
 
-    // @public {Node} - layer that shows the Vertex instances
     this.vertexLayer = new Node( {
       renderer: RENDERER,
 
@@ -168,7 +191,6 @@ export default class CircuitLayerNode extends Node {
       } ) ]
     } );
 
-    // @public {Node} - contains FixedCircuitElements
     this.fixedCircuitElementLayer = new Node( {
 
       // add a child eagerly so the WebGL block is all allocated when 1st object is dragged out of toolbox
@@ -184,7 +206,6 @@ export default class CircuitLayerNode extends Node {
       } ) ]
     } );
 
-    // @public {Node} - CCKCLightBulbNode calls addChild/removeChild to add sockets to the front layer
     this.lightBulbSocketLayer = new Node( {
       renderer: RENDERER,
 
@@ -195,7 +216,6 @@ export default class CircuitLayerNode extends Node {
       } ) ]
     } );
 
-    // @public {Node} - layer that shows the Charge instances
     this.chargeLayer = new Node( {
       renderer: RENDERER
 
@@ -210,10 +230,8 @@ export default class CircuitLayerNode extends Node {
       this.chargeLayer.visible = isValueDepictionEnabled && revealing;
     } );
 
-    // @public {Node} - layer that shows the Voltmeter and Ammeter (but not the SeriesAmmeter, which is shown in the fixedCircuitElementLayer)
     this.sensorLayer = new Node();
 
-    // @public (circuit-construction-kit-black-box-study)
     this.beforeCircuitElementsLayer = new Node();
     this.afterCircuitElementsLayer = new Node();
 
@@ -259,11 +277,8 @@ export default class CircuitLayerNode extends Node {
       this.children = ( viewType === CircuitElementViewType.LIFELIKE ) ? lifelikeLayering : schematicLayering;
     } );
 
-    // @public {Property.<Bounds2>} the visible bounds in the coordinate frame of the circuit.  Initialized with a
-    // placeholder value until it is filled in by CCKCScreenView (after attached to a parent)
     this.visibleBoundsInCircuitCoordinateFrameProperty = new Property( new Bounds2( 0, 0, 1, 1 ) );
 
-    // @public (read-only) {Circuit} - the Circuit model depicted by this view
     this.circuit = circuit;
 
     // @private {Object} - Map to find CircuitElement=>CircuitElementNode. key is CircuitElement.id, value is
@@ -273,7 +288,6 @@ export default class CircuitLayerNode extends Node {
     // @private {Object} - Map of Vertex.index => SolderNode
     this.solderNodes = {};
 
-    // @public (read-only) {Object} Map of Vertex.index => VertexNode
     this.vertexNodes = {};
 
     /**
@@ -431,7 +445,6 @@ export default class CircuitLayerNode extends Node {
       maxWidth: 36
     } );
 
-    // @public (read-only)
     this.cutButton = new RoundPushButton( {
       baseColor: 'yellow',
       content: cutIcon,
@@ -524,35 +537,25 @@ export default class CircuitLayerNode extends Node {
 
   /**
    * Returns the circuit element node that matches the given circuit element.
-   * @param {CircuitElement} circuitElement
-   * @returns {CircuitElementNode}
-   * @public
    */
-  getCircuitElementNode( circuitElement: CircuitElement ) {
+  getCircuitElementNode( circuitElement: CircuitElement ): CircuitElementNode {
     return this.circuitElementNodeMap[ circuitElement.id ];
   }
 
   /**
    * Get the solder node associated with the specified Vertex
-   * @param {Vertex} vertex
-   * @returns {SolderNode}
-   * @public
    */
-  getSolderNode( vertex: Vertex ) { return this.solderNodes[ vertex.index ]; }
+  getSolderNode( vertex: Vertex ): SolderNode { return this.solderNodes[ vertex.index ]; }
 
   /**
    * Get the VertexNode associated with the specified Vertex
-   * @param {Vertex} vertex
-   * @returns {VertexNode}
-   * @public
    */
-  getVertexNode( vertex: Vertex ) { return this.vertexNodes[ vertex.index ]; }
+  getVertexNode( vertex: Vertex ): VertexNode { return this.vertexNodes[ vertex.index ]; }
 
   /**
    * Find drop targets for all the given vertices
-   * @param {Vertex[]} vertices
-   * @returns {Object[]} candidates for connection, each Object has {src:Vertex,dst:Vertex} indicating what can snap
-   * @public
+   * @param vertices
+   * @returns candidates for connection, each Object has {src:Vertex,dst:Vertex} indicating what can snap
    */
   getAllDropTargets( vertices: Vertex[] ) {
     const allDropTargets = [];
@@ -592,9 +595,8 @@ export default class CircuitLayerNode extends Node {
 
   /**
    * Updates the view
-   * @public
    */
-  step() {
+  step(): void {
 
     // paint dirty fixed length circuit element nodes.  This batches changes instead of applying multiple changes
     // per frame
@@ -605,11 +607,8 @@ export default class CircuitLayerNode extends Node {
 
   /**
    * Returns whether the vertex can be dragged
-   * @param {Vertex} vertex
-   * @returns {boolean}
-   * @public
    */
-  canDragVertex( vertex: Vertex ) {
+  canDragVertex( vertex: Vertex ): boolean {
     const vertices = this.circuit.findAllFixedVertices( vertex );
 
     // If any of the vertices in the subgraph is already being dragged, then this vertex cannot be dragged.
@@ -624,10 +623,8 @@ export default class CircuitLayerNode extends Node {
 
   /**
    * Mark the vertex and its fixed connected vertices as being dragged, so they cannot be dragged by any other pointer.
-   * @param {Vertex} vertex
-   * @public
    */
-  setVerticesDragging( vertex: Vertex ) {
+  setVerticesDragging( vertex: Vertex ): void {
     const vertices = this.circuit.findAllFixedVertices( vertex );
     for ( let i = 0; i < vertices.length; i++ ) {
       vertices[ i ].isDragged = true;
@@ -636,11 +633,8 @@ export default class CircuitLayerNode extends Node {
 
   /**
    * Called when a Vertex drag begins, records the relative click point
-   * @param {Vector2} point
-   * @param {Vertex} vertex
-   * @public
    */
-  startDragVertex( point: Vector2, vertex: Vertex ) {
+  startDragVertex( point: Vector2, vertex: Vertex ): void {
 
     // If it is the edge of a fixed length circuit element, the element rotates and moves toward the mouse
     const vertexNode = this.getVertexNode( vertex );
@@ -690,12 +684,11 @@ export default class CircuitLayerNode extends Node {
 
   /**
    * Drag a vertex.
-   * @param {Vector2} point - the touch position
-   * @param {Vertex} vertex - the vertex that is being dragged
-   * @param {boolean} okToRotate - true if it is allowed to rotate adjacent CircuitElements
-   * @public
+   * @param point - the touch position
+   * @param vertex - the vertex that is being dragged
+   * @param okToRotate - true if it is allowed to rotate adjacent CircuitElements
    */
-  dragVertex( point: Vector2, vertex: Vertex, okToRotate: boolean ) {
+  dragVertex( point: Vector2, vertex: Vertex, okToRotate: boolean ): void {
     const vertexNode = this.getVertexNode( vertex );
 
     // Guard against the case in which the battery is flipped while dragging, see https://github.com/phetsims/circuit-construction-kit-common/issues/416
@@ -769,15 +762,13 @@ export default class CircuitLayerNode extends Node {
    *
    * Note: Do not confuse this with Circuit.translateVertexGroup which does not consider connections while dragging
    *
-   * @param {Vertex} vertex - the vertex being dragged
-   * @param {Array.<Vertex>} vertices - all the vertices in the group
-   * @param {Vector2} unsnappedDelta - how far to move the group
-   * @param {function|null} updatePositions - optional callback for updating positions after unsnapped positions
-   *                                        - update
-   * @param {Array.<Vertex>} attachable - the nodes that are candidates for attachment
-   * @public
+   * @param vertex - the vertex being dragged
+   * @param vertices - all the vertices in the group
+   * @param unsnappedDelta - how far to move the group
+   * @param updatePositions - optional callback for updating positions after unsnapped positions update
+   * @param attachable - the nodes that are candidates for attachment
    */
-  translateVertexGroup( vertex: Vertex, vertices: Vertex[], unsnappedDelta: Vector2, updatePositions: any, attachable: Vertex[] ) {
+  translateVertexGroup( vertex: Vertex, vertices: Vertex[], unsnappedDelta: Vector2, updatePositions: any, attachable: Vertex[] ): void {
 
     const screenBounds = this.visibleBoundsProperty.get();
     const bounds = this.parentToLocalBounds( screenBounds );
@@ -829,11 +820,10 @@ export default class CircuitLayerNode extends Node {
   /**
    * End a vertex drag.
    *
-   * @param {Vertex} vertex
-   * @param {boolean} dragged - true if the vertex actually moved with at least 1 drag call
-   * @public
+   * @param vertex
+   * @param dragged - true if the vertex actually moved with at least 1 drag call
    */
-  endDrag( vertex: Vertex, dragged: boolean ) {
+  endDrag( vertex: Vertex, dragged: boolean ): void {
     assert && assert( typeof dragged === 'boolean', 'didDrag must be supplied' );
 
     const vertexNode = this.getVertexNode( vertex );
@@ -870,8 +860,6 @@ export default class CircuitLayerNode extends Node {
 
   /**
    * Adds a child to a layer behind the control panels.
-   * @param {Node} child - the Node to add
-   * @public
    */
   addChildToBackground( child: Node ) {
     this.circuitLayerNodeBackLayer.addChild( child );
@@ -879,32 +867,27 @@ export default class CircuitLayerNode extends Node {
 
   /**
    * Removes a child from the layer behind the control panels.
-   * @param {Node} child - the Node to remove
-   * @public
    */
-  removeChildFromBackground( child: Node ) {
+  removeChildFromBackground( child: Node ): void {
     this.circuitLayerNodeBackLayer.removeChild( child );
   }
 
   /**
    * When the zoom level changes, recompute the visible bounds in the coordinate frame of the CircuitLayerNode so
    * that objects cannot be dragged outside the boundary.
-   * @param {Bounds2} visibleBounds - view coordinates for the visible region
-   * @public
+   * @param visibleBounds - view coordinates for the visible region
    */
-  updateTransform( visibleBounds: Bounds2 ) {
+  updateTransform( visibleBounds: Bounds2 ): void {
     this.visibleBoundsInCircuitCoordinateFrameProperty.set( this.parentToLocalBounds( visibleBounds ) );
   }
 
   /**
    * Check for an intersection between a probeNode and a wire, return null if no hits.
-   * @param {Vector2} position to hit test
-   * @param {function} filter - CircuitElement=>boolean the rule to use for checking circuit elements
-   * @param {Vector2|null} globalPoint
-   * @returns {CircuitElementNode|null}
-   * @public
+   * @param position to hit test
+   * @param filter - CircuitElement=>boolean the rule to use for checking circuit elements
+   * @param globalPoint
    */
-  hitCircuitElementNode( position: Vector2, filter: ( c: CircuitElement ) => boolean, globalPoint: Vector2 | null ) {
+  hitCircuitElementNode( position: Vector2, filter: ( c: CircuitElement ) => boolean, globalPoint: Vector2 | null ): CircuitElementNode | null {
 
     assert && assert( globalPoint !== undefined );
 
@@ -1048,11 +1031,8 @@ export default class CircuitLayerNode extends Node {
 
   /**
    * Find the current under the given probe
-   * @param {Node} probeNode
-   * @returns {number|null}
-   * @public
    */
-  getCurrent( probeNode: Node ) {
+  getCurrent( probeNode: Node ): number | null {
     const mainCurrent = this.getCurrentInLayer( probeNode, this.fixedCircuitElementLayer );
     if ( mainCurrent !== null ) {
       return mainCurrent;

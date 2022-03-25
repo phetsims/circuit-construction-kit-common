@@ -95,14 +95,12 @@ export default class BatteryNode extends FixedCircuitElementNode {
       providedOptions
     );
 
-    // @public (read-only) {Battery} - the Battery rendered by this Node
     this.battery = battery;
   }
 }
 
 /**
  * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
- * @public {Array.<Image>}
  */
 BatteryNode.webglSpriteNodes = [
   new Image( battery_png ),

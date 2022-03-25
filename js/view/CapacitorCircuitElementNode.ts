@@ -31,6 +31,7 @@ import CCKCScreenView from './CCKCScreenView.js';
 import CircuitLayerNode from './CircuitLayerNode.js';
 import FixedCircuitElementNode, { FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
 import Vector2 from '../../../dot/js/Vector2.js';
+import Bounds2 from '../../../dot/js/Bounds2.js';
 
 // constants
 // dimensions for schematic
@@ -64,7 +65,11 @@ rightSchematicShape = rightSchematicShape.transformed( Matrix3.scale( SCHEMATIC_
 
 export default class CapacitorCircuitElementNode extends FixedCircuitElementNode {
   private readonly capacitor: Capacitor;
+
+  // for clipping in ChargeNode
   readonly capacitorCircuitElementLifelikeNode: CapacitorNode;
+
+  // for clipping in ChargeNode
   readonly capacitorCircuitElementSchematicNode: Node;
   private readonly leftWireStub: Node;
   private readonly rightWireStub: Node;
@@ -193,13 +198,8 @@ export default class CapacitorCircuitElementNode extends FixedCircuitElementNode
       providedOptions
     );
 
-    // @public (read-only) {Capacitor} - the Capacitor rendered by this Node
     this.capacitor = capacitor;
-
-    // @public (read-only) {Node} - for clipping in ChargeNode
     this.capacitorCircuitElementLifelikeNode = lifelikeNode;
-
-    // @public (read-only) {Node} - for clipping in ChargeNode
     this.capacitorCircuitElementSchematicNode = schematicNode;
 
     this.leftWireStub = leftWireStub;
@@ -234,20 +234,15 @@ export default class CapacitorCircuitElementNode extends FixedCircuitElementNode
     };
   }
 
-  // @public
-  dispose() {
+  dispose(): void {
     this.disposeCapacitorCircuitElementNode();
     super.dispose();
   }
 
   /**
    * Returns true if the node hits the sensor at the given point.
-   * @param {Vector2} globalPoint
-   * @returns {boolean}
-   * @overrides
-   * @public
    */
-  containsSensorPoint( globalPoint: Vector2 ) {
+  containsSensorPoint( globalPoint: Vector2 ): boolean {
 
     // make sure bounds are correct if cut or joined in this animation frame
     this.step();
@@ -257,11 +252,8 @@ export default class CapacitorCircuitElementNode extends FixedCircuitElementNode
 
   /**
    * Determine whether the start side (with the pivot) contains the sensor point.
-   * @param {Vector2} globalPoint
-   * @returns {boolean}
-   * @public
    */
-  frontSideContainsSensorPoint( globalPoint: Vector2 ) {
+  frontSideContainsSensorPoint( globalPoint: Vector2 ): boolean {
 
     if ( this.viewTypeProperty.value === CircuitElementViewType.LIFELIKE ) {
       return this.capacitorCircuitElementLifelikeNode.frontSideContainsSensorPoint( globalPoint ) ||
@@ -274,11 +266,8 @@ export default class CapacitorCircuitElementNode extends FixedCircuitElementNode
 
   /**
    * Determine whether the end side (with the pivot) contains the sensor point.
-   * @param {Vector2} globalPoint
-   * @returns {boolean}
-   * @public
    */
-  backSideContainsSensorPoint( globalPoint: Vector2 ) {
+  backSideContainsSensorPoint( globalPoint: Vector2 ): boolean {
 
     if ( this.viewTypeProperty.value === CircuitElementViewType.LIFELIKE ) {
       return this.capacitorCircuitElementLifelikeNode.backSideContainsSensorPoint( globalPoint ) ||
@@ -291,10 +280,8 @@ export default class CapacitorCircuitElementNode extends FixedCircuitElementNode
 
   /**
    * Gets the bounds for the highlight rectangle.
-   * @returns {Bounds2}
-   * @public
    */
-  getHighlightBounds() {
+  getHighlightBounds(): Bounds2 {
     return this.viewTypeProperty.value === CircuitElementViewType.LIFELIKE ?
            this.contentNode.localBounds.erodedX( 22 ).erodedY( 15 ) :
            this.contentNode.localBounds.dilatedX( 10 ).dilatedY( 10 );

@@ -105,7 +105,6 @@ export default class CustomLightBulbNode extends Node {
     // @private {Image}
     this.backNode = backNode;
 
-    // @public {LightRaysNode|null}
     this.raysNode = raysNode;
 
     // @private {Property.<number>} - brightness of the bulb
@@ -152,20 +151,16 @@ export default class CustomLightBulbNode extends Node {
     this.visibleProperty.link( ( visible: boolean ) => visible && this.update() );
   }
 
-  /**
-   * @public - dispose resources when no longer used
-   */
-  dispose() {
+  dispose(): void {
     this.disposeCustomLightBulbNode();
   }
 
   /**
    * Move forward in time
-   * @param {number} time - total elapsed time in seconds
-   * @param {number} dt - seconds since last step
-   * @public
+   * @param time - total elapsed time in seconds
+   * @param dt - seconds since last step
    */
-  step( time: number, dt: number ) {
+  step( time: number, dt: number ): void {
     this.update();
   }
 
@@ -191,7 +186,6 @@ export default class CustomLightBulbNode extends Node {
 
 /**
  * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
- * @public {Array.<Image>}
  */
 CustomLightBulbNode.webglSpriteNodes = [
   new Image( lightBulbBack_png ),

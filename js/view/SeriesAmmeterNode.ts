@@ -214,21 +214,16 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
     };
   }
 
-  /**
-   * @public - dispose resources when no longer used
-   * @override
-   */
-  dispose() {
+  dispose(): void {
     this.disposeSeriesAmmeterNode();
     super.dispose();
   }
 
   /**
    * Multiple updates may happen per frame, they are batched and updated once in the view step to improve performance.
-   * @public - CCKCLightBulbNode calls updateRender for its child socket node
-   * @override
+   * CCKCLightBulbNode calls updateRender for its child socket node
    */
-  updateRender() {
+  updateRender(): void {
     super.updateRender();
     this.frontPanelContainer.setMatrix( this.contentNode.getMatrix() );
   }

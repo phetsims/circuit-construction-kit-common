@@ -13,16 +13,8 @@ export default class VoltageConnection {
   readonly vertex: Vertex;
   readonly voltage: number;
 
-  /**
-   * @param {Vertex} vertex
-   * @param {number} [voltage]
-   */
   constructor( vertex: Vertex, voltage: number = vertex.voltageProperty.value ) {
-
-    // @public
     this.vertex = vertex;
-
-    // @public
     this.voltage = voltage;
   }
 }

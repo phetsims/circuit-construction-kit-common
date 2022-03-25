@@ -40,6 +40,8 @@ const CONVENTIONAL_CHARGE_THRESHOLD = 1E-6;
 
 export default class ChargeNode extends Node {
   private readonly circuitLayerNode: CircuitLayerNode;
+
+  // the model depicted by this node
   private readonly charge: Charge;
   private readonly outsideOfBlackBoxProperty: BooleanProperty;
   private readonly updateVisibleListener: () => void;
@@ -62,7 +64,6 @@ export default class ChargeNode extends Node {
     // to look up the CapacitorNode for clipping
     this.circuitLayerNode = circuitLayerNode;
 
-    // @public (read-only) {Charge} - the model depicted by this node
     this.charge = charge;
 
     this.outsideOfBlackBoxProperty = new BooleanProperty( false );
@@ -83,9 +84,8 @@ export default class ChargeNode extends Node {
 
   /**
    * Dispose resources when no longer used.
-   * @public
    */
-  dispose() {
+  dispose(): void {
     this.charge.changedEmitter.removeListener( this.updateTransformListener );
     this.charge.visibleProperty.unlink( this.updateVisibleListener );
     this.outsideOfBlackBoxProperty.unlink( this.updateVisibleListener );
@@ -159,7 +159,6 @@ export default class ChargeNode extends Node {
 
 /**
  * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
- * @public {Array.<Image>}
  */
 ChargeNode.webglSpriteNodes = [ ELECTRON_CHARGE_NODE, ARROW_NODE ];
 

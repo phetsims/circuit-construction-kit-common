@@ -18,21 +18,11 @@ export default class LTASolution {
     this.currentCompanions = currentCompanions;
   }
 
-  /**
-   * @param {string} nodeIndex
-   * @returns {number}
-   * @public
-   */
-  getNodeVoltage( nodeIndex: string ) {
+  getNodeVoltage( nodeIndex: string ): number {
     return this.mnaSolution.getNodeVoltage( nodeIndex );
   }
 
-  /**
-   * @param {MNACircuitElement} element
-   * @returns {number}
-   * @public
-   */
-  getCurrent( element: MNAResistor ) {
+  getCurrent( element: MNAResistor ): number {
 
     // For resistors with r>0, Ohm's Law gives the current.  For components with no resistance (like closed switch or
     // 0-resistance battery), the current is given by the matrix solution.
@@ -44,14 +34,12 @@ export default class LTASolution {
     }
   }
 
-  // @public
-  getCurrentForCompanion( coreModel: CoreModel ) {
+  getCurrentForCompanion( coreModel: CoreModel ): number {
     const companion = _.find( this.currentCompanions, c => c.element.id === coreModel.id );
     return companion.getValueForSolution( this.mnaSolution );
   }
 
-  // @public
-  getVoltage( node0: string, node1: string ) {
+  getVoltage( node0: string, node1: string ): number {
     return this.getNodeVoltage( node1 ) - this.getNodeVoltage( node0 );
   }
 }

@@ -123,7 +123,7 @@ export default class ResistorNode extends FixedCircuitElementNode {
 
         if ( colors.length === 1 ) {
           singleColorBand.fill = colors[ 0 ];
-          assert && assert( colors[ 0 ].equals( Color.BLACK ), 'single band should be black' );
+          assert && assert( colors[ 0 ] !== null && colors[ 0 ].equals( Color.BLACK ), 'single band should be black' );
           colorBands.forEach( ( colorBand: any ) => { colorBand.fill = null; } );
         }
         else {
@@ -235,7 +235,6 @@ export default class ResistorNode extends FixedCircuitElementNode {
       providedOptions
     );
 
-    // @public (read-only) {Resistor} the resistor depicted by this node
     this.resistor = resistor;
 
     // @protected {Image}
@@ -249,12 +248,7 @@ export default class ResistorNode extends FixedCircuitElementNode {
     };
   }
 
-  /**
-   * Dispose the ResistorNode when it will no longer be used.
-   * @public
-   * @override
-   */
-  dispose() {
+  dispose(): void {
     this.disposeResistorNode();
     super.dispose();
   }
@@ -262,7 +256,6 @@ export default class ResistorNode extends FixedCircuitElementNode {
 
 /**
  * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
- * @public {Array.<Image>}
  */
 ResistorNode.webglSpriteNodes = [
   new Image( resistor_png ),

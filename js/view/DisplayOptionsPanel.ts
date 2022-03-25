@@ -38,6 +38,8 @@ const SPACING = 10;
 const LEFT_MARGIN = 30;
 
 export default class DisplayOptionsPanel extends CCKCPanel {
+
+  // So the stopwatch can be shown near the checkbox
   readonly stopwatchCheckbox: CCKCCheckbox | null;
 
   /**
@@ -169,7 +171,6 @@ export default class DisplayOptionsPanel extends CCKCPanel {
       stopwatchCheckbox.mouseArea = stopwatchCheckbox.touchArea;
     }
 
-    // @public (read-only) {CCKCCheckbox|null} - So the stopwatch can be shown near the checkbox
     this.stopwatchCheckbox = stopwatchCheckbox;
   }
 }

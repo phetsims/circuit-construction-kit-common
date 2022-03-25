@@ -29,11 +29,8 @@ export default class LTAStateSet {
   /**
    * The time averaged current is used to show transient values in current, such as a current spike when a battery+
    * capacitor (no resistance) circuit is wired up, see https://phet.unfuddle.com/a#/projects/9404/tickets/by_number/2270?cycle=true
-   * @param {MNACircuitElement} element
-   * @returns {number}
-   * @public
    */
-  getTimeAverageCurrent( element: MNACircuitElement ) {
+  getTimeAverageCurrent( element: MNACircuitElement ): number {
     let weightedSum = 0.0;
     let totalTime = 0.0;
     this.resultSet.forEach( ( stateObject: any ) => {
@@ -45,8 +42,7 @@ export default class LTAStateSet {
     return number;
   }
 
-  // @public
-  getTimeAverageCurrentForCoreModel( element: CoreModel ) {
+  getTimeAverageCurrentForCoreModel( element: CoreModel ): number {
     let weightedSum = 0.0;
     let totalTime = 0.0;
     this.resultSet.forEach( ( stateObject: any ) => {
@@ -60,38 +56,24 @@ export default class LTAStateSet {
 
   /**
    * The instantaneous current is used for computing the next modified nodal analysis state and integration.
-   * @param {MNACircuitElement} element
-   * @returns {number}
-   * @public
    */
-  getInstantaneousCurrent( element: MNAResistor ) {
+  getInstantaneousCurrent( element: MNAResistor ): number {
     return this.getFinalState().ltaSolution!.getCurrent( element );
   }
 
-  /**
-   * @param {MNACircuitElement} element
-   * @returns {number}
-   * @public
-   */
-  getInstantaneousVoltage( element: MNACircuitElement ) {
+  getInstantaneousVoltage( element: MNACircuitElement ): number {
     return this.getFinalState().ltaSolution!.getVoltage( element.nodeId0, element.nodeId1 );
   }
 
-  // @public
   getInstantaneousVoltageForCoreModel( coreModel: CoreModel ): number {
     return this.getFinalState().ltaSolution!.getVoltage( coreModel.node0, coreModel.node1 );
   }
 
-  // @public
   getInstantaneousCurrentForCoreModel( coreModel: CoreModel ): number {
     return this.getFinalState().ltaSolution!.getCurrentForCompanion( coreModel );
   }
 
-  /**
-   * @returns {LTAState}
-   * @public
-   */
-  getFinalState() {
+  getFinalState(): LTAState {
     return _.last( this.resultSet )!.state;
   }
 }

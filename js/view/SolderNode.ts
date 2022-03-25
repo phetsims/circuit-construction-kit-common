@@ -24,9 +24,13 @@ const CIRCLE_NODE = new Circle( SOLDER_RADIUS, { fill: SOLDER_COLOR } ).rasteriz
 
 export default class SolderNode extends Node {
   readonly vertex: Vertex;
+
+  // added by CircuitLayerNode during dragging, used for relative drag position.
   private readonly startOffset: Vector2 | null;
   private readonly disposeSolderNode: () => void;
   static webglSpriteNodes: Node[];
+
+  // radius of solder in model=view coordinates, for hit testing with probes
   static SOLDER_RADIUS: number;
 
   /**
@@ -46,10 +50,7 @@ export default class SolderNode extends Node {
       pickable: false
     } );
 
-    // @public (read-only) {Vertex}
     this.vertex = vertex;
-
-    // @public {Vector2|null} - added by CircuitLayerNode during dragging, used for relative drag position.
     this.startOffset = null;
 
     // Update the fill when the number of attached components changes.
@@ -92,10 +93,8 @@ export default class SolderNode extends Node {
 
   /**
    * Eliminate resources when no longer used.
-   * @public
-   * @override
    */
-  dispose() {
+  dispose(): void {
     this.disposeSolderNode();
     super.dispose();
   }
@@ -103,11 +102,8 @@ export default class SolderNode extends Node {
 
 /**
  * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
- * @public {Array.<Image>}
  */
 SolderNode.webglSpriteNodes = [ CIRCLE_NODE ];
-
-// @public (read-only) {number} - radius of solder in model=view coordinates, for hit testing with probes
 SolderNode.SOLDER_RADIUS = SOLDER_RADIUS;
 
 circuitConstructionKitCommon.register( 'SolderNode', SolderNode );

@@ -49,10 +49,7 @@ export default class Battery extends VoltageSource {
     super( startVertex, endVertex, internalResistanceProperty, BATTERY_LENGTH, tandem, filledOptions );
 
     this.initialOrientation = filledOptions.initialOrientation;
-
-    // @public (read-only) {BatteryType} - the type of the battery - NORMAL | HIGH_VOLTAGE
     this.batteryType = batteryType;
-
     this.isReversibleProperty = new BooleanProperty( true, {
       tandem: tandem.createTandem( 'isReversibleProperty' )
     } );

@@ -26,7 +26,8 @@ import Orientation from '../../../phet-core/js/Orientation.js';
 import MagnifyingGlassZoomButtonGroup from '../../../scenery-phet/js/MagnifyingGlassZoomButtonGroup.js';
 import ShadedRectangle from '../../../scenery-phet/js/ShadedRectangle.js';
 import WireNode from '../../../scenery-phet/js/WireNode.js';
-import { DragListener, Node, NodeOptions, NodeProperty, PressListenerEvent, Text } from '../../../scenery/js/imports.js';
+import { Node, NodeOptions, NodeProperty, PressListenerEvent, Text } from '../../../scenery/js/imports.js';
+import { DragListener } from '../../../scenery/js/imports.js';
 import ButtonNode from '../../../sun/js/buttons/ButtonNode.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -66,7 +67,11 @@ export default class CCKCChartNode extends Node {
   private readonly visibleBoundsProperty: Property<Bounds2>;
   private readonly backgroundNode: Node;
   private backgroundDragListener: DragListener | null;
+
+  // emits when the probes should be put in standard relative position to the body
   private readonly alignProbesEmitter: Emitter<[]>;
+
+  // emits when the CCKCChartNode has been dropped
   private readonly droppedEmitter: Emitter<[]>;
   protected readonly aboveBottomLeft1: IReadOnlyProperty<Vector2>;
   protected readonly aboveBottomLeft2: IReadOnlyProperty<Vector2>;
@@ -97,12 +102,8 @@ export default class CCKCChartNode extends Node {
 
     const tandem = options.tandem!;
 
-    // @public {Meter}
     this.meter = new Meter( tandem.createTandem( 'meter' ), 0 );
-
-    // @protected {ObservableArrayDef.<Vector2|null>}
     this.series = series;
-
     this.circuitLayerNode = circuitLayerNode;
     this.timeProperty = timeProperty;
     this.visibleBoundsProperty = visibleBoundsProperty;
@@ -119,13 +120,11 @@ export default class CCKCChartNode extends Node {
     // Mutate after backgroundNode is added as a child
     this.mutate( options );
 
-    // @public - emits when the probes should be put in standard relative position to the body
     this.alignProbesEmitter = new Emitter();
 
     // These do not need to be disposed because there is no connection to the "outside world"
     const leftBottomProperty = new NodeProperty( backgroundNode, backgroundNode.boundsProperty, 'leftBottom' );
 
-    // @public - emits when the CCKCChartNode has been dropped
     this.droppedEmitter = new Emitter();
 
     // @protected - for attaching probes
@@ -236,7 +235,6 @@ export default class CCKCChartNode extends Node {
       radius: 4
     } );
 
-    // @public
     this.updatePen = () => {
       penData[ 0 ].x = timeProperty.value;
       const length = series.length;
@@ -399,9 +397,8 @@ export default class CCKCChartNode extends Node {
 
   /**
    * Clear the data from the chart.
-   * @public
    */
-  reset() {
+  reset(): void {
     this.series.clear();
     this.meter.reset();
     this.zoomLevelProperty.reset();
@@ -410,20 +407,16 @@ export default class CCKCChartNode extends Node {
   /**
    * Gets the region of the background in global coordinates.  This can be used to determine if the chart
    * should be dropped back in a toolbox.
-   * @returns {Bounds2}
-   * @public
    */
-  getBackgroundNodeGlobalBounds() {
+  getBackgroundNodeGlobalBounds(): Bounds2 {
     return this.localToGlobalBounds( this.backgroundNode.bounds );
   }
 
   /**
    * Forward an event from the toolbox to start dragging the node in the play area.  This triggers the probes (if any)
    * to drag together with the chart.  This is accomplished by calling this.alignProbes() at each drag event.
-   * @param {SceneryEvent} event
-   * @public
    */
-  startDrag( event: PressListenerEvent ) {
+  startDrag( event: PressListenerEvent ): void {
 
     // Forward the event to the drag listener
     this.backgroundDragListener && this.backgroundDragListener.press( event );
@@ -434,10 +427,8 @@ export default class CCKCChartNode extends Node {
    * (1) drags the body
    * (2) constrains the drag to the screenView bounds
    * (3) drops back into the toolbox
-   * @param {CCKCScreenView} screenView
-   * @public
    */
-  initializeBodyDragListener( screenView: CCKCScreenView ) {
+  initializeBodyDragListener( screenView: CCKCScreenView ): void {
 
     // Since this will be shown from the toolbox, make the play area icon invisible and prepare to drag with probes
     this.meter.visibleProperty.value = false;

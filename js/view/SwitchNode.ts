@@ -153,6 +153,8 @@ const schematicClosedImage = createNode(
 ).rasterized( { wrap: false } );
 
 export default class SwitchNode extends FixedCircuitElementNode {
+
+  // the Switch rendered by this Node, equivalent to this.circuitElement
   readonly circuitSwitch: Switch;
   private readonly lifelikeOpenNode: Node;
   private readonly disposeSwitchNode: () => void;
@@ -187,7 +189,6 @@ export default class SwitchNode extends FixedCircuitElementNode {
       providedOptions
     );
 
-    // @public (read-only) {Switch} - the Switch rendered by this Node, equivalent to this.circuitElement
     this.circuitSwitch = circuitSwitch;
 
     let downPoint: Vector2 | null = null;
@@ -235,11 +236,9 @@ export default class SwitchNode extends FixedCircuitElementNode {
 
   /**
    * Determine whether the start side (with the pivot) contains the sensor point.
-   * @param {Vector2} point - in view coordinates
-   * @returns {boolean}
-   * @public
+   * @param point - in view coordinates
    */
-  startSideContainsSensorPoint( point: Vector2 ) {
+  startSideContainsSensorPoint( point: Vector2 ): boolean {
     const localPoint = this.contentNode.parentToLocalPoint( point );
     const leftSegmentContainsPoint = lifelikeOpenNode.leftSegmentNode.containsPoint( localPoint );
     const node = this.circuitSwitch.closedProperty.get() ? lifelikeClosedNode : lifelikeOpenNode;
@@ -249,23 +248,17 @@ export default class SwitchNode extends FixedCircuitElementNode {
 
   /**
    * Determine whether the end side (with the pivot) contains the sensor point.
-   * @param {Vector2} point - in view coordinates
-   * @returns {boolean}
-   * @public
+   * @param point - in view coordinates
    */
-  endSideContainsSensorPoint( point: Vector2 ) {
+  endSideContainsSensorPoint( point: Vector2 ): boolean {
     const localPoint = this.contentNode.parentToLocalPoint( point );
     return lifelikeOpenNode.rightSegmentNode.containsPoint( localPoint );
   }
 
   /**
    * Returns true if the node hits the sensor at the given point.
-   * @param {Vector2} globalPoint
-   * @returns {boolean}
-   * @overrides
-   * @public
    */
-  containsSensorPoint( globalPoint: Vector2 ) {
+  containsSensorPoint( globalPoint: Vector2 ): boolean {
 
     const localPoint = this.globalToParentPoint( globalPoint );
 
@@ -275,12 +268,7 @@ export default class SwitchNode extends FixedCircuitElementNode {
     return this.startSideContainsSensorPoint( localPoint ) || this.endSideContainsSensorPoint( localPoint );
   }
 
-  /**
-   * Clean up resources when no longer used.
-   * @public
-   * @override
-   */
-  dispose() {
+  dispose(): void {
     this.disposeSwitchNode();
     super.dispose();
   }

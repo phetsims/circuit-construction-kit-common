@@ -17,9 +17,17 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 export default class Meter {
   phetioIndex: number;
+
+  // indicates whether the meter is in the play area
   readonly visibleProperty: Property<boolean>;
+
+  // the position of the body of the meter
   readonly bodyPositionProperty: Property<Vector2>;
+
+  // When the meter is dragged from the toolbox, all pieces drag together.
   readonly draggingProbesWithBodyProperty: BooleanProperty;
+
+  // Fires an event when the meter is dropped
   readonly droppedEmitter: Emitter<[ Bounds2 ]>;
 
   /**
@@ -28,33 +36,26 @@ export default class Meter {
    */
   constructor( tandem: Tandem, phetioIndex: number ) {
 
-    // @public (read-only) {number}
     this.phetioIndex = phetioIndex;
-
-    // @public {Property.<boolean>} - indicates whether the meter is in the play area
     this.visibleProperty = new BooleanProperty( false, {
       tandem: tandem.createTandem( 'visibleProperty' )
     } );
 
-    // @public - the position of the body of the meter
     this.bodyPositionProperty = new Vector2Property( Vector2.ZERO, {
       tandem: tandem.createTandem( 'bodyPositionProperty' )
     } );
 
-    // @public {Property.<boolean>} When the meter is dragged from the toolbox, all pieces drag together.
     this.draggingProbesWithBodyProperty = new BooleanProperty( true, {
       tandem: tandem.createTandem( 'draggingProbesWithBodyProperty' )
     } );
 
-    // @public (read-only) {Emitter} Fires an event when the meter is dropped
     this.droppedEmitter = new Emitter( { parameters: [ { valueType: Bounds2 } ] } );
   }
 
   /**
    * Resets the meter.  This is overridden by Ammeter and Voltmeter.
-   * @public
    */
-  reset() {
+  reset(): void {
     this.visibleProperty.reset();
     this.bodyPositionProperty.reset();
     this.draggingProbesWithBodyProperty.reset();

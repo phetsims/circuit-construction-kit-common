@@ -29,7 +29,11 @@ type SelfOptions = {
 type SwitchOptions = SelfOptions & FixedCircuitElementOptions;
 
 export default class Switch extends FixedCircuitElement {
+
+  // the resistance in ohms
   readonly resistanceProperty: Property<number>;
+
+  // whether the switch is closed (and current can flow through it)
   readonly closedProperty: Property<boolean>;
 
   /**
@@ -50,10 +54,8 @@ export default class Switch extends FixedCircuitElement {
 
     super( startVertex, endVertex, SWITCH_LENGTH, tandem, options );
 
-    // @public (read-only) {NumberProperty} the resistance in ohms
     this.resistanceProperty = new NumberProperty( 0 );
 
-    // @public (read-only) {BooleanProperty} whether the switch is closed (and current can flow through it)
     this.closedProperty = new BooleanProperty( options.closed, {
       tandem: tandem.createTandem( 'closedProperty' )
     } );
@@ -65,21 +67,18 @@ export default class Switch extends FixedCircuitElement {
 
   /**
    * Dispose of this and PhET-iO instrumented children, so they will be unregistered.
-   * @public
    */
-  dispose() {
+  dispose(): void {
     this.closedProperty.dispose();
     super.dispose();
   }
 
   /**
    * Returns the position and angle of the given point along the Switch
-   * @param {number} distanceAlongWire
-   * @param {Matrix3} matrix to be updated with the position and angle, so that garbage isn't created each time
-   * @overrides
-   * @public
+   * @param distanceAlongWire
+   * @param matrix to be updated with the position and angle, so that garbage isn't created each time
    */
-  updateMatrixForPoint( distanceAlongWire: number, matrix: Matrix3 ) {
+  updateMatrixForPoint( distanceAlongWire: number, matrix: Matrix3 ): void {
 
     const startPosition = this.startPositionProperty.get();
     const endPosition = this.endPositionProperty.get();
@@ -105,11 +104,8 @@ export default class Switch extends FixedCircuitElement {
 
   /**
    * Get the properties so that the circuit can be solved when changed.
-   * @override
-   * @returns {Property.<*>[]}
-   * @public
    */
-  getCircuitProperties() {
+  getCircuitProperties(): Property<any>[] {
     return [ this.resistanceProperty, this.closedProperty ];
   }
 }

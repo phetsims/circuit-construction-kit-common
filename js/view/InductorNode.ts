@@ -156,14 +156,12 @@ export default class InductorNode extends FixedCircuitElementNode {
       providedOptions
     );
 
-    // @public (read-only) {Inductor}
     this.inductor = inductor;
   }
 }
 
 /**
  * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
- * @public {Array.<Image>}
  */
 InductorNode.webglSpriteNodes = [];
 

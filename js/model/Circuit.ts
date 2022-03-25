@@ -81,18 +81,48 @@ export default class Circuit {
   private readonly viewTypeProperty: Property<CircuitElementViewType>;
   readonly addRealBulbsProperty: Property<boolean>;
   private readonly blackBoxStudy: boolean;
+
+  // All wires share the same resistivity, which is defined by resistance = resistivity * length. On the Lab Screen,
+  // there is a wire resistivity control
   readonly wireResistivityProperty: NumberProperty;
+
+  // All batteries share a single internal resistance value, which can be edited with a control on the Lab Screen
   readonly sourceResistanceProperty: NumberProperty;
+
+  // The different types of CircuitElement the circuit may contain, including Wire, Battery, Switch, Resistor, LightBulb, etc.
   readonly circuitElements: ObservableArray<CircuitElement>;
+
+  // The charges in the circuit
   readonly charges: ObservableArray<Charge>;
+
+  // whether the current should be displayed
   readonly showCurrentProperty: BooleanProperty;
+
+  // whether to show charges or conventional current
   readonly currentTypeProperty: Property<CurrentType>;
+
+  // elapsed time for the circuit model
   readonly timeProperty: NumberProperty;
+
+  // move the charges with speed proportional to current
   readonly chargeAnimator: ChargeAnimator;
+
+  // After the circuit physics is recomputed in solve(), some listeners need to update themselves, such as the voltmeter
+  // and ammeter
   readonly circuitChangedEmitter: Emitter<[]>;
+
+  // Some actions only take place after an item has been dropped
   readonly vertexDroppedEmitter: Emitter<[ Vertex ]>;
+
+  // signifies that a component has been modified (for example, with the CircuitElementNumberControl)
   readonly componentEditedEmitter: Emitter<[]>;
   readonly vertexGroup: PhetioGroup<Vertex, [ Vector2 ]>;
+
+  // When the user taps on a CircuitElement, it becomes selected and highlighted, and shows additional controls at the
+  // bottom of the screen. When the sim launches or when the user taps away from a selected circuit element, the
+  // selection is `null`.  Once this simulation is instrumented for a11y, the focus property can be used to track this.
+  // Note that vertex selection is done via Vertex.isSelectedProperty.  These strategies can be unified when we work on
+  // a11y.
   readonly selectedCircuitElementProperty: Property<CircuitElement | null>;
 
   // whether physical characteristics have changed and warrant solving for currents and voltages
@@ -120,7 +150,6 @@ export default class Circuit {
   constructor( viewTypeProperty: Property<CircuitElementViewType>, addRealBulbsProperty: Property<boolean>, tandem: Tandem,
                providedOptions?: Partial<CircuitOptions> ) {
 
-    // @public
     this.viewTypeProperty = viewTypeProperty;
     this.addRealBulbsProperty = addRealBulbsProperty;
 
@@ -128,24 +157,15 @@ export default class Circuit {
 
     this.includeACElements = options.includeACElements;
     this.includeLabElements = options.includeLabElements;
-
-    // @public {Object}
     this.blackBoxStudy = options.blackBoxStudy;
-
-    // @public {NumberProperty} - All wires share the same resistivity, which is defined by
-    // resistance = resistivity * length. On the Lab Screen, there is a wire resistivity control
     this.wireResistivityProperty = new NumberProperty( CCKCConstants.DEFAULT_RESISTIVITY, {
       tandem: tandem.parentTandem.createTandem( 'wireResistivityProperty' )
     } );
 
-    // @public {NumberProperty} - All batteries share a single internal resistance value, which can be edited with
-    // a control on the Lab Screen
     this.sourceResistanceProperty = new NumberProperty( CCKCConstants.DEFAULT_BATTERY_RESISTANCE, {
       tandem: tandem.parentTandem.createTandem( 'sourceResistanceProperty' )
     } );
 
-    // @public {ObservableArrayDef.<CircuitElement>} - The different types of CircuitElement the circuit may
-    // contain, including Wire, Battery, Switch, Resistor, LightBulb, etc.
     this.circuitElements = createObservableArray( {
       phetioState: true,
       phetioType: createObservableArray.ObservableArrayIO( ReferenceIO( CircuitElement.CircuitElementIO ) ),
@@ -153,10 +173,7 @@ export default class Circuit {
       phetioDocumentation: 'All Circuit Elements, used for state save/restore'
     } );
 
-    // @public {ObservableArrayDef.<Charge>} - the charges in the circuit
     this.charges = createObservableArray();
-
-    // @public {Property.<CurrentType>} - whether to show charges or conventional current
     this.currentTypeProperty = new EnumerationProperty( CCKCQueryParameters.currentType === 'electrons' ?
                                                         CurrentType.ELECTRONS : CurrentType.CONVENTIONAL, {
       tandem: tandem.parentTandem.createTandem( 'currentTypeProperty' )
@@ -165,15 +182,11 @@ export default class Circuit {
     // When the current type changes, mark everything as dirty and relayout charges
     this.currentTypeProperty.lazyLink( () => this.relayoutAllCharges() );
 
-    // @public {BooleanProperty} - whether the current should be displayed
     this.showCurrentProperty = new BooleanProperty( CCKCQueryParameters.showCurrent, {
       tandem: tandem.parentTandem.createTandem( 'showCurrentProperty' )
     } );
 
-    // @public (read-only) elapsed time for the circuit model
     this.timeProperty = new NumberProperty( 0 );
-
-    // @public {ChargeAnimator} - move the charges with speed proportional to current
     this.chargeAnimator = new ChargeAnimator( this );
 
     // Mark as dirty when voltages or resistances change.
@@ -222,15 +235,8 @@ export default class Circuit {
     // When a Charge is removed from the list, dispose it
     this.charges.addItemRemovedListener( charge => charge.dispose() );
 
-    // @public (read-only) {Emitter} After the circuit physics is recomputed in solve(), some listeners need to update
-    // themselves, such as the voltmeter and ammeter
     this.circuitChangedEmitter = new Emitter();
-
-    // @public (read-only) {Emitter} - Some actions only take place after an item has been dropped
     this.vertexDroppedEmitter = new Emitter( { parameters: [ { valueType: Vertex } ] } );
-
-    // @public (read-only) {Emitter} - signifies that a component has been modified (for example, with the
-    // CircuitElementNumberControl)
     this.componentEditedEmitter = new Emitter();
 
     const emitCircuitChanged = () => {
@@ -238,7 +244,6 @@ export default class Circuit {
       this.circuitChangedEmitter.emit();
     };
 
-    // @public {PhetioGroup}
     this.vertexGroup = new PhetioGroup( ( tandem, position ) => {
       return new Vertex( position, {
         tandem: tandem,
@@ -286,11 +291,6 @@ export default class Circuit {
       vertex.vertexSelectedPropertyListener = null;
     } );
 
-    // @public {Property.<CircuitElement|null>} - When the user taps on a CircuitElement, it becomes selected and
-    // highlighted, and shows additional controls at the bottom of the screen. When the sim launches or when the user
-    // taps away from a selected circuit element, the selection is `null`.  Once this simulation is instrumented
-    // for a11y, the focus property can be used to track this. Note that vertex selection is done via
-    // Vertex.isSelectedProperty.  These strategies can be unified when we work on a11y.
     this.selectedCircuitElementProperty = new Property<CircuitElement | null>( null, {
       tandem: tandem.createTandem( 'selectedCircuitElementProperty' ),
       phetioType: Property.PropertyIO( NullableIO( ReferenceIO( CircuitElement.CircuitElementIO ) ) )
@@ -351,7 +351,6 @@ export default class Circuit {
       return [ new Vertex( startPosition ), new Vertex( startPosition.plusXY( length, 0 ) ) ];
     };
 
-    // @public {PhetioGroup}
     this.wireGroup = new PhetioGroup( ( tandem, startVertex, endVertex ) => {
       return new Wire( startVertex, endVertex, this.wireResistivityProperty, tandem );
     }, () => createVertices( WIRE_LENGTH ), {
@@ -359,7 +358,6 @@ export default class Circuit {
       tandem: tandem.createTandem( 'wireGroup' )
     } );
 
-    // @public {PhetioGroup}
     this.batteryGroup = new PhetioGroup( ( tandem, startVertex, endVertex ) => {
       return new Battery( startVertex, endVertex, this.sourceResistanceProperty, 'normal',
         tandem );
@@ -368,7 +366,6 @@ export default class Circuit {
       tandem: tandem.createTandem( 'batteryGroup' )
     } );
 
-    // @public {PhetioGroup}
     this.highVoltageBatteryGroup = new PhetioGroup( ( tandem, startVertex, endVertex ) => {
       return new Battery( startVertex, endVertex, this.sourceResistanceProperty, 'high-voltage',
         tandem, {
@@ -381,7 +378,6 @@ export default class Circuit {
       phetioDynamicElementName: 'highVoltageBattery'
     } );
 
-    // @public {PhetioGroup}
     this.acVoltageGroup = new PhetioGroup( ( tandem, startVertex, endVertex ) => {
       return new ACVoltage( startVertex, endVertex, this.sourceResistanceProperty, tandem );
     }, () => createVertices( CCKCConstants.AC_VOLTAGE_LENGTH ), {
@@ -389,7 +385,6 @@ export default class Circuit {
       tandem: options.includeACElements ? tandem.createTandem( 'acVoltageGroup' ) : Tandem.OPT_OUT
     } );
 
-    // @public {PhetioGroup}
     this.resistorGroup = new PhetioGroup(
       ( tandem, startVertex, endVertex, resistorType ) => resistorType === ResistorType.DOG ?
                                                           new Dog( startVertex, endVertex, tandem ) :
@@ -402,7 +397,6 @@ export default class Circuit {
         tandem: tandem.createTandem( 'resistorGroup' )
       } );
 
-    // @public {PhetioGroup}
     this.fuseGroup = new PhetioGroup(
       ( tandem, startVertex, endVertex ) => new Fuse( startVertex, endVertex, tandem ),
       () => createVertices( CCKCConstants.FUSE_LENGTH ), {
@@ -410,7 +404,6 @@ export default class Circuit {
         tandem: tandem.createTandem( 'fuseGroup' )
       } );
 
-    // @public {PhetioGroup}
     this.seriesAmmeterGroup = new PhetioGroup(
       ( tandem, startVertex, endVertex ) => new SeriesAmmeter( startVertex, endVertex, tandem ),
       () => createVertices( CCKCConstants.SERIES_AMMETER_LENGTH ), {
@@ -418,7 +411,6 @@ export default class Circuit {
         tandem: this.includeLabElements ? tandem.createTandem( 'seriesAmmeterGroup' ) : Tandem.OPT_OUT
       } );
 
-    // @public {PhetioGroup}
     this.highResistanceLightBulbGroup = new PhetioGroup(
       ( tandem, startVertex, endVertex ) => {
         return LightBulb.createAtPosition( startVertex, endVertex, this, CCKCConstants.HIGH_RESISTANCE,
@@ -430,7 +422,6 @@ export default class Circuit {
         tandem: this.includeLabElements ? tandem.createTandem( 'highResistanceLightBulbGroup' ) : Tandem.OPT_OUT
       } );
 
-    // @public {PhetioGroup}
     this.capacitorGroup = new PhetioGroup(
       ( tandem, startVertex, endVertex ) => new Capacitor( startVertex, endVertex, tandem ),
       () => createVertices( CCKCConstants.CAPACITOR_LENGTH ), {
@@ -438,7 +429,6 @@ export default class Circuit {
         tandem: options.includeACElements ? tandem.createTandem( 'capacitorGroup' ) : Tandem.OPT_OUT
       } );
 
-    // @public {PhetioGroup}
     this.inductorGroup = new PhetioGroup(
       ( tandem, startVertex, endVertex ) => new Inductor( startVertex, endVertex, tandem ),
       () => createVertices( CCKCConstants.INDUCTOR_LENGTH ), {
@@ -446,7 +436,6 @@ export default class Circuit {
         tandem: options.includeACElements ? tandem.createTandem( 'inductorGroup' ) : Tandem.OPT_OUT
       } );
 
-    // @public {PhetioGroup}
     this.switchGroup = new PhetioGroup(
       ( tandem, startVertex, endVertex ) => new Switch( startVertex, endVertex, tandem ),
       () => createVertices( CCKCConstants.SWITCH_LENGTH ), {
@@ -454,7 +443,6 @@ export default class Circuit {
         tandem: tandem.createTandem( 'switchGroup' )
       } );
 
-    // @public {PhetioGroup}
     this.lightBulbGroup = new PhetioGroup( ( tandem, startVertex, endVertex ) => {
       return new LightBulb( startVertex, endVertex, CCKCConstants.DEFAULT_RESISTANCE, this.viewTypeProperty, tandem );
     }, () => createVertices( 100 ), {
@@ -462,7 +450,6 @@ export default class Circuit {
       tandem: tandem.createTandem( 'lightBulbGroup' )
     } );
 
-    // @public {PhetioGroup}
     this.realLightBulbGroup = new PhetioGroup(
       ( tandem, startVertex, endVertex ) => {
         return new LightBulb( startVertex, endVertex, CCKCConstants.DEFAULT_RESISTANCE, this.viewTypeProperty, tandem, {
@@ -1470,7 +1457,6 @@ export default class Circuit {
     return sorted[ 0 ];
   }
 
-  // @public
   // A reporting tool to indicate whether current is conserved at each vertex
   checkCurrentConservation( index: number ) {
     console.log( '####### ' + index );
@@ -1594,14 +1580,13 @@ export default class Circuit {
     }
   }
 
-  // @public - only works in unbuilt mode
+  // only works in unbuilt mode
   toString() {
     return this.circuitElements.map( c => c.constructor.name ).join( ', ' );
   }
 
   /**
    * Reset the Circuit to its initial state.
-   * @public
    */
   reset() {
     this.clear();

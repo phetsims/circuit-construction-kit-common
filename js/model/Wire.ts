@@ -7,6 +7,7 @@
  */
 
 import NumberProperty from '../../../axon/js/NumberProperty.js';
+import Property from '../../../axon/js/Property.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -28,9 +29,17 @@ type SelfOptions = {
 type WireOptions = SelfOptions & CircuitElementOptions;
 
 export default class Wire extends CircuitElement {
+
+  // if the wire is a small stub attached to the black box
   private readonly wireStub: boolean;
+
+  // the resistance of the Wire in ohms
   readonly resistanceProperty: NumberProperty;
+
+  // the resistivity of the Wire in ohm-meters
   private readonly resistivityProperty: NumberProperty;
+
+  // when the length changes layoutCharges must be called
   readonly lengthProperty: NumberProperty;
   updateListener: () => void;
 
@@ -45,24 +54,17 @@ export default class Wire extends CircuitElement {
     const chargePathLength = startVertex.positionProperty.get().distance( endVertex.positionProperty.get() );
     super( startVertex, endVertex, chargePathLength, tandem, options );
 
-    // @public (read-only) {boolean} - if the wire is a small stub attached to the black box
     this.wireStub = options.wireStub;
 
-    // @public {NumberProperty} - the resistance of the Wire in ohms
     this.resistanceProperty = new NumberProperty( CCKCConstants.MINIMUM_WIRE_RESISTANCE );
 
     if ( phet.chipper.queryParameters.dev ) {
       this.resistanceProperty.link( console.log );
     }
 
-    // @public {Property.<number>} - the resistivity of the Wire in ohm-meters
     this.resistivityProperty = resistivityProperty;
-
-    // @public {Property.<number>} - when the length changes layoutCharges must be called
     this.lengthProperty = new NumberProperty( 0 );
-
     this.updateListener = () => this.update();
-
     this.vertexMovedEmitter.addListener( this.updateListener );
 
     // When resistivity changes, update the resistance
@@ -73,21 +75,19 @@ export default class Wire extends CircuitElement {
 
   /**
    * Move forward in time
-   * @param {number} time - total elapsed time in seconds
-   * @param {number} dt - seconds since last step
-   * @param {Circuit} circuit
-   * @public
+   * @param time - total elapsed time in seconds
+   * @param dt - seconds since last step
+   * @param circuit
    */
-  step( time: number, dt: number, circuit: Circuit ) {
+  step( time: number, dt: number, circuit: Circuit ): void {
     super.step( time, dt, circuit );
     this.update();
   }
 
   /**
    * Batch changes so that the length doesn't change incrementally when both vertices move one at a time.
-   * @public
    */
-  update() {
+  update(): void {
     const startPosition = this.startPositionProperty.get();
     const endPosition = this.endPositionProperty.get();
     const distanceBetweenVertices = startPosition.distance( endPosition ); // same as view coordinates
@@ -107,20 +107,15 @@ export default class Wire extends CircuitElement {
 
   /**
    * Get the properties so that the circuit can be solved when changed.
-   * @override
-   * @returns {Property.<*>[]}
-   * @public
    */
-  getCircuitProperties() {
+  getCircuitProperties(): Property<any>[] {
     return [ this.resistanceProperty ];
   }
 
   /**
    * Releases all resources related to the Wire, called when it will no longer be used.
-   * @public
-   * @override
    */
-  dispose() {
+  dispose(): void {
     this.vertexMovedEmitter.removeListener( this.updateListener );
     this.resistivityProperty.unlink( this.updateListener );
     super.dispose();

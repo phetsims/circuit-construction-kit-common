@@ -71,11 +71,10 @@ export default class VoltageChartNode extends CCKCChartNode {
 
   /**
    * Records data and displays it on the chart
-   * @param {number} time - total elapsed time in seconds
-   * @param {number} dt - delta time since last update
-   * @public
+   * @param time - total elapsed time in seconds
+   * @param dt - delta time since last update
    */
-  step( time: number, dt: number ) {
+  step( time: number, dt: number ): void {
     if ( this.meter.visibleProperty.value ) {
 
       this.series.push( this.sampleValue( time ) );
@@ -99,8 +98,7 @@ export default class VoltageChartNode extends CCKCChartNode {
     this.lastStepTime = time;
   }
 
-  // @public
-  sampleLatestValue() {
+  sampleLatestValue(): void {
 
     this.series.pop();
     assert && assert( typeof this.lastStepTime === 'number' );

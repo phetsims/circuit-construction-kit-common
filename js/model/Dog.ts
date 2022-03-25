@@ -41,10 +41,9 @@ export default class Dog extends Resistor {
   }
 
   /**
-   * @param {number} time in seconds
-   * @param {number} dt in seconds
-   * @param {Circuit} circuit
-   * @public
+   * @param time in seconds
+   * @param dt in seconds
+   * @param circuit
    */
   step( time: number, dt: number, circuit: Circuit ) {
     super.step( time, dt, circuit );

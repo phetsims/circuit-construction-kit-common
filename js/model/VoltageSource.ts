@@ -28,6 +28,8 @@ export type VoltageSourceOptions = {
 } & FixedCircuitElementOptions;
 
 export default abstract class VoltageSource extends FixedCircuitElement {
+
+  // the voltage of the battery in volts
   readonly voltageProperty: NumberProperty;
 
   // the internal resistance of the battery
@@ -61,7 +63,6 @@ export default abstract class VoltageSource extends FixedCircuitElement {
     }, providedOptions );
     super( startVertex, endVertex, length, tandem, options );
 
-    // @public {NumberProperty} - the voltage of the battery in volts
     this.voltageProperty = new NumberProperty( options.voltage, options.voltagePropertyOptions );
 
     this.internalResistanceProperty = internalResistanceProperty;
@@ -79,9 +80,8 @@ export default abstract class VoltageSource extends FixedCircuitElement {
 
   /**
    * Dispose of this and PhET-iO instrumented children, so they will be unregistered.
-   * @public
    */
-  dispose() {
+  dispose(): void {
     this.voltageProperty.dispose();
     this.powerDissipatedProperty.dispose();
     this.powerGeneratedProperty.dispose();
@@ -90,11 +90,8 @@ export default abstract class VoltageSource extends FixedCircuitElement {
 
   /**
    * Get the properties so that the circuit can be solved when changed.
-   * @returns {Property.<*>[]}
-   * @override
-   * @public
    */
-  getCircuitProperties() {
+  getCircuitProperties(): Property<any>[] {
     return [ this.voltageProperty ];
   }
 }

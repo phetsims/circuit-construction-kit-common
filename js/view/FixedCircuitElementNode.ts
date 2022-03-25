@@ -26,6 +26,7 @@ import CircuitLayerNodeDragListener from './CircuitLayerNodeDragListener.js';
 import FixedCircuitElementHighlightNode from './FixedCircuitElementHighlightNode.js';
 import CircuitElement from '../model/CircuitElement.js';
 import Multilink from '../../../axon/js/Multilink.js';
+import Bounds2 from '../../../dot/js/Bounds2.js';
 
 // constants
 const matrix = new Matrix3();
@@ -251,9 +252,9 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
 
   /**
    * Multiple updates may happen per frame, they are batched and updated once in the view step to improve performance.
-   * @public - CCKCLightBulbNode calls updateRender for its child socket node
+   * CCKCLightBulbNode calls updateRender for its child socket node
    */
-  updateRender() {
+  updateRender(): void {
     const startPosition = this.circuitElement.startPositionProperty.get();
     const endPosition = this.circuitElement.endPositionProperty.get();
 
@@ -320,11 +321,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
     }
   }
 
-  /**
-   * @public - dispose resources when no longer used
-   * @override
-   */
-  dispose() {
+  dispose(): void {
 
     // Interrupt the drag event if it was in progress
     this.dragListener && this.dragListener.interrupt();
@@ -359,17 +356,14 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
 
   /**
    * Gets the bounds for the highlight rectangle.
-   * @returns {Bounds2}
-   * @public
    */
-  getHighlightBounds() {
+  getHighlightBounds(): Bounds2 {
     return this.contentNode.localBounds.dilated( HIGHLIGHT_PADDING );
   }
 }
 
 /**
  * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
- * @public {Array.<Image>}
  */
 FixedCircuitElementNode.webglSpriteNodes = [
   new Image( fire_png )

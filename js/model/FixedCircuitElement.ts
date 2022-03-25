@@ -20,8 +20,14 @@ type SelfOptions = {
 export type FixedCircuitElementOptions = SelfOptions & CircuitElementOptions;
 
 export default abstract class FixedCircuitElement extends CircuitElement {
+
+  // the number of decimal places to show in readouts and controls
   readonly numberOfDecimalPlaces: number;
+
+  // The distance from one vertex to another (as the crow flies), used for rotation about a vertex
   readonly distanceBetweenVertices: number;
+
+  // keep track of whether it is a fixed length element for assertion testing in CircuitElement
   private readonly isFixedCircuitElement: boolean;
 
   constructor( startVertex: Vertex,
@@ -37,14 +43,8 @@ export default abstract class FixedCircuitElement extends CircuitElement {
     // Super constructor
     super( startVertex, endVertex, chargePathLength, tandem, options );
 
-    // @public (read-only) {number} - the number of decimal places to show in readouts and controls
     this.numberOfDecimalPlaces = options.numberOfDecimalPlaces;
-
-    // @public (read-only) {number} The distance from one vertex to another (as the crow flies), used for rotation
-    // about a vertex
     this.distanceBetweenVertices = startVertex.positionProperty.get().distance( endVertex.positionProperty.get() );
-
-    // @public {boolean} keep track of whether it is a fixed length element for assertion testing in CircuitElement
     this.isFixedCircuitElement = true;
   }
 }

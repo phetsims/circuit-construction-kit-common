@@ -90,8 +90,7 @@ export default class ReverseBatteryButton extends HBox {
     super( { children: [ child ] } );
   }
 
-  // @public
-  dispose() {
+  dispose(): void {
     assert && assert( false, 'should not be disposed' );
   }
 }

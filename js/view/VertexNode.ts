@@ -45,6 +45,8 @@ export default class VertexNode extends Node {
   private readonly vertexLabelNode: VBox;
   private readonly updateReadoutTextPosition: ( () => void );
   private readonly vertex: Vertex;
+
+  // added by CircuitLayerNode during dragging, used for relative drag position, or null if not being dragged
   startOffset: Vector2 | null;
   private readonly highlightNode: Circle;
   private readonly keyListener: { keydown: ( event: any ) => void };
@@ -141,11 +143,7 @@ export default class VertexNode extends Node {
       this.updateReadoutTextPosition();
     } );
 
-    // @public (read-only) {Vertex} - the vertex associated with this node
     this.vertex = vertex;
-
-    // @public (read-only) {Vector2|null} - added by CircuitLayerNode during dragging, used for relative drag position,
-    // or null if not being dragged.
     this.startOffset = null;
 
     // @private {Circle} - Highlight is shown when the vertex is selected.
@@ -254,12 +252,7 @@ export default class VertexNode extends Node {
     vertex.isSelectedProperty.link( this.updateVertexNodePositionListener );
   }
 
-  /**
-   * Dispose resources when no longer used.
-   * @public
-   * @override
-   */
-  dispose() {
+  dispose(): void {
     const vertex = this.vertex;
     const circuit = this.circuit;
     const cutButton = this.circuitLayerNode.cutButton;
@@ -424,12 +417,10 @@ export default class VertexNode extends Node {
   }
 }
 
-// @public {number}
 VertexNode.VERTEX_RADIUS = VERTEX_RADIUS;
 
 /**
  * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
- * @public {Array.<Image>}
  */
 VertexNode.webglSpriteNodes = [
   BLACK_CIRCLE_NODE, RED_CIRCLE_NODE

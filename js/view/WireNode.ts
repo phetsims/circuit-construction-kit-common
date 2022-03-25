@@ -214,7 +214,6 @@ export default class WireNode extends CircuitElementNode {
     // @private {CircuitLayerNode}
     this.circuitLayerNode = circuitLayerNode;
 
-    // @public (read-only) {Wire}
     this.wire = wire;
 
     // @private {Node}
@@ -419,12 +418,7 @@ export default class WireNode extends CircuitElementNode {
     this.mouseArea = this.touchArea;
   }
 
-  /**
-   * Dispose the WireNode when it will no longer be used.
-   * @public
-   * @override
-   */
-  dispose() {
+  dispose(): void {
     this.disposeWireNode();
     super.dispose();
   }
@@ -432,7 +426,6 @@ export default class WireNode extends CircuitElementNode {
 
 /**
  * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
- * @public {Array.<Image>}
  */
 WireNode.webglSpriteNodes = [
   BLACK_LINE_NODE,

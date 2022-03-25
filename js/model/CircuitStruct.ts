@@ -35,32 +35,19 @@ export default class CircuitStruct {
   static fromStateObject: ( circuit: any, circuitState: any, resistivityProperty: any, tandem: any, options: any ) => CircuitStruct;
 
   constructor() {
-
-    // @public {Vertex[]}
     this.vertices = [];
-
-    // @public {Wire[]}
     this.wires = [];
-
-    // @public {Resistor[]}
     this.resistors = [];
-
-    // @public {LightBulb[]}
     this.lightBulbs = [];
-
-    // @public {Battery[]}
     this.batteries = [];
-
-    // @public {Switch[]}
     this.switches = [];
   }
 
   /**
    * Clear out the CircuitStruct. Used for Black Box Study to clear the records of user-created circuits in the black
    * box.
-   * @public
    */
-  clear() {
+  clear(): void {
     this.vertices.length = 0;
     this.wires.length = 0;
     this.batteries.length = 0;
@@ -71,10 +58,8 @@ export default class CircuitStruct {
 
   /**
    * Gets all the circuit elements.
-   * @returns {CircuitElement[]}
-   * @public
    */
-  get circuitElements() {
+  get circuitElements(): CircuitElement[] {
     return ( [] as CircuitElement[] )
       .concat( this.wires )
       .concat( this.batteries )
@@ -86,13 +71,11 @@ export default class CircuitStruct {
 
 /**
  * Create a CircuitStruct from a plain object for deserialization.
- * @param {Object} circuit
- * @param {Object} circuitState
- * @param {Property.<number>} resistivityProperty - shared value for resistivity across all of the wires
- * @param {Tandem} tandem
- * @param {Object} [options]
- * @returns {CircuitStruct}
- * @public
+ * @param circuit
+ * @param circuitState
+ * @param resistivityProperty - shared value for resistivity across all of the wires
+ * @param tandem
+ * @param [options]
  */
 CircuitStruct.fromStateObject = ( circuit, circuitState, resistivityProperty, tandem, options ) => {
   const circuitStruct = new CircuitStruct();
