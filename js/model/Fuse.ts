@@ -20,8 +20,8 @@ import FixedCircuitElement, { FixedCircuitElementOptions } from './FixedCircuitE
 import Vertex from './Vertex.js';
 
 type SelfOptions = {
-  fuseLength?: number
-  currentRating?: number
+  fuseLength?: number;
+  currentRating?: number;
 };
 
 type FuseOptions = SelfOptions & FixedCircuitElementOptions;

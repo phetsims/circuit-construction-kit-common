@@ -496,7 +496,7 @@ class Equation {
    * @param z - the matrix on the right hand side in Ax=z
    * @param getColumn - (UnknownCurrent|UnknownVoltage) => number
    */
-  stamp( row: number, a: Matrix, z: Matrix, getColumn: { ( unknown: UnknownCurrent | UnknownVoltage ): number; ( arg0: UnknownCurrent | UnknownVoltage ): any; } ): void {
+  stamp( row: number, a: Matrix, z: Matrix, getColumn: { ( unknown: UnknownCurrent | UnknownVoltage ): number; ( arg0: UnknownCurrent | UnknownVoltage ): any } ): void {
 
     // Set the equation's value into the solution matrix
     z.set( row, 0, this.value );

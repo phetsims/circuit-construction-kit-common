@@ -32,7 +32,7 @@ type Steppable<T> = {
 
 export default class TimestepSubdivisions<T> {
 
-  stepInTimeWithHistory( originalState: T, steppable: Steppable<T>, totalTime: number ): { dt: number, state: T }[] {
+  stepInTimeWithHistory( originalState: T, steppable: Steppable<T>, totalTime: number ): { dt: number; state: T }[] {
     let state = originalState;
     let elapsedTime = 0.0;
     const states: { dt: number; state: T }[] = [];

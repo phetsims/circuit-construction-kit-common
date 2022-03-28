@@ -23,7 +23,7 @@ import Vertex from './Vertex.js';
 const METERS_PER_VIEW_COORDINATE = 0.0005;
 
 type SelfOptions = {
-  wireStub?: boolean
+  wireStub?: boolean;
 };
 
 type WireOptions = SelfOptions & CircuitElementOptions;

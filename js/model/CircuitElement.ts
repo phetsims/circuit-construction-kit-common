@@ -32,12 +32,12 @@ import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 let index = 0;
 
 type SelfOptions = {
-  isFlammable?: boolean,
-  isMetallic?: boolean,
-  isSizeChangedOnViewChange?: boolean,
-  isCurrentReentrant?: boolean,
-  interactive?: boolean,
-  insideTrueBlackBox?: boolean
+  isFlammable?: boolean;
+  isMetallic?: boolean;
+  isSizeChangedOnViewChange?: boolean;
+  isCurrentReentrant?: boolean;
+  interactive?: boolean;
+  insideTrueBlackBox?: boolean;
 };
 
 export type CircuitElementOptions = SelfOptions & PhetioObjectOptions;
