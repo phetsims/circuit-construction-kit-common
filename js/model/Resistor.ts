@@ -24,7 +24,7 @@ type ResistorSelfOptions = {
   isMetallic: boolean;
   resistorType: any;
 };
-type ResistorOptions = ResistorSelfOptions & FixedCircuitElementOptions;
+export type ResistorOptions = ResistorSelfOptions & FixedCircuitElementOptions;
 
 export default class Resistor extends FixedCircuitElement {
 
@@ -138,4 +138,3 @@ Resistor.ResistorIO = new IOType( 'ResistorIO', {
 } );
 
 circuitConstructionKitCommon.register( 'Resistor', Resistor );
-export type { ResistorOptions };

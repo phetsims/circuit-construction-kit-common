@@ -18,7 +18,7 @@ import PowerDissipatedProperty from './PowerDissipatedProperty.js';
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import NumberIO from '../../../tandem/js/types/NumberIO.js';
 
-type VoltageSourceOptions = {
+export type VoltageSourceOptions = {
   initialOrientation?: string; // TODO: enum
   voltage?: number;
   voltagePropertyOptions?: {
@@ -100,4 +100,3 @@ export default abstract class VoltageSource extends FixedCircuitElement {
 }
 
 circuitConstructionKitCommon.register( 'VoltageSource', VoltageSource );
-export type { VoltageSourceOptions };

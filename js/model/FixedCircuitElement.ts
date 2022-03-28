@@ -17,7 +17,7 @@ import Vertex from './Vertex.js';
 type FixedCircuitElementSelfOptions = {
   numberOfDecimalPlaces?: number;
 };
-type FixedCircuitElementOptions = FixedCircuitElementSelfOptions & CircuitElementOptions;
+export type FixedCircuitElementOptions = FixedCircuitElementSelfOptions & CircuitElementOptions;
 
 export default abstract class FixedCircuitElement extends CircuitElement {
   readonly numberOfDecimalPlaces: number;
@@ -50,4 +50,3 @@ export default abstract class FixedCircuitElement extends CircuitElement {
 }
 
 circuitConstructionKitCommon.register( 'FixedCircuitElement', FixedCircuitElement );
-export type { FixedCircuitElementOptions };

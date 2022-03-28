@@ -43,7 +43,7 @@ const HIGHLIGHT_PADDING = 10; // in view coordinates
 const isFireShown = ( current: number, isValueDepictionEnabled: boolean ) =>
   Math.abs( current ) >= FIRE_THRESHOLD && isValueDepictionEnabled;
 
-type FixedCircuitElementNodeOptions = {
+export type FixedCircuitElementNodeOptions = {
   isIcon: boolean;
   showHighlight: boolean;
 } & NodeOptions;// TODO: & CircuitElementNodeOptions
@@ -376,4 +376,3 @@ FixedCircuitElementNode.webglSpriteNodes = [
 ];
 
 circuitConstructionKitCommon.register( 'FixedCircuitElementNode', FixedCircuitElementNode );
-export type { FixedCircuitElementNodeOptions };

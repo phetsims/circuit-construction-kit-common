@@ -14,7 +14,7 @@ import FixedCircuitElement, { FixedCircuitElementOptions } from './FixedCircuitE
 import Vertex from './Vertex.js';
 
 type DynamicCircuitElementSelfOptions = {};
-type DynamicCircuitElementOptions = DynamicCircuitElementSelfOptions & FixedCircuitElementOptions;
+export type DynamicCircuitElementOptions = DynamicCircuitElementSelfOptions & FixedCircuitElementOptions;
 
 // This class should not be instantiated directly, instead subclasses should provide implementations for getCircuitProperties
 // and the subclasses should be used instead.
@@ -66,4 +66,3 @@ export default abstract class DynamicCircuitElement extends FixedCircuitElement 
 }
 
 circuitConstructionKitCommon.register( 'DynamicCircuitElement', DynamicCircuitElement );
-export type { DynamicCircuitElementOptions };
