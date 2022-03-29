@@ -1,4 +1,4 @@
-// Copyright 2017-2021, University of Colorado Boulder
+// Copyright 2017-2022, University of Colorado Boulder
 
 /**
  * Controls for showing and changing the wire resistivity.  Exists for the life of the sim and hence does not require a

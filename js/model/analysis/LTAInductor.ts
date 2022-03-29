@@ -1,4 +1,4 @@
-// Copyright 2021, University of Colorado Boulder
+// Copyright 2021-2022, University of Colorado Boulder
 import DynamicCoreModel from './DynamicCoreModel.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 

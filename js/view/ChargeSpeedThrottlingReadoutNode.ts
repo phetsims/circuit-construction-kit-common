@@ -1,4 +1,4 @@
-// Copyright 2016-2021, University of Colorado Boulder
+// Copyright 2016-2022, University of Colorado Boulder
 
 /**
  * This shows a readout that indicates the speed of the simulation is reduced (to prevent a strobe effect). Exists for
