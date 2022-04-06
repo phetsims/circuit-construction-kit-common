@@ -130,7 +130,7 @@ export default abstract class CircuitElementNode extends Node {
   /**
    * Dispose resources when no longer used.
    */
-  dispose(): void {
+  override dispose(): void {
     this.disposeCircuitElementNode();
     super.dispose();
   }

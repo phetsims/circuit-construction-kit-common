@@ -199,7 +199,7 @@ export default class FuseNode extends FixedCircuitElementNode {
     };
   }
 
-  dispose(): void {
+  override dispose(): void {
     this.disposeFuseNode();
     super.dispose();
   }

@@ -55,7 +55,7 @@ export default abstract class DynamicCircuitElement extends FixedCircuitElement 
     this.clearEmitter.emit();
   }
 
-  dispose() {
+  override dispose():void {
     this.clearEmitter.dispose();
     this.isClearableProperty.dispose();
     super.dispose();

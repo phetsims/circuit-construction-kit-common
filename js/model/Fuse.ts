@@ -69,7 +69,7 @@ export default class Fuse extends FixedCircuitElement {
     } );
   }
 
-  dispose() {
+  override dispose() {
     super.dispose();
     this.currentRatingProperty.dispose();
     this.isRepairableProperty.dispose();
@@ -89,7 +89,7 @@ export default class Fuse extends FixedCircuitElement {
    * @param dt - delta between last frame and current frame
    * @param circuit
    */
-  step( time: number, dt: number, circuit: Circuit ): void {
+  override step( time: number, dt: number, circuit: Circuit ): void {
     super.step( time, dt, circuit );
     // When the current exceeds the max, trip the fuse.  This cannot be modeled as a property link because it
     // creates a reentrant property loop which doesn't update the reset fuse button properly

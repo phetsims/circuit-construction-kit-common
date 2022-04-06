@@ -94,7 +94,7 @@ export default class SolderNode extends Node {
   /**
    * Eliminate resources when no longer used.
    */
-  dispose(): void {
+  override dispose(): void {
     this.disposeSolderNode();
     super.dispose();
   }

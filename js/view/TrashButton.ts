@@ -45,7 +45,7 @@ export default class TrashButton extends CCKCRoundPushButton {
     }, providedOptions ) );
   }
 
-  dispose(): void {
+  override dispose(): void {
     assert && assert( false, 'should not be disposed' );
   }
 }

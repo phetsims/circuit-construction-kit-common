@@ -301,7 +301,7 @@ export default abstract class CircuitElement extends PhetioObject {
   /**
    * Release resources associated with this CircuitElement, called when it will no longer be used.
    */
-  dispose(): void {
+  override dispose(): void {
     assert && assert( !this.circuitElementDisposed, 'circuit element was already disposed' );
     this.circuitElementDisposed = true;
 

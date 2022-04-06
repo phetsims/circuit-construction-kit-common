@@ -452,7 +452,7 @@ class EditPanel extends Panel {
     this.hbox = hbox;
   }
 
-  dispose() {
+  override dispose() {
     this.hbox.dispose();
     super.dispose();
   }

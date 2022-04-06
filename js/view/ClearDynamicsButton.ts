@@ -76,7 +76,7 @@ export default class ClearDynamicsButton extends HBox {
     } );
   }
 
-  dispose(): void {
+  override dispose(): void {
     assert && assert( false, 'should not be disposed' );
   }
 }

@@ -81,7 +81,7 @@ export default abstract class VoltageSource extends FixedCircuitElement {
   /**
    * Dispose of this and PhET-iO instrumented children, so they will be unregistered.
    */
-  dispose(): void {
+  override dispose(): void {
     this.voltageProperty.dispose();
     this.powerDissipatedProperty.dispose();
     this.powerGeneratedProperty.dispose();

@@ -258,7 +258,7 @@ export default class SwitchNode extends FixedCircuitElementNode {
   /**
    * Returns true if the node hits the sensor at the given point.
    */
-  containsSensorPoint( globalPoint: Vector2 ): boolean {
+  override containsSensorPoint( globalPoint: Vector2 ): boolean {
 
     const localPoint = this.globalToParentPoint( globalPoint );
 
@@ -268,7 +268,7 @@ export default class SwitchNode extends FixedCircuitElementNode {
     return this.startSideContainsSensorPoint( localPoint ) || this.endSideContainsSensorPoint( localPoint );
   }
 
-  dispose(): void {
+  override dispose(): void {
     this.disposeSwitchNode();
     super.dispose();
   }

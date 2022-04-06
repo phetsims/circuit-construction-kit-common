@@ -277,10 +277,9 @@ export default class CCKCLightBulbNode extends FixedCircuitElementNode {
 
   /**
    * Multiple updates may happen per frame, they are batched and updated once in the view step to improve performance.
-   * @override
    * @protected - CCKCLightBulbNode calls updateRender for its child socket node
    */
-  updateRender() {
+  override updateRender() {
     const startPosition = this.circuitElement.startPositionProperty.get();
     const endPosition = this.circuitElement.endPositionProperty.get();
     const angle = Vector2.getAngleBetweenVectors( startPosition, endPosition ) + Math.PI / 4;
@@ -297,7 +296,7 @@ export default class CCKCLightBulbNode extends FixedCircuitElementNode {
   /**
    * Dispose when no longer used.
    */
-  dispose(): void {
+  override dispose(): void {
     this.disposeCircuitConstructionKitLightBulbNode();
     super.dispose();
   }
@@ -305,7 +304,7 @@ export default class CCKCLightBulbNode extends FixedCircuitElementNode {
   /**
    * Maintain the opacity of the brightness lines while changing the opacity of the light bulb itself.
    */
-  updateOpacityOnInteractiveChange(): void {
+  override updateOpacityOnInteractiveChange(): void {
 
     // TODO (black-box-study): Make the light bulb images look faded out.
   }

@@ -68,7 +68,7 @@ export default class Switch extends FixedCircuitElement {
   /**
    * Dispose of this and PhET-iO instrumented children, so they will be unregistered.
    */
-  dispose(): void {
+  override dispose(): void {
     this.closedProperty.dispose();
     super.dispose();
   }
@@ -78,7 +78,7 @@ export default class Switch extends FixedCircuitElement {
    * @param distanceAlongWire
    * @param matrix to be updated with the position and angle, so that garbage isn't created each time
    */
-  updateMatrixForPoint( distanceAlongWire: number, matrix: Matrix3 ): void {
+  override updateMatrixForPoint( distanceAlongWire: number, matrix: Matrix3 ): void {
 
     const startPosition = this.startPositionProperty.get();
     const endPosition = this.endPositionProperty.get();

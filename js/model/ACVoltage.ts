@@ -96,12 +96,12 @@ export default class ACVoltage extends VoltageSource {
   }
 
   // Get the properties so that the circuit can be solved when changed.
-  getCircuitProperties() {
+  override getCircuitProperties() {
     return [ this.frequencyProperty, this.phaseProperty, this.maximumVoltageProperty, ...super.getCircuitProperties() ];
   }
 
   // Dispose of this and PhET-iO instrumented children, so they will be unregistered.
-  dispose() {
+  override dispose() {
     this.maximumVoltageProperty.dispose();
     this.frequencyProperty.dispose();
     this.phaseProperty.dispose();
@@ -113,7 +113,7 @@ export default class ACVoltage extends VoltageSource {
    * @param dt - delta between last frame and current frame
    * @param circuit
    */
-  step( time: number, dt: number, circuit: Circuit ) {
+  override step( time: number, dt: number, circuit: Circuit ) {
     super.step( time, dt, circuit );
     this.time = time;
     this.voltageProperty.value = -this.maximumVoltageProperty.value * Math.sin( 2 * Math.PI * this.frequencyProperty.value * time + this.phaseProperty.value * Math.PI / 180 );

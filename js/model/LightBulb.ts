@@ -137,7 +137,7 @@ export default class LightBulb extends FixedCircuitElement {
   }
 
   // Dispose of this and PhET-iO instrumented children, so they will be unregistered.
-  dispose() {
+  override dispose() {
     this.resistanceProperty.dispose();
     this.powerDissipatedProperty.dispose();
     super.dispose();
@@ -165,10 +165,9 @@ export default class LightBulb extends FixedCircuitElement {
 
   /**
    * Get the properties so that the circuit can be solved when changed.
-   * @override
    * @returns {Property.<*>[]}
    */
-  getCircuitProperties() {
+  override getCircuitProperties() {
     return [ this.resistanceProperty ];
   }
 
@@ -178,7 +177,7 @@ export default class LightBulb extends FixedCircuitElement {
    * @param {number} distanceAlongWire - how far along the bulb's length the charge has traveled
    * @param {Matrix3} matrix to be updated with the position and angle, so that garbage isn't created each time
    */
-  updateMatrixForPoint( distanceAlongWire: number, matrix: Matrix3 ) {
+  override updateMatrixForPoint( distanceAlongWire: number, matrix: Matrix3 ) {
 
     super.updateMatrixForPoint( distanceAlongWire, matrix );
 

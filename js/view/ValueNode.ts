@@ -280,7 +280,7 @@ export default class ValueNode extends Panel {
     };
   }
 
-  dispose(): void {
+  override dispose(): void {
     super.dispose();
     this.disposeValueNode();
   }

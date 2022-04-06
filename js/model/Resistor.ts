@@ -87,7 +87,7 @@ export default class Resistor extends FixedCircuitElement {
   /**
    * Dispose of this and PhET-iO instrumented children, so they will be unregistered.
    */
-  dispose(): void {
+  override dispose(): void {
     this.resistanceProperty.dispose();
     this.powerDissipatedProperty.dispose();
     this.isColorCodeVisibleProperty.dispose();

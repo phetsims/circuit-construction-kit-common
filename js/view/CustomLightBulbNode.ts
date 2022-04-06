@@ -151,7 +151,7 @@ export default class CustomLightBulbNode extends Node {
     this.visibleProperty.link( ( visible: boolean ) => visible && this.update() );
   }
 
-  dispose(): void {
+  override dispose(): void {
     this.disposeCustomLightBulbNode();
   }
 

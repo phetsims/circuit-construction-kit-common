@@ -418,7 +418,7 @@ export default class WireNode extends CircuitElementNode {
     this.mouseArea = this.touchArea;
   }
 
-  dispose(): void {
+  override dispose(): void {
     this.disposeWireNode();
     super.dispose();
   }

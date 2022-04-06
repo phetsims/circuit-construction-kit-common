@@ -234,7 +234,7 @@ export default class CapacitorCircuitElementNode extends FixedCircuitElementNode
     };
   }
 
-  dispose(): void {
+  override dispose(): void {
     this.disposeCapacitorCircuitElementNode();
     super.dispose();
   }
@@ -242,7 +242,7 @@ export default class CapacitorCircuitElementNode extends FixedCircuitElementNode
   /**
    * Returns true if the node hits the sensor at the given point.
    */
-  containsSensorPoint( globalPoint: Vector2 ): boolean {
+  override containsSensorPoint( globalPoint: Vector2 ): boolean {
 
     // make sure bounds are correct if cut or joined in this animation frame
     this.step();
@@ -281,7 +281,7 @@ export default class CapacitorCircuitElementNode extends FixedCircuitElementNode
   /**
    * Gets the bounds for the highlight rectangle.
    */
-  getHighlightBounds(): Bounds2 {
+  override getHighlightBounds(): Bounds2 {
     return this.viewTypeProperty.value === CircuitElementViewType.LIFELIKE ?
            this.contentNode.localBounds.erodedX( 22 ).erodedY( 15 ) :
            this.contentNode.localBounds.dilatedX( 10 ).dilatedY( 10 );

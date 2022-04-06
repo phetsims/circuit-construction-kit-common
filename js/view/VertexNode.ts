@@ -252,7 +252,7 @@ export default class VertexNode extends Node {
     vertex.isSelectedProperty.link( this.updateVertexNodePositionListener );
   }
 
-  dispose(): void {
+  override dispose(): void {
     const vertex = this.vertex;
     const circuit = this.circuit;
     const cutButton = this.circuitLayerNode.cutButton;

@@ -78,7 +78,7 @@ export default class CCKCOptionsDialogContent extends VBox {
     this.disposeCCKCOptionsDialogContent = () => schematicStandardRadioButtonGroup.dispose();
   }
 
-  dispose(): void {
+  override dispose(): void {
     this.disposeCCKCOptionsDialogContent();
     super.dispose();
   }

@@ -55,7 +55,7 @@ export default class Inductor extends DynamicCircuitElement {
   /**
    * Dispose of this and PhET-iO instrumented children, so they will be unregistered.
    */
-  dispose(): void {
+  override dispose(): void {
     this.inductanceProperty.dispose();
     super.dispose();
   }

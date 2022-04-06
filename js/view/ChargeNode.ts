@@ -85,7 +85,7 @@ export default class ChargeNode extends Node {
   /**
    * Dispose resources when no longer used.
    */
-  dispose(): void {
+  override dispose(): void {
     this.charge.changedEmitter.removeListener( this.updateTransformListener );
     this.charge.visibleProperty.unlink( this.updateVisibleListener );
     this.outsideOfBlackBoxProperty.unlink( this.updateVisibleListener );

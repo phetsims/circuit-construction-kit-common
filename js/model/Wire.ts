@@ -40,7 +40,7 @@ export default class Wire extends CircuitElement {
   private readonly resistivityProperty: NumberProperty;
 
   // when the length changes layoutCharges must be called
-  readonly lengthProperty: NumberProperty;
+  override readonly lengthProperty: NumberProperty;
   updateListener: () => void;
 
   constructor( startVertex: Vertex, endVertex: Vertex, resistivityProperty: NumberProperty, tandem: Tandem, providedOptions?: WireOptions ) {
@@ -79,7 +79,7 @@ export default class Wire extends CircuitElement {
    * @param dt - seconds since last step
    * @param circuit
    */
-  step( time: number, dt: number, circuit: Circuit ): void {
+  override step( time: number, dt: number, circuit: Circuit ): void {
     super.step( time, dt, circuit );
     this.update();
   }
@@ -115,7 +115,7 @@ export default class Wire extends CircuitElement {
   /**
    * Releases all resources related to the Wire, called when it will no longer be used.
    */
-  dispose(): void {
+  override dispose(): void {
     this.vertexMovedEmitter.removeListener( this.updateListener );
     this.resistivityProperty.unlink( this.updateListener );
     super.dispose();

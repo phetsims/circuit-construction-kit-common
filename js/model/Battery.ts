@@ -55,11 +55,11 @@ export default class Battery extends VoltageSource {
     } );
   }
 
-  step( time: number, dt: number, circuit: Circuit ): void {
+  override step( time: number, dt: number, circuit: Circuit ): void {
     // nothing to do
   }
 
-  dispose() {
+  override dispose() {
     this.isReversibleProperty.dispose();
     super.dispose();
   }

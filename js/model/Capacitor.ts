@@ -79,7 +79,7 @@ export default class Capacitor extends DynamicCircuitElement {
   }
 
   // Dispose of this and PhET-iO instrumented children, so they will be unregistered.
-  dispose() {
+  override dispose() {
     this.capacitanceProperty.dispose();
     super.dispose();
   }

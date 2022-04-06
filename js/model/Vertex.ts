@@ -162,7 +162,7 @@ export default class Vertex extends PhetioObject {
   /**
    * Dispose of this and PhET-iO instrumented children, so they will be unregistered.
    */
-  dispose(): void {
+  override dispose(): void {
     this.positionProperty.dispose();
     this.voltageProperty.dispose();
     this.isSelectedProperty.dispose();

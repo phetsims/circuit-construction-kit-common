@@ -76,7 +76,7 @@ export default class DogNode extends ResistorNode {
     dog.isBarkingProperty.link( this.isBarkingListener );
   }
 
-  dispose() {
+  override dispose(): void {
     super.dispose();
     this.dog.isBarkingProperty.unlink( this.isBarkingListener );
     this.contentNode.boundsProperty.unlink( this.boundsListener );

@@ -321,7 +321,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
     }
   }
 
-  dispose(): void {
+  override dispose(): void {
 
     // Interrupt the drag event if it was in progress
     this.dragListener && this.dragListener.interrupt();

@@ -214,7 +214,7 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
     };
   }
 
-  dispose(): void {
+  override dispose(): void {
     this.disposeSeriesAmmeterNode();
     super.dispose();
   }
@@ -223,7 +223,7 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
    * Multiple updates may happen per frame, they are batched and updated once in the view step to improve performance.
    * CCKCLightBulbNode calls updateRender for its child socket node
    */
-  updateRender(): void {
+  override updateRender(): void {
     super.updateRender();
     this.frontPanelContainer.setMatrix( this.contentNode.getMatrix() );
   }

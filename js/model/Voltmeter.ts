@@ -52,7 +52,7 @@ export default class Voltmeter extends Meter {
   /**
    * Reset the voltmeter, called when reset all is pressed.
    */
-  reset(): void {
+  override reset(): void {
     super.reset();
     this.voltageProperty.reset();
     this.redProbePositionProperty.reset();

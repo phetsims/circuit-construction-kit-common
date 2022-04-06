@@ -248,7 +248,7 @@ export default class ResistorNode extends FixedCircuitElementNode {
     };
   }
 
-  dispose(): void {
+  override dispose(): void {
     this.disposeResistorNode();
     super.dispose();
   }

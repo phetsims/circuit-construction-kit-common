@@ -45,7 +45,7 @@ export default class Dog extends Resistor {
    * @param dt in seconds
    * @param circuit
    */
-  step( time: number, dt: number, circuit: Circuit ) {
+  override step( time: number, dt: number, circuit: Circuit ):void {
     super.step( time, dt, circuit );
     const voltage = this.voltageDifferenceProperty.value;
 
