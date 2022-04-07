@@ -8,7 +8,7 @@
 
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
-import NumberProperty from '../../../axon/js/NumberProperty.js';
+import NumberProperty, { RangedProperty } from '../../../axon/js/NumberProperty.js';
 import CanvasLinePlot from '../../../bamboo/js/CanvasLinePlot.js';
 import ChartCanvasNode from '../../../bamboo/js/ChartCanvasNode.js';
 import ChartRectangle from '../../../bamboo/js/ChartRectangle.js';
@@ -26,8 +26,7 @@ import Orientation from '../../../phet-core/js/Orientation.js';
 import MagnifyingGlassZoomButtonGroup from '../../../scenery-phet/js/MagnifyingGlassZoomButtonGroup.js';
 import ShadedRectangle from '../../../scenery-phet/js/ShadedRectangle.js';
 import WireNode from '../../../scenery-phet/js/WireNode.js';
-import { Node, NodeOptions, NodeProperty, PressListenerEvent, Text } from '../../../scenery/js/imports.js';
-import { DragListener } from '../../../scenery/js/imports.js';
+import { DragListener, Node, NodeOptions, NodeProperty, PressListenerEvent, Text } from '../../../scenery/js/imports.js';
 import ButtonNode from '../../../sun/js/buttons/ButtonNode.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -75,7 +74,7 @@ export default class CCKCChartNode extends Node {
   private readonly droppedEmitter: Emitter<[]>;
   protected readonly aboveBottomLeft1: IReadOnlyProperty<Vector2>;
   protected readonly aboveBottomLeft2: IReadOnlyProperty<Vector2>;
-  private readonly zoomLevelProperty: NumberProperty;
+  private readonly zoomLevelProperty: RangedProperty;
   protected readonly updatePen: () => void;
 
   /**
@@ -182,7 +181,7 @@ export default class CCKCChartNode extends Node {
     this.zoomLevelProperty = new NumberProperty( initialZoomIndex, {
       range: new Range( 0, zoomRanges.length - 1 ),
       tandem: tandem.createTandem( 'zoomLevelProperty' )
-    } );
+    } ).asRanged();
 
     const gridLineOptions = {
       stroke: 'lightGray',

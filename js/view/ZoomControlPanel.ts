@@ -7,7 +7,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import NumberProperty from '../../../axon/js/NumberProperty.js';
+import { RangedProperty } from '../../../axon/js/NumberProperty.js';
 import merge from '../../../phet-core/js/merge.js';
 import MagnifyingGlassZoomButtonGroup from '../../../scenery-phet/js/MagnifyingGlassZoomButtonGroup.js';
 import PhetColorScheme from '../../../scenery-phet/js/PhetColorScheme.js';
@@ -29,7 +29,7 @@ export default class ZoomControlPanel extends MagnifyingGlassZoomButtonGroup {
    * @param selectedZoomProperty
    * @param providedOptions
    */
-  constructor( selectedZoomProperty: NumberProperty, providedOptions?: any ) {
+  constructor( selectedZoomProperty: RangedProperty, providedOptions?: any ) {
     providedOptions = merge( {
       spacing: BUTTON_SPACING,
       tandem: Tandem.REQUIRED,
