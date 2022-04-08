@@ -13,7 +13,7 @@ import merge from '../../../phet-core/js/merge.js';
 import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
 import { Text } from '../../../scenery/js/imports.js';
 import { VBox } from '../../../scenery/js/imports.js';
-import NumberSpinner from '../../../sun/js/NumberSpinner.js';
+import NumberSpinner, { NumberSpinnerOptions } from '../../../sun/js/NumberSpinner.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
@@ -35,7 +35,7 @@ export default class PhaseShiftControl extends VBox {
     const enabledProperty = new BooleanProperty( true );
 
     // options for all spinners
-    const spinnerOptions = {
+    const spinnerOptions: NumberSpinnerOptions = {
       enabledProperty: enabledProperty,
       deltaValue: 15,
       numberDisplayOptions: {
