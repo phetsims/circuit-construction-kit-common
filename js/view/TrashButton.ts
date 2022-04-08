@@ -14,6 +14,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CCKCRoundPushButton from './CCKCRoundPushButton.js';
 import Circuit from '../model/Circuit.js';
 import Tandem from '../../../tandem/js/Tandem.js';
+import { RoundPushButtonOptions } from '../../../sun/js/buttons/RoundPushButton.js';
 
 export default class TrashButton extends CCKCRoundPushButton {
 

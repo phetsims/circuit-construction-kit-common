@@ -8,7 +8,7 @@
 
 import merge from '../../../phet-core/js/merge.js';
 import PhetColorScheme from '../../../scenery-phet/js/PhetColorScheme.js';
-import RoundPushButton from '../../../sun/js/buttons/RoundPushButton.js';
+import RoundPushButton, { RoundPushButtonOptions } from '../../../sun/js/buttons/RoundPushButton.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 export default class CCKCRoundPushButton extends RoundPushButton {
