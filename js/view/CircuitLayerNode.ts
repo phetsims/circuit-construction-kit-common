@@ -468,7 +468,7 @@ export default class CircuitLayerNode extends Node {
 
     const vertexNodeGroup = new PhetioGroup<VertexNode, [ Vertex ]>( ( tandem, vertex: Vertex ) => {
       return new VertexNode( this, vertex, tandem );
-    }, [ circuit.vertexGroup.archetype ], {
+    }, () => [ circuit.vertexGroup.archetype ], {
       phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
       tandem: tandem.createTandem( 'vertexNodeGroup' ),
       supportsDynamicState: false
