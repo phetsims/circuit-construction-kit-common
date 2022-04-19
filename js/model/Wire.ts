@@ -47,7 +47,7 @@ export default class Wire extends CircuitElement {
     assert && assert( typeof resistivityProperty !== 'number', 'property should not be a number' );
     assert && assert( !startVertex.isDisposed, 'vertex should not be disposed' );
     assert && assert( !endVertex.isDisposed, 'vertex should not be disposed' );
-    const options = optionize<WireOptions, SelfOptions, CircuitElementOptions>( {
+    const options = optionize<WireOptions, SelfOptions, CircuitElementOptions>()( {
       wireStub: false,
       isMetallic: true
     }, providedOptions );

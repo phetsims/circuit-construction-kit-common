@@ -48,7 +48,7 @@ export default class Resistor extends FixedCircuitElement {
    * @param {Object} [providedOptions]
    */
   constructor( startVertex: Vertex, endVertex: Vertex, resistorType: any, tandem: Tandem, providedOptions?: ResistorOptions ) {
-    const options = optionize<ResistorOptions, SelfOptions, FixedCircuitElementOptions>( {
+    const options = optionize<ResistorOptions, SelfOptions, FixedCircuitElementOptions>()( {
       isFlammable: true, // All resistors are flammable except for the dog, which automatically disconnects at high current.
       phetioType: Resistor.ResistorIO,
       numberOfDecimalPlaces: resistorType === ResistorType.RESISTOR ? 1 : 0

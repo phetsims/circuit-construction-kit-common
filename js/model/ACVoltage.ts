@@ -51,7 +51,7 @@ export default class ACVoltage extends VoltageSource {
   constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, tandem: Tandem, providedOptions?: ACVoltageOptions ) {
     assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );
 
-    const options = optionize<ACVoltageOptions, SelfOptions, VoltageSourceOptions, 'voltage'>( {
+    const options = optionize<ACVoltageOptions, SelfOptions, VoltageSourceOptions>()( {
       initialOrientation: 'right',
       voltage: 9.0,
       isFlammable: true,

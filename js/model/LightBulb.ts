@@ -84,7 +84,7 @@ export default class LightBulb extends FixedCircuitElement {
     endVertex: Vertex, // bottom
     resistance: number,
     viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: LightBulbOptions ) {
-    const filledOptions = optionize<LightBulbOptions, SelfOptions, FixedCircuitElementOptions>( {
+    const filledOptions = optionize<LightBulbOptions, SelfOptions, FixedCircuitElementOptions>()( {
       highResistance: false,
       real: false
     }, providedOptions );

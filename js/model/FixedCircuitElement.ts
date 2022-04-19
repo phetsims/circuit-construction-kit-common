@@ -36,7 +36,7 @@ export default abstract class FixedCircuitElement extends CircuitElement {
                tandem: Tandem,
                providedOptions?: FixedCircuitElementOptions ) {
 
-    const options = optionize<FixedCircuitElementOptions, SelfOptions, CircuitElementOptions>( {
+    const options = optionize<FixedCircuitElementOptions, SelfOptions, CircuitElementOptions>()( {
       numberOfDecimalPlaces: 1
     }, providedOptions );
 

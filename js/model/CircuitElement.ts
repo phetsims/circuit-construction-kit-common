@@ -128,7 +128,7 @@ export default abstract class CircuitElement extends PhetioObject {
     assert && assert( typeof chargePathLength === 'number', 'charge path length should be a number' );
     assert && assert( chargePathLength > 0, 'charge path length must be positive' );
 
-    const options = optionize<CircuitElementOptions, SelfOptions, PhetioObjectOptions>( {
+    const options = optionize<CircuitElementOptions, SelfOptions, PhetioObjectOptions>()( {
       interactive: true, // In CCK: Black Box Study, CircuitElements in the black box cannot be manipulated
       isSizeChangedOnViewChange: true,
       insideTrueBlackBox: false,

@@ -44,7 +44,7 @@ export default class Switch extends FixedCircuitElement {
    */
   constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: SwitchOptions ) {
 
-    const options = optionize<SwitchOptions, SelfOptions, FixedCircuitElementOptions>( {
+    const options = optionize<SwitchOptions, SelfOptions, FixedCircuitElementOptions>()( {
       closed: false,
 
       // Use the bounding box of the open lifelike switch to show bounds for all combinations of open/closed x lifelike/schematic
