@@ -81,7 +81,7 @@ export default class CircuitElementNumberControl extends HBox {
   }
 
   override dispose(): void {
-    assert && assert( 'Should not be disposed' );
+    assert && assert( false, 'Should not be disposed' );
   }
 }
 
