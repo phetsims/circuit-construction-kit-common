@@ -486,7 +486,7 @@ export default class CCKCScreenView extends ScreenView {
    * Move forward in time by the specified dt
    * @param dt - seconds
    */
-  step( dt: number ): void {
+  override step( dt: number ): void {
 
     // noting from the main step
     this.circuitLayerNode.step();
