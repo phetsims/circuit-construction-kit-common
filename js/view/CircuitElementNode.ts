@@ -183,7 +183,7 @@ export default abstract class CircuitElementNode extends Node {
     }
   }
 
-  abstract updateRender(): void;
+  protected abstract updateRender(): void;
 
   /**
    * Handles when the node is dropped, called by subclass input listener.

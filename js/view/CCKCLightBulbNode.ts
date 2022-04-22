@@ -281,9 +281,9 @@ export default class CCKCLightBulbNode extends FixedCircuitElementNode {
 
   /**
    * Multiple updates may happen per frame, they are batched and updated once in the view step to improve performance.
-   * @protected - CCKCLightBulbNode calls updateRender for its child socket node
+   * CCKCLightBulbNode calls updateRender for its child socket node
    */
-  override updateRender() {
+  protected override updateRender() {
     const startPosition = this.circuitElement.startPositionProperty.get();
     const endPosition = this.circuitElement.endPositionProperty.get();
     const angle = Vector2.getAngleBetweenVectors( startPosition, endPosition ) + Math.PI / 4;

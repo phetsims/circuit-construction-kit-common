@@ -364,9 +364,9 @@ export default class WireNode extends CircuitElementNode {
 
   /**
    * Multiple updates may happen per frame, they are batched and updated once in the view step to improve performance.
-   * @protected - CCKCLightBulbNode calls updateRender for its child socket node
+   * CCKCLightBulbNode calls updateRender for its child socket node
    */
-  updateRender() {
+  protected updateRender() {
     const view = this.viewTypeProperty.value;
     if ( view === CircuitElementViewType.LIFELIKE ) {
 

@@ -251,7 +251,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
    * Multiple updates may happen per frame, they are batched and updated once in the view step to improve performance.
    * CCKCLightBulbNode calls updateRender for its child socket node
    */
-  updateRender(): void {
+  protected updateRender(): void {
     const startPosition = this.circuitElement.startPositionProperty.get();
     const endPosition = this.circuitElement.endPositionProperty.get();
 
