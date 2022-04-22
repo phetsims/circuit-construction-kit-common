@@ -237,7 +237,6 @@ export default class ResistorNode extends FixedCircuitElementNode {
 
     this.resistor = resistor;
 
-    // @protected {Image}
     this.lifelikeResistorImageNode = lifelikeResistorImageNode;
 
     this.disposeResistorNode = () => {

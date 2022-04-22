@@ -7,6 +7,10 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+
+// Disable for the whole file https://github.com/phetsims/circuit-construction-kit-common/issues/877
+/* eslint-disable no-protected-jsdoc */
+
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';

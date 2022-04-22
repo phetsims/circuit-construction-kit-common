@@ -225,7 +225,7 @@ export default class CCKCScreenView extends ScreenView {
       options.circuitElementToolboxOptions
     );
 
-    // @protected {SensorToolbox} - so that subclasses can add a layout circuit element near it
+    // so that subclasses can add a layout circuit element near it
     this.sensorToolbox = new SensorToolbox(
       CONTROL_PANEL_ALIGN_GROUP,
       this.circuitLayerNode,
@@ -247,7 +247,6 @@ export default class CCKCScreenView extends ScreenView {
     );
     this.viewRadioButtonGroup.mutate( { scale: this.circuitElementToolbox.carousel.backgroundWidth / this.viewRadioButtonGroup.width * CCKCConstants.CAROUSEL_SCALE } );
 
-    // @protected {DisplayOptionsPanel}
     this.displayOptionsPanel = new DisplayOptionsPanel(
       CONTROL_PANEL_ALIGN_GROUP,
       model.circuit.showCurrentProperty,

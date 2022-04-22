@@ -126,13 +126,13 @@ export default class CCKCChartNode extends Node {
 
     this.droppedEmitter = new Emitter();
 
-    // @protected - for attaching probes
+    // for attaching probes
     this.aboveBottomLeft1 = new DerivedProperty(
       [ leftBottomProperty ],
       ( position: Vector2 ) => position.isFinite() ? position.plusXY( 0, -20 ) : Vector2.ZERO
     );
 
-    // @protected - for attaching probes
+    // for attaching probes
     this.aboveBottomLeft2 = new DerivedProperty(
       [ leftBottomProperty ],
       ( position: Vector2 ) => position.isFinite() ? position.plusXY( 0, -10 ) : Vector2.ZERO
@@ -365,9 +365,8 @@ export default class CCKCChartNode extends Node {
    * @param {Property.<Vector2>} connectionProperty
    * @param {Tandem} tandem
    * @returns {CCKCProbeNode}
-   * @protected
    */
-  addProbeNode( color: string, wireColor: string, dx: number, dy: number, connectionProperty: IReadOnlyProperty<Vector2>, tandem: Tandem ) {
+  protected addProbeNode( color: string, wireColor: string, dx: number, dy: number, connectionProperty: IReadOnlyProperty<Vector2>, tandem: Tandem ) {
     const probeNode = new CCKCProbeNode( this, this.visibleBoundsProperty, { color: color, tandem: tandem } );
 
     // Add the wire behind the probe.

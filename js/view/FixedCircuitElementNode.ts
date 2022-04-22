@@ -54,11 +54,11 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
   private readonly schematicNode: Node;
   isIcon: boolean;
   private readonly circuitLayerNode: CircuitLayerNode | null;
-  contentNode: Node;
+  protected readonly contentNode: Node;
   private readonly fireNode: Node | null;
-  readonly viewTypeProperty: Property<CircuitElementViewType>;
+  protected readonly viewTypeProperty: Property<CircuitElementViewType>;
   private readonly viewPropertyListener: ( viewType: CircuitElementViewType ) => void;
-  readonly highlightNode: FixedCircuitElementHighlightNode | null;
+  protected readonly highlightNode: FixedCircuitElementHighlightNode | null;
   private readonly markDirtyListener: () => void;
   private readonly moveToFrontListener: () => void;
   private readonly pickableListener: ( pickable: boolean | null ) => Node;
@@ -111,14 +111,12 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
     // @private {CircuitLayerNode}
     this.circuitLayerNode = circuitLayerNode;
 
-    // @protected (read-only) {Node} node that shows the component, separate from the part that shows the highlight and
-    // the fire
+    // node that shows the component, separate from the part that shows the highlight and the fire
     this.contentNode = contentNode;
 
-    // @private {Image|null} - display the fire for flammable CircuitElements
+    // display the fire for flammable CircuitElements
     this.fireNode = null;
 
-    // @protected (read-only) {Property.<CircuitElementViewType>}
     this.viewTypeProperty = viewTypeProperty;
 
     // @private {function} - Show the selected node
@@ -128,7 +126,6 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
     // Add highlight (but not for icons)
     if ( !filledOptions.isIcon && filledOptions.showHighlight ) {
 
-      // @protected (read-only) {FixedCircuitElementHighlightNode}
       this.highlightNode = new FixedCircuitElementHighlightNode( this );
 
       // Update the highlight bounds after it is created

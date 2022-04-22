@@ -28,6 +28,9 @@ import CircuitElementNode from './CircuitElementNode.js';
 import CircuitLayerNode from './CircuitLayerNode.js';
 import CircuitLayerNodeDragListener from './CircuitLayerNodeDragListener.js';
 
+// Disable for the whole file https://github.com/phetsims/circuit-construction-kit-common/issues/877
+/* eslint-disable no-protected-jsdoc */
+
 // constants
 const LIFELIKE_LINE_WIDTH = 16; // line width in screen coordinates
 const SCHEMATIC_LINE_WIDTH = CCKCConstants.SCHEMATIC_LINE_WIDTH; // line width in screen coordinates
