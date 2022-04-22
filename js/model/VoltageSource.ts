@@ -17,6 +17,7 @@ import Vertex from './Vertex.js';
 import PowerDissipatedProperty from './PowerDissipatedProperty.js';
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import NumberIO from '../../../tandem/js/types/NumberIO.js';
+import IReadOnlyProperty from '../../../axon/js/IReadOnlyProperty.js';
 
 export type VoltageSourceOptions = {
   initialOrientation?: string; // TODO: enum
@@ -40,7 +41,7 @@ export default abstract class VoltageSource extends FixedCircuitElement {
   // @readonly
   initialOrientation: string; // TODO: enum
   powerDissipatedProperty: PowerDissipatedProperty;
-  powerGeneratedProperty: DerivedProperty<number, [ current: number, voltage: number ]>;
+  powerGeneratedProperty: IReadOnlyProperty<number>;
 
   /**
    * @param {Vertex} startVertex - one of the battery vertices
