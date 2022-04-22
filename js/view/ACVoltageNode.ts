@@ -109,7 +109,6 @@ export default class ACVoltageNode extends FixedCircuitElementNode {
       numberOfDecimalPlaces: 1,
       useHitTestForSensors: true
     }, providedOptions );
-    assert && assert( acSource instanceof ACVoltage, 'should be AC voltage' );
 
     // Center vertically to match the FixedCircuitElementNode assumption that origin is center left
     lifelikeNode.centerY = 0;

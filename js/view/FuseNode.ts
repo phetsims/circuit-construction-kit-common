@@ -55,8 +55,6 @@ export default class FuseNode extends FixedCircuitElementNode {
   constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, fuse: Fuse,
                viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, options?: any ) {
 
-    assert && assert( fuse instanceof Fuse, 'fuse should be a Fuse' );
-
     options = merge( { isIcon: false, useHitTestForSensors: true }, options );
 
     const fuseImageNode = new Image( fuse_png, { scale: 0.691 } );
