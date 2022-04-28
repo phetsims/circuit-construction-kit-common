@@ -429,7 +429,9 @@ export default abstract class CircuitElement extends PhetioObject {
 
 const VertexReferenceIO = ReferenceIO( Vertex.VertexIO );
 
-CircuitElement.CircuitElementIO = new IOType( 'CircuitElementIO', {
+CircuitElement.CircuitElementIO = new IOType<CircuitElement>( 'CircuitElementIO', {
+
+  // @ts-ignore https://github.com/phetsims/tandem/issues/261
   valueType: CircuitElement,
   documentation: 'A Circuit Element, such as battery, resistor or wire',
   toStateObject: ( circuitElement: CircuitElement ) => ( {
