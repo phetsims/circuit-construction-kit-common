@@ -239,7 +239,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
    * Set the view type
    * @param {CircuitElementViewType} viewType
    */
-  private setViewType( viewType: CircuitElementViewType ) {
+  private setViewType( viewType: CircuitElementViewType ): void {
     this.contentNode.children = [ viewType === CircuitElementViewType.LIFELIKE ? this.lifelikeNode : this.schematicNode ];
 
     // Update the dimensions of the highlight.  For Switches, retain the original bounds (big enough to encapsulate
@@ -292,7 +292,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
   /**
    * Move the circuit element node to the front
    */
-  private moveFixedCircuitElementNodeToFront() {
+  private moveFixedCircuitElementNodeToFront(): void {
 
     // Components outside the black box do not move in front of the overlay
     if ( this.circuitElement.interactiveProperty.get() ) {
@@ -307,7 +307,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
    * Used as a bound callback listener in the constructor to update the highlight visibility
    * @param {CircuitElement|null} circuitElement
    */
-  private setSelectedCircuitElement( circuitElement: CircuitElement | null ) {
+  private setSelectedCircuitElement( circuitElement: CircuitElement | null ): void {
     if ( this.highlightNode ) {
       const visible = ( circuitElement === this.circuitElement );
       CCKCUtils.setInSceneGraph( visible, this.circuitLayerNode!.highlightLayer, this.highlightNode );
@@ -347,7 +347,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
    * @param {number} resistance
    * @param {boolean} isValueDepictionEnabled
    */
-  private updateFireVisible( current: number, resistance: number, isValueDepictionEnabled: boolean ) {
+  private updateFireVisible( current: number, resistance: number, isValueDepictionEnabled: boolean ): void {
     this.fireNode!.visible = isFireShown( current, isValueDepictionEnabled ) && resistance >= 1E-8;
   }
 

@@ -11,14 +11,14 @@ import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Property from '../../../axon/js/Property.js';
 import Range from '../../../dot/js/Range.js';
 import optionize from '../../../phet-core/js/optionize.js';
+import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Circuit from './Circuit.js';
 import Vertex from './Vertex.js';
-import VoltageSource from './VoltageSource.js';
-import { VoltageSourceOptions } from './VoltageSource.js';
+import VoltageSource, { VoltageSourceOptions } from './VoltageSource.js';
 
 // constants
 
@@ -96,12 +96,12 @@ export default class ACVoltage extends VoltageSource {
   }
 
   // Get the properties so that the circuit can be solved when changed.
-  override getCircuitProperties() {
+  override getCircuitProperties(): Property<IntentionalAny>[] {
     return [ this.frequencyProperty, this.phaseProperty, this.maximumVoltageProperty, ...super.getCircuitProperties() ];
   }
 
   // Dispose of this and PhET-iO instrumented children, so they will be unregistered.
-  override dispose() {
+  override dispose(): void {
     this.maximumVoltageProperty.dispose();
     this.frequencyProperty.dispose();
     this.phaseProperty.dispose();
@@ -113,7 +113,7 @@ export default class ACVoltage extends VoltageSource {
    * @param dt - delta between last frame and current frame
    * @param circuit
    */
-  override step( time: number, dt: number, circuit: Circuit ) {
+  override step( time: number, dt: number, circuit: Circuit ): void {
     super.step( time, dt, circuit );
     this.time = time;
     this.voltageProperty.value = -this.maximumVoltageProperty.value * Math.sin( 2 * Math.PI * this.frequencyProperty.value * time + this.phaseProperty.value * Math.PI / 180 );

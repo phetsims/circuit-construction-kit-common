@@ -39,7 +39,7 @@ export default class Ammeter extends Meter {
   }
 
   // Restore the ammeter to its initial conditions
-  override reset() {
+  override reset(): void {
     super.reset();
     this.currentProperty.reset();
     this.probePositionProperty.reset();

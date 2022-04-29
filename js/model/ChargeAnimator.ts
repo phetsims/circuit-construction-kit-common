@@ -73,7 +73,7 @@ export default class ChargeAnimator {
   }
 
   // Restores to the initial state
-  reset() {
+  reset(): void {
     this.timeScaleProperty.reset();
     this.timeScaleRunningAverage.clear();
   }
@@ -82,7 +82,7 @@ export default class ChargeAnimator {
    * Update the position of the charges based on the circuit currents
    * @param dt - elapsed time in seconds
    */
-  step( dt: number ) {
+  step( dt: number ): void {
 
     if ( this.charges.length === 0 || this.circuit.circuitElements.length === 0 ) {
       return;
@@ -128,7 +128,7 @@ export default class ChargeAnimator {
    * Make the charges repel each other so they don't bunch up.
    * @param dt - the elapsed time in seconds
    */
-  private equalizeAll( dt: number ) {
+  private equalizeAll( dt: number ): void {
 
     // Update them in a stochastic order to avoid systematic sources of error building up.
     const indices = dotRandom.shuffle( _.range( this.charges.length ) );
@@ -150,7 +150,7 @@ export default class ChargeAnimator {
    * @param charge - the charge to adjust
    * @param dt - seconds
    */
-  private equalizeCharge( charge: Charge, dt: number ) {
+  private equalizeCharge( charge: Charge, dt: number ): void {
 
     const circuitElementCharges = this.circuit.getChargesInCircuitElement( charge.circuitElement );
 
@@ -202,7 +202,7 @@ export default class ChargeAnimator {
    * @param charge - the charge to update
    * @param dt - elapsed time in seconds
    */
-  private propagate( charge: Charge, dt: number ) {
+  private propagate( charge: Charge, dt: number ): void {
     const chargePosition = charge.distance;
     assert && assert( _.isNumber( chargePosition ), 'distance along wire should be a number' );
     const current = -charge.circuitElement.currentProperty.get() * charge.charge;
@@ -253,7 +253,7 @@ export default class ChargeAnimator {
    * @param {number} depth - number of recursive calls
    * @returns {Object[]}
    */
-  private getPositions( charge: Charge, overshoot: number, vertex: Vertex, depth: number ) {
+  private getPositions( charge: Charge, overshoot: number, vertex: Vertex, depth: number ): CircuitElementPosition[] {
 
     const circuit = this.circuit;
 

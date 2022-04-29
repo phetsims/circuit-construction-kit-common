@@ -65,7 +65,7 @@ export default class Charge {
   /**
    * After updating the circuit element and/or distance traveled, update the 2d position and direction.
    */
-  updatePositionAndAngle() {
+  updatePositionAndAngle(): void {
     assert && assert( !isNaN( this.distance ), 'charge position was not a number' );
     this.circuitElement.updateMatrixForPoint( this.distance, this.matrix );
 
@@ -74,7 +74,7 @@ export default class Charge {
   }
 
   // Dispose the charge when it will never be used again.
-  dispose() {
+  dispose(): void {
     this.disposeEmitterCharge.emit();
     this.disposeEmitterCharge.removeAllListeners();
     this.changedEmitter.dispose();

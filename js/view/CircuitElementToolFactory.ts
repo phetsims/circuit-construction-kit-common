@@ -117,7 +117,7 @@ export default class CircuitElementToolFactory {
    * @returns {CircuitElementToolNode}
    */
   private createCircuitElementToolNode( labelString: string, count: number, createIcon: ( t: Tandem, p: Property<CircuitElementViewType> ) => Node,
-                                        predicate: ( circuitElement: CircuitElement ) => boolean, createElement: any, providedOptions?: any ) {
+                                        predicate: ( circuitElement: CircuitElement ) => boolean, createElement: any, providedOptions?: any ): CircuitElementToolNode {
 
     assert && assert( Number.isInteger( count ), 'count should be an integer' );
 
@@ -170,7 +170,7 @@ export default class CircuitElementToolFactory {
    * @param {function} predicate - CircuitElement => boolean
    * @returns {function} a no-arg function that returns the {number} of CircuitElements of the specified type
    */
-  private createCounter( predicate: ( c: CircuitElement ) => boolean ) {
+  private createCounter( predicate: ( c: CircuitElement ) => boolean ): () => number {
     return () =>
       this.circuit.circuitElements.filter( circuitElement =>
 

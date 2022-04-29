@@ -289,7 +289,7 @@ export default class VertexNode extends Node {
   /**
    * @param {SceneryEvent} event - scenery keyboard event
    */
-  private keydownListener( event: any ) {
+  private keydownListener( event: any ): void {
     const domEvent = event.domEvent;
 
     // on delete or backspace, the focused Vertex should be cut
@@ -307,7 +307,7 @@ export default class VertexNode extends Node {
   /**
    * Update whether the vertex is shown as selected.
    */
-  private updateSelected() {
+  private updateSelected(): void {
     const selected = this.vertex.isSelectedProperty.value;
     const neighborCircuitElements = this.circuit.getNeighborCircuitElements( this.vertex );
 
@@ -332,7 +332,7 @@ export default class VertexNode extends Node {
     this.cutButton.enabled = numberConnections > 1 || isConnectedBlackBoxVertex;
   }
 
-  private updateStroke() {
+  private updateStroke(): void {
 
     // A memory leak was being caused by children getting added after dispose was called.
     // This is because the itemRemoved listener in CircuitLayerNode is added (and hence called) before this callback.
@@ -349,7 +349,7 @@ export default class VertexNode extends Node {
   }
 
   // update the position of the cut button
-  private updateCutButtonPosition() {
+  private updateCutButtonPosition(): void {
     const position = this.vertex.positionProperty.get();
 
     const neighbors = this.circuit.getNeighborCircuitElements( this.vertex );
@@ -381,7 +381,7 @@ export default class VertexNode extends Node {
   /**
    * Move the VertexNode when the Vertex moves.
    */
-  private updateVertexNodePosition() {
+  private updateVertexNodePosition(): void {
     const position = this.vertex.positionProperty.get();
     this.translation = position;
 
@@ -398,7 +398,7 @@ export default class VertexNode extends Node {
   /**
    * Remove click listeners
    */
-  private clearClickListeners() {
+  private clearClickListeners(): void {
     this.clickToDismissListeners.forEach( listener => {
       phet.joist.display.removeInputListener( listener );
       listener.dispose();
@@ -410,7 +410,7 @@ export default class VertexNode extends Node {
    * Sets whether the node is draggable, used as a callback for interrupting the drag listener
    * @param {boolean} draggable
    */
-  private setDraggable( draggable: boolean ) {
+  private setDraggable( draggable: boolean ): void {
     if ( !draggable ) {
       this.dragListener.interrupt();
     }

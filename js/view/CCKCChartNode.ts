@@ -366,7 +366,7 @@ export default class CCKCChartNode extends Node {
    * @param {Tandem} tandem
    * @returns {CCKCProbeNode}
    */
-  protected addProbeNode( color: string, wireColor: string, dx: number, dy: number, connectionProperty: IReadOnlyProperty<Vector2>, tandem: Tandem ) {
+  protected addProbeNode( color: string, wireColor: string, dx: number, dy: number, connectionProperty: IReadOnlyProperty<Vector2>, tandem: Tandem ): CCKCProbeNode {
     const probeNode = new CCKCProbeNode( this, this.visibleBoundsProperty, { color: color, tandem: tandem } );
 
     // Add the wire behind the probe.

@@ -166,7 +166,7 @@ export default class LTACircuit {
    * @param {number} dt
    * @returns {LTAStateSet}
    */
-  private solveWithSubdivisions2( dt: number ) {
+  private solveWithSubdivisions2( dt: number ): LTAStateSet {
     return this.solveWithSubdivisions( new TimestepSubdivisions(), dt );
   }
 

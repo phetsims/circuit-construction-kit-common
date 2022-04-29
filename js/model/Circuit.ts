@@ -492,7 +492,7 @@ export default class Circuit {
     this.dirty = false;
   }
 
-  disposeCircuitElement( circuitElement: CircuitElement ) {
+  disposeCircuitElement( circuitElement: CircuitElement ): void {
     this.circuitElements.remove( circuitElement );
 
     // Find the corresponding group that contains the circuitElement and dispose it.
@@ -517,7 +517,7 @@ export default class Circuit {
    * @param {Vector2} position - the position of the Vertex in view = model coordinates
    * @returns {Vertex}
    */
-  private createVertex( position: Vector2 ) {
+  private createVertex( position: Vector2 ): Vertex {
     return this.vertexGroup.createNextElement( position );
   }
 
@@ -526,7 +526,7 @@ export default class Circuit {
    * @param {Vertex} v1
    * @param {Vertex} v2
    */
-  private moveVerticesApart( v1: Vertex, v2: Vertex ) {
+  private moveVerticesApart( v1: Vertex, v2: Vertex ): void {
     const v1Neighbors = this.getNeighboringVertices( v1 );
     const v2Neighbors = this.getNeighboringVertices( v2 );
 
@@ -541,7 +541,7 @@ export default class Circuit {
   }
 
   // Update the position of all charges.
-  relayoutAllCharges() {
+  relayoutAllCharges(): void {
     this.circuitElements.forEach( circuitElement => {circuitElement.chargeLayoutDirty = true;} );
     this.layoutChargesInDirtyCircuitElements();
   }
@@ -553,7 +553,7 @@ export default class Circuit {
    * @param {Vertex} vertex - the vertex to rotate
    * @param {Vertex} pivotVertex - the vertex to rotate about
    */
-  private bumpAwaySingleVertex( vertex: Vertex, pivotVertex: Vertex ) {
+  private bumpAwaySingleVertex( vertex: Vertex, pivotVertex: Vertex ): void {
     const distance = vertex.positionProperty.value.distance( pivotVertex.positionProperty.value );
 
     // If the vertices are too close, they must be translated away
@@ -596,7 +596,7 @@ export default class Circuit {
    * @param {Vertex} pivotVertex - the origin about which the vertex will rotate
    * @param {number} deltaAngle - angle in radians to rotate
    */
-  private rotateSingleVertexByAngle( vertex: Vertex, pivotVertex: Vertex, deltaAngle: number ) {
+  private rotateSingleVertexByAngle( vertex: Vertex, pivotVertex: Vertex, deltaAngle: number ): void {
     const position = vertex.positionProperty.get();
     const pivotPosition = pivotVertex.positionProperty.get();
 
@@ -613,7 +613,7 @@ export default class Circuit {
    * @param {Vertex} vertex
    * @returns {number} - distance to nearest other Vertex in view coordinates
    */
-  private closestDistanceToOtherVertex( vertex: Vertex ) {
+  private closestDistanceToOtherVertex( vertex: Vertex ): number | null {
     let closestDistance = null;
     for ( let i = 0; i < this.vertexGroup.count; i++ ) {
       const v = this.vertexGroup.getElement( i );
@@ -628,7 +628,7 @@ export default class Circuit {
   }
 
   // Remove all elements from the circuit.
-  clear() {
+  clear(): void {
 
     this.selectedCircuitElementProperty.reset();
 
@@ -661,7 +661,7 @@ export default class Circuit {
    * Split the Vertex into separate vertices.
    * @param vertex - the vertex to be cut.
    */
-  cutVertex( vertex: Vertex ) {
+  cutVertex( vertex: Vertex ): void {
 
     // Only permit cutting a non-dragged vertex, see https://github.com/phetsims/circuit-construction-kit-common/issues/414
     if ( vertex.isDragged ) {
@@ -759,7 +759,7 @@ export default class Circuit {
    * @param {Vertex} mainVertex - the vertex whose group will be translated
    * @param {Vector2} delta - the vector by which to move the vertex group
    */
-  private translateVertexGroup( mainVertex: Vertex, delta: Vector2 ) {
+  private translateVertexGroup( mainVertex: Vertex, delta: Vector2 ): void {
     const vertexArray = this.findAllFixedVertices( mainVertex );
 
     for ( let j = 0; j < vertexArray.length; j++ ) {
@@ -777,7 +777,7 @@ export default class Circuit {
    * @param {Vertex} vertex
    * @returns {boolean}
    */
-  private hasFixedConnectionToBlackBoxInterfaceVertex( vertex: Vertex ) {
+  private hasFixedConnectionToBlackBoxInterfaceVertex( vertex: Vertex ): boolean {
     const fixedVertices = this.findAllFixedVertices( vertex );
     return _.some( fixedVertices, fixedVertex => fixedVertex.blackBoxInterfaceProperty.get() );
   }
@@ -794,7 +794,7 @@ export default class Circuit {
    * When removing a CircuitElement, also remove its start/end Vertex if it can be removed.
    * @param {Vertex} vertex
    */
-  private removeVertexIfOrphaned( vertex: Vertex ) {
+  private removeVertexIfOrphaned( vertex: Vertex ): void {
     if (
       this.getNeighborCircuitElements( vertex ).length === 0 &&
       !vertex.blackBoxInterfaceProperty.get() &&
@@ -809,7 +809,7 @@ export default class Circuit {
    * @param {Vertex} vertex
    * @returns {CircuitElement[]}
    */
-  getNeighborCircuitElements( vertex: Vertex ) {
+  getNeighborCircuitElements( vertex: Vertex ): CircuitElement[] {
     return this.circuitElements.filter( circuitElement => circuitElement.containsVertex( vertex ) );
   }
 
@@ -932,7 +932,7 @@ export default class Circuit {
    * Move forward in time
    * @param {number} dt - the elapsed time in seconds
    */
-  step( dt: number ) {
+  step( dt: number ): void {
 
     // Invoke any scheduled actions
     this.stepActions.forEach( stepAction => stepAction() );
@@ -981,7 +981,7 @@ export default class Circuit {
    * the charges repositioned, so they will be equally spaced internally and spaced well compared to neighbor
    * elements.
    */
-  layoutChargesInDirtyCircuitElements() {
+  layoutChargesInDirtyCircuitElements(): void {
     this.circuitElements.forEach( circuitElement => this.layoutCharges( circuitElement ) );
   }
 
@@ -992,7 +992,7 @@ export default class Circuit {
    * @param {Vertex} b
    * @returns {boolean}
    */
-  private isVertexAdjacent( a: Vertex, b: Vertex ) {
+  private isVertexAdjacent( a: Vertex, b: Vertex ): boolean {
 
     // A vertex cannot be adjacent to itself.
     if ( a === b ) {
@@ -1008,7 +1008,7 @@ export default class Circuit {
    * @param {CircuitElement[]} circuitElements - the group of CircuitElements within which to look for neighbors
    * @returns {Vertex[]}
    */
-  private getNeighborVerticesInGroup( vertex: Vertex, circuitElements: CircuitElement[] ) {
+  private getNeighborVerticesInGroup( vertex: Vertex, circuitElements: CircuitElement[] ): Vertex[] {
     const neighbors = [];
     for ( let i = 0; i < circuitElements.length; i++ ) {
       const circuitElement = circuitElements[ i ];
@@ -1024,7 +1024,7 @@ export default class Circuit {
    * @param {Vertex} vertex - the vertex to get neighbors for
    * @returns {Vertex[]}
    */
-  getNeighboringVertices( vertex: Vertex ) {
+  getNeighboringVertices( vertex: Vertex ): Vertex[] {
     const neighborCircuitElements = this.getNeighborCircuitElements( vertex );
     return this.getNeighborVerticesInGroup( vertex, neighborCircuitElements );
   }
@@ -1033,7 +1033,7 @@ export default class Circuit {
    * Marks all connected circuit elements as dirty (so electrons will be layed out again), called when any wire length is changed.
    * @param {Vertex} vertex
    */
-  private markAllConnectedCircuitElementsDirty( vertex: Vertex ) {
+  private markAllConnectedCircuitElementsDirty( vertex: Vertex ): void {
     const allConnectedVertices = this.findAllConnectedVertices( vertex );
 
     // This is called many times while dragging a wire vertex, so for loops (as opposed to functional style) are used
@@ -1053,12 +1053,12 @@ export default class Circuit {
    * Find the subgraph where all vertices are connected by any kind of CircuitElements
    * @param {Vertex} vertex
    */
-  findAllConnectedVertices( vertex: Vertex ) {
+  findAllConnectedVertices( vertex: Vertex ): Vertex[] {
     return this.searchVertices( vertex, trueFunction );
   }
 
   // Identify current senses for CurrentSense.UNSPECIFIED CircuitElements with a nonzero current
-  determineSenses() {
+  determineSenses(): void {
 
     // Disconnected circuit elements forget their sense
     this.circuitElements.forEach( c => {
@@ -1114,7 +1114,7 @@ export default class Circuit {
   }
 
   // Assign the sense to an un-sensed circuit element based on matching the sign of a corresponding reference element.
-  static assignSense( targetElement: CircuitElement, referenceElement: CircuitElement ) {
+  static assignSense( targetElement: CircuitElement, referenceElement: CircuitElement ): void {
     assert && assert( targetElement.currentSenseProperty.value === CurrentSense.UNSPECIFIED, 'target should have an unspecified sense' );
     const targetElementCurrent = targetElement.currentProperty.value;
     const referenceElementCurrent = referenceElement.currentProperty.value;
@@ -1132,7 +1132,7 @@ export default class Circuit {
   }
 
   // Traverse the circuit, filling in senses to adjacent circuit elements during the traversal
-  propagateSenses() {
+  propagateSenses(): void {
 
     const circuitElementsWithSenses = this.circuitElements.filter( c => c.currentSenseProperty.value !== CurrentSense.UNSPECIFIED );
     if ( circuitElementsWithSenses.length > 0 ) {
@@ -1183,7 +1183,7 @@ export default class Circuit {
    *                             - that determines which vertices are OK to visit
    * @returns {Vertex[]}
    */
-  private searchVertices( vertex: Vertex, okToVisit: ( a: Vertex, c: CircuitElement, b: Vertex ) => boolean ) {
+  private searchVertices( vertex: Vertex, okToVisit: ( a: Vertex, c: CircuitElement, b: Vertex ) => boolean ): Vertex[] {
 
     const fixedVertices = [];
     const toVisit: Vertex[] = [ vertex ];
@@ -1458,7 +1458,7 @@ export default class Circuit {
   }
 
   // A reporting tool to indicate whether current is conserved at each vertex
-  checkCurrentConservation( index: number ) {
+  checkCurrentConservation( index: number ): void {
     console.log( '####### ' + index );
     // the sum of currents flowing into the vertex should be 0
     this.vertexGroup.forEach( vertex => {
@@ -1581,14 +1581,14 @@ export default class Circuit {
   }
 
   // only works in unbuilt mode
-  toString() {
+  toString(): string {
     return this.circuitElements.map( c => c.constructor.name ).join( ', ' );
   }
 
   /**
    * Reset the Circuit to its initial state.
    */
-  reset() {
+  reset(): void {
     this.clear();
     this.showCurrentProperty.reset();
     this.currentTypeProperty.reset();

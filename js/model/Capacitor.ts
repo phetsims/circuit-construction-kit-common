@@ -15,6 +15,8 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import DynamicCircuitElement, { DynamicCircuitElementOptions } from './DynamicCircuitElement.js';
 import Vertex from './Vertex.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
+import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
+import Property from '../../../axon/js/Property.js';
 
 type CapacitorOptions = {
   capacitance: number;
@@ -79,12 +81,12 @@ export default class Capacitor extends DynamicCircuitElement {
   }
 
   // Dispose of this and PhET-iO instrumented children, so they will be unregistered.
-  override dispose() {
+  override dispose(): void {
     this.capacitanceProperty.dispose();
     super.dispose();
   }
 
-  getCircuitProperties() {
+  getCircuitProperties(): Property<IntentionalAny>[] {
     return [ this.capacitanceProperty ];
   }
 }

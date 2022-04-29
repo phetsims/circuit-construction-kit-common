@@ -69,7 +69,7 @@ export default class Fuse extends FixedCircuitElement {
     } );
   }
 
-  override dispose() {
+  override dispose(): void {
     super.dispose();
     this.currentRatingProperty.dispose();
     this.isRepairableProperty.dispose();

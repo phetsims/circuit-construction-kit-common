@@ -557,7 +557,7 @@ export default class CircuitLayerNode extends Node {
    * @param vertices
    * @returns candidates for connection, each Object has {src:Vertex,dst:Vertex} indicating what can snap
    */
-  getAllDropTargets( vertices: Vertex[] ) {
+  getAllDropTargets( vertices: Vertex[] ): { src: Vertex; dst: Vertex }[] {
     const allDropTargets = [];
 
     for ( let i = 0; i < vertices.length; i++ ) {
@@ -580,7 +580,7 @@ export default class CircuitLayerNode extends Node {
    * @returns {Object|null} Object that indicates the two vertices best suited for connecting as { src: Vertex, dst: Vertex },
    *                        or null if no match is suitable.
    */
-  private getBestDropTarget( vertices: Vertex[] ) {
+  private getBestDropTarget( vertices: Vertex[] ): { src: Vertex; dst: Vertex } | null {
     const allDropTargets = this.getAllDropTargets( vertices );
     if ( allDropTargets ) {
       const sorted = _.sortBy( allDropTargets, dropTarget =>
@@ -651,7 +651,7 @@ export default class CircuitLayerNode extends Node {
    * @param {CircuitElement[]} neighbors
    * @param {Vertex[]} vertices
    */
-  private rotateAboutFixedPivot( point: Vector2, vertex: Vertex, okToRotate: boolean, vertexNode: VertexNode, position: Vector2, neighbors: CircuitElement[], vertices: Vertex[] ) {
+  private rotateAboutFixedPivot( point: Vector2, vertex: Vertex, okToRotate: boolean, vertexNode: VertexNode, position: Vector2, neighbors: CircuitElement[], vertices: Vertex[] ): void {
 
     // Don't traverse across the black box interface, or it would rotate objects on the other side
     vertices = this.circuit.findAllFixedVertices( vertex, currentVertex => !currentVertex.blackBoxInterfaceProperty.get() );
@@ -861,7 +861,7 @@ export default class CircuitLayerNode extends Node {
   /**
    * Adds a child to a layer behind the control panels.
    */
-  addChildToBackground( child: Node ) {
+  addChildToBackground( child: Node ): void {
     this.circuitLayerNodeBackLayer.addChild( child );
   }
 
@@ -1005,7 +1005,7 @@ export default class CircuitLayerNode extends Node {
    * @param {Node} layer
    * @returns {number|null}
    */
-  private getCurrentInLayer( probeNode: Node, layer: Node ) {
+  private getCurrentInLayer( probeNode: Node, layer: Node ): number | null {
 
     const globalPoint = probeNode.parentToGlobalPoint( probeNode.translation );
 

@@ -93,7 +93,7 @@ export default class ChargeNode extends Node {
   }
 
   // update the transform of the charge node
-  updateTransform() {
+  updateTransform(): void {
     const charge = this.charge;
     const current = charge.circuitElement.currentProperty.get();
 
@@ -151,7 +151,7 @@ export default class ChargeNode extends Node {
     }
   }
 
-  updateVisible() {
+  updateVisible(): void {
     this.visible = this.charge.visibleProperty.get() &&
                    this.outsideOfBlackBoxProperty.get();
   }

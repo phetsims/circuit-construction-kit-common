@@ -228,7 +228,7 @@ export default abstract class CircuitElement extends PhetioObject {
    * Determine the voltage difference between end vertex and start vertex
    * @returns {number}
    */
-  private computeVoltageDifference() {
+  private computeVoltageDifference(): number {
     return this.endVertexProperty.value.voltageProperty.value -
            this.startVertexProperty.value.voltageProperty.value;
   }
@@ -239,7 +239,7 @@ export default abstract class CircuitElement extends PhetioObject {
    * @param oldVertex - the previous vertex
    * @param property
    */
-  private linkVertex( newVertex: Vertex, oldVertex: Vertex | null, property: IReadOnlyProperty<Vertex> ) {
+  private linkVertex( newVertex: Vertex, oldVertex: Vertex | null, property: IReadOnlyProperty<Vertex> ): void {
 
     // These guards prevent errors from the bad transient state caused by the Circuit.flip causing the same Vertex
     // to be both start and end at the same time.
@@ -265,7 +265,7 @@ export default abstract class CircuitElement extends PhetioObject {
   /**
    * Steps forward in time
    */
-  step( time: number, dt: number, circuit: Circuit ) {
+  step( time: number, dt: number, circuit: Circuit ): void {
   }
 
   /**
@@ -285,7 +285,7 @@ export default abstract class CircuitElement extends PhetioObject {
   /**
    * Signify that a vertex has moved.
    */
-  private emitVertexMoved() {
+  private emitVertexMoved(): void {
 
     // We are (hopefully!) in the middle of updating both vertices and we (hopefully!) will receive another callback
     // shortly with the correct values for both startPosition and endPosition
@@ -390,7 +390,7 @@ export default abstract class CircuitElement extends PhetioObject {
    * @param distanceAlongWire - the scalar distance from one endpoint to another.
    * @param matrix to be updated with the position and angle, so that garbage isn't created each time
    */
-  updateMatrixForPoint( distanceAlongWire: number, matrix: Matrix3 ) {
+  updateMatrixForPoint( distanceAlongWire: number, matrix: Matrix3 ): void {
     const startPosition = this.startPositionProperty.get();
     const endPosition = this.endPositionProperty.get();
     const translation = startPosition.blend( endPosition, distanceAlongWire / this.chargePathLength );

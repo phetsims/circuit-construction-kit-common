@@ -165,7 +165,7 @@ export default class CustomLightBulbNode extends Node {
   }
 
   // update when the brightness changes
-  update() {
+  update(): void {
     if ( this.visible && !this.baseOnly ) {
       const brightness = this.brightnessProperty.value;
       assert && assert( brightness >= 0 && brightness <= 1 );

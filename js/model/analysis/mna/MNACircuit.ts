@@ -67,7 +67,7 @@ export default class MNACircuit {
    * Returns a string representation of the circuit for debugging.
    * @returns {string}
    */
-  toString() {
+  toString(): string {
     if ( assert ) { // stripped out for builds
       return `resistors:\n${this.resistors.map( resistorToString ).join( '\n' )}\n` +
              `batteries:\n${this.batteries.map( batteryToString ).join( '\n' )}\n` +
@@ -83,7 +83,7 @@ export default class MNACircuit {
    * 0-resistance resistor.
    * @returns {number}
    */
-  private getCurrentCount() {
+  private getCurrentCount(): number {
     let numberOfResistanceFreeResistors = 0;
     for ( let i = 0; i < this.resistors.length; i++ ) {
       if ( this.resistors[ i ].resistance === 0 ) {
@@ -97,7 +97,7 @@ export default class MNACircuit {
    * Gets the number of variables for the system, one for each voltage and one for each current.
    * @returns {number}
    */
-  private getNumVars() {
+  private getNumVars(): number {
     return this.nodeCount + this.getCurrentCount();
   }
 
@@ -107,7 +107,7 @@ export default class MNACircuit {
    * @param {number} nodeIndex - the node at which to compute current sources
    * @returns {number}
    */
-  private getCurrentSourceTotal( nodeIndex: string ) {
+  private getCurrentSourceTotal( nodeIndex: string ): number {
     let currentSourceTotal = 0.0;
     for ( let i = 0; i < this.currentSources.length; i++ ) {
       const currentSource = this.currentSources[ i ];
@@ -132,7 +132,7 @@ export default class MNACircuit {
    * @param {number} sign - 1 for incoming current and -1 for outgoing current
    * @param {Term[]} nodeTerms - to accumulate the result
    */
-  private getCurrentTerms( node: string, side: 'nodeId0' | 'nodeId1', sign: number, nodeTerms: Term[] ) {
+  private getCurrentTerms( node: string, side: 'nodeId0' | 'nodeId1', sign: number, nodeTerms: Term[] ): Term[] {
     assert && CCKCUtils.validateNodeIndex( node );
 
     // Each battery introduces an unknown current through the battery
@@ -168,7 +168,7 @@ export default class MNACircuit {
    * Selects one node for each connected component to have the reference voltage of 0 volts.
    * @returns {number[]} - the node IDs selected for references
    */
-  private getReferenceNodeIds() {
+  private getReferenceNodeIds(): string[] {
 
     // The nodes which need to be visited.
     const toVisit = _.values( this.nodeSet );
@@ -194,7 +194,7 @@ export default class MNACircuit {
    * @param {string} node
    * @returns {string[]}
    */
-  private getConnectedNodeIds( node: string ) {
+  private getConnectedNodeIds( node: string ): string[] {
     const visited = [];
     const toVisit: string[] = [ node ];
 
@@ -221,7 +221,7 @@ export default class MNACircuit {
    * variables of the circuit.
    * @returns {Equation[]}
    */
-  private getEquations() {
+  private getEquations(): Equation[] {
     const equations = [];
 
     // Reference node in each connected circuit element has a voltage of 0.0
@@ -272,7 +272,7 @@ export default class MNACircuit {
    * Gets an array of the unknown currents in the circuit.
    * @returns {Array}
    */
-  private getUnknownCurrents() {
+  private getUnknownCurrents(): UnknownCurrent[] {
     const unknownCurrents: UnknownCurrent[] = [];
 
     // Each battery has an unknown current

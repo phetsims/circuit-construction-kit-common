@@ -21,6 +21,7 @@ import FixedCircuitElement, { FixedCircuitElementOptions } from './FixedCircuitE
 import Vertex from './Vertex.js';
 import PowerDissipatedProperty from './PowerDissipatedProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
+import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 
 // constants
 
@@ -112,7 +113,7 @@ export default class LightBulb extends FixedCircuitElement {
   }
 
   // Updates the charge path length when the view changes between lifelike/schematic
-  updatePathLength() {
+  updatePathLength(): void {
     this.chargePathLength = this.getPathLength();
   }
 
@@ -132,12 +133,12 @@ export default class LightBulb extends FixedCircuitElement {
   /**
    * Returns true because all light bulbs can have their resistance changed.
    */
-  isResistanceEditable():boolean {
+  isResistanceEditable(): boolean {
     return true;
   }
 
   // Dispose of this and PhET-iO instrumented children, so they will be unregistered.
-  override dispose() {
+  override dispose(): void {
     this.resistanceProperty.dispose();
     this.powerDissipatedProperty.dispose();
     super.dispose();
@@ -165,9 +166,8 @@ export default class LightBulb extends FixedCircuitElement {
 
   /**
    * Get the properties so that the circuit can be solved when changed.
-   * @returns {Property.<*>[]}
    */
-  override getCircuitProperties() {
+  override getCircuitProperties(): Property<IntentionalAny>[] {
     return [ this.resistanceProperty ];
   }
 
@@ -177,7 +177,7 @@ export default class LightBulb extends FixedCircuitElement {
    * @param {number} distanceAlongWire - how far along the bulb's length the charge has traveled
    * @param {Matrix3} matrix to be updated with the position and angle, so that garbage isn't created each time
    */
-  override updateMatrixForPoint( distanceAlongWire: number, matrix: Matrix3 ) {
+  override updateMatrixForPoint( distanceAlongWire: number, matrix: Matrix3 ): void {
 
     super.updateMatrixForPoint( distanceAlongWire, matrix );
 

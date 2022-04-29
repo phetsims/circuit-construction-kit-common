@@ -252,7 +252,7 @@ export default class CircuitConstructionKitModel {
     } );
   }
 
-  stepSingleStep() {
+  stepSingleStep(): void {
 
     // 6/60 = 0.1 second, run over multiple steps to maintain smooth curves in the charts
     _.times( 6, () => this.stepOnce( 1 / 60 ) );
@@ -263,7 +263,7 @@ export default class CircuitConstructionKitModel {
    * Step forward one step, whether automatically or when the step button is pressed.
    * @param {number} dt
    */
-  private stepOnce( dt: number ) {
+  private stepOnce( dt: number ): void {
 
     // Only move charges if the simulation is not paused.
     this.isValueDepictionEnabledProperty.value && this.circuit.step( dt );
@@ -275,7 +275,7 @@ export default class CircuitConstructionKitModel {
    * Update the circuit and zoom level when the simulation clock steps.
    * @param dt - elapsed time in seconds
    */
-  step( dt: number ) {
+  step( dt: number ): void {
 
     // If the step is large, it probably means that the screen was hidden for a while, so just ignore it.
     // see https://github.com/phetsims/circuit-construction-kit-common/issues/476
@@ -300,7 +300,7 @@ export default class CircuitConstructionKitModel {
   /**
    * Reset the circuit.
    */
-  reset() {
+  reset(): void {
     this.isValueDepictionEnabledProperty.reset();
     this.showLabelsProperty.reset();
     this.showValuesProperty.reset();

@@ -58,7 +58,7 @@ export default class VoltageChartNode extends CCKCChartNode {
   }
 
   // @private
-  sampleValue( time: number ) {
+  sampleValue( time: number ): Vector2 | null {
     const redPoint = this.circuitLayerNode.globalToLocalPoint( this.localToGlobalPoint( this.probeNode1.translation ) );
     const blackPoint = this.circuitLayerNode.globalToLocalPoint( this.localToGlobalPoint( this.probeNode2.translation ) );
 

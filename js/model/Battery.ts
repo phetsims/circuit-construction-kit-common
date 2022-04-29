@@ -59,7 +59,7 @@ export default class Battery extends VoltageSource {
     // nothing to do
   }
 
-  override dispose() {
+  override dispose(): void {
     this.isReversibleProperty.dispose();
     super.dispose();
   }

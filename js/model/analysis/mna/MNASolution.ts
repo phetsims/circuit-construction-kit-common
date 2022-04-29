@@ -29,7 +29,7 @@ export default class MNASolution {
   }
 
   // Compare two solutions, and provide detailed qunit equal test if equal is provided.
-  approxEquals( modifiedNodalAnalysisSolution: MNASolution, qassert: Assert | null ) {
+  approxEquals( modifiedNodalAnalysisSolution: MNASolution, qassert: Assert | null ): boolean {
     const keys = Array.from( this.nodeVoltages.keys() );
     const otherKeys = Array.from( modifiedNodalAnalysisSolution.nodeVoltages.keys() );
     const keyDifference = _.difference( keys, otherKeys );
@@ -62,7 +62,7 @@ export default class MNASolution {
    * For equality testing, make sure all of the specified elements and currents match ours
    * @param {MNASolution} modifiedNodalAnalysisSolution
    */
-  private hasAllCurrents( modifiedNodalAnalysisSolution: MNASolution ) {
+  private hasAllCurrents( modifiedNodalAnalysisSolution: MNASolution ): boolean {
     const keys = Array.from( modifiedNodalAnalysisSolution.elements.keys() );
     for ( let i = 0; i < keys.length; i++ ) {
       const element = keys[ i ];
@@ -78,7 +78,7 @@ export default class MNASolution {
    * @param {Object} element
    * @returns {boolean}
    */
-  private hasMatchingElement( element: MNACircuitElement ) {
+  private hasMatchingElement( element: MNACircuitElement ): boolean {
     const elements = Array.from( this.elements.keys() );
     for ( let i = 0; i < elements.length; i++ ) {
       const proposedElement = elements[ i ];
@@ -119,7 +119,7 @@ export default class MNASolution {
    * @param {Object} element - a circuit element with {nodeId1:{number},node2:{number}}
    * @returns {number} - the voltage
    */
-  private getVoltage( element: MNACircuitElement ) {
+  private getVoltage( element: MNACircuitElement ): number {
     const voltage = this.nodeVoltages.get( element.nodeId1 )! - this.nodeVoltages.get( element.nodeId0 )!;
     assert && assert( !isNaN( voltage ) );
     return voltage;
