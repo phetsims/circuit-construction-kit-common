@@ -1,23 +1,9 @@
 {
   "extends": "../chipper/tsconfig-core.json",
-  "references": [
-    {
-      "path": "../twixt/tsconfig-module.json"
-    },
-    {
-      "path": "../griddle"
-    },
-    {
-      "path": "../joist/tsconfig-module.json"
-    }
-  ],
   "include": [
     "js/**/*",
-    "sounds/**/*",
-    "mipmaps/**/*",
     "images/**/*",
-    "../chipper/phet-types.d.ts",
-    "../chipper/node_modules/@types/lodash/index.d.ts",
-    "../chipper/node_modules/@types/qunit/index.d.ts"
+    "mipmaps/**/*",
+    "sounds/**/*"
   ]
 }
