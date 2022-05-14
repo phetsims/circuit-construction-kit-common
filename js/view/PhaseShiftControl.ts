@@ -21,7 +21,7 @@ import CircuitElementNumberControl from './CircuitElementNumberControl.js';
 import CircuitElement from '../model/CircuitElement.js';
 import Circuit from '../model/Circuit.js';
 import ACVoltage from '../model/ACVoltage.js';
-import Multilink from '../../../axon/js/Multilink.js';
+import { UnknownMultilink } from '../../../axon/js/Multilink.js';
 
 export default class PhaseShiftControl extends VBox {
 
@@ -67,7 +67,7 @@ export default class PhaseShiftControl extends VBox {
       this.visible = isPhaseEditable && isEditable;
     };
 
-    let multilink: Multilink<[ boolean, boolean ]> | null = null;
+    let multilink: UnknownMultilink | null = null;
 
     // This is reused across all instances. The control itself can be hidden by PhET-iO customization, but the parent
     // node is another gate for the visibility.

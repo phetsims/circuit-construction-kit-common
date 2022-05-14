@@ -33,7 +33,6 @@ import VoltageSource from '../model/VoltageSource.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CircuitElement from '../model/CircuitElement.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
-import CurrentSense from '../model/CurrentSense.js';
 
 const capacitanceFaradsSymbolString = circuitConstructionKitCommonStrings.capacitanceFaradsSymbol;
 const fuseValueString = circuitConstructionKitCommonStrings.fuseValue;
@@ -191,7 +190,7 @@ export default class ValueNode extends Panel {
         align: 'right'
       } );
       const multilink = Property.multilink( [ circuitElement.resistanceProperty, circuitElement.currentRatingProperty ],
-        ( resistance: number, currentRating: number ) => {
+        ( resistance, currentRating ) => {
           const milliOhmString = resistance === CCKCConstants.MAX_RESISTANCE ? infinitySpan :
                                  Utils.toFixed( resistance * 1000, circuitElement.numberOfDecimalPlaces );
           readoutValueNode.text = StringUtils.fillIn( fuseValueString, {
@@ -213,7 +212,7 @@ export default class ValueNode extends Panel {
 
     if ( CCKCQueryParameters.showCurrents ) {
       const text = new Text( '' );
-      Property.multilink( [ circuitElement.currentProperty, circuitElement.currentSenseProperty ], ( current: number, sense: CurrentSense ) => {
+      Property.multilink( [ circuitElement.currentProperty, circuitElement.currentSenseProperty ], ( current, sense ) => {
         text.text = sense.toString() + ', ' + current.toFixed( 4 );// eslint-disable-line
       } );
 

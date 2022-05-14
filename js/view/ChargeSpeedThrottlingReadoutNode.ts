@@ -33,7 +33,7 @@ export default class ChargeSpeedThrottlingReadoutNode extends Text {
     } );
 
     Property.multilink( [ timeScaleProperty, showCurrentProperty, isValueDepictionEnabledProperty ],
-      ( timeScale: number, showCurrent: boolean, isValueDepictionEnabled: boolean ) => {
+      ( timeScale, showCurrent, isValueDepictionEnabled ) => {
         const percent = timeScale * 100;
         const isThrottled = percent < 99.5;
         const fixed = timeScale < 0.01 ? '< 1' : Utils.toFixed( percent, 0 );

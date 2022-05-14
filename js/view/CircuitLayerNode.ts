@@ -226,7 +226,7 @@ export default class CircuitLayerNode extends Node {
       // } ) ]
     } );
 
-    Property.multilink( [ screenView.model.isValueDepictionEnabledProperty, screenView.model.revealingProperty ], ( isValueDepictionEnabled: boolean, revealing: boolean ) => {
+    Property.multilink( [ screenView.model.isValueDepictionEnabledProperty, screenView.model.revealingProperty ], ( isValueDepictionEnabled, revealing ) => {
       this.chargeLayer.visible = isValueDepictionEnabled && revealing;
     } );
 

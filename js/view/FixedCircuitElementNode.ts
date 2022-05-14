@@ -25,7 +25,7 @@ import CircuitLayerNode from './CircuitLayerNode.js';
 import CircuitLayerNodeDragListener from './CircuitLayerNodeDragListener.js';
 import FixedCircuitElementHighlightNode from './FixedCircuitElementHighlightNode.js';
 import CircuitElement from '../model/CircuitElement.js';
-import Multilink from '../../../axon/js/Multilink.js';
+import { UnknownMultilink } from '../../../axon/js/Multilink.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 
 // constants
@@ -66,7 +66,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
   private readonly dragListener: CircuitLayerNodeDragListener | null;
   static webglSpriteNodes: Node[];
   private readonly updateHighlightVisibility: ( ( circuitElement: CircuitElement | null ) => void ) | null;
-  private readonly updateFireMultilink: Multilink<[ number, number, boolean ]> | null;
+  private readonly updateFireMultilink: UnknownMultilink | null;
 
   /**
    * @param {CCKCScreenView|null} screenView - the main screen view, null for isIcon
@@ -212,7 +212,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
         if ( screenView ) {
 
           // @private {Multilink} - Show fire in batteries and resistors with resistance > 0
-          this.updateFireMultilink = Property.multilink<[ number, number, boolean ]>( [
+          this.updateFireMultilink = Property.multilink( [
             circuitElement.currentProperty,
             ( circuitElement instanceof Resistor ) ? circuitElement.resistanceProperty : ONE_AMP_PROPERTY,
             screenView.model.isValueDepictionEnabledProperty

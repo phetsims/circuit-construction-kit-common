@@ -176,11 +176,11 @@ export default class SensorToolbox extends CCKCPanel {
     } );
 
     // Alter the visibility of the labels when the labels checkbox is toggled.
-    Property.multilink( [ circuitLayerNode.model.showLabelsProperty, allVoltmetersVisibleProperty ], ( showLabels: boolean, allVoltmetersVisible: boolean ) => {
+    Property.multilink( [ circuitLayerNode.model.showLabelsProperty, allVoltmetersVisibleProperty ], ( showLabels, allVoltmetersVisible ) => {
       voltmeterText.visible = showLabels && !allVoltmetersVisible;
     } );
     Property.multilink( [ circuitLayerNode.model.showLabelsProperty, allAmmetersVisibleProperty, allSeriesAmmetersInPlayArea ],
-      ( showLabels: boolean, allAmmetersInPlayArea: boolean, allSeriesAmmetersInPlayArea: boolean ) => {
+      ( showLabels, allAmmetersInPlayArea, allSeriesAmmetersInPlayArea ) => {
 
         let isAmmeterInToolbox = false;
         if ( providedOptions.showSeriesAmmeters && !allSeriesAmmetersInPlayArea ) {
@@ -256,7 +256,7 @@ export default class SensorToolbox extends CCKCPanel {
         overlay.addInputListener( createListenerMulti( chartNodes, 'meter' ) );
 
         // Alter the visibility of the labels when the labels checkbox is toggled.
-        Property.multilink( [ circuitLayerNode.model.showLabelsProperty, allInPlayAreaProperty ], ( showLabels: boolean, allInPlayArea: boolean ) => {
+        Property.multilink( [ circuitLayerNode.model.showLabelsProperty, allInPlayAreaProperty ], ( showLabels, allInPlayArea ) => {
           labelNode.visible = showLabels && !allInPlayArea;
         } );
 

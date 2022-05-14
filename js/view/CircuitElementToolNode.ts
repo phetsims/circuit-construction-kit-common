@@ -92,7 +92,7 @@ export default class CircuitElementToolNode extends VBox {
     let lastCount: number | null = null;
     let lastValue: boolean | null = null;
 
-    Property.multilink( [ circuit.circuitElements.lengthProperty, providedOptions.additionalProperty ], ( length: number, additionalValue: boolean ) => {
+    Property.multilink( [ circuit.circuitElements.lengthProperty, providedOptions.additionalProperty ], ( length, additionalValue: boolean ) => {
       const currentCount = count();
       if ( lastCount !== currentCount || lastValue !== additionalValue ) {
         this.setVisible( ( currentCount < maxNumber ) && additionalValue );

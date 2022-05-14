@@ -85,7 +85,7 @@ export default class CCKCLightBulbNode extends FixedCircuitElementNode {
     const brightnessProperty = new NumberProperty( 0 );
     const updateBrightness = Property.multilink(
       [ lightBulb.currentProperty, showResultsProperty, lightBulb.resistanceProperty ],
-      ( current: number, running: boolean, resistance: number ) => {
+      ( current, running, resistance ) => {
         const power = Math.abs( current * current * resistance );
 
         let brightness = toBrightness( 0.35, power );

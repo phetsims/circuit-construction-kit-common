@@ -75,7 +75,8 @@ export default class CircuitElementNumberControl extends HBox {
       oldCircuitElement instanceof ACVoltage && multilink && Property.unmultilink( multilink );
       if ( newCircuitElement ) {
         const otherGates = options.getAdditionalVisibilityProperties( newCircuitElement );
-        multilink = Property.multilink( [ newCircuitElement.isEditableProperty, ...otherGates ], listener );
+
+        multilink = Property.multilinkAny( [ newCircuitElement.isEditableProperty, ...otherGates ], listener );
       }
     } );
   }
