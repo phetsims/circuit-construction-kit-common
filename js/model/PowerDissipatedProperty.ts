@@ -1,12 +1,14 @@
 // Copyright 2022, University of Colorado Boulder
-// @author Sam Reid (PhET Interactive Simulations)
 
-import DerivedProperty from '../../../axon/js/DerivedProperty.js';
+/**
+ * @author Sam Reid (PhET Interactive Simulations)
+ */
+import DerivedProperty, { DerivedProperty2 } from '../../../axon/js/DerivedProperty.js';
 import Property from '../../../axon/js/Property.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import NumberIO from '../../../tandem/js/types/NumberIO.js';
 
-export default class PowerDissipatedProperty extends DerivedProperty<number, [ number, number ]> {
+export default class PowerDissipatedProperty extends DerivedProperty2<number, number, number> {
   constructor( currentProperty: Property<number>, resistanceProperty: Property<number>, tandem: Tandem ) {
     super(
       [ currentProperty, resistanceProperty ],

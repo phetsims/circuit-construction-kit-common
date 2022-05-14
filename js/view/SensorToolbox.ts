@@ -161,7 +161,7 @@ export default class SensorToolbox extends CCKCPanel {
         touchAreaExpansionBottom: 0,
         tandem: circuit.includeLabElements ? tandem.createTandem( 'seriesAmmeterToolNode' ) : Tandem.OPT_OUT
       } );
-    const allSeriesAmmetersInPlayArea = new DerivedProperty( [ circuit.circuitElements.lengthProperty ], ( ( length: number ) => {
+    const allSeriesAmmetersInPlayArea = new DerivedProperty( [ circuit.circuitElements.lengthProperty ], ( () => {
       return circuit.circuitElements.count( circuitElement => circuitElement instanceof SeriesAmmeter ) === MAX_SERIES_AMMETERS;
     } ) );
 

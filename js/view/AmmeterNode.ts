@@ -27,7 +27,6 @@ import CircuitLayerNode from './CircuitLayerNode.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import Property from '../../../axon/js/Property.js';
 import ammeterReadoutTypeProperty from './ammeterReadoutTypeProperty.js';
-import AmmeterReadoutType from '../model/AmmeterReadoutType.js';
 
 const currentString = circuitConstructionKitCommonStrings.current;
 
@@ -97,7 +96,7 @@ export default class AmmeterNode extends Node {
     );
 
     const currentReadoutProperty = new DerivedProperty( [ ammeter.currentProperty, ammeterReadoutTypeProperty ],
-      ( ( current: number | null, ammeterReadoutType: AmmeterReadoutType ) => {
+      ( ( current, ammeterReadoutType ) => {
         return CCKCUtils.createCurrentReadout( current, options.blackBoxStudy );
       } ) );
 
