@@ -33,6 +33,7 @@ import VoltageSource from '../model/VoltageSource.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CircuitElement from '../model/CircuitElement.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
+import Multilink from '../../../axon/js/Multilink.js';
 
 const capacitanceFaradsSymbolString = circuitConstructionKitCommonStrings.capacitanceFaradsSymbol;
 const fuseValueString = circuitConstructionKitCommonStrings.fuseValue;
@@ -189,7 +190,7 @@ export default class ValueNode extends Panel {
       readoutValueNode = createRichText( tandem.createTandem( 'fuseText' ), {
         align: 'right'
       } );
-      const multilink = Property.multilink( [ circuitElement.resistanceProperty, circuitElement.currentRatingProperty ],
+      const multilink = Multilink.multilink( [ circuitElement.resistanceProperty, circuitElement.currentRatingProperty ],
         ( resistance, currentRating ) => {
           const milliOhmString = resistance === CCKCConstants.MAX_RESISTANCE ? infinitySpan :
                                  Utils.toFixed( resistance * 1000, circuitElement.numberOfDecimalPlaces );
@@ -212,7 +213,7 @@ export default class ValueNode extends Panel {
 
     if ( CCKCQueryParameters.showCurrents ) {
       const text = new Text( '' );
-      Property.multilink( [ circuitElement.currentProperty, circuitElement.currentSenseProperty ], ( current, sense ) => {
+      Multilink.multilink( [ circuitElement.currentProperty, circuitElement.currentSenseProperty ], ( current, sense ) => {
         text.text = sense.toString() + ', ' + current.toFixed( 4 );// eslint-disable-line
       } );
 

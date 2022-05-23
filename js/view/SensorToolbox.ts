@@ -41,6 +41,7 @@ import CircuitLayerNode from './CircuitLayerNode.js';
 import { SceneryEvent } from '../../../scenery/js/imports.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
+import Multilink from '../../../axon/js/Multilink.js';
 
 const ammetersString = circuitConstructionKitCommonStrings.ammeters;
 const ammeterString = circuitConstructionKitCommonStrings.ammeter;
@@ -176,10 +177,10 @@ export default class SensorToolbox extends CCKCPanel {
     } );
 
     // Alter the visibility of the labels when the labels checkbox is toggled.
-    Property.multilink( [ circuitLayerNode.model.showLabelsProperty, allVoltmetersVisibleProperty ], ( showLabels, allVoltmetersVisible ) => {
+    Multilink.multilink( [ circuitLayerNode.model.showLabelsProperty, allVoltmetersVisibleProperty ], ( showLabels, allVoltmetersVisible ) => {
       voltmeterText.visible = showLabels && !allVoltmetersVisible;
     } );
-    Property.multilink( [ circuitLayerNode.model.showLabelsProperty, allAmmetersVisibleProperty, allSeriesAmmetersInPlayArea ],
+    Multilink.multilink( [ circuitLayerNode.model.showLabelsProperty, allAmmetersVisibleProperty, allSeriesAmmetersInPlayArea ],
       ( showLabels, allAmmetersInPlayArea, allSeriesAmmetersInPlayArea ) => {
 
         let isAmmeterInToolbox = false;
@@ -256,7 +257,7 @@ export default class SensorToolbox extends CCKCPanel {
         overlay.addInputListener( createListenerMulti( chartNodes, 'meter' ) );
 
         // Alter the visibility of the labels when the labels checkbox is toggled.
-        Property.multilink( [ circuitLayerNode.model.showLabelsProperty, allInPlayAreaProperty ], ( showLabels, allInPlayArea ) => {
+        Multilink.multilink( [ circuitLayerNode.model.showLabelsProperty, allInPlayAreaProperty ], ( showLabels, allInPlayArea ) => {
           labelNode.visible = showLabels && !allInPlayArea;
         } );
 

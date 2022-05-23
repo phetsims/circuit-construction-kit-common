@@ -25,7 +25,7 @@ import CircuitLayerNode from './CircuitLayerNode.js';
 import CircuitLayerNodeDragListener from './CircuitLayerNodeDragListener.js';
 import FixedCircuitElementHighlightNode from './FixedCircuitElementHighlightNode.js';
 import CircuitElement from '../model/CircuitElement.js';
-import { UnknownMultilink } from '../../../axon/js/Multilink.js';
+import Multilink, { UnknownMultilink } from '../../../axon/js/Multilink.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 
 // constants
@@ -212,7 +212,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
         if ( screenView ) {
 
           // @private {Multilink} - Show fire in batteries and resistors with resistance > 0
-          this.updateFireMultilink = Property.multilink( [
+          this.updateFireMultilink = Multilink.multilink( [
             circuitElement.currentProperty,
             ( circuitElement instanceof Resistor ) ? circuitElement.resistanceProperty : ONE_AMP_PROPERTY,
             screenView.model.isValueDepictionEnabledProperty
@@ -332,7 +332,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
     this.viewTypeProperty.unlink( this.viewPropertyListener );
 
     if ( !this.isIcon && this.updateFireMultilink ) {
-      Property.unmultilink( this.updateFireMultilink );
+      Multilink.unmultilink( this.updateFireMultilink );
     }
 
     // Detach the child nodes which are reused (so they don't have a _parents reference)

@@ -32,6 +32,7 @@ import CircuitLayerNode from './CircuitLayerNode.js';
 import FixedCircuitElementNode, { FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
+import Multilink from '../../../axon/js/Multilink.js';
 
 // constants
 // dimensions for schematic
@@ -132,7 +133,7 @@ export default class CapacitorCircuitElementNode extends FixedCircuitElementNode
     } );
 
     // q = CV
-    const capacitanceVoltageListener = Property.multilink( [
+    const capacitanceVoltageListener = Multilink.multilink( [
       capacitor.capacitanceProperty,
       capacitor.voltageDifferenceProperty
     ], ( C: number, V: number ) => {

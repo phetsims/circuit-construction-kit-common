@@ -21,7 +21,7 @@ import CircuitElementNumberControl from './CircuitElementNumberControl.js';
 import CircuitElement from '../model/CircuitElement.js';
 import Circuit from '../model/Circuit.js';
 import ACVoltage from '../model/ACVoltage.js';
-import { UnknownMultilink } from '../../../axon/js/Multilink.js';
+import Multilink, { UnknownMultilink } from '../../../axon/js/Multilink.js';
 
 export default class PhaseShiftControl extends VBox {
 
@@ -72,9 +72,9 @@ export default class PhaseShiftControl extends VBox {
     // This is reused across all instances. The control itself can be hidden by PhET-iO customization, but the parent
     // node is another gate for the visibility.
     circuit.selectedCircuitElementProperty.link( ( newCircuitElement: CircuitElement | null, oldCircuitElement: CircuitElement | null ) => {
-      oldCircuitElement instanceof ACVoltage && multilink && Property.unmultilink( multilink );
+      oldCircuitElement instanceof ACVoltage && multilink && Multilink.unmultilink( multilink );
       if ( newCircuitElement instanceof ACVoltage ) {
-        multilink = Property.multilink( [ newCircuitElement.isPhaseEditableProperty, newCircuitElement.isEditableProperty ], listener );
+        multilink = Multilink.multilink( [ newCircuitElement.isPhaseEditableProperty, newCircuitElement.isEditableProperty ], listener );
       }
     } );
   }

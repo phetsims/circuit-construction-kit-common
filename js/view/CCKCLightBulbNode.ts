@@ -38,6 +38,7 @@ import LightBulb from '../model/LightBulb.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import SchematicType from './SchematicType.js';
+import Multilink from '../../../axon/js/Multilink.js';
 
 // constants
 const SCRATCH_MATRIX = new Matrix3();
@@ -83,7 +84,7 @@ export default class CCKCLightBulbNode extends FixedCircuitElementNode {
       useHitTestForSensors: true
     }, providedOptions ) as FixedCircuitElementNodeOptions;
     const brightnessProperty = new NumberProperty( 0 );
-    const updateBrightness = Property.multilink(
+    const updateBrightness = Multilink.multilink(
       [ lightBulb.currentProperty, showResultsProperty, lightBulb.resistanceProperty ],
       ( current, running, resistance ) => {
         const power = Math.abs( current * current * resistance );

@@ -13,6 +13,7 @@ import StringUtils from '../../../phetcommon/js/util/StringUtils.js';
 import { Text } from '../../../scenery/js/imports.js';
 import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import Multilink from '../../../axon/js/Multilink.js';
 
 const animationSpeedLimitReachedString = circuitConstructionKitCommonStrings.animationSpeedLimitReached;
 
@@ -32,7 +33,7 @@ export default class ChargeSpeedThrottlingReadoutNode extends Text {
       maxWidth: 530
     } );
 
-    Property.multilink( [ timeScaleProperty, showCurrentProperty, isValueDepictionEnabledProperty ],
+    Multilink.multilink( [ timeScaleProperty, showCurrentProperty, isValueDepictionEnabledProperty ],
       ( timeScale, showCurrent, isValueDepictionEnabled ) => {
         const percent = timeScale * 100;
         const isThrottled = percent < 99.5;

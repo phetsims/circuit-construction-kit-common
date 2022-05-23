@@ -21,6 +21,7 @@ import Circuit from '../model/Circuit.js';
 import CircuitElement from '../model/CircuitElement.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import { SceneryEvent } from '../../../scenery/js/imports.js';
+import Multilink from '../../../axon/js/Multilink.js';
 
 // constants
 const TOOLBOX_ICON_WIDTH = CCKCConstants.TOOLBOX_ICON_WIDTH;
@@ -92,7 +93,7 @@ export default class CircuitElementToolNode extends VBox {
     let lastCount: number | null = null;
     let lastValue: boolean | null = null;
 
-    Property.multilink( [ circuit.circuitElements.lengthProperty, providedOptions.additionalProperty ], ( length, additionalValue: boolean ) => {
+    Multilink.multilink( [ circuit.circuitElements.lengthProperty, providedOptions.additionalProperty ], ( length, additionalValue: boolean ) => {
       const currentCount = count();
       if ( lastCount !== currentCount || lastValue !== additionalValue ) {
         this.setVisible( ( currentCount < maxNumber ) && additionalValue );

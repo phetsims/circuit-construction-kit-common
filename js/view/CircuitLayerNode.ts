@@ -66,6 +66,7 @@ import Vertex from '../model/Vertex.js';
 import CircuitConstructionKitModel from '../model/CircuitConstructionKitModel.js';
 import PhetioGroup from '../../../tandem/js/PhetioGroup.js';
 import CurrentSense from '../model/CurrentSense.js';
+import Multilink from '../../../axon/js/Multilink.js';
 
 // constants
 
@@ -226,7 +227,7 @@ export default class CircuitLayerNode extends Node {
       // } ) ]
     } );
 
-    Property.multilink( [ screenView.model.isValueDepictionEnabledProperty, screenView.model.revealingProperty ], ( isValueDepictionEnabled, revealing ) => {
+    Multilink.multilink( [ screenView.model.isValueDepictionEnabledProperty, screenView.model.revealingProperty ], ( isValueDepictionEnabled, revealing ) => {
       this.chargeLayer.visible = isValueDepictionEnabled && revealing;
     } );
 
