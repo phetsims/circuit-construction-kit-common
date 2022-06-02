@@ -17,6 +17,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Property from '../../../axon/js/Property.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
+import IReadOnlyProperty from '../../../axon/js/IReadOnlyProperty.js';
 
 // constants
 const TEXT_BOX_WIDTH = 140;
@@ -30,7 +31,7 @@ export default class ProbeTextNode extends VBox {
    * @param {Tandem} tandem
    * @param {Object} [providedOptions]
    */
-  constructor( textProperty: Property<string>, showResultsProperty: Property<boolean>, title: string, tandem: Tandem,
+  constructor( textProperty: IReadOnlyProperty<string>, showResultsProperty: Property<boolean>, title: string, tandem: Tandem,
                providedOptions?: any ) {
 
     providedOptions = merge( {
