@@ -59,9 +59,9 @@ export default class AmmeterNode extends Node {
   private readonly dragHandler: DragListener | null;
 
   /**
-   * @param {Ammeter} ammeter
-   * @param {CircuitLayerNode|null} circuitLayerNode - for getting the currents, or null if rendering an icon
-   * @param {Object} [providedOptions]
+   * @param ammeter
+   * @param circuitLayerNode - for getting the currents, or null if rendering an icon
+   * @param [providedOptions]
    */
   constructor( ammeter: Ammeter, circuitLayerNode: CircuitLayerNode | null, providedOptions?: Partial<AmmeterNodeOptions> ) {
     const options = merge( {

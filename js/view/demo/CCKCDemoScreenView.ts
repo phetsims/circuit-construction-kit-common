@@ -25,7 +25,7 @@ const LEAD_Y = -73;
 export default class CCKCDemoScreenView extends ScreenView {
 
   /**
-   * @param {Object} [providedOptions]
+   * @param [providedOptions]
    */
   constructor( providedOptions?: any ) {
     super( providedOptions );

@@ -106,10 +106,10 @@ export default class CCKCScreenView extends ScreenView {
   private stopwatchNodePositionDirty: boolean;
 
   /**
-   * @param {CircuitConstructionKitModel} model
-   * @param {CircuitElementToolNode[]} circuitElementToolNodes - to be shown in the carousel
-   * @param {Tandem} tandem
-   * @param {Object} [providedOptions]
+   * @param model
+   * @param circuitElementToolNodes - to be shown in the carousel
+   * @param tandem
+   * @param [providedOptions]
    */
   constructor( model: CircuitConstructionKitModel, circuitElementToolNodes: CircuitElementToolNode[], tandem: Tandem, providedOptions?: Partial<CCKCScreenViewOptions> ) {
 

@@ -57,14 +57,14 @@ const ICON_TEXT_SPACING = 3; // distance in view coordinates from the isIcon to 
 export default class SensorToolbox extends CCKCPanel {
 
   /**
-   * @param {AlignGroup} alignGroup - for alignment with other controls
-   * @param {CircuitLayerNode} circuitLayerNode - the main circuit node to use as a coordinate frame
-   * @param {VoltmeterNode[]} voltmeterNodes - nodes that display the Voltmeters
-   * @param {AmmeterNode[]} ammeterNodes - nodes that display the Ammeters
-   * @param {VoltageChartNode[]} voltageChartNodes - nodes for the VoltageChartNode, if present
-   * @param {CurrentChartNode[]} currentChartNodes - nodes for the CurrentChartNode, if present
-   * @param {Tandem} tandem
-   * @param {Object} [providedOptions]
+   * @param alignGroup - for alignment with other controls
+   * @param circuitLayerNode - the main circuit node to use as a coordinate frame
+   * @param voltmeterNodes - nodes that display the Voltmeters
+   * @param ammeterNodes - nodes that display the Ammeters
+   * @param voltageChartNodes - nodes for the VoltageChartNode, if present
+   * @param currentChartNodes - nodes for the CurrentChartNode, if present
+   * @param tandem
+   * @param [providedOptions]
    */
   constructor( alignGroup: AlignGroup, circuitLayerNode: CircuitLayerNode, voltmeterNodes: VoltmeterNode[],
                ammeterNodes: AmmeterNode[], voltageChartNodes: VoltageChartNode[], currentChartNodes: CurrentChartNode[],
@@ -79,8 +79,8 @@ export default class SensorToolbox extends CCKCPanel {
     }, providedOptions );
 
     /**
-     * @param {VoltmeterNode[]|AmmeterNode[]|VoltageChartNode[]|CurrentChartNode[]} meterNodes
-     * @param {string} meterModelName 'ammeter'|'voltmeter'|'meter' for looking up the corresponding models
+     * @param meterNodes
+     * @param meterModelName 'ammeter'|'voltmeter'|'meter' for looking up the corresponding models
      * @returns a listener
      */
     const createListenerMulti = ( meterNodes: VoltmeterNode[] | AmmeterNode[] | VoltageChartNode[] | CurrentChartNode[], meterModelName: string ): object =>

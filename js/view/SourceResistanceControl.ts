@@ -25,18 +25,16 @@ const resistanceOhmsSymbolString = circuitConstructionKitCommonStrings.resistanc
 export default class SourceResistanceControl extends VBox {
 
   /**
-   * @param {Property.<number>} sourceResistanceProperty - axon Property for the internal resistance of all Batteries
-   * @param {AlignGroup} alignGroup
-   * @param {string} batteryResistanceControlString
-   * @param {Object} titleConfig
-   * @param {Tandem} tandem
+   * @param sourceResistanceProperty - axon Property for the internal resistance of all Batteries
+   * @param alignGroup
+   * @param batteryResistanceControlString
+   * @param titleConfig
+   * @param tandem
    */
   constructor( sourceResistanceProperty: Property<number>, alignGroup: AlignGroup, batteryResistanceControlString: string, titleConfig: any, tandem: Tandem ) {
 
     /**
      * Creates label to be used for slider
-     * @param {string} string
-     * @param {Tandem} tandem
      */
     const createLabel = ( string: string, tandem: Tandem ) => new Text( string, {
       fontSize: 12,

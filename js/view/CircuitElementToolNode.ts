@@ -29,19 +29,19 @@ const TOOLBOX_ICON_WIDTH = CCKCConstants.TOOLBOX_ICON_WIDTH;
 export default class CircuitElementToolNode extends VBox {
 
   /**
-   * @param {string} labelText
-   * @param {Property.<boolean>} showLabelsProperty
-   * @param {Property.<CircuitElementViewType>} viewTypeProperty
-   * @param {Circuit} circuit
-   * @param {function} globalToCircuitLayerNodePoint Vector2=>Vector2 global point to coordinate frame of circuitLayerNode
-   * @param {Node} iconNode
-   * @param {number} maxNumber
-   * @param {function} count - () => number, gets the number of that kind of object in the model, so the icon can be
+   * @param labelText
+   * @param showLabelsProperty
+   * @param viewTypeProperty
+   * @param circuit
+   * @param globalToCircuitLayerNodePoint Vector2=>Vector2 global point to coordinate frame of circuitLayerNode
+   * @param iconNode
+   * @param maxNumber
+   * @param count - () => number, gets the number of that kind of object in the model, so the icon can be
    *                         - hidden when all items have been created
-   * @param {function} createElement - (Vector2) => CircuitElement Function that creates a CircuitElement at the given position
+   * @param createElement - (Vector2) => CircuitElement Function that creates a CircuitElement at the given position
    *                                 - for most components it is the center of the component.  For Light Bulbs, it is
    *                                 - in the center of the socket
-   * @param {Object} [providedOptions]
+   * @param [providedOptions]
    */
   constructor( labelText: string, showLabelsProperty: Property<boolean>, viewTypeProperty: Property<CircuitElementViewType>,
                circuit: Circuit, globalToCircuitLayerNodePoint: ( v: Vector2 ) => Vector2, iconNode: Node, maxNumber: number,

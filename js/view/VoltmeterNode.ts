@@ -63,11 +63,11 @@ export default class VoltmeterNode extends Node {
   static PROBE_ANGLE: number;
 
   /**
-   * @param {Voltmeter} voltmeter - the model Voltmeter to be shown by this node
-   * @param {CircuitConstructionKitModel} model
-   * @param {CircuitLayerNode} circuitLayerNode
-   * @param {Tandem} tandem
-   * @param {Object} [providedOptions]
+   * @param voltmeter - the model Voltmeter to be shown by this node
+   * @param model
+   * @param circuitLayerNode
+   * @param tandem
+   * @param [providedOptions]
    */
   constructor( voltmeter: Voltmeter, model: CircuitConstructionKitModel | null, circuitLayerNode: CircuitLayerNode | null,
                tandem: Tandem, providedOptions?: any ) {
@@ -131,8 +131,8 @@ export default class VoltmeterNode extends Node {
 
     /**
      * Creates a Vector2Property with a new Vector2 at the specified position.
-     * @param {number} [x]
-     * @param {number} [y]
+     * @param [x]
+     * @param [y]
      */
     const createVector2Property = function( x = 0, y = 0 ) {
       return new Vector2Property( new Vector2( x, y ) );
@@ -185,9 +185,6 @@ export default class VoltmeterNode extends Node {
 
     /**
      * Creates listeners for the link function to update the probe node and wire when probe position changes.
-     * @param {Node} probeNode
-     * @param {Vector2Property} probePositionProperty
-     * @param {number} sign
      */
     const probeMovedCallback = ( probeNode: Node, probePositionProperty: Vector2Property, sign: number ) => {
       return ( probePosition: Vector2 ) => {
@@ -230,8 +227,6 @@ export default class VoltmeterNode extends Node {
 
       /**
        * Gets a drag handler for one of the probes.
-       * @param {Property.<Vector2>} positionProperty
-       * @param {Tandem} tandem
        */
       const createProbeDragListener = ( positionProperty: Vector2Property, tandem: Tandem ) => {
         const probeDragListener = new DragListener( {
@@ -284,9 +279,9 @@ export default class VoltmeterNode extends Node {
 
       /**
        * Starting at the tip, iterate down over several samples and return the first hit, if any.
-       * @param {Node} probeNode
-       * @param {Vector2} probeTip
-       * @param {number} sign - the direction the probe is rotated
+       * @param probeNode
+       * @param probeTip
+       * @param sign - the direction the probe is rotated
        * @returns - if connected returns VoltageConnection otherwise null
        */
       const findConnection = ( probeNode: Node, probeTip: Vector2, sign: number ) => {

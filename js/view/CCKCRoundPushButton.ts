@@ -14,7 +14,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 export default class CCKCRoundPushButton extends RoundPushButton {
 
   /**
-   * @param {Object} [providedOptions]
+   * @param [providedOptions]
    */
   constructor( providedOptions?: Partial<RoundPushButtonOptions> ) {
     super( merge( {

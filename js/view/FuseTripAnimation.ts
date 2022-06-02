@@ -17,7 +17,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 export default class FuseTripAnimation extends Node {
 
   /**
-   * @param {Object} [providedOptions]
+   * @param [providedOptions]
    */
   constructor( providedOptions?: Partial<NodeOptions> ) {
     super();

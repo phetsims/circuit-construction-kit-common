@@ -37,10 +37,10 @@ export default class Switch extends FixedCircuitElement {
   readonly closedProperty: Property<boolean>;
 
   /**
-   * @param {Vertex} startVertex
-   * @param {Vertex} endVertex
-   * @param {Tandem} tandem
-   * @param {Object} [providedOptions]
+   * @param startVertex
+   * @param endVertex
+   * @param tandem
+   * @param [providedOptions]
    */
   constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: SwitchOptions ) {
 

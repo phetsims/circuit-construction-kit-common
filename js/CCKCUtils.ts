@@ -37,7 +37,6 @@ const CCKCUtils = {
   /**
    * Returns a string that adjusts its ampere value.
    * @param current - in Amps
-   * @param blackBoxStudy
    */
   createCurrentReadout: function( current: number | null, blackBoxStudy: boolean ): string {
     if ( CCKCQueryParameters.fullPrecisionAmmeter ) {

@@ -20,10 +20,6 @@ import CircuitElement from '../model/CircuitElement.js';
 
 export default class RepairFuseButton extends HBox {
 
-  /**
-   * @param {Circuit} circuit
-   * @param {Tandem} tandem
-   */
   constructor( circuit: Circuit, tandem: Tandem ) {
 
     const shape = new Shape().moveTo( 0, 0 ).zigZagToPoint( new Vector2( 35, 0 ), 4.7, 4, false );

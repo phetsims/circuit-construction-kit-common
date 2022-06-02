@@ -27,10 +27,6 @@ export default class Voltmeter extends Meter {
   // the position of the black probe in model=view coordinates
   readonly blackProbePositionProperty: Vector2Property;
 
-  /**
-   * @param {Tandem} tandem
-   * @param {number} phetioIndex
-   */
   constructor( tandem: Tandem, phetioIndex: number ) {
     super( tandem, phetioIndex );
 

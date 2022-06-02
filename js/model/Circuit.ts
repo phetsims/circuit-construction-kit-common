@@ -501,8 +501,8 @@ export default class Circuit {
 
   /**
    * Create a pair of vertices to be used for a new CircuitElement
-   * @param {Vector2} position - the position of the center of the CircuitElement
-   * @param {number} length - the distance between the vertices
+   * @param position - the position of the center of the CircuitElement
+   * @param length - the distance between the vertices
    * @returns with 2 elements
    */
   createVertexPairArray( position: Vector2, length: number ): [ Vertex, Vertex ] {
@@ -514,7 +514,7 @@ export default class Circuit {
 
   /**
    * Create a Vertex at the specified position, convenience function for creating the vertices for CircuitElements.
-   * @param {Vector2} position - the position of the Vertex in view = model coordinates
+   * @param position - the position of the Vertex in view = model coordinates
    */
   private createVertex( position: Vector2 ): Vertex {
     return this.vertexGroup.createNextElement( position );
@@ -522,8 +522,6 @@ export default class Circuit {
 
   /**
    * When over Vertex is released or bumped over another Vertex, rotate one away so it doesn't appear connected.
-   * @param {Vertex} v1
-   * @param {Vertex} v2
    */
   private moveVerticesApart( v1: Vertex, v2: Vertex ): void {
     const v1Neighbors = this.getNeighboringVertices( v1 );
@@ -549,8 +547,8 @@ export default class Circuit {
    * When two Vertices are dropped/bumped too close together, move away the pre-existing one by rotating or
    * translating it.
    *
-   * @param {Vertex} vertex - the vertex to rotate
-   * @param {Vertex} pivotVertex - the vertex to rotate about
+   * @param vertex - the vertex to rotate
+   * @param pivotVertex - the vertex to rotate about
    */
   private bumpAwaySingleVertex( vertex: Vertex, pivotVertex: Vertex ): void {
     const distance = vertex.positionProperty.value.distance( pivotVertex.positionProperty.value );
@@ -591,9 +589,9 @@ export default class Circuit {
 
   /**
    * Rotate the given Vertex about the specified Vertex by the given angle
-   * @param {Vertex} vertex - the vertex which will be rotated
-   * @param {Vertex} pivotVertex - the origin about which the vertex will rotate
-   * @param {number} deltaAngle - angle in radians to rotate
+   * @param vertex - the vertex which will be rotated
+   * @param pivotVertex - the origin about which the vertex will rotate
+   * @param deltaAngle - angle in radians to rotate
    */
   private rotateSingleVertexByAngle( vertex: Vertex, pivotVertex: Vertex, deltaAngle: number ): void {
     const position = vertex.positionProperty.get();
@@ -754,8 +752,8 @@ export default class Circuit {
    *
    * Note: do not confuse this with CircuitLayerNode.translateVertexGroup which proposes connections while dragging
    *
-   * @param {Vertex} mainVertex - the vertex whose group will be translated
-   * @param {Vector2} delta - the vector by which to move the vertex group
+   * @param mainVertex - the vertex whose group will be translated
+   * @param delta - the vector by which to move the vertex group
    */
   private translateVertexGroup( mainVertex: Vertex, delta: Vector2 ): void {
     const vertexArray = this.findAllFixedVertices( mainVertex );
@@ -772,7 +770,6 @@ export default class Circuit {
 
   /**
    * Returns true if the given vertex has a fixed connection to a black box interface vertex.
-   * @param {Vertex} vertex
    */
   private hasFixedConnectionToBlackBoxInterfaceVertex( vertex: Vertex ): boolean {
     const fixedVertices = this.findAllFixedVertices( vertex );
@@ -789,7 +786,6 @@ export default class Circuit {
 
   /**
    * When removing a CircuitElement, also remove its start/end Vertex if it can be removed.
-   * @param {Vertex} vertex
    */
   private removeVertexIfOrphaned( vertex: Vertex ): void {
     if (
@@ -803,7 +799,6 @@ export default class Circuit {
 
   /**
    * Get all of the CircuitElements that contain the given Vertex.
-   * @param {Vertex} vertex
    */
   getNeighborCircuitElements( vertex: Vertex ): CircuitElement[] {
     return this.circuitElements.filter( circuitElement => circuitElement.containsVertex( vertex ) );
@@ -811,7 +806,6 @@ export default class Circuit {
 
   /**
    * Gets the number of CircuitElements connected to the specified Vertex
-   * @param vertex
    */
   countCircuitElements( vertex: Vertex ): number {
     return this.circuitElements.count( circuitElement => circuitElement.containsVertex( vertex ) );
@@ -819,9 +813,9 @@ export default class Circuit {
 
   /**
    * Gets the voltage between two points.  Computed in the view because view coordinates are used in the computation.
-   * @param {VoltageConnection} redConnection
-   * @param {VoltageConnection} blackConnection
-   * @param {boolean} revealing - whether the black box is in "reveal" model
+   * @param redConnection
+   * @param blackConnection
+   * @param revealing - whether the black box is in "reveal" model
    */
   getVoltageBetweenConnections( redConnection: VoltageConnection | null, blackConnection: VoltageConnection | null, revealing: boolean ): number | null {
 
@@ -925,7 +919,7 @@ export default class Circuit {
 
   /**
    * Move forward in time
-   * @param {number} dt - the elapsed time in seconds
+   * @param dt - the elapsed time in seconds
    */
   step( dt: number ): void {
 
@@ -983,8 +977,6 @@ export default class Circuit {
   /**
    * Determine if one Vertex is adjacent to another Vertex.  The only way for two vertices to be adjacent is for them
    * to be the start/end of a single CircuitElement
-   * @param {Vertex} a
-   * @param {Vertex} b
    */
   private isVertexAdjacent( a: Vertex, b: Vertex ): boolean {
 
@@ -998,8 +990,8 @@ export default class Circuit {
 
   /**
    * Find the neighbor vertices within the given group of circuit elements
-   * @param {Vertex} vertex
-   * @param {CircuitElement[]} circuitElements - the group of CircuitElements within which to look for neighbors
+   * @param vertex
+   * @param circuitElements - the group of CircuitElements within which to look for neighbors
    */
   private getNeighborVerticesInGroup( vertex: Vertex, circuitElements: CircuitElement[] ): Vertex[] {
     const neighbors = [];
@@ -1014,7 +1006,7 @@ export default class Circuit {
 
   /**
    * Get an array of all the vertices adjacent to the specified Vertex.
-   * @param {Vertex} vertex - the vertex to get neighbors for
+   * @param vertex - the vertex to get neighbors for
    */
   getNeighboringVertices( vertex: Vertex ): Vertex[] {
     const neighborCircuitElements = this.getNeighborCircuitElements( vertex );
@@ -1023,7 +1015,6 @@ export default class Circuit {
 
   /**
    * Marks all connected circuit elements as dirty (so electrons will be layed out again), called when any wire length is changed.
-   * @param {Vertex} vertex
    */
   private markAllConnectedCircuitElementsDirty( vertex: Vertex ): void {
     const allConnectedVertices = this.findAllConnectedVertices( vertex );
@@ -1043,7 +1034,6 @@ export default class Circuit {
 
   /**
    * Find the subgraph where all vertices are connected by any kind of CircuitElements
-   * @param {Vertex} vertex
    */
   findAllConnectedVertices( vertex: Vertex ): Vertex[] {
     return this.searchVertices( vertex, trueFunction );
@@ -1170,8 +1160,8 @@ export default class Circuit {
   /**
    * Find the subgraph where all vertices are connected, given the list of traversible circuit elements.
    * There are a few other ad-hoc graph searches around, such as isInLoop and in LinearTransientAnalysis
-   * @param {Vertex} vertex
-   * @param {function} okToVisit - (startVertex:Vertex,circuitElement:CircuitElement,endVertex:Vertex)=>boolean, rule
+   * @param vertex
+   * @param okToVisit - (startVertex:Vertex,circuitElement:CircuitElement,endVertex:Vertex)=>boolean, rule
    *                             - that determines which vertices are OK to visit
    */
   private searchVertices( vertex: Vertex, okToVisit: ( a: Vertex, c: CircuitElement, b: Vertex ) => boolean ): Vertex[] {
@@ -1276,8 +1266,8 @@ export default class Circuit {
 
   /**
    * Find the subgraph where all vertices are connected by FixedCircuitElements, not stretchy wires.
-   * @param {Vertex} vertex
-   * @param {function} [okToVisit] - (startVertex:Vertex,circuitElement:CircuitElement,endVertex:Vertex)=>boolean,
+   * @param vertex
+   * @param [okToVisit] - (startVertex:Vertex,circuitElement:CircuitElement,endVertex:Vertex)=>boolean,
    *                               - rule that determines which vertices are OK to visit
    */
   findAllFixedVertices( vertex: Vertex, okToVisit: ( ( a: Vertex, c: CircuitElement, b: Vertex ) => boolean ) = e => true ): Vertex[] {
@@ -1300,9 +1290,9 @@ export default class Circuit {
   /**
    * A vertex has been dragged, is it a candidate for joining with other vertices?  If so, return the candidate
    * vertex.  Otherwise, return null.
-   * @param {Vertex} vertex - the dragged vertex
-   * @param {InteractionMode} mode - the application mode Circuit.InteractionMode.TEST | Circuit.InteractionMode.EXPLORE
-   * @param {Bounds2|undefined} blackBoxBounds - the bounds of the black box, if there is one
+   * @param vertex - the dragged vertex
+   * @param mode - the application mode Circuit.InteractionMode.TEST | Circuit.InteractionMode.EXPLORE
+   * @param blackBoxBounds - the bounds of the black box, if there is one
    * @returns - the vertex it will be able to connect to, if dropped or null if no connection is available
    */
   getDropTarget( vertex: Vertex, mode: InteractionMode, blackBoxBounds: Bounds2 | null ): Vertex | null {
@@ -1494,7 +1484,7 @@ export default class Circuit {
 
   /**
    * Flip the given CircuitElement
-   * @param {CircuitElement} circuitElement - the circuit element to flip
+   * @param circuitElement - the circuit element to flip
    */
   flip( circuitElement: CircuitElement ): void {
     const startVertex = circuitElement.startVertexProperty.value;
@@ -1515,7 +1505,7 @@ export default class Circuit {
 
   /**
    * Creates and positions charges in the specified circuit element.
-   * @param {CircuitElement} circuitElement - the circuit element within which the charges will be updated
+   * @param circuitElement - the circuit element within which the charges will be updated
    */
   layoutCharges( circuitElement: CircuitElement ): void {
 

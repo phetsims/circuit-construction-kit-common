@@ -140,9 +140,8 @@ export default class CircuitLayerNode extends Node {
   private readonly circuitDebugLayer: CircuitDebugLayer | null;
 
   /**
-   * @param {Circuit} circuit - the model Circuit
-   * @param {CCKCScreenView} screenView - for dropping CircuitElement instances back in the toolbox
-   * @param {Tandem} tandem
+   * @param circuit - the model Circuit
+   * @param screenView - for dropping CircuitElement instances back in the toolbox
    */
   constructor( circuit: Circuit, screenView: CCKCScreenView, tandem: Tandem ) {
     super();
@@ -294,10 +293,6 @@ export default class CircuitLayerNode extends Node {
      * (a) Add nodes for pre-existing model elements
      * (b) Add a listener that adds nodes when model elements are added
      * (c) Add a listener that removes nodes when model elements are removed
-     *
-     * @param predicate
-     * @param layer
-     * @param phetioGroup
      */
     const initializeCircuitElementType = ( predicate: ( c: CircuitElement ) => boolean, layer: Node, phetioGroup: PhetioGroup<CircuitElementNode, any> ) => {
       const addCircuitElement = ( circuitElement: CircuitElement ) => {
@@ -575,7 +570,7 @@ export default class CircuitLayerNode extends Node {
 
   /**
    * Finds the closest drop target for any of the given vertices
-   * @param {Vertex[]} vertices
+   * @param vertices
    * @returns Object that indicates the two vertices best suited for connecting as { src: Vertex, dst: Vertex },
    *                        or null if no match is suitable.
    */
@@ -642,13 +637,6 @@ export default class CircuitLayerNode extends Node {
 
   /**
    * Vertices connected to the black box cannot be moved, but they can be rotated.  Called when dragging a subcircuit.
-   * @param {Vector2} point
-   * @param {Vertex} vertex
-   * @param {boolean} okToRotate
-   * @param {VertexNode} vertexNode
-   * @param {Vector2} position
-   * @param {CircuitElement[]} neighbors
-   * @param {Vertex[]} vertices
    */
   private rotateAboutFixedPivot( point: Vector2, vertex: Vertex, okToRotate: boolean, vertexNode: VertexNode, position: Vector2, neighbors: CircuitElement[], vertices: Vertex[] ): void {
 
@@ -919,7 +907,7 @@ export default class CircuitLayerNode extends Node {
   /**
    * Find where the voltmeter probe node intersects the wire, for computing the voltage difference to display in the
    * voltmeter.
-   * @param {Vector2} probePosition - in the local coordinate frame of the CircuitLayerNode
+   * @param probePosition - in the local coordinate frame of the CircuitLayerNode
    * @returns VoltageConnection if connected, otherwise null
    */
   getVoltageConnection( probePosition: Vector2 ): VoltageConnection | null {
@@ -1000,8 +988,6 @@ export default class CircuitLayerNode extends Node {
 
   /**
    * Find the current in the given layer (if any CircuitElement hits the sensor)
-   * @param {Node} probeNode
-   * @param {Node} layer
    */
   private getCurrentInLayer( probeNode: Node, layer: Node ): number | null {
 

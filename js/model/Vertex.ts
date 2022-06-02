@@ -86,8 +86,8 @@ export default class Vertex extends PhetioObject {
   static VertexIO: IOType;
 
   /**
-   * @param {Vector2} position - position in view coordinates
-   * @param {Object} [providedOptions]
+   * @param position - position in view coordinates
+   * @param [providedOptions]
    */
   constructor( position: Vector2, providedOptions?: Partial<VertexOptions> ) {
 

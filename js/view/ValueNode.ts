@@ -49,8 +49,8 @@ const FONT = new PhetFont( { size: 22 } );
 
 /**
  * For convenience, creates a Text node with empty content and the specified tandem.
- * @param {Tandem} tandem
- * @param {Object} [providedOptions]
+ * @param tandem
+ * @param [providedOptions]
  */
 const createText = ( tandem: Tandem, providedOptions?: any ) => new Text( '', merge( {
   tandem: tandem,
@@ -59,8 +59,8 @@ const createText = ( tandem: Tandem, providedOptions?: any ) => new Text( '', me
 
 /**
  * For convenience, creates a RichText node with empty content and the specified tandem.
- * @param {Tandem} tandem
- * @param {Object} [providedOptions]
+ * @param tandem
+ * @param [providedOptions]
  */
 const createRichText = ( tandem: Tandem, providedOptions?: any ) => new RichText( '', merge( {
   tandem: tandem,
@@ -73,11 +73,11 @@ export default class ValueNode extends Panel {
   private readonly disposeValueNode: () => void;
 
   /**
-   * @param {Property.<number>} sourceResistanceProperty - user-specified value for internal resistance for batteries
-   * @param {CircuitElement} circuitElement
-   * @param {Property.<boolean>} showValuesProperty
-   * @param {Property.<CircuitElementViewType>} viewTypeProperty
-   * @param {Tandem} tandem
+   * @param sourceResistanceProperty - user-specified value for internal resistance for batteries
+   * @param circuitElement
+   * @param showValuesProperty
+   * @param viewTypeProperty
+   * @param tandem
    */
   constructor( sourceResistanceProperty: Property<number>, circuitElement: CircuitElement, showValuesProperty: Property<boolean>, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem ) {
     const disposeEmitterValueNode = new Emitter();

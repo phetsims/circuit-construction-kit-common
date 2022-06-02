@@ -101,7 +101,7 @@ export default class MNACircuit {
   /**
    * Sums all of the current leaving the node (subtracting current flowing into the node).
    *
-   * @param {number} nodeIndex - the node at which to compute current sources
+   * @param nodeIndex - the node at which to compute current sources
    */
   private getCurrentSourceTotal( nodeIndex: string ): number {
     let currentSourceTotal = 0.0;
@@ -123,10 +123,10 @@ export default class MNACircuit {
 
   /**
    * Gets current conservation terms going into or out of a node. Incoming current is negative, outgoing is positive.
-   * @param {number} node - the node
-   * @param {string} side - 'nodeId0' for outgoing current or 'nodeId1' for incoming current
-   * @param {number} sign - 1 for incoming current and -1 for outgoing current
-   * @param {Term[]} nodeTerms - to accumulate the result
+   * @param node - the node
+   * @param side - 'nodeId0' for outgoing current or 'nodeId1' for incoming current
+   * @param sign - 1 for incoming current and -1 for outgoing current
+   * @param nodeTerms - to accumulate the result
    */
   private getCurrentTerms( node: string, side: 'nodeId0' | 'nodeId1', sign: number, nodeTerms: Term[] ): Term[] {
     assert && CCKCUtils.validateNodeIndex( node );
@@ -187,7 +187,6 @@ export default class MNACircuit {
 
   /**
    * Finds all nodes connected (by any path) to the given node
-   * @param {string} node
    */
   private getConnectedNodeIds( node: string ): string[] {
     const visited = [];
@@ -355,8 +354,8 @@ circuitConstructionKitCommon.register( 'MNACircuit', MNACircuit );
  * Find the index of an element in an array comparing with the equals() method.
  * Could have used lodash's _.findIndex, but this will be called many times per frame and could be faster without
  * lodash
- * @param {Array} array
- * @param {Object} element
+ * @param array
+ * @param element
  * @returns the index or -1 if not found
  */
 const getIndexByEquals = ( array: Array<any>, element: any ) => {
@@ -370,14 +369,12 @@ const getIndexByEquals = ( array: Array<any>, element: any ) => {
 
 /**
  * For debugging, display a Resistor as a string
- * @param {Resistor} resistor
  */
 const resistorToString = ( resistor: MNAResistor ) =>
   `node${resistor.nodeId0} -> node${resistor.nodeId1} @ ${resistor.resistance} Ohms`;
 
 /**
  * For debugging, display a Battery as a string
- * @param {Battery} battery
  */
 const batteryToString = ( battery: MNABattery ) =>
   `node${battery.nodeId0} -> node${battery.nodeId1} @ ${battery.voltage} Volts`;
@@ -391,8 +388,8 @@ class Term {
   readonly variable: UnknownCurrent | UnknownVoltage;
 
   /**
-   * @param {number} coefficient - the multiplier for this term
-   * @param {UnknownCurrent|UnknownVoltage} variable - the variable for this term, like the x variable in 7x
+   * @param coefficient - the multiplier for this term
+   * @param variable - the variable for this term, like the x variable in 7x
    */
   constructor( coefficient: number, variable: UnknownCurrent | UnknownVoltage ) {
 
@@ -465,8 +462,8 @@ class Equation {
   private readonly terms: Term[];
 
   /**
-   * @param {number} value - the value on the right hand side of the equation, such as x+y=7
-   * @param {Term[]} terms
+   * @param value - the value on the right hand side of the equation, such as x+y=7
+   * @param terms
    * @constructor
    */
   constructor( value: number, terms: Term[] ) {

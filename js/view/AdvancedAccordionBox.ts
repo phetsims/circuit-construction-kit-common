@@ -27,11 +27,11 @@ type AdvancedAccordionBoxOptions = SelfOptions & CCKCAccordionBoxOptions;
 export default class AdvancedAccordionBox extends CCKCAccordionBox {
 
   /**
-   * @param {Circuit} circuit
-   * @param {AlignGroup} alignGroup - to match the width of other panels
-   * @param {string} batteryResistanceControlString
-   * @param {Tandem} tandem
-   * @param {Object} [providedOptions]
+   * @param circuit
+   * @param alignGroup - to match the width of other panels
+   * @param batteryResistanceControlString
+   * @param tandem
+   * @param [providedOptions]
    */
   constructor( circuit: Circuit, alignGroup: AlignGroup, batteryResistanceControlString: string, tandem: Tandem, providedOptions?: AdvancedAccordionBoxOptions ) {
 

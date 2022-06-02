@@ -25,10 +25,6 @@ export default class ZoomControlPanel extends MagnifyingGlassZoomButtonGroup {
   static ZOOMED_IN: number;
   static ZOOMED_OUT: number;
 
-  /**
-   * @param selectedZoomProperty
-   * @param providedOptions
-   */
   constructor( selectedZoomProperty: RangedProperty, providedOptions?: any ) {
     providedOptions = merge( {
       spacing: BUTTON_SPACING,

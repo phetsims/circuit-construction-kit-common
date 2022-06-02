@@ -62,10 +62,10 @@ export default class TimestepSubdivisions<T> {
   /**
    * Recursively searches for a value of dt that has acceptable error, starting with the value dt
    *
-   * @param {Object} state     the initial state
-   * @param {Steppable} steppable the update algorithm and distance metric
-   * @param {number} dt        the initial value to use for dt
-   * @param {Object} halfStepState - efficiently reuse value from parent call, instead of recomputing it.
+   * @param state     the initial state
+   * @param steppable the update algorithm and distance metric
+   * @param dt        the initial value to use for dt
+   * @param halfStepState - efficiently reuse value from parent call, instead of recomputing it.
    * @returns the selected timestep that has acceptable error or meets the minimum allowed
    */
   private search( state: T, steppable: Steppable<T>, dt: number, halfStepState: T | null ): { dt: number; state: T } {

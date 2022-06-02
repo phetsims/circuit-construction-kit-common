@@ -35,10 +35,10 @@ export default class VoltageChartNode extends CCKCChartNode {
   private lastStepTime: number | null;
 
   /**
-   * @param {CircuitLayerNode} circuitLayerNode
-   * @param {Property.<number>} timeProperty
-   * @param {Property.<Bounds2>} visibleBoundsProperty
-   * @param {Object} [providedOptions]
+   * @param circuitLayerNode
+   * @param timeProperty
+   * @param visibleBoundsProperty
+   * @param [providedOptions]
    */
   constructor( circuitLayerNode: CircuitLayerNode, timeProperty: Property<number>, visibleBoundsProperty: Property<Bounds2>, providedOptions?: any ) {
 

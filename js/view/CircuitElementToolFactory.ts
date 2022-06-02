@@ -87,11 +87,11 @@ export default class CircuitElementToolFactory {
   private wireToolNode: CircuitElementToolNode | null;
 
   /**
-   * @param {Circuit} circuit
-   * @param {Property.<boolean>} showLabelsProperty
-   * @param {Property.<CircuitElementViewType>} viewTypeProperty
-   * @param {function} globalToCircuitLayerNodePoint Vector2=>Vector2 global point to coordinate frame of circuitLayerNode
-   * @param {Tandem} parentTandem - parent tandem for the created tool nodes
+   * @param circuit
+   * @param showLabelsProperty
+   * @param viewTypeProperty
+   * @param globalToCircuitLayerNodePoint Vector2=>Vector2 global point to coordinate frame of circuitLayerNode
+   * @param parentTandem - parent tandem for the created tool nodes
    */
   constructor( circuit: Circuit, showLabelsProperty: Property<boolean>, viewTypeProperty: Property<CircuitElementViewType>, globalToCircuitLayerNodePoint: ( v: Vector2 ) => Vector2, parentTandem: Tandem ) {
     this.circuit = circuit;
@@ -104,16 +104,16 @@ export default class CircuitElementToolFactory {
 
   /**
    * Utility function that creates a CircuitElementToolNode
-   * @param {string} labelString
-   * @param {number} count
-   * @param {function(Tandem,Property.<CircuitElementViewType>):Node} createIcon
-   * @param {function} predicate - CircuitElement => boolean, used to count circuit elements of that kind.
+   * @param labelString
+   * @param count
+   * @param createIcon
+   * @param predicate - CircuitElement => boolean, used to count circuit elements of that kind.
    *                             - NOTE: All of the predicates are intended to cover all circuit elements and be
    *                             - mutually exclusive (so there is no double counting).  However, this is not enforced.
-   * @param {function} createElement - (Vector2) => CircuitElement Function that creates a CircuitElement at the given position
+   * @param createElement - (Vector2) => CircuitElement Function that creates a CircuitElement at the given position
    *                                 - for most components it is the center of the component.  For Light Bulbs, it is
    *                                 - in the center of the socket
-   * @param {Object} [providedOptions]
+   * @param [providedOptions]
    */
   private createCircuitElementToolNode( labelString: string, count: number, createIcon: ( t: Tandem, p: Property<CircuitElementViewType> ) => Node,
                                         predicate: ( circuitElement: CircuitElement ) => boolean, createElement: any, providedOptions?: any ): CircuitElementToolNode {
@@ -166,7 +166,7 @@ export default class CircuitElementToolFactory {
 
   /**
    * Returns a function which counts the number of circuit elements (not counting those in the true black box).
-   * @param {function} predicate - CircuitElement => boolean
+   * @param predicate - CircuitElement => boolean
    * @returns - a no-arg function that returns the {number} of CircuitElements of the specified type
    */
   private createCounter( predicate: ( c: CircuitElement ) => boolean ): () => number {

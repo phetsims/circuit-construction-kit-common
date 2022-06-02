@@ -20,11 +20,6 @@ export default class ZoomAnimation {
   private readonly totalDelta: number;
   private readonly zoomCallback: ( delta: number ) => void;
 
-  /**
-   * @param {number} initialZoom
-   * @param {number} targetZoom
-   * @param {function} zoomCallback
-   */
   constructor( initialZoom: number, targetZoom: number, zoomCallback: ( delta: number ) => void ) {
     this.easing = Easing.CUBIC_IN_OUT;
     this.ratio = 0;

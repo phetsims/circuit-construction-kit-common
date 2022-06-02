@@ -37,8 +37,8 @@ const HIGHLIGHT_PADDING = 10; // in view coordinates
 
 /**
  * Determine whether fire should be shown on the circuit element.
- * @param {number} current - in amps
- * @param {boolean} isValueDepictionEnabled - whether values are shown
+ * @param current - in amps
+ * @param isValueDepictionEnabled - whether values are shown
  */
 const isFireShown = ( current: number, isValueDepictionEnabled: boolean ) =>
   Math.abs( current ) >= FIRE_THRESHOLD && isValueDepictionEnabled;
@@ -68,15 +68,15 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
   private readonly updateFireMultilink: UnknownMultilink | null;
 
   /**
-   * @param {CCKCScreenView|null} screenView - the main screen view, null for isIcon
-   * @param {CircuitLayerNode|null} circuitLayerNode - Null if an isIcon is created
-   * @param {FixedCircuitElement} circuitElement - the corresponding model element
-   * @param {Property.<CircuitElementViewType>} viewTypeProperty
-   * @param {Node} lifelikeNode - the Node that will display the component as a lifelike object.  Origin must be
+   * @param screenView - the main screen view, null for isIcon
+   * @param circuitLayerNode - Null if an isIcon is created
+   * @param circuitElement - the corresponding model element
+   * @param viewTypeProperty
+   * @param lifelikeNode - the Node that will display the component as a lifelike object.  Origin must be
    *                            - left-center
-   * @param {Node} schematicNode - the Node that will display the component. Origin must be left-center.
-   * @param {Tandem} tandem
-   * @param {Object} [providedOptions]
+   * @param schematicNode - the Node that will display the component. Origin must be left-center.
+   * @param tandem
+   * @param [providedOptions]
    */
   constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, circuitElement: FixedCircuitElement,
                viewTypeProperty: Property<CircuitElementViewType>, lifelikeNode: Node, schematicNode: Node, tandem: Tandem,
@@ -229,7 +229,6 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
 
   /**
    * Set the view type
-   * @param {CircuitElementViewType} viewType
    */
   private setViewType( viewType: CircuitElementViewType ): void {
     this.contentNode.children = [ viewType === CircuitElementViewType.LIFELIKE ? this.lifelikeNode : this.schematicNode ];
@@ -297,7 +296,6 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
 
   /**
    * Used as a bound callback listener in the constructor to update the highlight visibility
-   * @param {CircuitElement|null} circuitElement
    */
   private setSelectedCircuitElement( circuitElement: CircuitElement | null ): void {
     if ( this.highlightNode ) {
@@ -335,9 +333,6 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
 
   /**
    * Hide or show the fire depending on various parameters, for listener bind.
-   * @param {number} current
-   * @param {number} resistance
-   * @param {boolean} isValueDepictionEnabled
    */
   private updateFireVisible( current: number, resistance: number, isValueDepictionEnabled: boolean ): void {
     this.fireNode!.visible = isFireShown( current, isValueDepictionEnabled ) && resistance >= 1E-8;

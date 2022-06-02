@@ -31,8 +31,8 @@ export default class Meter {
   readonly droppedEmitter: Emitter<[ Bounds2 ]>;
 
   /**
-   * @param {Tandem} tandem
-   * @param {number} phetioIndex - for assigning corresponding tandems
+   * @param tandem
+   * @param phetioIndex - for assigning corresponding tandems
    */
   constructor( tandem: Tandem, phetioIndex: number ) {
 

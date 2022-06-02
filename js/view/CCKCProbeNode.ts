@@ -20,9 +20,9 @@ import Vector2 from '../../../dot/js/Vector2.js';
 export default class CCKCProbeNode extends ProbeNode {
 
   /**
-   * @param {Node} node container node which should move to front on press
-   * @param {Property.<Bounds2>} visibleBoundsProperty - visible bounds of the ScreenView
-   * @param {Object} [providedOptions]
+   * @param node container node which should move to front on press
+   * @param visibleBoundsProperty - visible bounds of the ScreenView
+   * @param [providedOptions]
    */
   constructor( node: Node, visibleBoundsProperty: Property<Bounds2>, providedOptions?: any ) {
 

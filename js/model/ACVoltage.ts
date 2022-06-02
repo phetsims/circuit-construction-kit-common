@@ -114,7 +114,6 @@ export default class ACVoltage extends VoltageSource {
   /**
    * @param time - total elapsed time
    * @param dt - delta between last frame and current frame
-   * @param circuit
    */
   override step( time: number, dt: number, circuit: Circuit ): void {
     super.step( time, dt, circuit );

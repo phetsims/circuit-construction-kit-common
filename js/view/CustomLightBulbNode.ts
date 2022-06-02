@@ -36,8 +36,8 @@ export default class CustomLightBulbNode extends Node {
   static webglSpriteNodes: Image[];
 
   /**
-   * @param {Property.<number>} brightnessProperty 0 (off) to 1 (full brightness)
-   * @param {Object} [providedOptions]
+   * @param brightnessProperty 0 (off) to 1 (full brightness)
+   * @param [providedOptions]
    */
   constructor( brightnessProperty: Property<number>, providedOptions?: any ) {
     assert && assert( brightnessProperty, 'brightness property should exist' );

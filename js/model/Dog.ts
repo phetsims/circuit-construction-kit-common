@@ -21,10 +21,10 @@ export default class Dog extends Resistor {
   private triggerCount: number;
 
   /**
-   * @param {Vertex} startVertex
-   * @param {Vertex} endVertex
-   * @param {Tandem} tandem
-   * @param {Object} [providedOptions]
+   * @param startVertex
+   * @param endVertex
+   * @param tandem
+   * @param [providedOptions]
    */
   constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: ResistorOptions ) {
     super( startVertex, endVertex, ResistorType.DOG, tandem, providedOptions );

@@ -26,12 +26,12 @@ const SCRATCH_MATRIX = new Matrix3();
 export default class LightBulbSocketNode extends FixedCircuitElementNode {
 
   /**
-   * @param {CCKCScreenView|null} screenView - main screen view, null for icon
-   * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
-   * @param {LightBulb} lightBulb - the light bulb model
-   * @param {Property.<CircuitElementViewType>} viewTypeProperty
-   * @param {Tandem} tandem
-   * @param {Object} [providedOptions]
+   * @param screenView - main screen view, null for icon
+   * @param circuitLayerNode, null for icon
+   * @param lightBulb - the light bulb model
+   * @param viewTypeProperty
+   * @param tandem
+   * @param [providedOptions]
    */
   constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, lightBulb: LightBulb,
                viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: Partial<FixedCircuitElementNodeOptions> ) {

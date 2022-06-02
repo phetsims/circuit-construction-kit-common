@@ -28,10 +28,10 @@ export default class CircuitElementToolbox extends HBox {
   readonly carousel: Carousel;
 
   /**
-   * @param {Property.<CircuitElementViewType>} viewTypeProperty
-   * @param {CircuitElementToolNode[]} circuitElementToolNodes
-   * @param {Tandem} tandem
-   * @param {Object} [providedOptions]
+   * @param viewTypeProperty
+   * @param circuitElementToolNodes
+   * @param tandem
+   * @param [providedOptions]
    */
   constructor( viewTypeProperty: Property<CircuitElementViewType>, circuitElementToolNodes: CircuitElementToolNode[], tandem: Tandem, providedOptions?: any ) {
 

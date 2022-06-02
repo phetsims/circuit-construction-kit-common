@@ -261,7 +261,6 @@ export default class CircuitConstructionKitModel {
 
   /**
    * Step forward one step, whether automatically or when the step button is pressed.
-   * @param {number} dt
    */
   private stepOnce( dt: number ): void {
 

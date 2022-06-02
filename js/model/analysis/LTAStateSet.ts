@@ -19,9 +19,6 @@ export default class LTAStateSet {
 
   private readonly resultSet: Element[];
 
-  /**
-   * @param {ResultSet.<LTACircuit.LTAState>} resultSet
-   */
   constructor( resultSet: Element[] ) {
     this.resultSet = resultSet;
   }

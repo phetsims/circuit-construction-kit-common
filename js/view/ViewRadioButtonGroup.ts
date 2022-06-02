@@ -27,9 +27,9 @@ const SCALE = 0.4;
 export default class ViewRadioButtonGroup extends RectangularRadioButtonGroup<CircuitElementViewType> {
 
   /**
-   * @param {Property.<CircuitElementViewType>} viewTypeProperty - whether to show lifelike or schematic representations
-   * @param {Tandem} tandem
-   * @param {Object} [providedOptions]
+   * @param viewTypeProperty - whether to show lifelike or schematic representations
+   * @param tandem
+   * @param [providedOptions]
    */
   constructor( viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: any ) {
 
@@ -57,9 +57,6 @@ export default class ViewRadioButtonGroup extends RectangularRadioButtonGroup<Ci
 
     /**
      * Create a battery node to be used as an icon.
-     *
-     * @param {CircuitElementViewType} view
-     * @param {Tandem} tandem
      */
     const createBatteryNode = ( view: CircuitElementViewType, tandem: Tandem ) => new BatteryNode( null, null, battery, new Property( view ), tandem, {
       isIcon: true,

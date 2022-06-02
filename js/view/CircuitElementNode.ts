@@ -31,9 +31,9 @@ export default abstract class CircuitElementNode extends Node {
   static CircuitElementNodeIO: IOType;
 
   /**
-   * @param {CircuitElement} circuitElement - the CircuitElement to be rendered
-   * @param {Circuit|null} circuit - the circuit which the element can be removed from or null for icons
-   * @param {Object} [providedOptions]
+   * @param circuitElement - the CircuitElement to be rendered
+   * @param circuit - the circuit which the element can be removed from or null for icons
+   * @param [providedOptions]
    */
   constructor( circuitElement: CircuitElement, circuit: Circuit | null, providedOptions?: any ) {
 

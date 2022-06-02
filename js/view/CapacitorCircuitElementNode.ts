@@ -81,12 +81,12 @@ export default class CapacitorCircuitElementNode extends FixedCircuitElementNode
   private readonly disposeCapacitorCircuitElementNode: () => void;
 
   /**
-   * @param {CCKCScreenView|null} screenView - main screen view, null for isIcon
-   * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
-   * @param {Capacitor} capacitor
-   * @param {Property.<CircuitElementViewType>} viewTypeProperty
-   * @param {Tandem} tandem
-   * @param {Object} [providedOptions]
+   * @param screenView - main screen view, null for isIcon
+   * @param circuitLayerNode, null for icon
+   * @param capacitor
+   * @param viewTypeProperty
+   * @param tandem
+   * @param [providedOptions]
    */
   constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, capacitor: Capacitor, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: Partial<FixedCircuitElementNodeOptions> ) {
 

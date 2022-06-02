@@ -16,9 +16,6 @@ const ARROW_LENGTH = 23; // length of the arrow in view coordinates
 
 export default class ConventionalCurrentArrowNode extends ArrowNode {
 
-  /**
-   * @param {Tandem} tandem
-   */
   constructor( tandem: Tandem ) {
 
     super( 0, 0, ARROW_LENGTH, 0, {

@@ -16,9 +16,9 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 export default class CCKCPanel extends Panel {
 
   /**
-   * @param {Node} content - what will appear in the panel
-   * @param {Tandem} tandem
-   * @param {Object} [providedOptions]
+   * @param content - what will appear in the panel
+   * @param tandem
+   * @param [providedOptions]
    */
   constructor( content: Node, tandem: Tandem, providedOptions?: Partial<PanelOptions> ) {
     providedOptions = merge( {

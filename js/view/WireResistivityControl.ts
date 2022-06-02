@@ -31,10 +31,10 @@ const MAX_RESISTIVITY = 0.0168;
 export default class WireResistivityControl extends VBox {
 
   /**
-   * @param {Property.<number>} wireResistivityProperty
-   * @param {AlignGroup} alignGroup - for alignment with other controls
-   * @param {Object} titleConfig
-   * @param {Tandem} tandem
+   * @param wireResistivityProperty
+   * @param alignGroup - for alignment with other controls
+   * @param titleConfig
+   * @param tandem
    */
   constructor( wireResistivityProperty: Property<number>, alignGroup: AlignGroup, titleConfig: object, tandem: Tandem ) {
 

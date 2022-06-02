@@ -23,8 +23,8 @@ const ARROW_ICON_SCALE = 0.035;
 export default class ReverseBatteryButton extends HBox {
 
   /**
-   * @param {Circuit} circuit - the circuit that contains the battery
-   * @param {Tandem} tandem
+   * @param circuit - the circuit that contains the battery
+   * @param tandem
    */
   constructor( circuit: Circuit, tandem: Tandem ) {
 

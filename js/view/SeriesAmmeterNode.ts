@@ -43,7 +43,7 @@ const CORNER_RADIUS = 4;
 /**
  * Utility function for creating a panel for the sensor body
  * Rasterize so it can be rendered in WebGL, see https://github.com/phetsims/circuit-construction-kit-dc/issues/67
- * @param {Object} [providedOptions]
+ * @param [providedOptions]
  */
 const createPanel = ( providedOptions?: any ) => new Rectangle( 0, 0, PANEL_WIDTH, PANEL_HEIGHT, providedOptions ).rasterized( { wrap: false } );
 
@@ -59,11 +59,11 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
   private readonly disposeSeriesAmmeterNode: () => void;
 
   /**
-   * @param {CCKCScreenView|null} screenView - main screen view, null for isIcon
-   * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
-   * @param {SeriesAmmeter} seriesAmmeter
-   * @param {Tandem} tandem
-   * @param {Object} [providedOptions]
+   * @param screenView - main screen view, null for isIcon
+   * @param circuitLayerNode, null for icon
+   * @param seriesAmmeter
+   * @param tandem
+   * @param [providedOptions]
    */
   constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, seriesAmmeter: SeriesAmmeter,
                tandem: Tandem, providedOptions?: any ) {

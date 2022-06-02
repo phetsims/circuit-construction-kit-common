@@ -49,8 +49,8 @@ export default class ChargeNode extends Node {
   static webglSpriteNodes: Node[];
 
   /**
-   * @param {Charge} charge - the model element
-   * @param {CircuitLayerNode} circuitLayerNode
+   * @param charge - the model element
+   * @param circuitLayerNode
    */
   constructor( charge: Charge, circuitLayerNode: CircuitLayerNode ) {
 

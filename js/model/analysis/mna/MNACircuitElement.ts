@@ -31,7 +31,6 @@ export default class MNACircuitElement {
 
   /**
    * Find the node across from the specified node.
-   * @param {string} nodeId
    */
   getOppositeNode( nodeId: string ): string {
     assert && assert( this.nodeId0 === nodeId || this.nodeId1 === nodeId );

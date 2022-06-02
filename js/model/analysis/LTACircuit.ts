@@ -162,16 +162,10 @@ export default class LTACircuit {
     return new LTAStateSet( x );
   }
 
-  /**
-   * @param {number} dt
-   */
   private solveWithSubdivisions2( dt: number ): LTAStateSet {
     return this.solveWithSubdivisions( new TimestepSubdivisions(), dt );
   }
 
-  /**
-   * @param {number} dt
-   */
   updateWithSubdivisions( dt: number ): LTACircuit {
     return this.solveWithSubdivisions2( dt ).getFinalState().ltaCircuit;
   }
@@ -212,10 +206,6 @@ export default class LTACircuit {
   }
 }
 
-/**
- * @param {number[]} x
- * @param {number[]} y
- */
 const euclideanDistance = ( x: number[], y: number[] ) => {
   assert && assert( x.length === y.length, 'Vector length mismatch' );
   let sumSqDiffs = 0;

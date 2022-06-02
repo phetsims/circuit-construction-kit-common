@@ -247,10 +247,10 @@ export default class ChargeAnimator {
 
   /**
    * Returns the positions where a charge can flow to (connected circuits with current flowing in the right direction)
-   * @param {Charge} charge - the charge that is moving
-   * @param {number} overshoot - the distance the charge should appear along the next circuit element
-   * @param {Vertex} vertex - vertex the charge is passing by
-   * @param {number} depth - number of recursive calls
+   * @param charge - the charge that is moving
+   * @param overshoot - the distance the charge should appear along the next circuit element
+   * @param vertex - vertex the charge is passing by
+   * @param depth - number of recursive calls
    */
   private getPositions( charge: Charge, overshoot: number, vertex: Vertex, depth: number ): CircuitElementPosition[] {
 

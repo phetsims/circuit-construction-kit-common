@@ -51,8 +51,8 @@ const INNER_RADIUS = 5;
 
 /**
  * Determine the brightness for a given power
- * @param {number} multiplier - steepness of the function
- * @param {number} power - the power through the light bulb
+ * @param multiplier - steepness of the function
+ * @param power - the power through the light bulb
  */
 const toBrightness = ( multiplier: number, power: number ) => {
   const maximumBrightness = 1;
@@ -68,13 +68,13 @@ export default class CCKCLightBulbNode extends FixedCircuitElementNode {
   private readonly socketNode: LightBulbSocketNode | null;
 
   /**
-   * @param {CCKCScreenView|null} screenView - main screen view, null for icon
-   * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
-   * @param {LightBulb} lightBulb - the light bulb model
-   * @param {Property.<boolean>} showResultsProperty - true if the sim can display values
-   * @param {Property.<CircuitElementViewType>} viewTypeProperty
-   * @param {Tandem} tandem
-   * @param {Object} [providedOptions]
+   * @param screenView - main screen view, null for icon
+   * @param circuitLayerNode, null for icon
+   * @param lightBulb - the light bulb model
+   * @param showResultsProperty - true if the sim can display values
+   * @param viewTypeProperty
+   * @param tandem
+   * @param [providedOptions]
    */
   constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, lightBulb: LightBulb,
                showResultsProperty: Property<boolean>, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: Partial<FixedCircuitElementNodeOptions> ) {
@@ -137,7 +137,7 @@ export default class CCKCLightBulbNode extends FixedCircuitElementNode {
 
     /**
      * Adds the schematic circle with filament to the given Shape.
-     * @param {Shape} shape
+     * @param shape
      * @returns Shape
      */
     const addIEEESchematicCircle = ( shape: Shape ) => shape

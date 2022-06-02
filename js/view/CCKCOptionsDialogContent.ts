@@ -20,9 +20,6 @@ import ammeterReadoutTypeProperty from './ammeterReadoutTypeProperty.js';
 export default class CCKCOptionsDialogContent extends VBox {
   private readonly disposeCCKCOptionsDialogContent: () => void;
 
-  /**
-   * @param {Tandem} tandem
-   */
   constructor( tandem: Tandem ) {
 
     const textOptions = {

@@ -19,9 +19,9 @@ import { RoundPushButtonOptions } from '../../../sun/js/buttons/RoundPushButton.
 export default class TrashButton extends CCKCRoundPushButton {
 
   /**
-   * @param {Circuit} circuit - the circuit from which the CircuitElement can be removed
-   * @param {Tandem} tandem
-   * @param {Object} [providedOptions]
+   * @param circuit - the circuit from which the CircuitElement can be removed
+   * @param tandem
+   * @param [providedOptions]
    */
   constructor( circuit: Circuit, tandem: Tandem, providedOptions?: Partial<RoundPushButtonOptions> ) {
 

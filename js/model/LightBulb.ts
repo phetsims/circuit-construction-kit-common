@@ -148,9 +148,9 @@ export default class LightBulb extends FixedCircuitElement {
    * Maps from the "as the crow flies" path to the circuitous path. It maps points with a transformation such that:
    * startPoint => origin, endPoint => endVertex position
    *
-   * @param {number} index
-   * @param {Vector2} origin
-   * @param {Vector2[]} samplePoints - the array of points to use for sampling
+   * @param index
+   * @param origin
+   * @param samplePoints - the array of points to use for sampling
    */
   private static getFilamentPathPoint( index: number, origin: Vector2, samplePoints: Vector2[] ): Vector2 {
     const point = samplePoints[ index ];
@@ -174,8 +174,8 @@ export default class LightBulb extends FixedCircuitElement {
   /**
    * Overrides CircuitElement.getPosition to describe the path the charge takes through the light bulb.
    *
-   * @param {number} distanceAlongWire - how far along the bulb's length the charge has traveled
-   * @param {Matrix3} matrix to be updated with the position and angle, so that garbage isn't created each time
+   * @param distanceAlongWire - how far along the bulb's length the charge has traveled
+   * @param matrix to be updated with the position and angle, so that garbage isn't created each time
    */
   override updateMatrixForPoint( distanceAlongWire: number, matrix: Matrix3 ): void {
 

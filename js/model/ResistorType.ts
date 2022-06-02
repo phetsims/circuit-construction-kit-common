@@ -36,11 +36,11 @@ export default class ResistorType extends EnumerationValue {
   readonly verticalOffset: number;
 
   /**
-   * @param {number} defaultResistance - default value for resistance, in Ohms
-   * @param {Range} resistanceRange - possible values for the resistance, in Ohms
-   * @param {boolean} isMetallic - whether the item is metallic (non-insulated) and hence can have its value read at any point
-   * @param {number} length
-   * @param {number} [verticalOffset]
+   * @param defaultResistance - default value for resistance, in Ohms
+   * @param resistanceRange - possible values for the resistance, in Ohms
+   * @param isMetallic - whether the item is metallic (non-insulated) and hence can have its value read at any point
+   * @param length
+   * @param [verticalOffset]
    */
   constructor( defaultResistance: number, resistanceRange: Range, isMetallic: boolean, length: number, verticalOffset = 0 ) {
     super();

@@ -52,7 +52,7 @@ const SCHEMATIC_LINE_WIDTH = 4;
 const LIFELIKE_LINE_WIDTH = 2;
 
 /**
- * @param {boolean} schematic - whether to show the schematic (instead of lifelike) form
+ * @param schematic - whether to show the schematic (instead of lifelike) form
  */
 const createNode = ( schematic: boolean ) => new Node( {
   x: CCKCConstants.AC_VOLTAGE_LENGTH / 2,
@@ -95,12 +95,12 @@ export default class ACVoltageNode extends FixedCircuitElementNode {
   private readonly acSource: ACVoltage;
 
   /**
-   * @param {CCKCScreenView|null} screenView - main screen view, null for isIcon
-   * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
-   * @param {ACVoltage} acSource
-   * @param {Property.<CircuitElementViewType>} viewTypeProperty
-   * @param {Tandem} tandem
-   * @param {Object} [providedOptions]
+   * @param screenView - main screen view, null for isIcon
+   * @param circuitLayerNode, null for icon
+   * @param acSource
+   * @param viewTypeProperty
+   * @param tandem
+   * @param [providedOptions]
    */
   constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, acSource: ACVoltage,
                viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: Partial<ACVoltageNodeOptions> ) {

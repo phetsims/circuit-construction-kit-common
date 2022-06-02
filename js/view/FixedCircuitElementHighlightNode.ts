@@ -16,9 +16,6 @@ const CORNER_RADIUS = 8; // in view coordinates
 
 export default class FixedCircuitElementHighlightNode extends Rectangle {
 
-  /**
-   * @param {FixedCircuitElementNode} fixedCircuitElementNode
-   */
   constructor( fixedCircuitElementNode: FixedCircuitElementNode ) {
 
     super( 0, 0, 0, 0,

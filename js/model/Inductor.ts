@@ -33,10 +33,10 @@ export default class Inductor extends DynamicCircuitElement {
   static INDUCTANCE_NUMBER_OF_DECIMAL_PLACES = CCKCQueryParameters.inductorNumberDecimalPlaces;
 
   /**
-   * @param {Vertex} startVertex
-   * @param {Vertex} endVertex
-   * @param {Tandem} tandem
-   * @param {Object} [providedOptions]
+   * @param startVertex
+   * @param endVertex
+   * @param tandem
+   * @param [providedOptions]
    */
   constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: Partial<InductorOptions> ) {
     const options = merge( {

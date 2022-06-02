@@ -41,8 +41,8 @@ const colorTable: Entry[] = [
 
 /**
  * Gets the color table entry for the specified column in the colorTable
- * @param {string} keyName - the name of the key, such as 'significantFigure'|'multiplier'|'tolerance'
- * @param {string|number|null} value - the value to search for
+ * @param keyName - the name of the key, such as 'significantFigure'|'multiplier'|'tolerance'
+ * @param value - the value to search for
  * @returns entry from the color table, see above
  */
 // @ts-ignore
@@ -52,7 +52,7 @@ const ResistorColors = {
 
   /**
    * Get the color table entries for the specified resistance.
-   * @param {number} resistance
+   * @param resistance
    * @returns entries from the color table
    */
   getEntries: function( resistance: number ) {

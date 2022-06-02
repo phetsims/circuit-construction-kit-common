@@ -26,12 +26,12 @@ export default class DogNode extends ResistorNode {
   private readonly boundsListener: () => void;
 
   /**
-   * @param {CCKCScreenView|null} screenView - main screen view, null for isIcon
-   * @param {CircuitLayerNode|null} circuitLayerNode, null for isIcon
-   * @param {Dog} dog
-   * @param {Property.<CircuitElementViewType>} viewTypeProperty
-   * @param {Tandem} tandem
-   * @param {Object} [providedOptions]
+   * @param screenView - main screen view, null for isIcon
+   * @param circuitLayerNode, null for isIcon
+   * @param dog
+   * @param viewTypeProperty
+   * @param tandem
+   * @param [providedOptions]
    */
   constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, dog: Dog,
                viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: any ) {

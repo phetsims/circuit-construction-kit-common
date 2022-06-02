@@ -78,12 +78,12 @@ export default class CCKCChartNode extends Node {
   protected readonly updatePen: () => void;
 
   /**
-   * @param {CircuitLayerNode} circuitLayerNode
-   * @param {Property.<number>} timeProperty
-   * @param {Property.<Bounds2>} visibleBoundsProperty
-   * @param {ObservableArrayDef.<Vector2|null>} series
-   * @param {string} verticalAxisLabel
-   * @param {Object} [providedOptions]
+   * @param circuitLayerNode
+   * @param timeProperty
+   * @param visibleBoundsProperty
+   * @param series
+   * @param verticalAxisLabel
+   * @param [providedOptions]
    */
   constructor( circuitLayerNode: CircuitLayerNode, timeProperty: Property<number>, visibleBoundsProperty: Property<Bounds2>,
                series: ObservableArray<Vector2 | null>, verticalAxisLabel: string, providedOptions?: Partial<CCKCChartNodeOptions> ) {
@@ -358,12 +358,12 @@ export default class CCKCChartNode extends Node {
   }
 
   /**
-   * @param {Color|string} color
-   * @param {Color|string} wireColor
-   * @param {number} dx - initial relative x coordinate for the probe
-   * @param {number} dy - initial relative y coordinate for the probe
-   * @param {Property.<Vector2>} connectionProperty
-   * @param {Tandem} tandem
+   * @param color
+   * @param wireColor
+   * @param dx - initial relative x coordinate for the probe
+   * @param dy - initial relative y coordinate for the probe
+   * @param connectionProperty
+   * @param tandem
    */
   protected addProbeNode( color: string, wireColor: string, dx: number, dy: number, connectionProperty: IReadOnlyProperty<Vector2>, tandem: Tandem ): CCKCProbeNode {
     const probeNode = new CCKCProbeNode( this, this.visibleBoundsProperty, { color: color, tandem: tandem } );

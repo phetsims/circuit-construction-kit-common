@@ -76,12 +76,12 @@ export default class ResistorNode extends FixedCircuitElementNode {
   private readonly disposeResistorNode: () => void;
 
   /**
-   * @param {CCKCScreenView|null} screenView - main screen view, null for isIcon
-   * @param {CircuitLayerNode|null} circuitLayerNode, null for isIcon
-   * @param {Resistor} resistor
-   * @param {Property.<CircuitElementViewType>} viewTypeProperty
-   * @param {Tandem} tandem
-   * @param {Object} [providedOptions]
+   * @param screenView - main screen view, null for isIcon
+   * @param circuitLayerNode, null for isIcon
+   * @param resistor
+   * @param viewTypeProperty
+   * @param tandem
+   * @param [providedOptions]
    */
   constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, resistor: Resistor,
                viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: Partial<FixedCircuitElementNodeOptions> ) {
@@ -116,7 +116,6 @@ export default class ResistorNode extends FixedCircuitElementNode {
 
       /**
        * When the resistance changes, update the colors of the color bands.
-       * @param {number} resistance
        */
       updateColorBands = ( resistance: number ) => {
         const colors = ResistorColors.getColorArray( resistance );

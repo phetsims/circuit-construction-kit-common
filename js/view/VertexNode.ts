@@ -62,9 +62,9 @@ export default class VertexNode extends Node {
   static webglSpriteNodes: Node[];
 
   /**
-   * @param {CircuitLayerNode} circuitLayerNode - the entire CircuitLayerNode
-   * @param {Vertex} vertex - the Vertex that will be displayed
-   * @param {Tandem} tandem
+   * @param circuitLayerNode - the entire CircuitLayerNode
+   * @param vertex - the Vertex that will be displayed
+   * @param tandem
    */
   constructor( circuitLayerNode: CircuitLayerNode, vertex: Vertex, tandem: Tandem ) {
 
@@ -279,7 +279,7 @@ export default class VertexNode extends Node {
   }
 
   /**
-   * @param {SceneryEvent} event - scenery keyboard event
+   * @param event - scenery keyboard event
    */
   private keydownListener( event: any ): void {
     const domEvent = event.domEvent;
@@ -400,7 +400,6 @@ export default class VertexNode extends Node {
 
   /**
    * Sets whether the node is draggable, used as a callback for interrupting the drag listener
-   * @param {boolean} draggable
    */
   private setDraggable( draggable: boolean ): void {
     if ( !draggable ) {

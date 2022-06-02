@@ -20,9 +20,9 @@ const animationSpeedLimitReachedString = circuitConstructionKitCommonStrings.ani
 export default class ChargeSpeedThrottlingReadoutNode extends Text {
 
   /**
-   * @param {Property.<number>} timeScaleProperty - the fractional rate of time passage (1.0 = full speed)
-   * @param {Property.<boolean>} showCurrentProperty - true if currents are visible
-   * @param {Property.<boolean>} isValueDepictionEnabledProperty - true if the explore screen is running
+   * @param timeScaleProperty - the fractional rate of time passage (1.0 = full speed)
+   * @param showCurrentProperty - true if currents are visible
+   * @param isValueDepictionEnabledProperty - true if the explore screen is running
    */
   constructor( timeScaleProperty: Property<number>, showCurrentProperty: Property<boolean>, isValueDepictionEnabledProperty: Property<boolean> ) {
     super( animationSpeedLimitReachedString, {

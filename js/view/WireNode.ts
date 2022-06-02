@@ -55,8 +55,8 @@ const SCHEMATIC_BACKGROUND = new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
 /**
  * Create a LinearGradient for the wire, depending on the orientation relative to the shading (light comes from
  * top left)
- * @param {Object[]} colorStops - entries have point: Number, color: Color
- * @param {function} colorStopPointMap - (Vector2) => number, the operation to apply to create color stops
+ * @param colorStops - entries have point: Number, color: Color
+ * @param colorStopPointMap - (Vector2) => number, the operation to apply to create color stops
  */
 const createGradient = ( colorStops: any[], colorStopPointMap: ( n: number ) => number ) => {
   const gradient = new LinearGradient( 0, -LIFELIKE_LINE_WIDTH / 2, 0, LIFELIKE_LINE_WIDTH / 2 );
@@ -108,7 +108,6 @@ const TOUCH_AREA_LINE_STYLES = new LineStyles( {
 
 /**
  * Convenience function that gets the stroked shape for the wire line node with the given style
- * @param {Wire} wire
  */
 const getHighlightStrokedShape = ( wire: Wire ) => {
   const startPoint = wire.startPositionProperty.get();
@@ -119,7 +118,6 @@ const getHighlightStrokedShape = ( wire: Wire ) => {
 
 /**
  * Convenience function that gets the stroked shape for the wire line node with the given style
- * @param {Wire} wire
  */
 const getTouchArea = ( wire: Wire ) => {
   const startPoint = wire.startPositionProperty.get();
@@ -158,12 +156,12 @@ export default class WireNode extends CircuitElementNode {
   static webglSpriteNodes: Node[];
 
   /**
-   * @param {CCKCScreenView} screenView - the icon is created separately in CircuitElementToolFactory, so (unlike
+   * @param screenView - the icon is created separately in CircuitElementToolFactory, so (unlike
    *                                    - other CircuitElement types) the screenView is required
-   * @param {CircuitLayerNode|null} circuitLayerNode
-   * @param {Wire} wire
-   * @param {Property.<CircuitElementViewType>} viewTypeProperty
-   * @param {Tandem} tandem
+   * @param circuitLayerNode
+   * @param wire
+   * @param viewTypeProperty
+   * @param tandem
    */
   constructor( screenView: CCKCScreenView, circuitLayerNode: CircuitLayerNode | null, wire: Wire, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem ) {
 
@@ -238,7 +236,6 @@ export default class WireNode extends CircuitElementNode {
 
     /**
      * Update whether the WireNode is pickable
-     * @param {boolean} interactive
      */
     const updatePickable = ( interactive: boolean ) => {
       this.pickable = interactive;

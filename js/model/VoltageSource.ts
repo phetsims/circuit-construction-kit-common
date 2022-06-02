@@ -44,12 +44,12 @@ export default abstract class VoltageSource extends FixedCircuitElement {
   powerGeneratedProperty: IReadOnlyProperty<number>;
 
   /**
-   * @param {Vertex} startVertex - one of the battery vertices
-   * @param {Vertex} endVertex - the other battery vertex
-   * @param {Property.<number>} internalResistanceProperty - the resistance of the battery
-   * @param {number} length - the length of the battery in view coordinates
-   * @param {Tandem} tandem
-   * @param {Object} [providedOptions]
+   * @param startVertex - one of the battery vertices
+   * @param endVertex - the other battery vertex
+   * @param internalResistanceProperty - the resistance of the battery
+   * @param length - the length of the battery in view coordinates
+   * @param tandem
+   * @param [providedOptions]
    */
   constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, length: number, tandem: Tandem, providedOptions?: VoltageSourceOptions ) {
     assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );

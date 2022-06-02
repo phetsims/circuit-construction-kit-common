@@ -33,10 +33,6 @@ export default class SolderNode extends Node {
   // radius of solder in model=view coordinates, for hit testing with probes
   static SOLDER_RADIUS: number;
 
-  /**
-   * @param {CircuitLayerNode} circuitLayerNode
-   * @param {Vertex} vertex
-   */
   constructor( circuitLayerNode: CircuitLayerNode, vertex: Vertex ) {
     assert && assert( CIRCLE_NODE, 'solder image should exist before creating SolderNode' );
 

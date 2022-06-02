@@ -45,11 +45,11 @@ type SegmentedNode = {
   rotatingSegmentNode: Node;
 } & Node;
 /**
- * @param {CircuitElementViewType} viewType
- * @param {Color|string|LinearGradient} fill
- * @param {number} thickness
- * @param {number} curveDiameter - the diameter of the circles in the slots
- * @param {boolean} closed - whether the switch is closed
+ * @param viewType
+ * @param fill
+ * @param thickness
+ * @param curveDiameter - the diameter of the circles in the slots
+ * @param closed - whether the switch is closed
  * @returns - with leftSegmentNode, rotatingSegmentNode and rightSegmentNode properties (also {Node})
  */
 const createNode = function( viewType: CircuitElementViewType, fill: Gradient | Color, thickness: number, curveDiameter: number, closed: boolean ) {
@@ -160,12 +160,12 @@ export default class SwitchNode extends FixedCircuitElementNode {
   private readonly disposeSwitchNode: () => void;
 
   /**
-   * @param {CCKCScreenView|null} screenView - main screen view, null for icon
-   * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
-   * @param {Switch} circuitSwitch
-   * @param {Property.<CircuitElementViewType>} viewTypeProperty
-   * @param {Tandem} tandem
-   * @param {Object} [providedOptions]
+   * @param screenView - main screen view, null for icon
+   * @param circuitLayerNode, null for icon
+   * @param circuitSwitch
+   * @param viewTypeProperty
+   * @param tandem
+   * @param [providedOptions]
    */
   constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, circuitSwitch: Switch,
                viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: Partial<FixedCircuitElementNodeOptions> ) {

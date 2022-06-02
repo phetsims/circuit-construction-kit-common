@@ -25,11 +25,11 @@ const TEXT_BOX_WIDTH = 140;
 export default class ProbeTextNode extends VBox {
 
   /**
-   * @param {Property.<string>} textProperty - the text that should be displayed
-   * @param {Property.<boolean>} showResultsProperty - true if the text should be displayed
-   * @param {string} title - the title
-   * @param {Tandem} tandem
-   * @param {Object} [providedOptions]
+   * @param textProperty - the text that should be displayed
+   * @param showResultsProperty - true if the text should be displayed
+   * @param title - the title
+   * @param tandem
+   * @param [providedOptions]
    */
   constructor( textProperty: IReadOnlyProperty<string>, showResultsProperty: Property<boolean>, title: string, tandem: Tandem,
                providedOptions?: any ) {

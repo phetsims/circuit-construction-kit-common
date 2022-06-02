@@ -45,12 +45,12 @@ export default class FuseNode extends FixedCircuitElementNode {
   private readonly disposeFuseNode: () => void;
 
   /**
-   * @param {CCKCScreenView|null} screenView - main screen view, null for isIcon
-   * @param {CircuitLayerNode|null} circuitLayerNode, null for isIcon
-   * @param {Fuse} fuse
-   * @param {Property.<CircuitElementViewType>} viewTypeProperty
-   * @param {Tandem} tandem
-   * @param {Object} [options]
+   * @param screenView - main screen view, null for isIcon
+   * @param circuitLayerNode, null for isIcon
+   * @param fuse
+   * @param viewTypeProperty
+   * @param tandem
+   * @param [options]
    */
   constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, fuse: Fuse,
                viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, options?: any ) {

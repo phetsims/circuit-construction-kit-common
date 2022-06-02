@@ -41,11 +41,11 @@ export default class Resistor extends FixedCircuitElement {
   private readonly powerDissipatedProperty: PowerDissipatedProperty;
 
   /**
-   * @param {Vertex} startVertex
-   * @param {Vertex} endVertex
-   * @param {Resistor.ResistorType} resistorType
-   * @param {Tandem} tandem
-   * @param {Object} [providedOptions]
+   * @param startVertex
+   * @param endVertex
+   * @param resistorType
+   * @param tandem
+   * @param [providedOptions]
    */
   constructor( startVertex: Vertex, endVertex: Vertex, resistorType: any, tandem: Tandem, providedOptions?: ResistorOptions ) {
     const options = optionize<ResistorOptions, SelfOptions, FixedCircuitElementOptions>()( {
