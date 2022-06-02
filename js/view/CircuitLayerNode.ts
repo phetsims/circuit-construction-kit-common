@@ -576,7 +576,7 @@ export default class CircuitLayerNode extends Node {
   /**
    * Finds the closest drop target for any of the given vertices
    * @param {Vertex[]} vertices
-   * @returns {Object|null} Object that indicates the two vertices best suited for connecting as { src: Vertex, dst: Vertex },
+   * @returns Object that indicates the two vertices best suited for connecting as { src: Vertex, dst: Vertex },
    *                        or null if no match is suitable.
    */
   private getBestDropTarget( vertices: Vertex[] ): { src: Vertex; dst: Vertex } | null {
@@ -920,7 +920,7 @@ export default class CircuitLayerNode extends Node {
    * Find where the voltmeter probe node intersects the wire, for computing the voltage difference to display in the
    * voltmeter.
    * @param {Vector2} probePosition - in the local coordinate frame of the CircuitLayerNode
-   * @returns {VoltageConnection|null} returns VoltageConnection if connected, otherwise null
+   * @returns VoltageConnection if connected, otherwise null
    */
   getVoltageConnection( probePosition: Vector2 ): VoltageConnection | null {
 
@@ -1002,7 +1002,6 @@ export default class CircuitLayerNode extends Node {
    * Find the current in the given layer (if any CircuitElement hits the sensor)
    * @param {Node} probeNode
    * @param {Node} layer
-   * @returns {number|null}
    */
   private getCurrentInLayer( probeNode: Node, layer: Node ): number | null {
 

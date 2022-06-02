@@ -226,7 +226,6 @@ export default abstract class CircuitElement extends PhetioObject {
 
   /**
    * Determine the voltage difference between end vertex and start vertex
-   * @returns {number}
    */
   private computeVoltageDifference(): number {
     return this.endVertexProperty.value.voltageProperty.value -

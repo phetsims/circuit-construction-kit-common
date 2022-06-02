@@ -53,7 +53,6 @@ const LIFELIKE_LINE_WIDTH = 2;
 
 /**
  * @param {boolean} schematic - whether to show the schematic (instead of lifelike) form
- * @returns {Node}
  */
 const createNode = ( schematic: boolean ) => new Node( {
   x: CCKCConstants.AC_VOLTAGE_LENGTH / 2,

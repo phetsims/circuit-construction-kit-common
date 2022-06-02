@@ -53,7 +53,6 @@ const INNER_RADIUS = 5;
  * Determine the brightness for a given power
  * @param {number} multiplier - steepness of the function
  * @param {number} power - the power through the light bulb
- * @returns {number}
  */
 const toBrightness = ( multiplier: number, power: number ) => {
   const maximumBrightness = 1;

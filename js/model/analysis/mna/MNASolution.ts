@@ -76,7 +76,6 @@ export default class MNASolution {
   /**
    * Returns true if this solution has an element that matches the provided element.
    * @param {Object} element
-   * @returns {boolean}
    */
   private hasMatchingElement( element: MNACircuitElement ): boolean {
     const elements = Array.from( this.elements.keys() );
@@ -117,7 +116,7 @@ export default class MNASolution {
   /**
    * Returns the voltage across a circuit element.
    * @param {Object} element - a circuit element with {nodeId1:{number},node2:{number}}
-   * @returns {number} - the voltage
+   * @returns - the voltage
    */
   private getVoltage( element: MNACircuitElement ): number {
     const voltage = this.nodeVoltages.get( element.nodeId1 )! - this.nodeVoltages.get( element.nodeId0 )!;
@@ -131,7 +130,7 @@ export default class MNASolution {
  *
  * @param {number} a - a number
  * @param {number} b - another number
- * @returns {boolean} true if the numbers are approximately equal
+ * @returns true if the numbers are approximately equal
  */
 const approximatelyEquals = ( a: number, b: number ) => Math.abs( a - b ) < 1E-4;
 

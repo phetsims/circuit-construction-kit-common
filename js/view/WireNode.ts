@@ -57,7 +57,6 @@ const SCHEMATIC_BACKGROUND = new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
  * top left)
  * @param {Object[]} colorStops - entries have point: Number, color: Color
  * @param {function} colorStopPointMap - (Vector2) => number, the operation to apply to create color stops
- * @returns {LinearGradient}
  */
 const createGradient = ( colorStops: any[], colorStopPointMap: ( n: number ) => number ) => {
   const gradient = new LinearGradient( 0, -LIFELIKE_LINE_WIDTH / 2, 0, LIFELIKE_LINE_WIDTH / 2 );
@@ -110,7 +109,6 @@ const TOUCH_AREA_LINE_STYLES = new LineStyles( {
 /**
  * Convenience function that gets the stroked shape for the wire line node with the given style
  * @param {Wire} wire
- * @returns {Shape}
  */
 const getHighlightStrokedShape = ( wire: Wire ) => {
   const startPoint = wire.startPositionProperty.get();
@@ -122,7 +120,6 @@ const getHighlightStrokedShape = ( wire: Wire ) => {
 /**
  * Convenience function that gets the stroked shape for the wire line node with the given style
  * @param {Wire} wire
- * @returns {Shape}
  */
 const getTouchArea = ( wire: Wire ) => {
   const startPoint = wire.startPositionProperty.get();

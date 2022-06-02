@@ -114,7 +114,6 @@ export default class CircuitElementToolFactory {
    *                                 - for most components it is the center of the component.  For Light Bulbs, it is
    *                                 - in the center of the socket
    * @param {Object} [providedOptions]
-   * @returns {CircuitElementToolNode}
    */
   private createCircuitElementToolNode( labelString: string, count: number, createIcon: ( t: Tandem, p: Property<CircuitElementViewType> ) => Node,
                                         predicate: ( circuitElement: CircuitElement ) => boolean, createElement: any, providedOptions?: any ): CircuitElementToolNode {
@@ -168,7 +167,7 @@ export default class CircuitElementToolFactory {
   /**
    * Returns a function which counts the number of circuit elements (not counting those in the true black box).
    * @param {function} predicate - CircuitElement => boolean
-   * @returns {function} a no-arg function that returns the {number} of CircuitElements of the specified type
+   * @returns - a no-arg function that returns the {number} of CircuitElements of the specified type
    */
   private createCounter( predicate: ( c: CircuitElement ) => boolean ): () => number {
     return () =>

@@ -43,7 +43,7 @@ const colorTable: Entry[] = [
  * Gets the color table entry for the specified column in the colorTable
  * @param {string} keyName - the name of the key, such as 'significantFigure'|'multiplier'|'tolerance'
  * @param {string|number|null} value - the value to search for
- * @returns {Object} - entry from the color table, see above
+ * @returns entry from the color table, see above
  */
 // @ts-ignore
 const getEntry = ( keyName: string, value: string | number | null ) => _.find( colorTable, colorTableEntry => colorTableEntry[ keyName ] === value );
@@ -53,7 +53,7 @@ const ResistorColors = {
   /**
    * Get the color table entries for the specified resistance.
    * @param {number} resistance
-   * @returns {Object[]} entries from the color table
+   * @returns entries from the color table
    */
   getEntries: function( resistance: number ) {
     assert && assert( resistance >= 0, 'resistance should be non-negative' );

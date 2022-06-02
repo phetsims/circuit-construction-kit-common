@@ -60,7 +60,6 @@ export default class ViewRadioButtonGroup extends RectangularRadioButtonGroup<Ci
      *
      * @param {CircuitElementViewType} view
      * @param {Tandem} tandem
-     * @returns {BatteryNode}
      */
     const createBatteryNode = ( view: CircuitElementViewType, tandem: Tandem ) => new BatteryNode( null, null, battery, new Property( view ), tandem, {
       isIcon: true,

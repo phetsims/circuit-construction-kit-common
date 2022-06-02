@@ -251,7 +251,6 @@ export default class ChargeAnimator {
    * @param {number} overshoot - the distance the charge should appear along the next circuit element
    * @param {Vertex} vertex - vertex the charge is passing by
    * @param {number} depth - number of recursive calls
-   * @returns {Object[]}
    */
   private getPositions( charge: Charge, overshoot: number, vertex: Vertex, depth: number ): CircuitElementPosition[] {
 

@@ -39,7 +39,6 @@ const HIGHLIGHT_PADDING = 10; // in view coordinates
  * Determine whether fire should be shown on the circuit element.
  * @param {number} current - in amps
  * @param {boolean} isValueDepictionEnabled - whether values are shown
- * @returns {boolean}
  */
 const isFireShown = ( current: number, isValueDepictionEnabled: boolean ) =>
   Math.abs( current ) >= FIRE_THRESHOLD && isValueDepictionEnabled;

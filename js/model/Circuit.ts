@@ -503,7 +503,7 @@ export default class Circuit {
    * Create a pair of vertices to be used for a new CircuitElement
    * @param {Vector2} position - the position of the center of the CircuitElement
    * @param {number} length - the distance between the vertices
-   * @returns {Vertex[]} with 2 elements
+   * @returns with 2 elements
    */
   createVertexPairArray( position: Vector2, length: number ): [ Vertex, Vertex ] {
     return [
@@ -515,7 +515,6 @@ export default class Circuit {
   /**
    * Create a Vertex at the specified position, convenience function for creating the vertices for CircuitElements.
    * @param {Vector2} position - the position of the Vertex in view = model coordinates
-   * @returns {Vertex}
    */
   private createVertex( position: Vector2 ): Vertex {
     return this.vertexGroup.createNextElement( position );
@@ -610,8 +609,8 @@ export default class Circuit {
 
   /**
    * Determine the distance to the closest Vertex
-   * @param {Vertex} vertex
-   * @returns {number} - distance to nearest other Vertex in view coordinates
+   * @param vertex
+   * @returns - distance to nearest other Vertex in view coordinates
    */
   private closestDistanceToOtherVertex( vertex: Vertex ): number | null {
     let closestDistance = null;
@@ -679,7 +678,6 @@ export default class Circuit {
 
     /**
      * Function that identifies where vertices would go if pulled toward their neighbors
-     * @returns {Vector2[]}
      */
     const getTranslations = () => {
       return neighborCircuitElements.map( circuitElement => {
@@ -775,7 +773,6 @@ export default class Circuit {
   /**
    * Returns true if the given vertex has a fixed connection to a black box interface vertex.
    * @param {Vertex} vertex
-   * @returns {boolean}
    */
   private hasFixedConnectionToBlackBoxInterfaceVertex( vertex: Vertex ): boolean {
     const fixedVertices = this.findAllFixedVertices( vertex );
@@ -807,7 +804,6 @@ export default class Circuit {
   /**
    * Get all of the CircuitElements that contain the given Vertex.
    * @param {Vertex} vertex
-   * @returns {CircuitElement[]}
    */
   getNeighborCircuitElements( vertex: Vertex ): CircuitElement[] {
     return this.circuitElements.filter( circuitElement => circuitElement.containsVertex( vertex ) );
@@ -826,7 +822,6 @@ export default class Circuit {
    * @param {VoltageConnection} redConnection
    * @param {VoltageConnection} blackConnection
    * @param {boolean} revealing - whether the black box is in "reveal" model
-   * @returns {number|null}
    */
   getVoltageBetweenConnections( redConnection: VoltageConnection | null, blackConnection: VoltageConnection | null, revealing: boolean ): number | null {
 
@@ -990,7 +985,6 @@ export default class Circuit {
    * to be the start/end of a single CircuitElement
    * @param {Vertex} a
    * @param {Vertex} b
-   * @returns {boolean}
    */
   private isVertexAdjacent( a: Vertex, b: Vertex ): boolean {
 
@@ -1006,7 +1000,6 @@ export default class Circuit {
    * Find the neighbor vertices within the given group of circuit elements
    * @param {Vertex} vertex
    * @param {CircuitElement[]} circuitElements - the group of CircuitElements within which to look for neighbors
-   * @returns {Vertex[]}
    */
   private getNeighborVerticesInGroup( vertex: Vertex, circuitElements: CircuitElement[] ): Vertex[] {
     const neighbors = [];
@@ -1022,7 +1015,6 @@ export default class Circuit {
   /**
    * Get an array of all the vertices adjacent to the specified Vertex.
    * @param {Vertex} vertex - the vertex to get neighbors for
-   * @returns {Vertex[]}
    */
   getNeighboringVertices( vertex: Vertex ): Vertex[] {
     const neighborCircuitElements = this.getNeighborCircuitElements( vertex );
@@ -1181,7 +1173,6 @@ export default class Circuit {
    * @param {Vertex} vertex
    * @param {function} okToVisit - (startVertex:Vertex,circuitElement:CircuitElement,endVertex:Vertex)=>boolean, rule
    *                             - that determines which vertices are OK to visit
-   * @returns {Vertex[]}
    */
   private searchVertices( vertex: Vertex, okToVisit: ( a: Vertex, c: CircuitElement, b: Vertex ) => boolean ): Vertex[] {
 

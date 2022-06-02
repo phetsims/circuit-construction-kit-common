@@ -364,7 +364,6 @@ export default class CCKCChartNode extends Node {
    * @param {number} dy - initial relative y coordinate for the probe
    * @param {Property.<Vector2>} connectionProperty
    * @param {Tandem} tandem
-   * @returns {CCKCProbeNode}
    */
   protected addProbeNode( color: string, wireColor: string, dx: number, dy: number, connectionProperty: IReadOnlyProperty<Vector2>, tandem: Tandem ): CCKCProbeNode {
     const probeNode = new CCKCProbeNode( this, this.visibleBoundsProperty, { color: color, tandem: tandem } );

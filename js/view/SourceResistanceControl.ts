@@ -37,7 +37,6 @@ export default class SourceResistanceControl extends VBox {
      * Creates label to be used for slider
      * @param {string} string
      * @param {Tandem} tandem
-     * @returns {Text}
      */
     const createLabel = ( string: string, tandem: Tandem ) => new Text( string, {
       fontSize: 12,

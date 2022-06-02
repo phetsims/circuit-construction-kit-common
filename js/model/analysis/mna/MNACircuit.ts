@@ -65,7 +65,6 @@ export default class MNACircuit {
 
   /**
    * Returns a string representation of the circuit for debugging.
-   * @returns {string}
    */
   toString(): string {
     if ( assert ) { // stripped out for builds
@@ -81,7 +80,6 @@ export default class MNACircuit {
   /**
    * Counts the number of unknown currents in the circuit.  There is an unknown current in each battery and
    * 0-resistance resistor.
-   * @returns {number}
    */
   private getCurrentCount(): number {
     let numberOfResistanceFreeResistors = 0;
@@ -95,7 +93,6 @@ export default class MNACircuit {
 
   /**
    * Gets the number of variables for the system, one for each voltage and one for each current.
-   * @returns {number}
    */
   private getNumVars(): number {
     return this.nodeCount + this.getCurrentCount();
@@ -105,7 +102,6 @@ export default class MNACircuit {
    * Sums all of the current leaving the node (subtracting current flowing into the node).
    *
    * @param {number} nodeIndex - the node at which to compute current sources
-   * @returns {number}
    */
   private getCurrentSourceTotal( nodeIndex: string ): number {
     let currentSourceTotal = 0.0;
@@ -166,7 +162,7 @@ export default class MNACircuit {
 
   /**
    * Selects one node for each connected component to have the reference voltage of 0 volts.
-   * @returns {number[]} - the node IDs selected for references
+   * @returns the node IDs selected for references
    */
   private getReferenceNodeIds(): string[] {
 
@@ -192,7 +188,6 @@ export default class MNACircuit {
   /**
    * Finds all nodes connected (by any path) to the given node
    * @param {string} node
-   * @returns {string[]}
    */
   private getConnectedNodeIds( node: string ): string[] {
     const visited = [];
@@ -219,7 +214,6 @@ export default class MNACircuit {
   /**
    * Returns an array of Equation instances that will be solved as a linear algebra problem to find the unknown
    * variables of the circuit.
-   * @returns {Equation[]}
    */
   private getEquations(): Equation[] {
     const equations = [];
@@ -270,7 +264,6 @@ export default class MNACircuit {
 
   /**
    * Gets an array of the unknown currents in the circuit.
-   * @returns {Array}
    */
   private getUnknownCurrents(): UnknownCurrent[] {
     const unknownCurrents: UnknownCurrent[] = [];
@@ -364,7 +357,7 @@ circuitConstructionKitCommon.register( 'MNACircuit', MNACircuit );
  * lodash
  * @param {Array} array
  * @param {Object} element
- * @returns {number} the index or -1 if not found
+ * @returns the index or -1 if not found
  */
 const getIndexByEquals = ( array: Array<any>, element: any ) => {
   for ( let i = 0; i < array.length; i++ ) {
@@ -378,7 +371,6 @@ const getIndexByEquals = ( array: Array<any>, element: any ) => {
 /**
  * For debugging, display a Resistor as a string
  * @param {Resistor} resistor
- * @returns {string}
  */
 const resistorToString = ( resistor: MNAResistor ) =>
   `node${resistor.nodeId0} -> node${resistor.nodeId1} @ ${resistor.resistance} Ohms`;
@@ -386,7 +378,6 @@ const resistorToString = ( resistor: MNAResistor ) =>
 /**
  * For debugging, display a Battery as a string
  * @param {Battery} battery
- * @returns {string}
  */
 const batteryToString = ( battery: MNABattery ) =>
   `node${battery.nodeId0} -> node${battery.nodeId1} @ ${battery.voltage} Volts`;

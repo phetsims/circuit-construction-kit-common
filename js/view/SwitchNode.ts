@@ -50,7 +50,7 @@ type SegmentedNode = {
  * @param {number} thickness
  * @param {number} curveDiameter - the diameter of the circles in the slots
  * @param {boolean} closed - whether the switch is closed
- * @returns {Node} with leftSegmentNode, rotatingSegmentNode and rightSegmentNode properties (also {Node})
+ * @returns - with leftSegmentNode, rotatingSegmentNode and rightSegmentNode properties (also {Node})
  */
 const createNode = function( viewType: CircuitElementViewType, fill: Gradient | Color, thickness: number, curveDiameter: number, closed: boolean ) {
   const edgeRadius = thickness / 2;

@@ -34,7 +34,6 @@ export default class CircuitLayerNodeDragListener extends DragListener {
    * @param [targetNode] - If provided, will take the place of the targetNode for this call. Useful for
    *                              forwarded presses.
    * @param [callback] - to be run at the end of the function, but only on success
-   * @returns {boolean}
    */
   // @ts-ignore
   press( event: SceneryEvent, targetNode: Node | undefined, callback: () => void ): boolean {

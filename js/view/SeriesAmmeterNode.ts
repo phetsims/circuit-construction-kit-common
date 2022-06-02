@@ -44,7 +44,6 @@ const CORNER_RADIUS = 4;
  * Utility function for creating a panel for the sensor body
  * Rasterize so it can be rendered in WebGL, see https://github.com/phetsims/circuit-construction-kit-dc/issues/67
  * @param {Object} [providedOptions]
- * @returns {Rectangle}
  */
 const createPanel = ( providedOptions?: any ) => new Rectangle( 0, 0, PANEL_WIDTH, PANEL_HEIGHT, providedOptions ).rasterized( { wrap: false } );
 

@@ -188,7 +188,6 @@ export default class VoltmeterNode extends Node {
      * @param {Node} probeNode
      * @param {Vector2Property} probePositionProperty
      * @param {number} sign
-     * @returns {function}
      */
     const probeMovedCallback = ( probeNode: Node, probePositionProperty: Vector2Property, sign: number ) => {
       return ( probePosition: Vector2 ) => {
@@ -233,7 +232,6 @@ export default class VoltmeterNode extends Node {
        * Gets a drag handler for one of the probes.
        * @param {Property.<Vector2>} positionProperty
        * @param {Tandem} tandem
-       * @returns {MovableDragHandler}
        */
       const createProbeDragListener = ( positionProperty: Vector2Property, tandem: Tandem ) => {
         const probeDragListener = new DragListener( {
@@ -289,7 +287,7 @@ export default class VoltmeterNode extends Node {
        * @param {Node} probeNode
        * @param {Vector2} probeTip
        * @param {number} sign - the direction the probe is rotated
-       * @returns {VoltageConnection|null} if connected returns VoltageConnection otherwise null
+       * @returns - if connected returns VoltageConnection otherwise null
        */
       const findConnection = ( probeNode: Node, probeTip: Vector2, sign: number ) => {
         const probeTipVector = Vector2.createPolar( VOLTMETER_PROBE_TIP_LENGTH, sign * VoltmeterNode.PROBE_ANGLE + Math.PI / 2 );
