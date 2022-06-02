@@ -217,7 +217,6 @@ export default class VoltmeterNode extends Node {
       ]
     } );
 
-    // @private {CircuitLayerNode}
     this.circuitLayerNode = circuitLayerNode;
 
     this.voltmeter = voltmeter;

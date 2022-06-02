@@ -190,7 +190,6 @@ export default class WireNode extends CircuitElementNode {
     // the rounded caps for the lifelike view
     const lineNode = new Node();
 
-    // @private
     const lineNodeParent = new Node( {
       children: [ lineNode ],
       cursor: 'pointer'
@@ -211,15 +210,12 @@ export default class WireNode extends CircuitElementNode {
       tandem: tandem
     } );
 
-    // @private {Property.<CircuitElementViewType>}
     this.viewTypeProperty = viewTypeProperty;
 
-    // @private {CircuitLayerNode}
     this.circuitLayerNode = circuitLayerNode;
 
     this.wire = wire;
 
-    // @private {Node}
     this.startCapParent = startCapParent;
     this.endCapParent = endCapParent;
     this.lineNodeParent = lineNodeParent;
@@ -272,7 +268,7 @@ export default class WireNode extends CircuitElementNode {
 
       assert && assert( circuitLayerNode !== null );
 
-      // @private - Input listener for dragging the body of the wire, to translate it.
+      // Input listener for dragging the body of the wire, to translate it.
       this.dragListener = new CircuitLayerNodeDragListener( circuitLayerNode!, [
         () => wire.startVertexProperty.get(),
         () => wire.endVertexProperty.get()
@@ -329,7 +325,6 @@ export default class WireNode extends CircuitElementNode {
     };
     wire.connectedEmitter.addListener( moveToBack );
 
-    // @private {function} - dispose the wire node
     this.disposeWireNode = () => {
       assert && assert( this.dragListener );
       this.dragListener!.interrupt();

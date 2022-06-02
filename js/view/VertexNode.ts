@@ -81,14 +81,11 @@ export default class VertexNode extends Node {
 
     const circuit = circuitLayerNode.circuit;
 
-    // @private {Circuit}
     this.circuit = circuit;
     const cutButton = circuitLayerNode.cutButton;
 
-    // @private {RoundPushButton}
     this.cutButton = cutButton;
 
-    // @private {CircuitLayerNode}
     this.circuitLayerNode = circuitLayerNode;
 
     this.addLinkedElement( vertex, {
@@ -96,8 +93,7 @@ export default class VertexNode extends Node {
     } );
 
     // Use a query parameter to turn on node voltage readouts for debugging only.
-    // @private {Text} display for debugging only
-
+    // display for debugging only
     const customLabelText = new Text( '', {
       fontSize: 22,
       pickable: false
@@ -119,7 +115,7 @@ export default class VertexNode extends Node {
       maxWidth: 50
     } );
 
-    // @private {function} for debugging
+    // for debugging
     this.updateReadoutTextPosition = () => {
       this.vertexLabelNode.centerX = 0;
       this.vertexLabelNode.bottom = -30;
@@ -146,20 +142,20 @@ export default class VertexNode extends Node {
     this.vertex = vertex;
     this.startOffset = null;
 
-    // @private {Circle} - Highlight is shown when the vertex is selected.
+    // Highlight is shown when the vertex is selected.
     this.highlightNode = new Circle( 30, {
       stroke: CCKCConstants.HIGHLIGHT_COLOR,
       lineWidth: CCKCConstants.HIGHLIGHT_LINE_WIDTH,
       pickable: false
     } );
 
-    // @private - keyboard listener so that delete or backspace deletes the element - must be disposed
+    // keyboard listener so that delete or backspace deletes the element - must be disposed
     this.keyListener = {
       keydown: this.keydownListener.bind( this )
     };
     this.addInputListener( this.keyListener );
 
-    // @private {function} Shows up as red when disconnected or black when connected.  When unattachable, the dotted line disappears (black
+    // Shows up as red when disconnected or black when connected.  When unattachable, the dotted line disappears (black
     // box study)
     this.updateStrokeListener = this.updateStroke.bind( this );
 
@@ -174,16 +170,13 @@ export default class VertexNode extends Node {
 
     vertex.attachableProperty.link( this.updateStrokeListener );
 
-    // @private {function}
     this.updateSelectedListener = this.updateSelected.bind( this );
     vertex.isSelectedProperty.link( this.updateSelectedListener );
     vertex.isCuttableProperty.link( this.updateSelectedListener );
 
-    // @private {function}
     this.updateMoveToFront = this.moveToFront.bind( this );
     vertex.relayerEmitter.addListener( this.updateMoveToFront );
 
-    // @private {function}
     this.updatePickableListener = this.setPickable.bind( this );
     vertex.interactiveProperty.link( this.updatePickableListener );
 
@@ -191,10 +184,9 @@ export default class VertexNode extends Node {
     let latestPoint: Vector2 | null = null;
     let dragged = false;
 
-    // @private {DisplayClickToDismissListener[]} - called when the user clicks away from the selected vertex
+    // called when the user clicks away from the selected vertex
     this.clickToDismissListeners = [];
 
-    // @private {DragListener}
     this.dragListener = new CircuitLayerNodeDragListener( circuitLayerNode, [ () => vertex ], {
       tandem: tandem.createTandem( 'dragListener' ),
       start: ( event: any ) => {
@@ -237,14 +229,14 @@ export default class VertexNode extends Node {
       }
     } );
 
-    // @private {function} When Vertex becomes undraggable, interrupt the input listener
+    // When Vertex becomes undraggable, interrupt the input listener
     this.interruptionListener = this.setDraggable.bind( this );
     vertex.isDraggableProperty.lazyLink( this.interruptionListener );
 
     // Don't permit dragging by the scissors or highlight
     this.addInputListener( this.dragListener );
 
-    // @private {function} - Make sure the cut button remains in the visible screen bounds.
+    // Make sure the cut button remains in the visible screen bounds.
     this.updateVertexNodePositionListener = this.updateVertexNodePosition.bind( this );
     vertex.positionProperty.link( this.updateVertexNodePositionListener );
 

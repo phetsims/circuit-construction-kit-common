@@ -186,7 +186,6 @@ export default class FuseNode extends FixedCircuitElementNode {
       this.fuse.isTrippedProperty.link( updateTripped );
     }
 
-    // @private
     this.disposeFuseNode = () => {
       lifelikeFuseNode.dispose();
       fuse.currentRatingProperty.unlink( updateFilamentPathLineWidth );

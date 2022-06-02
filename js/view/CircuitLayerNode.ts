@@ -127,7 +127,11 @@ export default class CircuitLayerNode extends Node {
 
   // the Circuit model depicted by this view
   readonly circuit: Circuit;
+
+  // Map to find CircuitElement=>CircuitElementNode. key is CircuitElement.id, value is CircuitElementNode
   private readonly circuitElementNodeMap: { [ key: number ]: CircuitElementNode };
+
+  // Map of Vertex.index => SolderNode
   private readonly solderNodes: { [ key: number ]: SolderNode };
 
   // Map of Vertex.index => VertexNode
@@ -281,14 +285,8 @@ export default class CircuitLayerNode extends Node {
     this.visibleBoundsInCircuitCoordinateFrameProperty = new Property( new Bounds2( 0, 0, 1, 1 ) );
 
     this.circuit = circuit;
-
-    // @private {Object} - Map to find CircuitElement=>CircuitElementNode. key is CircuitElement.id, value is
-    // CircuitElementNode
     this.circuitElementNodeMap = {};
-
-    // @private {Object} - Map of Vertex.index => SolderNode
     this.solderNodes = {};
-
     this.vertexNodes = {};
 
     /**

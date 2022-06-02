@@ -270,7 +270,6 @@ export default class ValueNode extends Panel {
     viewTypeProperty.link( update );
     circuitElement.labelTextProperty.link( update );
 
-    // @private {function}
     this.disposeValueNode = () => {
       circuitElement.vertexMovedEmitter.removeListener( update );
       showValuesProperty.unlink( update );

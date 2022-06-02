@@ -35,7 +35,7 @@ export default class Dog extends Resistor {
     // time since last bark, to determine whether the bark has ended
     this.lastBarkTime = 0;
 
-    // @private - When connecting a voltage source (without completing the circuit), there is one frame where there is an unbalanced
+    // When connecting a voltage source (without completing the circuit), there is one frame where there is an unbalanced
     // voltage.  We need to wait until the next frame to see if the voltage difference is sustained.
     this.triggerCount = 0;
   }

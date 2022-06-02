@@ -176,7 +176,7 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
       providedOptions
     );
 
-    // @private {Node} - the panel to be shown in front for z-ordering.  Wrap centered in a child node to make the layout
+    // the panel to be shown in front for z-ordering.  Wrap centered in a child node to make the layout
     // in updateRender trivial.
     this.frontPanelContainer = new Node( {
       children: [ readoutPanel ]
@@ -192,10 +192,9 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
       }
     }
 
-    // @private (read-only) {boolean} - whether to show as an isIcon
+    // whether to show as an isIcon
     this.isIcon = providedOptions.isIcon;
 
-    // @private {function}
     this.disposeSeriesAmmeterNode = () => {
       seriesAmmeter.currentProperty.unlink( updateText );
       seriesAmmeter.startVertexProperty.unlink( updateText );

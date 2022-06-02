@@ -50,15 +50,13 @@ export default class VoltageChartNode extends CCKCChartNode {
 
     super( circuitLayerNode, timeProperty, visibleBoundsProperty, createObservableArray(), voltageWithUnitsString, providedOptions );
 
-    // @private {CCKCProbeNode}
     this.probeNode1 = this.addProbeNode( SERIES_1_COLOR, SERIES_1_COLOR, 5, 10, this.aboveBottomLeft1, providedOptions.tandem.createTandem( 'probeNode1' ) );
     this.probeNode2 = this.addProbeNode( SERIES_2_COLOR, SERIES_2_COLOR, 36, 54, this.aboveBottomLeft2, providedOptions.tandem.createTandem( 'probeNode2' ) );
 
     this.lastStepTime = null;
   }
 
-  // @private
-  sampleValue( time: number ): Vector2 | null {
+  private sampleValue( time: number ): Vector2 | null {
     const redPoint = this.circuitLayerNode.globalToLocalPoint( this.localToGlobalPoint( this.probeNode1.translation ) );
     const blackPoint = this.circuitLayerNode.globalToLocalPoint( this.localToGlobalPoint( this.probeNode2.translation ) );
 

@@ -52,7 +52,7 @@ export type FixedCircuitElementNodeOptions = {
 export default class FixedCircuitElementNode extends CircuitElementNode {
   private readonly lifelikeNode: Node;
   private readonly schematicNode: Node;
-  isIcon: boolean;
+  protected isIcon: boolean;
   private readonly circuitLayerNode: CircuitLayerNode | null;
   protected readonly contentNode: Node;
   private readonly fireNode: Node | null;
@@ -94,10 +94,10 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
       pickable: true
     }, providedOptions ) );
 
-    // @private {Node} shows the lifelike view
+    // shows the lifelike view
     this.lifelikeNode = lifelikeNode;
 
-    // @private {Node} shows the schematic view
+    // shows the schematic view
     this.schematicNode = schematicNode;
 
     const filledOptions = merge( {
@@ -105,10 +105,9 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
       showHighlight: true
     }, providedOptions ) as FixedCircuitElementNodeOptions;
 
-    // @private {boolean} - whether an isIcon is being rendered
+    // whether an isIcon is being rendered
     this.isIcon = filledOptions.isIcon;
 
-    // @private {CircuitLayerNode}
     this.circuitLayerNode = circuitLayerNode;
 
     // node that shows the component, separate from the part that shows the highlight and the fire
@@ -119,7 +118,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
 
     this.viewTypeProperty = viewTypeProperty;
 
-    // @private {function} - Show the selected node
+    // Show the selected node
     this.viewPropertyListener = this.setViewType.bind( this );
     viewTypeProperty.link( this.viewPropertyListener );
 
@@ -135,22 +134,18 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
       this.highlightNode = null;
     }
 
-    // @private {function}
     this.markDirtyListener = this.markAsDirty.bind( this );
     circuitElement.vertexMovedEmitter.addListener( this.markDirtyListener );
 
-    // @private {function}
     this.moveToFrontListener = this.moveFixedCircuitElementNodeToFront.bind( this );
     circuitElement.connectedEmitter.addListener( this.moveToFrontListener );
     circuitElement.vertexSelectedEmitter.addListener( this.moveToFrontListener );
 
-    // @private {function}
     this.pickableListener = this.setPickable.bind( this );
 
     // LightBulbSocketNode cannot ever be pickable, so let it opt out of this callback
     filledOptions.pickable && circuitElement.interactiveProperty.link( this.pickableListener );
 
-    // @private {boolean}
     this.fixedCircuitElementNodePickable = filledOptions.pickable || null;
 
     // Use whatever the start node currently is (it can change), and let the circuit manage the dependent vertices
@@ -160,7 +155,6 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
 
     if ( !filledOptions.isIcon && circuitLayerNode ) {
 
-      // @private {DragListener}
       this.dragListener = new CircuitLayerNodeDragListener( circuitLayerNode, [ () => circuitElement.endVertexProperty.get() ], {
         start: ( event: SceneryEvent ) => {
           this.moveToFront();
@@ -195,7 +189,6 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
 
       if ( filledOptions.showHighlight ) {
 
-        // @private {function}
         this.updateHighlightVisibility = this.setSelectedCircuitElement.bind( this );
         circuitLayerNode.circuit.selectedCircuitElementProperty.link( this.updateHighlightVisibility );
       }
@@ -211,7 +204,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
         this.addChild( this.fireNode );
         if ( screenView ) {
 
-          // @private {Multilink} - Show fire in batteries and resistors with resistance > 0
+          // Show fire in batteries and resistors with resistance > 0
           this.updateFireMultilink = Multilink.multilink( [
             circuitElement.currentProperty,
             ( circuitElement instanceof Resistor ) ? circuitElement.resistanceProperty : ONE_AMP_PROPERTY,

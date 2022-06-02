@@ -215,12 +215,11 @@ export default class SwitchNode extends FixedCircuitElementNode {
     // Only add the input listener if it is not for a toolbar icon
     screenView && this.contentNode.addInputListener( fireListener );
 
-    // @private {Node} - For hit testing
+    // For hit testing
     this.lifelikeOpenNode = createNode(
       CircuitElementViewType.LIFELIKE, lifelikeGradient, LIFELIKE_DIAMETER, 6, false
     );
 
-    // @private {function} - clean up resources when no longer used.
     this.disposeSwitchNode = () => {
       circuitSwitch.closedProperty.unlink( closeListener );
       screenView && this.contentNode.removeInputListener( fireListener );

@@ -56,7 +56,7 @@ export default class SolderNode extends Node {
     // Update the fill when the number of attached components changes.
     const updateFill = () => {
 
-      // @private {boolean} - defensive copies for callbacks cause listeners to get called during disposal, avoid calling
+      // defensive copies for callbacks cause listeners to get called during disposal, avoid calling
       // Node API after disposed
       if ( !this.isDisposed ) {
         this.visible = circuit.countCircuitElements( vertex ) > 1;
@@ -74,7 +74,6 @@ export default class SolderNode extends Node {
     // @ts-ignore
     vertex.positionProperty.link( updateSolderNodePosition );
 
-    // @private (read-only) {function} called by dispose()
     this.disposeSolderNode = () => {
 
       // @ts-ignore

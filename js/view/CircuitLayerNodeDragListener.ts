@@ -23,7 +23,6 @@ export default class CircuitLayerNodeDragListener extends DragListener {
   constructor( circuitLayerNode: CircuitLayerNode, vertexGetters: ( () => Vertex )[], providedOptions?: any ) {
     super( providedOptions );
 
-    // @private
     this.circuitLayerNode = circuitLayerNode;
     this.vertexGetters = vertexGetters;
   }

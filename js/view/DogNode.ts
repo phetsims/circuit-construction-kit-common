@@ -40,7 +40,6 @@ export default class DogNode extends ResistorNode {
     const soundClip = new SoundClip( dogBark_mp3 );
     soundManager.addSoundGenerator( soundClip );
 
-    // @private
     this.barkNode = new BarkNode( {
       maxWidth: 60
     } );

@@ -83,7 +83,7 @@ export default class CustomLightBulbNode extends Node {
       // Show the rays here where they can be easily positioned, but only when more than the base is showing
       const bulbRadius = middleNode.width / 2;
 
-      // @private {Node} - displays the light rays, not a child of this node
+      // {Node} - displays the light rays, not a child of this node
       raysNode = new LightRaysNode( bulbRadius, {
 
         // Since the raysNode is rendered in another node (not a child of the CustemLightBulbNode), it needs the same scale
@@ -99,21 +99,16 @@ export default class CustomLightBulbNode extends Node {
 
     super( providedOptions );
 
-    // @private {boolean}
     this.baseOnly = baseOnly;
-
-    // @private {Image}
     this.backNode = backNode;
-
     this.raysNode = raysNode;
 
-    // @private {Property.<number>} - brightness of the bulb
+    // brightness of the bulb
     this.brightnessProperty = brightnessProperty;
 
     // If it shows the rays, update their brightness
     if ( !providedOptions.baseOnly ) {
 
-      // @private {function}
       this.brightnessObserver = this.update.bind( this );
       this.brightnessProperty.link( this.brightnessObserver );
     }
@@ -121,7 +116,6 @@ export default class CustomLightBulbNode extends Node {
       this.brightnessObserver = null;
     }
 
-    // @private {function} - for disposal
     this.disposeCustomLightBulbNode = () => {
       if ( !providedOptions.baseOnly ) {
         this.brightnessProperty.unlink( this.brightnessObserver! );
