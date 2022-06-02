@@ -105,6 +105,9 @@ export default class ACVoltage extends VoltageSource {
     this.maximumVoltageProperty.dispose();
     this.frequencyProperty.dispose();
     this.phaseProperty.dispose();
+    this.isPhaseEditableProperty.dispose();
+    this.isFrequencyEditableProperty.dispose();
+    this.isVoltageEditableProperty.dispose();
     super.dispose();
   }
 
