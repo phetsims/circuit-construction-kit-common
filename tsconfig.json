@@ -5,10 +5,10 @@
       "path": "../twixt/tsconfig-module.json"
     },
     {
-      "path": "../griddle"
+      "path": "../joist/tsconfig-module.json"
     },
     {
-      "path": "../joist/tsconfig-module.json"
+      "path": "../bamboo/tsconfig.json"
     }
   ],
   "include": [
