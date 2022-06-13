@@ -9,14 +9,8 @@
 import Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import Vector2 from '../../../dot/js/Vector2.js';
-import { Shape } from '../../../kite/js/imports.js';
-import { LineStyles } from '../../../kite/js/imports.js';
-import { Circle } from '../../../scenery/js/imports.js';
-import { Line } from '../../../scenery/js/imports.js';
-import { Node } from '../../../scenery/js/imports.js';
-import { Path } from '../../../scenery/js/imports.js';
-import { Color } from '../../../scenery/js/imports.js';
-import { LinearGradient } from '../../../scenery/js/imports.js';
+import { LineStyles, Shape } from '../../../kite/js/imports.js';
+import { Circle, Color, Line, LinearGradient, Node, Path } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -27,9 +21,6 @@ import CCKCScreenView from './CCKCScreenView.js';
 import CircuitElementNode from './CircuitElementNode.js';
 import CircuitLayerNode from './CircuitLayerNode.js';
 import CircuitLayerNodeDragListener from './CircuitLayerNodeDragListener.js';
-
-// Disable for the whole file https://github.com/phetsims/circuit-construction-kit-common/issues/877
-/* eslint-disable no-protected-jsdoc */
 
 // constants
 const LIFELIKE_LINE_WIDTH = 16; // line width in screen coordinates
