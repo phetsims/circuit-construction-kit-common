@@ -8,12 +8,13 @@
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
+import EmptyObjectType from '../../../phet-core/js/types/EmptyObjectType.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import FixedCircuitElement, { FixedCircuitElementOptions } from './FixedCircuitElement.js';
 import Vertex from './Vertex.js';
 
-type SelfOptions = {};
+type SelfOptions = EmptyObjectType;
 export type DynamicCircuitElementOptions = SelfOptions & FixedCircuitElementOptions;
 
 // This class should not be instantiated directly, instead subclasses should provide implementations for getCircuitProperties

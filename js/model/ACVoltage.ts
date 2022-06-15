@@ -11,6 +11,7 @@ import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Property from '../../../axon/js/Property.js';
 import Range from '../../../dot/js/Range.js';
 import optionize from '../../../phet-core/js/optionize.js';
+import EmptyObjectType from '../../../phet-core/js/types/EmptyObjectType.js';
 import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -25,7 +26,7 @@ import VoltageSource, { VoltageSourceOptions } from './VoltageSource.js';
 // The maximum amplitude of the oscillating voltage
 const MAX_VOLTAGE = 120;
 
-type SelfOptions = {};
+type SelfOptions = EmptyObjectType;
 type ACVoltageOptions = SelfOptions & VoltageSourceOptions;
 
 export default class ACVoltage extends VoltageSource {

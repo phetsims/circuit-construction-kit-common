@@ -8,13 +8,14 @@
 
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Property from '../../../axon/js/Property.js';
+import EmptyObjectType from '../../../phet-core/js/types/EmptyObjectType.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import FixedCircuitElement, { FixedCircuitElementOptions } from './FixedCircuitElement.js';
 import Vertex from './Vertex.js';
 
-type SelfOptions = {};
+type SelfOptions = EmptyObjectType;
 type SeriesAmmeterOptions = SelfOptions & FixedCircuitElementOptions;
 
 export default class SeriesAmmeter extends FixedCircuitElement {
