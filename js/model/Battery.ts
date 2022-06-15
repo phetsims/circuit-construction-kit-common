@@ -23,7 +23,7 @@ import { VoltageSourceOptions } from './VoltageSource.js';
 // constants
 const BATTERY_LENGTH = CCKCConstants.BATTERY_LENGTH;
 
-type BatteryOptions = {} & VoltageSourceOptions;
+type BatteryOptions = VoltageSourceOptions;
 
 export default class Battery extends VoltageSource {
   readonly batteryType: BatteryType;

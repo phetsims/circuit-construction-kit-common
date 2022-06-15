@@ -12,9 +12,7 @@ import Bounds2 from '../../../dot/js/Bounds2.js';
 import Utils from '../../../dot/js/Utils.js';
 import merge from '../../../phet-core/js/merge.js';
 import StringUtils from '../../../phetcommon/js/util/StringUtils.js';
-import { HBox } from '../../../scenery/js/imports.js';
-import { Node } from '../../../scenery/js/imports.js';
-import { Text } from '../../../scenery/js/imports.js';
+import { HBox, Node, Text } from '../../../scenery/js/imports.js';
 import Panel from '../../../sun/js/Panel.js';
 import SunConstants from '../../../sun/js/SunConstants.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -45,6 +43,7 @@ import TrashButton from './TrashButton.js';
 import CircuitElement from '../model/CircuitElement.js';
 import InteractionMode from '../model/InteractionMode.js';
 import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
+import EmptyObjectType from '../../../phet-core/js/types/EmptyObjectType.js';
 
 const capacitanceString = circuitConstructionKitCommonStrings.capacitance;
 const capacitanceUnitsString = circuitConstructionKitCommonStrings.capacitanceUnits;
@@ -70,7 +69,7 @@ const GET_LAYOUT_POSITION = ( visibleBounds: Bounds2, centerX: number ) => {
 
 // So we can pass classes as types for instanceof checks, I've been using https://www.typescriptlang.org/docs/handbook/mixins.html
 // as a reference for how to create this type
-type GConstructor<T = {}> = new ( ...args: any[] ) => T;
+type GConstructor<T = EmptyObjectType> = new ( ...args: any[] ) => T;
 
 const NORMAL_SLIDER_KNOB_DELTA = 1;
 const HIGH_SLIDER_KNOB_DELTA = 100;

@@ -87,7 +87,7 @@ schematicNode.mouseArea = Shape.circle(
   CIRCLE_DIAMETER );
 schematicNode.touchArea = schematicNode.mouseArea;
 
-type ACVoltageNodeOptions = {} & FixedCircuitElementNodeOptions;
+type ACVoltageNodeOptions = FixedCircuitElementNodeOptions;
 
 export default class ACVoltageNode extends FixedCircuitElementNode {
 
