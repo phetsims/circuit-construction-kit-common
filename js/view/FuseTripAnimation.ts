@@ -37,7 +37,7 @@ export default class FuseTripAnimation extends Node {
       const pairs = polyline.split( ' ' );
       const vectors = pairs.map( pair => {
         const p = pair.split( ',' );
-        return new Vector2( parseInt( p[ 0 ], 10 ), parseInt( p[ 1 ], 10 ) );
+        return new Vector2( Number( p[ 0 ] ), Number( p[ 1 ] ) );
       } );
       shape.moveToPoint( vectors[ 0 ] );
       for ( let i = 1; i < vectors.length; i++ ) {

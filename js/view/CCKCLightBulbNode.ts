@@ -7,10 +7,6 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-
-// Disable for the whole file https://github.com/phetsims/circuit-construction-kit-common/issues/877
-/* eslint-disable no-protected-jsdoc */
-
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
@@ -18,10 +14,7 @@ import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import { Shape } from '../../../kite/js/imports.js';
 import merge from '../../../phet-core/js/merge.js';
-import { Image } from '../../../scenery/js/imports.js';
-import { Node } from '../../../scenery/js/imports.js';
-import { Path } from '../../../scenery/js/imports.js';
-import { Color } from '../../../scenery/js/imports.js';
+import { Color, Image, Node, Path } from '../../../scenery/js/imports.js';
 import lightBulbMiddleHigh_png from '../../mipmaps/lightBulbMiddleHigh_png.js';
 import lightBulbMiddleReal_png from '../../mipmaps/lightBulbMiddleReal_png.js';
 import lightBulbFrontReal_png from '../../images/lightBulbFrontReal_png.js';
