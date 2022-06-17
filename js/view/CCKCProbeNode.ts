@@ -30,7 +30,7 @@ export default class CCKCProbeNode extends ProbeNode {
       cursor: 'pointer',
       sensorTypeFunction: ProbeNode.crosshairs( { stroke: 'white' } ),
       scale: 0.4,
-      drag: () => {},
+      drag: _.noop,
       tandem: Tandem.OPTIONAL
     }, providedOptions );
 

@@ -265,6 +265,7 @@ export default abstract class CircuitElement extends PhetioObject {
    * Steps forward in time
    */
   step( time: number, dt: number, circuit: Circuit ): void {
+    // See subclass for implementation
   }
 
   /**
