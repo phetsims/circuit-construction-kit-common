@@ -116,7 +116,6 @@ export default class ChargeNode extends Node {
     // In order to show that no actual charges transfer between the plates of a capacitor, we clip their rendering.
     if ( this.charge.circuitElement instanceof Capacitor ) {
       const capacitorCircuitElementNode = this.circuitLayerNode.getCircuitElementNode( this.charge.circuitElement );
-      assert && assert( capacitorCircuitElementNode instanceof CapacitorCircuitElementNode );
       if ( capacitorCircuitElementNode instanceof CapacitorCircuitElementNode ) {
 
         // For unknown reasons, the x and y coordinates are swapped here.  The values were determined empirically.

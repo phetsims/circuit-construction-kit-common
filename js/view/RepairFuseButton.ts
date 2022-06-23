@@ -39,6 +39,8 @@ export default class RepairFuseButton extends HBox {
       content: icon,
       listener: () => {
         const fuse = circuit.selectedCircuitElementProperty.value;
+
+        // eslint-disable-next-line no-simple-type-checking-assertions
         assert && assert( fuse instanceof Fuse );
         if ( fuse instanceof Fuse ) {
           fuse.resetFuse();

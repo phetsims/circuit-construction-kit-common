@@ -954,6 +954,7 @@ export default class CircuitLayerNode extends Node {
       const switchNode = this.hitCircuitElementNode( probePosition, ( circuitElement: CircuitElement ) => circuitElement instanceof Switch, globalPoint );
       if ( switchNode ) {
 
+        // eslint-disable-next-line no-simple-type-checking-assertions
         assert && assert( switchNode instanceof SwitchNode );
         if ( switchNode instanceof SwitchNode ) {
 
@@ -970,6 +971,7 @@ export default class CircuitLayerNode extends Node {
       const capacitorNode = this.hitCircuitElementNode( probePosition, ( circuitElement: CircuitElement ) => circuitElement instanceof Capacitor, globalPoint );
       if ( capacitorNode ) {
 
+        // eslint-disable-next-line no-simple-type-checking-assertions
         assert && assert( capacitorNode instanceof CapacitorCircuitElementNode );
         if ( capacitorNode instanceof CapacitorCircuitElementNode ) {
 

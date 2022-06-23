@@ -23,9 +23,7 @@ export default class MNASolution {
 
   getSolvedCurrent( circuitElement: MNACircuitElement ): number {
     assert && assert( this.elements.has( circuitElement ) );
-    const value = this.elements.get( circuitElement )!;
-    assert && assert( typeof value === 'number' );
-    return value;
+    return this.elements.get( circuitElement )!;
   }
 
   // Compare two solutions, and provide detailed qunit equal test if equal is provided.
