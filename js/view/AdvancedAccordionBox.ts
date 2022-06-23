@@ -53,9 +53,9 @@ export default class AdvancedAccordionBox extends CCKCAccordionBox {
       const addRealBulbsCheckboxTandem = tandem.createTandem( 'addRealBulbsCheckbox' );
       children.push(
         new VStrut( 20 ),
-        new CCKCCheckbox( new Text( circuitConstructionKitCommonStrings.addRealBulbs, _.merge( {
+        new CCKCCheckbox( circuit.addRealBulbsProperty, new Text( circuitConstructionKitCommonStrings.addRealBulbs, _.merge( {
           tandem: addRealBulbsCheckboxTandem.createTandem( 'label' )
-        }, TEXT_OPTIONS ) ), circuit.addRealBulbsProperty, {
+        }, TEXT_OPTIONS ) ), {
           tandem: addRealBulbsCheckboxTandem
         } )
       );

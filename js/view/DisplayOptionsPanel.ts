@@ -108,18 +108,18 @@ export default class DisplayOptionsPanel extends CCKCPanel {
     showCurrentProperty.linkAttribute( currentTypeRadioButtonGroup, 'enabled' );
 
     const labelsCheckboxTandem = tandem.createTandem( 'labelsCheckbox' );
-    const showLabelsCheckbox = new CCKCCheckbox( createLabel( labelsString, labelsCheckboxTandem ), showLabelsProperty, {
+    const showLabelsCheckbox = new CCKCCheckbox( showLabelsProperty, createLabel( labelsString, labelsCheckboxTandem ), {
       tandem: labelsCheckboxTandem
     } );
     const valuesCheckboxTandem = tandem.createTandem( 'valuesCheckbox' );
-    const showValuesCheckbox = new CCKCCheckbox( createLabel( valuesString, valuesCheckboxTandem ), showValuesProperty, {
+    const showValuesCheckbox = new CCKCCheckbox( showValuesProperty, createLabel( valuesString, valuesCheckboxTandem ), {
       tandem: valuesCheckboxTandem
     } );
 
     let stopwatchCheckbox = null;
     if ( showStopwatchCheckbox ) {
       const stopwatchCheckboxTandem = tandem.createTandem( 'stopwatchCheckbox' );
-      stopwatchCheckbox = new CCKCCheckbox( createLabel( stopwatchString, stopwatchCheckboxTandem ), stopwatch.isVisibleProperty, {
+      stopwatchCheckbox = new CCKCCheckbox( stopwatch.isVisibleProperty, createLabel( stopwatchString, stopwatchCheckboxTandem ), {
         tandem: stopwatchCheckboxTandem
       } );
     }
@@ -132,7 +132,7 @@ export default class DisplayOptionsPanel extends CCKCPanel {
         align: 'left',
         spacing: 8,
         children: [
-          new CCKCCheckbox( createLabel( showCurrentString, showCurrentCheckboxTandem ), showCurrentProperty, {
+          new CCKCCheckbox( showCurrentProperty, createLabel( showCurrentString, showCurrentCheckboxTandem ), {
             tandem: showCurrentCheckboxTandem
           } ),
           new AlignBox( // TODO: is alignbox needed here?
