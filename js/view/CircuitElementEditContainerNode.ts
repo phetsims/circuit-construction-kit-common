@@ -39,7 +39,7 @@ import PhaseShiftControl from './PhaseShiftControl.js';
 import RepairFuseButton from './RepairFuseButton.js';
 import ReverseBatteryButton from './ReverseBatteryButton.js';
 import SwitchReadoutNode from './SwitchReadoutNode.js';
-import TrashButton from './TrashButton.js';
+import CCKCTrashButton from './CCKCTrashButton.js';
 import CircuitElement from '../model/CircuitElement.js';
 import InteractionMode from '../model/InteractionMode.js';
 import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
@@ -112,7 +112,7 @@ export default class CircuitElementEditContainerNode extends Node {
     }, providedOptions );
 
     // Create reusable components that will get assembled into a panel for the selected circuit element
-    const trashButton = new TrashButton( circuit, tandem.createTandem( 'trashButton' ) );
+    const trashButton = new CCKCTrashButton( circuit, tandem.createTandem( 'trashButton' ) );
     const trashButtonContainer = new HBox( { children: [ trashButton ] } ); // Use the "nested node" pattern for gated visibilty
 
     // TODO: Should this be named repairButton or repairFuseButton? https://github.com/phetsims/circuit-construction-kit-common/issues/797
