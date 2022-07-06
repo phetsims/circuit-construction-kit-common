@@ -10,8 +10,9 @@
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Property from '../../../axon/js/Property.js';
 import Vector2 from '../../../dot/js/Vector2.js';
-import merge from '../../../phet-core/js/merge.js';
-import RectangularRadioButtonGroup from '../../../sun/js/buttons/RectangularRadioButtonGroup.js';
+import optionize from '../../../phet-core/js/optionize.js';
+import EmptyObjectType from '../../../phet-core/js/types/EmptyObjectType.js';
+import RectangularRadioButtonGroup, { RectangularRadioButtonGroupOptions } from '../../../sun/js/buttons/RectangularRadioButtonGroup.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -24,6 +25,9 @@ import BatteryNode from './BatteryNode.js';
 const BATTERY_LENGTH = CCKCConstants.BATTERY_LENGTH;
 const SCALE = 0.4;
 
+type SelfOptions = EmptyObjectType;
+type ViewRadioButtonGroupOptions = RectangularRadioButtonGroupOptions & SelfOptions;
+
 export default class ViewRadioButtonGroup extends RectangularRadioButtonGroup<CircuitElementViewType> {
 
   /**
@@ -31,20 +35,22 @@ export default class ViewRadioButtonGroup extends RectangularRadioButtonGroup<Ci
    * @param tandem
    * @param [providedOptions]
    */
-  constructor( viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: any ) {
+  constructor( viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: ViewRadioButtonGroupOptions ) {
 
-    providedOptions = merge( {
+    const options = optionize<ViewRadioButtonGroupOptions, SelfOptions, RectangularRadioButtonGroupOptions>()( {
       spacing: 20,
       orientation: 'horizontal',
-      buttonContentXMargin: 8,
-      buttonContentYMargin: 11,
-      baseColor: CCKCConstants.PANEL_COLOR,
-      deselectedButtonOpacity: 0.4,
-      overButtonOpacity: 0.7,
-      cornerRadius: CCKCConstants.CORNER_RADIUS,
-      tandem: tandem,
       touchAreaXDilation: 9,
-      touchAreaYDilation: 10
+      touchAreaYDilation: 10,
+      radioButtonOptions: {
+        xMargin: 8,
+        yMargin: 11,
+        baseColor: CCKCConstants.PANEL_COLOR,
+        deselectedButtonOpacity: 0.4,
+        overButtonOpacity: 0.7,
+        cornerRadius: CCKCConstants.CORNER_RADIUS
+      },
+      tandem: tandem
     }, providedOptions );
 
     // Create a battery which can be used in the views
@@ -72,7 +78,7 @@ export default class ViewRadioButtonGroup extends RectangularRadioButtonGroup<Ci
       value: CircuitElementViewType.SCHEMATIC,
       node: schematicIcon,
       tandemName: 'schematicRadioButton'
-    } ], providedOptions );
+    } ], options );
   }
 }
 
