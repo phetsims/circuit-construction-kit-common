@@ -33,13 +33,13 @@ export default class CustomLightBulbNode extends Node {
   private readonly brightnessProperty: Property<number>;
   private readonly brightnessObserver: ( ( brightness: number ) => void ) | null;
   private readonly disposeCustomLightBulbNode: () => void;
-  static webglSpriteNodes: Image[];
+  public static webglSpriteNodes: Image[];
 
   /**
    * @param brightnessProperty 0 (off) to 1 (full brightness)
    * @param [providedOptions]
    */
-  constructor( brightnessProperty: Property<number>, providedOptions?: any ) {
+  public constructor( brightnessProperty: Property<number>, providedOptions?: any ) {
     assert && assert( brightnessProperty, 'brightness property should exist' );
 
     providedOptions = merge( {
@@ -145,7 +145,7 @@ export default class CustomLightBulbNode extends Node {
     this.visibleProperty.link( ( visible: boolean ) => visible && this.update() );
   }
 
-  override dispose(): void {
+  public override dispose(): void {
     this.disposeCustomLightBulbNode();
   }
 
@@ -154,12 +154,12 @@ export default class CustomLightBulbNode extends Node {
    * @param time - total elapsed time in seconds
    * @param dt - seconds since last step
    */
-  step( time: number, dt: number ): void {
+  private step( time: number, dt: number ): void {
     this.update();
   }
 
   // update when the brightness changes
-  update(): void {
+  private update(): void {
     if ( this.visible && !this.baseOnly ) {
       const brightness = this.brightnessProperty.value;
       assert && assert( brightness >= 0 && brightness <= 1 );

@@ -53,7 +53,7 @@ export default class AmmeterNode extends Node {
   private readonly probeNode: ProbeNode;
 
   // the model associated with this view
-  readonly ammeter: Ammeter;
+  public readonly ammeter: Ammeter;
 
   // so events can be forwarded from the toolbox
   private readonly dragHandler: DragListener | null;
@@ -63,7 +63,7 @@ export default class AmmeterNode extends Node {
    * @param circuitLayerNode - for getting the currents, or null if rendering an icon
    * @param [providedOptions]
    */
-  constructor( ammeter: Ammeter, circuitLayerNode: CircuitLayerNode | null, providedOptions?: Partial<AmmeterNodeOptions> ) {
+  public constructor( ammeter: Ammeter, circuitLayerNode: CircuitLayerNode | null, providedOptions?: Partial<AmmeterNodeOptions> ) {
     const options = merge( {
 
       // true if it will be used as a toolbox icon
@@ -235,7 +235,7 @@ export default class AmmeterNode extends Node {
   /**
    * Forward a drag from the toolbox to the play area node.
    */
-  startDrag( event: SceneryEvent<MouseEvent | TouchEvent | PointerEvent> ): void {
+  private startDrag( event: SceneryEvent<MouseEvent | TouchEvent | PointerEvent> ): void {
     this.dragHandler && this.dragHandler.press( event );
   }
 }

@@ -20,7 +20,7 @@ export default class CCKCPanel extends Panel {
    * @param tandem
    * @param [providedOptions]
    */
-  constructor( content: Node, tandem: Tandem, providedOptions?: Partial<PanelOptions> ) {
+  public constructor( content: Node, tandem: Tandem, providedOptions?: Partial<PanelOptions> ) {
     providedOptions = merge( {
       fill: CCKCConstants.PANEL_COLOR,
       lineWidth: CCKCConstants.PANEL_LINE_WIDTH,

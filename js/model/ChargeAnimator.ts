@@ -59,12 +59,12 @@ export default class ChargeAnimator {
   private scale: number;
 
   // a running average over last time steps as a smoothing step
-  readonly timeScaleRunningAverage: RunningAverage;
+  public readonly timeScaleRunningAverage: RunningAverage;
 
   // how much the time should be slowed, 1 is full speed, 0.5 is running at half speed, etc.
-  readonly timeScaleProperty: NumberProperty;
+  public readonly timeScaleProperty: NumberProperty;
 
-  constructor( circuit: Circuit ) {
+  public constructor( circuit: Circuit ) {
     this.charges = circuit.charges;
     this.circuit = circuit;
     this.scale = 1;
@@ -73,7 +73,7 @@ export default class ChargeAnimator {
   }
 
   // Restores to the initial state
-  reset(): void {
+  public reset(): void {
     this.timeScaleProperty.reset();
     this.timeScaleRunningAverage.clear();
   }
@@ -82,7 +82,7 @@ export default class ChargeAnimator {
    * Update the position of the charges based on the circuit currents
    * @param dt - elapsed time in seconds
    */
-  step( dt: number ): void {
+  public step( dt: number ): void {
 
     if ( this.charges.length === 0 || this.circuit.circuitElements.length === 0 ) {
       return;

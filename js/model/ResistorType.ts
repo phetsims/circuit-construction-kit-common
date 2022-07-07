@@ -8,32 +8,32 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 export default class ResistorType extends EnumerationValue {
 
-  static RESISTOR = new ResistorType( 10, new Range( 0, 120 ), false, CCKCConstants.RESISTOR_LENGTH );
-  static HIGH_RESISTANCE_RESISTOR = new ResistorType( 1000, new Range( 100, 10000 ), false, CCKCConstants.RESISTOR_LENGTH );
-  static COIN = ResistorType.fixed( 0, true, CCKCConstants.COIN_LENGTH );
-  static PAPER_CLIP = ResistorType.fixed( 0, true, CCKCConstants.PAPER_CLIP_LENGTH );
-  static PENCIL = ResistorType.fixed( 25, false, CCKCConstants.PENCIL_LENGTH );
-  static ERASER = ResistorType.fixed( 1000000000, false, CCKCConstants.ERASER_LENGTH );
-  static HAND = ResistorType.fixed( 100000, false, CCKCConstants.HAND_LENGTH, 15 );
+  public static RESISTOR = new ResistorType( 10, new Range( 0, 120 ), false, CCKCConstants.RESISTOR_LENGTH );
+  public static HIGH_RESISTANCE_RESISTOR = new ResistorType( 1000, new Range( 100, 10000 ), false, CCKCConstants.RESISTOR_LENGTH );
+  public static COIN = ResistorType.fixed( 0, true, CCKCConstants.COIN_LENGTH );
+  public static PAPER_CLIP = ResistorType.fixed( 0, true, CCKCConstants.PAPER_CLIP_LENGTH );
+  public static PENCIL = ResistorType.fixed( 25, false, CCKCConstants.PENCIL_LENGTH );
+  public static ERASER = ResistorType.fixed( 1000000000, false, CCKCConstants.ERASER_LENGTH );
+  public static HAND = ResistorType.fixed( 100000, false, CCKCConstants.HAND_LENGTH, 15 );
 
   // Adjust the dog so the charges travel along the tail/legs, see https://github.com/phetsims/circuit-construction-kit-common/issues/364
-  static DOG = ResistorType.fixed( 100000, false, CCKCConstants.DOG_LENGTH, -40 );
-  static DOLLAR_BILL = ResistorType.fixed( 1000000000, false, CCKCConstants.DOLLAR_BILL_LENGTH );
+  public static DOG = ResistorType.fixed( 100000, false, CCKCConstants.DOG_LENGTH, -40 );
+  public static DOLLAR_BILL = ResistorType.fixed( 1000000000, false, CCKCConstants.DOLLAR_BILL_LENGTH );
 
-  static enumeration = new Enumeration( ResistorType );
-
-  // In ohms
-  readonly defaultResistance: number;
+  public static enumeration = new Enumeration( ResistorType );
 
   // In ohms
-  readonly range: Range;
-  readonly isMetallic: boolean;
+  public readonly defaultResistance: number;
+
+  // In ohms
+  public readonly range: Range;
+  public readonly isMetallic: boolean;
 
   // in view coordinates
-  readonly length: number;
+  public readonly length: number;
 
   // amount the view is shifted down in view coordinates
-  readonly verticalOffset: number;
+  public readonly verticalOffset: number;
 
   /**
    * @param defaultResistance - default value for resistance, in Ohms
@@ -42,7 +42,7 @@ export default class ResistorType extends EnumerationValue {
    * @param length
    * @param [verticalOffset]
    */
-  constructor( defaultResistance: number, resistanceRange: Range, isMetallic: boolean, length: number, verticalOffset = 0 ) {
+  public constructor( defaultResistance: number, resistanceRange: Range, isMetallic: boolean, length: number, verticalOffset = 0 ) {
     super();
 
     this.defaultResistance = defaultResistance;
@@ -55,7 +55,7 @@ export default class ResistorType extends EnumerationValue {
   /**
    * Convenience function for creating a fixed-resistance resistor, like a household item.
    */
-  static fixed( resistance: number, isMetallic: boolean, length: number, verticalOffset = 0 ): ResistorType {
+  private static fixed( resistance: number, isMetallic: boolean, length: number, verticalOffset = 0 ): ResistorType {
     return new ResistorType( resistance, new Range( resistance, resistance ), isMetallic, length, verticalOffset );
   }
 }

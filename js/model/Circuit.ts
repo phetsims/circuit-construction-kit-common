@@ -79,75 +79,75 @@ type Pair = { v1: Vertex; v2: Vertex };
 
 export default class Circuit {
   private readonly viewTypeProperty: Property<CircuitElementViewType>;
-  readonly addRealBulbsProperty: Property<boolean>;
+  public readonly addRealBulbsProperty: Property<boolean>;
   private readonly blackBoxStudy: boolean;
 
   // All wires share the same resistivity, which is defined by resistance = resistivity * length. On the Lab Screen,
   // there is a wire resistivity control
-  readonly wireResistivityProperty: NumberProperty;
+  public readonly wireResistivityProperty: NumberProperty;
 
   // All batteries share a single internal resistance value, which can be edited with a control on the Lab Screen
-  readonly sourceResistanceProperty: NumberProperty;
+  public readonly sourceResistanceProperty: NumberProperty;
 
   // The different types of CircuitElement the circuit may contain, including Wire, Battery, Switch, Resistor, LightBulb, etc.
-  readonly circuitElements: ObservableArray<CircuitElement>;
+  public readonly circuitElements: ObservableArray<CircuitElement>;
 
   // The charges in the circuit
-  readonly charges: ObservableArray<Charge>;
+  public readonly charges: ObservableArray<Charge>;
 
   // whether the current should be displayed
-  readonly showCurrentProperty: BooleanProperty;
+  public readonly showCurrentProperty: BooleanProperty;
 
   // whether to show charges or conventional current
-  readonly currentTypeProperty: Property<CurrentType>;
+  public readonly currentTypeProperty: Property<CurrentType>;
 
   // elapsed time for the circuit model
-  readonly timeProperty: NumberProperty;
+  public readonly timeProperty: NumberProperty;
 
   // move the charges with speed proportional to current
-  readonly chargeAnimator: ChargeAnimator;
+  public readonly chargeAnimator: ChargeAnimator;
 
   // After the circuit physics is recomputed in solve(), some listeners need to update themselves, such as the voltmeter
   // and ammeter
-  readonly circuitChangedEmitter: Emitter<[]>;
+  public readonly circuitChangedEmitter: Emitter<[]>;
 
   // Some actions only take place after an item has been dropped
-  readonly vertexDroppedEmitter: Emitter<[ Vertex ]>;
+  public readonly vertexDroppedEmitter: Emitter<[ Vertex ]>;
 
   // signifies that a component has been modified (for example, with the CircuitElementNumberControl)
-  readonly componentEditedEmitter: Emitter<[]>;
-  readonly vertexGroup: PhetioGroup<Vertex, [ Vector2 ]>;
+  public readonly componentEditedEmitter: Emitter<[]>;
+  public readonly vertexGroup: PhetioGroup<Vertex, [ Vector2 ]>;
 
   // When the user taps on a CircuitElement, it becomes selected and highlighted, and shows additional controls at the
   // bottom of the screen. When the sim launches or when the user taps away from a selected circuit element, the
   // selection is `null`.  Once this simulation is instrumented for a11y, the focus property can be used to track this.
   // Note that vertex selection is done via Vertex.isSelectedProperty.  These strategies can be unified when we work on
   // a11y.
-  readonly selectedCircuitElementProperty: Property<CircuitElement | null>;
+  public readonly selectedCircuitElementProperty: Property<CircuitElement | null>;
 
   // whether physical characteristics have changed and warrant solving for currents and voltages
-  dirty: boolean;
+  public dirty: boolean;
 
   // Actions that will be invoked during the step function
   private readonly stepActions: ( () => void )[];
-  readonly wireGroup: PhetioGroup<Wire, [ Vertex, Vertex ]>;
-  readonly batteryGroup: PhetioGroup<Battery, [ Vertex, Vertex ]>;
-  readonly highVoltageBatteryGroup: PhetioGroup<Battery, [ Vertex, Vertex ]>;
-  readonly acVoltageGroup: PhetioGroup<ACVoltage, [ Vertex, Vertex ]>;
-  readonly resistorGroup: PhetioGroup<Resistor, [ Vertex, Vertex, ResistorType ]>;
-  readonly fuseGroup: PhetioGroup<Fuse, [ Vertex, Vertex ]>;
-  readonly seriesAmmeterGroup: PhetioGroup<SeriesAmmeter, [ Vertex, Vertex ]>;
-  readonly highResistanceLightBulbGroup: PhetioGroup<LightBulb, [ Vertex, Vertex ]>;
-  readonly capacitorGroup: PhetioGroup<Capacitor, [ Vertex, Vertex ]>;
-  readonly inductorGroup: PhetioGroup<Inductor, [ Vertex, Vertex ]>;
-  readonly switchGroup: PhetioGroup<Switch, [ Vertex, Vertex ]>;
-  readonly lightBulbGroup: PhetioGroup<LightBulb, [ Vertex, Vertex ]>;
-  private readonly realLightBulbGroup: PhetioGroup<LightBulb, [ Vertex, Vertex ]>;
+  public readonly wireGroup: PhetioGroup<Wire, [ Vertex, Vertex ]>;
+  public readonly batteryGroup: PhetioGroup<Battery, [ Vertex, Vertex ]>;
+  public readonly highVoltageBatteryGroup: PhetioGroup<Battery, [ Vertex, Vertex ]>;
+  public readonly acVoltageGroup: PhetioGroup<ACVoltage, [ Vertex, Vertex ]>;
+  public readonly resistorGroup: PhetioGroup<Resistor, [ Vertex, Vertex, ResistorType ]>;
+  public readonly fuseGroup: PhetioGroup<Fuse, [ Vertex, Vertex ]>;
+  public readonly seriesAmmeterGroup: PhetioGroup<SeriesAmmeter, [ Vertex, Vertex ]>;
+  public readonly highResistanceLightBulbGroup: PhetioGroup<LightBulb, [ Vertex, Vertex ]>;
+  public readonly capacitorGroup: PhetioGroup<Capacitor, [ Vertex, Vertex ]>;
+  public readonly inductorGroup: PhetioGroup<Inductor, [ Vertex, Vertex ]>;
+  public readonly switchGroup: PhetioGroup<Switch, [ Vertex, Vertex ]>;
+  public readonly lightBulbGroup: PhetioGroup<LightBulb, [ Vertex, Vertex ]>;
+  public readonly realLightBulbGroup: PhetioGroup<LightBulb, [ Vertex, Vertex ]>;
   private readonly groups: PhetioGroup<CircuitElement>[];
-  readonly includeACElements: boolean;
-  readonly includeLabElements: boolean;
+  public readonly includeACElements: boolean;
+  public readonly includeLabElements: boolean;
 
-  constructor( viewTypeProperty: Property<CircuitElementViewType>, addRealBulbsProperty: Property<boolean>, tandem: Tandem,
+  public constructor( viewTypeProperty: Property<CircuitElementViewType>, addRealBulbsProperty: Property<boolean>, tandem: Tandem,
                providedOptions?: Partial<CircuitOptions> ) {
 
     this.viewTypeProperty = viewTypeProperty;
@@ -492,7 +492,7 @@ export default class Circuit {
     this.dirty = false;
   }
 
-  disposeCircuitElement( circuitElement: CircuitElement ): void {
+  public disposeCircuitElement( circuitElement: CircuitElement ): void {
     this.circuitElements.remove( circuitElement );
 
     // Find the corresponding group that contains the circuitElement and dispose it.
@@ -505,7 +505,7 @@ export default class Circuit {
    * @param length - the distance between the vertices
    * @returns with 2 elements
    */
-  createVertexPairArray( position: Vector2, length: number ): [ Vertex, Vertex ] {
+  public createVertexPairArray( position: Vector2, length: number ): [ Vertex, Vertex ] {
     return [
       this.createVertex( position.plusXY( -length / 2, 0 ) ),
       this.createVertex( position.plusXY( length / 2, 0 ) )
@@ -538,7 +538,7 @@ export default class Circuit {
   }
 
   // Update the position of all charges.
-  relayoutAllCharges(): void {
+  public relayoutAllCharges(): void {
     this.circuitElements.forEach( circuitElement => {circuitElement.chargeLayoutDirty = true;} );
     this.layoutChargesInDirtyCircuitElements();
   }
@@ -625,7 +625,7 @@ export default class Circuit {
   }
 
   // Remove all elements from the circuit.
-  clear(): void {
+  private clear(): void {
 
     this.selectedCircuitElementProperty.reset();
 
@@ -658,7 +658,7 @@ export default class Circuit {
    * Split the Vertex into separate vertices.
    * @param vertex - the vertex to be cut.
    */
-  cutVertex( vertex: Vertex ): void {
+  public cutVertex( vertex: Vertex ): void {
 
     // Only permit cutting a non-dragged vertex, see https://github.com/phetsims/circuit-construction-kit-common/issues/414
     if ( vertex.isDragged ) {
@@ -779,7 +779,7 @@ export default class Circuit {
   /**
    * Returns true if the CircuitElement is not connected to any other CircuitElement.
    */
-  isSingle( circuitElement: CircuitElement ): boolean {
+  public isSingle( circuitElement: CircuitElement ): boolean {
     return this.getNeighborCircuitElements( circuitElement.startVertexProperty.get() ).length === 1 &&
            this.getNeighborCircuitElements( circuitElement.endVertexProperty.get() ).length === 1;
   }
@@ -800,14 +800,14 @@ export default class Circuit {
   /**
    * Get all of the CircuitElements that contain the given Vertex.
    */
-  getNeighborCircuitElements( vertex: Vertex ): CircuitElement[] {
+  public getNeighborCircuitElements( vertex: Vertex ): CircuitElement[] {
     return this.circuitElements.filter( circuitElement => circuitElement.containsVertex( vertex ) );
   }
 
   /**
    * Gets the number of CircuitElements connected to the specified Vertex
    */
-  countCircuitElements( vertex: Vertex ): number {
+  public countCircuitElements( vertex: Vertex ): number {
     return this.circuitElements.count( circuitElement => circuitElement.containsVertex( vertex ) );
   }
 
@@ -817,7 +817,7 @@ export default class Circuit {
    * @param blackConnection
    * @param revealing - whether the black box is in "reveal" model
    */
-  getVoltageBetweenConnections( redConnection: VoltageConnection | null, blackConnection: VoltageConnection | null, revealing: boolean ): number | null {
+  public getVoltageBetweenConnections( redConnection: VoltageConnection | null, blackConnection: VoltageConnection | null, revealing: boolean ): number | null {
 
     if ( redConnection === null || blackConnection === null ) {
       return null;
@@ -846,7 +846,7 @@ export default class Circuit {
    * Determines whether the specified Vertices are electrically connected through any arbitrary connections.  An
    * open switch breaks the connection.
    */
-  areVerticesElectricallyConnected( vertex1: Vertex, vertex2: Vertex ): boolean {
+  private areVerticesElectricallyConnected( vertex1: Vertex, vertex2: Vertex ): boolean {
     const connectedVertices = this.searchVertices( vertex1, ( startVertex, circuitElement ) => {
 
         // If the circuit element has a closed property (like a Switch), it is only OK to traverse if the element is
@@ -868,12 +868,12 @@ export default class Circuit {
    * When some physical characteristic has changed, we must recompute the voltages and currents.  Mark as
    * dirty and compute in step if anything has changed.
    */
-  markDirty(): void {
+  private markDirty(): void {
     this.dirty = true;
   }
 
   // Connect the vertices, merging oldVertex into vertex1 and deleting oldVertex
-  connect( targetVertex: Vertex, oldVertex: Vertex ): void {
+  public connect( targetVertex: Vertex, oldVertex: Vertex ): void {
     assert && assert( targetVertex.attachableProperty.get() && oldVertex.attachableProperty.get(),
       'both vertices should be attachable' );
 
@@ -921,7 +921,7 @@ export default class Circuit {
    * Move forward in time
    * @param dt - the elapsed time in seconds
    */
-  step( dt: number ): void {
+  public step( dt: number ): void {
 
     // Invoke any scheduled actions
     this.stepActions.forEach( stepAction => stepAction() );
@@ -970,7 +970,7 @@ export default class Circuit {
    * the charges repositioned, so they will be equally spaced internally and spaced well compared to neighbor
    * elements.
    */
-  layoutChargesInDirtyCircuitElements(): void {
+  public layoutChargesInDirtyCircuitElements(): void {
     this.circuitElements.forEach( circuitElement => this.layoutCharges( circuitElement ) );
   }
 
@@ -1008,7 +1008,7 @@ export default class Circuit {
    * Get an array of all the vertices adjacent to the specified Vertex.
    * @param vertex - the vertex to get neighbors for
    */
-  getNeighboringVertices( vertex: Vertex ): Vertex[] {
+  public getNeighboringVertices( vertex: Vertex ): Vertex[] {
     const neighborCircuitElements = this.getNeighborCircuitElements( vertex );
     return this.getNeighborVerticesInGroup( vertex, neighborCircuitElements );
   }
@@ -1035,12 +1035,12 @@ export default class Circuit {
   /**
    * Find the subgraph where all vertices are connected by any kind of CircuitElements
    */
-  findAllConnectedVertices( vertex: Vertex ): Vertex[] {
+  public findAllConnectedVertices( vertex: Vertex ): Vertex[] {
     return this.searchVertices( vertex, trueFunction );
   }
 
   // Identify current senses for CurrentSense.UNSPECIFIED CircuitElements with a nonzero current
-  determineSenses(): void {
+  private determineSenses(): void {
 
     // Disconnected circuit elements forget their sense
     this.circuitElements.forEach( c => {
@@ -1096,7 +1096,7 @@ export default class Circuit {
   }
 
   // Assign the sense to an un-sensed circuit element based on matching the sign of a corresponding reference element.
-  static assignSense( targetElement: CircuitElement, referenceElement: CircuitElement ): void {
+  private static assignSense( targetElement: CircuitElement, referenceElement: CircuitElement ): void {
     assert && assert( targetElement.currentSenseProperty.value === CurrentSense.UNSPECIFIED, 'target should have an unspecified sense' );
     const targetElementCurrent = targetElement.currentProperty.value;
     const referenceElementCurrent = referenceElement.currentProperty.value;
@@ -1114,7 +1114,7 @@ export default class Circuit {
   }
 
   // Traverse the circuit, filling in senses to adjacent circuit elements during the traversal
-  propagateSenses(): void {
+  private propagateSenses(): void {
 
     const circuitElementsWithSenses = this.circuitElements.filter( c => c.currentSenseProperty.value !== CurrentSense.UNSPECIFIED );
     if ( circuitElementsWithSenses.length > 0 ) {
@@ -1204,7 +1204,7 @@ export default class Circuit {
   }
 
   // Returns true if the circuit element is in a loop with a voltage source
-  isInLoop( circuitElement: CircuitElement ): boolean {
+  public isInLoop( circuitElement: CircuitElement ): boolean {
 
     // Special case for when we are asking if an open Switch is in a loop.  Open switches
     // cannot be in a loop since their vertices are not directly connected.  Note the search
@@ -1260,7 +1260,7 @@ export default class Circuit {
   /**
    * Get the charges that are in the specified circuit element.
    */
-  getChargesInCircuitElement( circuitElement: CircuitElement ): Charge[] {
+  public getChargesInCircuitElement( circuitElement: CircuitElement ): Charge[] {
     return this.charges.filter( charge => charge.circuitElement === circuitElement );
   }
 
@@ -1270,7 +1270,7 @@ export default class Circuit {
    * @param [okToVisit] - (startVertex:Vertex,circuitElement:CircuitElement,endVertex:Vertex)=>boolean,
    *                               - rule that determines which vertices are OK to visit
    */
-  findAllFixedVertices( vertex: Vertex, okToVisit: ( ( a: Vertex, c: CircuitElement, b: Vertex ) => boolean ) = e => true ): Vertex[] {
+  public findAllFixedVertices( vertex: Vertex, okToVisit: ( ( a: Vertex, c: CircuitElement, b: Vertex ) => boolean ) = e => true ): Vertex[] {
     return this.searchVertices( vertex, ( startVertex: Vertex, circuitElement: CircuitElement, endVertex: Vertex ) => {
       if ( okToVisit ) {
         return circuitElement instanceof FixedCircuitElement && okToVisit( startVertex, circuitElement, endVertex );
@@ -1282,7 +1282,7 @@ export default class Circuit {
   }
 
   // Returns the selected Vertex or null if none is selected
-  getSelectedVertex(): Vertex | null {
+  public getSelectedVertex(): Vertex | null {
     const selectedVertex = _.find( this.vertexGroup.getArray(), vertex => vertex.isSelectedProperty.get() );
     return ( selectedVertex || null ) as ( Vertex | null );
   }
@@ -1295,7 +1295,7 @@ export default class Circuit {
    * @param blackBoxBounds - the bounds of the black box, if there is one
    * @returns - the vertex it will be able to connect to, if dropped or null if no connection is available
    */
-  getDropTarget( vertex: Vertex, mode: InteractionMode, blackBoxBounds: Bounds2 | null ): Vertex | null {
+  public getDropTarget( vertex: Vertex, mode: InteractionMode, blackBoxBounds: Bounds2 | null ): Vertex | null {
 
     if ( mode === InteractionMode.TEST ) {
       assert && assert( blackBoxBounds, 'bounds should be provided for build mode' );
@@ -1439,7 +1439,7 @@ export default class Circuit {
   }
 
   // A reporting tool to indicate whether current is conserved at each vertex
-  checkCurrentConservation( index: number ): void {
+  private checkCurrentConservation( index: number ): void {
     console.log( '####### ' + index );
     // the sum of currents flowing into the vertex should be 0
     this.vertexGroup.forEach( vertex => {
@@ -1458,7 +1458,7 @@ export default class Circuit {
    * Due to numerical floating point errors, current may not be exactly conserved.  But we don't want to show electrons
    * moving in some part of a loop but not others, so we manually enforce current conservation at each vertex.
    */
-  conserveCurrent( vertex: Vertex, locked: CircuitElement[] ): void {
+  public conserveCurrent( vertex: Vertex, locked: CircuitElement[] ): void {
     // the sum of currents flowing into the vertex should be 0
     const neighbors = this.getNeighborCircuitElements( vertex );
     let sum = 0;
@@ -1486,7 +1486,7 @@ export default class Circuit {
    * Flip the given CircuitElement
    * @param circuitElement - the circuit element to flip
    */
-  flip( circuitElement: CircuitElement ): void {
+  public flip( circuitElement: CircuitElement ): void {
     const startVertex = circuitElement.startVertexProperty.value;
     const endVertex = circuitElement.endVertexProperty.value;
     circuitElement.startVertexProperty.value = endVertex;
@@ -1507,7 +1507,7 @@ export default class Circuit {
    * Creates and positions charges in the specified circuit element.
    * @param circuitElement - the circuit element within which the charges will be updated
    */
-  layoutCharges( circuitElement: CircuitElement ): void {
+  private layoutCharges( circuitElement: CircuitElement ): void {
 
     // Avoid unnecessary work to improve performance
     if ( circuitElement.chargeLayoutDirty ) {
@@ -1562,14 +1562,14 @@ export default class Circuit {
   }
 
   // only works in unbuilt mode
-  toString(): string {
+  private toString(): string {
     return this.circuitElements.map( c => c.constructor.name ).join( ', ' );
   }
 
   /**
    * Reset the Circuit to its initial state.
    */
-  reset(): void {
+  public reset(): void {
     this.clear();
     this.showCurrentProperty.reset();
     this.currentTypeProperty.reset();

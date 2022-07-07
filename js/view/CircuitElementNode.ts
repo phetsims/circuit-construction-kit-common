@@ -24,18 +24,18 @@ import DisplayClickToDismissListener from '../../../joist/js/DisplayClickToDismi
 export default abstract class CircuitElementNode extends Node {
   private readonly useHitTestForSensors: any;
   private readonly circuit: Circuit | null;
-  readonly circuitElement: CircuitElement;
+  public readonly circuitElement: CircuitElement;
   private readonly disposeEmitterCircuitElementNode: Emitter<[]>;
   private readonly disposeCircuitElementNode: () => void;
   private dirty: boolean;
-  static CircuitElementNodeIO: IOType;
+  private static CircuitElementNodeIO: IOType;
 
   /**
    * @param circuitElement - the CircuitElement to be rendered
    * @param circuit - the circuit which the element can be removed from or null for icons
    * @param [providedOptions]
    */
-  constructor( circuitElement: CircuitElement, circuit: Circuit | null, providedOptions?: any ) {
+  public constructor( circuitElement: CircuitElement, circuit: Circuit | null, providedOptions?: any ) {
 
     providedOptions = merge( {
       useHitTestForSensors: false // if true, use the scenery mouse region hit test for fine-grained region. Otherwise, use bounds test.
@@ -123,14 +123,14 @@ export default abstract class CircuitElementNode extends Node {
   /**
    * Mark dirty to batch changes, so that update can be done once in view step, if necessary
    */
-  markAsDirty(): void {
+  protected markAsDirty(): void {
     this.dirty = true;
   }
 
   /**
    * Dispose resources when no longer used.
    */
-  override dispose(): void {
+  public override dispose(): void {
     this.disposeCircuitElementNode();
     super.dispose();
   }
@@ -138,7 +138,7 @@ export default abstract class CircuitElementNode extends Node {
   /**
    * When interactivity changes, update the opacity.  Overridden.
    */
-  updateOpacityOnInteractiveChange(): void {
+  public updateOpacityOnInteractiveChange(): void {
 
     // TODO (black-box-study): Replace this with grayscale if we keep it
     // TODO (black-box-study): @jonathonolson said: I've wished for a scenery-level grayscale/etc. filter. Let me know when you get close to doing this.
@@ -153,7 +153,7 @@ export default abstract class CircuitElementNode extends Node {
   /**
    * Returns true if the node hits the sensor at the given point.
    */
-  containsSensorPoint( globalPoint: Vector2 ): boolean {
+  public containsSensorPoint( globalPoint: Vector2 ): boolean {
 
     const localPoint = this.globalToParentPoint( globalPoint );
 
@@ -175,7 +175,7 @@ export default abstract class CircuitElementNode extends Node {
   /**
    * called during the view step
    */
-  step(): void {
+  public step(): void {
     if ( this.dirty ) {
 
       this.updateRender();
@@ -183,7 +183,7 @@ export default abstract class CircuitElementNode extends Node {
     }
   }
 
-  protected abstract updateRender(): void;
+  public abstract updateRender(): void;
 
   /**
    * Handles when the node is dropped, called by subclass input listener.
@@ -195,7 +195,7 @@ export default abstract class CircuitElementNode extends Node {
    * @param latestPoint
    * @param dragged
    */
-  endDrag( node: Node, vertices: Vertex[], screenView: CCKCScreenView, circuitLayerNode: CircuitLayerNode, initialPoint: Vector2, latestPoint: Vector2, dragged: boolean ): void {
+  protected endDrag( node: Node, vertices: Vertex[], screenView: CCKCScreenView, circuitLayerNode: CircuitLayerNode, initialPoint: Vector2, latestPoint: Vector2, dragged: boolean ): void {
     const circuitElement = this.circuitElement;
 
     if ( circuitElement.interactiveProperty.get() ) {
@@ -223,7 +223,7 @@ export default abstract class CircuitElementNode extends Node {
   /**
    * On tap events, select the CircuitElement (if it is close enough to the tap)
    */
-  selectCircuitElementNodeWhenNear( circuitLayerNode: CircuitLayerNode, startPoint: Vector2, latestPoint: Vector2 | null ): void {
+  private selectCircuitElementNodeWhenNear( circuitLayerNode: CircuitLayerNode, startPoint: Vector2, latestPoint: Vector2 | null ): void {
 
     if ( !this.circuitElement.isDisposed && latestPoint && latestPoint.distance( startPoint ) < CCKCConstants.TAP_THRESHOLD ) {
 

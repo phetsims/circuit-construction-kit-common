@@ -29,18 +29,18 @@ type FuseOptions = SelfOptions & FixedCircuitElementOptions;
 export default class Fuse extends FixedCircuitElement {
 
   // the current at which the fuse trips, in amps
-  readonly currentRatingProperty: NumberProperty;
+  public readonly currentRatingProperty: NumberProperty;
 
   // true if the fuse is tripped
-  readonly isTrippedProperty: BooleanProperty;
+  public readonly isTrippedProperty: BooleanProperty;
 
   // the resistance in ohms.  Computed in step() as a function of isTrippedProperty and currentRatingProperty.  Computed
   // in step instead of as a DerivedProperty to avoid a re-entrant loop, see https://github.com/phetsims/circuit-construction-kit-common/issues/480#issuecomment-483430822
-  readonly resistanceProperty: NumberProperty;
+  public readonly resistanceProperty: NumberProperty;
   private timeCurrentRatingExceeded: number;
-  isRepairableProperty: BooleanProperty;
+  public isRepairableProperty: BooleanProperty;
 
-  constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: FuseOptions ) {
+  public constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: FuseOptions ) {
     const options = optionize<FuseOptions, SelfOptions, FixedCircuitElementOptions>()( {
       fuseLength: CCKCConstants.RESISTOR_LENGTH, // Same length as a resistor
       currentRating: Fuse.DEFAULT_CURRENT_RATING, // Amps
@@ -69,7 +69,7 @@ export default class Fuse extends FixedCircuitElement {
     } );
   }
 
-  override dispose(): void {
+  public override dispose(): void {
     super.dispose();
     this.currentRatingProperty.dispose();
     this.isRepairableProperty.dispose();
@@ -79,7 +79,7 @@ export default class Fuse extends FixedCircuitElement {
   /**
    * Reset the fuse so it is no longer tripped.
    */
-  resetFuse(): void {
+  public resetFuse(): void {
     this.isTrippedProperty.reset();
     this.timeCurrentRatingExceeded = 0;
   }
@@ -89,7 +89,7 @@ export default class Fuse extends FixedCircuitElement {
    * @param dt - delta between last frame and current frame
    * @param circuit
    */
-  override step( time: number, dt: number, circuit: Circuit ): void {
+  public override step( time: number, dt: number, circuit: Circuit ): void {
     super.step( time, dt, circuit );
     // When the current exceeds the max, trip the fuse.  This cannot be modeled as a property link because it
     // creates a reentrant property loop which doesn't update the reset fuse button properly
@@ -117,12 +117,12 @@ export default class Fuse extends FixedCircuitElement {
   /**
    * Get the properties that, when changed, require the circuit to be re-solved.
    */
-  getCircuitProperties(): Property<any>[] {
+  public getCircuitProperties(): Property<any>[] {
     return [ this.resistanceProperty, this.isTrippedProperty ];
   }
 
-  static RANGE = new Range( 0.5, 20 );
-  static DEFAULT_CURRENT_RATING = 4;
+  public static RANGE = new Range( 0.5, 20 );
+  public static DEFAULT_CURRENT_RATING = 4;
 }
 
 circuitConstructionKitCommon.register( 'Fuse', Fuse );

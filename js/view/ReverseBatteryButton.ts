@@ -26,7 +26,7 @@ export default class ReverseBatteryButton extends HBox {
    * @param circuit - the circuit that contains the battery
    * @param tandem
    */
-  constructor( circuit: Circuit, tandem: Tandem ) {
+  public constructor( circuit: Circuit, tandem: Tandem ) {
 
     // This SVG data was exported from assets/flip_battery_icon.ai, which was created by @arouinfar.  Using illustrator,
     // save the AI file as SVG, then inspect the file to get the path declaration.
@@ -90,7 +90,7 @@ export default class ReverseBatteryButton extends HBox {
     super( { children: [ child ] } );
   }
 
-  override dispose(): void {
+  public override dispose(): void {
     assert && assert( false, 'should not be disposed' );
   }
 }

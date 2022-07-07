@@ -16,7 +16,7 @@ export default class CCKCRoundPushButton extends RoundPushButton {
   /**
    * @param [providedOptions]
    */
-  constructor( providedOptions?: Partial<RoundPushButtonOptions> ) {
+  public constructor( providedOptions?: Partial<RoundPushButtonOptions> ) {
     super( merge( {
       baseColor: PhetColorScheme.BUTTON_YELLOW,
       xMargin: 10,

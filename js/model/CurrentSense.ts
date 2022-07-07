@@ -12,10 +12,10 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
  * @author Sam Reid (PhET Interactive Simulations)
  */
 export default class CurrentSense extends EnumerationValue {
-  static FORWARD = new CurrentSense();
-  static BACKWARD = new CurrentSense();
-  static UNSPECIFIED = new CurrentSense();
-  static enumeration = new Enumeration( CurrentSense );
+  public static FORWARD = new CurrentSense();
+  public static BACKWARD = new CurrentSense();
+  public static UNSPECIFIED = new CurrentSense();
+  private static enumeration = new Enumeration( CurrentSense );
 }
 
 circuitConstructionKitCommon.register( 'CurrentSense', CurrentSense );

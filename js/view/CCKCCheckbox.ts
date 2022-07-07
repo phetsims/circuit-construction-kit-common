@@ -16,12 +16,7 @@ const BOX_WIDTH = 16;
 
 export default class CCKCCheckbox extends Checkbox {
 
-  /**
-   * @param property
-   * @param content
-   * @param [providedOptions?]
-   */
-  constructor( property: Property<boolean>, content: Node, providedOptions?: Partial<CheckboxOptions> ) {
+  public constructor( property: Property<boolean>, content: Node, providedOptions?: Partial<CheckboxOptions> ) {
 
     providedOptions = merge( { boxWidth: BOX_WIDTH }, providedOptions );
     super( property, content, providedOptions );

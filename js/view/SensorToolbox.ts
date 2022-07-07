@@ -66,7 +66,7 @@ export default class SensorToolbox extends CCKCPanel {
    * @param tandem
    * @param [providedOptions]
    */
-  constructor( alignGroup: AlignGroup, circuitLayerNode: CircuitLayerNode, voltmeterNodes: VoltmeterNode[],
+  public constructor( alignGroup: AlignGroup, circuitLayerNode: CircuitLayerNode, voltmeterNodes: VoltmeterNode[],
                ammeterNodes: AmmeterNode[], voltageChartNodes: VoltageChartNode[], currentChartNodes: CurrentChartNode[],
                tandem: Tandem, providedOptions?: any ) {
     const circuit = circuitLayerNode.circuit;

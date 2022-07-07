@@ -85,7 +85,7 @@ export default class CCKCChartNode extends Node {
    * @param verticalAxisLabel
    * @param [providedOptions]
    */
-  constructor( circuitLayerNode: CircuitLayerNode, timeProperty: Property<number>, visibleBoundsProperty: Property<Bounds2>,
+  public constructor( circuitLayerNode: CircuitLayerNode, timeProperty: Property<number>, visibleBoundsProperty: Property<Bounds2>,
                series: ObservableArray<Vector2 | null>, verticalAxisLabel: string, providedOptions?: Partial<CCKCChartNodeOptions> ) {
     const options = merge( {
       defaultZoomLevel: new Range( -2, 2 ),
@@ -395,7 +395,7 @@ export default class CCKCChartNode extends Node {
   /**
    * Clear the data from the chart.
    */
-  reset(): void {
+  public reset(): void {
     this.series.clear();
     this.meter.reset();
     this.zoomLevelProperty.reset();
@@ -405,7 +405,7 @@ export default class CCKCChartNode extends Node {
    * Gets the region of the background in global coordinates.  This can be used to determine if the chart
    * should be dropped back in a toolbox.
    */
-  getBackgroundNodeGlobalBounds(): Bounds2 {
+  private getBackgroundNodeGlobalBounds(): Bounds2 {
     return this.localToGlobalBounds( this.backgroundNode.bounds );
   }
 
@@ -413,7 +413,7 @@ export default class CCKCChartNode extends Node {
    * Forward an event from the toolbox to start dragging the node in the play area.  This triggers the probes (if any)
    * to drag together with the chart.  This is accomplished by calling this.alignProbes() at each drag event.
    */
-  startDrag( event: PressListenerEvent ): void {
+  private startDrag( event: PressListenerEvent ): void {
 
     // Forward the event to the drag listener
     this.backgroundDragListener && this.backgroundDragListener.press( event );
@@ -425,7 +425,7 @@ export default class CCKCChartNode extends Node {
    * (2) constrains the drag to the screenView bounds
    * (3) drops back into the toolbox
    */
-  initializeBodyDragListener( screenView: CCKCScreenView ): void {
+  public initializeBodyDragListener( screenView: CCKCScreenView ): void {
 
     // Since this will be shown from the toolbox, make the play area icon invisible and prepare to drag with probes
     this.meter.visibleProperty.value = false;

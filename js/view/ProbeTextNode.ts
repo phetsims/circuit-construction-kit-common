@@ -31,7 +31,7 @@ export default class ProbeTextNode extends VBox {
    * @param tandem
    * @param [providedOptions]
    */
-  constructor( textProperty: IReadOnlyProperty<string>, showResultsProperty: Property<boolean>, title: string, tandem: Tandem,
+  public constructor( textProperty: IReadOnlyProperty<string>, showResultsProperty: Property<boolean>, title: string, tandem: Tandem,
                providedOptions?: any ) {
 
     providedOptions = merge( {

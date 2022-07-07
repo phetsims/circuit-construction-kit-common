@@ -83,7 +83,7 @@ export default class ResistorNode extends FixedCircuitElementNode {
    * @param tandem
    * @param [providedOptions]
    */
-  constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, resistor: Resistor,
+  public constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, resistor: Resistor,
                viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: Partial<FixedCircuitElementNodeOptions> ) {
 
     providedOptions = merge( { isIcon: false, useHitTestForSensors: true }, providedOptions );
@@ -246,7 +246,7 @@ export default class ResistorNode extends FixedCircuitElementNode {
     };
   }
 
-  override dispose(): void {
+  public override dispose(): void {
     this.disposeResistorNode();
     super.dispose();
   }

@@ -20,7 +20,7 @@ export default class ZoomAnimation {
   private readonly totalDelta: number;
   private readonly zoomCallback: ( delta: number ) => void;
 
-  constructor( initialZoom: number, targetZoom: number, zoomCallback: ( delta: number ) => void ) {
+  public constructor( initialZoom: number, targetZoom: number, zoomCallback: ( delta: number ) => void ) {
     this.easing = Easing.CUBIC_IN_OUT;
     this.ratio = 0;
     this.totalDelta = targetZoom - initialZoom;
@@ -31,7 +31,7 @@ export default class ZoomAnimation {
    * @param dt - elapsed time in seconds
    * TODO: Explain return value
    */
-  step( dt: number ): number {
+  public step( dt: number ): number {
     const oldRatio = this.ratio;
 
     if ( oldRatio < 1 ) {

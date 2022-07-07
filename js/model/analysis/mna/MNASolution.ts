@@ -16,18 +16,18 @@ export default class MNASolution {
   private readonly nodeVoltages: Map<string, number>;
   private readonly elements: Map<MNACircuitElement, number>; // circuit elements in the solution
 
-  constructor( nodeVoltages: Map<string, number>, elements: Map<MNACircuitElement, number> ) {
+  public constructor( nodeVoltages: Map<string, number>, elements: Map<MNACircuitElement, number> ) {
     this.nodeVoltages = nodeVoltages;
     this.elements = elements;
   }
 
-  getSolvedCurrent( circuitElement: MNACircuitElement ): number {
+  public getSolvedCurrent( circuitElement: MNACircuitElement ): number {
     assert && assert( this.elements.has( circuitElement ) );
     return this.elements.get( circuitElement )!;
   }
 
   // Compare two solutions, and provide detailed qunit equal test if equal is provided.
-  approxEquals( modifiedNodalAnalysisSolution: MNASolution, qassert: Assert | null ): boolean {
+  public approxEquals( modifiedNodalAnalysisSolution: MNASolution, qassert: Assert | null ): boolean {
     const keys = Array.from( this.nodeVoltages.keys() );
     const otherKeys = Array.from( modifiedNodalAnalysisSolution.nodeVoltages.keys() );
     const keyDifference = _.difference( keys, otherKeys );
@@ -89,7 +89,7 @@ export default class MNASolution {
   /**
    * Use Ohm's law to compute the current for a resistor with resistance>0
    */
-  getCurrentForResistor( resistor: MNAResistor ): number {
+  public getCurrentForResistor( resistor: MNAResistor ): number {
     assert && assert( resistor.resistance > 0, 'resistor must have resistance to use Ohms Law' );
 
     // To help understand the minus sign here:
@@ -105,7 +105,7 @@ export default class MNASolution {
   /**
    * Returns the voltage of the specified node.
    */
-  getNodeVoltage( nodeIndex: string ): number {
+  public getNodeVoltage( nodeIndex: string ): number {
     return this.nodeVoltages.get( nodeIndex )!;
   }
 

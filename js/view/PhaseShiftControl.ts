@@ -25,7 +25,7 @@ import Multilink, { UnknownMultilink } from '../../../axon/js/Multilink.js';
 
 export default class PhaseShiftControl extends VBox {
 
-  constructor( phaseProperty: Property<number>, circuit: Circuit, providedOptions?: any ) {
+  public constructor( phaseProperty: Property<number>, circuit: Circuit, providedOptions?: any ) {
     providedOptions = merge( {
       spacing: 7
     }, providedOptions );

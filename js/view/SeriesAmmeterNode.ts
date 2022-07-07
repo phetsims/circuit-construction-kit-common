@@ -65,7 +65,7 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
    * @param tandem
    * @param [providedOptions]
    */
-  constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, seriesAmmeter: SeriesAmmeter,
+  public constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, seriesAmmeter: SeriesAmmeter,
                tandem: Tandem, providedOptions?: any ) {
     providedOptions = providedOptions || {};
 
@@ -212,7 +212,7 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
     };
   }
 
-  override dispose(): void {
+  public override dispose(): void {
     this.disposeSeriesAmmeterNode();
     super.dispose();
   }
@@ -221,7 +221,7 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
    * Multiple updates may happen per frame, they are batched and updated once in the view step to improve performance.
    * CCKCLightBulbNode calls updateRender for its child socket node
    */
-  override updateRender(): void {
+  public override updateRender(): void {
     super.updateRender();
     this.frontPanelContainer.setMatrix( this.contentNode.getMatrix() );
   }

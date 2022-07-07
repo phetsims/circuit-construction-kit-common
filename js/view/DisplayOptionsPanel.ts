@@ -40,7 +40,7 @@ const LEFT_MARGIN = 30;
 export default class DisplayOptionsPanel extends CCKCPanel {
 
   // So the stopwatch can be shown near the checkbox
-  readonly stopwatchCheckbox: CCKCCheckbox | null;
+  public readonly stopwatchCheckbox: CCKCCheckbox | null;
 
   /**
    * @param alignGroup - box for aligning with other controls
@@ -52,7 +52,7 @@ export default class DisplayOptionsPanel extends CCKCPanel {
    * @param showStopwatchCheckbox - true if stopwatch should be shown
    * @param tandem
    */
-  constructor( alignGroup: AlignGroup, showCurrentProperty: Property<boolean>, currentTypeProperty: Property<CurrentType>, showValuesProperty: Property<boolean>, showLabelsProperty: Property<boolean>,
+  public constructor( alignGroup: AlignGroup, showCurrentProperty: Property<boolean>, currentTypeProperty: Property<CurrentType>, showValuesProperty: Property<boolean>, showLabelsProperty: Property<boolean>,
                stopwatch: Stopwatch, showStopwatchCheckbox: boolean, tandem: Tandem ) {
 
     const textIconSpacing = 11;

@@ -68,10 +68,10 @@ export default class CapacitorCircuitElementNode extends FixedCircuitElementNode
   private readonly capacitor: Capacitor;
 
   // for clipping in ChargeNode
-  readonly capacitorCircuitElementLifelikeNode: CapacitorNode;
+  public readonly capacitorCircuitElementLifelikeNode: CapacitorNode;
 
   // for clipping in ChargeNode
-  readonly capacitorCircuitElementSchematicNode: Node;
+  public readonly capacitorCircuitElementSchematicNode: Node;
   private readonly leftWireStub: Node;
   private readonly rightWireStub: Node;
   private readonly leftSchematicPath: Path;
@@ -88,7 +88,7 @@ export default class CapacitorCircuitElementNode extends FixedCircuitElementNode
    * @param tandem
    * @param [providedOptions]
    */
-  constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, capacitor: Capacitor, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: Partial<FixedCircuitElementNodeOptions> ) {
+  public constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, capacitor: Capacitor, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: Partial<FixedCircuitElementNodeOptions> ) {
 
     providedOptions = merge( {
       isIcon: false
@@ -235,7 +235,7 @@ export default class CapacitorCircuitElementNode extends FixedCircuitElementNode
     };
   }
 
-  override dispose(): void {
+  public override dispose(): void {
     this.disposeCapacitorCircuitElementNode();
     super.dispose();
   }
@@ -243,7 +243,7 @@ export default class CapacitorCircuitElementNode extends FixedCircuitElementNode
   /**
    * Returns true if the node hits the sensor at the given point.
    */
-  override containsSensorPoint( globalPoint: Vector2 ): boolean {
+  public override containsSensorPoint( globalPoint: Vector2 ): boolean {
 
     // make sure bounds are correct if cut or joined in this animation frame
     this.step();
@@ -254,7 +254,7 @@ export default class CapacitorCircuitElementNode extends FixedCircuitElementNode
   /**
    * Determine whether the start side (with the pivot) contains the sensor point.
    */
-  frontSideContainsSensorPoint( globalPoint: Vector2 ): boolean {
+  public frontSideContainsSensorPoint( globalPoint: Vector2 ): boolean {
 
     if ( this.viewTypeProperty.value === CircuitElementViewType.LIFELIKE ) {
       return this.capacitorCircuitElementLifelikeNode.frontSideContainsSensorPoint( globalPoint ) ||
@@ -268,7 +268,7 @@ export default class CapacitorCircuitElementNode extends FixedCircuitElementNode
   /**
    * Determine whether the end side (with the pivot) contains the sensor point.
    */
-  backSideContainsSensorPoint( globalPoint: Vector2 ): boolean {
+  public backSideContainsSensorPoint( globalPoint: Vector2 ): boolean {
 
     if ( this.viewTypeProperty.value === CircuitElementViewType.LIFELIKE ) {
       return this.capacitorCircuitElementLifelikeNode.backSideContainsSensorPoint( globalPoint ) ||
@@ -282,7 +282,7 @@ export default class CapacitorCircuitElementNode extends FixedCircuitElementNode
   /**
    * Gets the bounds for the highlight rectangle.
    */
-  override getHighlightBounds(): Bounds2 {
+  public override getHighlightBounds(): Bounds2 {
     return this.viewTypeProperty.value === CircuitElementViewType.LIFELIKE ?
            this.contentNode.localBounds.erodedX( 22 ).erodedY( 15 ) :
            this.contentNode.localBounds.dilatedX( 10 ).dilatedY( 10 );

@@ -9,7 +9,7 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import NumberIO from '../../../tandem/js/types/NumberIO.js';
 
 export default class PowerDissipatedProperty extends DerivedProperty2<number, number, number> {
-  constructor( currentProperty: Property<number>, resistanceProperty: Property<number>, tandem: Tandem ) {
+  public constructor( currentProperty: Property<number>, resistanceProperty: Property<number>, tandem: Tandem ) {
     super(
       [ currentProperty, resistanceProperty ],
       ( current, resistance ) => Math.abs( current * current * resistance ), {

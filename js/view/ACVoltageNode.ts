@@ -102,7 +102,7 @@ export default class ACVoltageNode extends FixedCircuitElementNode {
    * @param tandem
    * @param [providedOptions]
    */
-  constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, acSource: ACVoltage,
+  public constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, acSource: ACVoltage,
                viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: Partial<ACVoltageNodeOptions> ) {
     const options = merge( {
       numberOfDecimalPlaces: 1,

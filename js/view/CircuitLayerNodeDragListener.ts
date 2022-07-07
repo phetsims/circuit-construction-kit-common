@@ -20,7 +20,7 @@ export default class CircuitLayerNodeDragListener extends DragListener {
    * @param vertexGetters
    * @param [providedOptions]
    */
-  constructor( circuitLayerNode: CircuitLayerNode, vertexGetters: ( () => Vertex )[], providedOptions?: any ) {
+  public constructor( circuitLayerNode: CircuitLayerNode, vertexGetters: ( () => Vertex )[], providedOptions?: any ) {
     super( providedOptions );
 
     this.circuitLayerNode = circuitLayerNode;
@@ -36,7 +36,7 @@ export default class CircuitLayerNodeDragListener extends DragListener {
    * @param [callback] - to be run at the end of the function, but only on success
    */
   // @ts-ignore
-  press( event: SceneryEvent, targetNode: Node | undefined, callback: () => void ): boolean {
+  private press( event: SceneryEvent, targetNode: Node | undefined, callback: () => void ): boolean {
 
     const vertices = this.vertexGetters.map( vertexGetter => vertexGetter() );
 

@@ -43,7 +43,7 @@ export default class CircuitElementToolNode extends VBox {
    *                                 - in the center of the socket
    * @param [providedOptions]
    */
-  constructor( labelText: string, showLabelsProperty: Property<boolean>, viewTypeProperty: Property<CircuitElementViewType>,
+  public constructor( labelText: string, showLabelsProperty: Property<boolean>, viewTypeProperty: Property<CircuitElementViewType>,
                circuit: Circuit, globalToCircuitLayerNodePoint: ( v: Vector2 ) => Vector2, iconNode: Node, maxNumber: number,
                count: () => number, createElement: ( v: Vector2 ) => CircuitElement, providedOptions?: any ) {
     const labelNode = new Text( labelText, { fontSize: 12, maxWidth: TOOLBOX_ICON_WIDTH } );

@@ -34,62 +34,62 @@ type VertexOptions = {
 export default class Vertex extends PhetioObject {
 
   // Index counter for hashing in CircuitLayerNode.  Also useful for debugging and can be shown with ?vertexDisplay=index
-  readonly index: number;
+  public readonly index: number;
   private readonly vertexTandem: Tandem;
 
   // position of the vertex
-  readonly positionProperty: Property<Vector2>;
+  public readonly positionProperty: Property<Vector2>;
 
   // where the vertex would be if it hadn't snapped to a proposed connection
-  readonly unsnappedPositionProperty: Property<Vector2>;
+  public readonly unsnappedPositionProperty: Property<Vector2>;
 
   // Relative voltage of the node, determined by Circuit.solve
-  readonly voltageProperty: Property<number>;
+  public readonly voltageProperty: Property<number>;
 
   // after the user taps on a vertex it becomes selected, highlighting it and showing a 'cut' button. Multiple vertices
   // can be selected on an iPad, unlike CircuitElements, which can only have one vertex selected at a time.
-  readonly isSelectedProperty: Property<boolean>;
+  public readonly isSelectedProperty: Property<boolean>;
 
   // Some of the following properties overlap.  For example, if 'insideTrueBlackBox' is true, then the interactive
   // flag will be set to false when the circuit is in Circuit.InteractionMode.TEST mode.
 
   // Vertices on the black box interface persist between build/investigate, and cannot be moved/deleted
-  readonly isDraggableProperty: Property<boolean>;
+  public readonly isDraggableProperty: Property<boolean>;
 
   // Black box interface vertices can be interactive (tap to select) without being draggable
-  readonly interactiveProperty: Property<boolean>;
+  public readonly interactiveProperty: Property<boolean>;
 
   // whether the Vertex can be dragged or moved by dragging another part of the circuit must be observable.  When two
   // vertices are joined in Circuit.connect, non-interactivity propagates
-  readonly attachableProperty: Property<boolean>;
+  public readonly attachableProperty: Property<boolean>;
 
   // whether the vertex is on the edge of a black box.  This means it cannot be deleted, but it can be attached to
-  readonly blackBoxInterfaceProperty: Property<boolean>;
+  public readonly blackBoxInterfaceProperty: Property<boolean>;
 
   // whether the vertex is inside the true black box, not inside the user-created black box, on the interface or outside of the black box
-  readonly insideTrueBlackBoxProperty: Property<boolean>;
+  public readonly insideTrueBlackBoxProperty: Property<boolean>;
 
   // indicate when the vertex has been moved to the front in z-ordering and layering in the view must be updated
-  readonly relayerEmitter: Emitter<[]>;
+  public readonly relayerEmitter: Emitter<[]>;
 
   // added by Circuit.js so that listeners can be removed when vertices are removed
-  vertexSelectedPropertyListener: ( ( selected: boolean ) => void ) | null;
+  public vertexSelectedPropertyListener: ( ( selected: boolean ) => void ) | null;
 
   // Whether the vertex is being actively dragged.
-  isDragged: boolean;
+  public isDragged: boolean;
 
   // for black box study
-  outerWireStub: boolean;
-  isCuttableProperty: BooleanProperty;
-  labelTextProperty: StringProperty;
+  public outerWireStub: boolean;
+  public isCuttableProperty: BooleanProperty;
+  public labelTextProperty: StringProperty;
 
-  static VertexIO: IOType;
+  public static VertexIO: IOType;
 
   /**
    * @param position - position in view coordinates
    * @param [providedOptions]
    */
-  constructor( position: Vector2, providedOptions?: Partial<VertexOptions> ) {
+  public constructor( position: Vector2, providedOptions?: Partial<VertexOptions> ) {
 
     const options = merge( {
       draggable: true, // whether the vertex can be dragged, false for Black Box elements
@@ -154,7 +154,7 @@ export default class Vertex extends PhetioObject {
   /**
    * Called when vertices are cut.
    */
-  setPosition( position: Vector2 ): void {
+  public setPosition( position: Vector2 ): void {
     this.positionProperty.set( position );
     this.unsnappedPositionProperty.set( position );
   }
@@ -162,7 +162,7 @@ export default class Vertex extends PhetioObject {
   /**
    * Dispose of this and PhET-iO instrumented children, so they will be unregistered.
    */
-  override dispose(): void {
+  public override dispose(): void {
     this.positionProperty.dispose();
     this.voltageProperty.dispose();
     this.isSelectedProperty.dispose();

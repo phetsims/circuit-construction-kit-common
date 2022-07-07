@@ -27,7 +27,7 @@ export default class CCKCDemoScreenView extends ScreenView {
   /**
    * @param [providedOptions]
    */
-  constructor( providedOptions?: any ) {
+  private constructor( providedOptions?: any ) {
     super( providedOptions );
 
     // Classical zig-zag shape

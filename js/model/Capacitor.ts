@@ -25,12 +25,12 @@ type CapacitorOptions = {
 export default class Capacitor extends DynamicCircuitElement {
 
   // the capacitance in farads
-  readonly capacitanceProperty: NumberProperty;
-  static CAPACITANCE_RANGE = new Range( CCKCQueryParameters.capacitanceMin, CCKCQueryParameters.capacitanceMax );
-  static NUMBER_OF_DECIMAL_PLACES = CCKCQueryParameters.capacitorNumberDecimalPlaces;
-  static CAPACITANCE_DEFAULT = CCKCQueryParameters.capacitanceDefault;
+  public readonly capacitanceProperty: NumberProperty;
+  public static CAPACITANCE_RANGE = new Range( CCKCQueryParameters.capacitanceMin, CCKCQueryParameters.capacitanceMax );
+  public static NUMBER_OF_DECIMAL_PLACES = CCKCQueryParameters.capacitorNumberDecimalPlaces;
+  public static CAPACITANCE_DEFAULT = CCKCQueryParameters.capacitanceDefault;
 
-  constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: Partial<CapacitorOptions> ) {
+  public constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: Partial<CapacitorOptions> ) {
     const options = merge( {
       capacitance: Capacitor.CAPACITANCE_DEFAULT,
 
@@ -81,12 +81,12 @@ export default class Capacitor extends DynamicCircuitElement {
   }
 
   // Dispose of this and PhET-iO instrumented children, so they will be unregistered.
-  override dispose(): void {
+  public override dispose(): void {
     this.capacitanceProperty.dispose();
     super.dispose();
   }
 
-  getCircuitProperties(): Property<IntentionalAny>[] {
+  public getCircuitProperties(): Property<IntentionalAny>[] {
     return [ this.capacitanceProperty ];
   }
 }

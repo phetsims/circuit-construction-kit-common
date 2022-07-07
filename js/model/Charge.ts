@@ -15,25 +15,25 @@ import CircuitElement from './CircuitElement.js';
 export default class Charge {
 
   //the amount of charge
-  readonly charge: number;
+  public readonly charge: number;
 
   // the CircuitElement the Charge is in, changed by Charge.updatePositionAndAngle
-  circuitElement: CircuitElement;
+  public circuitElement: CircuitElement;
 
   // the distance the charge has traveled in its CircuitElement in view coordinates
-  distance: number;
+  public distance: number;
 
   // rotation and translation for the charge
-  readonly matrix: Matrix3;
+  public readonly matrix: Matrix3;
 
   // whether the charge should be displayed
-  readonly visibleProperty: Property<boolean>;
+  public readonly visibleProperty: Property<boolean>;
 
   // Indicate when the position and/or angle changed
-  readonly changedEmitter: Emitter<[]>;
+  public readonly changedEmitter: Emitter<[]>;
 
   // Send notifications when the charge is disposed, so the view can be disposed
-  readonly disposeEmitterCharge: Emitter<[]>;
+  public readonly disposeEmitterCharge: Emitter<[]>;
 
   /**
    * @param circuitElement - the circuit element the charge is in.
@@ -41,7 +41,7 @@ export default class Charge {
    * @param visibleProperty - whether the charge should be shown.
    * @param charge - +1 for conventional current and -1 for electrons
    */
-  constructor( circuitElement: CircuitElement, distance: number, visibleProperty: Property<boolean>, charge: number ) {
+  public constructor( circuitElement: CircuitElement, distance: number, visibleProperty: Property<boolean>, charge: number ) {
 
     assert && assert( charge === 1 || charge === -1, 'charge should be 1 or -1' );
 
@@ -65,7 +65,7 @@ export default class Charge {
   /**
    * After updating the circuit element and/or distance traveled, update the 2d position and direction.
    */
-  updatePositionAndAngle(): void {
+  public updatePositionAndAngle(): void {
     assert && assert( !isNaN( this.distance ), 'charge position was not a number' );
     this.circuitElement.updateMatrixForPoint( this.distance, this.matrix );
 
@@ -74,7 +74,7 @@ export default class Charge {
   }
 
   // Dispose the charge when it will never be used again.
-  dispose(): void {
+  public dispose(): void {
     this.disposeEmitterCharge.emit();
     this.disposeEmitterCharge.removeAllListeners();
     this.changedEmitter.dispose();

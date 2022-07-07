@@ -90,8 +90,8 @@ type CCKCScreenViewOptions = {
 };
 
 export default class CCKCScreenView extends ScreenView {
-  readonly model: CircuitConstructionKitModel;
-  readonly circuitLayerNodeBackLayer: Node;
+  public readonly model: CircuitConstructionKitModel;
+  public readonly circuitLayerNodeBackLayer: Node;
   private readonly circuitLayerNode: CircuitLayerNode;
   private readonly chartNodes: ( VoltageChartNode | CurrentChartNode )[];
   private readonly voltageChartNode1: VoltageChartNode | null;
@@ -99,7 +99,7 @@ export default class CCKCScreenView extends ScreenView {
   private readonly currentChartNode1: CurrentChartNode | null;
   private readonly currentChartNode2: CurrentChartNode | null;
   private readonly circuitElementToolbox: CircuitElementToolbox;
-  readonly sensorToolbox: SensorToolbox;
+  public readonly sensorToolbox: SensorToolbox;
   private readonly viewRadioButtonGroup: ViewRadioButtonGroup;
   private readonly displayOptionsPanel: DisplayOptionsPanel;
   private readonly advancedAccordionBox: AdvancedAccordionBox | null;
@@ -111,7 +111,7 @@ export default class CCKCScreenView extends ScreenView {
    * @param tandem
    * @param [providedOptions]
    */
-  constructor( model: CircuitConstructionKitModel, circuitElementToolNodes: CircuitElementToolNode[], tandem: Tandem, providedOptions?: Partial<CCKCScreenViewOptions> ) {
+  private constructor( model: CircuitConstructionKitModel, circuitElementToolNodes: CircuitElementToolNode[], tandem: Tandem, providedOptions?: Partial<CCKCScreenViewOptions> ) {
 
     const options = merge( {
 
@@ -470,7 +470,7 @@ export default class CCKCScreenView extends ScreenView {
   /**
    * Called from model steps
    */
-  stepOnce( dt: number ): void {
+  private stepOnce( dt: number ): void {
 
     // If the step is large, it probably means that the screen was hidden for a while, so just ignore it.
     // see https://github.com/phetsims/circuit-construction-kit-common/issues/476
@@ -485,7 +485,7 @@ export default class CCKCScreenView extends ScreenView {
    * Move forward in time by the specified dt
    * @param dt - seconds
    */
-  override step( dt: number ): void {
+  public override step( dt: number ): void {
 
     // noting from the main step
     this.circuitLayerNode.step();
@@ -500,7 +500,7 @@ export default class CCKCScreenView extends ScreenView {
   /**
    * Overrideable stub for resetting
    */
-  reset(): void {
+  private reset(): void {
     this.stopwatchNodePositionDirty = true;
     this.circuitElementToolbox.reset();
     this.advancedAccordionBox && this.advancedAccordionBox.expandedProperty.reset();
@@ -510,7 +510,7 @@ export default class CCKCScreenView extends ScreenView {
   /**
    * Return true if and only if the CircuitElementNode can be dropped in the toolbox.
    */
-  canNodeDropInToolbox( circuitElementNode: CircuitElementNode ): boolean {
+  public canNodeDropInToolbox( circuitElementNode: CircuitElementNode ): boolean {
     const circuitElement = circuitElementNode.circuitElement;
 
     // Only single (unconnected) elements can be dropped into the toolbox

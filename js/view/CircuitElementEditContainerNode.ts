@@ -103,7 +103,7 @@ const createSingletonAdapterProperty = <T extends CircuitElement>(
 
 export default class CircuitElementEditContainerNode extends Node {
 
-  constructor( circuit: Circuit, visibleBoundsProperty: Property<Bounds2>, modeProperty: EnumerationProperty<InteractionMode>, playAreaCenterXProperty: Property<number>, tandem: Tandem, providedOptions?: any ) {
+  public constructor( circuit: Circuit, visibleBoundsProperty: Property<Bounds2>, modeProperty: EnumerationProperty<InteractionMode>, playAreaCenterXProperty: Property<number>, tandem: Tandem, providedOptions?: any ) {
 
     super();
 
@@ -424,7 +424,7 @@ export default class CircuitElementEditContainerNode extends Node {
  * HBox with standardized options
  */
 class EditHBox extends HBox {
-  constructor( children: Node[] ) {
+  public constructor( children: Node[] ) {
     super( {
       spacing: 25,
       align: 'bottom',
@@ -439,7 +439,7 @@ class EditHBox extends HBox {
 class EditPanel extends Panel {
   private readonly hbox: EditHBox;
 
-  constructor( children: Node[] ) {
+  public constructor( children: Node[] ) {
     const hbox = new EditHBox( children );
     super( hbox, {
       fill: '#caddfa',
@@ -451,7 +451,7 @@ class EditPanel extends Panel {
     this.hbox = hbox;
   }
 
-  override dispose(): void {
+  public override dispose(): void {
     this.hbox.dispose();
     super.dispose();
   }

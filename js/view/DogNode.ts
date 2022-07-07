@@ -33,7 +33,7 @@ export default class DogNode extends ResistorNode {
    * @param tandem
    * @param [providedOptions]
    */
-  constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, dog: Dog,
+  public constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, dog: Dog,
                viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: any ) {
     super( screenView, circuitLayerNode, dog, viewTypeProperty, tandem, providedOptions );
 
@@ -75,7 +75,7 @@ export default class DogNode extends ResistorNode {
     dog.isBarkingProperty.link( this.isBarkingListener );
   }
 
-  override dispose(): void {
+  public override dispose(): void {
     super.dispose();
     this.dog.isBarkingProperty.unlink( this.isBarkingListener );
     this.contentNode.boundsProperty.unlink( this.boundsListener );

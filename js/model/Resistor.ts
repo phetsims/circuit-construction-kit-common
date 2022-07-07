@@ -30,14 +30,14 @@ export type ResistorOptions = SelfOptions & FixedCircuitElementOptions;
 export default class Resistor extends FixedCircuitElement {
 
   // the resistance in ohms
-  readonly resistanceProperty: NumberProperty;
+  public readonly resistanceProperty: NumberProperty;
 
-  readonly resistorType: ResistorType;
+  public readonly resistorType: ResistorType;
 
-  static ResistorIO: IOType;
-  static RESISTANCE_DECIMAL_PLACES = 1;
-  static HIGH_RESISTANCE_DECIMAL_PLACES = 0;
-  isColorCodeVisibleProperty: BooleanProperty;
+  public static ResistorIO: IOType;
+  public static RESISTANCE_DECIMAL_PLACES = 1;
+  public static HIGH_RESISTANCE_DECIMAL_PLACES = 0;
+  public isColorCodeVisibleProperty: BooleanProperty;
   private readonly powerDissipatedProperty: PowerDissipatedProperty;
 
   /**
@@ -47,7 +47,7 @@ export default class Resistor extends FixedCircuitElement {
    * @param tandem
    * @param [providedOptions]
    */
-  constructor( startVertex: Vertex, endVertex: Vertex, resistorType: any, tandem: Tandem, providedOptions?: ResistorOptions ) {
+  public constructor( startVertex: Vertex, endVertex: Vertex, resistorType: any, tandem: Tandem, providedOptions?: ResistorOptions ) {
     const options = optionize<ResistorOptions, SelfOptions, FixedCircuitElementOptions>()( {
       isFlammable: true, // All resistors are flammable except for the dog, which automatically disconnects at high current.
       phetioType: Resistor.ResistorIO,
@@ -87,7 +87,7 @@ export default class Resistor extends FixedCircuitElement {
   /**
    * Dispose of this and PhET-iO instrumented children, so they will be unregistered.
    */
-  override dispose(): void {
+  public override dispose(): void {
     this.resistanceProperty.dispose();
     this.powerDissipatedProperty.dispose();
     this.isColorCodeVisibleProperty.dispose();
@@ -97,7 +97,7 @@ export default class Resistor extends FixedCircuitElement {
   /**
    * Returns true if the resistance is editable.  Household item resistance is not editable.
    */
-  isResistanceEditable(): boolean {
+  public isResistanceEditable(): boolean {
     return this.resistorType === ResistorType.HIGH_RESISTANCE_RESISTOR ||
            this.resistorType === ResistorType.RESISTOR;
   }
@@ -105,7 +105,7 @@ export default class Resistor extends FixedCircuitElement {
   /**
    * Get the properties so that the circuit can be solved when changed.
    */
-  getCircuitProperties(): Property<any>[] {
+  public getCircuitProperties(): Property<any>[] {
     return [ this.resistanceProperty ];
   }
 }

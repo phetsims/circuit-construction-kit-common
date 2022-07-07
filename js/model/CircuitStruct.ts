@@ -26,15 +26,15 @@ import CircuitElementViewType from './CircuitElementViewType.js';
 import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 
 export default class CircuitStruct {
-  vertices: Vertex[];
-  wires: Wire[];
-  resistors: Resistor[];
-  lightBulbs: LightBulb[];
-  batteries: Battery[];
-  switches: Switch[];
-  static fromStateObject: ( circuit: any, circuitState: any, resistivityProperty: any, tandem: any, options: any ) => CircuitStruct;
+  public vertices: Vertex[];
+  public wires: Wire[];
+  public resistors: Resistor[];
+  public lightBulbs: LightBulb[];
+  public batteries: Battery[];
+  public switches: Switch[];
+  public static fromStateObject: ( circuit: any, circuitState: any, resistivityProperty: any, tandem: any, options: any ) => CircuitStruct;
 
-  constructor() {
+  public constructor() {
     this.vertices = [];
     this.wires = [];
     this.resistors = [];
@@ -47,7 +47,7 @@ export default class CircuitStruct {
    * Clear out the CircuitStruct. Used for Black Box Study to clear the records of user-created circuits in the black
    * box.
    */
-  clear(): void {
+  private clear(): void {
     this.vertices.length = 0;
     this.wires.length = 0;
     this.batteries.length = 0;
@@ -59,7 +59,7 @@ export default class CircuitStruct {
   /**
    * Gets all the circuit elements.
    */
-  get circuitElements(): CircuitElement[] {
+  private get circuitElements(): CircuitElement[] {
     return ( [] as CircuitElement[] )
       .concat( this.wires )
       .concat( this.batteries )

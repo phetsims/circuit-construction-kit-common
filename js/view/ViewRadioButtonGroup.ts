@@ -35,7 +35,7 @@ export default class ViewRadioButtonGroup extends RectangularRadioButtonGroup<Ci
    * @param tandem
    * @param [providedOptions]
    */
-  constructor( viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: ViewRadioButtonGroupOptions ) {
+  public constructor( viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: ViewRadioButtonGroupOptions ) {
 
     const options = optionize<ViewRadioButtonGroupOptions, SelfOptions, RectangularRadioButtonGroupOptions>()( {
       spacing: 20,

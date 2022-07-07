@@ -54,13 +54,13 @@ const CONTROL_POINT_Y2 = 60;
 
 export default class VoltmeterNode extends Node {
   private readonly circuitLayerNode: CircuitLayerNode | null;
-  readonly voltmeter: Voltmeter;
+  public readonly voltmeter: Voltmeter;
   private readonly redProbeNode: Rectangle;
   private readonly blackProbeNode: Rectangle;
 
   // so events can be forwarded from the toolbox
   private readonly dragHandler: DragListener | null;
-  static PROBE_ANGLE: number;
+  public static PROBE_ANGLE: number;
 
   /**
    * @param voltmeter - the model Voltmeter to be shown by this node
@@ -69,7 +69,7 @@ export default class VoltmeterNode extends Node {
    * @param tandem
    * @param [providedOptions]
    */
-  constructor( voltmeter: Voltmeter, model: CircuitConstructionKitModel | null, circuitLayerNode: CircuitLayerNode | null,
+  public constructor( voltmeter: Voltmeter, model: CircuitConstructionKitModel | null, circuitLayerNode: CircuitLayerNode | null,
                tandem: Tandem, providedOptions?: any ) {
 
     providedOptions = merge( {
@@ -337,7 +337,7 @@ export default class VoltmeterNode extends Node {
   /**
    * Forward a drag from the toolbox to the play area node.
    */
-  startDrag( event: any ): void {
+  private startDrag( event: any ): void {
     this.dragHandler!.press( event );
   }
 }

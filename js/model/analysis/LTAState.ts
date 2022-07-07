@@ -3,17 +3,17 @@ import LTACircuit from './LTACircuit.js';
 import LTASolution from './LTASolution.js';
 
 export default class LTAState {
-  readonly ltaCircuit: LTACircuit;
-  readonly ltaSolution: LTASolution | null;
+  public readonly ltaCircuit: LTACircuit;
+  public readonly ltaSolution: LTASolution | null;
   private solution: LTASolution | null;
 
-  constructor( ltaCircuit: LTACircuit, ltaSolution: LTASolution | null ) {
+  public constructor( ltaCircuit: LTACircuit, ltaSolution: LTASolution | null ) {
     this.ltaCircuit = ltaCircuit;
     this.ltaSolution = ltaSolution;
     this.solution = null;
   }
 
-  update( dt: number ): LTAState {
+  public update( dt: number ): LTAState {
     this.solution = this.ltaCircuit.solvePropagate( dt );
     const newCircuit = this.ltaCircuit.updateCircuit( this.solution );
     return new LTAState( newCircuit, this.solution );
@@ -23,7 +23,7 @@ export default class LTAState {
    * Returns an array of characteristic measurements from the solution, in order to determine whether more subdivisions
    * are needed in the timestep.
    */
-  getCharacteristicArray(): number[] {
+  public getCharacteristicArray(): number[] {
 
     // The solution has been applied to the this.dynamicCircuit, so we can read values from it
     const currents = [];

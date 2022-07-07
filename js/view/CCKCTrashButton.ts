@@ -23,7 +23,7 @@ export default class CCKCTrashButton extends CCKCRoundPushButton {
    * @param tandem
    * @param [providedOptions]
    */
-  constructor( circuit: Circuit, tandem: Tandem, providedOptions?: Partial<RoundPushButtonOptions> ) {
+  public constructor( circuit: Circuit, tandem: Tandem, providedOptions?: Partial<RoundPushButtonOptions> ) {
 
     super( merge( {
       touchAreaDilation: 5, // radius dilation for touch area
@@ -46,7 +46,7 @@ export default class CCKCTrashButton extends CCKCRoundPushButton {
     }, providedOptions ) );
   }
 
-  override dispose(): void {
+  public override dispose(): void {
     assert && assert( false, 'should not be disposed' );
   }
 }

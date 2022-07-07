@@ -11,10 +11,10 @@ import CCKCUtils from '../../../CCKCUtils.js';
 import circuitConstructionKitCommon from '../../../circuitConstructionKitCommon.js';
 
 export default class MNACircuitElement {
-  readonly nodeId0: string; // index of the start node
-  readonly nodeId1: string; // index of the end node
+  public readonly nodeId0: string; // index of the start node
+  public readonly nodeId1: string; // index of the end node
 
-  constructor( nodeId0: string, nodeId1: string ) {
+  public constructor( nodeId0: string, nodeId1: string ) {
     assert && CCKCUtils.validateNodeIndex( nodeId0 );
     assert && CCKCUtils.validateNodeIndex( nodeId1 );
 
@@ -25,14 +25,14 @@ export default class MNACircuitElement {
   /**
    * Determine if the element contains the given node id
    */
-  containsNodeId( nodeId: string ): boolean {
+  public containsNodeId( nodeId: string ): boolean {
     return this.nodeId0 === nodeId || this.nodeId1 === nodeId;
   }
 
   /**
    * Find the node across from the specified node.
    */
-  getOppositeNode( nodeId: string ): string {
+  public getOppositeNode( nodeId: string ): string {
     assert && assert( this.nodeId0 === nodeId || this.nodeId1 === nodeId );
     return this.nodeId0 === nodeId ? this.nodeId1 : this.nodeId0;
   }

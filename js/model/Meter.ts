@@ -16,25 +16,25 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 export default class Meter {
-  phetioIndex: number;
+  public phetioIndex: number;
 
   // indicates whether the meter is in the play area
-  readonly visibleProperty: Property<boolean>;
+  public readonly visibleProperty: Property<boolean>;
 
   // the position of the body of the meter
-  readonly bodyPositionProperty: Property<Vector2>;
+  public readonly bodyPositionProperty: Property<Vector2>;
 
   // When the meter is dragged from the toolbox, all pieces drag together.
-  readonly draggingProbesWithBodyProperty: BooleanProperty;
+  public readonly draggingProbesWithBodyProperty: BooleanProperty;
 
   // Fires an event when the meter is dropped
-  readonly droppedEmitter: Emitter<[ Bounds2 ]>;
+  public readonly droppedEmitter: Emitter<[ Bounds2 ]>;
 
   /**
    * @param tandem
    * @param phetioIndex - for assigning corresponding tandems
    */
-  constructor( tandem: Tandem, phetioIndex: number ) {
+  public constructor( tandem: Tandem, phetioIndex: number ) {
 
     this.phetioIndex = phetioIndex;
     this.visibleProperty = new BooleanProperty( false, {
@@ -55,7 +55,7 @@ export default class Meter {
   /**
    * Resets the meter.  This is overridden by Ammeter and Voltmeter.
    */
-  reset(): void {
+  public reset(): void {
     this.visibleProperty.reset();
     this.bodyPositionProperty.reset();
     this.draggingProbesWithBodyProperty.reset();

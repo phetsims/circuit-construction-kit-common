@@ -24,7 +24,7 @@ export default class ChargeSpeedThrottlingReadoutNode extends Text {
    * @param showCurrentProperty - true if currents are visible
    * @param isValueDepictionEnabledProperty - true if the explore screen is running
    */
-  constructor( timeScaleProperty: Property<number>, showCurrentProperty: Property<boolean>, isValueDepictionEnabledProperty: Property<boolean> ) {
+  public constructor( timeScaleProperty: Property<number>, showCurrentProperty: Property<boolean>, isValueDepictionEnabledProperty: Property<boolean> ) {
     super( animationSpeedLimitReachedString, {
 
       // Reduce the width of the animation speed limit reached so it doesn't overlap controls

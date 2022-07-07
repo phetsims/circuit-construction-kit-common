@@ -69,7 +69,7 @@ export default class CCKCLightBulbNode extends FixedCircuitElementNode {
    * @param tandem
    * @param [providedOptions]
    */
-  constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, lightBulb: LightBulb,
+  public constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, lightBulb: LightBulb,
                showResultsProperty: Property<boolean>, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: Partial<FixedCircuitElementNodeOptions> ) {
     let filledOptions = merge( {
       isIcon: false,
@@ -276,7 +276,7 @@ export default class CCKCLightBulbNode extends FixedCircuitElementNode {
    * Multiple updates may happen per frame, they are batched and updated once in the view step to improve performance.
    * CCKCLightBulbNode calls updateRender for its child socket node
    */
-  protected override updateRender(): void {
+  public override updateRender(): void {
     const startPosition = this.circuitElement.startPositionProperty.get();
     const endPosition = this.circuitElement.endPositionProperty.get();
     const angle = Vector2.getAngleBetweenVectors( startPosition, endPosition ) + Math.PI / 4;
@@ -293,7 +293,7 @@ export default class CCKCLightBulbNode extends FixedCircuitElementNode {
   /**
    * Dispose when no longer used.
    */
-  override dispose(): void {
+  public override dispose(): void {
     this.disposeCircuitConstructionKitLightBulbNode();
     super.dispose();
   }
@@ -301,7 +301,7 @@ export default class CCKCLightBulbNode extends FixedCircuitElementNode {
   /**
    * Maintain the opacity of the brightness lines while changing the opacity of the light bulb itself.
    */
-  override updateOpacityOnInteractiveChange(): void {
+  public override updateOpacityOnInteractiveChange(): void {
 
     // TODO (black-box-study): Make the light bulb images look faded out.
   }

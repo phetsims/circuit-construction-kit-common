@@ -79,7 +79,7 @@ export default class ValueNode extends Panel {
    * @param viewTypeProperty
    * @param tandem
    */
-  constructor( sourceResistanceProperty: Property<number>, circuitElement: CircuitElement, showValuesProperty: Property<boolean>, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem ) {
+  public constructor( sourceResistanceProperty: Property<number>, circuitElement: CircuitElement, showValuesProperty: Property<boolean>, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem ) {
     const disposeEmitterValueNode = new Emitter();
 
     let readoutValueNode: any;
@@ -279,7 +279,7 @@ export default class ValueNode extends Panel {
     };
   }
 
-  override dispose(): void {
+  public override dispose(): void {
     super.dispose();
     this.disposeValueNode();
   }

@@ -3,10 +3,10 @@
 import CoreModel from './CoreModel.js';
 
 class LTAResistiveBattery extends CoreModel {
-  readonly voltage: number;
-  resistance: number;
+  public readonly voltage: number;
+  public resistance: number;
 
-  constructor( id: number, node0: string, node1: string, voltage: number, resistance: number ) {
+  public constructor( id: number, node0: string, node1: string, voltage: number, resistance: number ) {
     super( id, node0, node1 );
     this.voltage = voltage;
     this.resistance = resistance;

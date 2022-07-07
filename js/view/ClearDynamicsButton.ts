@@ -28,7 +28,7 @@ const SHAPE_MATRIX = Matrix3.pool.create( SCALE, 0, 0, 0, -SCALE, 0, 0, 0, 1 ); 
 
 export default class ClearDynamicsButton extends HBox {
 
-  constructor( circuit: Circuit, tandem: Tandem ) {
+  public constructor( circuit: Circuit, tandem: Tandem ) {
 
     // This SVG data was exported from assets/flip_battery_icon.ai, which was created by @arouinfar.  Using illustrator,
     // save the AI file as SVG, then inspect the file to get the path declaration.
@@ -72,7 +72,7 @@ export default class ClearDynamicsButton extends HBox {
     } );
   }
 
-  override dispose(): void {
+  public override dispose(): void {
     assert && assert( false, 'should not be disposed' );
   }
 }

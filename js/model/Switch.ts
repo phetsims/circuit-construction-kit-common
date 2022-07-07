@@ -31,18 +31,12 @@ type SwitchOptions = SelfOptions & FixedCircuitElementOptions;
 export default class Switch extends FixedCircuitElement {
 
   // the resistance in ohms
-  readonly resistanceProperty: Property<number>;
+  public readonly resistanceProperty: Property<number>;
 
   // whether the switch is closed (and current can flow through it)
-  readonly closedProperty: Property<boolean>;
+  public readonly closedProperty: Property<boolean>;
 
-  /**
-   * @param startVertex
-   * @param endVertex
-   * @param tandem
-   * @param [providedOptions]
-   */
-  constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: SwitchOptions ) {
+  public constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: SwitchOptions ) {
 
     const options = optionize<SwitchOptions, SelfOptions, FixedCircuitElementOptions>()( {
       closed: false,
@@ -68,7 +62,7 @@ export default class Switch extends FixedCircuitElement {
   /**
    * Dispose of this and PhET-iO instrumented children, so they will be unregistered.
    */
-  override dispose(): void {
+  public override dispose(): void {
     this.closedProperty.dispose();
     super.dispose();
   }
@@ -78,7 +72,7 @@ export default class Switch extends FixedCircuitElement {
    * @param distanceAlongWire
    * @param matrix to be updated with the position and angle, so that garbage isn't created each time
    */
-  override updateMatrixForPoint( distanceAlongWire: number, matrix: Matrix3 ): void {
+  public override updateMatrixForPoint( distanceAlongWire: number, matrix: Matrix3 ): void {
 
     const startPosition = this.startPositionProperty.get();
     const endPosition = this.endPositionProperty.get();
@@ -105,7 +99,7 @@ export default class Switch extends FixedCircuitElement {
   /**
    * Get the properties so that the circuit can be solved when changed.
    */
-  getCircuitProperties(): Property<any>[] {
+  public getCircuitProperties(): Property<any>[] {
     return [ this.resistanceProperty, this.closedProperty ];
   }
 }

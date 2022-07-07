@@ -23,17 +23,17 @@ const SOLDER_RADIUS = 11.2;
 const CIRCLE_NODE = new Circle( SOLDER_RADIUS, { fill: SOLDER_COLOR } ).rasterized( { wrap: false } );
 
 export default class SolderNode extends Node {
-  readonly vertex: Vertex;
+  public readonly vertex: Vertex;
 
   // added by CircuitLayerNode during dragging, used for relative drag position.
   private readonly startOffset: Vector2 | null;
   private readonly disposeSolderNode: () => void;
-  static webglSpriteNodes: Node[];
+  public static webglSpriteNodes: Node[];
 
   // radius of solder in model=view coordinates, for hit testing with probes
-  static SOLDER_RADIUS: number;
+  public static SOLDER_RADIUS: number;
 
-  constructor( circuitLayerNode: CircuitLayerNode, vertex: Vertex ) {
+  public constructor( circuitLayerNode: CircuitLayerNode, vertex: Vertex ) {
     assert && assert( CIRCLE_NODE, 'solder image should exist before creating SolderNode' );
 
     const circuit = circuitLayerNode.circuit;
@@ -89,7 +89,7 @@ export default class SolderNode extends Node {
   /**
    * Eliminate resources when no longer used.
    */
-  override dispose(): void {
+  public override dispose(): void {
     this.disposeSolderNode();
     super.dispose();
   }

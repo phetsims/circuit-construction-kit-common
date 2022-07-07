@@ -16,17 +16,11 @@ import ResistorType from './ResistorType.js';
 import Vertex from './Vertex.js';
 
 export default class Dog extends Resistor {
-  readonly isBarkingProperty: Property<boolean>;
+  public readonly isBarkingProperty: Property<boolean>;
   private lastBarkTime: number;
   private triggerCount: number;
 
-  /**
-   * @param startVertex
-   * @param endVertex
-   * @param tandem
-   * @param [providedOptions]
-   */
-  constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: ResistorOptions ) {
+  public constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: ResistorOptions ) {
     super( startVertex, endVertex, ResistorType.DOG, tandem, providedOptions );
 
     // keep track of whether the dog is barking, so we can update the view accordingly
@@ -45,7 +39,7 @@ export default class Dog extends Resistor {
    * @param dt in seconds
    * @param circuit
    */
-  override step( time: number, dt: number, circuit: Circuit ):void {
+  public override step( time: number, dt: number, circuit: Circuit ):void {
     super.step( time, dt, circuit );
     const voltage = this.voltageDifferenceProperty.value;
 

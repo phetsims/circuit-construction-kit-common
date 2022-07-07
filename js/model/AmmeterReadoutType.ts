@@ -10,9 +10,9 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
  * @author Sam Reid (PhET Interactive Simulations)
  */
 export default class AmmeterReadoutType extends EnumerationValue {
-  static MAGNITUDE = new AmmeterReadoutType();
-  static SIGNED = new AmmeterReadoutType();
-  static enumeration = new Enumeration( AmmeterReadoutType );
+  public static MAGNITUDE = new AmmeterReadoutType();
+  public static SIGNED = new AmmeterReadoutType();
+  public static enumeration = new Enumeration( AmmeterReadoutType );
 }
 
 circuitConstructionKitCommon.register( 'AmmeterReadoutType', AmmeterReadoutType );

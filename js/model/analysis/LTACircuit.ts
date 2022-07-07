@@ -29,10 +29,10 @@ type DistanceParams = { getCharacteristicArray: () => number[] };
 export default class LTACircuit {
   private readonly ltaResistors: MNAResistor[];
   private readonly ltaBatteries: LTAResistiveBattery[];
-  readonly ltaCapacitors: LTACapacitor[];
-  readonly ltaInductors: LTAInductor[];
+  public readonly ltaCapacitors: LTACapacitor[];
+  public readonly ltaInductors: LTAInductor[];
 
-  constructor( ltaResistors: MNAResistor[],
+  public constructor( ltaResistors: MNAResistor[],
                ltaBatteries: LTAResistiveBattery[],
                ltaCapacitors: LTACapacitor[],
                ltaInductors: LTAInductor[] ) {
@@ -46,7 +46,7 @@ export default class LTACircuit {
   /**
    * Solving the companion model is the same as propagating forward in time by dt.
    */
-  solvePropagate( dt: number ): LTASolution {
+  public solvePropagate( dt: number ): LTASolution {
 
     const companionBatteries: MNABattery[] = [];
     const companionResistors: MNAResistor[] = [];
@@ -151,7 +151,7 @@ export default class LTACircuit {
     return new LTASolution( this, mnaSolution, currentCompanions );
   }
 
-  solveWithSubdivisions( timestepSubdivisions: TimestepSubdivisions<LTAState>, dt: number ): LTAStateSet {
+  public solveWithSubdivisions( timestepSubdivisions: TimestepSubdivisions<LTAState>, dt: number ): LTAStateSet {
     const steppable = {
       update: ( a: { update: ( dt: number ) => LTAState }, dt: number ) => a.update( dt ),
       distance: ( a: DistanceParams, b: DistanceParams ) => euclideanDistance( a.getCharacteristicArray(), b.getCharacteristicArray() )
@@ -166,22 +166,22 @@ export default class LTACircuit {
     return this.solveWithSubdivisions( new TimestepSubdivisions(), dt );
   }
 
-  updateWithSubdivisions( dt: number ): LTACircuit {
+  public updateWithSubdivisions( dt: number ): LTACircuit {
     return this.solveWithSubdivisions2( dt ).getFinalState().ltaCircuit;
   }
 
-  solveItWithSubdivisions( dt: number ): LTASolution | null {
+  public solveItWithSubdivisions( dt: number ): LTASolution | null {
     return this.solveWithSubdivisions2( dt ).getFinalState().ltaSolution;
   }
 
-  update( dt: number ): LTACircuit {
+  private update( dt: number ): LTACircuit {
     return this.updateCircuit( this.solvePropagate( dt ) );
   }
 
   /**
    * Applies the specified solution to the circuit.
    */
-  updateCircuit( solution: LTASolution ): LTACircuit {
+  public updateCircuit( solution: LTASolution ): LTACircuit {
     const updatedCapacitors = this.ltaCapacitors.map( ltaCapacitor => {
       return new LTACapacitor(
         ltaCapacitor.id,

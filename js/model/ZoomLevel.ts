@@ -8,9 +8,9 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
  * @author Sam Reid (PhET Interactive Simulations)
  */
 export default class ZoomLevel extends EnumerationValue {
-  static NORMAL = new ZoomLevel();
-  static ZOOMED_OUT = new ZoomLevel();
-  static enumeration = new Enumeration( ZoomLevel );
+  public static NORMAL = new ZoomLevel();
+  public static ZOOMED_OUT = new ZoomLevel();
+  private static enumeration = new Enumeration( ZoomLevel );
 }
 
 circuitConstructionKitCommon.register( 'ZoomLevel', ZoomLevel );

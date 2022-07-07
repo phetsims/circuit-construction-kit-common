@@ -60,10 +60,10 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
   protected readonly highlightNode: FixedCircuitElementHighlightNode | null;
   private readonly markDirtyListener: () => void;
   private readonly moveToFrontListener: () => void;
-  private readonly pickableListener: ( pickable: boolean | null ) => Node;
+  protected readonly pickableListener: ( pickable: boolean | null ) => Node;
   private readonly fixedCircuitElementNodePickable: boolean | null;
   private readonly dragListener: CircuitLayerNodeDragListener | null;
-  static webglSpriteNodes: Node[];
+  public static webglSpriteNodes: Node[];
   private readonly updateHighlightVisibility: ( ( circuitElement: CircuitElement | null ) => void ) | null;
   private readonly updateFireMultilink: UnknownMultilink | null;
 
@@ -78,7 +78,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
    * @param tandem
    * @param [providedOptions]
    */
-  constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, circuitElement: FixedCircuitElement,
+  public constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, circuitElement: FixedCircuitElement,
                viewTypeProperty: Property<CircuitElementViewType>, lifelikeNode: Node, schematicNode: Node, tandem: Tandem,
                providedOptions?: Partial<FixedCircuitElementNodeOptions> ) {
     assert && assert( lifelikeNode !== schematicNode, 'schematicNode should be different than lifelikeNode' );
@@ -242,7 +242,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
    * Multiple updates may happen per frame, they are batched and updated once in the view step to improve performance.
    * CCKCLightBulbNode calls updateRender for its child socket node
    */
-  protected updateRender(): void {
+  public updateRender(): void {
     const startPosition = this.circuitElement.startPositionProperty.get();
     const endPosition = this.circuitElement.endPositionProperty.get();
 
@@ -308,7 +308,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
     }
   }
 
-  override dispose(): void {
+  public override dispose(): void {
 
     // Interrupt the drag event if it was in progress
     this.dragListener && this.dragListener.interrupt();
@@ -341,7 +341,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
   /**
    * Gets the bounds for the highlight rectangle.
    */
-  getHighlightBounds(): Bounds2 {
+  public getHighlightBounds(): Bounds2 {
     return this.contentNode.localBounds.dilated( HIGHLIGHT_PADDING );
   }
 }

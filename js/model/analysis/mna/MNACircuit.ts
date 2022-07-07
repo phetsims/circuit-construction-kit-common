@@ -38,7 +38,7 @@ export default class MNACircuit {
   private readonly nodeCount: number;
   private readonly nodes: string[];
 
-  constructor( batteries: MNABattery[], resistors: MNAResistor[], currentSources: MNACurrent[] ) {
+  public constructor( batteries: MNABattery[], resistors: MNAResistor[], currentSources: MNACurrent[] ) {
     assert && assert( batteries, 'batteries should be defined' );
     assert && assert( resistors, 'resistors should be defined' );
     assert && assert( currentSources, 'currentSources should be defined' );
@@ -66,7 +66,7 @@ export default class MNACircuit {
   /**
    * Returns a string representation of the circuit for debugging.
    */
-  toString(): string {
+  public toString(): string {
     if ( assert ) { // stripped out for builds
       return `resistors:\n${this.resistors.map( resistorToString ).join( '\n' )}\n` +
              `batteries:\n${this.batteries.map( batteryToString ).join( '\n' )}\n` +
@@ -284,7 +284,7 @@ export default class MNACircuit {
   /**
    * Solves for all unknown currents and voltages in the circuit.
    */
-  solve(): MNASolution {
+  public solve(): MNASolution {
     const equations = this.getEquations();
     const unknownCurrents = this.getUnknownCurrents();
     const unknownVoltages = this.nodes.map( node => new UnknownVoltage( node ) );
@@ -382,16 +382,16 @@ const batteryToString = ( battery: MNABattery ) =>
 class Term {
 
   // the coefficient for the term, like '7' in 7x
-  readonly coefficient: number;
+  public readonly coefficient: number;
 
   // the variable for the term, like the x variable in 7x
-  readonly variable: UnknownCurrent | UnknownVoltage;
+  public readonly variable: UnknownCurrent | UnknownVoltage;
 
   /**
    * @param coefficient - the multiplier for this term
    * @param variable - the variable for this term, like the x variable in 7x
    */
-  constructor( coefficient: number, variable: UnknownCurrent | UnknownVoltage ) {
+  public constructor( coefficient: number, variable: UnknownCurrent | UnknownVoltage ) {
 
     assert && assert( !isNaN( coefficient ), 'coefficient cannot be NaN' );
 
@@ -402,7 +402,7 @@ class Term {
   /**
    * Returns a string representation for debugging.
    */
-  toTermString(): string {
+  public toTermString(): string {
     const prefix = this.coefficient === 1 ? '' :
                    this.coefficient === -1 ? '-' :
                    `${this.coefficient}*`;
@@ -411,16 +411,16 @@ class Term {
 }
 
 class UnknownCurrent {
-  readonly element: MNACircuitElement;
+  public readonly element: MNACircuitElement;
 
-  constructor( element: MNACircuitElement ) {
+  public constructor( element: MNACircuitElement ) {
     this.element = element;
   }
 
   /**
    * Returns the name of the term for debugging.
    */
-  toTermName(): string {
+  public toTermName(): string {
     return `I${this.element.nodeId0}_${this.element.nodeId1}`;
   }
 
@@ -428,15 +428,15 @@ class UnknownCurrent {
    * Two UnknownCurrents are equal if the refer to the same element.
    * @param other - an UnknownCurrent to compare with this one
    */
-  equals( other: UnknownCurrent ): boolean {
+  private equals( other: UnknownCurrent ): boolean {
     return other.element === this.element;
   }
 }
 
 class UnknownVoltage {
-  readonly node: string; // the index of the node
+  public readonly node: string; // the index of the node
 
-  constructor( node: string ) {
+  public constructor( node: string ) {
     assert && CCKCUtils.validateNodeIndex( node );
     this.node = node;
   }
@@ -444,7 +444,7 @@ class UnknownVoltage {
   /**
    * Returns a string variable name for this term, for debugging.
    */
-  toTermName(): string {
+  public toTermName(): string {
     return `V${this.node}`;
   }
 
@@ -452,7 +452,7 @@ class UnknownVoltage {
    * Two UnknownVoltages are equal if they refer to the same node.
    * @param other - another object to compare with this one
    */
-  equals( other: UnknownVoltage ): boolean {
+  private equals( other: UnknownVoltage ): boolean {
     return other.node === this.node;
   }
 }
@@ -464,9 +464,8 @@ class Equation {
   /**
    * @param value - the value on the right hand side of the equation, such as x+y=7
    * @param terms
-   * @constructor
    */
-  constructor( value: number, terms: Term[] ) {
+  public constructor( value: number, terms: Term[] ) {
 
     assert && assert( !isNaN( value ) );
 
@@ -484,7 +483,7 @@ class Equation {
    * @param z - the matrix on the right hand side in Ax=z
    * @param getColumn - (UnknownCurrent|UnknownVoltage) => number
    */
-  stamp( row: number, a: Matrix, z: Matrix, getColumn: { ( unknown: UnknownCurrent | UnknownVoltage ): number; ( arg0: UnknownCurrent | UnknownVoltage ): any } ): void {
+  public stamp( row: number, a: Matrix, z: Matrix, getColumn: { ( unknown: UnknownCurrent | UnknownVoltage ): number; ( arg0: UnknownCurrent | UnknownVoltage ): any } ): void {
 
     // Set the equation's value into the solution matrix
     z.set( row, 0, this.value );
@@ -501,7 +500,7 @@ class Equation {
   /**
    * Returns a string representation for debugging.
    */
-  toString(): string {
+  private toString(): string {
     const termList = [];
     for ( let i = 0; i < this.terms.length; i++ ) {
       termList.push( this.terms[ i ].toTermString() );

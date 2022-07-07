@@ -16,7 +16,7 @@ const CORNER_RADIUS = 8; // in view coordinates
 
 export default class FixedCircuitElementHighlightNode extends Rectangle {
 
-  constructor( fixedCircuitElementNode: FixedCircuitElementNode ) {
+  public constructor( fixedCircuitElementNode: FixedCircuitElementNode ) {
 
     super( 0, 0, 0, 0,
       CORNER_RADIUS,
@@ -32,7 +32,7 @@ export default class FixedCircuitElementHighlightNode extends Rectangle {
   /**
    * Update the dimensions of the highlight, called on startup and when components change from lifelike/schematic.
    */
-  recomputeBounds( fixedCircuitElementNode: FixedCircuitElementNode ): void {
+  public recomputeBounds( fixedCircuitElementNode: FixedCircuitElementNode ): void {
 
     // This is called rarely and hence the extra allocation is OK
     this.setRectBounds( fixedCircuitElementNode.getHighlightBounds() );

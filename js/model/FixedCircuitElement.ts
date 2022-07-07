@@ -22,15 +22,15 @@ export type FixedCircuitElementOptions = SelfOptions & CircuitElementOptions;
 export default abstract class FixedCircuitElement extends CircuitElement {
 
   // the number of decimal places to show in readouts and controls
-  readonly numberOfDecimalPlaces: number;
+  public readonly numberOfDecimalPlaces: number;
 
   // The distance from one vertex to another (as the crow flies), used for rotation about a vertex
-  readonly distanceBetweenVertices: number;
+  public readonly distanceBetweenVertices: number;
 
   // keep track of whether it is a fixed length element for assertion testing in CircuitElement
   private readonly isFixedCircuitElement: boolean;
 
-  constructor( startVertex: Vertex,
+  public constructor( startVertex: Vertex,
                endVertex: Vertex,
                chargePathLength: number, // the distance the charges travel (in view coordinates), see CircuitElement.js
                tandem: Tandem,

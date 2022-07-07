@@ -64,23 +64,23 @@ type LightBulbOptions = SelfOptions & FixedCircuitElementOptions;
 export default class LightBulb extends FixedCircuitElement {
 
   // true if R is a function of current. Not an enum because in the future we may have a real high resistance bulb.
-  readonly real: boolean;
+  public readonly real: boolean;
 
   // true if the light bulb is a high resistance light bulb
-  readonly highResistance: boolean;
+  public readonly highResistance: boolean;
 
   // the resistance of the light bulb which can be edited with the UI
-  readonly resistanceProperty: NumberProperty;
+  public readonly resistanceProperty: NumberProperty;
   private readonly viewTypeProperty: Property<CircuitElementViewType>;
 
   // TODO: improve types
-  static createAtPosition: ( startVertex: Vertex, endVertex: Vertex, circuit: Circuit, resistance: number, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: any ) => LightBulb;
-  static createVertexPair: ( position: Vector2, circuit: Circuit, icon?: boolean ) => { startVertex: Vertex; endVertex: Vertex };
-  static createSamplePoints: ( position: Vector2 ) => [ Vector2, Vector2 ];
-  static vertexDelta: Vector2;
+  public static createAtPosition: ( startVertex: Vertex, endVertex: Vertex, circuit: Circuit, resistance: number, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: any ) => LightBulb;
+  public static createVertexPair: ( position: Vector2, circuit: Circuit, icon?: boolean ) => { startVertex: Vertex; endVertex: Vertex };
+  public static createSamplePoints: ( position: Vector2 ) => [ Vector2, Vector2 ];
+  public static vertexDelta: Vector2;
   private readonly powerDissipatedProperty: PowerDissipatedProperty;
 
-  constructor(
+  public constructor(
     startVertex: Vertex, // side
     endVertex: Vertex, // bottom
     resistance: number,
@@ -113,7 +113,7 @@ export default class LightBulb extends FixedCircuitElement {
   }
 
   // Updates the charge path length when the view changes between lifelike/schematic
-  updatePathLength(): void {
+  public updatePathLength(): void {
     this.chargePathLength = this.getPathLength();
   }
 
@@ -133,12 +133,12 @@ export default class LightBulb extends FixedCircuitElement {
   /**
    * Returns true because all light bulbs can have their resistance changed.
    */
-  isResistanceEditable(): boolean {
+  private isResistanceEditable(): boolean {
     return true;
   }
 
   // Dispose of this and PhET-iO instrumented children, so they will be unregistered.
-  override dispose(): void {
+  public override dispose(): void {
     this.resistanceProperty.dispose();
     this.powerDissipatedProperty.dispose();
     super.dispose();
@@ -167,7 +167,7 @@ export default class LightBulb extends FixedCircuitElement {
   /**
    * Get the properties so that the circuit can be solved when changed.
    */
-  override getCircuitProperties(): Property<IntentionalAny>[] {
+  public override getCircuitProperties(): Property<IntentionalAny>[] {
     return [ this.resistanceProperty ];
   }
 
@@ -177,7 +177,7 @@ export default class LightBulb extends FixedCircuitElement {
    * @param distanceAlongWire - how far along the bulb's length the charge has traveled
    * @param matrix to be updated with the position and angle, so that garbage isn't created each time
    */
-  override updateMatrixForPoint( distanceAlongWire: number, matrix: Matrix3 ): void {
+  public override updateMatrixForPoint( distanceAlongWire: number, matrix: Matrix3 ): void {
 
     super.updateMatrixForPoint( distanceAlongWire, matrix );
 
@@ -214,7 +214,7 @@ export default class LightBulb extends FixedCircuitElement {
     throw new Error( 'exceeded charge path bounds' );
   }
 
-  static REAL_BULB_COLD_RESISTANCE = 10;
+  public static REAL_BULB_COLD_RESISTANCE = 10;
 }
 
 // Create a LightBulb at the specified position

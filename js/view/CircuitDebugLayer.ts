@@ -17,13 +17,13 @@ import CurrentSense from '../model/CurrentSense.js';
 export default class CircuitDebugLayer extends Node {
   private readonly circuitLayerNode: CircuitLayerNode;
 
-  constructor( circuitLayerNode: CircuitLayerNode ) {
+  public constructor( circuitLayerNode: CircuitLayerNode ) {
     super();
     this.circuitLayerNode = circuitLayerNode;
     this.rebuild();
   }
 
-  step(): void {
+  public step(): void {
     this.rebuild();
   }
 

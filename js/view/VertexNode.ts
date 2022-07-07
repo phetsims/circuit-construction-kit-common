@@ -47,26 +47,26 @@ export default class VertexNode extends Node {
   private readonly vertex: Vertex;
 
   // added by CircuitLayerNode during dragging, used for relative drag position, or null if not being dragged
-  startOffset: Vector2 | null;
+  public startOffset: Vector2 | null;
   private readonly highlightNode: Circle;
   private readonly keyListener: { keydown: ( event: any ) => void };
   private readonly updateStrokeListener: () => void;
   private readonly updateSelectedListener: () => void;
-  private readonly updateMoveToFront: () => Node;
-  private readonly updatePickableListener: ( pickable: boolean | null ) => Node;
+  protected readonly updateMoveToFront: () => Node;
+  protected readonly updatePickableListener: ( pickable: boolean | null ) => Node;
   private readonly clickToDismissListeners: DisplayClickToDismissListener[];
   private readonly dragListener: CircuitLayerNodeDragListener;
   private readonly interruptionListener: ( draggable: boolean ) => void;
   private readonly updateVertexNodePositionListener: () => void;
-  static VERTEX_RADIUS: number;
-  static webglSpriteNodes: Node[];
+  public static VERTEX_RADIUS: number;
+  public static webglSpriteNodes: Node[];
 
   /**
    * @param circuitLayerNode - the entire CircuitLayerNode
    * @param vertex - the Vertex that will be displayed
    * @param tandem
    */
-  constructor( circuitLayerNode: CircuitLayerNode, vertex: Vertex, tandem: Tandem ) {
+  public constructor( circuitLayerNode: CircuitLayerNode, vertex: Vertex, tandem: Tandem ) {
 
     super( {
       tandem: tandem,
@@ -244,7 +244,7 @@ export default class VertexNode extends Node {
     vertex.isSelectedProperty.link( this.updateVertexNodePositionListener );
   }
 
-  override dispose(): void {
+  public override dispose(): void {
     const vertex = this.vertex;
     const circuit = this.circuit;
     const cutButton = this.circuitLayerNode.cutButton;

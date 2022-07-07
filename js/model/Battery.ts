@@ -26,16 +26,16 @@ const BATTERY_LENGTH = CCKCConstants.BATTERY_LENGTH;
 type BatteryOptions = VoltageSourceOptions;
 
 export default class Battery extends VoltageSource {
-  readonly batteryType: BatteryType;
-  static VOLTAGE_DEFAULT = 9.0;
-  static VOLTAGE_RANGE = new Range( 0, 120 );
-  static VOLTAGE_DECIMAL_PLACES = 1;
-  static HIGH_VOLTAGE_DEFAULT = 1000;
-  static HIGH_VOLTAGE_RANGE = new Range( 100, 100000 );
-  static HIGH_VOLTAGE_DECIMAL_PLACES = 0;
-  isReversibleProperty: BooleanProperty;
+  public readonly batteryType: BatteryType;
+  public static VOLTAGE_DEFAULT = 9.0;
+  public static VOLTAGE_RANGE = new Range( 0, 120 );
+  public static VOLTAGE_DECIMAL_PLACES = 1;
+  public static HIGH_VOLTAGE_DEFAULT = 1000;
+  public static HIGH_VOLTAGE_RANGE = new Range( 100, 100000 );
+  public static HIGH_VOLTAGE_DECIMAL_PLACES = 0;
+  public isReversibleProperty: BooleanProperty;
 
-  constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, batteryType: BatteryType,
+  public constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, batteryType: BatteryType,
                tandem: Tandem, providedOptions?: BatteryOptions ) {
     assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );
     const filledOptions = optionize<BatteryOptions, EmptyObjectType, VoltageSourceOptions>()( {
@@ -56,11 +56,11 @@ export default class Battery extends VoltageSource {
     } );
   }
 
-  override step( time: number, dt: number, circuit: Circuit ): void {
+  public override step( time: number, dt: number, circuit: Circuit ): void {
     // nothing to do
   }
 
-  override dispose(): void {
+  public override dispose(): void {
     this.isReversibleProperty.dispose();
     super.dispose();
   }

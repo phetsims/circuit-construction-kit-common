@@ -46,13 +46,13 @@ export default class ChargeNode extends Node {
   private readonly outsideOfBlackBoxProperty: BooleanProperty;
   private readonly updateVisibleListener: () => void;
   private readonly updateTransformListener: () => void;
-  static webglSpriteNodes: Node[];
+  public static webglSpriteNodes: Node[];
 
   /**
    * @param charge - the model element
    * @param circuitLayerNode
    */
-  constructor( charge: Charge, circuitLayerNode: CircuitLayerNode ) {
+  public constructor( charge: Charge, circuitLayerNode: CircuitLayerNode ) {
 
     const child = charge.charge > 0 ? ARROW_NODE : ELECTRON_CHARGE_NODE;
 
@@ -85,7 +85,7 @@ export default class ChargeNode extends Node {
   /**
    * Dispose resources when no longer used.
    */
-  override dispose(): void {
+  public override dispose(): void {
     this.charge.changedEmitter.removeListener( this.updateTransformListener );
     this.charge.visibleProperty.unlink( this.updateVisibleListener );
     this.outsideOfBlackBoxProperty.unlink( this.updateVisibleListener );
@@ -93,7 +93,7 @@ export default class ChargeNode extends Node {
   }
 
   // update the transform of the charge node
-  updateTransform(): void {
+  private updateTransform(): void {
     const charge = this.charge;
     const current = charge.circuitElement.currentProperty.get();
 
@@ -150,7 +150,7 @@ export default class ChargeNode extends Node {
     }
   }
 
-  updateVisible(): void {
+  private updateVisible(): void {
     this.visible = this.charge.visibleProperty.get() &&
                    this.outsideOfBlackBoxProperty.get();
   }

@@ -144,7 +144,7 @@ export default class WireNode extends CircuitElementNode {
   private readonly highlightNode: Path;
   private readonly dragListener: CircuitLayerNodeDragListener | null;
   private readonly disposeWireNode: () => void;
-  static webglSpriteNodes: Node[];
+  public static webglSpriteNodes: Node[];
 
   /**
    * @param screenView - the icon is created separately in CircuitElementToolFactory, so (unlike
@@ -154,7 +154,7 @@ export default class WireNode extends CircuitElementNode {
    * @param viewTypeProperty
    * @param tandem
    */
-  constructor( screenView: CCKCScreenView, circuitLayerNode: CircuitLayerNode | null, wire: Wire, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem ) {
+  public constructor( screenView: CCKCScreenView, circuitLayerNode: CircuitLayerNode | null, wire: Wire, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem ) {
 
     const startCapParent = new Node( {
       children: [ lifelikeRoundedCapNormal ]
@@ -346,7 +346,7 @@ export default class WireNode extends CircuitElementNode {
    * Multiple updates may happen per frame, they are batched and updated once in the view step to improve performance.
    * CCKCLightBulbNode calls updateRender for its child socket node
    */
-  protected updateRender(): void {
+  public updateRender(): void {
     const view = this.viewTypeProperty.value;
     if ( view === CircuitElementViewType.LIFELIKE ) {
 
@@ -401,7 +401,7 @@ export default class WireNode extends CircuitElementNode {
     this.mouseArea = this.touchArea;
   }
 
-  override dispose(): void {
+  public override dispose(): void {
     this.disposeWireNode();
     super.dispose();
   }

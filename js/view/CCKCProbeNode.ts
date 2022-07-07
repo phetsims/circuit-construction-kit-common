@@ -24,7 +24,7 @@ export default class CCKCProbeNode extends ProbeNode {
    * @param visibleBoundsProperty - visible bounds of the ScreenView
    * @param [providedOptions]
    */
-  constructor( node: Node, visibleBoundsProperty: Property<Bounds2>, providedOptions?: any ) {
+  public constructor( node: Node, visibleBoundsProperty: Property<Bounds2>, providedOptions?: any ) {
 
     providedOptions = merge( {
       cursor: 'pointer',

@@ -31,17 +31,17 @@ export type VoltageSourceOptions = {
 export default abstract class VoltageSource extends FixedCircuitElement {
 
   // the voltage of the battery in volts
-  readonly voltageProperty: NumberProperty;
+  public readonly voltageProperty: NumberProperty;
 
   // the internal resistance of the battery
-  readonly internalResistanceProperty: Property<number>;
+  public readonly internalResistanceProperty: Property<number>;
 
   // track which way the battery "button" (plus side) was facing the initial state so
   // the user can only create a certain number of "left" or "right" batteries from the toolbox.
   // @readonly
-  initialOrientation: string; // TODO: enum
-  powerDissipatedProperty: PowerDissipatedProperty;
-  powerGeneratedProperty: IReadOnlyProperty<number>;
+  public initialOrientation: string; // TODO: enum
+  private powerDissipatedProperty: PowerDissipatedProperty;
+  private powerGeneratedProperty: IReadOnlyProperty<number>;
 
   /**
    * @param startVertex - one of the battery vertices
@@ -51,7 +51,7 @@ export default abstract class VoltageSource extends FixedCircuitElement {
    * @param tandem
    * @param [providedOptions]
    */
-  constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, length: number, tandem: Tandem, providedOptions?: VoltageSourceOptions ) {
+  public constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, length: number, tandem: Tandem, providedOptions?: VoltageSourceOptions ) {
     assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );
     const options = merge( {
       initialOrientation: 'right',
@@ -82,7 +82,7 @@ export default abstract class VoltageSource extends FixedCircuitElement {
   /**
    * Dispose of this and PhET-iO instrumented children, so they will be unregistered.
    */
-  override dispose(): void {
+  public override dispose(): void {
     this.voltageProperty.dispose();
     this.powerDissipatedProperty.dispose();
     this.powerGeneratedProperty.dispose();
@@ -92,7 +92,7 @@ export default abstract class VoltageSource extends FixedCircuitElement {
   /**
    * Get the properties so that the circuit can be solved when changed.
    */
-  getCircuitProperties(): Property<any>[] {
+  public getCircuitProperties(): Property<any>[] {
     return [ this.voltageProperty ];
   }
 }

@@ -20,7 +20,7 @@ import CircuitElement from '../model/CircuitElement.js';
 
 export default class RepairFuseButton extends HBox {
 
-  constructor( circuit: Circuit, tandem: Tandem ) {
+  public constructor( circuit: Circuit, tandem: Tandem ) {
 
     const shape = new Shape().moveTo( 0, 0 ).zigZagToPoint( new Vector2( 35, 0 ), 4.7, 4, false );
 
@@ -68,7 +68,7 @@ export default class RepairFuseButton extends HBox {
     super( { children: [ button ] } );
   }
 
-  override dispose(): void {
+  public override dispose(): void {
     assert && assert( false, 'should not be disposed' );
   }
 }

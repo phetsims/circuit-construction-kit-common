@@ -10,10 +10,10 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Vertex from './Vertex.js';
 
 export default class VoltageConnection {
-  readonly vertex: Vertex;
-  readonly voltage: number;
+  public readonly vertex: Vertex;
+  public readonly voltage: number;
 
-  constructor( vertex: Vertex, voltage: number = vertex.voltageProperty.value ) {
+  public constructor( vertex: Vertex, voltage: number = vertex.voltageProperty.value ) {
     this.vertex = vertex;
     this.voltage = voltage;
   }

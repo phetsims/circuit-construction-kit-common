@@ -31,7 +31,7 @@ export default class SourceResistanceControl extends VBox {
    * @param titleConfig
    * @param tandem
    */
-  constructor( sourceResistanceProperty: Property<number>, alignGroup: AlignGroup, batteryResistanceControlString: string, titleConfig: any, tandem: Tandem ) {
+  public constructor( sourceResistanceProperty: Property<number>, alignGroup: AlignGroup, batteryResistanceControlString: string, titleConfig: any, tandem: Tandem ) {
 
     /**
      * Creates label to be used for slider

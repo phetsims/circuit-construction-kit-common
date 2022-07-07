@@ -19,15 +19,15 @@ import Meter from './Meter.js';
 export default class Voltmeter extends Meter {
 
   // the voltage the probe is reading (in volts) or null if unconnected
-  readonly voltageProperty: Property<number | null>;
+  public readonly voltageProperty: Property<number | null>;
 
   // the position of the tip of the red probe in model=view coordinates
-  readonly redProbePositionProperty: Vector2Property;
+  public readonly redProbePositionProperty: Vector2Property;
 
   // the position of the black probe in model=view coordinates
-  readonly blackProbePositionProperty: Vector2Property;
+  public readonly blackProbePositionProperty: Vector2Property;
 
-  constructor( tandem: Tandem, phetioIndex: number ) {
+  public constructor( tandem: Tandem, phetioIndex: number ) {
     super( tandem, phetioIndex );
 
     this.voltageProperty = new Property<number | null>( null, {
@@ -48,7 +48,7 @@ export default class Voltmeter extends Meter {
   /**
    * Reset the voltmeter, called when reset all is pressed.
    */
-  override reset(): void {
+  public override reset(): void {
     super.reset();
     this.voltageProperty.reset();
     this.redProbePositionProperty.reset();

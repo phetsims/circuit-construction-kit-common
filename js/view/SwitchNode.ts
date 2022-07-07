@@ -155,7 +155,7 @@ const schematicClosedImage = createNode(
 export default class SwitchNode extends FixedCircuitElementNode {
 
   // the Switch rendered by this Node, equivalent to this.circuitElement
-  readonly circuitSwitch: Switch;
+  public readonly circuitSwitch: Switch;
   private readonly lifelikeOpenNode: Node;
   private readonly disposeSwitchNode: () => void;
 
@@ -167,7 +167,7 @@ export default class SwitchNode extends FixedCircuitElementNode {
    * @param tandem
    * @param [providedOptions]
    */
-  constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, circuitSwitch: Switch,
+  public constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, circuitSwitch: Switch,
                viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: Partial<FixedCircuitElementNodeOptions> ) {
 
     const lifelikeNode = new Node();
@@ -237,7 +237,7 @@ export default class SwitchNode extends FixedCircuitElementNode {
    * Determine whether the start side (with the pivot) contains the sensor point.
    * @param point - in view coordinates
    */
-  startSideContainsSensorPoint( point: Vector2 ): boolean {
+  public startSideContainsSensorPoint( point: Vector2 ): boolean {
     const localPoint = this.contentNode.parentToLocalPoint( point );
     const leftSegmentContainsPoint = lifelikeOpenNode.leftSegmentNode.containsPoint( localPoint );
     const node = this.circuitSwitch.closedProperty.get() ? lifelikeClosedNode : lifelikeOpenNode;
@@ -249,7 +249,7 @@ export default class SwitchNode extends FixedCircuitElementNode {
    * Determine whether the end side (with the pivot) contains the sensor point.
    * @param point - in view coordinates
    */
-  endSideContainsSensorPoint( point: Vector2 ): boolean {
+  public endSideContainsSensorPoint( point: Vector2 ): boolean {
     const localPoint = this.contentNode.parentToLocalPoint( point );
     return lifelikeOpenNode.rightSegmentNode.containsPoint( localPoint );
   }
@@ -257,7 +257,7 @@ export default class SwitchNode extends FixedCircuitElementNode {
   /**
    * Returns true if the node hits the sensor at the given point.
    */
-  override containsSensorPoint( globalPoint: Vector2 ): boolean {
+  public override containsSensorPoint( globalPoint: Vector2 ): boolean {
 
     const localPoint = this.globalToParentPoint( globalPoint );
 
@@ -267,7 +267,7 @@ export default class SwitchNode extends FixedCircuitElementNode {
     return this.startSideContainsSensorPoint( localPoint ) || this.endSideContainsSensorPoint( localPoint );
   }
 
-  override dispose(): void {
+  public override dispose(): void {
     this.disposeSwitchNode();
     super.dispose();
   }

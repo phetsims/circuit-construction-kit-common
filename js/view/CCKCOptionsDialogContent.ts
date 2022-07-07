@@ -20,7 +20,7 @@ import ammeterReadoutTypeProperty from './ammeterReadoutTypeProperty.js';
 export default class CCKCOptionsDialogContent extends VBox {
   private readonly disposeCCKCOptionsDialogContent: () => void;
 
-  constructor( tandem: Tandem ) {
+  public constructor( tandem: Tandem ) {
 
     const textOptions = {
       fontSize: 23
@@ -75,7 +75,7 @@ export default class CCKCOptionsDialogContent extends VBox {
     this.disposeCCKCOptionsDialogContent = () => schematicStandardRadioButtonGroup.dispose();
   }
 
-  override dispose(): void {
+  public override dispose(): void {
     this.disposeCCKCOptionsDialogContent();
     super.dispose();
   }

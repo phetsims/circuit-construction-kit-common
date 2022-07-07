@@ -22,9 +22,9 @@ import Multilink from '../../../axon/js/Multilink.js';
 
 // Extend HBox so an invisible parent will auto-layout (not leave a blank hole)
 export default class CircuitElementNumberControl extends HBox {
-  static NUMBER_CONTROL_ELEMENT_MAX_WIDTH = 115;
+  public static NUMBER_CONTROL_ELEMENT_MAX_WIDTH = 115;
 
-  constructor( title: string, valuePattern: string, valueProperty: Property<number>, range: Range, circuit: Circuit,
+  public constructor( title: string, valuePattern: string, valueProperty: Property<number>, range: Range, circuit: Circuit,
                numberOfDecimalPlaces: number, providedOptions?: any ) {
 
     // When the user changes any parameter of any circuit element, signify it.
@@ -82,7 +82,7 @@ export default class CircuitElementNumberControl extends HBox {
     } );
   }
 
-  override dispose(): void {
+  public override dispose(): void {
     assert && assert( false, 'Should not be disposed' );
   }
 }

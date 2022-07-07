@@ -27,18 +27,12 @@ type InductorOptions = {
 export default class Inductor extends DynamicCircuitElement {
 
   // the inductance in Henries
-  readonly inductanceProperty: NumberProperty;
-  static INDUCTANCE_DEFAULT = CCKCQueryParameters.inductanceDefault;
-  static INDUCTANCE_RANGE = new Range( CCKCQueryParameters.inductanceMin, CCKCQueryParameters.inductanceMax );
-  static INDUCTANCE_NUMBER_OF_DECIMAL_PLACES = CCKCQueryParameters.inductorNumberDecimalPlaces;
+  public readonly inductanceProperty: NumberProperty;
+  public static INDUCTANCE_DEFAULT = CCKCQueryParameters.inductanceDefault;
+  public static INDUCTANCE_RANGE = new Range( CCKCQueryParameters.inductanceMin, CCKCQueryParameters.inductanceMax );
+  public static INDUCTANCE_NUMBER_OF_DECIMAL_PLACES = CCKCQueryParameters.inductorNumberDecimalPlaces;
 
-  /**
-   * @param startVertex
-   * @param endVertex
-   * @param tandem
-   * @param [providedOptions]
-   */
-  constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: Partial<InductorOptions> ) {
+  public constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: Partial<InductorOptions> ) {
     const options = merge( {
       inductance: Inductor.INDUCTANCE_DEFAULT,
       numberOfDecimalPlaces: Inductor.INDUCTANCE_NUMBER_OF_DECIMAL_PLACES
@@ -55,7 +49,7 @@ export default class Inductor extends DynamicCircuitElement {
   /**
    * Dispose of this and PhET-iO instrumented children, so they will be unregistered.
    */
-  override dispose(): void {
+  public override dispose(): void {
     this.inductanceProperty.dispose();
     super.dispose();
   }
@@ -63,7 +57,7 @@ export default class Inductor extends DynamicCircuitElement {
   /**
    * Get the properties so that the circuit can be solved when changed.
    */
-  getCircuitProperties(): Property<any>[] {
+  public getCircuitProperties(): Property<any>[] {
     return [ this.inductanceProperty ];
   }
 }

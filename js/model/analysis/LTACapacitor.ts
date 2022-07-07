@@ -4,10 +4,10 @@ import DynamicCoreModel from './DynamicCoreModel.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 
 export default class LTACapacitor extends DynamicCoreModel {
-  capacitorVoltageNode1: string | null;
-  capacitance: number;
+  public capacitorVoltageNode1: string | null;
+  public capacitance: number;
 
-  constructor( id: number, node0: string, node1: string, voltage: number, current: number, capacitance: number ) {
+  public constructor( id: number, node0: string, node1: string, voltage: number, current: number, capacitance: number ) {
     super( id, node0, node1, voltage, current );
     this.capacitance = capacitance;
 

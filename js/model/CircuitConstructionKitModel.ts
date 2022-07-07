@@ -38,50 +38,50 @@ type CircuitConstructionKitModelOptions = {
 
 export default class CircuitConstructionKitModel {
   private zoomAnimation: ZoomAnimation | null;
-  readonly viewTypeProperty: Property<CircuitElementViewType>;
+  public readonly viewTypeProperty: Property<CircuitElementViewType>;
 
   // whether the carousel shows real bulbs
   private readonly addRealBulbsProperty: BooleanProperty;
 
   // contains CircuitElements, Vertices, etc.
-  readonly circuit: Circuit;
+  public readonly circuit: Circuit;
 
   // created statically and indexed starting at 1 for human-readability for PhET-iO
-  readonly voltmeters: Voltmeter[];
+  public readonly voltmeters: Voltmeter[];
 
   // created statically and indexed starting at 1 for human-readability for PhET-iO
-  readonly ammeters: Ammeter[];
-  readonly isValueDepictionEnabledProperty: BooleanProperty;
+  public readonly ammeters: Ammeter[];
+  public readonly isValueDepictionEnabledProperty: BooleanProperty;
 
   // true if the labels in the toolbox should be shown
-  readonly showLabelsProperty: BooleanProperty;
+  public readonly showLabelsProperty: BooleanProperty;
 
   // true if the values in the toolbox should be shown
-  readonly showValuesProperty: BooleanProperty;
-  readonly selectedZoomProperty: RangedProperty;
+  public readonly showValuesProperty: BooleanProperty;
+  public readonly selectedZoomProperty: RangedProperty;
 
   // the animated value of the zoom level
-  readonly currentZoomProperty: NumberProperty;
+  public readonly currentZoomProperty: NumberProperty;
 
   // True if the simulation is playing, controlled by the TimeControlNode
-  readonly isPlayingProperty: BooleanProperty;
+  public readonly isPlayingProperty: BooleanProperty;
 
   // whether the user is in the CircuitConstructionKitModel.InteractionMode.EXPLORE or CircuitConstructionKitModel.InteractionMode.TEST mode
-  readonly modeProperty: EnumerationProperty<InteractionMode>;
+  public readonly modeProperty: EnumerationProperty<InteractionMode>;
 
   // true when the user is holding down the reveal button and the answer (inside the black box) is showing
-  readonly revealingProperty: BooleanProperty;
+  public readonly revealingProperty: BooleanProperty;
 
   // bounds of the black box, if any.  Set by subclass in Black Box Study. Specifically, filled in by the
   // BlackBoxSceneView after the black box node is created and positioned
-  readonly blackBoxBounds: Bounds2 | null;
-  readonly stopwatch: Stopwatch;
+  public readonly blackBoxBounds: Bounds2 | null;
+  public readonly stopwatch: Stopwatch;
 
   // Indicates when the model has updated, some views need to update accordingly
-  readonly stepEmitter: Emitter<[ number ]>;
+  public readonly stepEmitter: Emitter<[ number ]>;
   private readonly zoomProperty: EnumerationProperty<ZoomLevel>;
 
-  constructor( includeACElements: boolean, includeLabElements: boolean, tandem: Tandem, providedOptions?: Partial<CircuitConstructionKitModelOptions> ) {
+  private constructor( includeACElements: boolean, includeLabElements: boolean, tandem: Tandem, providedOptions?: Partial<CircuitConstructionKitModelOptions> ) {
 
     const options = merge( {
 
@@ -252,7 +252,7 @@ export default class CircuitConstructionKitModel {
     } );
   }
 
-  stepSingleStep(): void {
+  public stepSingleStep(): void {
 
     // 6/60 = 0.1 second, run over multiple steps to maintain smooth curves in the charts
     _.times( 6, () => this.stepOnce( 1 / 60 ) );
@@ -274,7 +274,7 @@ export default class CircuitConstructionKitModel {
    * Update the circuit and zoom level when the simulation clock steps.
    * @param dt - elapsed time in seconds
    */
-  step( dt: number ): void {
+  private step( dt: number ): void {
 
     // If the step is large, it probably means that the screen was hidden for a while, so just ignore it.
     // see https://github.com/phetsims/circuit-construction-kit-common/issues/476
@@ -299,7 +299,7 @@ export default class CircuitConstructionKitModel {
   /**
    * Reset the circuit.
    */
-  reset(): void {
+  public reset(): void {
     this.isValueDepictionEnabledProperty.reset();
     this.showLabelsProperty.reset();
     this.showValuesProperty.reset();

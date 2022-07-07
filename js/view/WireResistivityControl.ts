@@ -36,7 +36,7 @@ export default class WireResistivityControl extends VBox {
    * @param titleConfig
    * @param tandem
    */
-  constructor( wireResistivityProperty: Property<number>, alignGroup: AlignGroup, titleConfig: object, tandem: Tandem ) {
+  public constructor( wireResistivityProperty: Property<number>, alignGroup: AlignGroup, titleConfig: object, tandem: Tandem ) {
 
     const titleNode = new Text( wireResistivityString, titleConfig );
 

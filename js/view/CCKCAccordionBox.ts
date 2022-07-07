@@ -35,7 +35,7 @@ export default class CCKCAccordionBox extends AccordionBox {
    * @param tandem
    * @param [providedOptions]
    */
-  constructor( content: Node, title: string, tandem: Tandem, providedOptions?: CCKCAccordionBoxOptions ) {
+  public constructor( content: Node, title: string, tandem: Tandem, providedOptions?: CCKCAccordionBoxOptions ) {
 
     const options = optionize<CCKCAccordionBoxOptions, SelfOptions, AccordionBoxOptions>()( {
       strutWidth: 10

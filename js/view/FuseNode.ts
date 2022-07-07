@@ -52,7 +52,7 @@ export default class FuseNode extends FixedCircuitElementNode {
    * @param tandem
    * @param [options]
    */
-  constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, fuse: Fuse,
+  public constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, fuse: Fuse,
                viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, options?: any ) {
 
     options = merge( { isIcon: false, useHitTestForSensors: true }, options );
@@ -196,7 +196,7 @@ export default class FuseNode extends FixedCircuitElementNode {
     };
   }
 
-  override dispose(): void {
+  public override dispose(): void {
     this.disposeFuseNode();
     super.dispose();
   }

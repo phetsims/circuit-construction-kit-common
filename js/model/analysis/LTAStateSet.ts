@@ -19,7 +19,7 @@ export default class LTAStateSet {
 
   private readonly resultSet: Element[];
 
-  constructor( resultSet: Element[] ) {
+  public constructor( resultSet: Element[] ) {
     this.resultSet = resultSet;
   }
 
@@ -27,7 +27,7 @@ export default class LTAStateSet {
    * The time averaged current is used to show transient values in current, such as a current spike when a battery+
    * capacitor (no resistance) circuit is wired up, see https://phet.unfuddle.com/a#/projects/9404/tickets/by_number/2270?cycle=true
    */
-  getTimeAverageCurrent( element: MNACircuitElement ): number {
+  public getTimeAverageCurrent( element: MNACircuitElement ): number {
     let weightedSum = 0.0;
     let totalTime = 0.0;
     this.resultSet.forEach( ( stateObject: any ) => {
@@ -39,7 +39,7 @@ export default class LTAStateSet {
     return number;
   }
 
-  getTimeAverageCurrentForCoreModel( element: CoreModel ): number {
+  public getTimeAverageCurrentForCoreModel( element: CoreModel ): number {
     let weightedSum = 0.0;
     let totalTime = 0.0;
     this.resultSet.forEach( ( stateObject: any ) => {
@@ -54,23 +54,23 @@ export default class LTAStateSet {
   /**
    * The instantaneous current is used for computing the next modified nodal analysis state and integration.
    */
-  getInstantaneousCurrent( element: MNAResistor ): number {
+  private getInstantaneousCurrent( element: MNAResistor ): number {
     return this.getFinalState().ltaSolution!.getCurrent( element );
   }
 
-  getInstantaneousVoltage( element: MNACircuitElement ): number {
+  private getInstantaneousVoltage( element: MNACircuitElement ): number {
     return this.getFinalState().ltaSolution!.getVoltage( element.nodeId0, element.nodeId1 );
   }
 
-  getInstantaneousVoltageForCoreModel( coreModel: CoreModel ): number {
+  public getInstantaneousVoltageForCoreModel( coreModel: CoreModel ): number {
     return this.getFinalState().ltaSolution!.getVoltage( coreModel.node0, coreModel.node1 );
   }
 
-  getInstantaneousCurrentForCoreModel( coreModel: CoreModel ): number {
+  public getInstantaneousCurrentForCoreModel( coreModel: CoreModel ): number {
     return this.getFinalState().ltaSolution!.getCurrentForCompanion( coreModel );
   }
 
-  getFinalState(): LTAState {
+  public getFinalState(): LTAState {
     return _.last( this.resultSet )!.state;
   }
 }

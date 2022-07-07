@@ -34,13 +34,7 @@ export default class VoltageChartNode extends CCKCChartNode {
   private readonly probeNode2: CCKCProbeNode;
   private lastStepTime: number | null;
 
-  /**
-   * @param circuitLayerNode
-   * @param timeProperty
-   * @param visibleBoundsProperty
-   * @param [providedOptions]
-   */
-  constructor( circuitLayerNode: CircuitLayerNode, timeProperty: Property<number>, visibleBoundsProperty: Property<Bounds2>, providedOptions?: any ) {
+  public constructor( circuitLayerNode: CircuitLayerNode, timeProperty: Property<number>, visibleBoundsProperty: Property<Bounds2>, providedOptions?: any ) {
 
     providedOptions = merge( {
       defaultZoomLevel: new Range( -10, 10 ),
@@ -56,7 +50,7 @@ export default class VoltageChartNode extends CCKCChartNode {
     this.lastStepTime = null;
   }
 
-  private sampleValue( time: number ): Vector2 | null {
+  public sampleValue( time: number ): Vector2 | null {
     const redPoint = this.circuitLayerNode.globalToLocalPoint( this.localToGlobalPoint( this.probeNode1.translation ) );
     const blackPoint = this.circuitLayerNode.globalToLocalPoint( this.localToGlobalPoint( this.probeNode2.translation ) );
 
@@ -72,7 +66,7 @@ export default class VoltageChartNode extends CCKCChartNode {
    * @param time - total elapsed time in seconds
    * @param dt - delta time since last update
    */
-  step( time: number, dt: number ): void {
+  public step( time: number, dt: number ): void {
     if ( this.meter.visibleProperty.value ) {
 
       this.series.push( this.sampleValue( time ) );
@@ -96,7 +90,7 @@ export default class VoltageChartNode extends CCKCChartNode {
     this.lastStepTime = time;
   }
 
-  sampleLatestValue(): void {
+  public sampleLatestValue(): void {
 
     this.series.pop();
     assert && assert( typeof this.lastStepTime === 'number' );

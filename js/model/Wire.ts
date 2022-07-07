@@ -34,16 +34,16 @@ export default class Wire extends CircuitElement {
   private readonly wireStub: boolean;
 
   // the resistance of the Wire in ohms
-  readonly resistanceProperty: NumberProperty;
+  public readonly resistanceProperty: NumberProperty;
 
   // the resistivity of the Wire in ohm-meters
   private readonly resistivityProperty: NumberProperty;
 
   // when the length changes layoutCharges must be called
-  override readonly lengthProperty: NumberProperty;
-  updateListener: () => void;
+  public override readonly lengthProperty: NumberProperty;
+  private updateListener: () => void;
 
-  constructor( startVertex: Vertex, endVertex: Vertex, resistivityProperty: NumberProperty, tandem: Tandem, providedOptions?: WireOptions ) {
+  public constructor( startVertex: Vertex, endVertex: Vertex, resistivityProperty: NumberProperty, tandem: Tandem, providedOptions?: WireOptions ) {
     assert && assert( typeof resistivityProperty !== 'number', 'property should not be a number' );
     assert && assert( !startVertex.isDisposed, 'vertex should not be disposed' );
     assert && assert( !endVertex.isDisposed, 'vertex should not be disposed' );
@@ -79,7 +79,7 @@ export default class Wire extends CircuitElement {
    * @param dt - seconds since last step
    * @param circuit
    */
-  override step( time: number, dt: number, circuit: Circuit ): void {
+  public override step( time: number, dt: number, circuit: Circuit ): void {
     super.step( time, dt, circuit );
     this.update();
   }
@@ -87,7 +87,7 @@ export default class Wire extends CircuitElement {
   /**
    * Batch changes so that the length doesn't change incrementally when both vertices move one at a time.
    */
-  update(): void {
+  private update(): void {
     const startPosition = this.startPositionProperty.get();
     const endPosition = this.endPositionProperty.get();
     const distanceBetweenVertices = startPosition.distance( endPosition ); // same as view coordinates
@@ -108,14 +108,14 @@ export default class Wire extends CircuitElement {
   /**
    * Get the properties so that the circuit can be solved when changed.
    */
-  getCircuitProperties(): Property<any>[] {
+  public getCircuitProperties(): Property<any>[] {
     return [ this.resistanceProperty ];
   }
 
   /**
    * Releases all resources related to the Wire, called when it will no longer be used.
    */
-  override dispose(): void {
+  public override dispose(): void {
     this.vertexMovedEmitter.removeListener( this.updateListener );
     this.resistivityProperty.unlink( this.updateListener );
     super.dispose();

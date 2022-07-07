@@ -25,7 +25,7 @@ import CircuitElementToolNode from './CircuitElementToolNode.js';
 const CAROUSEL_ITEM_SPACING = 11;
 
 export default class CircuitElementToolbox extends HBox {
-  readonly carousel: Carousel;
+  public readonly carousel: Carousel;
 
   /**
    * @param viewTypeProperty
@@ -33,7 +33,7 @@ export default class CircuitElementToolbox extends HBox {
    * @param tandem
    * @param [providedOptions]
    */
-  constructor( viewTypeProperty: Property<CircuitElementViewType>, circuitElementToolNodes: CircuitElementToolNode[], tandem: Tandem, providedOptions?: any ) {
+  public constructor( viewTypeProperty: Property<CircuitElementViewType>, circuitElementToolNodes: CircuitElementToolNode[], tandem: Tandem, providedOptions?: any ) {
 
     providedOptions = merge( {
       carouselOptions: {
@@ -80,7 +80,7 @@ export default class CircuitElementToolbox extends HBox {
   /**
    * Resets the toolbox.
    */
-  reset(): void {
+  public reset(): void {
     this.carousel.reset();
   }
 }

@@ -19,12 +19,12 @@ import Meter from './Meter.js';
 export default class Ammeter extends Meter {
 
   // the full-precision reading on the ammeter. It will be formatted for display in the view.  Null means the ammeter is not on a wire.
-  readonly currentProperty: Property<number | null>;
+  public readonly currentProperty: Property<number | null>;
 
   // the position of the tip of the probe
-  readonly probePositionProperty: Property<Vector2>;
+  public readonly probePositionProperty: Property<Vector2>;
 
-  constructor( tandem: Tandem, phetioIndex: number ) {
+  public constructor( tandem: Tandem, phetioIndex: number ) {
     super( tandem, phetioIndex );
 
     this.currentProperty = new Property<number | null>( null, {
@@ -39,7 +39,7 @@ export default class Ammeter extends Meter {
   }
 
   // Restore the ammeter to its initial conditions
-  override reset(): void {
+  public override reset(): void {
     super.reset();
     this.currentProperty.reset();
     this.probePositionProperty.reset();
