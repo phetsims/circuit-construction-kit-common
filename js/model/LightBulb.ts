@@ -12,7 +12,6 @@ import Matrix3 from '../../../dot/js/Matrix3.js';
 import Range from '../../../dot/js/Range.js';
 import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
-import merge from '../../../phet-core/js/merge.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Circuit from './Circuit.js';
@@ -84,7 +83,9 @@ export default class LightBulb extends FixedCircuitElement {
     startVertex: Vertex, // side
     endVertex: Vertex, // bottom
     resistance: number,
-    viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: LightBulbOptions ) {
+    viewTypeProperty: Property<CircuitElementViewType>,
+    tandem: Tandem,
+    providedOptions?: LightBulbOptions ) {
     const filledOptions = optionize<LightBulbOptions, SelfOptions, FixedCircuitElementOptions>()( {
       highResistance: false,
       real: false
@@ -219,7 +220,6 @@ export default class LightBulb extends FixedCircuitElement {
 
 // Create a LightBulb at the specified position
 LightBulb.createAtPosition = ( startVertex, endVertex, circuit, resistance, viewTypeProperty, tandem, options ) => {
-  options = merge( { icon: false }, options );
   return new LightBulb( startVertex, endVertex, resistance, viewTypeProperty, tandem, options );
 };
 

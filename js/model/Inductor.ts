@@ -9,7 +9,7 @@
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Property from '../../../axon/js/Property.js';
 import Range from '../../../dot/js/Range.js';
-import merge from '../../../phet-core/js/merge.js';
+import optionize from '../../../phet-core/js/optionize.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
@@ -20,9 +20,10 @@ import Vertex from './Vertex.js';
 // constants
 const INDUCTOR_LENGTH = CCKCConstants.INDUCTOR_LENGTH;
 
-type InductorOptions = {
-  inductance: number;
-} & DynamicCircuitElementOptions;
+type SelfOptions = {
+  inductance?: number;
+};
+type InductorOptions = SelfOptions & DynamicCircuitElementOptions;
 
 export default class Inductor extends DynamicCircuitElement {
 
@@ -32,11 +33,11 @@ export default class Inductor extends DynamicCircuitElement {
   public static INDUCTANCE_RANGE = new Range( CCKCQueryParameters.inductanceMin, CCKCQueryParameters.inductanceMax );
   public static INDUCTANCE_NUMBER_OF_DECIMAL_PLACES = CCKCQueryParameters.inductorNumberDecimalPlaces;
 
-  public constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: Partial<InductorOptions> ) {
-    const options = merge( {
+  public constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: InductorOptions ) {
+    const options = optionize<InductorOptions, SelfOptions, DynamicCircuitElementOptions>()( {
       inductance: Inductor.INDUCTANCE_DEFAULT,
       numberOfDecimalPlaces: Inductor.INDUCTANCE_NUMBER_OF_DECIMAL_PLACES
-    }, providedOptions ) as InductorOptions;
+    }, providedOptions );
 
     super( startVertex, endVertex, INDUCTOR_LENGTH, tandem, options );
 

@@ -11,8 +11,8 @@ import Multilink from '../../../axon/js/Multilink.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import Vector2 from '../../../dot/js/Vector2.js';
-import ScreenView from '../../../joist/js/ScreenView.js';
-import merge from '../../../phet-core/js/merge.js';
+import ScreenView, { ScreenViewOptions } from '../../../joist/js/ScreenView.js';
+import optionize from '../../../phet-core/js/optionize.js';
 import PlayPauseButton from '../../../scenery-phet/js/buttons/PlayPauseButton.js';
 import ResetAllButton from '../../../scenery-phet/js/buttons/ResetAllButton.js';
 import StopwatchNode from '../../../scenery-phet/js/StopwatchNode.js';
@@ -73,21 +73,22 @@ document.addEventListener( 'keydown', event => {
   }
 } );
 
-type CCKCScreenViewOptions = {
-  showResetAllButton: boolean;
+type SelfOptions = {
+  showResetAllButton?: boolean;
 
   circuitElementToolboxOptions: any;
 
-  showSeriesAmmeters: boolean;
-  showTimeControls: boolean;
-  showNoncontactAmmeters: boolean;
-  showAdvancedControls: boolean;
-  showCharts: boolean;
-  blackBoxStudy: boolean;
-  showStopwatchCheckbox: boolean;
-  showPhaseShiftControl: boolean;
-  hasACandDCVoltageSources: boolean;
+  showSeriesAmmeters?: boolean;
+  showTimeControls?: boolean;
+  showNoncontactAmmeters?: boolean;
+  showAdvancedControls?: boolean;
+  showCharts?: boolean;
+  blackBoxStudy?: boolean;
+  showStopwatchCheckbox?: boolean;
+  showPhaseShiftControl?: boolean;
+  hasACandDCVoltageSources?: boolean;
 };
+type CCKCScreenViewOptions = SelfOptions & ScreenViewOptions;
 
 export default class CCKCScreenView extends ScreenView {
   public readonly model: CircuitConstructionKitModel;
@@ -111,9 +112,9 @@ export default class CCKCScreenView extends ScreenView {
    * @param tandem
    * @param [providedOptions]
    */
-  private constructor( model: CircuitConstructionKitModel, circuitElementToolNodes: CircuitElementToolNode[], tandem: Tandem, providedOptions?: Partial<CCKCScreenViewOptions> ) {
+  private constructor( model: CircuitConstructionKitModel, circuitElementToolNodes: CircuitElementToolNode[], tandem: Tandem, providedOptions?: CCKCScreenViewOptions ) {
 
-    const options = merge( {
+    const options = optionize<CCKCScreenViewOptions, SelfOptions, ScreenViewOptions>()( {
 
       // When used as a scene, the reset all button is suppressed here, added in the screen so that it may reset all
       // scenes (including but not limited to this one).
@@ -131,7 +132,7 @@ export default class CCKCScreenView extends ScreenView {
       showStopwatchCheckbox: false,
       showPhaseShiftControl: false,
       hasACandDCVoltageSources: false // determines the string shown in the AdvancedAccordionBox
-    }, providedOptions ) as CCKCScreenViewOptions;
+    }, providedOptions );
 
     super( { tandem: tandem } );
 

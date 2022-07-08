@@ -21,7 +21,6 @@ import Range from '../../../dot/js/Range.js';
 import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
-import merge from '../../../phet-core/js/merge.js';
 import Orientation from '../../../phet-core/js/Orientation.js';
 import MagnifyingGlassZoomButtonGroup from '../../../scenery-phet/js/MagnifyingGlassZoomButtonGroup.js';
 import ShadedRectangle from '../../../scenery-phet/js/ShadedRectangle.js';
@@ -40,6 +39,7 @@ import Bounds2 from '../../../dot/js/Bounds2.js';
 import CCKCScreenView from './CCKCScreenView.js';
 import IReadOnlyProperty from '../../../axon/js/IReadOnlyProperty.js';
 import { ObservableArray } from '../../../axon/js/createObservableArray.js';
+import optionize from '../../../phet-core/js/optionize.js';
 
 const oneSecondString = circuitConstructionKitCommonStrings.oneSecond;
 const timeString = circuitConstructionKitCommonStrings.time;
@@ -54,9 +54,10 @@ const WIRE_LINE_WIDTH = 3;
 
 const MAX_AXIS_LABEL_WIDTH = 120;
 
-type CCKCChartNodeOptions = {
-  defaultZoomLevel: number;
-} & NodeOptions;
+type SelfOptions = {
+  defaultZoomLevel?: Range;
+};
+type CCKCChartNodeOptions = SelfOptions & NodeOptions;
 
 export default class CCKCChartNode extends Node {
   protected readonly meter: Meter;
@@ -86,8 +87,8 @@ export default class CCKCChartNode extends Node {
    * @param [providedOptions]
    */
   public constructor( circuitLayerNode: CircuitLayerNode, timeProperty: Property<number>, visibleBoundsProperty: Property<Bounds2>,
-               series: ObservableArray<Vector2 | null>, verticalAxisLabel: string, providedOptions?: Partial<CCKCChartNodeOptions> ) {
-    const options = merge( {
+                      series: ObservableArray<Vector2 | null>, verticalAxisLabel: string, providedOptions?: CCKCChartNodeOptions ) {
+    const options = optionize<CCKCChartNodeOptions, SelfOptions, NodeOptions>()( {
       defaultZoomLevel: new Range( -2, 2 ),
 
       // Prevent adjustment of the control panel rendering while dragging,

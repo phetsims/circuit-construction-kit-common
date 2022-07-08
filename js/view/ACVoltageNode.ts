@@ -9,7 +9,6 @@
 import Property from '../../../axon/js/Property.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import { Shape } from '../../../kite/js/imports.js';
-import merge from '../../../phet-core/js/merge.js';
 import MinusNode from '../../../scenery-phet/js/MinusNode.js';
 import PlusNode from '../../../scenery-phet/js/PlusNode.js';
 import { Circle } from '../../../scenery/js/imports.js';
@@ -23,6 +22,8 @@ import FixedCircuitElementNode, { FixedCircuitElementNodeOptions } from './Fixed
 import CCKCScreenView from './CCKCScreenView.js';
 import CircuitLayerNode from './CircuitLayerNode.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
+import EmptyObjectType from '../../../phet-core/js/types/EmptyObjectType.js';
+import optionize from '../../../phet-core/js/optionize.js';
 
 // constants
 const sineCurveShape = new Shape();
@@ -87,6 +88,7 @@ schematicNode.mouseArea = Shape.circle(
   CIRCLE_DIAMETER );
 schematicNode.touchArea = schematicNode.mouseArea;
 
+type SelfOptions = EmptyObjectType;
 type ACVoltageNodeOptions = FixedCircuitElementNodeOptions;
 
 export default class ACVoltageNode extends FixedCircuitElementNode {
@@ -103,8 +105,10 @@ export default class ACVoltageNode extends FixedCircuitElementNode {
    * @param [providedOptions]
    */
   public constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, acSource: ACVoltage,
-               viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: Partial<ACVoltageNodeOptions> ) {
-    const options = merge( {
+                      viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: ACVoltageNodeOptions ) {
+    const options = optionize<ACVoltageNodeOptions, SelfOptions, FixedCircuitElementNodeOptions>()( {
+
+      // @ts-ignore
       numberOfDecimalPlaces: 1,
       useHitTestForSensors: true
     }, providedOptions );

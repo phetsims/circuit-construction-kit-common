@@ -11,7 +11,6 @@ import Matrix3 from '../../../dot/js/Matrix3.js';
 import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import { Shape } from '../../../kite/js/imports.js';
-import merge from '../../../phet-core/js/merge.js';
 import { Image } from '../../../scenery/js/imports.js';
 import { Node } from '../../../scenery/js/imports.js';
 import { Path } from '../../../scenery/js/imports.js';
@@ -25,10 +24,12 @@ import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import Fuse from '../model/Fuse.js';
 import CCKCScreenView from './CCKCScreenView.js';
 import CircuitLayerNode from './CircuitLayerNode.js';
-import FixedCircuitElementNode from './FixedCircuitElementNode.js';
+import FixedCircuitElementNode, { FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
 import FuseTripAnimation from './FuseTripAnimation.js';
 import schematicTypeProperty from './schematicTypeProperty.js';
 import SchematicType from './SchematicType.js';
+import optionize from '../../../phet-core/js/optionize.js';
+import EmptyObjectType from '../../../phet-core/js/types/EmptyObjectType.js';
 
 // constants
 const SCHEMATIC_STEM_WIDTH = 20;
@@ -40,6 +41,9 @@ const SPLIT_DX = 8; // in view coordinates, half the distance of the split part 
 const VERTICAL_GLASS_MARGIN = 3;
 const DEFAULT_GLASS_FILL = '#c3dbfd';
 
+type SelfOptions = EmptyObjectType;
+type FuseNodeOptions = SelfOptions & FixedCircuitElementNodeOptions;
+
 export default class FuseNode extends FixedCircuitElementNode {
   private readonly fuse: Fuse;
   private readonly disposeFuseNode: () => void;
@@ -50,12 +54,15 @@ export default class FuseNode extends FixedCircuitElementNode {
    * @param fuse
    * @param viewTypeProperty
    * @param tandem
-   * @param [options]
+   * @param [providedOptions]
    */
   public constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, fuse: Fuse,
-               viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, options?: any ) {
+                      viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: FuseNodeOptions ) {
 
-    options = merge( { isIcon: false, useHitTestForSensors: true }, options );
+    const options = optionize<FuseNodeOptions, SelfOptions, FixedCircuitElementNodeOptions>()( {
+      isIcon: false,
+      useHitTestForSensors: true
+    }, providedOptions );
 
     const fuseImageNode = new Image( fuse_png, { scale: 0.691 } );
     const numberOfZigZags = ( fuseImageNode.width - CAP_WIDTH * 2 ) / HORIZONTAL_ZIG_ZAG_DISTANCE / 2;

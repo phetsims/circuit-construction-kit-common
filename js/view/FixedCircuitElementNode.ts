@@ -10,8 +10,7 @@ import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import Vector2 from '../../../dot/js/Vector2.js';
-import merge from '../../../phet-core/js/merge.js';
-import { Image, Node, NodeOptions, SceneryEvent } from '../../../scenery/js/imports.js';
+import { Image, Node, SceneryEvent } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import fire_png from '../../images/fire_png.js';
 import CCKCUtils from '../CCKCUtils.js';
@@ -20,13 +19,14 @@ import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import FixedCircuitElement from '../model/FixedCircuitElement.js';
 import Resistor from '../model/Resistor.js';
 import CCKCScreenView from './CCKCScreenView.js';
-import CircuitElementNode from './CircuitElementNode.js';
+import CircuitElementNode, { CircuitElementNodeOptions } from './CircuitElementNode.js';
 import CircuitLayerNode from './CircuitLayerNode.js';
 import CircuitLayerNodeDragListener from './CircuitLayerNodeDragListener.js';
 import FixedCircuitElementHighlightNode from './FixedCircuitElementHighlightNode.js';
 import CircuitElement from '../model/CircuitElement.js';
 import Multilink, { UnknownMultilink } from '../../../axon/js/Multilink.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
+import optionize from '../../../phet-core/js/optionize.js';
 
 // constants
 const matrix = new Matrix3();
@@ -43,10 +43,11 @@ const HIGHLIGHT_PADDING = 10; // in view coordinates
 const isFireShown = ( current: number, isValueDepictionEnabled: boolean ) =>
   Math.abs( current ) >= FIRE_THRESHOLD && isValueDepictionEnabled;
 
-export type FixedCircuitElementNodeOptions = {
-  isIcon: boolean;
-  showHighlight: boolean;
-} & NodeOptions;// TODO: & CircuitElementNodeOptions
+type SelfOptions = {
+  isIcon?: boolean;
+  showHighlight?: boolean;
+};
+export type FixedCircuitElementNodeOptions = SelfOptions & CircuitElementNodeOptions;
 
 export default class FixedCircuitElementNode extends CircuitElementNode {
   private readonly lifelikeNode: Node;
@@ -79,19 +80,24 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
    * @param [providedOptions]
    */
   public constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, circuitElement: FixedCircuitElement,
-               viewTypeProperty: Property<CircuitElementViewType>, lifelikeNode: Node, schematicNode: Node, tandem: Tandem,
-               providedOptions?: Partial<FixedCircuitElementNodeOptions> ) {
+                      viewTypeProperty: Property<CircuitElementViewType>, lifelikeNode: Node, schematicNode: Node, tandem: Tandem,
+                      providedOptions?: FixedCircuitElementNodeOptions ) {
     assert && assert( lifelikeNode !== schematicNode, 'schematicNode should be different than lifelikeNode' );
 
     const circuit = circuitLayerNode && circuitLayerNode.circuit;
 
     const contentNode = new Node();
-    super( circuitElement, circuit, merge( {
+
+    const options = optionize<FixedCircuitElementNodeOptions, SelfOptions, CircuitElementNodeOptions>()( {
       cursor: 'pointer',
       children: [ contentNode ],
       tandem: tandem,
-      pickable: true
-    }, providedOptions ) );
+      pickable: true,
+      isIcon: false,
+      showHighlight: true
+    }, providedOptions );
+
+    super( circuitElement, circuit, options );
 
     // shows the lifelike view
     this.lifelikeNode = lifelikeNode;
@@ -99,13 +105,8 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
     // shows the schematic view
     this.schematicNode = schematicNode;
 
-    const filledOptions = merge( {
-      isIcon: false,
-      showHighlight: true
-    }, providedOptions ) as FixedCircuitElementNodeOptions;
-
     // whether an isIcon is being rendered
-    this.isIcon = filledOptions.isIcon;
+    this.isIcon = options.isIcon;
 
     this.circuitLayerNode = circuitLayerNode;
 
@@ -122,7 +123,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
     viewTypeProperty.link( this.viewPropertyListener );
 
     // Add highlight (but not for icons)
-    if ( !filledOptions.isIcon && filledOptions.showHighlight ) {
+    if ( !options.isIcon && options.showHighlight ) {
 
       this.highlightNode = new FixedCircuitElementHighlightNode( this );
 
@@ -143,16 +144,16 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
     this.pickableListener = this.setPickable.bind( this );
 
     // LightBulbSocketNode cannot ever be pickable, so let it opt out of this callback
-    filledOptions.pickable && circuitElement.interactiveProperty.link( this.pickableListener );
+    options.pickable && circuitElement.interactiveProperty.link( this.pickableListener );
 
-    this.fixedCircuitElementNodePickable = filledOptions.pickable || null;
+    this.fixedCircuitElementNodePickable = options.pickable || null;
 
     // Use whatever the start node currently is (it can change), and let the circuit manage the dependent vertices
     let initialPoint: Vector2 | null = null;
     let latestPoint: Vector2 | null = null;
     let dragged = false;
 
-    if ( !filledOptions.isIcon && circuitLayerNode ) {
+    if ( !options.isIcon && circuitLayerNode ) {
 
       this.dragListener = new CircuitLayerNodeDragListener( circuitLayerNode, [ () => circuitElement.endVertexProperty.get() ], {
         start: ( event: SceneryEvent ) => {
@@ -186,7 +187,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
       } );
       this.contentNode.addInputListener( this.dragListener );
 
-      if ( filledOptions.showHighlight ) {
+      if ( options.showHighlight ) {
 
         this.updateHighlightVisibility = this.setSelectedCircuitElement.bind( this );
         circuitLayerNode.circuit.selectedCircuitElementProperty.link( this.updateHighlightVisibility );

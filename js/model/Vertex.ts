@@ -13,7 +13,7 @@ import Property from '../../../axon/js/Property.js';
 import StringProperty from '../../../axon/js/StringProperty.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
-import merge from '../../../phet-core/js/merge.js';
+import optionize from '../../../phet-core/js/optionize.js';
 import PhetioObject, { PhetioObjectOptions } from '../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import IOType from '../../../tandem/js/types/IOType.js';
@@ -22,14 +22,14 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 // Index counter for debugging
 let counter = 0;
 
-type VertexOptions = {
-  draggable: boolean;
-  attachable: boolean;
-  interactive: boolean;
-  blackBoxInterface: boolean;
-  insideTrueBlackBox: boolean;
-  tandem: Tandem;
-} & PhetioObjectOptions;
+type SelfOptions = {
+  draggable?: boolean;
+  attachable?: boolean;
+  interactive?: boolean;
+  blackBoxInterface?: boolean;
+  insideTrueBlackBox?: boolean;
+};
+type VertexOptions = SelfOptions & PhetioObjectOptions;
 
 export default class Vertex extends PhetioObject {
 
@@ -89,9 +89,9 @@ export default class Vertex extends PhetioObject {
    * @param position - position in view coordinates
    * @param [providedOptions]
    */
-  public constructor( position: Vector2, providedOptions?: Partial<VertexOptions> ) {
+  public constructor( position: Vector2, providedOptions?: VertexOptions ) {
 
-    const options = merge( {
+    const options = optionize<VertexOptions, SelfOptions, PhetioObjectOptions>()( {
       draggable: true, // whether the vertex can be dragged, false for Black Box elements
       attachable: true, // Black box interior elements cannot be connected while the box is closed
       interactive: true, // Black box interface vertices can be interactive (tap to select) without being draggable
@@ -100,7 +100,7 @@ export default class Vertex extends PhetioObject {
       tandem: Tandem.OPTIONAL, // Temporary vertices (for icons) should not be instrumented since they
       phetioDynamicElement: true
       // are more of an implementation detail rather than a feature
-    }, providedOptions ) as VertexOptions;
+    }, providedOptions );
 
     super( options );
 

@@ -9,7 +9,7 @@
 import Emitter from '../../../axon/js/Emitter.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import merge from '../../../phet-core/js/merge.js';
-import { KeyboardUtils, Node, SceneryEvent } from '../../../scenery/js/imports.js';
+import { KeyboardUtils, Node, NodeOptions, SceneryEvent } from '../../../scenery/js/imports.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Circuit from '../model/Circuit.js';
@@ -20,6 +20,12 @@ import CircuitLayerNode from './CircuitLayerNode.js';
 import Vertex from '../model/Vertex.js';
 import IOType from '../../../tandem/js/types/IOType.js';
 import DisplayClickToDismissListener from '../../../joist/js/DisplayClickToDismissListener.js';
+
+type SelfOptions = {
+  useHitTestForSensors?: boolean;
+};
+
+export type CircuitElementNodeOptions = SelfOptions & NodeOptions;
 
 export default abstract class CircuitElementNode extends Node {
   private readonly useHitTestForSensors: any;
@@ -35,7 +41,7 @@ export default abstract class CircuitElementNode extends Node {
    * @param circuit - the circuit which the element can be removed from or null for icons
    * @param [providedOptions]
    */
-  public constructor( circuitElement: CircuitElement, circuit: Circuit | null, providedOptions?: any ) {
+  public constructor( circuitElement: CircuitElement, circuit: Circuit | null, providedOptions?: CircuitElementNodeOptions ) {
 
     providedOptions = merge( {
       useHitTestForSensors: false // if true, use the scenery mouse region hit test for fine-grained region. Otherwise, use bounds test.
@@ -63,6 +69,8 @@ export default abstract class CircuitElementNode extends Node {
 
     // Make it easy to get back to circuitElements
     this.addLinkedElement( circuitElement, {
+
+      // @ts-ignore
       tandem: providedOptions.tandem.createTandem( 'circuitElement' )
     } );
 

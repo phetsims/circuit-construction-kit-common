@@ -9,9 +9,8 @@
 import Range from '../../../dot/js/Range.js';
 import Property from '../../../axon/js/Property.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
-import merge from '../../../phet-core/js/merge.js';
 import NumberControl from '../../../scenery-phet/js/NumberControl.js';
-import { HBox } from '../../../scenery/js/imports.js';
+import { HBox, HBoxOptions } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -19,13 +18,24 @@ import Circuit from '../model/Circuit.js';
 import CircuitElement from '../model/CircuitElement.js';
 import ACVoltage from '../model/ACVoltage.js';
 import Multilink from '../../../axon/js/Multilink.js';
+import optionize from '../../../phet-core/js/optionize.js';
+
+type SelfOptions = {
+  titleNodeOptions?: any;
+  numberDisplayOptions?: any;
+  layoutFunction?: any;
+  sliderOptions?: any;
+  getAdditionalVisibilityProperties?: any;
+  delta?: number;
+};
+type CircuitElementNumberControlOptions = SelfOptions & HBoxOptions;
 
 // Extend HBox so an invisible parent will auto-layout (not leave a blank hole)
 export default class CircuitElementNumberControl extends HBox {
   public static NUMBER_CONTROL_ELEMENT_MAX_WIDTH = 115;
 
   public constructor( title: string, valuePattern: string, valueProperty: Property<number>, range: Range, circuit: Circuit,
-               numberOfDecimalPlaces: number, providedOptions?: any ) {
+                      numberOfDecimalPlaces: number, providedOptions?: CircuitElementNumberControlOptions ) {
 
     // When the user changes any parameter of any circuit element, signify it.
     // TODO: Should this be done through Circuit?  Why is this wired here in the view?  See https://github.com/phetsims/circuit-construction-kit-common/issues/513
@@ -33,7 +43,8 @@ export default class CircuitElementNumberControl extends HBox {
 
     valueProperty.lazyLink( valuePropertyListener );
 
-    const options = merge( {
+    const options = optionize<CircuitElementNumberControlOptions, SelfOptions, HBoxOptions>()( {
+      delta: 0.01,
       titleNodeOptions: {
         maxWidth: CircuitElementNumberControl.NUMBER_CONTROL_ELEMENT_MAX_WIDTH,
         font: CCKCConstants.DEFAULT_FONT

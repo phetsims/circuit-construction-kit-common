@@ -9,7 +9,6 @@
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Range from '../../../dot/js/Range.js';
 import Property from '../../../axon/js/Property.js';
-import merge from '../../../phet-core/js/merge.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import FixedCircuitElement, { FixedCircuitElementOptions } from './FixedCircuitElement.js';
@@ -18,15 +17,17 @@ import PowerDissipatedProperty from './PowerDissipatedProperty.js';
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import NumberIO from '../../../tandem/js/types/NumberIO.js';
 import IReadOnlyProperty from '../../../axon/js/IReadOnlyProperty.js';
+import optionize from '../../../phet-core/js/optionize.js';
 
-export type VoltageSourceOptions = {
+type SelfOptions = {
   initialOrientation?: string; // TODO: enum
   voltage?: number;
   voltagePropertyOptions?: {
     range?: Range;
     tandem?: Tandem;
   };
-} & FixedCircuitElementOptions;
+};
+export type VoltageSourceOptions = SelfOptions & FixedCircuitElementOptions;
 
 export default abstract class VoltageSource extends FixedCircuitElement {
 
@@ -53,7 +54,7 @@ export default abstract class VoltageSource extends FixedCircuitElement {
    */
   public constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, length: number, tandem: Tandem, providedOptions?: VoltageSourceOptions ) {
     assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );
-    const options = merge( {
+    const options = optionize<VoltageSourceOptions, SelfOptions, FixedCircuitElementOptions>()( {
       initialOrientation: 'right',
       voltage: 9.0,
       isFlammable: true,

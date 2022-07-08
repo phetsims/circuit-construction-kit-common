@@ -13,7 +13,6 @@ import Emitter from '../../../axon/js/Emitter.js';
 import Property from '../../../axon/js/Property.js';
 import NumberProperty, { RangedProperty } from '../../../axon/js/NumberProperty.js';
 import Utils from '../../../dot/js/Utils.js';
-import merge from '../../../phet-core/js/merge.js';
 import Range from '../../../dot/js/Range.js';
 import Stopwatch from '../../../scenery-phet/js/Stopwatch.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -30,10 +29,11 @@ import CircuitElementViewType from './CircuitElementViewType.js';
 import LightBulb from './LightBulb.js';
 import InteractionMode from './InteractionMode.js';
 import ZoomLevel from './ZoomLevel.js';
+import optionize from '../../../phet-core/js/optionize.js';
 
 type CircuitConstructionKitModelOptions = {
-  blackBoxStudy: boolean;
-  revealing: boolean;
+  blackBoxStudy?: boolean;
+  revealing?: boolean;
 };
 
 export default class CircuitConstructionKitModel {
@@ -81,15 +81,15 @@ export default class CircuitConstructionKitModel {
   public readonly stepEmitter: Emitter<[ number ]>;
   private readonly zoomProperty: EnumerationProperty<ZoomLevel>;
 
-  private constructor( includeACElements: boolean, includeLabElements: boolean, tandem: Tandem, providedOptions?: Partial<CircuitConstructionKitModelOptions> ) {
+  private constructor( includeACElements: boolean, includeLabElements: boolean, tandem: Tandem, providedOptions?: CircuitConstructionKitModelOptions ) {
 
-    const options = merge( {
+    const options = optionize<CircuitConstructionKitModelOptions>()( {
 
       // Determines whether electrons can be shown.  In black box, electrons can only be shown when the user reveals
       // the answer by pressing the reveal answer button.
       revealing: true,
       blackBoxStudy: false
-    }, providedOptions ) as CircuitConstructionKitModelOptions;
+    }, providedOptions );
 
     // animation for the zoom level or null if not animating
     this.zoomAnimation = null;

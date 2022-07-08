@@ -11,7 +11,6 @@
 
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Vector2 from '../../../dot/js/Vector2.js';
-import merge from '../../../phet-core/js/merge.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Battery from './Battery.js';
@@ -79,10 +78,6 @@ export default class CircuitStruct {
  */
 CircuitStruct.fromStateObject = ( circuit, circuitState, resistivityProperty, tandem, options ) => {
   const circuitStruct = new CircuitStruct();
-  options = merge( {
-
-    // See CircuitElement.js for options
-  }, options );
   for ( let i = 0; i < circuitState.vertices.length; i++ ) {
     options = circuitState.vertices[ i ].options || {};
     const vertex = circuit.vertexGroup.createNextElement( new Vector2( circuitState.vertices[ i ].x, circuitState.vertices[ i ].y ), options );

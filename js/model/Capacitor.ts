@@ -8,7 +8,6 @@
 
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Range from '../../../dot/js/Range.js';
-import merge from '../../../phet-core/js/merge.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -17,10 +16,12 @@ import Vertex from './Vertex.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import Property from '../../../axon/js/Property.js';
+import optionize from '../../../phet-core/js/optionize.js';
 
-type CapacitorOptions = {
-  capacitance: number;
-} & DynamicCircuitElementOptions;
+type SelfOptions = {
+  capacitance?: number;
+};
+type CapacitorOptions = SelfOptions & DynamicCircuitElementOptions;
 
 export default class Capacitor extends DynamicCircuitElement {
 
@@ -30,14 +31,14 @@ export default class Capacitor extends DynamicCircuitElement {
   public static NUMBER_OF_DECIMAL_PLACES = CCKCQueryParameters.capacitorNumberDecimalPlaces;
   public static CAPACITANCE_DEFAULT = CCKCQueryParameters.capacitanceDefault;
 
-  public constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: Partial<CapacitorOptions> ) {
-    const options = merge( {
+  public constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: CapacitorOptions ) {
+    const options = optionize<CapacitorOptions, SelfOptions, DynamicCircuitElementOptions>()( {
       capacitance: Capacitor.CAPACITANCE_DEFAULT,
 
       // The number of decimal places is only used in the view, but we define it in the model as a convenient way to
       // associate the value with the component
       numberOfDecimalPlaces: Capacitor.NUMBER_OF_DECIMAL_PLACES
-    }, providedOptions ) as CapacitorOptions;
+    }, providedOptions );
 
     super( startVertex, endVertex, CCKCConstants.CAPACITOR_LENGTH, tandem, options );
 

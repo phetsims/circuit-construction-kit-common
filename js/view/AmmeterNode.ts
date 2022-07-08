@@ -11,7 +11,6 @@ import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
-import merge from '../../../phet-core/js/merge.js';
 import ProbeNode from '../../../scenery-phet/js/ProbeNode.js';
 import WireNode from '../../../scenery-phet/js/WireNode.js';
 import { Color, DragListener, Image, Node, NodeOptions, Rectangle, SceneryEvent } from '../../../scenery/js/imports.js';
@@ -27,6 +26,7 @@ import CircuitLayerNode from './CircuitLayerNode.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import Property from '../../../axon/js/Property.js';
 import ammeterReadoutTypeProperty from './ammeterReadoutTypeProperty.js';
+import optionize from '../../../phet-core/js/optionize.js';
 
 const currentString = circuitConstructionKitCommonStrings.current;
 
@@ -41,13 +41,13 @@ const SCALE_FACTOR = 0.5;
 
 // unsigned measurements for the circles on the voltmeter body image, for where the probe wires connect
 const PROBE_CONNECTION_POINT_DY = 8;
-type AmmeterNodeOptions = {
-  isIcon: boolean;
-  visibleBoundsProperty: Property<Bounds2> | null;
-  showResultsProperty: BooleanProperty;
-  blackBoxStudy: boolean;
-  tandem: Tandem;
-} & NodeOptions;
+type SelfOptions = {
+  isIcon?: boolean;
+  visibleBoundsProperty?: Property<Bounds2> | null;
+  showResultsProperty?: BooleanProperty;
+  blackBoxStudy?: boolean;
+};
+type AmmeterNodeOptions = SelfOptions & NodeOptions;
 
 export default class AmmeterNode extends Node {
   private readonly probeNode: ProbeNode;
@@ -63,8 +63,8 @@ export default class AmmeterNode extends Node {
    * @param circuitLayerNode - for getting the currents, or null if rendering an icon
    * @param [providedOptions]
    */
-  public constructor( ammeter: Ammeter, circuitLayerNode: CircuitLayerNode | null, providedOptions?: Partial<AmmeterNodeOptions> ) {
-    const options = merge( {
+  public constructor( ammeter: Ammeter, circuitLayerNode: CircuitLayerNode | null, providedOptions?: AmmeterNodeOptions ) {
+    const options = optionize<AmmeterNodeOptions, SelfOptions, NodeOptions>()( {
 
       // true if it will be used as a toolbox icon
       isIcon: false,
@@ -79,7 +79,7 @@ export default class AmmeterNode extends Node {
       blackBoxStudy: false,
 
       tandem: Tandem.REQUIRED
-    }, providedOptions ) as AmmeterNodeOptions;
+    }, providedOptions );
     const tandem = options.tandem;
 
     const wireBodyPositionProperty = new Vector2Property( new Vector2( 0, 0 ) );

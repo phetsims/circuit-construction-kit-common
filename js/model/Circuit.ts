@@ -14,7 +14,6 @@ import createObservableArray, { ObservableArray } from '../../../axon/js/createO
 import Property from '../../../axon/js/Property.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
 import Vector2 from '../../../dot/js/Vector2.js';
-import merge from '../../../phet-core/js/merge.js';
 import PhetioGroup from '../../../tandem/js/PhetioGroup.js';
 import NullableIO from '../../../tandem/js/types/NullableIO.js';
 import ReferenceIO from '../../../tandem/js/types/ReferenceIO.js';
@@ -48,6 +47,7 @@ import ResistorType from './ResistorType.js';
 import InteractionMode from './InteractionMode.js';
 import CurrentSense from './CurrentSense.js';
 import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
+import optionize from '../../../phet-core/js/optionize.js';
 
 // constants
 const SNAP_RADIUS = 30; // For two vertices to join together, they must be this close, in view coordinates
@@ -148,12 +148,12 @@ export default class Circuit {
   public readonly includeLabElements: boolean;
 
   public constructor( viewTypeProperty: Property<CircuitElementViewType>, addRealBulbsProperty: Property<boolean>, tandem: Tandem,
-               providedOptions?: Partial<CircuitOptions> ) {
+                      providedOptions?: CircuitOptions ) {
 
     this.viewTypeProperty = viewTypeProperty;
     this.addRealBulbsProperty = addRealBulbsProperty;
 
-    const options = merge( { blackBoxStudy: false }, providedOptions ) as CircuitOptions;
+    const options = optionize<CircuitOptions>()( { blackBoxStudy: false }, providedOptions );
 
     this.includeACElements = options.includeACElements;
     this.includeLabElements = options.includeLabElements;
