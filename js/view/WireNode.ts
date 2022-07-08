@@ -10,7 +10,7 @@ import Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import { LineStyles, Shape } from '../../../kite/js/imports.js';
-import { Circle, Color, Line, LinearGradient, Node, Path } from '../../../scenery/js/imports.js';
+import { Circle, Color, Line, LinearGradient, Node, Path, SceneryEvent } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -49,7 +49,7 @@ const SCHEMATIC_BACKGROUND = new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
  * @param colorStops - entries have point: Number, color: Color
  * @param colorStopPointMap - (Vector2) => number, the operation to apply to create color stops
  */
-const createGradient = ( colorStops: any[], colorStopPointMap: ( n: number ) => number ) => {
+const createGradient = ( colorStops: Array<{ point: number; color: Color }>, colorStopPointMap: ( n: number ) => number ) => {
   const gradient = new LinearGradient( 0, -LIFELIKE_LINE_WIDTH / 2, 0, LIFELIKE_LINE_WIDTH / 2 );
   colorStops.forEach( colorStop => {
     gradient.addColorStop( colorStopPointMap( colorStop.point ), colorStop.color );
@@ -235,7 +235,7 @@ export default class WireNode extends CircuitElementNode {
 
     // When the start vertex changes to a different instance (say when vertices are soldered together), unlink the
     // old one and link to the new one.
-    const doUpdateTransform = ( newVertex: Vertex, oldVertex: Vertex | null | undefined, property: any ) => {
+    const doUpdateTransform = ( newVertex: Vertex, oldVertex: Vertex | null | undefined ) => {
       oldVertex && oldVertex.positionProperty.unlink( markAsDirty );
       newVertex.positionProperty.link( markAsDirty );
     };
@@ -259,7 +259,7 @@ export default class WireNode extends CircuitElementNode {
         () => wire.endVertexProperty.get()
       ], {
         tandem: tandem.createTandem( 'dragListener' ),
-        start: ( event: any ) => {
+        start: ( event: SceneryEvent ) => {
           if ( wire.interactiveProperty.get() ) {
 
             // Start drag by starting a drag on start and end vertices
@@ -270,7 +270,7 @@ export default class WireNode extends CircuitElementNode {
             latestPoint = event.pointer.point.copy();
           }
         },
-        drag: ( event: any ) => {
+        drag: ( event: SceneryEvent ) => {
           if ( wire.interactiveProperty.get() ) {
 
             latestPoint = event.pointer.point.copy();

@@ -10,6 +10,7 @@ import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Property from '../../../axon/js/Property.js';
 import Range from '../../../dot/js/Range.js';
 import optionize from '../../../phet-core/js/optionize.js';
+import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
@@ -58,7 +59,7 @@ export default class Inductor extends DynamicCircuitElement {
   /**
    * Get the properties so that the circuit can be solved when changed.
    */
-  public getCircuitProperties(): Property<any>[] {
+  public getCircuitProperties(): Property<IntentionalAny>[] {
     return [ this.inductanceProperty ];
   }
 }

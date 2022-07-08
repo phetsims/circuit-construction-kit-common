@@ -9,9 +9,9 @@
 
 import Property from '../../../axon/js/Property.js';
 import merge from '../../../phet-core/js/merge.js';
-import { HBox } from '../../../scenery/js/imports.js';
+import { HBox, HBoxOptions } from '../../../scenery/js/imports.js';
 import { Color } from '../../../scenery/js/imports.js';
-import Carousel from '../../../sun/js/Carousel.js';
+import Carousel, { CarouselOptions } from '../../../sun/js/Carousel.js';
 import PageControl from '../../../sun/js/PageControl.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -24,6 +24,11 @@ import CircuitElementToolNode from './CircuitElementToolNode.js';
 // This specifies the spacing between items and also the space before and after the first and last items
 const CAROUSEL_ITEM_SPACING = 11;
 
+type SelfOptions = {
+  carouselOptions?: CarouselOptions;
+};
+export type CircuitElementToolboxOptions = SelfOptions & HBoxOptions;
+
 export default class CircuitElementToolbox extends HBox {
   public readonly carousel: Carousel;
 
@@ -33,7 +38,7 @@ export default class CircuitElementToolbox extends HBox {
    * @param tandem
    * @param [providedOptions]
    */
-  public constructor( viewTypeProperty: Property<CircuitElementViewType>, circuitElementToolNodes: CircuitElementToolNode[], tandem: Tandem, providedOptions?: any ) {
+  public constructor( viewTypeProperty: Property<CircuitElementViewType>, circuitElementToolNodes: CircuitElementToolNode[], tandem: Tandem, providedOptions?: CircuitElementToolboxOptions ) {
 
     providedOptions = merge( {
       carouselOptions: {

@@ -23,7 +23,7 @@ export default class CCKCTrashButton extends CCKCRoundPushButton {
    * @param tandem
    * @param [providedOptions]
    */
-  public constructor( circuit: Circuit, tandem: Tandem, providedOptions?: Partial<RoundPushButtonOptions> ) {
+  public constructor( circuit: Circuit, tandem: Tandem, providedOptions?: RoundPushButtonOptions ) {
 
     super( merge( {
       touchAreaDilation: 5, // radius dilation for touch area

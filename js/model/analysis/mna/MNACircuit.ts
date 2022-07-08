@@ -22,6 +22,7 @@ import MNACircuitElement from './MNACircuitElement.js';
 import MNABattery from './MNABattery.js';
 import MNAResistor from './MNAResistor.js';
 import MNACurrent from './MNACurrent.js';
+import IntentionalAny from '../../../../../phet-core/js/types/IntentionalAny.js';
 
 export default class MNACircuit {
   private readonly batteries: MNABattery[];
@@ -358,7 +359,7 @@ circuitConstructionKitCommon.register( 'MNACircuit', MNACircuit );
  * @param element
  * @returns the index or -1 if not found
  */
-const getIndexByEquals = ( array: Array<any>, element: any ) => {
+const getIndexByEquals = <T extends { equals: ( t: IntentionalAny ) => boolean }>( array: Array<T>, element: IntentionalAny ) => {
   for ( let i = 0; i < array.length; i++ ) {
     if ( array[ i ].equals( element ) ) {
       return i;
@@ -428,7 +429,7 @@ class UnknownCurrent {
    * Two UnknownCurrents are equal if the refer to the same element.
    * @param other - an UnknownCurrent to compare with this one
    */
-  private equals( other: UnknownCurrent ): boolean {
+  public equals( other: UnknownCurrent ): boolean {
     return other.element === this.element;
   }
 }
@@ -452,7 +453,7 @@ class UnknownVoltage {
    * Two UnknownVoltages are equal if they refer to the same node.
    * @param other - another object to compare with this one
    */
-  private equals( other: UnknownVoltage ): boolean {
+  public equals( other: UnknownVoltage ): boolean {
     return other.node === this.node;
   }
 }
@@ -483,7 +484,10 @@ class Equation {
    * @param z - the matrix on the right hand side in Ax=z
    * @param getColumn - (UnknownCurrent|UnknownVoltage) => number
    */
-  public stamp( row: number, a: Matrix, z: Matrix, getColumn: { ( unknown: UnknownCurrent | UnknownVoltage ): number; ( arg0: UnknownCurrent | UnknownVoltage ): any } ): void {
+  public stamp( row: number, a: Matrix, z: Matrix, getColumn: {
+    ( unknown: UnknownCurrent | UnknownVoltage ): number;
+    ( arg0: UnknownCurrent | UnknownVoltage ): number;
+  } ): void {
 
     // Set the equation's value into the solution matrix
     z.set( row, 0, this.value );

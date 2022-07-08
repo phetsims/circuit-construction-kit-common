@@ -65,7 +65,7 @@ export default class InductorNode extends FixedCircuitElementNode {
    * @param [providedOptions]
    */
   public constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, inductor: Inductor,
-               viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: Partial<FixedCircuitElementNodeOptions> ) {
+                      viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: FixedCircuitElementNodeOptions ) {
 
     providedOptions = merge( { isIcon: false, useHitTestForSensors: true }, providedOptions );
 

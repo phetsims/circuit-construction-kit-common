@@ -18,10 +18,11 @@ import CCKCScreenView from './CCKCScreenView.js';
 import CircuitLayerNode from './CircuitLayerNode.js';
 import ResistorNode from './ResistorNode.js';
 import Dog from '../model/Dog.js';
+import { FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
 
 export default class DogNode extends ResistorNode {
   private readonly barkNode: BarkNode;
-  private readonly isBarkingListener: ( isBarking: any ) => void;
+  private readonly isBarkingListener: ( isBarking: boolean ) => void;
   private readonly dog: Dog;
   private readonly boundsListener: () => void;
 
@@ -34,7 +35,7 @@ export default class DogNode extends ResistorNode {
    * @param [providedOptions]
    */
   public constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, dog: Dog,
-               viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: any ) {
+                      viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: FixedCircuitElementNodeOptions ) {
     super( screenView, circuitLayerNode, dog, viewTypeProperty, tandem, providedOptions );
 
     const soundClip = new SoundClip( dogBark_mp3 );

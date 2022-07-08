@@ -17,7 +17,7 @@ import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CCKCChartNode from './CCKCChartNode.js';
+import CCKCChartNode, { CCKCChartNodeOptions } from './CCKCChartNode.js';
 import CircuitLayerNode from './CircuitLayerNode.js';
 import Property from '../../../axon/js/Property.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
@@ -34,7 +34,7 @@ export default class VoltageChartNode extends CCKCChartNode {
   private readonly probeNode2: CCKCProbeNode;
   private lastStepTime: number | null;
 
-  public constructor( circuitLayerNode: CircuitLayerNode, timeProperty: Property<number>, visibleBoundsProperty: Property<Bounds2>, providedOptions?: any ) {
+  public constructor( circuitLayerNode: CircuitLayerNode, timeProperty: Property<number>, visibleBoundsProperty: Property<Bounds2>, providedOptions?: CCKCChartNodeOptions ) {
 
     providedOptions = merge( {
       defaultZoomLevel: new Range( -10, 10 ),

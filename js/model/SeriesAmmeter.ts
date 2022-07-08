@@ -9,6 +9,7 @@
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Property from '../../../axon/js/Property.js';
 import EmptyObjectType from '../../../phet-core/js/types/EmptyObjectType.js';
+import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -31,7 +32,7 @@ export default class SeriesAmmeter extends FixedCircuitElement {
   /**
    * Get the properties so that the circuit can be solved when changed.
    */
-  public getCircuitProperties(): Property<any>[] {
+  public getCircuitProperties(): Property<IntentionalAny>[] {
 
     // No internal parameters that can change the circuit
     return [];

@@ -17,7 +17,7 @@ export default class BarkNode extends Node {
   /**
    * @param [providedOptions]
    */
-  public constructor( providedOptions?: Partial<NodeOptions> ) {
+  public constructor( providedOptions?: NodeOptions ) {
     super();
     this.addChild( new Path( commentSolidShape, {
       fill: 'white',

@@ -12,7 +12,6 @@ import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Property from '../../../axon/js/Property.js';
 import { Node } from '../../../scenery/js/imports.js';
 import Vector2 from '../../../dot/js/Vector2.js';
-import merge from '../../../phet-core/js/merge.js';
 import { AlignGroup } from '../../../scenery/js/imports.js';
 import { Image } from '../../../scenery/js/imports.js';
 import { Line } from '../../../scenery/js/imports.js';
@@ -37,7 +36,7 @@ import ACVoltageNode from './ACVoltageNode.js';
 import BatteryNode from './BatteryNode.js';
 import CapacitorCircuitElementNode from './CapacitorCircuitElementNode.js';
 import CCKCLightBulbNode from './CCKCLightBulbNode.js';
-import CircuitElementToolNode from './CircuitElementToolNode.js';
+import CircuitElementToolNode, { CircuitElementToolNodeOptions } from './CircuitElementToolNode.js';
 import FuseNode from './FuseNode.js';
 import InductorNode from './InductorNode.js';
 import ResistorNode from './ResistorNode.js';
@@ -48,6 +47,7 @@ import CircuitElement from '../model/CircuitElement.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import ResistorType from '../model/ResistorType.js';
 import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
+import optionize from '../../../phet-core/js/optionize.js';
 
 const acSourceString = circuitConstructionKitCommonStrings.acSource;
 const capacitorString = circuitConstructionKitCommonStrings.capacitor;
@@ -77,6 +77,23 @@ const SWITCH_LENGTH = CCKCConstants.SWITCH_LENGTH;
 const iconAlignGroup = new AlignGroup();
 const LIFELIKE_PROPERTY = new EnumerationProperty( CircuitElementViewType.LIFELIKE );
 const SCHEMATIC_PROPERTY = new EnumerationProperty( CircuitElementViewType.SCHEMATIC );
+
+// createCircuitElementToolNode
+
+type CreateCircuitElementToolNodeSelfOptions = {
+  lifelikeIconHeight?: number;
+  schematicIconHeight?: number;
+};
+
+type CreateResistorToolNodeSelfOptions = {
+  count?: number;
+  resistorType?: ResistorType;
+  labelString?: string;
+  tandemName?: string;
+};
+
+type CreateCircuitElementToolNodeProvidedOptions = CreateCircuitElementToolNodeSelfOptions & CircuitElementToolNodeOptions;
+type CreateResistorToolNodeProvidedOptions = CreateResistorToolNodeSelfOptions & CreateCircuitElementToolNodeProvidedOptions;
 
 export default class CircuitElementToolFactory {
   private readonly circuit: Circuit;
@@ -116,11 +133,11 @@ export default class CircuitElementToolFactory {
    * @param [providedOptions]
    */
   private createCircuitElementToolNode( labelString: string, count: number, createIcon: ( t: Tandem, p: Property<CircuitElementViewType> ) => Node,
-                                        predicate: ( circuitElement: CircuitElement ) => boolean, createElement: any, providedOptions?: any ): CircuitElementToolNode {
+                                        predicate: ( circuitElement: CircuitElement ) => boolean, createElement: ( v: Vector2 ) => CircuitElement, providedOptions?: CreateCircuitElementToolNodeProvidedOptions ): CircuitElementToolNode {
 
     assert && assert( Number.isInteger( count ), 'count should be an integer' );
 
-    providedOptions = merge( {
+    const options = optionize<CreateCircuitElementToolNodeProvidedOptions, CreateCircuitElementToolNodeSelfOptions, CircuitElementToolNodeOptions>()( {
       tandem: Tandem.REQUIRED,
       additionalProperty: new BooleanProperty( true ),
       lifelikeIconHeight: CCKCConstants.TOOLBOX_ICON_HEIGHT,
@@ -135,8 +152,8 @@ export default class CircuitElementToolFactory {
       return node1;
     };
 
-    const lifelikeIcon = wrap( createIcon( providedOptions.tandem.createTandem( 'lifelikeIcon' ), LIFELIKE_PROPERTY ), providedOptions.lifelikeIconHeight );
-    const schematicIcon = wrap( createIcon( providedOptions.tandem.createTandem( 'schematicIcon' ), SCHEMATIC_PROPERTY ), providedOptions.schematicIconHeight );
+    const lifelikeIcon = wrap( createIcon( options.tandem.createTandem( 'lifelikeIcon' ), LIFELIKE_PROPERTY ), options.lifelikeIconHeight );
+    const schematicIcon = wrap( createIcon( options.tandem.createTandem( 'schematicIcon' ), SCHEMATIC_PROPERTY ), options.schematicIconHeight );
 
     const toggleNode = new ToggleNode( this.viewTypeProperty, [
       { value: CircuitElementViewType.LIFELIKE, node: lifelikeIcon },
@@ -158,8 +175,8 @@ export default class CircuitElementToolFactory {
       count,
       this.createCounter( predicate ),
       createElement, {
-        tandem: providedOptions.tandem,
-        additionalProperty: providedOptions.additionalProperty
+        tandem: options.tandem,
+        additionalProperty: options.additionalProperty
       }
     );
   }
@@ -248,7 +265,7 @@ export default class CircuitElementToolFactory {
   }
 
   private createLightBulbToolNode( lightBulbGroup = this.circuit.lightBulbGroup, string = lightBulbString,
-                           real = false, addRealBulbsProperty = null, tandemName = 'lightBulbToolNode' ): CircuitElementToolNode {
+                                   real = false, addRealBulbsProperty = null, tandemName = 'lightBulbToolNode' ): CircuitElementToolNode {
     const vertexPair = LightBulb.createVertexPair( Vector2.ZERO, this.circuit, true );
     const lightBulbModel = LightBulb.createAtPosition(
       vertexPair.startVertex,
@@ -258,7 +275,6 @@ export default class CircuitElementToolFactory {
       this.viewTypeProperty,
       Tandem.OPTIONAL, {
         highResistance: false,
-        icon: true,
         real: real
       } );
     return this.createCircuitElementToolNode( string, 10,
@@ -276,8 +292,8 @@ export default class CircuitElementToolFactory {
       } );
   }
 
-  private createResistorToolNode( providedOptions?: any ): CircuitElementToolNode {
-    providedOptions = merge( {
+  private createResistorToolNode( providedOptions?: CreateResistorToolNodeProvidedOptions ): CircuitElementToolNode {
+    const options = optionize<CreateResistorToolNodeProvidedOptions, CreateResistorToolNodeSelfOptions, CreateCircuitElementToolNodeSelfOptions>()( {
       count: 10,
       resistorType: ResistorType.RESISTOR,
       lifelikeIconHeight: 15,
@@ -285,8 +301,8 @@ export default class CircuitElementToolFactory {
       labelString: resistorString,
       tandemName: 'resistorToolNode'
     }, providedOptions );
-    const labelString = providedOptions.labelString;
-    const resistorType = providedOptions.resistorType;
+    const labelString = options.labelString;
+    const resistorType = options.resistorType;
 
     // Create the icon model without using the PhetioGroup, so it will not be PhET-iO instrumented.
     const resistorModel = new Resistor(
@@ -296,7 +312,7 @@ export default class CircuitElementToolFactory {
       Tandem.OPTIONAL
     );
 
-    return this.createCircuitElementToolNode( labelString, providedOptions.count,
+    return this.createCircuitElementToolNode( labelString, options.count,
       ( tandem, viewTypeProperty ) => new ResistorNode( null, null, resistorModel, viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
         isIcon: true
       } ),
@@ -305,9 +321,9 @@ export default class CircuitElementToolFactory {
         const vertices = this.circuit.createVertexPairArray( position, resistorType.length );
         return this.circuit.resistorGroup.createNextElement( vertices[ 0 ], vertices[ 1 ], resistorType );
       }, {
-        tandem: this.parentTandem.createTandem( providedOptions.tandemName ),
-        lifelikeIconHeight: providedOptions.lifelikeIconHeight,
-        schematicIconHeight: providedOptions.schematicIconHeight
+        tandem: this.parentTandem.createTandem( options.tandemName ),
+        lifelikeIconHeight: options.lifelikeIconHeight,
+        schematicIconHeight: options.schematicIconHeight
       } );
   }
 
@@ -508,8 +524,7 @@ export default class CircuitElementToolFactory {
           1000,
           this.viewTypeProperty,
           Tandem.OPTIONAL, {
-            highResistance: true,
-            icon: true
+            highResistance: true
           } ),
         new BooleanProperty( true ),
         viewTypeProperty,

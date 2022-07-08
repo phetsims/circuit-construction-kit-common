@@ -8,16 +8,17 @@
 
 import createObservableArray from '../../../axon/js/createObservableArray.js';
 import Vector2 from '../../../dot/js/Vector2.js';
-import merge from '../../../phet-core/js/merge.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CCKCChartNode from './CCKCChartNode.js';
+import CCKCChartNode, { CCKCChartNodeOptions } from './CCKCChartNode.js';
 import CircuitLayerNode from './CircuitLayerNode.js';
 import Property from '../../../axon/js/Property.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import CCKCProbeNode from './CCKCProbeNode.js';
+import optionize from '../../../phet-core/js/optionize.js';
+import EmptyObjectType from '../../../phet-core/js/types/EmptyObjectType.js';
 
 const currentWithUnitsString = circuitConstructionKitCommonStrings.currentWithUnits;
 
@@ -32,10 +33,9 @@ export default class CurrentChartNode extends CCKCChartNode {
    * @param [providedOptions]
    */
   public constructor( circuitLayerNode: CircuitLayerNode, timeProperty: Property<number>, visibleBoundsProperty: Property<Bounds2>,
-               providedOptions?: any ) {
+                      providedOptions?: CCKCChartNodeOptions ) {
 
-    providedOptions = merge( {
-      timeDivisions: CCKCConstants.NUMBER_OF_TIME_DIVISIONS,
+    const options = optionize<CCKCChartNodeOptions, EmptyObjectType, CCKCChartNodeOptions>()( {
       tandem: Tandem.OPTIONAL
     }, providedOptions );
 
@@ -47,7 +47,7 @@ export default class CurrentChartNode extends CCKCChartNode {
       5,
       10,
       this.aboveBottomLeft1,
-      providedOptions.tandem.createTandem( 'probeNode' )
+      options.tandem.createTandem( 'probeNode' )
     );
     this.lastStepTime = null;
   }

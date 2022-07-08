@@ -18,6 +18,7 @@ import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import NumberIO from '../../../tandem/js/types/NumberIO.js';
 import IReadOnlyProperty from '../../../axon/js/IReadOnlyProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
+import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 
 type SelfOptions = {
   initialOrientation?: string; // TODO: enum
@@ -93,7 +94,7 @@ export default abstract class VoltageSource extends FixedCircuitElement {
   /**
    * Get the properties so that the circuit can be solved when changed.
    */
-  public getCircuitProperties(): Property<any>[] {
+  public getCircuitProperties(): Property<IntentionalAny>[] {
     return [ this.voltageProperty ];
   }
 }

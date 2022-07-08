@@ -27,12 +27,12 @@ export default class LTAStateSet {
    * The time averaged current is used to show transient values in current, such as a current spike when a battery+
    * capacitor (no resistance) circuit is wired up, see https://phet.unfuddle.com/a#/projects/9404/tickets/by_number/2270?cycle=true
    */
-  public getTimeAverageCurrent( element: MNACircuitElement ): number {
+  public getTimeAverageCurrent( element: MNAResistor ): number {
     let weightedSum = 0.0;
     let totalTime = 0.0;
-    this.resultSet.forEach( ( stateObject: any ) => {
-      weightedSum += stateObject.state.ltaSolution.getCurrent( element ) * stateObject.dt;
-      totalTime += stateObject.dt;
+    this.resultSet.forEach( resultElement => {
+      weightedSum += resultElement.state.ltaSolution!.getCurrent( element ) * resultElement.dt;
+      totalTime += resultElement.dt;
     } );
     const number = weightedSum / totalTime;
     assert && assert( !isNaN( number ) );
@@ -42,8 +42,8 @@ export default class LTAStateSet {
   public getTimeAverageCurrentForCoreModel( element: CoreModel ): number {
     let weightedSum = 0.0;
     let totalTime = 0.0;
-    this.resultSet.forEach( ( stateObject: any ) => {
-      weightedSum += stateObject.state.ltaSolution.getCurrentForCompanion( element ) * stateObject.dt;
+    this.resultSet.forEach( stateObject => {
+      weightedSum += stateObject.state.ltaSolution!.getCurrentForCompanion( element ) * stateObject.dt;
       totalTime += stateObject.dt;
     } );
     const number = weightedSum / totalTime;

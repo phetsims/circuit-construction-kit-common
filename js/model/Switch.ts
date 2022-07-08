@@ -12,6 +12,7 @@ import Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import Utils from '../../../dot/js/Utils.js';
 import optionize from '../../../phet-core/js/optionize.js';
+import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -99,7 +100,7 @@ export default class Switch extends FixedCircuitElement {
   /**
    * Get the properties so that the circuit can be solved when changed.
    */
-  public getCircuitProperties(): Property<any>[] {
+  public getCircuitProperties(): Property<IntentionalAny>[] {
     return [ this.resistanceProperty, this.closedProperty ];
   }
 }

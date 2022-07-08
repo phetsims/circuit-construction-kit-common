@@ -6,7 +6,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import { Node } from '../../../scenery/js/imports.js';
+import { Node, RectangleOptions } from '../../../scenery/js/imports.js';
 import { Rectangle } from '../../../scenery/js/imports.js';
 import { Text } from '../../../scenery/js/imports.js';
 import { VBox } from '../../../scenery/js/imports.js';
@@ -16,7 +16,7 @@ import CCKCConstants from '../CCKCConstants.js';
 import CCKCUtils from '../CCKCUtils.js';
 import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import FixedCircuitElementNode from './FixedCircuitElementNode.js';
+import FixedCircuitElementNode, { FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
 import CCKCScreenView from './CCKCScreenView.js';
 import CircuitLayerNode from './CircuitLayerNode.js';
 import SeriesAmmeter from '../model/SeriesAmmeter.js';
@@ -45,7 +45,7 @@ const CORNER_RADIUS = 4;
  * Rasterize so it can be rendered in WebGL, see https://github.com/phetsims/circuit-construction-kit-dc/issues/67
  * @param [providedOptions]
  */
-const createPanel = ( providedOptions?: any ) => new Rectangle( 0, 0, PANEL_WIDTH, PANEL_HEIGHT, providedOptions ).rasterized( { wrap: false } );
+const createPanel = ( providedOptions?: RectangleOptions ) => new Rectangle( 0, 0, PANEL_WIDTH, PANEL_HEIGHT, providedOptions ).rasterized( { wrap: false } );
 
 const orangeBackgroundPanel = createPanel( { cornerRadius: CORNER_RADIUS, fill: ORANGE } );
 const blackBorder = createPanel( {
@@ -66,8 +66,7 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
    * @param [providedOptions]
    */
   public constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, seriesAmmeter: SeriesAmmeter,
-               tandem: Tandem, providedOptions?: any ) {
-    providedOptions = providedOptions || {};
+                      tandem: Tandem, providedOptions?: FixedCircuitElementNodeOptions ) {
 
     // Charges go behind this panel to give the appearance they go through the ammeter
     const readoutText = new Text( WIDEST_LABEL, { fontSize: 15 } );
@@ -181,7 +180,7 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
       children: [ readoutPanel ]
     } );
 
-    if ( providedOptions.isIcon ) {
+    if ( providedOptions && providedOptions.isIcon ) {
       lifelikeNode.addChild( this.frontPanelContainer.mutate( { centerY: lifelikeNode.height / 2 - 2 } ) );
     }
     else {
@@ -192,7 +191,7 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
     }
 
     // whether to show as an isIcon
-    this.isIcon = providedOptions.isIcon;
+    this.isIcon = !!( providedOptions && providedOptions.isIcon );
 
     this.disposeSeriesAmmeterNode = () => {
       seriesAmmeter.currentProperty.unlink( updateText );

@@ -10,10 +10,9 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
-import Property from '../../../axon/js/Property.js';
+import Property, { ReadOnlyProperty } from '../../../axon/js/Property.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import Vector2 from '../../../dot/js/Vector2.js';
-import merge from '../../../phet-core/js/merge.js';
 import { DragListener } from '../../../scenery/js/imports.js';
 import { HBox } from '../../../scenery/js/imports.js';
 import { Node } from '../../../scenery/js/imports.js';
@@ -30,7 +29,7 @@ import SeriesAmmeter from '../model/SeriesAmmeter.js';
 import Vertex from '../model/Vertex.js';
 import Voltmeter from '../model/Voltmeter.js';
 import AmmeterNode from './AmmeterNode.js';
-import CCKCPanel from './CCKCPanel.js';
+import CCKCPanel, { CCKCPanelOptions } from './CCKCPanel.js';
 import CircuitElementToolNode from './CircuitElementToolNode.js';
 import CurrentChartNode from './CurrentChartNode.js';
 import SeriesAmmeterNode from './SeriesAmmeterNode.js';
@@ -42,6 +41,7 @@ import { SceneryEvent } from '../../../scenery/js/imports.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import Multilink from '../../../axon/js/Multilink.js';
+import optionize from '../../../phet-core/js/optionize.js';
 
 const ammetersString = circuitConstructionKitCommonStrings.ammeters;
 const ammeterString = circuitConstructionKitCommonStrings.ammeter;
@@ -54,6 +54,13 @@ const TOOLBOX_ICON_HEIGHT = 53;
 const VOLTMETER_ICON_SCALE = 1.4;
 const ICON_TEXT_SPACING = 3; // distance in view coordinates from the isIcon to the text below the isIcon
 
+type SelfOptions = {
+  showResultsProperty?: ReadOnlyProperty<boolean>;
+  showSeriesAmmeters?: boolean;
+  showNoncontactAmmeters?: boolean;
+  showCharts?: boolean;
+};
+type SensorToolboxOptions = SelfOptions & CCKCPanelOptions;
 export default class SensorToolbox extends CCKCPanel {
 
   /**
@@ -67,11 +74,11 @@ export default class SensorToolbox extends CCKCPanel {
    * @param [providedOptions]
    */
   public constructor( alignGroup: AlignGroup, circuitLayerNode: CircuitLayerNode, voltmeterNodes: VoltmeterNode[],
-               ammeterNodes: AmmeterNode[], voltageChartNodes: VoltageChartNode[], currentChartNodes: CurrentChartNode[],
-               tandem: Tandem, providedOptions?: any ) {
+                      ammeterNodes: AmmeterNode[], voltageChartNodes: VoltageChartNode[], currentChartNodes: CurrentChartNode[],
+                      tandem: Tandem, providedOptions?: SensorToolboxOptions ) {
     const circuit = circuitLayerNode.circuit;
 
-    providedOptions = merge( {
+    const options = optionize<SensorToolboxOptions, SelfOptions, CCKCPanelOptions>()( {
       showResultsProperty: circuitLayerNode.model.isValueDepictionEnabledProperty,
       showSeriesAmmeters: true, // whether the series ammeters should be shown in the toolbox
       showNoncontactAmmeters: true, // whether the noncontact ammeters should be shown in the toolbox
@@ -171,7 +178,7 @@ export default class SensorToolbox extends CCKCPanel {
       maxWidth: 60,
       tandem: tandem.createTandem( 'voltmeterLabel' )
     } );
-    const ammeterText = new Text( providedOptions.showSeriesAmmeters && providedOptions.showNoncontactAmmeters ? ammetersString : ammeterString, {
+    const ammeterText = new Text( options.showSeriesAmmeters && options.showNoncontactAmmeters ? ammetersString : ammeterString, {
       maxWidth: 60,
       tandem: tandem.createTandem( 'ammeterLabel' )
     } );
@@ -184,10 +191,10 @@ export default class SensorToolbox extends CCKCPanel {
       ( showLabels, allAmmetersInPlayArea, allSeriesAmmetersInPlayArea ) => {
 
         let isAmmeterInToolbox = false;
-        if ( providedOptions.showSeriesAmmeters && !allSeriesAmmetersInPlayArea ) {
+        if ( options.showSeriesAmmeters && !allSeriesAmmetersInPlayArea ) {
           isAmmeterInToolbox = true;
         }
-        if ( providedOptions.showNoncontactAmmeters && !allAmmetersInPlayArea ) {
+        if ( options.showNoncontactAmmeters && !allAmmetersInPlayArea ) {
           isAmmeterInToolbox = true;
         }
 
@@ -205,8 +212,8 @@ export default class SensorToolbox extends CCKCPanel {
     } );
 
     const children = [];
-    providedOptions.showNoncontactAmmeters && children.push( ammeterToolNode );
-    providedOptions.showSeriesAmmeters && children.push( seriesAmmeterToolNode );
+    options.showNoncontactAmmeters && children.push( ammeterToolNode );
+    options.showSeriesAmmeters && children.push( seriesAmmeterToolNode );
 
     const ammeterToolIcon = new VBox( {
       spacing: ICON_TEXT_SPACING,
@@ -224,13 +231,13 @@ export default class SensorToolbox extends CCKCPanel {
     } );
 
     const topBox = alignGroup.createBox( new HBox( {
-      spacing: ( providedOptions.showNoncontactAmmeters && providedOptions.showSeriesAmmeters ) ? 20 : 40,
+      spacing: ( options.showNoncontactAmmeters && options.showSeriesAmmeters ) ? 20 : 40,
       align: 'bottom',
       children: [ voltmeterToolIcon, ammeterToolIcon ]
     } ) );
 
     const rows: Node[] = [ topBox ];
-    if ( providedOptions.showCharts ) {
+    if ( options.showCharts ) {
       const everything = new Property( Bounds2.EVERYTHING );
 
       const createChartToolIcon = ( chartNodes: Node[], chartNodeIcon: VoltageChartNode | CurrentChartNode, labelNode: Text, tandem: Tandem ) => {
@@ -275,7 +282,7 @@ export default class SensorToolbox extends CCKCPanel {
         tandem.createTandem( 'voltageChartToolIcon' )
       );
       const currentChartToolIcon = createChartToolIcon( currentChartNodes,
-        new CurrentChartNode( circuitLayerNode, new NumberProperty( 0 ), everything, { scale: scale } ),
+        new CurrentChartNode( circuitLayerNode, new NumberProperty( 0 ), everything, { scale: scale, tandem: Tandem.OPT_OUT } ),
         new Text( currentChartString, { maxWidth: 60 } ),
         tandem.createTandem( 'currentChartToolIcon' )
       );

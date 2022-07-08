@@ -11,7 +11,7 @@ import validate from '../../../axon/js/validate.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import IOType from '../../../tandem/js/types/IOType.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitElement from './CircuitElement.js';
+import CircuitElement, { CircuitElementState } from './CircuitElement.js';
 import FixedCircuitElement, { FixedCircuitElementOptions } from './FixedCircuitElement.js';
 import ResistorType from './ResistorType.js';
 import Vertex from './Vertex.js';
@@ -20,10 +20,11 @@ import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import PowerDissipatedProperty from './PowerDissipatedProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import Property from '../../../axon/js/Property.js';
+import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 
 type SelfOptions = {
   isMetallic: boolean;
-  resistorType: any;
+  resistorType: ResistorType;
 };
 export type ResistorOptions = SelfOptions & FixedCircuitElementOptions;
 
@@ -47,7 +48,7 @@ export default class Resistor extends FixedCircuitElement {
    * @param tandem
    * @param [providedOptions]
    */
-  public constructor( startVertex: Vertex, endVertex: Vertex, resistorType: any, tandem: Tandem, providedOptions?: ResistorOptions ) {
+  public constructor( startVertex: Vertex, endVertex: Vertex, resistorType: ResistorType, tandem: Tandem, providedOptions?: ResistorOptions ) {
     const options = optionize<ResistorOptions, SelfOptions, FixedCircuitElementOptions>()( {
       isFlammable: true, // All resistors are flammable except for the dog, which automatically disconnects at high current.
       phetioType: Resistor.ResistorIO,
@@ -105,12 +106,16 @@ export default class Resistor extends FixedCircuitElement {
   /**
    * Get the properties so that the circuit can be solved when changed.
    */
-  public getCircuitProperties(): Property<any>[] {
+  public getCircuitProperties(): Property<IntentionalAny>[] {
     return [ this.resistanceProperty ];
   }
 }
 
-Resistor.ResistorIO = new IOType( 'ResistorIO', {
+type ResistorState = {
+  resistorType: ResistorType;
+} & CircuitElementState;
+
+Resistor.ResistorIO = new IOType<Resistor, ResistorState>( 'ResistorIO', {
   valueType: Resistor,
   supertype: CircuitElement.CircuitElementIO,
   stateSchema: {
@@ -122,7 +127,7 @@ Resistor.ResistorIO = new IOType( 'ResistorIO', {
     return stateObject;
   },
 
-  stateToArgsForConstructor( stateObject: any ) {
+  stateToArgsForConstructor( stateObject: ResistorState ) {
     const args = CircuitElement.CircuitElementIO.stateToArgsForConstructor( stateObject );
     args.push( EnumerationIO( ResistorType ).fromStateObject( stateObject.resistorType ) );
     return args;

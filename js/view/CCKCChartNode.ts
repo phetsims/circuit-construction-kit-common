@@ -40,6 +40,7 @@ import CCKCScreenView from './CCKCScreenView.js';
 import IReadOnlyProperty from '../../../axon/js/IReadOnlyProperty.js';
 import { ObservableArray } from '../../../axon/js/createObservableArray.js';
 import optionize from '../../../phet-core/js/optionize.js';
+import PickRequired from '../../../phet-core/js/types/PickRequired.js';
 
 const oneSecondString = circuitConstructionKitCommonStrings.oneSecond;
 const timeString = circuitConstructionKitCommonStrings.time;
@@ -57,7 +58,7 @@ const MAX_AXIS_LABEL_WIDTH = 120;
 type SelfOptions = {
   defaultZoomLevel?: Range;
 };
-type CCKCChartNodeOptions = SelfOptions & NodeOptions;
+export type CCKCChartNodeOptions = SelfOptions & NodeOptions & PickRequired<NodeOptions, 'tandem'>;
 
 export default class CCKCChartNode extends Node {
   protected readonly meter: Meter;

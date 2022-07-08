@@ -16,7 +16,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 export default class FuseTripAnimation extends Node {
 
-  public constructor( providedOptions?: Partial<NodeOptions> ) {
+  public constructor( providedOptions?: NodeOptions ) {
     super();
 
     // Geometry sampled by exporting circuit-construction-kit-common/assets/spark.ai to SVG then copying the

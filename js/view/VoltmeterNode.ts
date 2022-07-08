@@ -11,9 +11,8 @@ import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
-import merge from '../../../phet-core/js/merge.js';
 import WireNode from '../../../scenery-phet/js/WireNode.js';
-import { DragListener } from '../../../scenery/js/imports.js';
+import { DragListener, NodeOptions, PressListenerEvent } from '../../../scenery/js/imports.js';
 import { Image } from '../../../scenery/js/imports.js';
 import { Node } from '../../../scenery/js/imports.js';
 import { Rectangle } from '../../../scenery/js/imports.js';
@@ -33,6 +32,8 @@ import CircuitLayerNode from './CircuitLayerNode.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
+import { ReadOnlyProperty } from '../../../axon/js/ReadOnlyProperty.js';
+import optionize from '../../../phet-core/js/optionize.js';
 
 const voltageString = circuitConstructionKitCommonStrings.voltage;
 
@@ -52,6 +53,13 @@ const CONTROL_POINT_X = 30;
 const CONTROL_POINT_Y1 = 15;
 const CONTROL_POINT_Y2 = 60;
 
+type SelfOptions = {
+  isIcon?: boolean;
+  visibleBoundsProperty?: ReadOnlyProperty<Bounds2> | null;
+  showResultsProperty?: ReadOnlyProperty<boolean>;
+};
+type VoltmeterNodeOptions = SelfOptions & NodeOptions;
+
 export default class VoltmeterNode extends Node {
   private readonly circuitLayerNode: CircuitLayerNode | null;
   public readonly voltmeter: Voltmeter;
@@ -70,9 +78,9 @@ export default class VoltmeterNode extends Node {
    * @param [providedOptions]
    */
   public constructor( voltmeter: Voltmeter, model: CircuitConstructionKitModel | null, circuitLayerNode: CircuitLayerNode | null,
-               tandem: Tandem, providedOptions?: any ) {
+                      tandem: Tandem, providedOptions?: VoltmeterNodeOptions ) {
 
-    providedOptions = merge( {
+    const options = optionize<VoltmeterNodeOptions, SelfOptions, NodeOptions>()( {
 
       // Whether this will be used as an icon or not.
       isIcon: false,
@@ -118,7 +126,7 @@ export default class VoltmeterNode extends Node {
     );
 
     const probeTextNode = new ProbeTextNode(
-      voltageReadoutProperty, providedOptions.showResultsProperty, voltageString, tandem.createTandem( 'probeTextNode' ), {
+      voltageReadoutProperty, options.showResultsProperty, voltageString, tandem.createTandem( 'probeTextNode' ), {
         centerX: voltmeterBody_png[ 0 ].width / 2,
         centerY: voltmeterBody_png[ 0 ].height / 2
       } );
@@ -174,8 +182,8 @@ export default class VoltmeterNode extends Node {
         const probeY = -30 - bodyNode.height / 2;
         const probeOffsetX = 78;
 
-        const constrain = ( pt: Vector2 ) => providedOptions.visibleBoundsProperty ?
-                                             providedOptions.visibleBoundsProperty.value.eroded( CCKCConstants.DRAG_BOUNDS_EROSION ).closestPointTo( pt ) :
+        const constrain = ( pt: Vector2 ) => options.visibleBoundsProperty ?
+                                             options.visibleBoundsProperty.value.eroded( CCKCConstants.DRAG_BOUNDS_EROSION ).closestPointTo( pt ) :
                                              pt;
 
         voltmeter.redProbePositionProperty.set( constrain( bodyPosition.plusXY( +probeOffsetX, probeY ) ) );
@@ -220,7 +228,7 @@ export default class VoltmeterNode extends Node {
     this.blackProbeNode = blackProbeNode;
 
     // For the real version (not the icon), add drag listeners and update visibility
-    if ( !providedOptions.isIcon ) {
+    if ( !options.isIcon ) {
 
       // Show the voltmeter when icon dragged out of the toolbox
       voltmeter.visibleProperty.linkAttribute( this, 'visible' );
@@ -233,7 +241,7 @@ export default class VoltmeterNode extends Node {
           positionProperty: positionProperty,
           start: () => this.moveToFront(),
           tandem: tandem.createTandem( 'probeDragListener' ),
-          dragBoundsProperty: new DerivedProperty( [ providedOptions.visibleBoundsProperty ], ( visibleBounds: Bounds2 ) => {
+          dragBoundsProperty: new DerivedProperty( [ options.visibleBoundsProperty! ], ( visibleBounds: Bounds2 ) => {
             return visibleBounds.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
           } )
         } );
@@ -246,7 +254,7 @@ export default class VoltmeterNode extends Node {
       this.redProbeNode.addInputListener( redProbeDragListener );
       this.blackProbeNode.addInputListener( blackProbeDragListener );
 
-      const erodedBoundsProperty = new DerivedProperty( [ providedOptions.visibleBoundsProperty ], ( visibleBounds: Bounds2 ) => {
+      const erodedBoundsProperty = new DerivedProperty( [ options.visibleBoundsProperty! ], ( visibleBounds: Bounds2 ) => {
         return visibleBounds.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
       } );
 
@@ -256,7 +264,7 @@ export default class VoltmeterNode extends Node {
         tandem: tandem.createTandem( 'dragHandler' ),
         useParentOffset: true,
         dragBoundsProperty: erodedBoundsProperty,
-        start: ( event: any ) => {
+        start: event => {
           this.moveToFront();
         },
         end: () => {
@@ -327,7 +335,7 @@ export default class VoltmeterNode extends Node {
     }
 
     // When rendered as an icon, the touch area should span the bounds (no gaps between probes and body)
-    if ( providedOptions.isIcon ) {
+    if ( options.isIcon ) {
       this.touchArea = this.bounds.copy();
       this.mouseArea = this.bounds.copy();
       this.cursor = 'pointer';
@@ -337,7 +345,7 @@ export default class VoltmeterNode extends Node {
   /**
    * Forward a drag from the toolbox to the play area node.
    */
-  private startDrag( event: any ): void {
+  private startDrag( event: PressListenerEvent ): void {
     this.dragHandler!.press( event );
   }
 }

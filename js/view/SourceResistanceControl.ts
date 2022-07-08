@@ -10,7 +10,7 @@
 
 import Utils from '../../../dot/js/Utils.js';
 import StringUtils from '../../../phetcommon/js/util/StringUtils.js';
-import { Text } from '../../../scenery/js/imports.js';
+import { Text, TextOptions } from '../../../scenery/js/imports.js';
 import { VBox } from '../../../scenery/js/imports.js';
 import HSlider from '../../../sun/js/HSlider.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -31,7 +31,7 @@ export default class SourceResistanceControl extends VBox {
    * @param titleConfig
    * @param tandem
    */
-  public constructor( sourceResistanceProperty: Property<number>, alignGroup: AlignGroup, batteryResistanceControlString: string, titleConfig: any, tandem: Tandem ) {
+  public constructor( sourceResistanceProperty: Property<number>, alignGroup: AlignGroup, batteryResistanceControlString: string, titleConfig: TextOptions, tandem: Tandem ) {
 
     /**
      * Creates label to be used for slider

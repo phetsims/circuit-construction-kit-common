@@ -9,7 +9,7 @@
 import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import merge from '../../../phet-core/js/merge.js';
-import { Circle, Color, KeyboardUtils, Node, SceneryEvent, Text, VBox } from '../../../scenery/js/imports.js';
+import { Circle, Color, KeyboardUtils, Node, SceneryEvent, SceneryListenerFunction, Text, VBox } from '../../../scenery/js/imports.js';
 import RoundPushButton from '../../../sun/js/buttons/RoundPushButton.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -49,7 +49,7 @@ export default class VertexNode extends Node {
   // added by CircuitLayerNode during dragging, used for relative drag position, or null if not being dragged
   public startOffset: Vector2 | null;
   private readonly highlightNode: Circle;
-  private readonly keyListener: { keydown: ( event: any ) => void };
+  private readonly keyListener: { keydown: SceneryListenerFunction<KeyboardEvent> };
   private readonly updateStrokeListener: () => void;
   private readonly updateSelectedListener: () => void;
   protected readonly updateMoveToFront: () => Node;
@@ -189,13 +189,13 @@ export default class VertexNode extends Node {
 
     this.dragListener = new CircuitLayerNodeDragListener( circuitLayerNode, [ () => vertex ], {
       tandem: tandem.createTandem( 'dragListener' ),
-      start: ( event: any ) => {
+      start: ( event: SceneryEvent ) => {
         initialPoint = event.pointer.point;
         latestPoint = event.pointer.point.copy();
         circuitLayerNode.startDragVertex( event.pointer.point, vertex );
         dragged = false;
       },
-      drag: ( event: any ) => {
+      drag: ( event: SceneryEvent ) => {
         latestPoint = event.pointer.point.copy();
         dragged = true;
         circuitLayerNode.dragVertex( event.pointer.point, vertex, true );
@@ -281,7 +281,7 @@ export default class VertexNode extends Node {
   /**
    * @param event - scenery keyboard event
    */
-  private keydownListener( event: any ): void {
+  private keydownListener( event: SceneryEvent ): void {
     const domEvent = event.domEvent;
 
     // on delete or backspace, the focused Vertex should be cut
@@ -290,7 +290,7 @@ export default class VertexNode extends Node {
 
       // prevent default so 'backspace' and 'delete' don't navigate back a page in Firefox, see
       // https://github.com/phetsims/circuit-construction-kit-common/issues/307
-      domEvent.preventDefault();
+      domEvent!.preventDefault();
 
       this.cutButton.enabled && this.circuit.cutVertex( this.circuit.getSelectedVertex()! );
     }

@@ -28,7 +28,7 @@ type SelfOptions = {
 export type CircuitElementNodeOptions = SelfOptions & NodeOptions;
 
 export default abstract class CircuitElementNode extends Node {
-  private readonly useHitTestForSensors: any;
+  private readonly useHitTestForSensors: boolean;
   private readonly circuit: Circuit | null;
   public readonly circuitElement: CircuitElement;
   private readonly disposeEmitterCircuitElementNode: Emitter<[]>;
@@ -61,7 +61,7 @@ export default abstract class CircuitElementNode extends Node {
 
     super( providedOptions );
 
-    this.useHitTestForSensors = providedOptions.useHitTestForSensors;
+    this.useHitTestForSensors = !!providedOptions.useHitTestForSensors;
 
     // the circuit which the element can be removed from or null for icons
     this.circuit = circuit;
@@ -77,7 +77,7 @@ export default abstract class CircuitElementNode extends Node {
     // keyboard listener so that delete or backspace deletes the element - must be disposed
     const keyListener = {
 
-      keydown: ( event: any ) => {
+      keydown: ( event: SceneryEvent<KeyboardEvent> ) => {
 
         // on delete or backspace, the focused circuit element should be deleted
         // @ts-ignore
@@ -85,7 +85,7 @@ export default abstract class CircuitElementNode extends Node {
 
           // prevent default so 'backspace' and 'delete' don't navigate back a page in Firefox, see
           // https://github.com/phetsims/circuit-construction-kit-common/issues/307
-          event.domEvent.preventDefault();
+          event.domEvent!.preventDefault();
 
           // Only permit deletion when not being dragged, see https://github.com/phetsims/circuit-construction-kit-common/issues/414
           if ( !circuitElement.startVertexProperty.value.isDragged && !circuitElement.endVertexProperty.value.isDragged ) {

@@ -6,7 +6,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import ScreenView from '../../../../joist/js/ScreenView.js';
+import ScreenView, { ScreenViewOptions } from '../../../../joist/js/ScreenView.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import { Path } from '../../../../scenery/js/imports.js';
 import BarkNode from '../BarkNode.js';
@@ -24,10 +24,7 @@ const LEAD_Y = -73;
 
 export default class CCKCDemoScreenView extends ScreenView {
 
-  /**
-   * @param [providedOptions]
-   */
-  private constructor( providedOptions?: any ) {
+  private constructor( providedOptions: ScreenViewOptions ) {
     super( providedOptions );
 
     // Classical zig-zag shape

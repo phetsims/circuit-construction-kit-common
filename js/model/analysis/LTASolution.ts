@@ -10,9 +10,9 @@ export default class LTASolution {
 
   private readonly circuit: LTACircuit;
   private readonly mnaSolution: MNASolution;
-  private readonly currentCompanions: any;
+  private readonly currentCompanions: { element: CoreModel; getValueForSolution: ( solution: MNASolution ) => number }[];
 
-  public constructor( circuit: LTACircuit, mnaSolution: MNASolution, currentCompanions: any ) {
+  public constructor( circuit: LTACircuit, mnaSolution: MNASolution, currentCompanions: { element: CoreModel; getValueForSolution: ( solution: MNASolution ) => number }[] ) {
     this.circuit = circuit;
     this.mnaSolution = mnaSolution;
     this.currentCompanions = currentCompanions;
@@ -36,7 +36,7 @@ export default class LTASolution {
 
   public getCurrentForCompanion( coreModel: CoreModel ): number {
     const companion = _.find( this.currentCompanions, c => c.element.id === coreModel.id );
-    return companion.getValueForSolution( this.mnaSolution );
+    return companion!.getValueForSolution( this.mnaSolution );
   }
 
   public getVoltage( node0: string, node1: string ): number {

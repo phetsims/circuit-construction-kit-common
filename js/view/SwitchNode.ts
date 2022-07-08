@@ -168,7 +168,7 @@ export default class SwitchNode extends FixedCircuitElementNode {
    * @param [providedOptions]
    */
   public constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, circuitSwitch: Switch,
-               viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: Partial<FixedCircuitElementNodeOptions> ) {
+                      viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: FixedCircuitElementNodeOptions ) {
 
     const lifelikeNode = new Node();
     const schematicNode = new Node();
@@ -197,10 +197,10 @@ export default class SwitchNode extends FixedCircuitElementNode {
     const fireListener = new FireListener( {
       tandem: tandem.createTandem( 'fireListener' ),
       attach: false,
-      press: ( event: any ) => {
+      press: event => {
         downPoint = circuitLayerNode!.globalToLocalPoint( event.pointer.point );
       },
-      fire: ( event: any ) => {
+      fire: event => {
 
         // Measure how far the switch was dragged in CircuitLayerNode coordinates (if any)
         const distance = circuitLayerNode!.globalToLocalPoint( event.pointer.point ).distance( downPoint! );

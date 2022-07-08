@@ -201,7 +201,7 @@ export default class CircuitLayerNode extends Node {
       renderer: RENDERER,
       children: [ new Node( {
         visible: false,
-        children: ( [] as any )
+        children: ( [] as Node[] )
           .concat( BatteryNode.webglSpriteNodes )
           .concat( ResistorNode.webglSpriteNodes )
           .concat( FixedCircuitElementNode.webglSpriteNodes )
@@ -294,10 +294,10 @@ export default class CircuitLayerNode extends Node {
      * (b) Add a listener that adds nodes when model elements are added
      * (c) Add a listener that removes nodes when model elements are removed
      */
-    const initializeCircuitElementType = ( predicate: ( c: CircuitElement ) => boolean, layer: Node, phetioGroup: PhetioGroup<CircuitElementNode, any> ) => {
+    const initializeCircuitElementType = ( predicate: ( c: CircuitElement ) => boolean, layer: Node, phetioGroup: PhetioGroup<CircuitElementNode, [ CircuitElement ]> ) => {
       const addCircuitElement = ( circuitElement: CircuitElement ) => {
         if ( predicate( circuitElement ) ) {
-          const circuitElementNode = phetioGroup.createCorrespondingGroupElement( circuitElement.tandem.name, circuitElement, Tandem.OPTIONAL );
+          const circuitElementNode = phetioGroup.createCorrespondingGroupElement( circuitElement.tandem.name, circuitElement );
           this.circuitElementNodeMap[ circuitElement.id ] = circuitElementNode;
 
           layer.addChild( circuitElementNode );
@@ -755,7 +755,7 @@ export default class CircuitLayerNode extends Node {
    * @param updatePositions - optional callback for updating positions after unsnapped positions update
    * @param attachable - the nodes that are candidates for attachment
    */
-  private translateVertexGroup( vertex: Vertex, vertices: Vertex[], unsnappedDelta: Vector2, updatePositions: any, attachable: Vertex[] ): void {
+  private translateVertexGroup( vertex: Vertex, vertices: Vertex[], unsnappedDelta: Vector2, updatePositions: ( () => void ) | null, attachable: Vertex[] ): void {
 
     const screenBounds = this.visibleBoundsProperty.get();
     const bounds = this.parentToLocalBounds( screenBounds );

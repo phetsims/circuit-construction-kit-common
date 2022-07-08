@@ -72,7 +72,7 @@ export default class BatteryNode extends FixedCircuitElementNode {
    * @param tandem
    * @param [providedOptions]
    */
-  public constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, battery: Battery, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: Partial<FixedCircuitElementNodeOptions> ) {
+  public constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, battery: Battery, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: FixedCircuitElementNodeOptions ) {
 
     providedOptions = merge( { useHitTestForSensors: true }, providedOptions );
     const lifelikeNode = new Image( battery.batteryType === 'normal' ? battery_png : batteryHigh_png );

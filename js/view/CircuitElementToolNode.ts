@@ -8,10 +8,9 @@
  */
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
-import Property from '../../../axon/js/Property.js';
+import Property, { ReadOnlyProperty } from '../../../axon/js/Property.js';
 import Vector2 from '../../../dot/js/Vector2.js';
-import merge from '../../../phet-core/js/merge.js';
-import { DragListener } from '../../../scenery/js/imports.js';
+import { DragListener, VBoxOptions } from '../../../scenery/js/imports.js';
 import { Text } from '../../../scenery/js/imports.js';
 import { Node } from '../../../scenery/js/imports.js';
 import { VBox } from '../../../scenery/js/imports.js';
@@ -22,9 +21,20 @@ import CircuitElement from '../model/CircuitElement.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import { SceneryEvent } from '../../../scenery/js/imports.js';
 import Multilink from '../../../axon/js/Multilink.js';
+import optionize from '../../../phet-core/js/optionize.js';
 
 // constants
 const TOOLBOX_ICON_WIDTH = CCKCConstants.TOOLBOX_ICON_WIDTH;
+
+type SelfOptions = {
+  touchAreaExpansionLeft?: number;
+  touchAreaExpansionTop?: number;
+  touchAreaExpansionRight?: number;
+  touchAreaExpansionBottom?: number;
+
+  additionalProperty?: ReadOnlyProperty<boolean>;
+};
+export type CircuitElementToolNodeOptions = SelfOptions & VBoxOptions;
 
 export default class CircuitElementToolNode extends VBox {
 
@@ -44,11 +54,11 @@ export default class CircuitElementToolNode extends VBox {
    * @param [providedOptions]
    */
   public constructor( labelText: string, showLabelsProperty: Property<boolean>, viewTypeProperty: Property<CircuitElementViewType>,
-               circuit: Circuit, globalToCircuitLayerNodePoint: ( v: Vector2 ) => Vector2, iconNode: Node, maxNumber: number,
-               count: () => number, createElement: ( v: Vector2 ) => CircuitElement, providedOptions?: any ) {
+                      circuit: Circuit, globalToCircuitLayerNodePoint: ( v: Vector2 ) => Vector2, iconNode: Node, maxNumber: number,
+                      count: () => number, createElement: ( v: Vector2 ) => CircuitElement, providedOptions?: CircuitElementToolNodeOptions ) {
     const labelNode = new Text( labelText, { fontSize: 12, maxWidth: TOOLBOX_ICON_WIDTH } );
     showLabelsProperty.linkAttribute( labelNode, 'visible' );
-    providedOptions = merge( {
+    const options = optionize<CircuitElementToolNodeOptions, SelfOptions, VBoxOptions>()( {
       spacing: 2, // Spacing between the icon and the text
       cursor: 'pointer',
 
@@ -64,7 +74,7 @@ export default class CircuitElementToolNode extends VBox {
       excludeInvisibleChildrenFromBounds: false,
       additionalProperty: new BooleanProperty( true )
     }, providedOptions );
-    super( providedOptions );
+    super( options );
 
     this.addInputListener( DragListener.createForwardingListener( ( event: SceneryEvent ) => {
 
@@ -93,7 +103,7 @@ export default class CircuitElementToolNode extends VBox {
     let lastCount: number | null = null;
     let lastValue: boolean | null = null;
 
-    Multilink.multilink( [ circuit.circuitElements.lengthProperty, providedOptions.additionalProperty ], ( length, additionalValue: boolean ) => {
+    Multilink.multilink( [ circuit.circuitElements.lengthProperty, options.additionalProperty ], ( length, additionalValue: boolean ) => {
       const currentCount = count();
       if ( lastCount !== currentCount || lastValue !== additionalValue ) {
         this.setVisible( ( currentCount < maxNumber ) && additionalValue );
@@ -107,16 +117,18 @@ export default class CircuitElementToolNode extends VBox {
 
       // Expand touch area around text, see https://github.com/phetsims/circuit-construction-kit-dc/issues/82
       this.touchArea = this.localBounds.withOffsets(
-        providedOptions.touchAreaExpansionLeft,
-        providedOptions.touchAreaExpansionTop,
-        providedOptions.touchAreaExpansionRight,
-        providedOptions.touchAreaExpansionBottom
+        options.touchAreaExpansionLeft,
+        options.touchAreaExpansionTop,
+        options.touchAreaExpansionRight,
+        options.touchAreaExpansionBottom
       );
       this.mouseArea = this.touchArea;
     };
     viewTypeProperty.link( updatePointerAreas );
 
     this.localBoundsProperty.link( updatePointerAreas );
+
+    this.mutate();
   }
 }
 

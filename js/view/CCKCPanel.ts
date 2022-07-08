@@ -13,6 +13,8 @@ import { Node } from '../../../scenery/js/imports.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
+export type CCKCPanelOptions = PanelOptions;
+
 export default class CCKCPanel extends Panel {
 
   /**
@@ -20,7 +22,7 @@ export default class CCKCPanel extends Panel {
    * @param tandem
    * @param [providedOptions]
    */
-  public constructor( content: Node, tandem: Tandem, providedOptions?: Partial<PanelOptions> ) {
+  public constructor( content: Node, tandem: Tandem, providedOptions?: PanelOptions ) {
     providedOptions = merge( {
       fill: CCKCConstants.PANEL_COLOR,
       lineWidth: CCKCConstants.PANEL_LINE_WIDTH,

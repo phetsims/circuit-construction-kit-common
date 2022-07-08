@@ -10,9 +10,8 @@
 import Property from '../../../axon/js/Property.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import Utils from '../../../dot/js/Utils.js';
-import merge from '../../../phet-core/js/merge.js';
 import StringUtils from '../../../phetcommon/js/util/StringUtils.js';
-import { HBox, Node, Text } from '../../../scenery/js/imports.js';
+import { HBox, Node, NodeOptions, Text } from '../../../scenery/js/imports.js';
 import Panel from '../../../sun/js/Panel.js';
 import SunConstants from '../../../sun/js/SunConstants.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -44,6 +43,8 @@ import CircuitElement from '../model/CircuitElement.js';
 import InteractionMode from '../model/InteractionMode.js';
 import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import EmptyObjectType from '../../../phet-core/js/types/EmptyObjectType.js';
+import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
+import optionize from '../../../phet-core/js/optionize.js';
 
 const capacitanceString = circuitConstructionKitCommonStrings.capacitance;
 const capacitanceUnitsString = circuitConstructionKitCommonStrings.capacitanceUnits;
@@ -69,7 +70,7 @@ const GET_LAYOUT_POSITION = ( visibleBounds: Bounds2, centerX: number ) => {
 
 // So we can pass classes as types for instanceof checks, I've been using https://www.typescriptlang.org/docs/handbook/mixins.html
 // as a reference for how to create this type
-type GConstructor<T = EmptyObjectType> = new ( ...args: any[] ) => T;
+type GConstructor<T = EmptyObjectType> = new ( ...args: IntentionalAny[] ) => T;
 
 const NORMAL_SLIDER_KNOB_DELTA = 1;
 const HIGH_SLIDER_KNOB_DELTA = 100;
@@ -101,13 +102,19 @@ const createSingletonAdapterProperty = <T extends CircuitElement>(
   return singletonAdapterProperty;
 };
 
+type SelfOptions = {
+  showPhaseShiftControl?: boolean;
+};
+type CircuitElementEditContainerNodeOptions = SelfOptions & NodeOptions;
+
 export default class CircuitElementEditContainerNode extends Node {
 
-  public constructor( circuit: Circuit, visibleBoundsProperty: Property<Bounds2>, modeProperty: EnumerationProperty<InteractionMode>, playAreaCenterXProperty: Property<number>, tandem: Tandem, providedOptions?: any ) {
+  public constructor( circuit: Circuit, visibleBoundsProperty: Property<Bounds2>, modeProperty: EnumerationProperty<InteractionMode>, playAreaCenterXProperty: Property<number>, tandem: Tandem,
+                      providedOptions?: CircuitElementEditContainerNodeOptions ) {
 
     super();
 
-    providedOptions = merge( {
+    const options = optionize<CircuitElementEditContainerNodeOptions, SelfOptions, NodeOptions>()( {
       showPhaseShiftControl: false
     }, providedOptions );
 
@@ -174,7 +181,7 @@ export default class CircuitElementEditContainerNode extends Node {
         }
       } );
 
-    type GConstructor<T> = new ( ...args: any[] ) => T;
+    type GConstructor<T> = new ( ...args: IntentionalAny[] ) => T;
 
     const createResistanceNumberControl = ( tandemName: string, CircuitElementType: GConstructor<LightBulb | Resistor> ) => new CircuitElementNumberControl( resistanceString,
       StringUtils.fillIn( resistanceOhmsValuePatternString, { resistance: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
@@ -373,7 +380,7 @@ export default class CircuitElementEditContainerNode extends Node {
             acFrequencyControl
           ];
 
-          if ( providedOptions.showPhaseShiftControl ) {
+          if ( options.showPhaseShiftControl ) {
             children.push( phaseShiftControl );
           }
           children.push( trashButtonContainer );

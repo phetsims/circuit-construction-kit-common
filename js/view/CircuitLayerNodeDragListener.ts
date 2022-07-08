@@ -5,7 +5,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import { SceneryEvent } from '../../../scenery/js/imports.js';
+import { DragListenerOptions, SceneryEvent } from '../../../scenery/js/imports.js';
 import { DragListener } from '../../../scenery/js/imports.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Vertex from '../model/Vertex.js';
@@ -20,7 +20,7 @@ export default class CircuitLayerNodeDragListener extends DragListener {
    * @param vertexGetters
    * @param [providedOptions]
    */
-  public constructor( circuitLayerNode: CircuitLayerNode, vertexGetters: ( () => Vertex )[], providedOptions?: any ) {
+  public constructor( circuitLayerNode: CircuitLayerNode, vertexGetters: ( () => Vertex )[], providedOptions?: DragListenerOptions<DragListener> ) {
     super( providedOptions );
 
     this.circuitLayerNode = circuitLayerNode;

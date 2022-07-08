@@ -34,7 +34,7 @@ import AmmeterNode from './AmmeterNode.js';
 import ChargeSpeedThrottlingReadoutNode from './ChargeSpeedThrottlingReadoutNode.js';
 import CircuitElementEditContainerNode from './CircuitElementEditContainerNode.js';
 import CircuitElementNode from './CircuitElementNode.js';
-import CircuitElementToolbox from './CircuitElementToolbox.js';
+import CircuitElementToolbox, { CircuitElementToolboxOptions } from './CircuitElementToolbox.js';
 import CircuitElementToolNode from './CircuitElementToolNode.js';
 import CircuitLayerNode from './CircuitLayerNode.js';
 import CurrentChartNode from './CurrentChartNode.js';
@@ -76,7 +76,7 @@ document.addEventListener( 'keydown', event => {
 type SelfOptions = {
   showResetAllButton?: boolean;
 
-  circuitElementToolboxOptions: any;
+  circuitElementToolboxOptions: CircuitElementToolboxOptions;
 
   showSeriesAmmeters?: boolean;
   showTimeControls?: boolean;

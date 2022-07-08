@@ -10,9 +10,9 @@
 import Property from '../../../axon/js/Property.js';
 import Utils from '../../../dot/js/Utils.js';
 import { Shape } from '../../../kite/js/imports.js';
-import merge from '../../../phet-core/js/merge.js';
+import optionize from '../../../phet-core/js/optionize.js';
 import LightRaysNode from '../../../scenery-phet/js/LightRaysNode.js';
-import { Image } from '../../../scenery/js/imports.js';
+import { Image, NodeOptions } from '../../../scenery/js/imports.js';
 import { Node } from '../../../scenery/js/imports.js';
 import lightBulbBack_png from '../../images/lightBulbBack_png.js';
 import lightBulbFrontHigh_png from '../../images/lightBulbFrontHigh_png.js';
@@ -25,6 +25,14 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 // constants
 const BULB_IMAGE_SCALE = 0.125;
+
+type SelfOptions = {
+  baseOnly?: boolean;
+  highResistance?: boolean;
+  real?: boolean;
+  scale?: number; // Note this differs from NodeOptions['scale']
+};
+type CustomLightBulbNodeOptions = SelfOptions & NodeOptions;
 
 export default class CustomLightBulbNode extends Node {
   private readonly baseOnly: boolean;
@@ -39,33 +47,33 @@ export default class CustomLightBulbNode extends Node {
    * @param brightnessProperty 0 (off) to 1 (full brightness)
    * @param [providedOptions]
    */
-  public constructor( brightnessProperty: Property<number>, providedOptions?: any ) {
+  public constructor( brightnessProperty: Property<number>, providedOptions?: CustomLightBulbNodeOptions ) {
     assert && assert( brightnessProperty, 'brightness property should exist' );
 
-    providedOptions = merge( {
+    const options = optionize<CustomLightBulbNodeOptions, SelfOptions, NodeOptions>()( {
       baseOnly: false,
       highResistance: true,
       scale: CCKCConstants.BULB_SCALE,
       real: false
     }, providedOptions );
 
-    const baseOnly = providedOptions.baseOnly;
+    const baseOnly = options.baseOnly;
 
-    const selectedSocketImage = providedOptions.highResistance ? lightBulbFrontHigh_png :
-                                providedOptions.real ? lightBulbFrontReal_png :
+    const selectedSocketImage = options.highResistance ? lightBulbFrontHigh_png :
+                                options.real ? lightBulbFrontReal_png :
                                 lightBulbFront_png;
 
-    const selectedMiddleImage = providedOptions.real ? lightBulbMiddleReal_png :
+    const selectedMiddleImage = options.real ? lightBulbMiddleReal_png :
                                 lightBulbMiddle_png;
 
-    const backNode = new Image( providedOptions.baseOnly ? selectedSocketImage : lightBulbBack_png, {
+    const backNode = new Image( options.baseOnly ? selectedSocketImage : lightBulbBack_png, {
       scale: BULB_IMAGE_SCALE,
       centerX: 0,
       bottom: 0,
       pickable: false
     } );
 
-    const middleNode = new Image( providedOptions.baseOnly ? selectedSocketImage :
+    const middleNode = new Image( options.baseOnly ? selectedSocketImage :
                                   selectedMiddleImage, {
       scale: BULB_IMAGE_SCALE,
       centerBottom: backNode.centerBottom,
@@ -75,8 +83,8 @@ export default class CustomLightBulbNode extends Node {
     let raysNode = null;
 
     // If it is only for showing the socket, omit the rays
-    if ( providedOptions.baseOnly ) {
-      providedOptions.children = [ backNode ];
+    if ( options.baseOnly ) {
+      options.children = [ backNode ];
     }
     else {
 
@@ -87,17 +95,17 @@ export default class CustomLightBulbNode extends Node {
       raysNode = new LightRaysNode( bulbRadius, {
 
         // Since the raysNode is rendered in another node (not a child of the CustemLightBulbNode), it needs the same scale
-        scale: providedOptions.scale,
+        scale: options.scale,
         x: backNode.centerX,
 
         // The scale here seems essential to line up the rays on the bulb, not sure why, see https://github.com/phetsims/circuit-construction-kit-common/issues/397
-        y: ( middleNode.top + bulbRadius ) * providedOptions.scale
+        y: ( middleNode.top + bulbRadius ) * options.scale
       } );
 
-      providedOptions.children = [ backNode, middleNode ];
+      options.children = [ backNode, middleNode ];
     }
 
-    super( providedOptions );
+    super( options );
 
     this.baseOnly = baseOnly;
     this.backNode = backNode;
@@ -107,7 +115,7 @@ export default class CustomLightBulbNode extends Node {
     this.brightnessProperty = brightnessProperty;
 
     // If it shows the rays, update their brightness
-    if ( !providedOptions.baseOnly ) {
+    if ( !options.baseOnly ) {
 
       this.brightnessObserver = this.update.bind( this );
       this.brightnessProperty.link( this.brightnessObserver );
@@ -117,7 +125,7 @@ export default class CustomLightBulbNode extends Node {
     }
 
     this.disposeCustomLightBulbNode = () => {
-      if ( !providedOptions.baseOnly ) {
+      if ( !options.baseOnly ) {
         this.brightnessProperty.unlink( this.brightnessObserver! );
       }
     };

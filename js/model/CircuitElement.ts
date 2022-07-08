@@ -428,8 +428,11 @@ export default abstract class CircuitElement extends PhetioObject {
 }
 
 const VertexReferenceIO = ReferenceIO( Vertex.VertexIO );
-
-CircuitElement.CircuitElementIO = new IOType<CircuitElement>( 'CircuitElementIO', {
+export type CircuitElementState = {
+  startVertexID: string;
+  endVertexID: string;
+};
+CircuitElement.CircuitElementIO = new IOType<CircuitElement, CircuitElementState>( 'CircuitElementIO', {
 
   // @ts-ignore https://github.com/phetsims/tandem/issues/261
   valueType: CircuitElement,
@@ -442,7 +445,7 @@ CircuitElement.CircuitElementIO = new IOType<CircuitElement>( 'CircuitElementIO'
     startVertexID: VertexReferenceIO,
     endVertexID: VertexReferenceIO
   },
-  stateToArgsForConstructor: ( stateObject: any ) => {
+  stateToArgsForConstructor: ( stateObject: CircuitElementState ) => {
     return [
       VertexReferenceIO.fromStateObject( stateObject.startVertexID ),
       VertexReferenceIO.fromStateObject( stateObject.endVertexID )

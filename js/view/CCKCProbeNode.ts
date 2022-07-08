@@ -9,13 +9,18 @@
 import Property from '../../../axon/js/Property.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import { Node } from '../../../scenery/js/imports.js';
-import merge from '../../../phet-core/js/merge.js';
-import ProbeNode from '../../../scenery-phet/js/ProbeNode.js';
+import ProbeNode, { ProbeNodeOptions } from '../../../scenery-phet/js/ProbeNode.js';
 import { DragListener } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
 import Vector2 from '../../../dot/js/Vector2.js';
+import optionize from '../../../phet-core/js/optionize.js';
+
+type SelfOptions = {
+  drag?: () => void;
+};
+type CCKProbeNodeOptions = SelfOptions & ProbeNodeOptions;
 
 export default class CCKCProbeNode extends ProbeNode {
 
@@ -24,9 +29,9 @@ export default class CCKCProbeNode extends ProbeNode {
    * @param visibleBoundsProperty - visible bounds of the ScreenView
    * @param [providedOptions]
    */
-  public constructor( node: Node, visibleBoundsProperty: Property<Bounds2>, providedOptions?: any ) {
+  public constructor( node: Node, visibleBoundsProperty: Property<Bounds2>, providedOptions?: CCKProbeNodeOptions ) {
 
-    providedOptions = merge( {
+    const options = optionize<CCKProbeNodeOptions, SelfOptions, ProbeNodeOptions>()( {
       cursor: 'pointer',
       sensorTypeFunction: ProbeNode.crosshairs( { stroke: 'white' } ),
       scale: 0.4,
@@ -34,11 +39,11 @@ export default class CCKCProbeNode extends ProbeNode {
       tandem: Tandem.OPTIONAL
     }, providedOptions );
 
-    super( providedOptions );
+    super( options );
 
     // Wire position through PhET-iO so it can be recorded in the state
     const positionProperty = new Vector2Property( new Vector2( 0, 0 ), {
-      tandem: providedOptions.tandem.createTandem( 'positionProperty' )
+      tandem: options.tandem.createTandem( 'positionProperty' )
     } );
 
     positionProperty.link( p => this.setTranslation( p ) );
@@ -49,8 +54,8 @@ export default class CCKCProbeNode extends ProbeNode {
       positionProperty: positionProperty,
       dragBoundsProperty: visibleBoundsProperty,
       press: () => node.moveToFront(),
-      drag: () => providedOptions.drag(),
-      tandem: providedOptions.tandem.createTandem( 'dragListener' )
+      drag: () => options.drag(),
+      tandem: options.tandem.createTandem( 'dragListener' )
     } ) );
   }
 }

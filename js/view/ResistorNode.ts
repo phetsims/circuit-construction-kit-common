@@ -84,7 +84,7 @@ export default class ResistorNode extends FixedCircuitElementNode {
    * @param [providedOptions]
    */
   public constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, resistor: Resistor,
-               viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: Partial<FixedCircuitElementNodeOptions> ) {
+                      viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: FixedCircuitElementNodeOptions ) {
 
     providedOptions = merge( { isIcon: false, useHitTestForSensors: true }, providedOptions );
 
@@ -112,7 +112,7 @@ export default class ResistorNode extends FixedCircuitElementNode {
       const singleColorBand = new Rectangle( 0, 0, COLOR_BAND_WIDTH, COLOR_BAND_HEIGHT, {
         centerX: COLOR_BAND_PADDING + AVAILABLE_COLOR_BAND_SPACE / 2,
         y: COLOR_BAND_Y
-      } ) as any;
+      } );
 
       /**
        * When the resistance changes, update the colors of the color bands.
@@ -123,7 +123,7 @@ export default class ResistorNode extends FixedCircuitElementNode {
         if ( colors.length === 1 ) {
           singleColorBand.fill = colors[ 0 ];
           assert && assert( colors[ 0 ] !== null && colors[ 0 ].equals( Color.BLACK ), 'single band should be black' );
-          colorBands.forEach( ( colorBand: any ) => { colorBand.fill = null; } );
+          colorBands.forEach( colorBand => { colorBand.fill = null; } );
         }
         else {
 
