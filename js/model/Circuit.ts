@@ -159,11 +159,11 @@ export default class Circuit {
     this.includeLabElements = options.includeLabElements;
     this.blackBoxStudy = options.blackBoxStudy;
     this.wireResistivityProperty = new NumberProperty( CCKCConstants.DEFAULT_RESISTIVITY, {
-      tandem: tandem.parentTandem.createTandem( 'wireResistivityProperty' )
+      tandem: tandem.parentTandem!.createTandem( 'wireResistivityProperty' )
     } );
 
     this.sourceResistanceProperty = new NumberProperty( CCKCConstants.DEFAULT_BATTERY_RESISTANCE, {
-      tandem: tandem.parentTandem.createTandem( 'sourceResistanceProperty' )
+      tandem: tandem.parentTandem!.createTandem( 'sourceResistanceProperty' )
     } );
 
     this.circuitElements = createObservableArray( {
@@ -176,14 +176,14 @@ export default class Circuit {
     this.charges = createObservableArray();
     this.currentTypeProperty = new EnumerationProperty( CCKCQueryParameters.currentType === 'electrons' ?
                                                         CurrentType.ELECTRONS : CurrentType.CONVENTIONAL, {
-      tandem: tandem.parentTandem.createTandem( 'currentTypeProperty' )
+      tandem: tandem.parentTandem!.createTandem( 'currentTypeProperty' )
     } );
 
     // When the current type changes, mark everything as dirty and relayout charges
     this.currentTypeProperty.lazyLink( () => this.relayoutAllCharges() );
 
     this.showCurrentProperty = new BooleanProperty( CCKCQueryParameters.showCurrent, {
-      tandem: tandem.parentTandem.createTandem( 'showCurrentProperty' )
+      tandem: tandem.parentTandem!.createTandem( 'showCurrentProperty' )
     } );
 
     this.timeProperty = new NumberProperty( 0 );
