@@ -32,7 +32,7 @@ import CircuitLayerNode from './CircuitLayerNode.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
-import { ReadOnlyProperty } from '../../../axon/js/ReadOnlyProperty.js';
+import ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
 
 const voltageString = circuitConstructionKitCommonStrings.voltage;

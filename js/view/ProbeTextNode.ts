@@ -14,7 +14,7 @@ import { Text } from '../../../scenery/js/imports.js';
 import { VBox } from '../../../scenery/js/imports.js';
 import { Color } from '../../../scenery/js/imports.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import { ReadOnlyProperty } from '../../../axon/js/Property.js';
+import ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
 import IReadOnlyProperty from '../../../axon/js/IReadOnlyProperty.js';

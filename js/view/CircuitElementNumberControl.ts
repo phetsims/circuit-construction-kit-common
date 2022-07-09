@@ -7,7 +7,8 @@
  */
 
 import Range from '../../../dot/js/Range.js';
-import Property, { ReadOnlyProperty } from '../../../axon/js/Property.js';
+import Property from '../../../axon/js/Property.js';
+import ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import NumberControl, { LayoutFunction } from '../../../scenery-phet/js/NumberControl.js';
 import { HBox, HBoxOptions, TextOptions } from '../../../scenery/js/imports.js';

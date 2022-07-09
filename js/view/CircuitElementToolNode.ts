@@ -8,7 +8,8 @@
  */
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
-import Property, { ReadOnlyProperty } from '../../../axon/js/Property.js';
+import Property from '../../../axon/js/Property.js';
+import ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import { DragListener, VBoxOptions } from '../../../scenery/js/imports.js';
 import { Text } from '../../../scenery/js/imports.js';
