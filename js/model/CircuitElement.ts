@@ -411,7 +411,7 @@ export default abstract class CircuitElement extends PhetioObject {
   /**
    * Get all Property instances that influence the circuit dynamics.
    */
-  public abstract getCircuitProperties(): Property<IntentionalAny>[]
+  public abstract getCircuitProperties(): Property<IntentionalAny>[];
 
   /**
    * Get the midpoint between the vertices.  Used for dropping circuit elements into the toolbox.
