@@ -33,7 +33,7 @@ export default class MNACircuit {
   private readonly elements: MNACircuitElement[];
 
   // an object with index for all keys that have a node in the circuit, such as: {0:0, 1:1, 2:2, 7:7}
-  private readonly nodeSet: { [ key: string ]: string };
+  private readonly nodeSet: Record<string, string>;
 
   // the number of nodes in the set
   private readonly nodeCount: number;

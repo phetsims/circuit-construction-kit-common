@@ -129,13 +129,13 @@ export default class CircuitLayerNode extends Node {
   public readonly circuit: Circuit;
 
   // Map to find CircuitElement=>CircuitElementNode. key is CircuitElement.id, value is CircuitElementNode
-  private readonly circuitElementNodeMap: { [ key: number ]: CircuitElementNode };
+  private readonly circuitElementNodeMap: Record<number, CircuitElementNode>;
 
   // Map of Vertex.index => SolderNode
-  private readonly solderNodes: { [ key: number ]: SolderNode };
+  private readonly solderNodes: Record<number, SolderNode>;
 
   // Map of Vertex.index => VertexNode
-  private readonly vertexNodes: { [ key: number ]: VertexNode };
+  private readonly vertexNodes: Record<number, VertexNode>;
   public readonly cutButton: RoundPushButton;
   private readonly circuitDebugLayer: CircuitDebugLayer | null;
 
