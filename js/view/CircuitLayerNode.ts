@@ -374,7 +374,7 @@ export default class CircuitLayerNode extends Node {
     initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Resistor, this.fixedCircuitElementLayer,
       new PhetioGroup<CircuitElementNode, [ CircuitElement ]>( ( tandem: Tandem, circuitElement: CircuitElement ) => {
           if ( circuitElement instanceof Dog ) {
-            return new DogNode( screenView, this, circuitElement as Dog, this.model.viewTypeProperty, tandem );
+            return new DogNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem );
           }
           else {
             return new ResistorNode( screenView, this, circuitElement as Resistor, this.model.viewTypeProperty, tandem );

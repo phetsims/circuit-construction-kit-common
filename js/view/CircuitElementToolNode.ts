@@ -80,7 +80,7 @@ export default class CircuitElementToolNode extends VBox {
     this.addInputListener( DragListener.createForwardingListener( ( event: SceneryEvent ) => {
 
       // initial position of the pointer in the coordinate frame of the CircuitLayerNode
-      const v: Vector2 = event.pointer.point as Vector2;
+      const v: Vector2 = event.pointer.point;
       const viewPosition = globalToCircuitLayerNodePoint( v );
 
       // Adjust for touch.  The object should appear centered on the mouse but vertically above the finger so the finger

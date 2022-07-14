@@ -1284,7 +1284,7 @@ export default class Circuit {
   // Returns the selected Vertex or null if none is selected
   public getSelectedVertex(): Vertex | null {
     const selectedVertex = _.find( this.vertexGroup.getArray(), vertex => vertex.isSelectedProperty.get() );
-    return ( selectedVertex || null ) as ( Vertex | null );
+    return selectedVertex || null;
   }
 
   /**

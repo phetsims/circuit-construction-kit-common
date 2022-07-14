@@ -101,7 +101,7 @@ export default class CCKCChartNode extends Node {
 
     super();
 
-    const tandem = options.tandem!;
+    const tandem = options.tandem;
 
     this.meter = new Meter( tandem.createTandem( 'meter' ), 0 );
     this.series = series;
