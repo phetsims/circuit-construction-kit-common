@@ -202,7 +202,7 @@ export default class MNACircuit {
         if ( element.containsNodeId( nodeToVisit ) ) {
           const oppositeNode = element.getOppositeNode( nodeToVisit );
           assert && CCKCUtils.validateNodeIndex( oppositeNode );
-          if ( visited.indexOf( oppositeNode ) === -1 ) {
+          if ( !visited.includes( oppositeNode ) ) {
             toVisit.push( oppositeNode );
           }
         }

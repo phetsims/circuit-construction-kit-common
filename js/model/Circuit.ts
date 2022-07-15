@@ -861,7 +861,7 @@ export default class Circuit {
         }
       }
     );
-    return connectedVertices.indexOf( vertex2 ) >= 0;
+    return connectedVertices.includes( vertex2 );
   }
 
   /**
@@ -1168,14 +1168,14 @@ export default class Circuit {
 
     const fixedVertices = [];
     const toVisit: Vertex[] = [ vertex ];
-    const visited = [];
+    const visited: Vertex[] = [];
     while ( toVisit.length > 0 ) {
 
       // Find the neighbors joined by a FixedCircuitElement, not a stretchy Wire
       const currentVertex = toVisit.pop()!;
 
       // If we haven't visited it before, then explore it
-      if ( visited.indexOf( currentVertex ) < 0 ) {
+      if ( !visited.includes( currentVertex ) ) {
 
         const neighborCircuitElements = this.getNeighborCircuitElements( currentVertex );
 
@@ -1184,8 +1184,8 @@ export default class Circuit {
           const neighborVertex = neighborCircuitElement.getOppositeVertex( currentVertex );
 
           // If the node was already visited, don't visit again
-          if ( visited.indexOf( neighborVertex ) < 0 &&
-               toVisit.indexOf( neighborVertex ) < 0 &&
+          if ( !visited.includes( neighborVertex ) &&
+               !toVisit.includes( neighborVertex ) &&
                okToVisit( currentVertex, neighborCircuitElement, neighborVertex ) ) {
             toVisit.push( neighborVertex );
           }
@@ -1196,7 +1196,7 @@ export default class Circuit {
 
       // O(n^2) to search for duplicates as we go, if this becomes a performance bottleneck we may wish to find a better
       // way to deduplicate, perhaps Set or something like that
-      if ( visited.indexOf( currentVertex ) < 0 ) {
+      if ( !visited.includes( currentVertex ) ) {
         visited.push( currentVertex );
       }
     }
