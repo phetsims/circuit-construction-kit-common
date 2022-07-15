@@ -92,7 +92,7 @@ export default class ChargeAnimator {
     dt = Math.min( dt, MAX_DT );
 
     // Find the fastest current in any circuit element
-    const maxCircuitElement = _.maxBy( this.circuit.circuitElements, CURRENT_MAGNITUDE ) as CircuitElement;
+    const maxCircuitElement = _.maxBy( this.circuit.circuitElements, CURRENT_MAGNITUDE )!;
     const maxCurrentMagnitude = CURRENT_MAGNITUDE( maxCircuitElement );
     assert && assert( maxCurrentMagnitude >= 0, 'max current should be positive' );
 
@@ -236,7 +236,7 @@ export default class ChargeAnimator {
         if ( circuitPositions.length > 0 ) {
 
           // choose the CircuitElement with the furthest away electron
-          const chosenCircuitPosition = _.maxBy( circuitPositions, 'distanceToClosestElectron' ) as CircuitElementPosition;
+          const chosenCircuitPosition = _.maxBy( circuitPositions, 'distanceToClosestElectron' )!;
           assert && assert( chosenCircuitPosition.distanceToClosestElectron >= 0, 'distanceToClosestElectron should be >=0' );
           charge.circuitElement = chosenCircuitPosition.circuitElement;
           charge.distance = chosenCircuitPosition.distance;
@@ -298,10 +298,10 @@ export default class ChargeAnimator {
 
           // find closest electron to the vertex
           if ( atStartOfNewCircuitElement ) {
-            distanceToClosestElectron = ( _.minBy( charges, 'distance' ) as Charge ).distance;
+            distanceToClosestElectron = ( _.minBy( charges, 'distance' )! ).distance;
           }
           else {
-            distanceToClosestElectron = circuitElement.chargePathLength - ( _.maxBy( charges, 'distance' ) as Charge ).distance;
+            distanceToClosestElectron = circuitElement.chargePathLength - ( _.maxBy( charges, 'distance' )! ).distance;
           }
 
           assert && assert( typeof distance === 'number', 'distance should be a number' );
@@ -321,7 +321,7 @@ export default class ChargeAnimator {
           if ( positions.length > 0 ) {
 
             // find the one with the closest electron
-            const nearest = _.minBy( positions, 'distanceToClosestElectron' ) as CircuitElementPosition;
+            const nearest = _.minBy( positions, 'distanceToClosestElectron' )!;
             assert && assert( typeof distance === 'number', 'distance should be a number' );
             if ( typeof distance === 'number' ) {
               circuitPositions.push( {

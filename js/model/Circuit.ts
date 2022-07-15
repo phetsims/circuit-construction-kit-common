@@ -331,7 +331,7 @@ export default class Circuit {
 
           // Find the closest pair
           const distance = ( pair: Pair ) => pair.v2.unsnappedPositionProperty.get().distance( pair.v1.unsnappedPositionProperty.get() );
-          const minPair = _.minBy( pairs, distance ) as Pair;
+          const minPair = _.minBy( pairs, distance )!;
           const minDistance = distance( minPair );
 
           // If the pair is too close, then bump one vertex away from each other (but only if both are not user controlled)
@@ -1172,7 +1172,7 @@ export default class Circuit {
     while ( toVisit.length > 0 ) {
 
       // Find the neighbors joined by a FixedCircuitElement, not a stretchy Wire
-      const currentVertex = toVisit.pop() as Vertex;
+      const currentVertex = toVisit.pop()!;
 
       // If we haven't visited it before, then explore it
       if ( visited.indexOf( currentVertex ) < 0 ) {
@@ -1229,7 +1229,7 @@ export default class Circuit {
     const visited: Vertex[] = [];
     stack.push( circuitElement.startVertexProperty.value );
     while ( stack.length > 0 ) {
-      const vertex = stack.pop() as Vertex;
+      const vertex = stack.pop()!;
       if ( !visited.includes( vertex ) ) {
         visited.push( vertex );
 
@@ -1393,7 +1393,7 @@ export default class Circuit {
     // (9) When in Black Box "build" mode (i.e. building inside the black box), a vertex user cannot connect to
     // a black box interface vertex if its other vertices would be outside of the black box.  See #136
     if ( mode === InteractionMode.TEST ) {
-      const boxBounds = blackBoxBounds as Bounds2;
+      const boxBounds = blackBoxBounds!;
       const fixedVertices2 = this.findAllFixedVertices( vertex );
       candidateVertices = candidateVertices.filter( candidateVertex => {
 
@@ -1543,7 +1543,7 @@ export default class Circuit {
              charges[ 0 ].circuitElement === circuitElement &&
              charges[ 0 ].visibleProperty === this.showCurrentProperty ) {
 
-          const c = charges.shift() as Charge; // remove 1st element, since it's the charge we checked in the guard
+          const c = charges.shift()!; // remove 1st element, since it's the charge we checked in the guard
           c.circuitElement = circuitElement;
           c.distance = chargePosition;
           c.updatePositionAndAngle();

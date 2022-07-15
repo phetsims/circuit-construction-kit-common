@@ -195,7 +195,7 @@ export default class MNACircuit {
 
     while ( toVisit.length > 0 ) {
 
-      const nodeToVisit = toVisit.shift() as string;
+      const nodeToVisit = toVisit.shift()!;
       visited.push( nodeToVisit );
       for ( let i = 0; i < this.elements.length; i++ ) {
         const element = this.elements[ i ];

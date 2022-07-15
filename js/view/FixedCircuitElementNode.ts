@@ -181,7 +181,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
           }
         },
         end: () =>
-          this.endDrag( this.contentNode, [ circuitElement.endVertexProperty.get() ], screenView as CCKCScreenView, circuitLayerNode,
+          this.endDrag( this.contentNode, [ circuitElement.endVertexProperty.get() ], screenView!, circuitLayerNode,
             initialPoint!, latestPoint!, dragged ),
         tandem: tandem.createTandem( 'dragListener' )
       } );
