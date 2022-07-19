@@ -144,6 +144,7 @@ export default class LinearTransientAnalysis {
     let needsHelp = false;
 
     ltaBatteries.forEach( resistiveBatteryAdapter => {
+      // @ts-ignore TODO https://github.com/phetsims/circuit-construction-kit-common/issues/888
       if ( Math.abs( circuitResult.getTimeAverageCurrentForCoreModel( resistiveBatteryAdapter ) ) > CCKCQueryParameters.batteryCurrentThreshold ) {
         const voltageSource = voltageSourceMap.get( resistiveBatteryAdapter )!;
         resistiveBatteryAdapter.resistance = voltageSource.internalResistanceProperty.value;
