@@ -274,7 +274,7 @@ export default class CircuitConstructionKitModel {
    * Update the circuit and zoom level when the simulation clock steps.
    * @param dt - elapsed time in seconds
    */
-  private step( dt: number ): void {
+  public step( dt: number ): void {
 
     // If the step is large, it probably means that the screen was hidden for a while, so just ignore it.
     // see https://github.com/phetsims/circuit-construction-kit-common/issues/476
