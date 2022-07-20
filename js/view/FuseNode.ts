@@ -29,7 +29,7 @@ import FuseTripAnimation from './FuseTripAnimation.js';
 import schematicTypeProperty from './schematicTypeProperty.js';
 import SchematicType from './SchematicType.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import EmptyObjectType from '../../../phet-core/js/types/EmptyObjectType.js';
+import { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 
 // constants
 const SCHEMATIC_STEM_WIDTH = 20;
@@ -41,7 +41,7 @@ const SPLIT_DX = 8; // in view coordinates, half the distance of the split part 
 const VERTICAL_GLASS_MARGIN = 3;
 const DEFAULT_GLASS_FILL = '#c3dbfd';
 
-type SelfOptions = EmptyObjectType;
+type SelfOptions = EmptySelfOptions;
 type FuseNodeOptions = SelfOptions & FixedCircuitElementNodeOptions;
 
 export default class FuseNode extends FixedCircuitElementNode {

@@ -11,7 +11,7 @@ import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Property from '../../../axon/js/Property.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import EmptyObjectType from '../../../phet-core/js/types/EmptyObjectType.js';
+import { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import RectangularRadioButtonGroup, { RectangularRadioButtonGroupOptions } from '../../../sun/js/buttons/RectangularRadioButtonGroup.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -25,7 +25,7 @@ import BatteryNode from './BatteryNode.js';
 const BATTERY_LENGTH = CCKCConstants.BATTERY_LENGTH;
 const SCALE = 0.4;
 
-type SelfOptions = EmptyObjectType;
+type SelfOptions = EmptySelfOptions;
 type ViewRadioButtonGroupOptions = RectangularRadioButtonGroupOptions & SelfOptions;
 
 export default class ViewRadioButtonGroup extends RectangularRadioButtonGroup<CircuitElementViewType> {

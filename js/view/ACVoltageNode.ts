@@ -22,7 +22,7 @@ import FixedCircuitElementNode, { FixedCircuitElementNodeOptions } from './Fixed
 import CCKCScreenView from './CCKCScreenView.js';
 import CircuitLayerNode from './CircuitLayerNode.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
-import EmptyObjectType from '../../../phet-core/js/types/EmptyObjectType.js';
+import { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import optionize from '../../../phet-core/js/optionize.js';
 
 // constants
@@ -88,7 +88,7 @@ schematicNode.mouseArea = Shape.circle(
   CIRCLE_DIAMETER );
 schematicNode.touchArea = schematicNode.mouseArea;
 
-type SelfOptions = EmptyObjectType;
+type SelfOptions = EmptySelfOptions;
 type ACVoltageNodeOptions = FixedCircuitElementNodeOptions;
 
 export default class ACVoltageNode extends FixedCircuitElementNode {

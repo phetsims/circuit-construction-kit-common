@@ -42,7 +42,7 @@ import CCKCTrashButton from './CCKCTrashButton.js';
 import CircuitElement from '../model/CircuitElement.js';
 import InteractionMode from '../model/InteractionMode.js';
 import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
-import EmptyObjectType from '../../../phet-core/js/types/EmptyObjectType.js';
+import { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import optionize from '../../../phet-core/js/optionize.js';
 
@@ -70,7 +70,7 @@ const GET_LAYOUT_POSITION = ( visibleBounds: Bounds2, centerX: number ) => {
 
 // So we can pass classes as types for instanceof checks, I've been using https://www.typescriptlang.org/docs/handbook/mixins.html
 // as a reference for how to create this type
-type GConstructor<T = EmptyObjectType> = new ( ...args: IntentionalAny[] ) => T;
+type GConstructor<T = EmptySelfOptions> = new ( ...args: IntentionalAny[] ) => T;
 
 const NORMAL_SLIDER_KNOB_DELTA = 1;
 const HIGH_SLIDER_KNOB_DELTA = 100;

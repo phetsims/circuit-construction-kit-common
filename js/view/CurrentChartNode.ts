@@ -18,7 +18,7 @@ import Property from '../../../axon/js/Property.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import CCKCProbeNode from './CCKCProbeNode.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import EmptyObjectType from '../../../phet-core/js/types/EmptyObjectType.js';
+import { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 
 const currentWithUnitsString = circuitConstructionKitCommonStrings.currentWithUnits;
 
@@ -35,7 +35,7 @@ export default class CurrentChartNode extends CCKCChartNode {
   public constructor( circuitLayerNode: CircuitLayerNode, timeProperty: Property<number>, visibleBoundsProperty: Property<Bounds2>,
                       providedOptions?: CCKCChartNodeOptions ) {
 
-    const options = optionize<CCKCChartNodeOptions, EmptyObjectType, CCKCChartNodeOptions>()( {
+    const options = optionize<CCKCChartNodeOptions, EmptySelfOptions, CCKCChartNodeOptions>()( {
       tandem: Tandem.OPTIONAL
     }, providedOptions );
 
