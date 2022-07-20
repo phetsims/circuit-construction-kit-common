@@ -8,6 +8,7 @@
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
+import IEmitter from '../../../axon/js/IEmitter.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Property from '../../../axon/js/Property.js';
 import StringProperty from '../../../axon/js/StringProperty.js';
@@ -70,7 +71,7 @@ export default class Vertex extends PhetioObject {
   public readonly insideTrueBlackBoxProperty: Property<boolean>;
 
   // indicate when the vertex has been moved to the front in z-ordering and layering in the view must be updated
-  public readonly relayerEmitter: Emitter<[]>;
+  public readonly relayerEmitter: IEmitter;
 
   // added by Circuit.js so that listeners can be removed when vertices are removed
   public vertexSelectedPropertyListener: ( ( selected: boolean ) => void ) | null;

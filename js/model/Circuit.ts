@@ -48,6 +48,7 @@ import InteractionMode from './InteractionMode.js';
 import CurrentSense from './CurrentSense.js';
 import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
+import IEmitter from '../../../axon/js/IEmitter.js';
 
 // constants
 const SNAP_RADIUS = 30; // For two vertices to join together, they must be this close, in view coordinates
@@ -109,13 +110,13 @@ export default class Circuit {
 
   // After the circuit physics is recomputed in solve(), some listeners need to update themselves, such as the voltmeter
   // and ammeter
-  public readonly circuitChangedEmitter: Emitter<[]>;
+  public readonly circuitChangedEmitter: IEmitter;
 
   // Some actions only take place after an item has been dropped
-  public readonly vertexDroppedEmitter: Emitter<[ Vertex ]>;
+  public readonly vertexDroppedEmitter: IEmitter<[ Vertex ]>;
 
   // signifies that a component has been modified (for example, with the CircuitElementNumberControl)
-  public readonly componentEditedEmitter: Emitter<[]>;
+  public readonly componentEditedEmitter: IEmitter<[]>;
   public readonly vertexGroup: PhetioGroup<Vertex, [ Vector2 ]>;
 
   // When the user taps on a CircuitElement, it becomes selected and highlighted, and shows additional controls at the

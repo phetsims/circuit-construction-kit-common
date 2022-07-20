@@ -8,6 +8,7 @@
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
+import IEmitter from '../../../axon/js/IEmitter.js';
 import Property from '../../../axon/js/Property.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import Vector2 from '../../../dot/js/Vector2.js';
@@ -28,7 +29,7 @@ export default class Meter {
   public readonly draggingProbesWithBodyProperty: BooleanProperty;
 
   // Fires an event when the meter is dropped
-  public readonly droppedEmitter: Emitter<[ Bounds2 ]>;
+  public readonly droppedEmitter: IEmitter<[ Bounds2 ]>;
 
   /**
    * @param tandem

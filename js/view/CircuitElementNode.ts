@@ -20,6 +20,7 @@ import CircuitLayerNode from './CircuitLayerNode.js';
 import Vertex from '../model/Vertex.js';
 import IOType from '../../../tandem/js/types/IOType.js';
 import DisplayClickToDismissListener from '../../../joist/js/DisplayClickToDismissListener.js';
+import IEmitter from '../../../axon/js/IEmitter.js';
 
 type SelfOptions = {
   useHitTestForSensors?: boolean;
@@ -31,7 +32,7 @@ export default abstract class CircuitElementNode extends Node {
   private readonly useHitTestForSensors: boolean;
   private readonly circuit: Circuit | null;
   public readonly circuitElement: CircuitElement;
-  private readonly disposeEmitterCircuitElementNode: Emitter<[]>;
+  private readonly disposeEmitterCircuitElementNode: IEmitter;
   private readonly disposeCircuitElementNode: () => void;
   private dirty: boolean;
   private static CircuitElementNodeIO: IOType;

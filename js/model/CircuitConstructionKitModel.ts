@@ -30,6 +30,7 @@ import LightBulb from './LightBulb.js';
 import InteractionMode from './InteractionMode.js';
 import ZoomLevel from './ZoomLevel.js';
 import optionize from '../../../phet-core/js/optionize.js';
+import IEmitter from '../../../axon/js/IEmitter.js';
 
 type CircuitConstructionKitModelOptions = {
   blackBoxStudy?: boolean;
@@ -78,7 +79,7 @@ export default class CircuitConstructionKitModel {
   public readonly stopwatch: Stopwatch;
 
   // Indicates when the model has updated, some views need to update accordingly
-  public readonly stepEmitter: Emitter<[ number ]>;
+  public readonly stepEmitter: IEmitter<[ number ]>;
   private readonly zoomProperty: EnumerationProperty<ZoomLevel>;
 
   private constructor( includeACElements: boolean, includeLabElements: boolean, tandem: Tandem, providedOptions?: CircuitConstructionKitModelOptions ) {

@@ -7,6 +7,7 @@
  */
 
 import Emitter from '../../../axon/js/Emitter.js';
+import IEmitter from '../../../axon/js/IEmitter.js';
 import Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -30,10 +31,10 @@ export default class Charge {
   public readonly visibleProperty: Property<boolean>;
 
   // Indicate when the position and/or angle changed
-  public readonly changedEmitter: Emitter<[]>;
+  public readonly changedEmitter: IEmitter;
 
   // Send notifications when the charge is disposed, so the view can be disposed
-  public readonly disposeEmitterCharge: Emitter<[]>;
+  public readonly disposeEmitterCharge: IEmitter;
 
   /**
    * @param circuitElement - the circuit element the charge is in.

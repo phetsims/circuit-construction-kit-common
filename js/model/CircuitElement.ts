@@ -27,6 +27,7 @@ import optionize from '../../../phet-core/js/optionize.js';
 import StringProperty from '../../../axon/js/StringProperty.js';
 import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
+import IEmitter from '../../../axon/js/IEmitter.js';
 
 // variables
 let index = 0;
@@ -82,22 +83,22 @@ export default abstract class CircuitElement extends PhetioObject {
   public chargeLayoutDirty: boolean;
 
   // indicate when this CircuitElement has been connected to another CircuitElement
-  public readonly connectedEmitter: Emitter<[]>;
+  public readonly connectedEmitter: IEmitter;
 
   // indicate when an adjacent Vertex has moved to front, so that the corresponding Node can move to front too
-  public readonly vertexSelectedEmitter: Emitter<[]>;
+  public readonly vertexSelectedEmitter: IEmitter;
 
   // indicate when either Vertex has moved
-  public readonly vertexMovedEmitter: Emitter<[]>;
+  public readonly vertexMovedEmitter: IEmitter;
 
   // indicate when the CircuitElement has been moved to the front in z-ordering
-  public readonly moveToFrontEmitter: Emitter<[]>;
+  public readonly moveToFrontEmitter: IEmitter;
 
   // indicate when the circuit element has started being dragged, when it is created in the toolbox
-  public readonly startDragEmitter: Emitter<[ SceneryEvent ]>;
+  public readonly startDragEmitter: IEmitter<[ SceneryEvent ]>;
 
   // indicate when the circuit element has been disposed
-  public readonly disposeEmitterCircuitElement: Emitter<[]>;
+  public readonly disposeEmitterCircuitElement: IEmitter;
   private readonly vertexMovedListener: () => void;
   private readonly linkVertexListener: PropertyLinkListener<Vertex>;
 

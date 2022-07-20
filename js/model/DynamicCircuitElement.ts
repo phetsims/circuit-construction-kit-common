@@ -8,6 +8,7 @@
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
+import IEmitter from '../../../axon/js/IEmitter.js';
 import EmptyObjectType from '../../../phet-core/js/types/EmptyObjectType.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -30,7 +31,7 @@ export default abstract class DynamicCircuitElement extends FixedCircuitElement 
   public mnaCurrent: number;
 
   // For listening only
-  public readonly clearEmitter: Emitter<[]>;
+  public readonly clearEmitter: IEmitter;
   public isClearableProperty: BooleanProperty;
 
   public constructor( startVertex: Vertex, endVertex: Vertex, length: number, tandem: Tandem, providedOptions?: DynamicCircuitElementOptions ) {

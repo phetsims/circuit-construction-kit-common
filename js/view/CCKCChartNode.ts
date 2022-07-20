@@ -41,6 +41,7 @@ import IReadOnlyProperty from '../../../axon/js/IReadOnlyProperty.js';
 import { ObservableArray } from '../../../axon/js/createObservableArray.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import PickRequired from '../../../phet-core/js/types/PickRequired.js';
+import IEmitter from '../../../axon/js/IEmitter.js';
 
 const oneSecondString = circuitConstructionKitCommonStrings.oneSecond;
 const timeString = circuitConstructionKitCommonStrings.time;
@@ -70,10 +71,10 @@ export default class CCKCChartNode extends Node {
   private backgroundDragListener: DragListener | null;
 
   // emits when the probes should be put in standard relative position to the body
-  private readonly alignProbesEmitter: Emitter<[]>;
+  private readonly alignProbesEmitter: IEmitter;
 
   // emits when the CCKCChartNode has been dropped
-  private readonly droppedEmitter: Emitter<[]>;
+  private readonly droppedEmitter: IEmitter;
   protected readonly aboveBottomLeft1: IReadOnlyProperty<Vector2>;
   protected readonly aboveBottomLeft2: IReadOnlyProperty<Vector2>;
   private readonly zoomLevelProperty: RangedProperty;
