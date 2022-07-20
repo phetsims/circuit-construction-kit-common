@@ -116,7 +116,7 @@ export default class Circuit {
   public readonly vertexDroppedEmitter: IEmitter<[ Vertex ]>;
 
   // signifies that a component has been modified (for example, with the CircuitElementNumberControl)
-  public readonly componentEditedEmitter: IEmitter<[]>;
+  public readonly componentEditedEmitter: IEmitter;
   public readonly vertexGroup: PhetioGroup<Vertex, [ Vector2 ]>;
 
   // When the user taps on a CircuitElement, it becomes selected and highlighted, and shows additional controls at the
