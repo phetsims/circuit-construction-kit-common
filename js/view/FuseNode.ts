@@ -11,11 +11,7 @@ import Matrix3 from '../../../dot/js/Matrix3.js';
 import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import { Shape } from '../../../kite/js/imports.js';
-import { Image } from '../../../scenery/js/imports.js';
-import { Node } from '../../../scenery/js/imports.js';
-import { Path } from '../../../scenery/js/imports.js';
-import { Rectangle } from '../../../scenery/js/imports.js';
-import { Color } from '../../../scenery/js/imports.js';
+import { Color, Image, Node, Path, Rectangle } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import fuse_png from '../../images/fuse_png.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -28,8 +24,7 @@ import FixedCircuitElementNode, { FixedCircuitElementNodeOptions } from './Fixed
 import FuseTripAnimation from './FuseTripAnimation.js';
 import schematicTypeProperty from './schematicTypeProperty.js';
 import SchematicType from './SchematicType.js';
-import optionize from '../../../phet-core/js/optionize.js';
-import { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
+import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 
 // constants
 const SCHEMATIC_STEM_WIDTH = 20;

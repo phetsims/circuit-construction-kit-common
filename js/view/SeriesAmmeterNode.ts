@@ -6,11 +6,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import { Node, RectangleOptions } from '../../../scenery/js/imports.js';
-import { Rectangle } from '../../../scenery/js/imports.js';
-import { Text } from '../../../scenery/js/imports.js';
-import { VBox } from '../../../scenery/js/imports.js';
-import { Color } from '../../../scenery/js/imports.js';
+import { Color, Node, Rectangle, RectangleOptions, Text, VBox } from '../../../scenery/js/imports.js';
 import Panel from '../../../sun/js/Panel.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCUtils from '../CCKCUtils.js';

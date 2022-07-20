@@ -9,8 +9,7 @@
 
 import Property from '../../../axon/js/Property.js';
 import merge from '../../../phet-core/js/merge.js';
-import { HBox, HBoxOptions } from '../../../scenery/js/imports.js';
-import { Color } from '../../../scenery/js/imports.js';
+import { Color, HBox, HBoxOptions } from '../../../scenery/js/imports.js';
 import Carousel, { CarouselOptions } from '../../../sun/js/Carousel.js';
 import PageControl from '../../../sun/js/PageControl.js';
 import Tandem from '../../../tandem/js/Tandem.js';

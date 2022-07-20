@@ -9,8 +9,8 @@
 import Screen from '../../joist/js/Screen.js';
 import Sim from '../../joist/js/Sim.js';
 import simLauncher from '../../joist/js/simLauncher.js';
-import CCKCDemoScreenView from './view/demo/CCKCDemoScreenView.js';
 import circuitConstructionKitCommonStrings from './circuitConstructionKitCommonStrings.js';
+import CCKCDemoScreenView from './view/demo/CCKCDemoScreenView.js';
 
 const simOptions = {
   title: circuitConstructionKitCommonStrings[ 'circuit-construction-kit-common' ].title

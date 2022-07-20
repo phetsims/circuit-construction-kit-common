@@ -9,16 +9,14 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Property from '../../../axon/js/Property.js';
 import Range from '../../../dot/js/Range.js';
-import optionize from '../../../phet-core/js/optionize.js';
-import { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
+import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import BatteryType from './BatteryType.js';
 import Circuit from './Circuit.js';
 import Vertex from './Vertex.js';
-import VoltageSource from './VoltageSource.js';
-import { VoltageSourceOptions } from './VoltageSource.js';
+import VoltageSource, { VoltageSourceOptions } from './VoltageSource.js';
 
 // constants
 const BATTERY_LENGTH = CCKCConstants.BATTERY_LENGTH;

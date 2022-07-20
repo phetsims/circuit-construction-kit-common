@@ -17,8 +17,7 @@ import CircuitLayerNode from './CircuitLayerNode.js';
 import Property from '../../../axon/js/Property.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import CCKCProbeNode from './CCKCProbeNode.js';
-import optionize from '../../../phet-core/js/optionize.js';
-import { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
+import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 
 const currentWithUnitsString = circuitConstructionKitCommonStrings.currentWithUnits;
 

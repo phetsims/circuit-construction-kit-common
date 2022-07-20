@@ -5,8 +5,7 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-import { Text } from '../../../scenery/js/imports.js';
-import { VBox } from '../../../scenery/js/imports.js';
+import { Text, VBox } from '../../../scenery/js/imports.js';
 import HSeparator from '../../../sun/js/HSeparator.js';
 import VerticalAquaRadioButtonGroup from '../../../sun/js/VerticalAquaRadioButtonGroup.js';
 import Tandem from '../../../tandem/js/Tandem.js';

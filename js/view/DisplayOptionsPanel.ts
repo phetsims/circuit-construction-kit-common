@@ -8,11 +8,7 @@
  */
 
 import ElectronChargeNode from '../../../scenery-phet/js/ElectronChargeNode.js';
-import { AlignBox } from '../../../scenery/js/imports.js';
-import { AlignGroup } from '../../../scenery/js/imports.js';
-import { HBox } from '../../../scenery/js/imports.js';
-import { Text } from '../../../scenery/js/imports.js';
-import { VBox } from '../../../scenery/js/imports.js';
+import { AlignBox, AlignGroup, HBox, Text, VBox } from '../../../scenery/js/imports.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';

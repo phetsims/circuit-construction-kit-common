@@ -42,9 +42,8 @@ import CCKCTrashButton from './CCKCTrashButton.js';
 import CircuitElement from '../model/CircuitElement.js';
 import InteractionMode from '../model/InteractionMode.js';
 import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
-import { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
+import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
-import optionize from '../../../phet-core/js/optionize.js';
 
 const capacitanceString = circuitConstructionKitCommonStrings.capacitance;
 const capacitanceUnitsString = circuitConstructionKitCommonStrings.capacitanceUnits;

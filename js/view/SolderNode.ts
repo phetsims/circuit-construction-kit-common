@@ -7,8 +7,7 @@
  */
 
 import Vector2 from '../../../dot/js/Vector2.js';
-import { Circle } from '../../../scenery/js/imports.js';
-import { Node } from '../../../scenery/js/imports.js';
+import { Circle, Node } from '../../../scenery/js/imports.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Vertex from '../model/Vertex.js';
 import CircuitLayerNode from './CircuitLayerNode.js';

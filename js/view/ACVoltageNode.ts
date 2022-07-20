@@ -11,9 +11,7 @@ import Dimension2 from '../../../dot/js/Dimension2.js';
 import { Shape } from '../../../kite/js/imports.js';
 import MinusNode from '../../../scenery-phet/js/MinusNode.js';
 import PlusNode from '../../../scenery-phet/js/PlusNode.js';
-import { Circle } from '../../../scenery/js/imports.js';
-import { Node } from '../../../scenery/js/imports.js';
-import { Path } from '../../../scenery/js/imports.js';
+import { Circle, Node, Path } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -22,8 +20,7 @@ import FixedCircuitElementNode, { FixedCircuitElementNodeOptions } from './Fixed
 import CCKCScreenView from './CCKCScreenView.js';
 import CircuitLayerNode from './CircuitLayerNode.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
-import { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
-import optionize from '../../../phet-core/js/optionize.js';
+import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 
 // constants
 const sineCurveShape = new Shape();

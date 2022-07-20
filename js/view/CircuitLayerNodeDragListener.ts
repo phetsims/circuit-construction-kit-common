@@ -5,8 +5,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import { DragListenerOptions, SceneryEvent } from '../../../scenery/js/imports.js';
-import { DragListener } from '../../../scenery/js/imports.js';
+import { DragListener, DragListenerOptions, SceneryEvent } from '../../../scenery/js/imports.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Vertex from '../model/Vertex.js';
 import CircuitLayerNode from './CircuitLayerNode.js';

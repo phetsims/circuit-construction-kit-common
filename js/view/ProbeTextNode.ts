@@ -8,11 +8,7 @@
  */
 
 import merge from '../../../phet-core/js/merge.js';
-import { Node, VBoxOptions } from '../../../scenery/js/imports.js';
-import { Rectangle } from '../../../scenery/js/imports.js';
-import { Text } from '../../../scenery/js/imports.js';
-import { VBox } from '../../../scenery/js/imports.js';
-import { Color } from '../../../scenery/js/imports.js';
+import { Color, Node, Rectangle, Text, VBox, VBoxOptions } from '../../../scenery/js/imports.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
 import Tandem from '../../../tandem/js/Tandem.js';

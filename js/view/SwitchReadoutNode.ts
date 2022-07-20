@@ -6,8 +6,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import { Node } from '../../../scenery/js/imports.js';
-import { Text } from '../../../scenery/js/imports.js';
+import { Node, Text } from '../../../scenery/js/imports.js';
 import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Circuit from '../model/Circuit.js';

@@ -11,16 +11,12 @@ import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Property from '../../../axon/js/Property.js';
 import ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
 import Vector2 from '../../../dot/js/Vector2.js';
-import { DragListener, VBoxOptions } from '../../../scenery/js/imports.js';
-import { Text } from '../../../scenery/js/imports.js';
-import { Node } from '../../../scenery/js/imports.js';
-import { VBox } from '../../../scenery/js/imports.js';
+import { DragListener, Node, SceneryEvent, Text, VBox, VBoxOptions } from '../../../scenery/js/imports.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Circuit from '../model/Circuit.js';
 import CircuitElement from '../model/CircuitElement.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
-import { SceneryEvent } from '../../../scenery/js/imports.js';
 import Multilink from '../../../axon/js/Multilink.js';
 import optionize from '../../../phet-core/js/optionize.js';
 

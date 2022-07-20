@@ -7,8 +7,7 @@
  */
 
 import ArrowNode from '../../../scenery-phet/js/ArrowNode.js';
-import { Node } from '../../../scenery/js/imports.js';
-import { Text } from '../../../scenery/js/imports.js';
+import { Node, Text } from '../../../scenery/js/imports.js';
 import Panel from '../../../sun/js/Panel.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitLayerNode from './CircuitLayerNode.js';
