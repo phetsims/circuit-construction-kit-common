@@ -42,12 +42,14 @@ export default class ViewRadioButtonGroup extends RectangularRadioButtonGroup<Ci
       touchAreaXDilation: 9,
       touchAreaYDilation: 10,
       radioButtonOptions: {
+        baseColor: CCKCConstants.PANEL_COLOR,
+        cornerRadius: CCKCConstants.CORNER_RADIUS,
         xMargin: 8,
         yMargin: 11,
-        baseColor: CCKCConstants.PANEL_COLOR,
-        deselectedButtonOpacity: 0.4,
-        overButtonOpacity: 0.7,
-        cornerRadius: CCKCConstants.CORNER_RADIUS
+        buttonAppearanceStrategyOptions: {
+          deselectedButtonOpacity: 0.4,
+          overButtonOpacity: 0.7
+        }
       },
       tandem: tandem
     }, providedOptions );
