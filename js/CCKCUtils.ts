@@ -88,7 +88,7 @@ const CCKCUtils = {
    * @param parent - parent that contains the child in the scene graph
    * @param child - child added/removed from scene graph
    */
-  setInSceneGraph: function( inSceneGraph: boolean, parent: Node, child: Node ) {
+  setInSceneGraph: function( inSceneGraph: boolean, parent: Node, child: Node ): void {
     if ( inSceneGraph && !parent.hasChild( child ) ) {
       parent.addChild( child );
     }
@@ -110,7 +110,7 @@ const CCKCUtils = {
     }
   },
 
-  validateNodeIndex( nodeIndex: string ) {
+  validateNodeIndex( nodeIndex: string ): void {
     if ( assert ) {
       assert && assert( typeof nodeIndex === 'string' || typeof nodeIndex === 'number', 'nodeIndex must be string or number' );
       if ( typeof nodeIndex === 'number' ) {

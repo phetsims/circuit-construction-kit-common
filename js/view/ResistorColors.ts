@@ -46,7 +46,7 @@ const colorTable: Entry[] = [
  * @returns entry from the color table, see above
  */
 // @ts-ignore
-const getEntry = ( keyName: string, value: string | number | null ) => _.find( colorTable, colorTableEntry => colorTableEntry[ keyName ] === value );
+const getEntry = ( keyName: string, value: string | number | null ) => _.find( colorTable, colorTableEntry => colorTableEntry[ keyName ] === value )!;
 
 const ResistorColors = {
 
@@ -55,7 +55,7 @@ const ResistorColors = {
    * @param resistance
    * @returns entries from the color table
    */
-  getEntries: function( resistance: number ) {
+  getEntries: function( resistance: number ): Entry[] {
     assert && assert( resistance >= 0, 'resistance should be non-negative' );
 
     // 0 resistance has a single black band centered on the resistor

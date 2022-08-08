@@ -73,11 +73,11 @@ export default class LightBulb extends FixedCircuitElement {
   private readonly viewTypeProperty: Property<CircuitElementViewType>;
 
   // TODO: improve types
-  public static createAtPosition = ( startVertex: Vertex, endVertex: Vertex, circuit: Circuit, resistance: number, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: LightBulbOptions ) => {
+  public static createAtPosition = ( startVertex: Vertex, endVertex: Vertex, circuit: Circuit, resistance: number, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: LightBulbOptions ): LightBulb => {
     return new LightBulb( startVertex, endVertex, resistance, viewTypeProperty, tandem, providedOptions );
   };
 
-  public static createVertexPair = ( position: Vector2, circuit: Circuit, icon = false ) => {
+  public static createVertexPair = ( position: Vector2, circuit: Circuit, icon = false ): { startVertex: Vertex; endVertex: Vertex } => {
     const points = LightBulb.createSamplePoints( position );
 
     // start vertex is at the bottom
