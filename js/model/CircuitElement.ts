@@ -22,7 +22,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Circuit from './Circuit.js';
 import CurrentSense from './CurrentSense.js';
 import Vertex from './Vertex.js';
-import IReadOnlyProperty, { PropertyLinkListener } from '../../../axon/js/IReadOnlyProperty.js';
+import TReadOnlyProperty, { PropertyLinkListener } from '../../../axon/js/TReadOnlyProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import StringProperty from '../../../axon/js/StringProperty.js';
 import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
@@ -239,7 +239,7 @@ export default abstract class CircuitElement extends PhetioObject {
    * @param oldVertex - the previous vertex
    * @param property
    */
-  private linkVertex( newVertex: Vertex, oldVertex: Vertex | null, property: IReadOnlyProperty<Vertex> ): void {
+  private linkVertex( newVertex: Vertex, oldVertex: Vertex | null, property: TReadOnlyProperty<Vertex> ): void {
 
     // These guards prevent errors from the bad transient state caused by the Circuit.flip causing the same Vertex
     // to be both start and end at the same time.

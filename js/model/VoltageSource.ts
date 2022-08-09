@@ -16,7 +16,7 @@ import Vertex from './Vertex.js';
 import PowerDissipatedProperty from './PowerDissipatedProperty.js';
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import NumberIO from '../../../tandem/js/types/NumberIO.js';
-import IReadOnlyProperty from '../../../axon/js/IReadOnlyProperty.js';
+import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 
@@ -43,7 +43,7 @@ export default abstract class VoltageSource extends FixedCircuitElement {
   // @readonly
   public initialOrientation: string; // TODO: enum
   private powerDissipatedProperty: PowerDissipatedProperty;
-  private powerGeneratedProperty: IReadOnlyProperty<number>;
+  private powerGeneratedProperty: TReadOnlyProperty<number>;
 
   /**
    * @param startVertex - one of the battery vertices

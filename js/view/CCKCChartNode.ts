@@ -37,7 +37,7 @@ import CircuitLayerNode from './CircuitLayerNode.js';
 import Property from '../../../axon/js/Property.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import CCKCScreenView from './CCKCScreenView.js';
-import IReadOnlyProperty from '../../../axon/js/IReadOnlyProperty.js';
+import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import { ObservableArray } from '../../../axon/js/createObservableArray.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import PickRequired from '../../../phet-core/js/types/PickRequired.js';
@@ -75,8 +75,8 @@ export default class CCKCChartNode extends Node {
 
   // emits when the CCKCChartNode has been dropped
   private readonly droppedEmitter: IEmitter;
-  protected readonly aboveBottomLeft1: IReadOnlyProperty<Vector2>;
-  protected readonly aboveBottomLeft2: IReadOnlyProperty<Vector2>;
+  protected readonly aboveBottomLeft1: TReadOnlyProperty<Vector2>;
+  protected readonly aboveBottomLeft2: TReadOnlyProperty<Vector2>;
   private readonly zoomLevelProperty: RangedProperty;
   protected readonly updatePen: () => void;
 
@@ -368,7 +368,7 @@ export default class CCKCChartNode extends Node {
    * @param connectionProperty
    * @param tandem
    */
-  protected addProbeNode( color: string, wireColor: string, dx: number, dy: number, connectionProperty: IReadOnlyProperty<Vector2>, tandem: Tandem ): CCKCProbeNode {
+  protected addProbeNode( color: string, wireColor: string, dx: number, dy: number, connectionProperty: TReadOnlyProperty<Vector2>, tandem: Tandem ): CCKCProbeNode {
     const probeNode = new CCKCProbeNode( this, this.visibleBoundsProperty, { color: color, tandem: tandem } );
 
     // Add the wire behind the probe.
