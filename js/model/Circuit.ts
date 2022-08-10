@@ -294,7 +294,7 @@ export default class Circuit {
 
     this.selectedCircuitElementProperty = new Property<CircuitElement | null>( null, {
       tandem: tandem.createTandem( 'selectedCircuitElementProperty' ),
-      phetioType: Property.PropertyIO( NullableIO( ReferenceIO( CircuitElement.CircuitElementIO ) ) )
+      phetioValueType: NullableIO( ReferenceIO( CircuitElement.CircuitElementIO ) )
     } );
 
     this.selectedCircuitElementProperty.link( selectedCircuitElement => {

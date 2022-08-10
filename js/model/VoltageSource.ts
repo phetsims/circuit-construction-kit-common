@@ -75,7 +75,7 @@ export default abstract class VoltageSource extends FixedCircuitElement {
       [ this.currentProperty, this.voltageProperty ],
       ( current, voltage ) => Math.abs( current * voltage ), {
         tandem: tandem.createTandem( 'powerGeneratedProperty' ),
-        phetioType: DerivedProperty.DerivedPropertyIO( NumberIO )
+        phetioValueType: NumberIO
       } );
 
     this.initialOrientation = options.initialOrientation;

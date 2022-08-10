@@ -3,7 +3,7 @@
 /**
  * @author Sam Reid (PhET Interactive Simulations)
  */
-import DerivedProperty, { DerivedProperty2 } from '../../../axon/js/DerivedProperty.js';
+import { DerivedProperty2 } from '../../../axon/js/DerivedProperty.js';
 import Property from '../../../axon/js/Property.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import NumberIO from '../../../tandem/js/types/NumberIO.js';
@@ -15,7 +15,7 @@ export default class PowerDissipatedProperty extends DerivedProperty2<number, nu
       ( current, resistance ) => Math.abs( current * current * resistance ), {
         units: 'W',
         tandem: tandem,
-        phetioType: DerivedProperty.DerivedPropertyIO( NumberIO ),
+        phetioValueType: NumberIO,
         phetioDocumentation: 'The dissipated power in Watts'
       } );
   }

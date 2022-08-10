@@ -150,13 +150,13 @@ export default abstract class CircuitElement extends PhetioObject {
     this.isSizeChangedOnViewChange = options.isSizeChangedOnViewChange;
 
     this.startVertexProperty = new Property( startVertex, {
-      phetioType: Property.PropertyIO( Vertex.VertexIO ),
+      phetioValueType: Vertex.VertexIO,
       tandem: tandem.createTandem( 'startVertexProperty' ),
       phetioState: false
     } );
 
     this.endVertexProperty = new Property( endVertex, {
-      phetioType: Property.PropertyIO( Vertex.VertexIO ),
+      phetioValueType: Vertex.VertexIO,
       tandem: tandem.createTandem( 'endVertexProperty' ),
       phetioState: false
     } );
