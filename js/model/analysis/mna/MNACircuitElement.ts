@@ -36,6 +36,10 @@ export default class MNACircuitElement {
     assert && assert( this.nodeId0 === nodeId || this.nodeId1 === nodeId );
     return this.nodeId0 === nodeId ? this.nodeId1 : this.nodeId0;
   }
+
+  public toString(): string {
+    return `${this.nodeId0}, ${this.nodeId1}`;
+  }
 }
 
 circuitConstructionKitCommon.register( 'MNACircuitElement', MNACircuitElement );

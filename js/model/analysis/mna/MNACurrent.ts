@@ -10,5 +10,9 @@ export default class MNACurrent extends MNACircuitElement {
     super( nodeId0, nodeId1 );
     this.current = current;
   }
+
+  public override toString(): string {
+    return super.toString() + `, current: ${this.current}`;
+  }
 }
 circuitConstructionKitCommon.register( 'MNACurrent', MNACurrent );
