@@ -69,7 +69,10 @@ export default class CircuitElementToolNode extends VBox {
       touchAreaExpansionBottom: 0,
 
       excludeInvisibleChildrenFromBounds: false,
-      additionalProperty: new BooleanProperty( true )
+      additionalProperty: new BooleanProperty( true ),
+      visiblePropertyOptions: {
+        phetioFeatured: true
+      }
     }, providedOptions );
     super( options );
 
