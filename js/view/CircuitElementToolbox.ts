@@ -75,7 +75,11 @@ export default class CircuitElementToolbox extends HBox {
 
     super( {
       spacing: 5,
-      children: [ pageControl, carousel ]
+      children: [ pageControl, carousel ],
+      tandem: tandem,
+      visiblePropertyOptions: {
+        phetioFeatured: true
+      }
     } );
 
     this.carousel = carousel;
