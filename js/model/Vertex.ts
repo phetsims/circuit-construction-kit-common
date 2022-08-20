@@ -11,7 +11,6 @@ import Emitter from '../../../axon/js/Emitter.js';
 import TEmitter from '../../../axon/js/TEmitter.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Property from '../../../axon/js/Property.js';
-import StringProperty from '../../../axon/js/StringProperty.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
 import optionize from '../../../phet-core/js/optionize.js';
@@ -19,6 +18,10 @@ import PhetioObject, { PhetioObjectOptions } from '../../../tandem/js/PhetioObje
 import Tandem from '../../../tandem/js/Tandem.js';
 import IOType from '../../../tandem/js/types/IOType.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import LocalizedString from '../../../chipper/js/LocalizedString.js';
+import { localizedStrings } from '../../../chipper/js/getStringModule.js';
+import arrayRemove from '../../../phet-core/js/arrayRemove.js';
+import TProperty from '../../../axon/js/TProperty.js';
 
 // Index counter for debugging
 let counter = 0;
@@ -82,7 +85,8 @@ export default class Vertex extends PhetioObject {
   // for black box study
   public outerWireStub: boolean;
   public isCuttableProperty: BooleanProperty;
-  public labelTextProperty: StringProperty;
+  public labelTextProperty: TProperty<string>;
+  private readonly localizedString: LocalizedString;
 
   public static VertexIO: IOType;
 
@@ -147,9 +151,10 @@ export default class Vertex extends PhetioObject {
       tandem: options.tandem.createTandem( 'isCuttableProperty' )
     } );
 
-    this.labelTextProperty = new StringProperty( '', {
-      tandem: options.tandem.createTandem( 'labelTextProperty' )
-    } );
+    this.localizedString = new LocalizedString( '', options.tandem.createTandem( 'labelTextProperty' ) );
+    this.labelTextProperty = this.localizedString.property;
+
+    localizedStrings.push( this.localizedString );
   }
 
   /**
@@ -170,6 +175,8 @@ export default class Vertex extends PhetioObject {
     this.isDraggableProperty.dispose();
     this.isCuttableProperty.dispose();
     this.labelTextProperty.dispose();
+
+    arrayRemove( localizedStrings, this.localizedString );
     super.dispose();
   }
 }
