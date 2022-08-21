@@ -19,8 +19,6 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import IOType from '../../../tandem/js/types/IOType.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import LocalizedString from '../../../chipper/js/LocalizedString.js';
-import { localizedStrings } from '../../../chipper/js/getStringModule.js';
-import arrayRemove from '../../../phet-core/js/arrayRemove.js';
 import TProperty from '../../../axon/js/TProperty.js';
 
 // Index counter for debugging
@@ -153,8 +151,6 @@ export default class Vertex extends PhetioObject {
 
     this.localizedString = new LocalizedString( '', options.tandem.createTandem( 'labelTextProperty' ) );
     this.labelTextProperty = this.localizedString.property;
-
-    localizedStrings.push( this.localizedString );
   }
 
   /**
@@ -175,8 +171,7 @@ export default class Vertex extends PhetioObject {
     this.isDraggableProperty.dispose();
     this.isCuttableProperty.dispose();
     this.labelTextProperty.dispose();
-
-    arrayRemove( localizedStrings, this.localizedString );
+    this.localizedString.dispose();
     super.dispose();
   }
 }
