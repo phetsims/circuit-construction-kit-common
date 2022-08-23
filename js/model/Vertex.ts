@@ -170,7 +170,6 @@ export default class Vertex extends PhetioObject {
     this.isSelectedProperty.dispose();
     this.isDraggableProperty.dispose();
     this.isCuttableProperty.dispose();
-    this.labelTextProperty.dispose();
     this.localizedString.dispose();
     super.dispose();
   }
