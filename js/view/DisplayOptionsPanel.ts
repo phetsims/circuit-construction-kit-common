@@ -20,13 +20,14 @@ import Stopwatch from '../../../scenery-phet/js/Stopwatch.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CurrentType from '../model/CurrentType.js';
 import VerticalAquaRadioButtonGroup from '../../../sun/js/VerticalAquaRadioButtonGroup.js';
+import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 
-const conventionalString = circuitConstructionKitCommonStrings.conventional;
-const electronsString = circuitConstructionKitCommonStrings.electrons;
-const labelsString = circuitConstructionKitCommonStrings.labels;
-const showCurrentString = circuitConstructionKitCommonStrings.showCurrent;
-const stopwatchString = circuitConstructionKitCommonStrings.stopwatch;
-const valuesString = circuitConstructionKitCommonStrings.values;
+const conventionalString = circuitConstructionKitCommonStrings.conventionalProperty;
+const electronsString = circuitConstructionKitCommonStrings.electronsProperty;
+const labelsString = circuitConstructionKitCommonStrings.labelsProperty;
+const showCurrentString = circuitConstructionKitCommonStrings.showCurrentProperty;
+const stopwatchString = circuitConstructionKitCommonStrings.stopwatchProperty;
+const valuesString = circuitConstructionKitCommonStrings.valuesProperty;
 
 // constants
 const BOX_ALIGNMENT = { xAlign: 'left' as const };
@@ -49,7 +50,7 @@ export default class DisplayOptionsPanel extends CCKCPanel {
    * @param tandem
    */
   public constructor( alignGroup: AlignGroup, showCurrentProperty: Property<boolean>, currentTypeProperty: Property<CurrentType>, showValuesProperty: Property<boolean>, showLabelsProperty: Property<boolean>,
-               stopwatch: Stopwatch, showStopwatchCheckbox: boolean, tandem: Tandem ) {
+                      stopwatch: Stopwatch, showStopwatchCheckbox: boolean, tandem: Tandem ) {
 
     const textIconSpacing = 11;
 
@@ -57,7 +58,7 @@ export default class DisplayOptionsPanel extends CCKCPanel {
     const currentTypeRadioButtonLabelGroup = new AlignGroup();
 
     // Create an instrumented label
-    const createLabel = ( string: string, parentTandem: Tandem ) => new Text( string, {
+    const createLabel = ( stringProperty: TReadOnlyProperty<string>, parentTandem: Tandem ) => new Text( stringProperty, {
       tandem: parentTandem.createTandem( 'label' ),
       fontSize: CCKCConstants.FONT_SIZE,
       maxWidth: 120
