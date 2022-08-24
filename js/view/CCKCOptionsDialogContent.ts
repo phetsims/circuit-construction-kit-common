@@ -15,15 +15,14 @@ import schematicTypeProperty from './schematicTypeProperty.js';
 import SchematicType from './SchematicType.js';
 import AmmeterReadoutType from '../model/AmmeterReadoutType.js';
 import ammeterReadoutTypeProperty from './ammeterReadoutTypeProperty.js';
+import PreferencesDialog from '../../../joist/js/preferences/PreferencesDialog.js';
 
 export default class CCKCOptionsDialogContent extends VBox {
   private readonly disposeCCKCOptionsDialogContent: () => void;
 
   public constructor( tandem: Tandem ) {
 
-    const textOptions = {
-      fontSize: 23
-    };
+    const textOptions = PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS;
     const schematicStandardRadioButtonGroup = new VerticalAquaRadioButtonGroup<SchematicType>( schematicTypeProperty, [ {
       node: new Text( circuitConstructionKitCommonStrings.ieee, textOptions ),
       value: SchematicType.IEEE,
@@ -39,7 +38,7 @@ export default class CCKCOptionsDialogContent extends VBox {
     } ], {
       tandem: tandem.createTandem( 'schematicTypeRadioButtonGroup' ),
       radioButtonOptions: {
-        radius: 9
+        radius: 8
       }
     } );
 
@@ -54,19 +53,19 @@ export default class CCKCOptionsDialogContent extends VBox {
     } ], {
       tandem: tandem.createTandem( 'ammeterReadoutRadioButtonGroup' ),
       radioButtonOptions: {
-        radius: 9
+        radius: 8
       }
     } );
 
     super( {
       align: 'left',
-      spacing: 22,
+      spacing: PreferencesDialog.CONTENT_SPACING,
       tandem: tandem,
       children: [
-        new Text( circuitConstructionKitCommonStrings.schematicStandard, textOptions ),
+        new Text( circuitConstructionKitCommonStrings.schematicStandard, PreferencesDialog.PANEL_SECTION_LABEL_OPTIONS ),
         schematicStandardRadioButtonGroup,
         new HSeparator( 200 ),
-        new Text( circuitConstructionKitCommonStrings.ammeterReadout, textOptions ),
+        new Text( circuitConstructionKitCommonStrings.ammeterReadout, PreferencesDialog.PANEL_SECTION_LABEL_OPTIONS ),
         ammeterReadoutRadioButtonGroup
       ]
     } );
