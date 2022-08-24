@@ -1,7 +1,7 @@
 // Copyright 2020-2022, University of Colorado Boulder
 
 /**
- * Shows the contents for the options dialog.
+ * Shows contents for controls that change simulation representation or behavior.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
