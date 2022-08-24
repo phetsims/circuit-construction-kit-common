@@ -17,7 +17,7 @@ import AmmeterReadoutType from '../model/AmmeterReadoutType.js';
 import ammeterReadoutTypeProperty from './ammeterReadoutTypeProperty.js';
 import PreferencesDialog from '../../../joist/js/preferences/PreferencesDialog.js';
 
-export default class CCKCOptionsDialogContent extends VBox {
+export default class CCKCGeneralPreferencesContentNode extends VBox {
   private readonly disposeCCKCOptionsDialogContent: () => void;
 
   public constructor( tandem: Tandem ) {
@@ -79,4 +79,4 @@ export default class CCKCOptionsDialogContent extends VBox {
   }
 }
 
-circuitConstructionKitCommon.register( 'CCKCOptionsDialogContent', CCKCOptionsDialogContent );
+circuitConstructionKitCommon.register( 'CCKCGeneralPreferencesContentNode', CCKCGeneralPreferencesContentNode );
