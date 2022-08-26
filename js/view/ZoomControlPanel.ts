@@ -21,7 +21,6 @@ const ZOOMED_OUT = 0.5;
 const BUTTON_SPACING = 20;
 
 export default class ZoomControlPanel extends MagnifyingGlassZoomButtonGroup {
-  private static ZoomControlPanel: number;
   public static ZOOMED_IN: number;
   public static ZOOMED_OUT: number;
 
