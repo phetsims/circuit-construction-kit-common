@@ -39,7 +39,7 @@ import SensorToolbox from './SensorToolbox.js';
 import ViewRadioButtonGroup from './ViewRadioButtonGroup.js';
 import VoltageChartNode from './VoltageChartNode.js';
 import VoltmeterNode from './VoltmeterNode.js';
-import ZoomControlPanel from './ZoomControlPanel.js';
+import ZoomButtonGroup from './ZoomButtonGroup.js';
 
 const batteryResistanceString = circuitConstructionKitCommonStrings.batteryResistance;
 const sourceResistanceString = circuitConstructionKitCommonStrings.sourceResistance;
@@ -329,7 +329,7 @@ export default class CCKCScreenView extends ScreenView {
 
     // Create the zoom button group
     // TODO: Rename the class https://github.com/phetsims/tandem/issues/267
-    const zoomButtonGroup = new ZoomControlPanel( model.selectedZoomProperty, {
+    const zoomButtonGroup = new ZoomButtonGroup( model.selectedZoomProperty, {
       tandem: tandem.createTandem( 'zoomButtonGroup' )
     } );
     zoomButtonGroup.mutate( {

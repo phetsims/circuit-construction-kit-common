@@ -18,7 +18,7 @@ import Stopwatch from '../../../scenery-phet/js/Stopwatch.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import ZoomControlPanel from '../view/ZoomControlPanel.js';
+import ZoomButtonGroup from '../view/ZoomButtonGroup.js';
 import Ammeter from './Ammeter.js';
 import Circuit from './Circuit.js';
 import Voltmeter from './Voltmeter.js';
@@ -159,7 +159,7 @@ export default class CircuitConstructionKitModel {
     this.selectedZoomProperty.lazyLink( ( newValue: number ) => {
       this.zoomAnimation = new ZoomAnimation( this.currentZoomProperty.get(), newValue, ( delta: number ) => {
         const proposedZoomValue = this.currentZoomProperty.value + delta;
-        const boundedValue = Utils.clamp( proposedZoomValue, ZoomControlPanel.ZOOMED_OUT, ZoomControlPanel.ZOOMED_IN );
+        const boundedValue = Utils.clamp( proposedZoomValue, ZoomButtonGroup.ZOOMED_OUT, ZoomButtonGroup.ZOOMED_IN );
         this.currentZoomProperty.value = boundedValue;
       } );
     } );

@@ -20,7 +20,7 @@ const ZOOMED_IN = 1;
 const ZOOMED_OUT = 0.5;
 const BUTTON_SPACING = 20;
 
-export default class ZoomControlPanel extends MagnifyingGlassZoomButtonGroup {
+export default class ZoomButtonGroup extends MagnifyingGlassZoomButtonGroup {
   public static ZOOMED_IN: number;
   public static ZOOMED_OUT: number;
 
@@ -42,7 +42,7 @@ export default class ZoomControlPanel extends MagnifyingGlassZoomButtonGroup {
   }
 }
 
-ZoomControlPanel.ZOOMED_OUT = ZOOMED_OUT;
-ZoomControlPanel.ZOOMED_IN = ZOOMED_IN;
+ZoomButtonGroup.ZOOMED_OUT = ZOOMED_OUT;
+ZoomButtonGroup.ZOOMED_IN = ZOOMED_IN;
 
-circuitConstructionKitCommon.register( 'ZoomControlPanel', ZoomControlPanel );
+circuitConstructionKitCommon.register( 'ZoomButtonGroup', ZoomButtonGroup );
