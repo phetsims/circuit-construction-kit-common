@@ -327,12 +327,13 @@ export default class CCKCScreenView extends ScreenView {
     ammeterNodes.forEach( ammeterNode => this.circuitLayerNode.sensorLayer.addChild( ammeterNode ) );
     this.chartNodes.forEach( chartNode => this.circuitLayerNode.sensorLayer.addChild( chartNode ) );
 
-    // Create the zoom control panel
-    const zoomControlPanel = new ZoomControlPanel( model.selectedZoomProperty, {
-      tandem: tandem.createTandem( 'zoomControlPanel' )
+    // Create the zoom button group
+    // TODO: Rename the class https://github.com/phetsims/tandem/issues/267
+    const zoomButtonGroup = new ZoomControlPanel( model.selectedZoomProperty, {
+      tandem: tandem.createTandem( 'zoomButtonGroup' )
     } );
-    zoomControlPanel.mutate( {
-      scale: this.circuitElementToolbox.carousel.backgroundWidth / zoomControlPanel.width * CCKCConstants.CAROUSEL_SCALE
+    zoomButtonGroup.mutate( {
+      scale: this.circuitElementToolbox.carousel.backgroundWidth / zoomButtonGroup.width * CCKCConstants.CAROUSEL_SCALE
     } );
 
     // Add the optional Play/Pause button
@@ -347,7 +348,7 @@ export default class CCKCScreenView extends ScreenView {
         // Float the playPauseButton to the bottom left
         playPauseButton.mutate( {
           left: visibleBounds.left + VERTICAL_MARGIN,
-          bottom: visibleBounds.bottom - VERTICAL_MARGIN - zoomControlPanel.height - VERTICAL_MARGIN
+          bottom: visibleBounds.bottom - VERTICAL_MARGIN - zoomButtonGroup.height - VERTICAL_MARGIN
         } );
       } );
     }
@@ -366,7 +367,7 @@ export default class CCKCScreenView extends ScreenView {
     }
 
     // Add it in front of everything (should never be obscured by a CircuitElement)
-    this.addChild( zoomControlPanel );
+    this.addChild( zoomButtonGroup );
 
     this.visibleBoundsProperty.link( ( visibleBounds: Bounds2 ) => {
 
@@ -387,8 +388,8 @@ export default class CCKCScreenView extends ScreenView {
         bottom: visibleBounds.bottom - HORIZONTAL_MARGIN
       } );
 
-      zoomControlPanel.left = visibleBounds.left + HORIZONTAL_MARGIN;
-      zoomControlPanel.bottom = visibleBounds.bottom - VERTICAL_MARGIN;
+      zoomButtonGroup.left = visibleBounds.left + HORIZONTAL_MARGIN;
+      zoomButtonGroup.bottom = visibleBounds.bottom - VERTICAL_MARGIN;
 
       playAreaCenterXProperty.value = ( controlPanelVBox.left + this.circuitElementToolbox.right ) / 2;
 
