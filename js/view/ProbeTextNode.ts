@@ -34,7 +34,7 @@ export default class ProbeTextNode extends VBox {
       spacing: 3
     }, providedOptions );
 
-    const readout = new Text( textProperty.value, {
+    const readout = new Text( textProperty, {
       fontSize: 40,
       maxWidth: TEXT_BOX_WIDTH - 20,
       tandem: tandem.createTandem( 'readoutText' )
@@ -46,8 +46,6 @@ export default class ProbeTextNode extends VBox {
       stroke: Color.BLACK,
       fill: Color.WHITE
     } );
-
-    textProperty.link( text => readout.setText( text ) );
 
     // Text bounds is not updated eagerly, so wait for the bounds to change for layout
     readout.boundsProperty.link( bounds => {
