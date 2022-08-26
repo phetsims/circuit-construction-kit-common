@@ -328,7 +328,6 @@ export default class CCKCScreenView extends ScreenView {
     this.chartNodes.forEach( chartNode => this.circuitLayerNode.sensorLayer.addChild( chartNode ) );
 
     // Create the zoom button group
-    // TODO: Rename the class https://github.com/phetsims/tandem/issues/267
     const zoomButtonGroup = new ZoomButtonGroup( model.selectedZoomProperty, {
       tandem: tandem.createTandem( 'zoomButtonGroup' )
     } );
