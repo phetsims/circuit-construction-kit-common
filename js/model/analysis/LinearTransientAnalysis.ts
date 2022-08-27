@@ -7,7 +7,6 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import CCKCQueryParameters from '../../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import Capacitor from '../Capacitor.js';
 import LTACircuit from './LTACircuit.js';
@@ -137,20 +136,7 @@ export default class LinearTransientAnalysis {
 
     // Solve the system
     const ltaCircuit = new LTACircuit( ltaResistors, ltaBatteries, ltaCapacitors, ltaInductors );
-    let circuitResult = ltaCircuit.solveWithSubdivisions( TIMESTEP_SUBDIVISIONS, dt );
-
-    // if any battery exceeds its current threshold, increase its resistance and run the solution again.
-    // see https://github.com/phetsims/circuit-construction-kit-common/issues/245
-    let needsHelp = false;
-
-    ltaBatteries.forEach( resistiveBatteryAdapter => {
-      // @ts-ignore TODO https://github.com/phetsims/circuit-construction-kit-common/issues/888
-      if ( Math.abs( circuitResult.getTimeAverageCurrentForCoreModel( resistiveBatteryAdapter ) ) > CCKCQueryParameters.batteryCurrentThreshold ) {
-        const voltageSource = voltageSourceMap.get( resistiveBatteryAdapter )!;
-        resistiveBatteryAdapter.resistance = voltageSource.internalResistanceProperty.value;
-        needsHelp = true;
-      }
-    } );
+    const circuitResult = ltaCircuit.solveWithSubdivisions( TIMESTEP_SUBDIVISIONS, dt );
 
     ltaResistors.forEach( resistorAdapter => {
       const circuitElement = resistorMap.get( resistorAdapter )!;
@@ -174,16 +160,8 @@ export default class LinearTransientAnalysis {
         // shift by base so at V=0 the log is 1
         resistorAdapter.resistance = LightBulb.REAL_BULB_COLD_RESISTANCE + coefficient * V / logWithBase( V + base, base );
         circuitElement.resistanceProperty.value = resistorAdapter.resistance;
-
-        needsHelp = true;
       }
     } );
-
-    // Run the secondary solution if necessary
-    if ( needsHelp ) {
-      // TODO: Could this be causing https://github.com/phetsims/circuit-construction-kit-common/issues/758 ?
-      circuitResult = ltaCircuit.solveWithSubdivisions( TIMESTEP_SUBDIVISIONS, dt );
-    }
 
     // Apply the solutions from the analysis back to the actual Circuit
     ltaBatteries.forEach( batteryAdapter => {
