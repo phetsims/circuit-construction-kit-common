@@ -141,6 +141,7 @@ export default class CircuitConstructionKitModel {
     // 0 = zoomed out fully, 1 = zoomed in fully.  This NumberProperty is an implementation detail necessary to wire up
     // to MagnifyingGlassZoomButton
     this.selectedZoomProperty = new NumberProperty( 1, {
+      tandem: tandem.createTandem( 'selectedZoomProperty' ),
       range: new Range( 0, 1 ),
       validValues: [ 0, 1 ],
       phetioDocumentation: 'Zoom level for the sim.  0=zoomed out, 1=zoomed in (magnified)'
