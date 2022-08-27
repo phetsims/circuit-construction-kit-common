@@ -157,11 +157,16 @@ export default class CircuitConstructionKitModel {
     this.currentZoomProperty = new NumberProperty( this.selectedZoomProperty.get() );
 
     this.selectedZoomProperty.lazyLink( ( newValue: number ) => {
-      this.zoomAnimation = new ZoomAnimation( this.currentZoomProperty.get(), newValue, ( delta: number ) => {
-        const proposedZoomValue = this.currentZoomProperty.value + delta;
-        const boundedValue = Utils.clamp( proposedZoomValue, ZoomButtonGroup.ZOOMED_OUT, ZoomButtonGroup.ZOOMED_IN );
-        this.currentZoomProperty.value = boundedValue;
-      } );
+      if ( phet.joist.sim.isSettingPhetioStateProperty.value ) {
+        this.currentZoomProperty.value = newValue === 0 ? ZoomButtonGroup.ZOOMED_OUT : ZoomButtonGroup.ZOOMED_IN;
+      }
+      else {
+        this.zoomAnimation = new ZoomAnimation( this.currentZoomProperty.get(), newValue, ( delta: number ) => {
+          const proposedZoomValue = this.currentZoomProperty.value + delta;
+          const boundedValue = Utils.clamp( proposedZoomValue, ZoomButtonGroup.ZOOMED_OUT, ZoomButtonGroup.ZOOMED_IN );
+          this.currentZoomProperty.value = boundedValue;
+        } );
+      }
     } );
 
     this.isPlayingProperty = new BooleanProperty( true, {
