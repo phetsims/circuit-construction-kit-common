@@ -256,6 +256,11 @@ export default class ValueNode extends Panel {
       // The label partially overlaps the component to make it clear which label goes with which component
       circuitElement.updateMatrixForPoint( circuitElement.chargePathLength * distance, matrix );
       const delta = Vector2.createPolar( VERTICAL_OFFSET, matrix.rotation + 3 * Math.PI / 2 );
+
+      // Put the label above the circuit element, see https://github.com/phetsims/circuit-construction-kit-common/issues/845
+      if ( delta.y > 0 ) {
+        delta.y = -delta.y;
+      }
       this.centerBottom = matrix.translation.plus( delta.timesScalar( 0.8 ) );
     };
 
