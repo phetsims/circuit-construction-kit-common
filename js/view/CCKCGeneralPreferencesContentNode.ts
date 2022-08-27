@@ -70,7 +70,10 @@ export default class CCKCGeneralPreferencesContentNode extends VBox {
       ]
     } );
 
-    this.disposeCCKCGeneralPreferencesContentNode = () => schematicStandardRadioButtonGroup.dispose();
+    this.disposeCCKCGeneralPreferencesContentNode = () => {
+      schematicStandardRadioButtonGroup.dispose();
+      ammeterReadoutRadioButtonGroup.dispose();
+    };
   }
 
   public override dispose(): void {
