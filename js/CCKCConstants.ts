@@ -156,7 +156,7 @@ const CCKCConstants = {
   DEFAULT_FONT: new PhetFont( FONT_SIZE ),
 
   // Number of wires that can be dragged out of the toolbox
-  NUMBER_OF_WIRES: CCKCQueryParameters.moreWires ? 50 : 25,
+  NUMBER_OF_WIRES: 50,
 
   // The number of gridlines in the charts that indicate the progression of time.
   NUMBER_OF_TIME_DIVISIONS: 4,

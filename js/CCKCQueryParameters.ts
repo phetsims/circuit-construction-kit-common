@@ -35,13 +35,6 @@ const CCKCQueryParameters = QueryStringMachine.getAll( {
     public: true
   },
 
-  // Increases the number of wires that can be dragged from the toolbox
-  // see https://github.com/phetsims/circuit-construction-kit-common/issues/432
-  moreWires: {
-    public: true,
-    type: 'flag'
-  },
-
   // Increases the number of inductors that can be dragged from the toolbox
   // see https://github.com/phetsims/circuit-construction-kit-common/issues/774
   moreInductors: {
