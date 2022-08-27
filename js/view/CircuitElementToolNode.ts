@@ -53,14 +53,24 @@ export default class CircuitElementToolNode extends VBox {
   public constructor( labelText: string, showLabelsProperty: Property<boolean>, viewTypeProperty: Property<CircuitElementViewType>,
                       circuit: Circuit, globalToCircuitLayerNodePoint: ( v: Vector2 ) => Vector2, iconNode: Node, maxNumber: number,
                       count: () => number, createElement: ( v: Vector2 ) => CircuitElement, providedOptions?: CircuitElementToolNodeOptions ) {
-    const labelNode = new Text( labelText, { fontSize: 12, maxWidth: TOOLBOX_ICON_WIDTH } );
-    showLabelsProperty.linkAttribute( labelNode, 'visible' );
+
+    let labelNode: Node | null = null;
+    if ( labelText.length > 0 && providedOptions && providedOptions.tandem ) {
+      labelNode = new Text( labelText, {
+        fontSize: 12, maxWidth: TOOLBOX_ICON_WIDTH,
+        tandem: providedOptions.tandem.createTandem( 'label' ),
+        visiblePropertyOptions: {
+          phetioReadOnly: true
+        }
+      } );
+      showLabelsProperty.linkAttribute( labelNode, 'visible' );
+    }
     const options = optionize<CircuitElementToolNodeOptions, SelfOptions, VBoxOptions>()( {
       spacing: 2, // Spacing between the icon and the text
       cursor: 'pointer',
 
       // hack because the series ammeter tool node has text rendered separately (joined with probe ammeter)
-      children: labelText.length > 0 ? [ iconNode, labelNode ] : [ iconNode ],
+      children: labelNode ? [ iconNode, labelNode ] : [ iconNode ],
 
       // Expand touch area around text, see https://github.com/phetsims/circuit-construction-kit-dc/issues/82
       touchAreaExpansionLeft: 0,
