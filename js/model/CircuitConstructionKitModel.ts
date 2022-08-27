@@ -216,7 +216,8 @@ export default class CircuitConstructionKitModel {
     // changes to obtain the new circuit.
     const circuitChangedEmitter = new Emitter( {
       tandem: circuitTandem.createTandem( 'circuitChangedEmitter' ),
-      phetioDocumentation: 'Emits when any circuit model parameter or topology has changed'
+      phetioDocumentation: 'Emits when any circuit model parameter or topology has changed',
+      phetioReadOnly: true
     } );
 
     const emitCircuitChanged = () => circuitChangedEmitter.emit();

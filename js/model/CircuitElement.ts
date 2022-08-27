@@ -152,13 +152,15 @@ export default abstract class CircuitElement extends PhetioObject {
     this.startVertexProperty = new Property( startVertex, {
       phetioValueType: Vertex.VertexIO,
       tandem: tandem.createTandem( 'startVertexProperty' ),
-      phetioState: false
+      phetioState: false,
+      phetioReadOnly: true
     } );
 
     this.endVertexProperty = new Property( endVertex, {
       phetioValueType: Vertex.VertexIO,
       tandem: tandem.createTandem( 'endVertexProperty' ),
-      phetioState: false
+      phetioState: false,
+      phetioReadOnly: true
     } );
 
     this.currentProperty = new NumberProperty( 0, {

@@ -30,7 +30,8 @@ export default class Ammeter extends Meter {
     this.currentProperty = new Property<number | null>( null, {
       tandem: tandem.createTandem( 'currentProperty' ),
       units: 'A',
-      phetioValueType: NullableIO( NumberIO )
+      phetioValueType: NullableIO( NumberIO ),
+      phetioReadOnly: true
     } );
 
     this.probePositionProperty = new Vector2Property( Vector2.ZERO, {

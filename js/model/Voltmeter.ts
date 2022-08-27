@@ -33,7 +33,8 @@ export default class Voltmeter extends Meter {
     this.voltageProperty = new Property<number | null>( null, {
       tandem: tandem.createTandem( 'voltageProperty' ),
       units: 'V',
-      phetioValueType: NullableIO( NumberIO )
+      phetioValueType: NullableIO( NumberIO ),
+      phetioReadOnly: true
     } );
 
     this.redProbePositionProperty = new Vector2Property( Vector2.ZERO, {
