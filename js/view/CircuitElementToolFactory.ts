@@ -44,23 +44,24 @@ import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import ResistorType from '../model/ResistorType.js';
 import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
+import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 
-const acSourceString = circuitConstructionKitCommonStrings.acSource;
-const capacitorString = circuitConstructionKitCommonStrings.capacitor;
-const inductorString = circuitConstructionKitCommonStrings.inductor;
-const batteryString = circuitConstructionKitCommonStrings.battery;
-const coinString = circuitConstructionKitCommonStrings.coin;
-const dogString = circuitConstructionKitCommonStrings.dog;
-const dollarBillString = circuitConstructionKitCommonStrings.dollarBill;
-const eraserString = circuitConstructionKitCommonStrings.eraser;
-const fuseString = circuitConstructionKitCommonStrings.fuse;
-const handString = circuitConstructionKitCommonStrings.hand;
-const lightBulbString = circuitConstructionKitCommonStrings.lightBulb;
-const paperClipString = circuitConstructionKitCommonStrings.paperClip;
-const pencilString = circuitConstructionKitCommonStrings.pencil;
-const resistorString = circuitConstructionKitCommonStrings.resistor;
-const switchString = circuitConstructionKitCommonStrings.switch;
-const wireString = circuitConstructionKitCommonStrings.wire;
+const acSourceString = circuitConstructionKitCommonStrings.acSourceProperty;
+const capacitorString = circuitConstructionKitCommonStrings.capacitorProperty;
+const inductorString = circuitConstructionKitCommonStrings.inductorProperty;
+const batteryString = circuitConstructionKitCommonStrings.batteryProperty;
+const coinString = circuitConstructionKitCommonStrings.coinProperty;
+const dogString = circuitConstructionKitCommonStrings.dogProperty;
+const dollarBillString = circuitConstructionKitCommonStrings.dollarBillProperty;
+const eraserString = circuitConstructionKitCommonStrings.eraserProperty;
+const fuseString = circuitConstructionKitCommonStrings.fuseProperty;
+const handString = circuitConstructionKitCommonStrings.handProperty;
+const lightBulbString = circuitConstructionKitCommonStrings.lightBulbProperty;
+const paperClipString = circuitConstructionKitCommonStrings.paperClipProperty;
+const pencilString = circuitConstructionKitCommonStrings.pencilProperty;
+const resistorString = circuitConstructionKitCommonStrings.resistorProperty;
+const switchString = circuitConstructionKitCommonStrings.switchProperty;
+const wireString = circuitConstructionKitCommonStrings.wireProperty;
 
 // constants
 const BATTERY_LENGTH = CCKCConstants.BATTERY_LENGTH;
@@ -84,7 +85,7 @@ type CreateCircuitElementToolNodeSelfOptions = {
 type CreateResistorToolNodeSelfOptions = {
   count?: number;
   resistorType?: ResistorType;
-  labelString?: string;
+  labelString?: TReadOnlyProperty<string>;
   tandemName?: string;
 };
 
@@ -106,7 +107,7 @@ export default class CircuitElementToolFactory {
    * @param globalToCircuitLayerNodePoint Vector2=>Vector2 global point to coordinate frame of circuitLayerNode
    * @param parentTandem - parent tandem for the created tool nodes
    */
-  private constructor( circuit: Circuit, showLabelsProperty: Property<boolean>, viewTypeProperty: Property<CircuitElementViewType>, globalToCircuitLayerNodePoint: ( v: Vector2 ) => Vector2, parentTandem: Tandem ) {
+  public constructor( circuit: Circuit, showLabelsProperty: Property<boolean>, viewTypeProperty: Property<CircuitElementViewType>, globalToCircuitLayerNodePoint: ( v: Vector2 ) => Vector2, parentTandem: Tandem ) {
     this.circuit = circuit;
     this.showLabelsProperty = showLabelsProperty;
     this.viewTypeProperty = viewTypeProperty;
@@ -128,7 +129,7 @@ export default class CircuitElementToolFactory {
    *                                 - in the center of the socket
    * @param [providedOptions]
    */
-  private createCircuitElementToolNode( labelString: string, count: number, createIcon: ( t: Tandem, p: Property<CircuitElementViewType> ) => Node,
+  public createCircuitElementToolNode( labelString: TReadOnlyProperty<string>, count: number, createIcon: ( t: Tandem, p: Property<CircuitElementViewType> ) => Node,
                                         predicate: ( circuitElement: CircuitElement ) => boolean, createElement: ( v: Vector2 ) => CircuitElement, providedOptions?: CreateCircuitElementToolNodeProvidedOptions ): CircuitElementToolNode {
 
     assert && assert( Number.isInteger( count ), 'count should be an integer' );
@@ -182,7 +183,7 @@ export default class CircuitElementToolFactory {
    * @param predicate - CircuitElement => boolean
    * @returns - a no-arg function that returns the {number} of CircuitElements of the specified type
    */
-  private createCounter( predicate: ( c: CircuitElement ) => boolean ): () => number {
+  public createCounter( predicate: ( c: CircuitElement ) => boolean ): () => number {
     return () =>
       this.circuit.circuitElements.filter( circuitElement =>
 
@@ -191,7 +192,7 @@ export default class CircuitElementToolFactory {
       ).length;
   }
 
-  private createWireToolNode(): Node {
+  public createWireToolNode(): Node {
     if ( !this.wireToolNode ) {
 
       // Cache a single instance to simplify PhET-iO
@@ -219,7 +220,7 @@ export default class CircuitElementToolFactory {
   /**
    * @param count - the number that can be dragged out at once
    */
-  private createRightBatteryToolNode( count = 10 ): CircuitElementToolNode {
+  public createRightBatteryToolNode( count = 10 ): CircuitElementToolNode {
     const batteryModel = new Battery(
       new Vertex( Vector2.ZERO ), new Vertex( new Vector2( CCKCConstants.BATTERY_LENGTH, 0 ) ),
       new NumberProperty( 0 ), 'normal', Tandem.OPTIONAL
@@ -239,7 +240,7 @@ export default class CircuitElementToolFactory {
   /**
    * @param count - the number that can be dragged out at once
    */
-  private createACVoltageToolNode( count = 10 ): CircuitElementToolNode {
+  public createACVoltageToolNode( count = 10 ): CircuitElementToolNode {
     const acSource = new ACVoltage(
       new Vertex( Vector2.ZERO ),
       new Vertex( new Vector2( AC_VOLTAGE_LENGTH, 0 ) ),
@@ -260,8 +261,8 @@ export default class CircuitElementToolFactory {
     );
   }
 
-  private createLightBulbToolNode( lightBulbGroup = this.circuit.lightBulbGroup, string = lightBulbString,
-                                   real = false, addRealBulbsProperty = null, tandemName = 'lightBulbToolNode' ): CircuitElementToolNode {
+  public createLightBulbToolNode( lightBulbGroup = this.circuit.lightBulbGroup, string = lightBulbString,
+                                  real = false, addRealBulbsProperty: BooleanProperty | null = null, tandemName = 'lightBulbToolNode' ): CircuitElementToolNode {
     const vertexPair = LightBulb.createVertexPair( Vector2.ZERO, this.circuit, true );
     const lightBulbModel = LightBulb.createAtPosition(
       vertexPair.startVertex,
@@ -288,7 +289,7 @@ export default class CircuitElementToolFactory {
       } );
   }
 
-  private createResistorToolNode( providedOptions?: CreateResistorToolNodeProvidedOptions ): CircuitElementToolNode {
+  public createResistorToolNode( providedOptions?: CreateResistorToolNodeProvidedOptions ): CircuitElementToolNode {
     const options = optionize<CreateResistorToolNodeProvidedOptions, CreateResistorToolNodeSelfOptions, CreateCircuitElementToolNodeSelfOptions>()( {
       count: 10,
       resistorType: ResistorType.RESISTOR,
@@ -323,7 +324,7 @@ export default class CircuitElementToolFactory {
       } );
   }
 
-  private createFuseToolNode(): CircuitElementToolNode {
+  public createFuseToolNode(): CircuitElementToolNode {
     const fuseModel = new Fuse(
       new Vertex( Vector2.ZERO ),
       new Vertex( new Vector2( CCKCConstants.RESISTOR_LENGTH, 0 ) ),
@@ -345,7 +346,7 @@ export default class CircuitElementToolFactory {
   /**
    * @param count - the number that can be dragged out at once
    */
-  private createCapacitorToolNode( count = 10 ): CircuitElementToolNode {
+  public createCapacitorToolNode( count = 10 ): CircuitElementToolNode {
     const capacitor = new Capacitor(
       new Vertex( Vector2.ZERO ),
       new Vertex( new Vector2( CCKCConstants.CAPACITOR_LENGTH, 0 ) ),
@@ -361,7 +362,7 @@ export default class CircuitElementToolFactory {
       } );
   }
 
-  private createInductorToolNode(): CircuitElementToolNode {
+  public createInductorToolNode(): CircuitElementToolNode {
     const inductorModel = new Inductor(
       new Vertex( Vector2.ZERO ),
       new Vertex( new Vector2( CCKCConstants.INDUCTOR_LENGTH, 0 ) ),
@@ -381,7 +382,7 @@ export default class CircuitElementToolFactory {
       } );
   }
 
-  private createSwitchToolNode(): CircuitElementToolNode {
+  public createSwitchToolNode(): CircuitElementToolNode {
     return this.createCircuitElementToolNode( switchString, 5,
       ( tandem, viewTypeProperty ) => new SwitchNode( null, null,
         new Switch(
@@ -399,7 +400,7 @@ export default class CircuitElementToolFactory {
       } );
   }
 
-  private createPaperClipToolNode(): CircuitElementToolNode {
+  public createPaperClipToolNode(): CircuitElementToolNode {
     return this.createResistorToolNode( {
       count: 1,
       resistorType: ResistorType.PAPER_CLIP,
@@ -409,7 +410,7 @@ export default class CircuitElementToolFactory {
   }
 
   // Same docs as for createPaperClipToolNode
-  private createCoinToolNode(): CircuitElementToolNode {
+  public createCoinToolNode(): CircuitElementToolNode {
     return this.createResistorToolNode( {
       count: 1,
       resistorType: ResistorType.COIN,
@@ -420,7 +421,7 @@ export default class CircuitElementToolFactory {
   }
 
   // Same docs as as for createPaperClipToolNode
-  private createDollarBillToolNode(): CircuitElementToolNode {
+  public createDollarBillToolNode(): CircuitElementToolNode {
     return this.createResistorToolNode( {
       count: 1,
       resistorType: ResistorType.DOLLAR_BILL,
@@ -431,7 +432,7 @@ export default class CircuitElementToolFactory {
   }
 
   // Same docs as for createPaperClipToolNode
-  private createEraserToolNode(): CircuitElementToolNode {
+  public createEraserToolNode(): CircuitElementToolNode {
     return this.createResistorToolNode( {
       count: 1,
       resistorType: ResistorType.ERASER,
@@ -442,7 +443,7 @@ export default class CircuitElementToolFactory {
   }
 
   // Same docs as for createPaperClipToolNode
-  private createPencilToolNode(): CircuitElementToolNode {
+  public createPencilToolNode(): CircuitElementToolNode {
     return this.createResistorToolNode( {
       count: 1,
       resistorType: ResistorType.PENCIL,
@@ -453,7 +454,7 @@ export default class CircuitElementToolFactory {
   }
 
   // Same docs as for createPaperClipToolNode
-  private createHandToolNode(): CircuitElementToolNode {
+  public createHandToolNode(): CircuitElementToolNode {
     return this.createResistorToolNode( {
       count: 1,
       resistorType: ResistorType.HAND,
@@ -464,7 +465,7 @@ export default class CircuitElementToolFactory {
   }
 
   // Same docs as for createPaperClipToolNode
-  private createDogToolNode(): CircuitElementToolNode {
+  public createDogToolNode(): CircuitElementToolNode {
     return this.createResistorToolNode( {
       count: 1,
       resistorType: ResistorType.DOG,
@@ -475,7 +476,7 @@ export default class CircuitElementToolFactory {
   }
 
   // Same docs as for createPaperClipToolNode
-  private createHighResistanceResistorToolNode(): CircuitElementToolNode {
+  public createHighResistanceResistorToolNode(): CircuitElementToolNode {
     return this.createResistorToolNode( {
       count: 4,
       resistorType: ResistorType.HIGH_RESISTANCE_RESISTOR,
@@ -484,7 +485,7 @@ export default class CircuitElementToolFactory {
     } );
   }
 
-  private createHighVoltageBatteryToolNode(): CircuitElementToolNode {
+  public createHighVoltageBatteryToolNode(): CircuitElementToolNode {
     return this.createCircuitElementToolNode( batteryString, 4,
       ( tandem, viewTypeProperty ) => new BatteryNode( null, null,
         new Battery(
@@ -507,7 +508,7 @@ export default class CircuitElementToolFactory {
       } );
   }
 
-  private createHighResistanceBulbToolNode(): CircuitElementToolNode {
+  public createHighResistanceBulbToolNode(): CircuitElementToolNode {
     const vertexPair = LightBulb.createVertexPair( Vector2.ZERO, this.circuit, true );
     return this.createCircuitElementToolNode( lightBulbString, 4,
       ( tandem, viewTypeProperty ) => new CCKCLightBulbNode(

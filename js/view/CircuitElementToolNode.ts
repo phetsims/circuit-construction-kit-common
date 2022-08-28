@@ -19,6 +19,7 @@ import CircuitElement from '../model/CircuitElement.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import Multilink from '../../../axon/js/Multilink.js';
 import optionize from '../../../phet-core/js/optionize.js';
+import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 
 // constants
 const TOOLBOX_ICON_WIDTH = CCKCConstants.TOOLBOX_ICON_WIDTH;
@@ -50,12 +51,12 @@ export default class CircuitElementToolNode extends VBox {
    *                                 - in the center of the socket
    * @param [providedOptions]
    */
-  public constructor( labelText: string, showLabelsProperty: Property<boolean>, viewTypeProperty: Property<CircuitElementViewType>,
+  public constructor( labelText: TReadOnlyProperty<string>, showLabelsProperty: Property<boolean>, viewTypeProperty: Property<CircuitElementViewType>,
                       circuit: Circuit, globalToCircuitLayerNodePoint: ( v: Vector2 ) => Vector2, iconNode: Node, maxNumber: number,
                       count: () => number, createElement: ( v: Vector2 ) => CircuitElement, providedOptions?: CircuitElementToolNodeOptions ) {
 
     let labelNode: Node | null = null;
-    if ( labelText.length > 0 && providedOptions && providedOptions.tandem ) {
+    if ( labelText.value.length > 0 && providedOptions && providedOptions.tandem ) {
       labelNode = new Text( labelText, {
         fontSize: 12, maxWidth: TOOLBOX_ICON_WIDTH,
         tandem: providedOptions.tandem.createTandem( 'label' ),

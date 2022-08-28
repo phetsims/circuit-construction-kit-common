@@ -31,7 +31,6 @@ import ChargeSpeedThrottlingReadoutNode from './ChargeSpeedThrottlingReadoutNode
 import CircuitElementEditContainerNode from './CircuitElementEditContainerNode.js';
 import CircuitElementNode from './CircuitElementNode.js';
 import CircuitElementToolbox, { CircuitElementToolboxOptions } from './CircuitElementToolbox.js';
-import CircuitElementToolNode from './CircuitElementToolNode.js';
 import CircuitLayerNode from './CircuitLayerNode.js';
 import CurrentChartNode from './CurrentChartNode.js';
 import DisplayOptionsPanel from './DisplayOptionsPanel.js';
@@ -84,18 +83,18 @@ type SelfOptions = {
   showPhaseShiftControl?: boolean;
   hasACandDCVoltageSources?: boolean;
 };
-type CCKCScreenViewOptions = SelfOptions & ScreenViewOptions;
+export type CCKCScreenViewOptions = SelfOptions & ScreenViewOptions;
 
 export default class CCKCScreenView extends ScreenView {
   public readonly model: CircuitConstructionKitModel;
   public readonly circuitLayerNodeBackLayer: Node;
-  private readonly circuitLayerNode: CircuitLayerNode;
+  protected readonly circuitLayerNode: CircuitLayerNode;
   private readonly chartNodes: ( VoltageChartNode | CurrentChartNode )[];
   private readonly voltageChartNode1: VoltageChartNode | null;
   private readonly voltageChartNode2: VoltageChartNode | null;
   private readonly currentChartNode1: CurrentChartNode | null;
   private readonly currentChartNode2: CurrentChartNode | null;
-  private readonly circuitElementToolbox: CircuitElementToolbox;
+  protected readonly circuitElementToolbox: CircuitElementToolbox;
   public readonly sensorToolbox: SensorToolbox;
   private readonly viewRadioButtonGroup: ViewRadioButtonGroup;
   private readonly displayOptionsPanel: DisplayOptionsPanel;
@@ -108,7 +107,7 @@ export default class CCKCScreenView extends ScreenView {
    * @param tandem
    * @param [providedOptions]
    */
-  private constructor( model: CircuitConstructionKitModel, circuitElementToolNodes: CircuitElementToolNode[], tandem: Tandem, providedOptions?: CCKCScreenViewOptions ) {
+  protected constructor( model: CircuitConstructionKitModel, circuitElementToolNodes: Node[], tandem: Tandem, providedOptions?: CCKCScreenViewOptions ) {
 
     const options = optionize<CCKCScreenViewOptions, SelfOptions, ScreenViewOptions>()( {
 

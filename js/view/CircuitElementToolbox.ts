@@ -9,14 +9,13 @@
 
 import Property from '../../../axon/js/Property.js';
 import merge from '../../../phet-core/js/merge.js';
-import { Color, HBox, HBoxOptions } from '../../../scenery/js/imports.js';
+import { Node, Color, HBox, HBoxOptions } from '../../../scenery/js/imports.js';
 import Carousel, { CarouselOptions } from '../../../sun/js/Carousel.js';
 import PageControl from '../../../sun/js/PageControl.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
-import CircuitElementToolNode from './CircuitElementToolNode.js';
 
 // constants
 
@@ -37,7 +36,7 @@ export default class CircuitElementToolbox extends HBox {
    * @param tandem
    * @param [providedOptions]
    */
-  public constructor( viewTypeProperty: Property<CircuitElementViewType>, circuitElementToolNodes: CircuitElementToolNode[], tandem: Tandem, providedOptions?: CircuitElementToolboxOptions ) {
+  public constructor( viewTypeProperty: Property<CircuitElementViewType>, circuitElementToolNodes: Node[], tandem: Tandem, providedOptions?: CircuitElementToolboxOptions ) {
 
     providedOptions = merge( {
       carouselOptions: {

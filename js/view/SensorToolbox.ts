@@ -148,7 +148,7 @@ export default class SensorToolbox extends CCKCPanel {
     seriesAmmeterNodeIcon.mutate( { scale: TOOLBOX_ICON_HEIGHT / seriesAmmeterNodeIcon.width } );
     const MAX_SERIES_AMMETERS = 6;
     const seriesAmmeterToolNode = new CircuitElementToolNode(
-      '',
+      new Property( '' ),
       new BooleanProperty( false ),
       new EnumerationProperty( CircuitElementViewType.SCHEMATIC ),
       circuit,

@@ -42,7 +42,7 @@ export default class CircuitConstructionKitModel {
   public readonly viewTypeProperty: Property<CircuitElementViewType>;
 
   // whether the carousel shows real bulbs
-  private readonly addRealBulbsProperty: BooleanProperty;
+  public readonly addRealBulbsProperty: BooleanProperty;
 
   // contains CircuitElements, Vertices, etc.
   public readonly circuit: Circuit;
@@ -82,7 +82,7 @@ export default class CircuitConstructionKitModel {
   public readonly stepEmitter: TEmitter<[ number ]>;
   private readonly zoomProperty: EnumerationProperty<ZoomLevel>;
 
-  private constructor( includeACElements: boolean, includeLabElements: boolean, tandem: Tandem, providedOptions?: CircuitConstructionKitModelOptions ) {
+  protected constructor( includeACElements: boolean, includeLabElements: boolean, tandem: Tandem, providedOptions?: CircuitConstructionKitModelOptions ) {
 
     const options = optionize<CircuitConstructionKitModelOptions>()( {
 
