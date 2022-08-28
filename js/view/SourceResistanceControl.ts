@@ -65,7 +65,11 @@ export default class SourceResistanceControl extends VBox {
 
     const titleNode = new Text( batteryResistanceControlString, titleConfig );
     super( {
-      children: [ titleNode, slider ]
+      children: [ titleNode, slider ],
+      tandem: tandem,
+      visiblePropertyOptions: {
+        phetioFeatured: true
+      }
     } );
   }
 }

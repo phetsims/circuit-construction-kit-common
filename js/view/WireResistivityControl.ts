@@ -52,7 +52,11 @@ export default class WireResistivityControl extends VBox {
     slider.addMajorTick( MAX_RESISTIVITY, new Text( lotsStringProperty, TICK_LABEL_TEXT_OPTIONS ) );
 
     super( {
-      children: [ titleNode, slider ]
+      children: [ titleNode, slider ],
+      tandem: tandem,
+      visiblePropertyOptions: {
+        phetioFeatured: true
+      }
     } );
   }
 }
