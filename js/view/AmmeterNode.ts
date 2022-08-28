@@ -28,7 +28,7 @@ import Property from '../../../axon/js/Property.js';
 import ammeterReadoutTypeProperty from './ammeterReadoutTypeProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
 
-const currentString = circuitConstructionKitCommonStrings.current;
+const currentStringProperty = circuitConstructionKitCommonStrings.currentProperty;
 
 // constants
 // measurements for the cubic curve for the wire nodes
@@ -101,7 +101,7 @@ export default class AmmeterNode extends Node {
       } ) );
 
     const probeTextNode = new ProbeTextNode(
-      currentReadoutProperty, options.showResultsProperty, currentString, tandem.createTandem( 'probeTextNode' ), {
+      currentReadoutProperty, options.showResultsProperty, currentStringProperty, tandem.createTandem( 'probeTextNode' ), {
         centerX: ammeterBody_png.width / 2,
         centerY: ammeterBody_png.height / 2 + 7 // adjust for the top notch design
       } );

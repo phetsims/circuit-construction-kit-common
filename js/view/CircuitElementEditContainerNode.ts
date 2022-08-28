@@ -45,19 +45,19 @@ import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 
-const capacitanceString = circuitConstructionKitCommonStrings.capacitance;
-const capacitanceUnitsString = circuitConstructionKitCommonStrings.capacitanceUnits;
-const currentRatingString = circuitConstructionKitCommonStrings.currentRating;
-const currentUnitsString = circuitConstructionKitCommonStrings.currentUnits;
-const frequencyHzValuePatternString = circuitConstructionKitCommonStrings.frequencyHzValuePattern;
-const frequencyString = circuitConstructionKitCommonStrings.frequency;
-const inductanceString = circuitConstructionKitCommonStrings.inductance;
-const inductanceUnitsString = circuitConstructionKitCommonStrings.inductanceUnits;
-const resistanceOhmsValuePatternString = circuitConstructionKitCommonStrings.resistanceOhmsValuePattern;
-const resistanceString = circuitConstructionKitCommonStrings.resistance;
-const tapCircuitElementToEditString = circuitConstructionKitCommonStrings.tapCircuitElementToEdit;
-const voltageString = circuitConstructionKitCommonStrings.voltage;
-const voltageVoltsValuePatternString = circuitConstructionKitCommonStrings.voltageVoltsValuePattern;
+const capacitanceStringProperty = circuitConstructionKitCommonStrings.capacitanceProperty;
+const capacitanceUnitsStringProperty = circuitConstructionKitCommonStrings.capacitanceUnitsProperty;
+const currentRatingStringProperty = circuitConstructionKitCommonStrings.currentRatingProperty;
+const currentUnitsStringProperty = circuitConstructionKitCommonStrings.currentUnitsProperty;
+const frequencyHzValuePatternStringProperty = circuitConstructionKitCommonStrings.frequencyHzValuePatternProperty;
+const frequencyStringProperty = circuitConstructionKitCommonStrings.frequencyProperty;
+const inductanceStringProperty = circuitConstructionKitCommonStrings.inductanceProperty;
+const inductanceUnitsStringProperty = circuitConstructionKitCommonStrings.inductanceUnitsProperty;
+const resistanceOhmsValuePatternStringProperty = circuitConstructionKitCommonStrings.resistanceOhmsValuePatternProperty;
+const resistanceStringProperty = circuitConstructionKitCommonStrings.resistanceProperty;
+const tapCircuitElementToEditStringProperty = circuitConstructionKitCommonStrings.tapCircuitElementToEditProperty;
+const voltageStringProperty = circuitConstructionKitCommonStrings.voltageProperty;
+const voltageVoltsValuePatternStringProperty = circuitConstructionKitCommonStrings.voltageVoltsValuePatternProperty;
 
 // constants
 const GET_LAYOUT_POSITION = ( visibleBounds: Bounds2, centerX: number ) => {
@@ -140,10 +140,10 @@ export default class CircuitElementEditContainerNode extends Node {
     } );
 
     // For PhET-iO, NumberControls are created statically on startup and switch between which CircuitElement it controls.
-    const fuseCurrentRatingControl = new CircuitElementNumberControl( currentRatingString,
+    const fuseCurrentRatingControl = new CircuitElementNumberControl( currentRatingStringProperty,
 
       // Adapter to take from {{named}} to {{value}} for usage in common code
-      StringUtils.fillIn( currentUnitsString, { current: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
+      StringUtils.fillIn( currentUnitsStringProperty, { current: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
       createSingletonAdapterProperty( Fuse.DEFAULT_CURRENT_RATING, Fuse, circuit, ( c: Fuse ) => c.currentRatingProperty ),
       Fuse.RANGE, circuit,
       // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/513 Eliminate numberOfDecimalPlaces: 1 from Fuse and places like it
@@ -155,8 +155,8 @@ export default class CircuitElementEditContainerNode extends Node {
         }
       } );
 
-    const capacitorEditControl = new CircuitElementNumberControl( capacitanceString,
-      StringUtils.fillIn( capacitanceUnitsString, { capacitance: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
+    const capacitorEditControl = new CircuitElementNumberControl( capacitanceStringProperty,
+      StringUtils.fillIn( capacitanceUnitsStringProperty, { capacitance: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
       createSingletonAdapterProperty( Capacitor.CAPACITANCE_DEFAULT, Capacitor, circuit, ( c: Capacitor ) => c.capacitanceProperty ),
       Capacitor.CAPACITANCE_RANGE, circuit, Capacitor.NUMBER_OF_DECIMAL_PLACES, {
         tandem: circuit.includeACElements ? tandem.createTandem( 'capacitanceNumberControl' ) : Tandem.OPT_OUT,
@@ -167,8 +167,8 @@ export default class CircuitElementEditContainerNode extends Node {
         }
       } );
 
-    const inductanceControl = new CircuitElementNumberControl( inductanceString,
-      StringUtils.fillIn( inductanceUnitsString, { inductance: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
+    const inductanceControl = new CircuitElementNumberControl( inductanceStringProperty,
+      StringUtils.fillIn( inductanceUnitsStringProperty, { inductance: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
       createSingletonAdapterProperty( Inductor.INDUCTANCE_DEFAULT, Inductor, circuit, ( c: Inductor ) => c.inductanceProperty ),
       Inductor.INDUCTANCE_RANGE, circuit, Inductor.INDUCTANCE_NUMBER_OF_DECIMAL_PLACES, {
         tandem: circuit.includeACElements ? tandem.createTandem( 'inductanceNumberControl' ) : Tandem.OPT_OUT,
@@ -182,8 +182,8 @@ export default class CircuitElementEditContainerNode extends Node {
 
     type GConstructor<T> = new ( ...args: IntentionalAny[] ) => T;
 
-    const createResistanceNumberControl = ( tandemName: string, CircuitElementType: GConstructor<LightBulb | Resistor> ) => new CircuitElementNumberControl( resistanceString,
-      StringUtils.fillIn( resistanceOhmsValuePatternString, { resistance: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
+    const createResistanceNumberControl = ( tandemName: string, CircuitElementType: GConstructor<LightBulb | Resistor> ) => new CircuitElementNumberControl( resistanceStringProperty,
+      StringUtils.fillIn( resistanceOhmsValuePatternStringProperty, { resistance: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
       createSingletonAdapterProperty( ResistorType.RESISTOR.defaultResistance, CircuitElementType, circuit, ( c: LightBulb | Resistor ) => c.resistanceProperty,
         ( c: LightBulb | Resistor ) =>
           ( c instanceof LightBulb && !c.highResistance ) ||
@@ -197,8 +197,8 @@ export default class CircuitElementEditContainerNode extends Node {
         },
         numberDisplayOptions: { decimalPlaces: Resistor.RESISTANCE_DECIMAL_PLACES }
       } );
-    const createHighResistanceNumberControl = ( tandemName: string, CircuitElementType: GConstructor<LightBulb | Resistor> ) => new CircuitElementNumberControl( resistanceString,
-      StringUtils.fillIn( resistanceOhmsValuePatternString, { resistance: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
+    const createHighResistanceNumberControl = ( tandemName: string, CircuitElementType: GConstructor<LightBulb | Resistor> ) => new CircuitElementNumberControl( resistanceStringProperty,
+      StringUtils.fillIn( resistanceOhmsValuePatternStringProperty, { resistance: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
       createSingletonAdapterProperty( ResistorType.HIGH_RESISTANCE_RESISTOR.defaultResistance, CircuitElementType, circuit, ( c: LightBulb | Resistor ) => c.resistanceProperty,
         ( c: LightBulb | Resistor ) =>
           ( c instanceof LightBulb && c.highResistance ) ||
@@ -218,8 +218,8 @@ export default class CircuitElementEditContainerNode extends Node {
     const highResistanceNumberControl = createHighResistanceNumberControl( 'highResistanceNumberControl', Resistor );
     const lightBulbHighResistanceNumberControl = createHighResistanceNumberControl( 'lightBulbHighResistanceNumberControl', LightBulb );
 
-    const voltageNumberControl = new CircuitElementNumberControl( voltageString,
-      StringUtils.fillIn( voltageVoltsValuePatternString, { voltage: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
+    const voltageNumberControl = new CircuitElementNumberControl( voltageStringProperty,
+      StringUtils.fillIn( voltageVoltsValuePatternStringProperty, { voltage: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
       createSingletonAdapterProperty( Battery.VOLTAGE_DEFAULT, Battery, circuit, ( c: Battery ) => c.voltageProperty, ( c: Battery ) => c.batteryType === 'normal' ),
       Battery.VOLTAGE_RANGE,
       circuit,
@@ -231,8 +231,8 @@ export default class CircuitElementEditContainerNode extends Node {
         },
         numberDisplayOptions: { decimalPlaces: Battery.VOLTAGE_DECIMAL_PLACES }
       } );
-    const highVoltageNumberControl = new CircuitElementNumberControl( voltageString,
-      StringUtils.fillIn( voltageVoltsValuePatternString, { voltage: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
+    const highVoltageNumberControl = new CircuitElementNumberControl( voltageStringProperty,
+      StringUtils.fillIn( voltageVoltsValuePatternStringProperty, { voltage: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
       createSingletonAdapterProperty( Battery.HIGH_VOLTAGE_DEFAULT, Battery, circuit, ( c: Battery ) => c.voltageProperty, ( c: Battery ) => c.batteryType === 'high-voltage' ),
       Battery.HIGH_VOLTAGE_RANGE,
       circuit,
@@ -250,8 +250,8 @@ export default class CircuitElementEditContainerNode extends Node {
     } );
 
     const acVoltageControl = new CircuitElementNumberControl(
-      voltageString,
-      StringUtils.fillIn( voltageVoltsValuePatternString, {
+      voltageStringProperty,
+      StringUtils.fillIn( voltageVoltsValuePatternStringProperty, {
         voltage: SunConstants.VALUE_NAMED_PLACEHOLDER
       } ),
       createSingletonAdapterProperty( 9, ACVoltage, circuit, circuitElement => circuitElement.maximumVoltageProperty ),
@@ -264,8 +264,8 @@ export default class CircuitElementEditContainerNode extends Node {
     );
 
     const acFrequencyControl = new CircuitElementNumberControl(
-      frequencyString,
-      StringUtils.fillIn( frequencyHzValuePatternString, {
+      frequencyStringProperty,
+      StringUtils.fillIn( frequencyHzValuePatternStringProperty, {
         frequency: SunConstants.VALUE_NAMED_PLACEHOLDER
       } ),
       createSingletonAdapterProperty( ACVoltage.DEFAULT_FREQUENCY, ACVoltage, circuit, circuitElement => circuitElement.frequencyProperty ),
@@ -278,7 +278,7 @@ export default class CircuitElementEditContainerNode extends Node {
       }
     );
 
-    const tapInstructionTextNode = new Text( tapCircuitElementToEditString, {
+    const tapInstructionTextNode = new Text( tapCircuitElementToEditStringProperty, {
       fontSize: 24,
       maxWidth: 300,
       tandem: tandem.createTandem( 'tapInstructionTextNode' ),

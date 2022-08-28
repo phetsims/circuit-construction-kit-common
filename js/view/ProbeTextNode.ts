@@ -27,7 +27,7 @@ export default class ProbeTextNode extends VBox {
    * @param tandem
    * @param [providedOptions]
    */
-  public constructor( textProperty: TReadOnlyProperty<string>, showResultsProperty: ReadOnlyProperty<boolean>, title: string, tandem: Tandem,
+  public constructor( textProperty: TReadOnlyProperty<string>, showResultsProperty: ReadOnlyProperty<boolean>, title: TReadOnlyProperty<string>, tandem: Tandem,
                       providedOptions?: VBoxOptions ) {
 
     providedOptions = merge( {
@@ -73,7 +73,7 @@ export default class ProbeTextNode extends VBox {
     // set the children
     providedOptions.children = [ new Text( title, {
       fontSize: 42,
-      maxWidth: 190,
+      maxWidth: TEXT_BOX_WIDTH,
       tandem: tandem.createTandem( 'titleText' )
     } ), new Node( {
       children: [ textBox, readout ]

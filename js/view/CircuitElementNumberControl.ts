@@ -22,6 +22,7 @@ import Multilink, { UnknownMultilink } from '../../../axon/js/Multilink.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import { NumberDisplayOptions } from '../../../scenery-phet/js/NumberDisplay.js';
 import { SliderOptions } from '../../../sun/js/Slider.js';
+import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 
 type SelfOptions<T extends CircuitElement> = {
   titleNodeOptions?: TextOptions;
@@ -37,7 +38,7 @@ type CircuitElementNumberControlOptions<T extends CircuitElement> = SelfOptions<
 export default class CircuitElementNumberControl<T extends CircuitElement> extends HBox {
   public static NUMBER_CONTROL_ELEMENT_MAX_WIDTH = 115;
 
-  public constructor( title: string, valuePattern: string, valueProperty: Property<number>, range: Range, circuit: Circuit,
+  public constructor( title: TReadOnlyProperty<string>, valuePattern: string, valueProperty: Property<number>, range: Range, circuit: Circuit,
                       numberOfDecimalPlaces: number, providedOptions?: CircuitElementNumberControlOptions<T> ) {
 
     // When the user changes any parameter of any circuit element, signify it.

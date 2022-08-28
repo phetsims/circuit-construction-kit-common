@@ -32,11 +32,11 @@ import CircuitElement from '../model/CircuitElement.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import Multilink from '../../../axon/js/Multilink.js';
 
-const capacitanceFaradsSymbolString = circuitConstructionKitCommonStrings.capacitanceFaradsSymbol;
-const fuseValueString = circuitConstructionKitCommonStrings.fuseValue;
-const inductanceHenriesSymbolString = circuitConstructionKitCommonStrings.inductanceHenriesSymbol;
-const resistanceOhmsSymbolString = circuitConstructionKitCommonStrings.resistanceOhmsSymbol;
-const voltageUnitsString = circuitConstructionKitCommonStrings.voltageUnits;
+const capacitanceFaradsSymbolStringProperty = circuitConstructionKitCommonStrings.capacitanceFaradsSymbolProperty;
+const fuseValueStringProperty = circuitConstructionKitCommonStrings.fuseValueProperty;
+const inductanceHenriesSymbolStringProperty = circuitConstructionKitCommonStrings.inductanceHenriesSymbolProperty;
+const resistanceOhmsSymbolStringProperty = circuitConstructionKitCommonStrings.resistanceOhmsSymbolProperty;
+const voltageUnitsStringProperty = circuitConstructionKitCommonStrings.voltageUnitsProperty;
 
 // constants
 const VERTICAL_OFFSET = 24;
@@ -86,7 +86,7 @@ export default class ValueNode extends Panel {
       const voltageText = createText( tandem.createTandem( 'voltageText' ) );
       const voltageListener = ( voltage: number ) => {
 
-        voltageText.text = StringUtils.fillIn( voltageUnitsString, {
+        voltageText.text = StringUtils.fillIn( voltageUnitsStringProperty, {
           voltage: Utils.toFixed( voltage, circuitElement.numberOfDecimalPlaces )
         } );
         update && update();
@@ -101,7 +101,7 @@ export default class ValueNode extends Panel {
 
       const resistanceNode = createText( tandem.createTandem( 'resistanceText' ) );
       const sourceResistanceListener = ( internalResistance: number, lastInternalResistance: number | null | undefined ) => {
-        resistanceNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, {
+        resistanceNode.text = StringUtils.fillIn( resistanceOhmsSymbolStringProperty, {
           resistance: Utils.toFixed( internalResistance, 1 )
         } );
 
@@ -130,7 +130,7 @@ export default class ValueNode extends Panel {
 
       // Items like the hand and dog and high resistance resistor shouldn't show ".0"
       const linkResistance = ( resistance: number ) => {
-        ( readoutValueNode as Text ).text = StringUtils.fillIn( resistanceOhmsSymbolString, {
+        ( readoutValueNode as Text ).text = StringUtils.fillIn( resistanceOhmsSymbolStringProperty, {
           resistance: Utils.toFixed( resistance, circuitElement.numberOfDecimalPlaces )
         } );
         update && update();
@@ -144,7 +144,7 @@ export default class ValueNode extends Panel {
       // Items like the hand and dog and high resistance resistor shouldn't show ".0"
       const linkCapacitance = ( capacitance: number ) => {
 
-        ( readoutValueNode as Text ).text = StringUtils.fillIn( capacitanceFaradsSymbolString, {
+        ( readoutValueNode as Text ).text = StringUtils.fillIn( capacitanceFaradsSymbolStringProperty, {
           resistance: Utils.toFixed( capacitance, circuitElement.numberOfDecimalPlaces )
         } );
         update && update();
@@ -156,7 +156,7 @@ export default class ValueNode extends Panel {
       readoutValueNode = createText( tandem.createTandem( 'inductorText' ) );
 
       const linkInductance = ( inductance: number ) => {
-        ( readoutValueNode as Text ).text = StringUtils.fillIn( inductanceHenriesSymbolString, {
+        ( readoutValueNode as Text ).text = StringUtils.fillIn( inductanceHenriesSymbolStringProperty, {
           resistance: Utils.toFixed( inductance, circuitElement.numberOfDecimalPlaces )
         } );
         update && update();
@@ -170,7 +170,7 @@ export default class ValueNode extends Panel {
       readoutValueNode = createRichText( tandem.createTandem( 'switchText' ) );
 
       const updateResistance = ( resistance: number ) => {
-        ( readoutValueNode as Text ).text = StringUtils.fillIn( resistanceOhmsSymbolString, {
+        ( readoutValueNode as Text ).text = StringUtils.fillIn( resistanceOhmsSymbolStringProperty, {
 
           // Using a serif font makes the infinity symbol look less lopsided
           resistance: resistance > 100000 ? infinitySpan : '0'
@@ -191,7 +191,7 @@ export default class ValueNode extends Panel {
         ( resistance, currentRating ) => {
           const milliOhmString = resistance === CCKCConstants.MAX_RESISTANCE ? infinitySpan :
                                  Utils.toFixed( resistance * 1000, circuitElement.numberOfDecimalPlaces );
-          ( readoutValueNode as Text ).text = StringUtils.fillIn( fuseValueString, {
+          ( readoutValueNode as Text ).text = StringUtils.fillIn( fuseValueStringProperty, {
 
             // Convert to milli
             resistance: milliOhmString,

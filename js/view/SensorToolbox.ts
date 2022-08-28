@@ -37,11 +37,11 @@ import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import Multilink from '../../../axon/js/Multilink.js';
 import optionize from '../../../phet-core/js/optionize.js';
 
-const ammetersString = circuitConstructionKitCommonStrings.ammeters;
-const ammeterString = circuitConstructionKitCommonStrings.ammeter;
-const currentChartString = circuitConstructionKitCommonStrings.currentChart;
-const voltageChartString = circuitConstructionKitCommonStrings.voltageChart;
-const voltmeterString = circuitConstructionKitCommonStrings.voltmeter;
+const ammetersStringProperty = circuitConstructionKitCommonStrings.ammetersProperty;
+const ammeterStringProperty = circuitConstructionKitCommonStrings.ammeterProperty;
+const currentChartStringProperty = circuitConstructionKitCommonStrings.currentChartProperty;
+const voltageChartStringProperty = circuitConstructionKitCommonStrings.voltageChartProperty;
+const voltmeterStringProperty = circuitConstructionKitCommonStrings.voltmeterProperty;
 
 // constants
 const TOOLBOX_ICON_HEIGHT = 53;
@@ -168,14 +168,14 @@ export default class SensorToolbox extends CCKCPanel {
     } ) );
 
     // Labels underneath the sensor tool nodes
-    const voltmeterText = new Text( voltmeterString, {
+    const voltmeterText = new Text( voltmeterStringProperty, {
       maxWidth: 60,
       tandem: tandem.createTandem( 'voltmeterLabel' ),
       visiblePropertyOptions: {
         phetioReadOnly: true
       }
     } );
-    const ammeterText = new Text( options.showSeriesAmmeters && options.showNoncontactAmmeters ? ammetersString : ammeterString, {
+    const ammeterText = new Text( options.showSeriesAmmeters && options.showNoncontactAmmeters ? ammetersStringProperty : ammeterStringProperty, {
       maxWidth: 60,
       tandem: tandem.createTandem( 'ammeterLabel' ),
       visiblePropertyOptions: {
@@ -278,7 +278,7 @@ export default class SensorToolbox extends CCKCPanel {
 
       const voltageChartToolIcon = createChartToolIcon( voltageChartNodes,
         voltageChartNodeIconContents,
-        new Text( voltageChartString, {
+        new Text( voltageChartStringProperty, {
           maxWidth: 60,
           visiblePropertyOptions: {
             phetioReadOnly: true
@@ -288,7 +288,7 @@ export default class SensorToolbox extends CCKCPanel {
       );
       const currentChartToolIcon = createChartToolIcon( currentChartNodes,
         new CurrentChartNode( circuitLayerNode, new NumberProperty( 0 ), everything, { scale: scale, tandem: Tandem.OPT_OUT } ),
-        new Text( currentChartString, {
+        new Text( currentChartStringProperty, {
           maxWidth: 60,
           visiblePropertyOptions: {
             phetioReadOnly: true

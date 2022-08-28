@@ -31,7 +31,7 @@ import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
 import ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
 
-const voltageString = circuitConstructionKitCommonStrings.voltage;
+const voltageStringProperty = circuitConstructionKitCommonStrings.voltageProperty;
 
 // constants
 const VOLTMETER_PROBE_TIP_LENGTH = 20; // The probe tip is about 20 view coordinates tall
@@ -122,7 +122,7 @@ export default class VoltmeterNode extends Node {
     );
 
     const probeTextNode = new ProbeTextNode(
-      voltageReadoutProperty, options.showResultsProperty, voltageString, tandem.createTandem( 'probeTextNode' ), {
+      voltageReadoutProperty, options.showResultsProperty, voltageStringProperty, tandem.createTandem( 'probeTextNode' ), {
         centerX: voltmeterBody_png[ 0 ].width / 2,
         centerY: voltmeterBody_png[ 0 ].height / 2
       } );
