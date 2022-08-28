@@ -164,7 +164,9 @@ export default abstract class CircuitElement extends PhetioObject {
     } );
 
     this.currentProperty = new NumberProperty( 0, {
-      reentrant: options.isCurrentReentrant
+      reentrant: options.isCurrentReentrant,
+      tandem: tandem.createTandem( 'currentProperty' ),
+      phetioReadOnly: true
     } );
     this.currentProperty.link( current => {
       assert && assert( !isNaN( current ) );
