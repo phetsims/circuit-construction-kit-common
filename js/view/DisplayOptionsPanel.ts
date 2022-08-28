@@ -82,7 +82,7 @@ export default class DisplayOptionsPanel extends CCKCPanel {
     const conventionalBox = new HBox( {
       children: [
         currentTypeRadioButtonLabelGroup.createBox( createLabel( conventionalStringProperty, currentTypeRadioButtonGroupTandem.createTandem( CONVENTIONAL_RADIO_BUTTON_TANDEM ) ), BOX_ALIGNMENT ),
-        new ConventionalCurrentArrowNode( tandem.createTandem( 'arrowNode' ) )
+        new ConventionalCurrentArrowNode( Tandem.OPT_OUT )
       ],
       spacing: textIconSpacing
     } );

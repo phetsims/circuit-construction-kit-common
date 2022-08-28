@@ -237,7 +237,7 @@ export default class CCKCLightBulbNode extends FixedCircuitElementNode {
         circuitLayerNode,
         lightBulb,
         viewTypeProperty,
-        tandem.createTandem( 'socketNode' ),
+        Tandem.OPT_OUT,
         filledOptions
       );
       viewListener = ( view: CircuitElementViewType ) => {

@@ -149,8 +149,8 @@ export default class CircuitElementToolFactory {
       return node1;
     };
 
-    const lifelikeIcon = wrap( createIcon( options.tandem.createTandem( 'lifelikeIcon' ), LIFELIKE_PROPERTY ), options.lifelikeIconHeight );
-    const schematicIcon = wrap( createIcon( options.tandem.createTandem( 'schematicIcon' ), SCHEMATIC_PROPERTY ), options.schematicIconHeight );
+    const lifelikeIcon = wrap( createIcon( Tandem.OPT_OUT, LIFELIKE_PROPERTY ), options.lifelikeIconHeight );
+    const schematicIcon = wrap( createIcon( Tandem.OPT_OUT, SCHEMATIC_PROPERTY ), options.schematicIconHeight );
 
     const toggleNode = new ToggleNode( this.viewTypeProperty, [
       { value: CircuitElementViewType.LIFELIKE, node: lifelikeIcon },
