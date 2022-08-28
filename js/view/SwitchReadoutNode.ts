@@ -34,8 +34,10 @@ export default class SwitchReadoutNode extends Node {
           phetioReadOnly: true
         }
       } );
-    const closedText = createText( theSwitchIsClosedStringProperty, tandem.createTandem( 'closedTextNode' ) );
-    const openText = createText( theSwitchIsOpenStringProperty, tandem.createTandem( 'openTextNode' ) );
+
+    const messageNodeTandem = tandem.createTandem( 'messageNode' );
+    const closedText = createText( theSwitchIsClosedStringProperty, messageNodeTandem.createTandem( 'closedTextNode' ) );
+    const openText = createText( theSwitchIsOpenStringProperty, messageNodeTandem.createTandem( 'openTextNode' ) );
 
     const closedListener = ( closed: boolean ) => {
       closedText.visible = closed;
@@ -62,9 +64,14 @@ export default class SwitchReadoutNode extends Node {
     closedText.boundsProperty.link( update );
     openText.boundsProperty.link( update );
 
+    const messageNode = new Node( {
+      children: [ closedText, openText ],
+      tandem: messageNodeTandem
+    } );
 
     super( {
-      children: [ closedText, openText, trashButton ]
+      children: [ messageNode, trashButton ],
+      tandem: tandem
     } );
   }
 }
