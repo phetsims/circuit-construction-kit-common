@@ -13,9 +13,10 @@ import Circuit from '../model/Circuit.js';
 import Switch from '../model/Switch.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CircuitElement from '../model/CircuitElement.js';
+import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 
-const theSwitchIsClosedString = circuitConstructionKitCommonStrings.theSwitchIsClosed;
-const theSwitchIsOpenString = circuitConstructionKitCommonStrings.theSwitchIsOpen;
+const theSwitchIsClosedStringProperty = circuitConstructionKitCommonStrings.theSwitchIsClosedProperty;
+const theSwitchIsOpenStringProperty = circuitConstructionKitCommonStrings.theSwitchIsOpenProperty;
 
 // constants
 const MAX_TEXT_WIDTH = 300;
@@ -24,7 +25,7 @@ export default class SwitchReadoutNode extends Node {
   public constructor( circuit: Circuit, tandem: Tandem, trashButton: Node ) {
 
     // Create both texts and display both so they remain aligned as the value changes
-    const createText = ( string: string, tandem: Tandem ) =>
+    const createText = ( string: TReadOnlyProperty<string>, tandem: Tandem ) =>
       new Text( string, {
         fontSize: 24,
         maxWidth: MAX_TEXT_WIDTH,
@@ -33,8 +34,8 @@ export default class SwitchReadoutNode extends Node {
           phetioReadOnly: true
         }
       } );
-    const closedText = createText( theSwitchIsClosedString, tandem.createTandem( 'closedTextNode' ) );
-    const openText = createText( theSwitchIsOpenString, tandem.createTandem( 'openTextNode' ) );
+    const closedText = createText( theSwitchIsClosedStringProperty, tandem.createTandem( 'closedTextNode' ) );
+    const openText = createText( theSwitchIsOpenStringProperty, tandem.createTandem( 'openTextNode' ) );
 
     const closedListener = ( closed: boolean ) => {
       closedText.visible = closed;

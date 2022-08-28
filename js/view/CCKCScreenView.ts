@@ -40,8 +40,8 @@ import VoltageChartNode from './VoltageChartNode.js';
 import VoltmeterNode from './VoltmeterNode.js';
 import ZoomButtonGroup from './ZoomButtonGroup.js';
 
-const batteryResistanceString = circuitConstructionKitCommonStrings.batteryResistance;
-const sourceResistanceString = circuitConstructionKitCommonStrings.sourceResistance;
+const batteryResistanceStringProperty = circuitConstructionKitCommonStrings.batteryResistanceProperty;
+const sourceResistanceStringProperty = circuitConstructionKitCommonStrings.sourceResistanceProperty;
 
 // constants
 const VERTICAL_MARGIN = CCKCConstants.VERTICAL_MARGIN;
@@ -257,7 +257,7 @@ export default class CCKCScreenView extends ScreenView {
     this.advancedAccordionBox = options.showAdvancedControls ? new AdvancedAccordionBox(
       model.circuit,
       CONTROL_PANEL_ALIGN_GROUP,
-      options.hasACandDCVoltageSources ? sourceResistanceString : batteryResistanceString,
+      options.hasACandDCVoltageSources ? sourceResistanceStringProperty : batteryResistanceStringProperty,
       tandem.createTandem( 'advancedAccordionBox' ), {
         showRealBulbsCheckbox: !options.hasACandDCVoltageSources
       }

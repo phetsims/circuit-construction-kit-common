@@ -16,9 +16,9 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Property from '../../../axon/js/Property.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 
-const lotsString = circuitConstructionKitCommonStrings.lots;
-const tinyString = circuitConstructionKitCommonStrings.tiny;
-const wireResistivityString = circuitConstructionKitCommonStrings.wireResistivity;
+const lotsStringProperty = circuitConstructionKitCommonStrings.lotsProperty;
+const tinyStringProperty = circuitConstructionKitCommonStrings.tinyProperty;
+const wireResistivityStringProperty = circuitConstructionKitCommonStrings.wireResistivityProperty;
 
 // constants
 const TICK_LABEL_TEXT_OPTIONS = { fontSize: 12, maxWidth: 45 };
@@ -36,7 +36,7 @@ export default class WireResistivityControl extends VBox {
    */
   public constructor( wireResistivityProperty: Property<number>, alignGroup: AlignGroup, titleConfig: object, tandem: Tandem ) {
 
-    const titleNode = new Text( wireResistivityString, titleConfig );
+    const titleNode = new Text( wireResistivityStringProperty, titleConfig );
 
     const slider = new HSlider( wireResistivityProperty, new Range(
       CCKCConstants.DEFAULT_RESISTIVITY,
@@ -48,8 +48,8 @@ export default class WireResistivityControl extends VBox {
       tandem: tandem.createTandem( 'slider' )
     } );
 
-    slider.addMajorTick( 0, new Text( tinyString, TICK_LABEL_TEXT_OPTIONS ) );
-    slider.addMajorTick( MAX_RESISTIVITY, new Text( lotsString, TICK_LABEL_TEXT_OPTIONS ) );
+    slider.addMajorTick( 0, new Text( tinyStringProperty, TICK_LABEL_TEXT_OPTIONS ) );
+    slider.addMajorTick( MAX_RESISTIVITY, new Text( lotsStringProperty, TICK_LABEL_TEXT_OPTIONS ) );
 
     super( {
       children: [ titleNode, slider ]

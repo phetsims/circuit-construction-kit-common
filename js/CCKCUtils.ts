@@ -16,8 +16,8 @@ import ammeterReadoutTypeProperty from './view/ammeterReadoutTypeProperty.js';
 import MathSymbols from '../../scenery-phet/js/MathSymbols.js';
 import AmmeterReadoutType from './model/AmmeterReadoutType.js';
 
-const currentUnitsString = circuitConstructionKitCommonStrings.currentUnits;
-const voltageUnitsString = circuitConstructionKitCommonStrings.voltageUnits;
+const currentUnitsStringProperty = circuitConstructionKitCommonStrings.currentUnitsProperty;
+const voltageUnitsStringProperty = circuitConstructionKitCommonStrings.voltageUnitsProperty;
 
 // Number of accumulated solve steps within a single frame.  We use high precision for the first
 // several steps, then go to high performance for remaining steps.
@@ -66,7 +66,7 @@ const CCKCUtils = {
         const decimals = this.getNumberOfDecimalPoints( signedCurrent );
 
         // Show 3 decimal places so that current can still be seen with a glowing high-resistance bulb
-        return StringUtils.fillIn( currentUnitsString, { current: Utils.toFixed( signedCurrent, decimals ) } );
+        return StringUtils.fillIn( currentUnitsStringProperty, { current: Utils.toFixed( signedCurrent, decimals ) } );
       }
     }
   },
@@ -78,7 +78,7 @@ const CCKCUtils = {
   createVoltageReadout: function( value: number ): string {
     const decimals = this.getNumberOfDecimalPoints( value );
 
-    return StringUtils.fillIn( voltageUnitsString, { voltage: Utils.toFixed( value, decimals ) } );
+    return StringUtils.fillIn( voltageUnitsStringProperty, { voltage: Utils.toFixed( value, decimals ) } );
   },
 
   /**

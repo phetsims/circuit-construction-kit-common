@@ -15,7 +15,7 @@ import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommon
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Multilink from '../../../axon/js/Multilink.js';
 
-const animationSpeedLimitReachedString = circuitConstructionKitCommonStrings.animationSpeedLimitReached;
+const animationSpeedLimitReachedStringProperty = circuitConstructionKitCommonStrings.animationSpeedLimitReachedProperty;
 
 export default class ChargeSpeedThrottlingReadoutNode extends Text {
 
@@ -25,7 +25,7 @@ export default class ChargeSpeedThrottlingReadoutNode extends Text {
    * @param isValueDepictionEnabledProperty - true if the explore screen is running
    */
   public constructor( timeScaleProperty: Property<number>, showCurrentProperty: Property<boolean>, isValueDepictionEnabledProperty: Property<boolean> ) {
-    super( animationSpeedLimitReachedString, {
+    super( animationSpeedLimitReachedStringProperty, {
 
       // Reduce the width of the animation speed limit reached so it doesn't overlap controls
       // see https://github.com/phetsims/circuit-construction-kit-dc/issues/118
@@ -38,7 +38,7 @@ export default class ChargeSpeedThrottlingReadoutNode extends Text {
         const percent = timeScale * 100;
         const isThrottled = percent < 99.5;
         const fixed = timeScale < 0.01 ? '< 1' : Utils.toFixed( percent, 0 );
-        this.setText( StringUtils.fillIn( animationSpeedLimitReachedString, { percent: fixed } ) );
+        this.setText( StringUtils.fillIn( animationSpeedLimitReachedStringProperty, { percent: fixed } ) );
 
         // Only show the throttling message if the speed is less than 100% and charges are visible
         this.visible = isThrottled && showCurrent && isValueDepictionEnabled;

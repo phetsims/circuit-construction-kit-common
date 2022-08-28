@@ -22,12 +22,12 @@ import CurrentType from '../model/CurrentType.js';
 import VerticalAquaRadioButtonGroup from '../../../sun/js/VerticalAquaRadioButtonGroup.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 
-const conventionalString = circuitConstructionKitCommonStrings.conventionalProperty;
-const electronsString = circuitConstructionKitCommonStrings.electronsProperty;
-const labelsString = circuitConstructionKitCommonStrings.labelsProperty;
-const showCurrentString = circuitConstructionKitCommonStrings.showCurrentProperty;
-const stopwatchString = circuitConstructionKitCommonStrings.stopwatchProperty;
-const valuesString = circuitConstructionKitCommonStrings.valuesProperty;
+const conventionalStringProperty = circuitConstructionKitCommonStrings.conventionalProperty;
+const electronsStringProperty = circuitConstructionKitCommonStrings.electronsProperty;
+const labelsStringProperty = circuitConstructionKitCommonStrings.labelsProperty;
+const showCurrentStringProperty = circuitConstructionKitCommonStrings.showCurrentProperty;
+const stopwatchStringProperty = circuitConstructionKitCommonStrings.stopwatchProperty;
+const valuesStringProperty = circuitConstructionKitCommonStrings.valuesProperty;
 
 // constants
 const BOX_ALIGNMENT = { xAlign: 'left' as const };
@@ -71,7 +71,7 @@ export default class DisplayOptionsPanel extends CCKCPanel {
 
     const electronsBox = new HBox( {
       children: [
-        currentTypeRadioButtonLabelGroup.createBox( createLabel( electronsString, currentTypeRadioButtonGroupTandem.createTandem( ELECTRONS_RADIO_BUTTON_TANDEM ) ), BOX_ALIGNMENT ),
+        currentTypeRadioButtonLabelGroup.createBox( createLabel( electronsStringProperty, currentTypeRadioButtonGroupTandem.createTandem( ELECTRONS_RADIO_BUTTON_TANDEM ) ), BOX_ALIGNMENT ),
 
         // Match the size to the play area electrons, see https://github.com/phetsims/circuit-construction-kit-dc/issues/154
         new ElectronChargeNode( { scale: 0.75 } )
@@ -81,7 +81,7 @@ export default class DisplayOptionsPanel extends CCKCPanel {
 
     const conventionalBox = new HBox( {
       children: [
-        currentTypeRadioButtonLabelGroup.createBox( createLabel( conventionalString, currentTypeRadioButtonGroupTandem.createTandem( CONVENTIONAL_RADIO_BUTTON_TANDEM ) ), BOX_ALIGNMENT ),
+        currentTypeRadioButtonLabelGroup.createBox( createLabel( conventionalStringProperty, currentTypeRadioButtonGroupTandem.createTandem( CONVENTIONAL_RADIO_BUTTON_TANDEM ) ), BOX_ALIGNMENT ),
         new ConventionalCurrentArrowNode( tandem.createTandem( 'arrowNode' ) )
       ],
       spacing: textIconSpacing
@@ -105,18 +105,18 @@ export default class DisplayOptionsPanel extends CCKCPanel {
     showCurrentProperty.linkAttribute( currentTypeRadioButtonGroup, 'enabled' );
 
     const labelsCheckboxTandem = tandem.createTandem( 'labelsCheckbox' );
-    const showLabelsCheckbox = new CCKCCheckbox( showLabelsProperty, createLabel( labelsString, labelsCheckboxTandem ), {
+    const showLabelsCheckbox = new CCKCCheckbox( showLabelsProperty, createLabel( labelsStringProperty, labelsCheckboxTandem ), {
       tandem: labelsCheckboxTandem
     } );
     const valuesCheckboxTandem = tandem.createTandem( 'valuesCheckbox' );
-    const showValuesCheckbox = new CCKCCheckbox( showValuesProperty, createLabel( valuesString, valuesCheckboxTandem ), {
+    const showValuesCheckbox = new CCKCCheckbox( showValuesProperty, createLabel( valuesStringProperty, valuesCheckboxTandem ), {
       tandem: valuesCheckboxTandem
     } );
 
     let stopwatchCheckbox = null;
     if ( showStopwatchCheckbox ) {
       const stopwatchCheckboxTandem = tandem.createTandem( 'stopwatchCheckbox' );
-      stopwatchCheckbox = new CCKCCheckbox( stopwatch.isVisibleProperty, createLabel( stopwatchString, stopwatchCheckboxTandem ), {
+      stopwatchCheckbox = new CCKCCheckbox( stopwatch.isVisibleProperty, createLabel( stopwatchStringProperty, stopwatchCheckboxTandem ), {
         tandem: stopwatchCheckboxTandem
       } );
     }
@@ -129,7 +129,7 @@ export default class DisplayOptionsPanel extends CCKCPanel {
         align: 'left',
         spacing: 8,
         children: [
-          new CCKCCheckbox( showCurrentProperty, createLabel( showCurrentString, showCurrentCheckboxTandem ), {
+          new CCKCCheckbox( showCurrentProperty, createLabel( showCurrentStringProperty, showCurrentCheckboxTandem ), {
             tandem: showCurrentCheckboxTandem
           } ),
           new AlignBox( // TODO: is alignbox needed here?

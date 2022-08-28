@@ -22,7 +22,7 @@ import Property from '../../../axon/js/Property.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import CCKCProbeNode from './CCKCProbeNode.js';
 
-const voltageWithUnitsString = circuitConstructionKitCommonStrings.voltageWithUnits;
+const voltageWithUnitsStringProperty = circuitConstructionKitCommonStrings.voltageWithUnitsProperty;
 
 // constants
 const SERIES_1_COLOR = '#ec3223';
@@ -41,7 +41,7 @@ export default class VoltageChartNode extends CCKCChartNode {
       tandem: Tandem.OPTIONAL
     }, providedOptions );
 
-    super( circuitLayerNode, timeProperty, visibleBoundsProperty, createObservableArray(), voltageWithUnitsString, providedOptions );
+    super( circuitLayerNode, timeProperty, visibleBoundsProperty, createObservableArray(), voltageWithUnitsStringProperty, providedOptions );
 
     this.probeNode1 = this.addProbeNode( SERIES_1_COLOR, SERIES_1_COLOR, 5, 10, this.aboveBottomLeft1, providedOptions.tandem.createTandem( 'probeNode1' ) );
     this.probeNode2 = this.addProbeNode( SERIES_2_COLOR, SERIES_2_COLOR, 36, 54, this.aboveBottomLeft2, providedOptions.tandem.createTandem( 'probeNode2' ) );

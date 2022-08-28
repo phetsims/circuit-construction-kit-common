@@ -19,7 +19,7 @@ import Bounds2 from '../../../dot/js/Bounds2.js';
 import CCKCProbeNode from './CCKCProbeNode.js';
 import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 
-const currentWithUnitsString = circuitConstructionKitCommonStrings.currentWithUnits;
+const currentWithUnitsStringProperty = circuitConstructionKitCommonStrings.currentWithUnitsProperty;
 
 export default class CurrentChartNode extends CCKCChartNode {
   private readonly probeNode1: CCKCProbeNode;
@@ -38,7 +38,7 @@ export default class CurrentChartNode extends CCKCChartNode {
       tandem: Tandem.OPTIONAL
     }, providedOptions );
 
-    super( circuitLayerNode, timeProperty, visibleBoundsProperty, createObservableArray(), currentWithUnitsString, providedOptions );
+    super( circuitLayerNode, timeProperty, visibleBoundsProperty, createObservableArray(), currentWithUnitsStringProperty, providedOptions );
 
     this.probeNode1 = this.addProbeNode(
       CCKCConstants.CHART_SERIES_COLOR,

@@ -43,8 +43,8 @@ import optionize from '../../../phet-core/js/optionize.js';
 import PickRequired from '../../../phet-core/js/types/PickRequired.js';
 import TEmitter from '../../../axon/js/TEmitter.js';
 
-const oneSecondString = circuitConstructionKitCommonStrings.oneSecond;
-const timeString = circuitConstructionKitCommonStrings.time;
+const oneSecondStringProperty = circuitConstructionKitCommonStrings.oneSecondProperty;
+const timeStringProperty = circuitConstructionKitCommonStrings.timeProperty;
 
 // constants
 const AXIS_LABEL_FILL = 'white';
@@ -89,7 +89,7 @@ export default class CCKCChartNode extends Node {
    * @param [providedOptions]
    */
   public constructor( circuitLayerNode: CircuitLayerNode, timeProperty: Property<number>, visibleBoundsProperty: Property<Bounds2>,
-                      series: ObservableArray<Vector2 | null>, verticalAxisLabel: string, providedOptions?: CCKCChartNodeOptions ) {
+                      series: ObservableArray<Vector2 | null>, verticalAxisLabel: TReadOnlyProperty<string>, providedOptions?: CCKCChartNodeOptions ) {
     const options = optionize<CCKCChartNodeOptions, SelfOptions, NodeOptions>()( {
       defaultZoomLevel: new Range( -2, 2 ),
 
@@ -153,13 +153,13 @@ export default class CCKCChartNode extends Node {
       cornerYRadius: 6
     } );
 
-    const horizontalAxisTitleNode = new Text( timeString, {
+    const horizontalAxisTitleNode = new Text( timeStringProperty, {
       fontSize: LABEL_FONT_SIZE,
       fill: AXIS_LABEL_FILL,
       centerTop: chartBackground.centerBottom.plusXY( 0, 5 ),
       maxWidth: MAX_AXIS_LABEL_WIDTH
     } );
-    const scaleIndicatorText = new Text( oneSecondString, {
+    const scaleIndicatorText = new Text( oneSecondStringProperty, {
       fontSize: 11,
       fill: 'white'
     } );

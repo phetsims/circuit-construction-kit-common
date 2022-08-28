@@ -23,7 +23,7 @@ import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import CurrentSense from '../model/CurrentSense.js';
 
-const currentString = circuitConstructionKitCommonStrings.current;
+const currentStringProperty = circuitConstructionKitCommonStrings.currentProperty;
 
 // constants
 const PANEL_HEIGHT = 40;
@@ -111,7 +111,7 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
     // series ammeter
     const readoutPanel = new Panel( new VBox( {
       children: [
-        new Text( currentString, { fontSize: 12, maxWidth: 54 } ),
+        new Text( currentStringProperty, { fontSize: 12, maxWidth: 54 } ),
         new Rectangle( 0, 0, maxBounds.width + textPanelMarginX * 2, maxBounds.height + textPanelMarginY * 2, {
           cornerRadius: 4,
           stroke: Color.BLACK,

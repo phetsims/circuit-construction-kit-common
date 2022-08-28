@@ -18,6 +18,7 @@ import WireResistivityControl from './WireResistivityControl.js';
 import Circuit from '../model/Circuit.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import optionize from '../../../phet-core/js/optionize.js';
+import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 
 type SelfOptions = {
   showRealBulbsCheckbox?: boolean;
@@ -33,7 +34,7 @@ export default class AdvancedAccordionBox extends CCKCAccordionBox {
    * @param tandem
    * @param [providedOptions]
    */
-  public constructor( circuit: Circuit, alignGroup: AlignGroup, batteryResistanceControlString: string, tandem: Tandem, providedOptions?: AdvancedAccordionBoxOptions ) {
+  public constructor( circuit: Circuit, alignGroup: AlignGroup, batteryResistanceControlString: TReadOnlyProperty<string>, tandem: Tandem, providedOptions?: AdvancedAccordionBoxOptions ) {
 
     const options = optionize<AdvancedAccordionBoxOptions, SelfOptions, CCKCAccordionBox>()( {
       showRealBulbsCheckbox: true
@@ -53,7 +54,7 @@ export default class AdvancedAccordionBox extends CCKCAccordionBox {
       const addRealBulbsCheckboxTandem = tandem.createTandem( 'addRealBulbsCheckbox' );
       children.push(
         new VStrut( 20 ),
-        new CCKCCheckbox( circuit.addRealBulbsProperty, new Text( circuitConstructionKitCommonStrings.addRealBulbs, _.merge( {
+        new CCKCCheckbox( circuit.addRealBulbsProperty, new Text( circuitConstructionKitCommonStrings.addRealBulbsProperty, _.merge( {
           tandem: addRealBulbsCheckboxTandem.createTandem( 'label' )
         }, TEXT_OPTIONS ) ), {
           tandem: addRealBulbsCheckboxTandem
@@ -63,7 +64,7 @@ export default class AdvancedAccordionBox extends CCKCAccordionBox {
     super( alignGroup.createBox( new VBox( {
       align: 'left',
       children: children
-    } ) ), circuitConstructionKitCommonStrings.advanced, tandem, {
+    } ) ), circuitConstructionKitCommonStrings.advancedProperty, tandem, {
 
       // Left align the title, with no padding
       titleAlignX: 'left',

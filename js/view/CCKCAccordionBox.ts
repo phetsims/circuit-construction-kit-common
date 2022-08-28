@@ -8,6 +8,7 @@
  */
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
+import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import merge from '../../../phet-core/js/merge.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import { HBox, HStrut, Node, Text } from '../../../scenery/js/imports.js';
@@ -32,7 +33,7 @@ export default class CCKCAccordionBox extends AccordionBox {
    * @param tandem
    * @param [providedOptions]
    */
-  public constructor( content: Node, title: string, tandem: Tandem, providedOptions?: CCKCAccordionBoxOptions ) {
+  public constructor( content: Node, title: TReadOnlyProperty<string>, tandem: Tandem, providedOptions?: CCKCAccordionBoxOptions ) {
 
     const options = optionize<CCKCAccordionBoxOptions, SelfOptions, AccordionBoxOptions>()( {
       strutWidth: 10
