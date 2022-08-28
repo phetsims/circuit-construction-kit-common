@@ -23,6 +23,7 @@ import optionize from '../../../phet-core/js/optionize.js';
 import { NumberDisplayOptions } from '../../../scenery-phet/js/NumberDisplay.js';
 import { SliderOptions } from '../../../sun/js/Slider.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import Vertex from '../model/Vertex.js';
 
 type SelfOptions<T extends CircuitElement> = {
   titleNodeOptions?: TextOptions;
@@ -87,9 +88,9 @@ export default class CircuitElementNumberControl<T extends CircuitElement> exten
 
     // This is reused across all instances. The control itself can be hidden by PhET-iO customization, but the parent
     // node is another gate for the visibility.
-    circuit.selectedCircuitElementProperty.link( ( newCircuitElement: CircuitElement | null, oldCircuitElement: CircuitElement | null ) => {
+    circuit.selectionProperty.link( ( newCircuitElement: CircuitElement | Vertex | null, oldCircuitElement: CircuitElement | Vertex | null ) => {
       oldCircuitElement instanceof ACVoltage && multilink && Multilink.unmultilink( multilink );
-      if ( newCircuitElement ) {
+      if ( newCircuitElement instanceof CircuitElement ) {
 
         // @ts-ignore
         const otherGates = options.getAdditionalVisibilityProperties( newCircuitElement );

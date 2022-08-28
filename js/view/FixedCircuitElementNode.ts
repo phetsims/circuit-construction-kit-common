@@ -27,6 +27,7 @@ import CircuitElement from '../model/CircuitElement.js';
 import Multilink, { UnknownMultilink } from '../../../axon/js/Multilink.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import optionize from '../../../phet-core/js/optionize.js';
+import Vertex from '../model/Vertex.js';
 
 // constants
 const matrix = new Matrix3();
@@ -65,7 +66,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
   private readonly fixedCircuitElementNodePickable: boolean | null;
   private readonly dragListener: CircuitLayerNodeDragListener | null;
   public static webglSpriteNodes: Node[];
-  private readonly updateHighlightVisibility: ( ( circuitElement: CircuitElement | null ) => void ) | null;
+  private readonly updateHighlightVisibility: ( ( circuitElement: CircuitElement | Vertex | null ) => void ) | null;
   private readonly updateFireMultilink: UnknownMultilink | null;
 
   /**
@@ -190,7 +191,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
       if ( options.showHighlight ) {
 
         this.updateHighlightVisibility = this.setSelectedCircuitElement.bind( this );
-        circuitLayerNode.circuit.selectedCircuitElementProperty.link( this.updateHighlightVisibility );
+        circuitLayerNode.circuit.selectionProperty.link( this.updateHighlightVisibility );
       }
       else {
         this.updateHighlightVisibility = null;
@@ -266,7 +267,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
     matrix.setToTranslationRotationPoint( startPosition, angle );
     this.contentNode.setMatrix( matrix );
 
-    if ( this.highlightNode && this.circuitLayerNode!.circuit.selectedCircuitElementProperty.get() === this.circuitElement ) {
+    if ( this.highlightNode && this.circuitLayerNode!.circuit.selectionProperty.get() === this.circuitElement ) {
       this.highlightNode.setMatrix( matrix );
     }
 
@@ -298,7 +299,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
   /**
    * Used as a bound callback listener in the constructor to update the highlight visibility
    */
-  private setSelectedCircuitElement( circuitElement: CircuitElement | null ): void {
+  private setSelectedCircuitElement( circuitElement: CircuitElement | Vertex | null ): void {
     if ( this.highlightNode ) {
       const visible = ( circuitElement === this.circuitElement );
       CCKCUtils.setInSceneGraph( visible, this.circuitLayerNode!.highlightLayer, this.highlightNode );
@@ -315,7 +316,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
     this.dragListener && this.dragListener.interrupt();
     this.dragListener && this.dragListener.dispose();
     this.circuitElement.vertexMovedEmitter.removeListener( this.markDirtyListener );
-    this.updateHighlightVisibility && this.circuitLayerNode!.circuit.selectedCircuitElementProperty.unlink( this.updateHighlightVisibility );
+    this.updateHighlightVisibility && this.circuitLayerNode!.circuit.selectionProperty.unlink( this.updateHighlightVisibility );
     this.circuitElement.connectedEmitter.removeListener( this.moveToFrontListener );
     this.circuitElement.vertexSelectedEmitter.removeListener( this.moveToFrontListener );
     this.fixedCircuitElementNodePickable && this.circuitElement.interactiveProperty.unlink( this.pickableListener );

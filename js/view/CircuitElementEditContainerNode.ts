@@ -87,14 +87,14 @@ const createSingletonAdapterProperty = <T extends CircuitElement>(
   // Cannot use DynamicProperty.derivedProperty since the selected circuit element isn't always the right subtype of CircuitElement
   const singletonAdapterProperty = new Property( initialValue, {} );
   singletonAdapterProperty.link( value => {
-    if ( circuit.selectedCircuitElementProperty.value && circuit.selectedCircuitElementProperty.value instanceof CircuitElementType ) {
-      getter( circuit.selectedCircuitElementProperty.value ).value = value;
+    if ( circuit.selectionProperty.value && circuit.selectionProperty.value instanceof CircuitElementType ) {
+      getter( circuit.selectionProperty.value ).value = value;
     }
   } );
 
   // When the value in the model changes, say from PhET-iO, we propagate it back to the control
   const modelListener = ( currentRating: number ) => singletonAdapterProperty.set( currentRating );
-  circuit.selectedCircuitElementProperty.link( ( newCircuitElement, oldCircuitElement ) => {
+  circuit.selectionProperty.link( ( newCircuitElement, oldCircuitElement ) => {
     oldCircuitElement instanceof CircuitElementType && predicate( oldCircuitElement ) && getter( oldCircuitElement ).unlink( modelListener );
     newCircuitElement instanceof CircuitElementType && predicate( newCircuitElement ) && getter( newCircuitElement ).link( modelListener );
   } );
@@ -134,9 +134,9 @@ export default class CircuitElementEditContainerNode extends Node {
     // TODO: Can we use DynamicProperty for this part?  But DynamicProperty probably cannot handle cases like subtypes,
     // where Battery has isReversableProperty but not all CircuitElements do.  But maybe we should add support for that
     // in DynamicProperty?
-    circuit.selectedCircuitElementProperty.link( ( newCircuitElement, oldCircuitElement ) => {
-      newCircuitElement && newCircuitElement.isDisposableProperty.link( listener );
-      oldCircuitElement && oldCircuitElement.isDisposableProperty.unlink( listener );
+    circuit.selectionProperty.link( ( newCircuitElement, oldCircuitElement ) => {
+      newCircuitElement instanceof CircuitElement && newCircuitElement.isDisposableProperty.link( listener );
+      oldCircuitElement instanceof CircuitElement && oldCircuitElement.isDisposableProperty.unlink( listener );
     } );
 
     // For PhET-iO, NumberControls are created statically on startup and switch between which CircuitElement it controls.
@@ -314,7 +314,7 @@ export default class CircuitElementEditContainerNode extends Node {
 
     // When the selected element changes, update the displayed controls
     let editNode: Node | null = null;
-    circuit.selectedCircuitElementProperty.link( selectedCircuitElement => {
+    circuit.selectionProperty.link( selectedCircuitElement => {
       if ( editNode ) {
         this.hasChild( editNode ) && this.removeChild( editNode );
         if ( editNode !== tapInstructionTextNode && editNode !== trashButtonContainer && editNode !== switchReadoutNode ) {

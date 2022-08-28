@@ -222,7 +222,7 @@ export default class CircuitElementToolFactory {
    */
   public createRightBatteryToolNode( count = 10 ): CircuitElementToolNode {
     const batteryModel = new Battery(
-      new Vertex( Vector2.ZERO ), new Vertex( new Vector2( CCKCConstants.BATTERY_LENGTH, 0 ) ),
+      new Vertex( Vector2.ZERO, this.circuit.selectionProperty ), new Vertex( new Vector2( CCKCConstants.BATTERY_LENGTH, 0 ), this.circuit.selectionProperty ),
       new NumberProperty( 0 ), 'normal', Tandem.OPTIONAL
     );
     return this.createCircuitElementToolNode( batteryStringProperty, count,
@@ -242,8 +242,8 @@ export default class CircuitElementToolFactory {
    */
   public createACVoltageToolNode( count = 10 ): CircuitElementToolNode {
     const acSource = new ACVoltage(
-      new Vertex( Vector2.ZERO ),
-      new Vertex( new Vector2( AC_VOLTAGE_LENGTH, 0 ) ),
+      new Vertex( Vector2.ZERO, this.circuit.selectionProperty ),
+      new Vertex( new Vector2( AC_VOLTAGE_LENGTH, 0 ), this.circuit.selectionProperty ),
       new NumberProperty( 0 ),
       Tandem.OPTIONAL
     );
@@ -303,8 +303,8 @@ export default class CircuitElementToolFactory {
 
     // Create the icon model without using the PhetioGroup, so it will not be PhET-iO instrumented.
     const resistorModel = new Resistor(
-      new Vertex( Vector2.ZERO ),
-      new Vertex( new Vector2( resistorType.length, 0 ) ),
+      new Vertex( Vector2.ZERO, this.circuit.selectionProperty ),
+      new Vertex( new Vector2( resistorType.length, 0 ), this.circuit.selectionProperty ),
       resistorType,
       Tandem.OPTIONAL
     );
@@ -326,8 +326,8 @@ export default class CircuitElementToolFactory {
 
   public createFuseToolNode(): CircuitElementToolNode {
     const fuseModel = new Fuse(
-      new Vertex( Vector2.ZERO ),
-      new Vertex( new Vector2( CCKCConstants.RESISTOR_LENGTH, 0 ) ),
+      new Vertex( Vector2.ZERO, this.circuit.selectionProperty ),
+      new Vertex( new Vector2( CCKCConstants.RESISTOR_LENGTH, 0 ), this.circuit.selectionProperty ),
       Tandem.OPTIONAL
     );
     return this.createCircuitElementToolNode( fuseStringProperty, 10,
@@ -348,8 +348,8 @@ export default class CircuitElementToolFactory {
    */
   public createCapacitorToolNode( count = 10 ): CircuitElementToolNode {
     const capacitor = new Capacitor(
-      new Vertex( Vector2.ZERO ),
-      new Vertex( new Vector2( CCKCConstants.CAPACITOR_LENGTH, 0 ) ),
+      new Vertex( Vector2.ZERO, this.circuit.selectionProperty ),
+      new Vertex( new Vector2( CCKCConstants.CAPACITOR_LENGTH, 0 ), this.circuit.selectionProperty ),
       Tandem.OPTIONAL
     );
     return this.createCircuitElementToolNode( capacitorStringProperty, count,
@@ -364,8 +364,8 @@ export default class CircuitElementToolFactory {
 
   public createInductorToolNode(): CircuitElementToolNode {
     const inductorModel = new Inductor(
-      new Vertex( Vector2.ZERO ),
-      new Vertex( new Vector2( CCKCConstants.INDUCTOR_LENGTH, 0 ) ),
+      new Vertex( Vector2.ZERO, this.circuit.selectionProperty ),
+      new Vertex( new Vector2( CCKCConstants.INDUCTOR_LENGTH, 0 ), this.circuit.selectionProperty ),
       Tandem.OPTIONAL
     );
     const count = CCKCQueryParameters.moreInductors ? 10 : 1;
@@ -386,8 +386,8 @@ export default class CircuitElementToolFactory {
     return this.createCircuitElementToolNode( switchStringProperty, 5,
       ( tandem, viewTypeProperty ) => new SwitchNode( null, null,
         new Switch(
-          new Vertex( Vector2.ZERO ),
-          new Vertex( new Vector2( SWITCH_LENGTH, 0 ) ),
+          new Vertex( Vector2.ZERO, this.circuit.selectionProperty ),
+          new Vertex( new Vector2( SWITCH_LENGTH, 0 ), this.circuit.selectionProperty ),
           Tandem.OPTIONAL
         ), viewTypeProperty, tandem.createTandem( 'switchIcon' ), {
           isIcon: true
@@ -489,8 +489,8 @@ export default class CircuitElementToolFactory {
     return this.createCircuitElementToolNode( batteryStringProperty, 4,
       ( tandem, viewTypeProperty ) => new BatteryNode( null, null,
         new Battery(
-          new Vertex( Vector2.ZERO ),
-          new Vertex( new Vector2( CCKCConstants.BATTERY_LENGTH, 0 ) ),
+          new Vertex( Vector2.ZERO, this.circuit.selectionProperty ),
+          new Vertex( new Vector2( CCKCConstants.BATTERY_LENGTH, 0 ), this.circuit.selectionProperty ),
           new NumberProperty( 0 ),
           'high-voltage',
           Tandem.OPTIONAL, {

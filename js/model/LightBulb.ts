@@ -81,8 +81,8 @@ export default class LightBulb extends FixedCircuitElement {
     const points = LightBulb.createSamplePoints( position );
 
     // start vertex is at the bottom
-    const startVertex = icon ? new Vertex( points[ 0 ] ) : circuit.vertexGroup.createNextElement( points[ 0 ] );
-    const endVertex = icon ? new Vertex( points[ 1 ] ) : circuit.vertexGroup.createNextElement( points[ 1 ] );
+    const startVertex = icon ? new Vertex( points[ 0 ], circuit.selectionProperty ) : circuit.vertexGroup.createNextElement( points[ 0 ] );
+    const endVertex = icon ? new Vertex( points[ 1 ], circuit.selectionProperty ) : circuit.vertexGroup.createNextElement( points[ 1 ] );
     return { startVertex: startVertex, endVertex: endVertex };
   };
 

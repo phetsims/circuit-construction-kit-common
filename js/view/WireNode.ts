@@ -290,7 +290,7 @@ export default class WireNode extends CircuitElementNode {
       } );
       this.addInputListener( this.dragListener );
 
-      circuitLayerNode!.circuit.selectedCircuitElementProperty.link( markAsDirty );
+      circuitLayerNode!.circuit.selectionProperty.link( markAsDirty );
     }
     else {
       this.dragListener = null;
@@ -318,7 +318,7 @@ export default class WireNode extends CircuitElementNode {
       wire.startVertexProperty.unlink( doUpdateTransform );
       wire.endVertexProperty.unlink( doUpdateTransform );
 
-      circuitLayerNode && circuitLayerNode.circuit.selectedCircuitElementProperty.unlink( markAsDirty );
+      circuitLayerNode && circuitLayerNode.circuit.selectionProperty.unlink( markAsDirty );
       wire.interactiveProperty.unlink( updatePickable );
 
       wire.startPositionProperty.unlink( markAsDirty );
@@ -390,7 +390,7 @@ export default class WireNode extends CircuitElementNode {
     this.lineNodeParent.setMatrix( MATRIX );
 
     if ( this.circuitLayerNode ) {
-      const selectedCircuitElement = this.circuitLayerNode.circuit.selectedCircuitElementProperty.get();
+      const selectedCircuitElement = this.circuitLayerNode.circuit.selectionProperty.get();
       const isCurrentlyHighlighted = selectedCircuitElement === this.wire;
       this.highlightNode.visible = isCurrentlyHighlighted;
       if ( isCurrentlyHighlighted ) {

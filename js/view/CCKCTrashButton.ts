@@ -15,6 +15,7 @@ import CCKCRoundPushButton from './CCKCRoundPushButton.js';
 import Circuit from '../model/Circuit.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import { RoundPushButtonOptions } from '../../../sun/js/buttons/RoundPushButton.js';
+import CircuitElement from '../model/CircuitElement.js';
 
 export default class CCKCTrashButton extends CCKCRoundPushButton {
 
@@ -33,8 +34,8 @@ export default class CCKCTrashButton extends CCKCRoundPushButton {
       } ),
       listener: () => {
 
-        const circuitElement = circuit.selectedCircuitElementProperty.value;
-        if ( circuitElement ) {
+        const circuitElement = circuit.selectionProperty.value;
+        if ( circuitElement instanceof CircuitElement ) {
 
           // Only permit deletion when not being dragged, see https://github.com/phetsims/circuit-construction-kit-common/issues/414
           if ( !circuitElement.startVertexProperty.value.isDragged && !circuitElement.endVertexProperty.value.isDragged ) {

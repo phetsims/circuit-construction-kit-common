@@ -16,6 +16,7 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Battery from '../model/Battery.js';
+import CircuitElement from '../model/CircuitElement.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import Vertex from '../model/Vertex.js';
 import BatteryNode from './BatteryNode.js';
@@ -55,8 +56,8 @@ export default class ViewRadioButtonGroup extends RectangularRadioButtonGroup<Ci
     }, providedOptions );
 
     // Create a battery which can be used in the views
-    const startVertex = new Vertex( new Vector2( BATTERY_LENGTH / 2, 0 ) );
-    const endVertex = new Vertex( new Vector2( -BATTERY_LENGTH / 2, 0 ) );
+    const startVertex = new Vertex( new Vector2( BATTERY_LENGTH / 2, 0 ), new Property<CircuitElement | Vertex | null>( null ) );
+    const endVertex = new Vertex( new Vector2( -BATTERY_LENGTH / 2, 0 ), new Property<CircuitElement | Vertex | null>( null ) );
     const battery = new Battery( endVertex, startVertex, new NumberProperty( 0 ), 'normal', Tandem.OPTIONAL, {
       initialOrientation: 'left',
       numberOfDecimalPlaces: Battery.VOLTAGE_DECIMAL_PLACES

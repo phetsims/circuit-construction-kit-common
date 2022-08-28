@@ -20,6 +20,7 @@ import IOType from '../../../tandem/js/types/IOType.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import LocalizedString from '../../../chipper/js/LocalizedString.js';
 import TProperty from '../../../axon/js/TProperty.js';
+import CircuitElement from './CircuitElement.js';
 
 // Index counter for debugging
 let counter = 0;
@@ -47,10 +48,6 @@ export default class Vertex extends PhetioObject {
 
   // Relative voltage of the node, determined by Circuit.solve
   public readonly voltageProperty: Property<number>;
-
-  // after the user taps on a vertex it becomes selected, highlighting it and showing a 'cut' button. Multiple vertices
-  // can be selected on an iPad, unlike CircuitElements, which can only have one vertex selected at a time.
-  public readonly isSelectedProperty: Property<boolean>;
 
   // Some of the following properties overlap.  For example, if 'insideTrueBlackBox' is true, then the interactive
   // flag will be set to false when the circuit is in Circuit.InteractionMode.TEST mode.
@@ -87,12 +84,9 @@ export default class Vertex extends PhetioObject {
   private readonly localizedString: LocalizedString;
 
   public static VertexIO: IOType;
+  public readonly selectionProperty: TProperty<Vertex | CircuitElement | null>;
 
-  /**
-   * @param position - position in view coordinates
-   * @param [providedOptions]
-   */
-  public constructor( position: Vector2, providedOptions?: VertexOptions ) {
+  public constructor( position: Vector2, selectionProperty: TProperty<CircuitElement | Vertex | null>, providedOptions?: VertexOptions ) {
 
     const options = optionize<VertexOptions, SelfOptions, PhetioObjectOptions>()( {
       draggable: true, // whether the vertex can be dragged, false for Black Box elements
@@ -108,6 +102,8 @@ export default class Vertex extends PhetioObject {
     super( options );
 
     this.index = counter++;
+
+    this.selectionProperty = selectionProperty;
 
     this.vertexTandem = options.tandem;
 
@@ -127,10 +123,6 @@ export default class Vertex extends PhetioObject {
       units: 'V',
       phetioReadOnly: true,
       phetioHighFrequency: true
-    } );
-
-    this.isSelectedProperty = new BooleanProperty( false, {
-      tandem: options.tandem && options.tandem.createTandem( 'isSelectedProperty' )
     } );
 
     this.isDraggableProperty = new BooleanProperty( options.draggable, {
@@ -168,11 +160,14 @@ export default class Vertex extends PhetioObject {
   public override dispose(): void {
     this.positionProperty.dispose();
     this.voltageProperty.dispose();
-    this.isSelectedProperty.dispose();
     this.isDraggableProperty.dispose();
     this.isCuttableProperty.dispose();
     this.localizedString.dispose();
     super.dispose();
+  }
+
+  public isSelected(): boolean {
+    return this.selectionProperty.value === this;
   }
 }
 

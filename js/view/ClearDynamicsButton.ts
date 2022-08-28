@@ -17,6 +17,7 @@ import CCKCRoundPushButton from './CCKCRoundPushButton.js';
 import Circuit from '../model/Circuit.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CircuitElement from '../model/CircuitElement.js';
+import Vertex from '../model/Vertex.js';
 
 // constants
 const SCALE = 0.032;
@@ -48,7 +49,7 @@ export default class ClearDynamicsButton extends HBox {
         ]
       } ),
       listener: () => {
-        const dynamicCircuitElement = circuit.selectedCircuitElementProperty.value;
+        const dynamicCircuitElement = circuit.selectionProperty.value;
         if ( dynamicCircuitElement instanceof DynamicCircuitElement ) {
           dynamicCircuitElement.clear();
         }
@@ -64,7 +65,7 @@ export default class ClearDynamicsButton extends HBox {
 
     // This is reused across all batteries.  The button itself can be hidden by PhET-iO customization, but the parent
     // node is another gate for the visibility.
-    circuit.selectedCircuitElementProperty.link( ( newCircuitElement: CircuitElement | null, oldCircuitElement: CircuitElement | null ) => {
+    circuit.selectionProperty.link( ( newCircuitElement: CircuitElement | Vertex | null, oldCircuitElement: CircuitElement | Vertex | null ) => {
       oldCircuitElement instanceof DynamicCircuitElement && oldCircuitElement.isClearableProperty.unlink( isClearableListener );
       newCircuitElement instanceof DynamicCircuitElement && newCircuitElement.isClearableProperty.link( isClearableListener );
     } );

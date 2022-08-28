@@ -22,6 +22,7 @@ import Circuit from '../model/Circuit.js';
 import ACVoltage from '../model/ACVoltage.js';
 import Multilink, { UnknownMultilink } from '../../../axon/js/Multilink.js';
 import PickRequired from '../../../phet-core/js/types/PickRequired.js';
+import Vertex from '../model/Vertex.js';
 
 type PhaseShiftControlOptions = VBoxOptions & PickRequired<VBoxOptions, 'tandem'>;
 export default class PhaseShiftControl extends VBox {
@@ -72,7 +73,7 @@ export default class PhaseShiftControl extends VBox {
 
     // This is reused across all instances. The control itself can be hidden by PhET-iO customization, but the parent
     // node is another gate for the visibility.
-    circuit.selectedCircuitElementProperty.link( ( newCircuitElement: CircuitElement | null, oldCircuitElement: CircuitElement | null ) => {
+    circuit.selectionProperty.link( ( newCircuitElement: CircuitElement | Vertex | null, oldCircuitElement: CircuitElement | Vertex | null ) => {
       oldCircuitElement instanceof ACVoltage && multilink && Multilink.unmultilink( multilink );
       if ( newCircuitElement instanceof ACVoltage ) {
         multilink = Multilink.multilink( [ newCircuitElement.isPhaseEditableProperty, newCircuitElement.isEditableProperty ], listener );

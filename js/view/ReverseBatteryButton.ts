@@ -14,6 +14,7 @@ import CCKCRoundPushButton from './CCKCRoundPushButton.js';
 import Circuit from '../model/Circuit.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CircuitElement from '../model/CircuitElement.js';
+import Vertex from '../model/Vertex.js';
 
 // constants
 const ARROW_ICON_SCALE = 0.035;
@@ -61,7 +62,7 @@ export default class ReverseBatteryButton extends HBox {
           ]
         } ),
         listener: () => {
-          const battery = circuit.selectedCircuitElementProperty.value;
+          const battery = circuit.selectionProperty.value;
 
           if ( battery instanceof Battery ) {
             circuit.flip( battery );
@@ -80,7 +81,7 @@ export default class ReverseBatteryButton extends HBox {
 
     // This is reused across all batteries.  The button itself can be hidden by PhET-iO customization, but the parent
     // node is another gate for the visibility.
-    circuit.selectedCircuitElementProperty.link( ( newCircuitElement: CircuitElement | null, oldCircuitElement: CircuitElement | null ) => {
+    circuit.selectionProperty.link( ( newCircuitElement: CircuitElement | Vertex | null, oldCircuitElement: CircuitElement | Vertex | null ) => {
       oldCircuitElement instanceof Battery && oldCircuitElement.isReversibleProperty.unlink( isReversibleListener );
       newCircuitElement instanceof Battery && newCircuitElement.isReversibleProperty.link( isReversibleListener );
     } );

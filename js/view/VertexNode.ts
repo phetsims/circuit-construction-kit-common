@@ -171,7 +171,7 @@ export default class VertexNode extends Node {
     vertex.attachableProperty.link( this.updateStrokeListener );
 
     this.updateSelectedListener = this.updateSelected.bind( this );
-    vertex.isSelectedProperty.link( this.updateSelectedListener );
+    vertex.selectionProperty.link( this.updateSelectedListener );
     vertex.isCuttableProperty.link( this.updateSelectedListener );
 
     this.updateMoveToFront = this.moveToFront.bind( this );
@@ -208,11 +208,11 @@ export default class VertexNode extends Node {
         // Only show on a tap, not on every drag.
         if ( vertex.interactiveProperty.get() && latestPoint!.distance( initialPoint! ) < CCKCConstants.TAP_THRESHOLD ) {
 
-          vertex.isSelectedProperty.set( true );
+          vertex.selectionProperty.value = vertex;
 
           const dismissListener = ( event: SceneryEvent ) => {
             if ( !_.includes( event.trail.nodes, this ) && !_.includes( event.trail.nodes, cutButton ) ) {
-              vertex.isSelectedProperty.set( false );
+              vertex.selectionProperty.value = null;
               this.clearClickListeners();
             }
           };
@@ -223,7 +223,6 @@ export default class VertexNode extends Node {
         else {
 
           // Deselect after dragging so a grayed-out cut button doesn't remain when open vertex is connected
-          vertex.isSelectedProperty.set( false );
           this.clearClickListeners();
         }
       }
@@ -241,7 +240,7 @@ export default class VertexNode extends Node {
     vertex.positionProperty.link( this.updateVertexNodePositionListener );
 
     // When showing the highlight, make sure it shows in the right place (not updated while invisible)
-    vertex.isSelectedProperty.link( this.updateVertexNodePositionListener );
+    vertex.selectionProperty.link( this.updateVertexNodePositionListener );
   }
 
   public override dispose(): void {
@@ -250,8 +249,7 @@ export default class VertexNode extends Node {
     const cutButton = this.circuitLayerNode.cutButton;
     const circuitLayerNode = this.circuitLayerNode;
     vertex.positionProperty.unlink( this.updateVertexNodePositionListener );
-    vertex.isSelectedProperty.unlink( this.updateVertexNodePositionListener );
-    vertex.isSelectedProperty.unlink( this.updateSelectedListener );
+    vertex.selectionProperty.unlink( this.updateVertexNodePositionListener );
     vertex.interactiveProperty.unlink( this.updatePickableListener );
     vertex.relayerEmitter.removeListener( this.updateMoveToFront );
     CCKCUtils.setInSceneGraph( false, circuitLayerNode.buttonLayer, cutButton );
@@ -300,7 +298,7 @@ export default class VertexNode extends Node {
    * Update whether the vertex is shown as selected.
    */
   private updateSelected(): void {
-    const selected = this.vertex.isSelectedProperty.value;
+    const selected = this.vertex.isSelected();
     const neighborCircuitElements = this.circuit.getNeighborCircuitElements( this.vertex );
 
     if ( selected ) {
@@ -378,13 +376,13 @@ export default class VertexNode extends Node {
     this.translation = position;
 
     // Update the position of the highlight, but only if it is visible
-    if ( this.vertex.isSelectedProperty.get() ) {
+    if ( this.vertex.isSelected() ) {
       this.highlightNode.translation = position;
     }
     this.updateReadoutTextPosition && this.updateReadoutTextPosition();
 
     // Update the cut button position, but only if the cut button is showing (to save on CPU)
-    this.vertex.isSelectedProperty.get() && this.updateCutButtonPosition();
+    this.vertex.isSelected() && this.updateCutButtonPosition();
   }
 
   /**

@@ -15,6 +15,7 @@ import Circuit from '../model/Circuit.js';
 import Fuse from '../model/Fuse.js';
 import CCKCRoundPushButton from './CCKCRoundPushButton.js';
 import CircuitElement from '../model/CircuitElement.js';
+import Vertex from '../model/Vertex.js';
 
 export default class RepairFuseButton extends HBox {
 
@@ -36,7 +37,7 @@ export default class RepairFuseButton extends HBox {
       touchAreaDilation: 5, // radius dilation for touch area
       content: icon,
       listener: () => {
-        const fuse = circuit.selectedCircuitElementProperty.value;
+        const fuse = circuit.selectionProperty.value;
 
         // eslint-disable-next-line no-simple-type-checking-assertions
         assert && assert( fuse instanceof Fuse );
@@ -55,7 +56,7 @@ export default class RepairFuseButton extends HBox {
 
     // This is reused across all instances.  The button itself can be hidden by PhET-iO customization, but the parent
     // node is another gate for the visibility.
-    circuit.selectedCircuitElementProperty.link( ( newCircuitElement: CircuitElement | null, oldCircuitElement: CircuitElement | null ) => {
+    circuit.selectionProperty.link( ( newCircuitElement: CircuitElement | Vertex | null, oldCircuitElement: CircuitElement | Vertex | null ) => {
       oldCircuitElement instanceof Fuse && oldCircuitElement.isRepairableProperty.unlink( isRepairableListener );
       newCircuitElement instanceof Fuse && newCircuitElement.isRepairableProperty.link( isRepairableListener );
 

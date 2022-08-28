@@ -14,6 +14,7 @@ import Switch from '../model/Switch.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CircuitElement from '../model/CircuitElement.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import Vertex from '../model/Vertex.js';
 
 const theSwitchIsClosedStringProperty = circuitConstructionKitCommonStrings.theSwitchIsClosedProperty;
 const theSwitchIsOpenStringProperty = circuitConstructionKitCommonStrings.theSwitchIsOpenProperty;
@@ -45,7 +46,7 @@ export default class SwitchReadoutNode extends Node {
     };
 
     // This is reused across all switches
-    circuit.selectedCircuitElementProperty.link( ( newCircuitElement: CircuitElement | null, oldCircuitElement: CircuitElement | null ) => {
+    circuit.selectionProperty.link( ( newCircuitElement: CircuitElement | Vertex | null, oldCircuitElement: CircuitElement | Vertex | null ) => {
       oldCircuitElement instanceof Switch && oldCircuitElement.closedProperty.unlink( closedListener );
       newCircuitElement instanceof Switch && newCircuitElement.closedProperty.link( closedListener );
     } );

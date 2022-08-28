@@ -49,6 +49,7 @@ import CurrentSense from './CurrentSense.js';
 import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import TEmitter from '../../../axon/js/TEmitter.js';
+import OrIO from '../../../tandem/js/types/OrIO.js';
 
 // constants
 const SNAP_RADIUS = 30; // For two vertices to join together, they must be this close, in view coordinates
@@ -124,7 +125,7 @@ export default class Circuit {
   // selection is `null`.  Once this simulation is instrumented for a11y, the focus property can be used to track this.
   // Note that vertex selection is done via Vertex.isSelectedProperty.  These strategies can be unified when we work on
   // a11y.
-  public readonly selectedCircuitElementProperty: Property<CircuitElement | null>;
+  public readonly selectionProperty: Property<CircuitElement | Vertex | null>;
 
   // whether physical characteristics have changed and warrant solving for currents and voltages
   public dirty: boolean;
@@ -223,8 +224,8 @@ export default class Circuit {
       this.removeVertexIfOrphaned( circuitElement.endVertexProperty.get() );
 
       // Clear the selected element property so that the Edit panel for the element will disappear
-      if ( this.selectedCircuitElementProperty.get() === circuitElement ) {
-        this.selectedCircuitElementProperty.set( null );
+      if ( this.selectionProperty.get() === circuitElement ) {
+        this.selectionProperty.set( null );
       }
 
       circuitElement.getCircuitProperties().forEach( property => property.unlink( markDirtyListener ) );
@@ -240,13 +241,18 @@ export default class Circuit {
     this.vertexDroppedEmitter = new Emitter( { parameters: [ { valueType: Vertex } ] } );
     this.componentEditedEmitter = new Emitter();
 
+    this.selectionProperty = new Property<CircuitElement | Vertex | null>( null, {
+      tandem: tandem.createTandem( 'selectionProperty' ),
+      phetioValueType: NullableIO( ReferenceIO( OrIO( [ CircuitElement.CircuitElementIO, Vertex.VertexIO ] ) ) )
+    } );
+
     const emitCircuitChanged = () => {
       this.dirty = true;
       this.circuitChangedEmitter.emit();
     };
 
     this.vertexGroup = new PhetioGroup( ( tandem, position ) => {
-      return new Vertex( position, {
+      return new Vertex( position, this.selectionProperty, {
         tandem: tandem,
         phetioType: Vertex.VertexIO
       } );
@@ -262,20 +268,6 @@ export default class Circuit {
 
       const filtered = this.vertexGroup.filter( candidateVertex => vertex === candidateVertex );
       assert && assert( filtered.length === 1, 'should only have one copy of each vertex' );
-
-      // if one vertex becomes selected, deselect the other vertices and circuit elements
-      const vertexSelectedPropertyListener = ( selected: boolean ) => {
-        if ( selected ) {
-          this.vertexGroup.forEach( v => {
-            if ( v !== vertex ) {
-              v.isSelectedProperty.set( false );
-            }
-          } );
-          this.selectedCircuitElementProperty.set( null );
-        }
-      };
-      vertex.vertexSelectedPropertyListener = vertexSelectedPropertyListener;
-      vertex.isSelectedProperty.link( vertexSelectedPropertyListener );
     } );
 
     // Stop watching the vertex positions for updating the voltmeter and ammeter
@@ -287,22 +279,6 @@ export default class Circuit {
 
       // More sanity checks for the listeners
       assert && assert( !vertex.positionProperty.hasListener( emitCircuitChanged ), 'Listener should be removed' );
-
-      vertex.isSelectedProperty.unlink( vertex.vertexSelectedPropertyListener! );
-      vertex.vertexSelectedPropertyListener = null;
-    } );
-
-    this.selectedCircuitElementProperty = new Property<CircuitElement | null>( null, {
-      tandem: tandem.createTandem( 'selectedCircuitElementProperty' ),
-      phetioValueType: NullableIO( ReferenceIO( CircuitElement.CircuitElementIO ) )
-    } );
-
-    this.selectedCircuitElementProperty.link( selectedCircuitElement => {
-
-      // When a circuit element is selected, deselect all the vertices
-      if ( selectedCircuitElement ) {
-        this.vertexGroup.forEach( vertex => vertex.isSelectedProperty.set( false ) );
-      }
     } );
 
     this.stepActions = [];
@@ -349,7 +325,7 @@ export default class Circuit {
     // hence not transmitted in the state.
     const createVertices: ( l: number ) => [ Vertex, Vertex ] = ( length: number ) => {
       const startPosition = new Vector2( -1000, 0 );
-      return [ new Vertex( startPosition ), new Vertex( startPosition.plusXY( length, 0 ) ) ];
+      return [ new Vertex( startPosition, this.selectionProperty ), new Vertex( startPosition.plusXY( length, 0 ), this.selectionProperty ) ];
     };
 
     this.wireGroup = new PhetioGroup( ( tandem, startVertex, endVertex ) => {
@@ -628,7 +604,7 @@ export default class Circuit {
   // Remove all elements from the circuit.
   private clear(): void {
 
-    this.selectedCircuitElementProperty.reset();
+    this.selectionProperty.reset();
 
     // Vertices must be cleared from the black box screen--it's not handled by clearing the circuit elements
     if ( this.blackBoxStudy ) {
@@ -1284,8 +1260,13 @@ export default class Circuit {
 
   // Returns the selected Vertex or null if none is selected
   public getSelectedVertex(): Vertex | null {
-    const selectedVertex = _.find( this.vertexGroup.getArray(), vertex => vertex.isSelectedProperty.get() );
-    return selectedVertex || null;
+    const selection = this.selectionProperty.value;
+    if ( selection instanceof Vertex ) {
+      return selection;
+    }
+    else {
+      return null;
+    }
   }
 
   /**
@@ -1577,7 +1558,7 @@ export default class Circuit {
     this.wireResistivityProperty.reset();
     this.sourceResistanceProperty.reset();
     this.chargeAnimator.reset();
-    this.selectedCircuitElementProperty.reset();
+    this.selectionProperty.reset();
   }
 }
 

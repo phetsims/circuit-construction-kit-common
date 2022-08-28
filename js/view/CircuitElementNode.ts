@@ -236,7 +236,7 @@ export default abstract class CircuitElementNode extends Node {
 
     if ( !this.circuitElement.isDisposed && latestPoint && latestPoint.distance( startPoint ) < CCKCConstants.TAP_THRESHOLD ) {
 
-      circuitLayerNode.circuit.selectedCircuitElementProperty.set( this.circuitElement );
+      circuitLayerNode.circuit.selectionProperty.set( this.circuitElement );
 
       // focus the element for keyboard interaction
       // @ts-ignore
@@ -264,7 +264,7 @@ export default abstract class CircuitElementNode extends Node {
           if ( this.disposeEmitterCircuitElementNode.hasListener( disposeListener ) ) {
             this.disposeEmitterCircuitElementNode.removeListener( disposeListener );
           }
-          circuitLayerNode.circuit.selectedCircuitElementProperty.set( null );
+          circuitLayerNode.circuit.selectionProperty.set( null );
         }
       };
 
@@ -279,7 +279,7 @@ export default abstract class CircuitElementNode extends Node {
     else {
 
       // deselect after dragging
-      circuitLayerNode.circuit.selectedCircuitElementProperty.set( null );
+      circuitLayerNode.circuit.selectionProperty.set( null );
     }
   }
 }
