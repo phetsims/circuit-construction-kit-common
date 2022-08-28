@@ -170,11 +170,17 @@ export default class SensorToolbox extends CCKCPanel {
     // Labels underneath the sensor tool nodes
     const voltmeterText = new Text( voltmeterString, {
       maxWidth: 60,
-      tandem: tandem.createTandem( 'voltmeterLabel' )
+      tandem: tandem.createTandem( 'voltmeterLabel' ),
+      visiblePropertyOptions: {
+        phetioReadOnly: true
+      }
     } );
     const ammeterText = new Text( options.showSeriesAmmeters && options.showNoncontactAmmeters ? ammetersString : ammeterString, {
       maxWidth: 60,
-      tandem: tandem.createTandem( 'ammeterLabel' )
+      tandem: tandem.createTandem( 'ammeterLabel' ),
+      visiblePropertyOptions: {
+        phetioReadOnly: true
+      }
     } );
 
     // Alter the visibility of the labels when the labels checkbox is toggled.
@@ -272,12 +278,22 @@ export default class SensorToolbox extends CCKCPanel {
 
       const voltageChartToolIcon = createChartToolIcon( voltageChartNodes,
         voltageChartNodeIconContents,
-        new Text( voltageChartString, { maxWidth: 60 } ),
+        new Text( voltageChartString, {
+          maxWidth: 60,
+          visiblePropertyOptions: {
+            phetioReadOnly: true
+          }
+        } ),
         tandem.createTandem( 'voltageChartToolIcon' )
       );
       const currentChartToolIcon = createChartToolIcon( currentChartNodes,
         new CurrentChartNode( circuitLayerNode, new NumberProperty( 0 ), everything, { scale: scale, tandem: Tandem.OPT_OUT } ),
-        new Text( currentChartString, { maxWidth: 60 } ),
+        new Text( currentChartString, {
+          maxWidth: 60,
+          visiblePropertyOptions: {
+            phetioReadOnly: true
+          }
+        } ),
         tandem.createTandem( 'currentChartToolIcon' )
       );
       voltageChartToolIcon.centerX = voltmeterToolIcon.centerX;
