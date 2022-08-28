@@ -24,15 +24,15 @@ export default class CCKCGeneralPreferencesContentNode extends VBox {
 
     const textOptions = PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS;
     const schematicStandardRadioButtonGroup = new VerticalAquaRadioButtonGroup<SchematicType>( schematicTypeProperty, [ {
-      node: new Text( circuitConstructionKitCommonStrings.ieee, textOptions ),
+      node: new Text( circuitConstructionKitCommonStrings.ieeeProperty, textOptions ),
       value: SchematicType.IEEE,
       tandemName: 'ieeeRadioButton'
     }, {
-      node: new Text( circuitConstructionKitCommonStrings.iec, textOptions ),
+      node: new Text( circuitConstructionKitCommonStrings.iecProperty, textOptions ),
       value: SchematicType.IEC,
       tandemName: 'iecRadioButton'
     }, {
-      node: new Text( circuitConstructionKitCommonStrings.british, textOptions ),
+      node: new Text( circuitConstructionKitCommonStrings.britishProperty, textOptions ),
       value: SchematicType.BRITISH,
       tandemName: 'britishRadioButton'
     } ], {
@@ -43,11 +43,11 @@ export default class CCKCGeneralPreferencesContentNode extends VBox {
     } );
 
     const ammeterReadoutRadioButtonGroup = new VerticalAquaRadioButtonGroup<AmmeterReadoutType>( ammeterReadoutTypeProperty, [ {
-      node: new Text( circuitConstructionKitCommonStrings.magnitude, textOptions ),
+      node: new Text( circuitConstructionKitCommonStrings.magnitudeProperty, textOptions ),
       value: AmmeterReadoutType.MAGNITUDE,
       tandemName: 'magnitudeRadioButton'
     }, {
-      node: new Text( circuitConstructionKitCommonStrings.signed, textOptions ),
+      node: new Text( circuitConstructionKitCommonStrings.signedProperty, textOptions ),
       value: AmmeterReadoutType.SIGNED,
       tandemName: 'signedRadioButton'
     } ], {
@@ -62,10 +62,10 @@ export default class CCKCGeneralPreferencesContentNode extends VBox {
       spacing: PreferencesDialog.CONTENT_SPACING,
       tandem: tandem,
       children: [
-        new Text( circuitConstructionKitCommonStrings.schematicStandard, PreferencesDialog.PANEL_SECTION_LABEL_OPTIONS ),
+        new Text( circuitConstructionKitCommonStrings.schematicStandardProperty, PreferencesDialog.PANEL_SECTION_LABEL_OPTIONS ),
         schematicStandardRadioButtonGroup,
         new HSeparator( 200 ),
-        new Text( circuitConstructionKitCommonStrings.ammeterReadout, PreferencesDialog.PANEL_SECTION_LABEL_OPTIONS ),
+        new Text( circuitConstructionKitCommonStrings.ammeterReadoutProperty, PreferencesDialog.PANEL_SECTION_LABEL_OPTIONS ),
         ammeterReadoutRadioButtonGroup
       ]
     } );
