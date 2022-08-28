@@ -136,7 +136,7 @@ export default class SensorToolbox extends CCKCPanel {
       Tandem.OPTIONAL
     );
     const seriesAmmeterNodeIcon = new SeriesAmmeterNode( null, null, seriesAmmeterIcon,
-      circuit.includeLabElements ? tandem.createTandem( 'seriesAmmeterNodeIcon' ) : Tandem.OPT_OUT, {
+      circuit.includeLabElements ? tandem.createTandem( 'seriesAmmeterNodeIcon' ) : Tandem.OPT_OUT, options.showResultsProperty, {
         isIcon: true
       } );
     const createSeriesAmmeter = ( position: Vector2 ) => {

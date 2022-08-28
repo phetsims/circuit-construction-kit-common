@@ -6,8 +6,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import { Color, Node, Rectangle, RectangleOptions, Text, VBox } from '../../../scenery/js/imports.js';
-import Panel from '../../../sun/js/Panel.js';
+import { Node, Rectangle, RectangleOptions } from '../../../scenery/js/imports.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCUtils from '../CCKCUtils.js';
 import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
@@ -22,6 +21,10 @@ import ammeterReadoutTypeProperty from './ammeterReadoutTypeProperty.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import CurrentSense from '../model/CurrentSense.js';
+import ProbeTextNode from './ProbeTextNode.js';
+import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import Panel from '../../../sun/js/Panel.js';
+import Property from '../../../axon/js/Property.js';
 
 const currentStringProperty = circuitConstructionKitCommonStrings.currentProperty;
 
@@ -29,10 +32,6 @@ const currentStringProperty = circuitConstructionKitCommonStrings.currentPropert
 const PANEL_HEIGHT = 40;
 const PANEL_WIDTH = CCKCConstants.SERIES_AMMETER_LENGTH;
 const ORANGE = '#f39033';
-
-// Widest text to use for max width, hardcoded to use english, otherwise uses lengthened translation strings which
-// may already be too long, see https://github.com/phetsims/circuit-construction-kit-common/issues/419
-const WIDEST_LABEL = '99.99 A';
 
 const CORNER_RADIUS = 4;
 
@@ -54,24 +53,15 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
   private readonly frontPanelContainer: Node;
   private readonly disposeSeriesAmmeterNode: () => void;
 
-  /**
-   * @param screenView - main screen view, null for isIcon
-   * @param circuitLayerNode, null for icon
-   * @param seriesAmmeter
-   * @param tandem
-   * @param [providedOptions]
-   */
   public constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, seriesAmmeter: SeriesAmmeter,
-                      tandem: Tandem, providedOptions?: FixedCircuitElementNodeOptions ) {
+                      tandem: Tandem, isValueDepictionEnabledProperty: TReadOnlyProperty<boolean>, providedOptions?: FixedCircuitElementNodeOptions ) {
 
-    // Charges go behind this panel to give the appearance they go through the ammeter
-    const readoutText = new Text( WIDEST_LABEL, { fontSize: 15 } );
-    readoutText.maxWidth = readoutText.width;
-    const maxBounds = readoutText.bounds.copy();
+    const textProperty = new Property( MathSymbols.NO_VALUE );
 
-    // Margins within the numeric readout text box
-    const textPanelMarginX = 3;
-    const textPanelMarginY = 1;
+    const probeTextNode = new ProbeTextNode(
+      textProperty, isValueDepictionEnabledProperty, currentStringProperty, tandem.createTandem( 'probeTextNode' ), {
+        seriesAmmeter: true
+      } );
 
     /**
      * Update the text in the numeric readout text box.  Shows '?' if disconnected.
@@ -79,7 +69,7 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
     const updateText = () => {
       let readout = MathSymbols.NO_VALUE;
 
-      // If it is not an icon and connected at both sides, show the current, otherwise show '?'
+      // If it is not an icon and connected at both sides, show the current, otherwise show '-'
       if ( screenView ) {
 
         const circuit = screenView.model.circuit;
@@ -93,11 +83,7 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
         }
       }
 
-      readoutText.setText( readout );
-
-      // Center the text in the panel
-      readoutText.centerX = ( maxBounds.width + textPanelMarginX * 2 ) / 2;
-      readoutText.centerY = ( maxBounds.height + textPanelMarginY * 2 ) / 2;
+      textProperty.value = readout;
     };
 
     seriesAmmeter.currentProperty.link( updateText );
@@ -106,30 +92,6 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
     seriesAmmeter.currentSenseProperty.lazyLink( updateText );
     ammeterReadoutTypeProperty.lazyLink( updateText );
     circuitLayerNode && circuitLayerNode.circuit.circuitChangedEmitter.addListener( updateText );
-
-    // The readout panel is in front of the series ammeter node, and makes it look like the charges flow through the
-    // series ammeter
-    const readoutPanel = new Panel( new VBox( {
-      children: [
-        new Text( currentStringProperty, { fontSize: 12, maxWidth: 54 } ),
-        new Rectangle( 0, 0, maxBounds.width + textPanelMarginX * 2, maxBounds.height + textPanelMarginY * 2, {
-          cornerRadius: 4,
-          stroke: Color.BLACK,
-          fill: Color.WHITE,
-          lineWidth: 0.75,
-          children: [
-            readoutText
-          ]
-        } )
-      ]
-    } ), {
-      pickable: false,
-      fill: ORANGE,
-      stroke: null,
-      xMargin: 4,
-      yMargin: 0,
-      tandem: tandem.createTandem( 'readoutPanel' )
-    } );
 
     // This node only has a lifelike representation because it is a sensor
     const lifelikeNode = new Node( {
@@ -156,9 +118,6 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
     // Center vertically to match the FixedCircuitElementNode assumption that origin is center left
     lifelikeNode.centerY = 0;
 
-    // Center the readout within the main body of the sensor
-    readoutPanel.center = lifelikeNode.center;
-
     super(
       screenView,
       circuitLayerNode,
@@ -172,12 +131,19 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
 
     // the panel to be shown in front for z-ordering.  Wrap centered in a child node to make the layout
     // in updateRender trivial.
-    this.frontPanelContainer = new Node( {
-      children: [ readoutPanel ]
+    this.frontPanelContainer = new Panel( probeTextNode, {
+      fill: ORANGE,
+      stroke: null,
+      xMargin: 10,
+      yMargin: 1,
+      pickable: false
     } );
 
     if ( providedOptions && providedOptions.isIcon ) {
-      lifelikeNode.addChild( this.frontPanelContainer.mutate( { centerY: lifelikeNode.height / 2 - 2 } ) );
+      lifelikeNode.addChild( this.frontPanelContainer.mutate( {
+        centerX: lifelikeNode.width / 2,
+        centerY: lifelikeNode.height / 2 - 2
+      } ) );
     }
     else {
       assert && assert( !!circuitLayerNode );
@@ -202,7 +168,7 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
       }
       lifelikeNode.dispose();
       this.frontPanelContainer.dispose();
-      readoutPanel.dispose();
+      probeTextNode.dispose();
       circuitLayerNode && circuitLayerNode.circuit.circuitChangedEmitter.removeListener( updateText );
     };
   }
@@ -218,7 +184,8 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
    */
   public override updateRender(): void {
     super.updateRender();
-    this.frontPanelContainer.setMatrix( this.contentNode.getMatrix() );
+    this.frontPanelContainer.setMatrix( this.contentNode.getMatrix() ); // For rotation
+    this.frontPanelContainer.center = this.center; // for translation
   }
 }
 

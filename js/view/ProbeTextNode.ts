@@ -7,16 +7,22 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import merge from '../../../phet-core/js/merge.js';
 import { Color, Node, Rectangle, Text, VBox, VBoxOptions } from '../../../scenery/js/imports.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import optionize from '../../../phet-core/js/optionize.js';
+import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
 
 // constants
 const TEXT_BOX_WIDTH = 140;
+
+type SelfOptions = {
+  seriesAmmeter?: boolean;
+};
+
+export type ProbeTextNodeOptions = StrictOmit<SelfOptions & VBoxOptions, 'children'>;
 
 export default class ProbeTextNode extends VBox {
 
@@ -27,15 +33,17 @@ export default class ProbeTextNode extends VBox {
    * @param tandem
    * @param [providedOptions]
    */
-  public constructor( textProperty: TReadOnlyProperty<string>, showResultsProperty: ReadOnlyProperty<boolean>, title: TReadOnlyProperty<string>, tandem: Tandem,
-                      providedOptions?: VBoxOptions ) {
+  public constructor( textProperty: TReadOnlyProperty<string>, showResultsProperty: TReadOnlyProperty<boolean>, title: TReadOnlyProperty<string>, tandem: Tandem,
+                      providedOptions?: ProbeTextNodeOptions ) {
 
-    providedOptions = merge( {
-      spacing: 3
+    const options = optionize<ProbeTextNodeOptions, SelfOptions, VBoxOptions>()( {
+      spacing: providedOptions && providedOptions.seriesAmmeter ? 0.5 : 3,
+      seriesAmmeter: false,
+      pickable: false
     }, providedOptions );
 
     const readout = new Text( textProperty, {
-      fontSize: 40,
+      fontSize: options.seriesAmmeter ? 46 : 40,
       maxWidth: TEXT_BOX_WIDTH - 20,
       tandem: tandem.createTandem( 'readoutText' ),
       textPropertyOptions: {
@@ -71,15 +79,19 @@ export default class ProbeTextNode extends VBox {
     showResultsProperty.linkAttribute( readout, 'visible' );
 
     // set the children
-    providedOptions.children = [ new Text( title, {
-      fontSize: 42,
+    options.children = [ new Text( title, {
+      fontSize: options.seriesAmmeter ? 33 : 42,
       maxWidth: TEXT_BOX_WIDTH,
       tandem: tandem.createTandem( 'titleText' )
     } ), new Node( {
       children: [ textBox, readout ]
     } ) ];
 
-    super( providedOptions );
+    if ( options.seriesAmmeter ) {
+      options.scale = 0.37;
+    }
+
+    super( options );
   }
 }
 

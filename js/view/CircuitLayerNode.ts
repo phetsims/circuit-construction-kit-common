@@ -392,7 +392,8 @@ export default class CircuitLayerNode extends Node {
           supportsDynamicState: false
         } ) );
     initializeCircuitElementType( ( e: CircuitElement ) => e instanceof SeriesAmmeter, this.fixedCircuitElementLayer,
-      new PhetioGroup<CircuitElementNode, [ CircuitElement ]>( ( tandem: Tandem, circuitElement: CircuitElement ) => new SeriesAmmeterNode( screenView, this, circuitElement as SeriesAmmeter, tandem ),
+      new PhetioGroup<CircuitElementNode, [ CircuitElement ]>( ( tandem: Tandem, circuitElement: CircuitElement ) => new SeriesAmmeterNode( screenView, this, circuitElement as SeriesAmmeter, tandem,
+          this.model.isValueDepictionEnabledProperty ),
         () => [ this.circuit.seriesAmmeterGroup.archetype ], {
           phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
           tandem: circuit.includeLabElements ? tandem.createTandem( 'seriesAmmeterNodeGroup' ) : Tandem.OPT_OUT,
