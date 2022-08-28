@@ -71,6 +71,11 @@ export default class CurrentChartNode extends CCKCChartNode {
 
   public sampleLatestValue(): void {
 
+    // Avoid trouble during fuzzboard startup
+    if ( this.lastStepTime === null ) {
+      return;
+    }
+
     this.series.pop();
     const current = this.circuitLayerNode.getCurrent( this.probeNode1 );
     assert && assert( typeof this.lastStepTime === 'number' );

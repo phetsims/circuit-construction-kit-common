@@ -91,6 +91,11 @@ export default class VoltageChartNode extends CCKCChartNode {
 
   public sampleLatestValue(): void {
 
+    // Avoid trouble during fuzzboard startup
+    if ( this.lastStepTime === null ) {
+      return;
+    }
+
     this.series.pop();
     assert && assert( typeof this.lastStepTime === 'number' );
     if ( typeof this.lastStepTime === 'number' ) {
