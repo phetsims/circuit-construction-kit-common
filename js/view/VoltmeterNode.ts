@@ -336,6 +336,10 @@ export default class VoltmeterNode extends Node {
       this.mouseArea = this.bounds.copy();
       this.cursor = 'pointer';
     }
+
+    this.addLinkedElement( voltmeter, {
+      tandem: this.tandem.createTandem( 'voltmeter' )
+    } );
   }
 
   /**

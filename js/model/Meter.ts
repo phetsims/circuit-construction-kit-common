@@ -15,8 +15,9 @@ import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import PhetioObject from '../../../tandem/js/PhetioObject.js';
 
-export default class Meter {
+export default class Meter extends PhetioObject {
   public phetioIndex: number;
 
   // indicates whether the meter is in the play area
@@ -36,6 +37,11 @@ export default class Meter {
    * @param phetioIndex - for assigning corresponding tandems
    */
   public constructor( tandem: Tandem, phetioIndex: number ) {
+
+    super( {
+      tandem: tandem,
+      phetioState: false
+    } );
 
     this.phetioIndex = phetioIndex;
     this.visibleProperty = new BooleanProperty( false, {

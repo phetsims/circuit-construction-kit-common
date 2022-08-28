@@ -230,6 +230,10 @@ export default class AmmeterNode extends Node {
       this.mouseArea = this.bounds.copy();
       this.cursor = 'pointer';
     }
+
+    this.addLinkedElement( ammeter, {
+      tandem: tandem.createTandem( 'ammeter' )
+    } );
   }
 
   /**
