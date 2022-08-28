@@ -37,7 +37,10 @@ export default class ProbeTextNode extends VBox {
     const readout = new Text( textProperty, {
       fontSize: 40,
       maxWidth: TEXT_BOX_WIDTH - 20,
-      tandem: tandem.createTandem( 'readoutText' )
+      tandem: tandem.createTandem( 'readoutText' ),
+      textPropertyOptions: {
+        phetioReadOnly: true
+      }
     } );
 
     const textBox = new Rectangle( 0, 0, TEXT_BOX_WIDTH, 52, {
