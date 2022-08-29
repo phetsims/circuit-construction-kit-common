@@ -337,6 +337,7 @@ export default abstract class CircuitElement extends PhetioObject {
     this.startVertexProperty.dispose();
     this.endVertexProperty.dispose();
     this.labelTextProperty.dispose();
+    this.currentProperty.dispose();
 
     super.dispose();
   }
