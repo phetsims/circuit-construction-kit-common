@@ -54,7 +54,7 @@ export default class AdvancedAccordionBox extends CCKCAccordionBox {
       const addRealBulbsCheckboxTandem = tandem.createTandem( 'addRealBulbsCheckbox' );
       children.push(
         new VStrut( 20 ),
-        new CCKCCheckbox( circuit.addRealBulbsProperty, new Text( circuitConstructionKitCommonStrings.addRealBulbsProperty, _.merge( {
+        new CCKCCheckbox( circuit.addRealBulbsProperty, new Text( circuitConstructionKitCommonStrings.addRealBulbsStringProperty, _.merge( {
           tandem: addRealBulbsCheckboxTandem.createTandem( 'label' )
         }, TEXT_OPTIONS ) ), {
           tandem: addRealBulbsCheckboxTandem
@@ -64,7 +64,7 @@ export default class AdvancedAccordionBox extends CCKCAccordionBox {
     super( alignGroup.createBox( new VBox( {
       align: 'left',
       children: children
-    } ) ), circuitConstructionKitCommonStrings.advancedProperty, tandem, {
+    } ) ), circuitConstructionKitCommonStrings.advancedStringProperty, tandem, {
 
       // Left align the title, with no padding
       titleAlignX: 'left',

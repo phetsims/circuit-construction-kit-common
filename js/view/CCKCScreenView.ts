@@ -40,8 +40,8 @@ import VoltageChartNode from './VoltageChartNode.js';
 import VoltmeterNode from './VoltmeterNode.js';
 import ZoomButtonGroup from './ZoomButtonGroup.js';
 
-const batteryResistanceStringProperty = circuitConstructionKitCommonStrings.batteryResistanceProperty;
-const sourceResistanceStringProperty = circuitConstructionKitCommonStrings.sourceResistanceProperty;
+const batteryResistanceStringProperty = circuitConstructionKitCommonStrings.batteryResistanceStringProperty;
+const sourceResistanceStringProperty = circuitConstructionKitCommonStrings.sourceResistanceStringProperty;
 
 // constants
 const VERTICAL_MARGIN = CCKCConstants.VERTICAL_MARGIN;

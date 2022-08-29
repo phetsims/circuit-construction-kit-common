@@ -22,12 +22,12 @@ import CurrentType from '../model/CurrentType.js';
 import VerticalAquaRadioButtonGroup from '../../../sun/js/VerticalAquaRadioButtonGroup.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 
-const conventionalStringProperty = circuitConstructionKitCommonStrings.conventionalProperty;
-const electronsStringProperty = circuitConstructionKitCommonStrings.electronsProperty;
-const labelsStringProperty = circuitConstructionKitCommonStrings.labelsProperty;
-const showCurrentStringProperty = circuitConstructionKitCommonStrings.showCurrentProperty;
-const stopwatchStringProperty = circuitConstructionKitCommonStrings.stopwatchProperty;
-const valuesStringProperty = circuitConstructionKitCommonStrings.valuesProperty;
+const conventionalStringProperty = circuitConstructionKitCommonStrings.conventionalStringProperty;
+const electronsStringProperty = circuitConstructionKitCommonStrings.electronsStringProperty;
+const labelsStringProperty = circuitConstructionKitCommonStrings.labelsStringProperty;
+const showCurrentStringProperty = circuitConstructionKitCommonStrings.showCurrentStringProperty;
+const stopwatchStringProperty = circuitConstructionKitCommonStrings.stopwatchStringProperty;
+const valuesStringProperty = circuitConstructionKitCommonStrings.valuesStringProperty;
 
 // constants
 const BOX_ALIGNMENT = { xAlign: 'left' as const };

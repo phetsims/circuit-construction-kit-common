@@ -28,7 +28,7 @@ import Property from '../../../axon/js/Property.js';
 import ammeterReadoutTypeProperty from './ammeterReadoutTypeProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
 
-const currentStringProperty = circuitConstructionKitCommonStrings.currentProperty;
+const currentStringProperty = circuitConstructionKitCommonStrings.currentStringProperty;
 
 // constants
 // measurements for the cubic curve for the wire nodes

@@ -31,7 +31,7 @@ import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
 import ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
 
-const voltageStringProperty = circuitConstructionKitCommonStrings.voltageProperty;
+const voltageStringProperty = circuitConstructionKitCommonStrings.voltageStringProperty;
 
 // constants
 const VOLTMETER_PROBE_TIP_LENGTH = 20; // The probe tip is about 20 view coordinates tall

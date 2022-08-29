@@ -26,7 +26,7 @@ import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import Panel from '../../../sun/js/Panel.js';
 import Property from '../../../axon/js/Property.js';
 
-const currentStringProperty = circuitConstructionKitCommonStrings.currentProperty;
+const currentStringProperty = circuitConstructionKitCommonStrings.currentStringProperty;
 
 // constants
 const PANEL_HEIGHT = 40;

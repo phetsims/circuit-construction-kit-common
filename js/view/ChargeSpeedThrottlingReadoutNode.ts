@@ -15,7 +15,7 @@ import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommon
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Multilink from '../../../axon/js/Multilink.js';
 
-const animationSpeedLimitReachedStringProperty = circuitConstructionKitCommonStrings.animationSpeedLimitReachedProperty;
+const animationSpeedLimitReachedStringProperty = circuitConstructionKitCommonStrings.animationSpeedLimitReachedStringProperty;
 
 export default class ChargeSpeedThrottlingReadoutNode extends Text {
 

@@ -19,7 +19,7 @@ import Property from '../../../axon/js/Property.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 
-const resistanceOhmsSymbolStringProperty = circuitConstructionKitCommonStrings.resistanceOhmsSymbolProperty;
+const resistanceOhmsSymbolStringProperty = circuitConstructionKitCommonStrings.resistanceOhmsSymbolStringProperty;
 
 export default class SourceResistanceControl extends VBox {
 
@@ -53,7 +53,7 @@ export default class SourceResistanceControl extends VBox {
       constrainValue: ( value: number ) => range.constrainValue( Utils.roundSymmetric( value ) ),
       tandem: tandem.createTandem( 'slider' )
     } );
-    slider.addMajorTick( range.min, createLabel( circuitConstructionKitCommonStrings.tinyProperty, tandem.createTandem( 'tinyLabel' ) ) );
+    slider.addMajorTick( range.min, createLabel( circuitConstructionKitCommonStrings.tinyStringProperty, tandem.createTandem( 'tinyLabel' ) ) );
     slider.addMajorTick( midpoint );
     slider.addMajorTick( range.max, createLabel( new Property( StringUtils.fillIn( resistanceOhmsSymbolStringProperty, { resistance: Utils.toFixed( range.max, 0 ) } ) ), tandem.createTandem( 'maxLabel' ) ) );
 

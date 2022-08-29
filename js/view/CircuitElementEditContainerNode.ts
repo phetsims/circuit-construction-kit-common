@@ -45,19 +45,19 @@ import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 
-const capacitanceStringProperty = circuitConstructionKitCommonStrings.capacitanceProperty;
-const capacitanceUnitsStringProperty = circuitConstructionKitCommonStrings.capacitanceUnitsProperty;
-const currentRatingStringProperty = circuitConstructionKitCommonStrings.currentRatingProperty;
-const currentUnitsStringProperty = circuitConstructionKitCommonStrings.currentUnitsProperty;
-const frequencyHzValuePatternStringProperty = circuitConstructionKitCommonStrings.frequencyHzValuePatternProperty;
-const frequencyStringProperty = circuitConstructionKitCommonStrings.frequencyProperty;
-const inductanceStringProperty = circuitConstructionKitCommonStrings.inductanceProperty;
-const inductanceUnitsStringProperty = circuitConstructionKitCommonStrings.inductanceUnitsProperty;
-const resistanceOhmsValuePatternStringProperty = circuitConstructionKitCommonStrings.resistanceOhmsValuePatternProperty;
-const resistanceStringProperty = circuitConstructionKitCommonStrings.resistanceProperty;
-const tapCircuitElementToEditStringProperty = circuitConstructionKitCommonStrings.tapCircuitElementToEditProperty;
-const voltageStringProperty = circuitConstructionKitCommonStrings.voltageProperty;
-const voltageVoltsValuePatternStringProperty = circuitConstructionKitCommonStrings.voltageVoltsValuePatternProperty;
+const capacitanceStringProperty = circuitConstructionKitCommonStrings.capacitanceStringProperty;
+const capacitanceUnitsStringProperty = circuitConstructionKitCommonStrings.capacitanceUnitsStringProperty;
+const currentRatingStringProperty = circuitConstructionKitCommonStrings.currentRatingStringProperty;
+const currentUnitsStringProperty = circuitConstructionKitCommonStrings.currentUnitsStringProperty;
+const frequencyHzValuePatternStringProperty = circuitConstructionKitCommonStrings.frequencyHzValuePatternStringProperty;
+const frequencyStringProperty = circuitConstructionKitCommonStrings.frequencyStringProperty;
+const inductanceStringProperty = circuitConstructionKitCommonStrings.inductanceStringProperty;
+const inductanceUnitsStringProperty = circuitConstructionKitCommonStrings.inductanceUnitsStringProperty;
+const resistanceOhmsValuePatternStringProperty = circuitConstructionKitCommonStrings.resistanceOhmsValuePatternStringProperty;
+const resistanceStringProperty = circuitConstructionKitCommonStrings.resistanceStringProperty;
+const tapCircuitElementToEditStringProperty = circuitConstructionKitCommonStrings.tapCircuitElementToEditStringProperty;
+const voltageStringProperty = circuitConstructionKitCommonStrings.voltageStringProperty;
+const voltageVoltsValuePatternStringProperty = circuitConstructionKitCommonStrings.voltageVoltsValuePatternStringProperty;
 
 // constants
 const GET_LAYOUT_POSITION = ( visibleBounds: Bounds2, centerX: number ) => {

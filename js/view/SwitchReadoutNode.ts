@@ -16,8 +16,8 @@ import CircuitElement from '../model/CircuitElement.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import Vertex from '../model/Vertex.js';
 
-const theSwitchIsClosedStringProperty = circuitConstructionKitCommonStrings.theSwitchIsClosedProperty;
-const theSwitchIsOpenStringProperty = circuitConstructionKitCommonStrings.theSwitchIsOpenProperty;
+const theSwitchIsClosedStringProperty = circuitConstructionKitCommonStrings.theSwitchIsClosedStringProperty;
+const theSwitchIsOpenStringProperty = circuitConstructionKitCommonStrings.theSwitchIsOpenStringProperty;
 
 // constants
 const MAX_TEXT_WIDTH = 300;

@@ -46,22 +46,22 @@ import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 
-const acSourceStringProperty = circuitConstructionKitCommonStrings.acSourceProperty;
-const capacitorStringProperty = circuitConstructionKitCommonStrings.capacitorProperty;
-const inductorStringProperty = circuitConstructionKitCommonStrings.inductorProperty;
-const batteryStringProperty = circuitConstructionKitCommonStrings.batteryProperty;
-const coinStringProperty = circuitConstructionKitCommonStrings.coinProperty;
-const dogStringProperty = circuitConstructionKitCommonStrings.dogProperty;
-const dollarBillStringProperty = circuitConstructionKitCommonStrings.dollarBillProperty;
-const eraserStringProperty = circuitConstructionKitCommonStrings.eraserProperty;
-const fuseStringProperty = circuitConstructionKitCommonStrings.fuseProperty;
-const handStringProperty = circuitConstructionKitCommonStrings.handProperty;
-const lightBulbStringProperty = circuitConstructionKitCommonStrings.lightBulbProperty;
-const paperClipStringProperty = circuitConstructionKitCommonStrings.paperClipProperty;
-const pencilStringProperty = circuitConstructionKitCommonStrings.pencilProperty;
-const resistorStringProperty = circuitConstructionKitCommonStrings.resistorProperty;
-const switchStringProperty = circuitConstructionKitCommonStrings.switchProperty;
-const wireStringProperty = circuitConstructionKitCommonStrings.wireProperty;
+const acSourceStringProperty = circuitConstructionKitCommonStrings.acSourceStringProperty;
+const capacitorStringProperty = circuitConstructionKitCommonStrings.capacitorStringProperty;
+const inductorStringProperty = circuitConstructionKitCommonStrings.inductorStringProperty;
+const batteryStringProperty = circuitConstructionKitCommonStrings.batteryStringProperty;
+const coinStringProperty = circuitConstructionKitCommonStrings.coinStringProperty;
+const dogStringProperty = circuitConstructionKitCommonStrings.dogStringProperty;
+const dollarBillStringProperty = circuitConstructionKitCommonStrings.dollarBillStringProperty;
+const eraserStringProperty = circuitConstructionKitCommonStrings.eraserStringProperty;
+const fuseStringProperty = circuitConstructionKitCommonStrings.fuseStringProperty;
+const handStringProperty = circuitConstructionKitCommonStrings.handStringProperty;
+const lightBulbStringProperty = circuitConstructionKitCommonStrings.lightBulbStringProperty;
+const paperClipStringProperty = circuitConstructionKitCommonStrings.paperClipStringProperty;
+const pencilStringProperty = circuitConstructionKitCommonStrings.pencilStringProperty;
+const resistorStringProperty = circuitConstructionKitCommonStrings.resistorStringProperty;
+const switchStringProperty = circuitConstructionKitCommonStrings.switchStringProperty;
+const wireStringProperty = circuitConstructionKitCommonStrings.wireStringProperty;
 
 // constants
 const BATTERY_LENGTH = CCKCConstants.BATTERY_LENGTH;

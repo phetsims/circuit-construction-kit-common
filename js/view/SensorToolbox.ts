@@ -37,11 +37,11 @@ import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import Multilink from '../../../axon/js/Multilink.js';
 import optionize from '../../../phet-core/js/optionize.js';
 
-const ammetersStringProperty = circuitConstructionKitCommonStrings.ammetersProperty;
-const ammeterStringProperty = circuitConstructionKitCommonStrings.ammeterProperty;
-const currentChartStringProperty = circuitConstructionKitCommonStrings.currentChartProperty;
-const voltageChartStringProperty = circuitConstructionKitCommonStrings.voltageChartProperty;
-const voltmeterStringProperty = circuitConstructionKitCommonStrings.voltmeterProperty;
+const ammetersStringProperty = circuitConstructionKitCommonStrings.ammetersStringProperty;
+const ammeterStringProperty = circuitConstructionKitCommonStrings.ammeterStringProperty;
+const currentChartStringProperty = circuitConstructionKitCommonStrings.currentChartStringProperty;
+const voltageChartStringProperty = circuitConstructionKitCommonStrings.voltageChartStringProperty;
+const voltmeterStringProperty = circuitConstructionKitCommonStrings.voltmeterStringProperty;
 
 // constants
 const TOOLBOX_ICON_HEIGHT = 53;

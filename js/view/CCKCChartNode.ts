@@ -43,8 +43,8 @@ import optionize from '../../../phet-core/js/optionize.js';
 import PickRequired from '../../../phet-core/js/types/PickRequired.js';
 import TEmitter from '../../../axon/js/TEmitter.js';
 
-const oneSecondStringProperty = circuitConstructionKitCommonStrings.oneSecondProperty;
-const timeStringProperty = circuitConstructionKitCommonStrings.timeProperty;
+const oneSecondStringProperty = circuitConstructionKitCommonStrings.oneSecondStringProperty;
+const timeStringProperty = circuitConstructionKitCommonStrings.timeStringProperty;
 
 // constants
 const AXIS_LABEL_FILL = 'white';

@@ -19,7 +19,7 @@ import Bounds2 from '../../../dot/js/Bounds2.js';
 import CCKCProbeNode from './CCKCProbeNode.js';
 import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 
-const currentWithUnitsStringProperty = circuitConstructionKitCommonStrings.currentWithUnitsProperty;
+const currentWithUnitsStringProperty = circuitConstructionKitCommonStrings.currentWithUnitsStringProperty;
 
 export default class CurrentChartNode extends CCKCChartNode {
   private readonly probeNode1: CCKCProbeNode;

@@ -32,11 +32,11 @@ import CircuitElement from '../model/CircuitElement.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import Multilink from '../../../axon/js/Multilink.js';
 
-const capacitanceFaradsSymbolStringProperty = circuitConstructionKitCommonStrings.capacitanceFaradsSymbolProperty;
-const fuseValueStringProperty = circuitConstructionKitCommonStrings.fuseValueProperty;
-const inductanceHenriesSymbolStringProperty = circuitConstructionKitCommonStrings.inductanceHenriesSymbolProperty;
-const resistanceOhmsSymbolStringProperty = circuitConstructionKitCommonStrings.resistanceOhmsSymbolProperty;
-const voltageUnitsStringProperty = circuitConstructionKitCommonStrings.voltageUnitsProperty;
+const capacitanceFaradsSymbolStringProperty = circuitConstructionKitCommonStrings.capacitanceFaradsSymbolStringProperty;
+const fuseValueStringProperty = circuitConstructionKitCommonStrings.fuseValueStringProperty;
+const inductanceHenriesSymbolStringProperty = circuitConstructionKitCommonStrings.inductanceHenriesSymbolStringProperty;
+const resistanceOhmsSymbolStringProperty = circuitConstructionKitCommonStrings.resistanceOhmsSymbolStringProperty;
+const voltageUnitsStringProperty = circuitConstructionKitCommonStrings.voltageUnitsStringProperty;
 
 // constants
 const VERTICAL_OFFSET = 24;

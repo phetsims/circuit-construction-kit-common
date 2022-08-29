@@ -22,7 +22,7 @@ import Property from '../../../axon/js/Property.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import CCKCProbeNode from './CCKCProbeNode.js';
 
-const voltageWithUnitsStringProperty = circuitConstructionKitCommonStrings.voltageWithUnitsProperty;
+const voltageWithUnitsStringProperty = circuitConstructionKitCommonStrings.voltageWithUnitsStringProperty;
 
 // constants
 const SERIES_1_COLOR = '#ec3223';

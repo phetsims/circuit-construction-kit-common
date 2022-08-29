@@ -16,8 +16,8 @@ import ammeterReadoutTypeProperty from './view/ammeterReadoutTypeProperty.js';
 import MathSymbols from '../../scenery-phet/js/MathSymbols.js';
 import AmmeterReadoutType from './model/AmmeterReadoutType.js';
 
-const currentUnitsStringProperty = circuitConstructionKitCommonStrings.currentUnitsProperty;
-const voltageUnitsStringProperty = circuitConstructionKitCommonStrings.voltageUnitsProperty;
+const currentUnitsStringProperty = circuitConstructionKitCommonStrings.currentUnitsStringProperty;
+const voltageUnitsStringProperty = circuitConstructionKitCommonStrings.voltageUnitsStringProperty;
 
 // Number of accumulated solve steps within a single frame.  We use high precision for the first
 // several steps, then go to high performance for remaining steps.

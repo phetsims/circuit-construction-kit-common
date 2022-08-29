@@ -16,9 +16,9 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Property from '../../../axon/js/Property.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 
-const lotsStringProperty = circuitConstructionKitCommonStrings.lotsProperty;
-const tinyStringProperty = circuitConstructionKitCommonStrings.tinyProperty;
-const wireResistivityStringProperty = circuitConstructionKitCommonStrings.wireResistivityProperty;
+const lotsStringProperty = circuitConstructionKitCommonStrings.lotsStringProperty;
+const tinyStringProperty = circuitConstructionKitCommonStrings.tinyStringProperty;
+const wireResistivityStringProperty = circuitConstructionKitCommonStrings.wireResistivityStringProperty;
 
 // constants
 const TICK_LABEL_TEXT_OPTIONS = { fontSize: 12, maxWidth: 45 };
