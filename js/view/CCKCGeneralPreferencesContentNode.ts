@@ -24,15 +24,15 @@ export default class CCKCGeneralPreferencesContentNode extends VBox {
 
     const textOptions = PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS;
     const schematicStandardRadioButtonGroup = new VerticalAquaRadioButtonGroup<SchematicType>( schematicTypeProperty, [ {
-      node: new Text( circuitConstructionKitCommonStrings.ieeeStringProperty, textOptions ),
+      createNode: tandem => new Text( circuitConstructionKitCommonStrings.ieeeStringProperty, textOptions ),
       value: SchematicType.IEEE,
       tandemName: 'ieeeRadioButton'
     }, {
-      node: new Text( circuitConstructionKitCommonStrings.iecStringProperty, textOptions ),
+      createNode: tandem => new Text( circuitConstructionKitCommonStrings.iecStringProperty, textOptions ),
       value: SchematicType.IEC,
       tandemName: 'iecRadioButton'
     }, {
-      node: new Text( circuitConstructionKitCommonStrings.britishStringProperty, textOptions ),
+      createNode: tandem => new Text( circuitConstructionKitCommonStrings.britishStringProperty, textOptions ),
       value: SchematicType.BRITISH,
       tandemName: 'britishRadioButton'
     } ], {
@@ -43,11 +43,11 @@ export default class CCKCGeneralPreferencesContentNode extends VBox {
     } );
 
     const ammeterReadoutRadioButtonGroup = new VerticalAquaRadioButtonGroup<AmmeterReadoutType>( ammeterReadoutTypeProperty, [ {
-      node: new Text( circuitConstructionKitCommonStrings.magnitudeStringProperty, textOptions ),
+      createNode: tandem => new Text( circuitConstructionKitCommonStrings.magnitudeStringProperty, textOptions ),
       value: AmmeterReadoutType.MAGNITUDE,
       tandemName: 'magnitudeRadioButton'
     }, {
-      node: new Text( circuitConstructionKitCommonStrings.signedStringProperty, textOptions ),
+      createNode: tandem => new Text( circuitConstructionKitCommonStrings.signedStringProperty, textOptions ),
       value: AmmeterReadoutType.SIGNED,
       tandemName: 'signedRadioButton'
     } ], {
