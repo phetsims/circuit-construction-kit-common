@@ -18,7 +18,7 @@ import ammeterReadoutTypeProperty from './ammeterReadoutTypeProperty.js';
 import PreferencesDialog from '../../../joist/js/preferences/PreferencesDialog.js';
 
 export default class CCKCSimulationPreferencesContentNode extends VBox {
-  private readonly disposeCCKCGeneralPreferencesContentNode: () => void;
+  private readonly disposeCCKCSimulationPreferencesContentNode: () => void;
 
   public constructor( tandem: Tandem ) {
 
@@ -70,14 +70,14 @@ export default class CCKCSimulationPreferencesContentNode extends VBox {
       ]
     } );
 
-    this.disposeCCKCGeneralPreferencesContentNode = () => {
+    this.disposeCCKCSimulationPreferencesContentNode = () => {
       schematicStandardRadioButtonGroup.dispose();
       ammeterReadoutRadioButtonGroup.dispose();
     };
   }
 
   public override dispose(): void {
-    this.disposeCCKCGeneralPreferencesContentNode();
+    this.disposeCCKCSimulationPreferencesContentNode();
     super.dispose();
   }
 }
