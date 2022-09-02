@@ -12,13 +12,9 @@ import simLauncher from '../../joist/js/simLauncher.js';
 import circuitConstructionKitCommonStrings from './circuitConstructionKitCommonStrings.js';
 import CCKCDemoScreenView from './view/demo/CCKCDemoScreenView.js';
 
-const simOptions = {
-  title: circuitConstructionKitCommonStrings[ 'circuit-construction-kit-common' ].title
-};
-
 // until the images are fully loaded, see https://github.com/phetsims/coulombs-law/issues/70
 simLauncher.launch( () => {
-  new Sim( 'CCK Common', [
+  new Sim( circuitConstructionKitCommonStrings[ 'circuit-construction-kit-common' ].titleStringProperty, [
     new Screen( () => {return {};}, model => new CCKCDemoScreenView() )
-  ], simOptions ).start();
+  ] ).start();
 } );
