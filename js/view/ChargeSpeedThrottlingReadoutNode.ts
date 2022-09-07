@@ -11,11 +11,11 @@ import Property from '../../../axon/js/Property.js';
 import Utils from '../../../dot/js/Utils.js';
 import StringUtils from '../../../phetcommon/js/util/StringUtils.js';
 import { Text } from '../../../scenery/js/imports.js';
-import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
+import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Multilink from '../../../axon/js/Multilink.js';
 
-const animationSpeedLimitReachedStringProperty = circuitConstructionKitCommonStrings.animationSpeedLimitReachedStringProperty;
+const animationSpeedLimitReachedStringProperty = CircuitConstructionKitCommonStrings.animationSpeedLimitReachedStringProperty;
 
 export default class ChargeSpeedThrottlingReadoutNode extends Text {
 

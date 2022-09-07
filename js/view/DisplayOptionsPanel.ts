@@ -10,7 +10,7 @@
 import ElectronChargeNode from '../../../scenery-phet/js/ElectronChargeNode.js';
 import { AlignBox, AlignGroup, HBox, Text, VBox } from '../../../scenery/js/imports.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
+import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CCKCCheckbox from './CCKCCheckbox.js';
 import CCKCPanel from './CCKCPanel.js';
@@ -22,12 +22,12 @@ import CurrentType from '../model/CurrentType.js';
 import VerticalAquaRadioButtonGroup from '../../../sun/js/VerticalAquaRadioButtonGroup.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 
-const conventionalStringProperty = circuitConstructionKitCommonStrings.conventionalStringProperty;
-const electronsStringProperty = circuitConstructionKitCommonStrings.electronsStringProperty;
-const labelsStringProperty = circuitConstructionKitCommonStrings.labelsStringProperty;
-const showCurrentStringProperty = circuitConstructionKitCommonStrings.showCurrentStringProperty;
-const stopwatchStringProperty = circuitConstructionKitCommonStrings.stopwatchStringProperty;
-const valuesStringProperty = circuitConstructionKitCommonStrings.valuesStringProperty;
+const conventionalStringProperty = CircuitConstructionKitCommonStrings.conventionalStringProperty;
+const electronsStringProperty = CircuitConstructionKitCommonStrings.electronsStringProperty;
+const labelsStringProperty = CircuitConstructionKitCommonStrings.labelsStringProperty;
+const showCurrentStringProperty = CircuitConstructionKitCommonStrings.showCurrentStringProperty;
+const stopwatchStringProperty = CircuitConstructionKitCommonStrings.stopwatchStringProperty;
+const valuesStringProperty = CircuitConstructionKitCommonStrings.valuesStringProperty;
 
 // constants
 const BOX_ALIGNMENT = { xAlign: 'left' as const };

@@ -30,7 +30,7 @@ import ButtonNode from '../../../sun/js/buttons/ButtonNode.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
+import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import Meter from '../model/Meter.js';
 import CCKCProbeNode from './CCKCProbeNode.js';
 import CircuitLayerNode from './CircuitLayerNode.js';
@@ -43,8 +43,8 @@ import optionize from '../../../phet-core/js/optionize.js';
 import PickRequired from '../../../phet-core/js/types/PickRequired.js';
 import TEmitter from '../../../axon/js/TEmitter.js';
 
-const oneSecondStringProperty = circuitConstructionKitCommonStrings.oneSecondStringProperty;
-const timeStringProperty = circuitConstructionKitCommonStrings.timeStringProperty;
+const oneSecondStringProperty = CircuitConstructionKitCommonStrings.oneSecondStringProperty;
+const timeStringProperty = CircuitConstructionKitCommonStrings.timeStringProperty;
 
 // constants
 const AXIS_LABEL_FILL = 'white';
@@ -271,7 +271,7 @@ export default class CCKCChartNode extends Node {
       } ) ] );
 
     // Show a text message when there is data, but none of the data is in range.
-    const dataOutOfRangeMessage = new Text( circuitConstructionKitCommonStrings.dataOutOfRange, {
+    const dataOutOfRangeMessage = new Text( CircuitConstructionKitCommonStrings.dataOutOfRange, {
       fill: 'red',
       centerX: linePlot.centerX,
       centerY: linePlot.centerY,

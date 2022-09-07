@@ -9,7 +9,7 @@
 
 import { AlignGroup, Text, VBox, VStrut } from '../../../scenery/js/imports.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
+import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CCKCAccordionBox, { CCKCAccordionBoxOptions } from './CCKCAccordionBox.js';
 import CCKCCheckbox from './CCKCCheckbox.js';
@@ -54,7 +54,7 @@ export default class AdvancedAccordionBox extends CCKCAccordionBox {
       const addRealBulbsCheckboxTandem = tandem.createTandem( 'addRealBulbsCheckbox' );
       children.push(
         new VStrut( 20 ),
-        new CCKCCheckbox( circuit.addRealBulbsProperty, new Text( circuitConstructionKitCommonStrings.addRealBulbsStringProperty, _.merge( {
+        new CCKCCheckbox( circuit.addRealBulbsProperty, new Text( CircuitConstructionKitCommonStrings.addRealBulbsStringProperty, _.merge( {
           tandem: addRealBulbsCheckboxTandem.createTandem( 'label' )
         }, TEXT_OPTIONS ) ), {
           tandem: addRealBulbsCheckboxTandem
@@ -64,7 +64,7 @@ export default class AdvancedAccordionBox extends CCKCAccordionBox {
     super( alignGroup.createBox( new VBox( {
       align: 'left',
       children: children
-    } ) ), circuitConstructionKitCommonStrings.advancedStringProperty, tandem, {
+    } ) ), CircuitConstructionKitCommonStrings.advancedStringProperty, tandem, {
 
       // Left align the title, with no padding
       titleAlignX: 'left',

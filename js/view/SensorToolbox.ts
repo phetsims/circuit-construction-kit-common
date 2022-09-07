@@ -18,7 +18,7 @@ import { AlignGroup, DragListener, HBox, Node, Rectangle, SceneryEvent, Text, VB
 import HSeparator from '../../../sun/js/HSeparator.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
+import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Ammeter from '../model/Ammeter.js';
 import SeriesAmmeter from '../model/SeriesAmmeter.js';
@@ -37,11 +37,11 @@ import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import Multilink from '../../../axon/js/Multilink.js';
 import optionize from '../../../phet-core/js/optionize.js';
 
-const ammetersStringProperty = circuitConstructionKitCommonStrings.ammetersStringProperty;
-const ammeterStringProperty = circuitConstructionKitCommonStrings.ammeterStringProperty;
-const currentChartStringProperty = circuitConstructionKitCommonStrings.currentChartStringProperty;
-const voltageChartStringProperty = circuitConstructionKitCommonStrings.voltageChartStringProperty;
-const voltmeterStringProperty = circuitConstructionKitCommonStrings.voltmeterStringProperty;
+const ammetersStringProperty = CircuitConstructionKitCommonStrings.ammetersStringProperty;
+const ammeterStringProperty = CircuitConstructionKitCommonStrings.ammeterStringProperty;
+const currentChartStringProperty = CircuitConstructionKitCommonStrings.currentChartStringProperty;
+const voltageChartStringProperty = CircuitConstructionKitCommonStrings.voltageChartStringProperty;
+const voltmeterStringProperty = CircuitConstructionKitCommonStrings.voltmeterStringProperty;
 
 // constants
 const TOOLBOX_ICON_HEIGHT = 53;

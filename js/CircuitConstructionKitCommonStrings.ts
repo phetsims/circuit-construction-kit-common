@@ -157,8 +157,8 @@ type StringsType = {
   'dataOutOfRangeStringProperty': TReadOnlyProperty<string>;
 };
 
-const circuitConstructionKitCommonStrings = getStringModule( 'CIRCUIT_CONSTRUCTION_KIT_COMMON' ) as StringsType;
+const CircuitConstructionKitCommonStrings = getStringModule( 'CIRCUIT_CONSTRUCTION_KIT_COMMON' ) as StringsType;
 
-circuitConstructionKitCommon.register( 'circuitConstructionKitCommonStrings', circuitConstructionKitCommonStrings );
+circuitConstructionKitCommon.register( 'CircuitConstructionKitCommonStrings', CircuitConstructionKitCommonStrings );
 
-export default circuitConstructionKitCommonStrings;
+export default CircuitConstructionKitCommonStrings;

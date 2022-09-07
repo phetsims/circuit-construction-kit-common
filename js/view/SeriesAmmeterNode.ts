@@ -9,7 +9,7 @@
 import { Node, Rectangle, RectangleOptions } from '../../../scenery/js/imports.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCUtils from '../CCKCUtils.js';
-import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
+import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import FixedCircuitElementNode, { FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
 import CCKCScreenView from './CCKCScreenView.js';
@@ -26,7 +26,7 @@ import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import Panel from '../../../sun/js/Panel.js';
 import Property from '../../../axon/js/Property.js';
 
-const currentStringProperty = circuitConstructionKitCommonStrings.currentStringProperty;
+const currentStringProperty = CircuitConstructionKitCommonStrings.currentStringProperty;
 
 // constants
 const PANEL_HEIGHT = 40;

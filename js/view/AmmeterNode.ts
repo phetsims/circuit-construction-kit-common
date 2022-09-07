@@ -18,7 +18,7 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import ammeterBody_png from '../../images/ammeterBody_png.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCUtils from '../CCKCUtils.js';
-import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
+import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import ProbeTextNode from './ProbeTextNode.js';
 import Ammeter from '../model/Ammeter.js';
@@ -28,7 +28,7 @@ import Property from '../../../axon/js/Property.js';
 import ammeterReadoutTypeProperty from './ammeterReadoutTypeProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
 
-const currentStringProperty = circuitConstructionKitCommonStrings.currentStringProperty;
+const currentStringProperty = CircuitConstructionKitCommonStrings.currentStringProperty;
 
 // constants
 // measurements for the cubic curve for the wire nodes

@@ -14,7 +14,7 @@ import { Color, Rectangle } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
-import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
+import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CCKCChartNode, { CCKCChartNodeOptions } from './CCKCChartNode.js';
 import CircuitLayerNode from './CircuitLayerNode.js';
@@ -22,7 +22,7 @@ import Property from '../../../axon/js/Property.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import CCKCProbeNode from './CCKCProbeNode.js';
 
-const voltageWithUnitsStringProperty = circuitConstructionKitCommonStrings.voltageWithUnitsStringProperty;
+const voltageWithUnitsStringProperty = CircuitConstructionKitCommonStrings.voltageWithUnitsStringProperty;
 
 // constants
 const SERIES_1_COLOR = '#ec3223';

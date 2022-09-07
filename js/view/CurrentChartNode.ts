@@ -10,7 +10,7 @@ import createObservableArray from '../../../axon/js/createObservableArray.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
+import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CCKCChartNode, { CCKCChartNodeOptions } from './CCKCChartNode.js';
 import CircuitLayerNode from './CircuitLayerNode.js';
@@ -19,7 +19,7 @@ import Bounds2 from '../../../dot/js/Bounds2.js';
 import CCKCProbeNode from './CCKCProbeNode.js';
 import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 
-const currentWithUnitsStringProperty = circuitConstructionKitCommonStrings.currentWithUnitsStringProperty;
+const currentWithUnitsStringProperty = CircuitConstructionKitCommonStrings.currentWithUnitsStringProperty;
 
 export default class CurrentChartNode extends CCKCChartNode {
   private readonly probeNode1: CCKCProbeNode;

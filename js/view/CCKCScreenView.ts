@@ -22,7 +22,7 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
+import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import CircuitConstructionKitModel from '../model/CircuitConstructionKitModel.js';
 import SeriesAmmeter from '../model/SeriesAmmeter.js';
 import AdvancedAccordionBox from './AdvancedAccordionBox.js';
@@ -40,8 +40,8 @@ import VoltageChartNode from './VoltageChartNode.js';
 import VoltmeterNode from './VoltmeterNode.js';
 import ZoomButtonGroup from './ZoomButtonGroup.js';
 
-const batteryResistanceStringProperty = circuitConstructionKitCommonStrings.batteryResistanceStringProperty;
-const sourceResistanceStringProperty = circuitConstructionKitCommonStrings.sourceResistanceStringProperty;
+const batteryResistanceStringProperty = CircuitConstructionKitCommonStrings.batteryResistanceStringProperty;
+const sourceResistanceStringProperty = CircuitConstructionKitCommonStrings.sourceResistanceStringProperty;
 
 // constants
 const VERTICAL_MARGIN = CCKCConstants.VERTICAL_MARGIN;

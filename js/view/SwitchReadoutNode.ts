@@ -7,7 +7,7 @@
  */
 
 import { Node, Text } from '../../../scenery/js/imports.js';
-import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
+import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Circuit from '../model/Circuit.js';
 import Switch from '../model/Switch.js';
@@ -16,8 +16,8 @@ import CircuitElement from '../model/CircuitElement.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import Vertex from '../model/Vertex.js';
 
-const theSwitchIsClosedStringProperty = circuitConstructionKitCommonStrings.theSwitchIsClosedStringProperty;
-const theSwitchIsOpenStringProperty = circuitConstructionKitCommonStrings.theSwitchIsOpenStringProperty;
+const theSwitchIsClosedStringProperty = CircuitConstructionKitCommonStrings.theSwitchIsClosedStringProperty;
+const theSwitchIsOpenStringProperty = CircuitConstructionKitCommonStrings.theSwitchIsOpenStringProperty;
 
 // constants
 const MAX_TEXT_WIDTH = 300;

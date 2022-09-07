@@ -19,7 +19,7 @@ import voltmeterBody_png from '../../mipmaps/voltmeterBody_png.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import CCKCUtils from '../CCKCUtils.js';
-import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
+import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import ProbeTextNode from './ProbeTextNode.js';
 import Voltmeter from '../model/Voltmeter.js';
@@ -31,7 +31,7 @@ import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
 import ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
 
-const voltageStringProperty = circuitConstructionKitCommonStrings.voltageStringProperty;
+const voltageStringProperty = CircuitConstructionKitCommonStrings.voltageStringProperty;
 
 // constants
 const VOLTMETER_PROBE_TIP_LENGTH = 20; // The probe tip is about 20 view coordinates tall

@@ -18,7 +18,7 @@ import { Color, Node, RichText, RichTextOptions, Text, TextOptions, VBox } from 
 import Panel from '../../../sun/js/Panel.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
-import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
+import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Capacitor from '../model/Capacitor.js';
 import Fuse from '../model/Fuse.js';
@@ -32,11 +32,11 @@ import CircuitElement from '../model/CircuitElement.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import Multilink from '../../../axon/js/Multilink.js';
 
-const capacitanceFaradsSymbolStringProperty = circuitConstructionKitCommonStrings.capacitanceFaradsSymbolStringProperty;
-const fuseValueStringProperty = circuitConstructionKitCommonStrings.fuseValueStringProperty;
-const inductanceHenriesSymbolStringProperty = circuitConstructionKitCommonStrings.inductanceHenriesSymbolStringProperty;
-const resistanceOhmsSymbolStringProperty = circuitConstructionKitCommonStrings.resistanceOhmsSymbolStringProperty;
-const voltageUnitsStringProperty = circuitConstructionKitCommonStrings.voltageUnitsStringProperty;
+const capacitanceFaradsSymbolStringProperty = CircuitConstructionKitCommonStrings.capacitanceFaradsSymbolStringProperty;
+const fuseValueStringProperty = CircuitConstructionKitCommonStrings.fuseValueStringProperty;
+const inductanceHenriesSymbolStringProperty = CircuitConstructionKitCommonStrings.inductanceHenriesSymbolStringProperty;
+const resistanceOhmsSymbolStringProperty = CircuitConstructionKitCommonStrings.resistanceOhmsSymbolStringProperty;
+const voltageUnitsStringProperty = CircuitConstructionKitCommonStrings.voltageUnitsStringProperty;
 
 // constants
 const VERTICAL_OFFSET = 24;
