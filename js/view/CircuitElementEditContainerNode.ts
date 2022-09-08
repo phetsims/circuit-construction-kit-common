@@ -76,7 +76,7 @@ const HIGH_SLIDER_KNOB_DELTA = 100;
 const NORMAL_TWEAKER_DELTA = 0.1;
 const HIGH_TWEAKER_DELTA = 10;
 
-// TODO: Consider moving this into CircuitElementNumberControl once we have built them all, see https://github.com/phetsims/circuit-construction-kit-common/issues/797
+// TODO: Consider moving this into CircuitElementNumberControl once we have built them all?
 const createSingletonAdapterProperty = <T extends CircuitElement>(
   initialValue: number,
   CircuitElementType: GConstructor<T>,
@@ -121,12 +121,10 @@ export default class CircuitElementEditContainerNode extends Node {
     const trashButton = new CCKCTrashButton( circuit, tandem.createTandem( 'trashButton' ) );
     const trashButtonContainer = new HBox( { children: [ trashButton ] } ); // Use the "nested node" pattern for gated visibilty
 
-    // TODO: Should this be named repairButton or repairFuseButton? https://github.com/phetsims/circuit-construction-kit-common/issues/797
-    const repairFuseButton = new RepairFuseButton( circuit, tandem.createTandem( 'repairButton' ) );
+    const repairFuseButton = new RepairFuseButton( circuit, tandem.createTandem( 'repairFuseButton' ) );
     const clearDynamicsButton = new ClearDynamicsButton( circuit, tandem.createTandem( 'clearButton' ) );
 
-    // TODO: Should this be named reverseButton or reverseBatteryButton? https://github.com/phetsims/circuit-construction-kit-common/issues/797
-    const reverseBatteryButton = new ReverseBatteryButton( circuit, tandem.createTandem( 'reverseButton' ) );
+    const reverseBatteryButton = new ReverseBatteryButton( circuit, tandem.createTandem( 'reverseBatteryButton' ) );
     const switchReadoutNode = new SwitchReadoutNode( circuit, tandem.createTandem( 'switchReadoutNode' ), trashButtonContainer );
 
     const listener = ( isDisposable: boolean ) => trashButtonContainer.setVisible( isDisposable );
