@@ -926,7 +926,6 @@ export default class Circuit {
           return neighborsWithCurrent.length > 0;
         };
 
-        // TODO: Could this be causing https://github.com/phetsims/circuit-construction-kit-common/issues/758 ? But it doesn't get triggered
         if ( !hasCurrent( inductor.startVertexProperty.value ) && !hasCurrent( inductor.endVertexProperty.value ) ) {
           inductor.clear();
         }
