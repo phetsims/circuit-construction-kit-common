@@ -144,7 +144,6 @@ export default class CircuitElementEditContainerNode extends Node {
       StringUtils.fillIn( currentUnitsStringProperty, { current: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
       createSingletonAdapterProperty( Fuse.DEFAULT_CURRENT_RATING, Fuse, circuit, ( c: Fuse ) => c.currentRatingProperty ),
       Fuse.RANGE, circuit,
-      // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/513 Eliminate numberOfDecimalPlaces: 1 from Fuse and places like it
       1, {
         tandem: tandem.createTandem( 'currentRatingControl' ),
         delta: NORMAL_TWEAKER_DELTA, // For the tweakers
@@ -363,7 +362,6 @@ export default class CircuitElementEditContainerNode extends Node {
         }
         else if ( selectedCircuitElement instanceof Switch ) {
 
-          // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/513 should this be instrumented?
           editNode = switchReadoutNode;
         }
         else if ( selectedCircuitElement instanceof SeriesAmmeter || selectedCircuitElement instanceof Wire ) {

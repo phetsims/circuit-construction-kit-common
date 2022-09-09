@@ -43,7 +43,6 @@ export default class CircuitElementNumberControl<T extends CircuitElement> exten
                       numberOfDecimalPlaces: number, providedOptions?: CircuitElementNumberControlOptions<T> ) {
 
     // When the user changes any parameter of any circuit element, signify it.
-    // TODO: Should this be done through Circuit?  Why is this wired here in the view?  See https://github.com/phetsims/circuit-construction-kit-common/issues/513
     const valuePropertyListener = () => circuit.componentEditedEmitter.emit();
 
     valueProperty.lazyLink( valuePropertyListener );
