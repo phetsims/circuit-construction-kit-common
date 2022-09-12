@@ -170,14 +170,14 @@ export default class SensorToolbox extends CCKCPanel {
     // Labels underneath the sensor tool nodes
     const voltmeterText = new Text( voltmeterStringProperty, {
       maxWidth: 60,
-      tandem: tandem.createTandem( 'voltmeterLabel' ),
+      tandem: tandem.createTandem( 'voltmeterText' ),
       visiblePropertyOptions: {
         phetioReadOnly: true
       }
     } );
     const ammeterText = new Text( options.showSeriesAmmeters && options.showNoncontactAmmeters ? ammetersStringProperty : ammeterStringProperty, {
       maxWidth: 60,
-      tandem: tandem.createTandem( 'ammeterLabel' ),
+      tandem: tandem.createTandem( 'ammeterText' ),
       visiblePropertyOptions: {
         phetioReadOnly: true
       }

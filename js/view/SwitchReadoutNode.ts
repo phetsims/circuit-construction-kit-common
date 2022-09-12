@@ -37,8 +37,8 @@ export default class SwitchReadoutNode extends Node {
       } );
 
     const messageNodeTandem = tandem.createTandem( 'messageNode' );
-    const closedText = createText( theSwitchIsClosedStringProperty, messageNodeTandem.createTandem( 'closedTextNode' ) );
-    const openText = createText( theSwitchIsOpenStringProperty, messageNodeTandem.createTandem( 'openTextNode' ) );
+    const closedText = createText( theSwitchIsClosedStringProperty, messageNodeTandem.createTandem( 'closedText' ) );
+    const openText = createText( theSwitchIsOpenStringProperty, messageNodeTandem.createTandem( 'openText' ) );
 
     const closedListener = ( closed: boolean ) => {
       closedText.visible = closed;

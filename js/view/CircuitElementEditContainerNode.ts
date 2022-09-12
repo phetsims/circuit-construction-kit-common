@@ -275,10 +275,10 @@ export default class CircuitElementEditContainerNode extends Node {
       }
     );
 
-    const tapInstructionTextNode = new Text( tapCircuitElementToEditStringProperty, {
+    const tapInstructionText = new Text( tapCircuitElementToEditStringProperty, {
       fontSize: 24,
       maxWidth: 300,
-      tandem: tandem.createTandem( 'tapInstructionTextNode' ),
+      tandem: tandem.createTandem( 'tapInstructionText' ),
       visiblePropertyOptions: {
 
         // Visibility is controlled by the link below
@@ -294,7 +294,7 @@ export default class CircuitElementEditContainerNode extends Node {
       const fixedLengthElements = circuit.circuitElements.filter( circuitElement =>
         circuitElement instanceof FixedCircuitElement && circuitElement.interactiveProperty.get()
       );
-      tapInstructionTextNode.visible = fixedLengthElements.length > 0;
+      tapInstructionText.visible = fixedLengthElements.length > 0;
     };
 
     circuit.vertexDroppedEmitter.addListener( updateInstructionTextVisible );
@@ -314,7 +314,7 @@ export default class CircuitElementEditContainerNode extends Node {
     circuit.selectionProperty.link( selectedCircuitElement => {
       if ( editNode ) {
         this.hasChild( editNode ) && this.removeChild( editNode );
-        if ( editNode !== tapInstructionTextNode && editNode !== trashButtonContainer && editNode !== switchReadoutNode ) {
+        if ( editNode !== tapInstructionText && editNode !== trashButtonContainer && editNode !== switchReadoutNode ) {
           editNode.dispose();
         }
       }
@@ -398,12 +398,12 @@ export default class CircuitElementEditContainerNode extends Node {
         }
       }
       else {
-        editNode = tapInstructionTextNode;
+        editNode = tapInstructionText;
       }
       if ( editNode !== null ) {
         this.addChild( editNode );
 
-        if ( editNode === tapInstructionTextNode || editNode instanceof SwitchReadoutNode ) {
+        if ( editNode === tapInstructionText || editNode instanceof SwitchReadoutNode ) {
           this.mouseArea = null;
           this.touchArea = null;
         }

@@ -37,7 +37,7 @@ export type CircuitElementToolNodeOptions = SelfOptions & VBoxOptions;
 export default class CircuitElementToolNode extends VBox {
 
   /**
-   * @param labelText
+   * @param labelTextProperty
    * @param showLabelsProperty
    * @param viewTypeProperty
    * @param circuit
@@ -51,27 +51,27 @@ export default class CircuitElementToolNode extends VBox {
    *                                 - in the center of the socket
    * @param [providedOptions]
    */
-  public constructor( labelText: TReadOnlyProperty<string>, showLabelsProperty: Property<boolean>, viewTypeProperty: Property<CircuitElementViewType>,
+  public constructor( labelTextProperty: TReadOnlyProperty<string>, showLabelsProperty: Property<boolean>, viewTypeProperty: Property<CircuitElementViewType>,
                       circuit: Circuit, globalToCircuitLayerNodePoint: ( v: Vector2 ) => Vector2, iconNode: Node, maxNumber: number,
                       count: () => number, createElement: ( v: Vector2 ) => CircuitElement, providedOptions?: CircuitElementToolNodeOptions ) {
 
-    let labelNode: Node | null = null;
-    if ( labelText.value.length > 0 && providedOptions && providedOptions.tandem ) {
-      labelNode = new Text( labelText, {
+    let labelText: Node | null = null;
+    if ( labelTextProperty.value.length > 0 && providedOptions && providedOptions.tandem ) {
+      labelText = new Text( labelTextProperty, {
         fontSize: 12, maxWidth: TOOLBOX_ICON_WIDTH,
-        tandem: providedOptions.tandem.createTandem( 'label' ),
+        tandem: providedOptions.tandem.createTandem( 'labelText' ),
         visiblePropertyOptions: {
           phetioReadOnly: true
         }
       } );
-      showLabelsProperty.linkAttribute( labelNode, 'visible' );
+      showLabelsProperty.linkAttribute( labelText, 'visible' );
     }
     const options = optionize<CircuitElementToolNodeOptions, SelfOptions, VBoxOptions>()( {
       spacing: 2, // Spacing between the icon and the text
       cursor: 'pointer',
 
       // hack because the series ammeter tool node has text rendered separately (joined with probe ammeter)
-      children: labelNode ? [ iconNode, labelNode ] : [ iconNode ],
+      children: labelText ? [ iconNode, labelText ] : [ iconNode ],
 
       // Expand touch area around text, see https://github.com/phetsims/circuit-construction-kit-dc/issues/82
       touchAreaExpansionLeft: 0,

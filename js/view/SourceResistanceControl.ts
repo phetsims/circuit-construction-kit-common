@@ -53,9 +53,11 @@ export default class SourceResistanceControl extends VBox {
       constrainValue: ( value: number ) => range.constrainValue( Utils.roundSymmetric( value ) ),
       tandem: tandem.createTandem( 'slider' )
     } );
-    slider.addMajorTick( range.min, createLabel( CircuitConstructionKitCommonStrings.tinyStringProperty, tandem.createTandem( 'tinyLabel' ) ) );
+    slider.addMajorTick( range.min, createLabel( CircuitConstructionKitCommonStrings.tinyStringProperty, tandem.createTandem( 'tinyLabelText' ) ) );
     slider.addMajorTick( midpoint );
-    slider.addMajorTick( range.max, createLabel( new Property( StringUtils.fillIn( resistanceOhmsSymbolStringProperty, { resistance: Utils.toFixed( range.max, 0 ) } ) ), tandem.createTandem( 'maxLabel' ) ) );
+    slider.addMajorTick( range.max, createLabel( new Property( StringUtils.fillIn( resistanceOhmsSymbolStringProperty, {
+      resistance: Utils.toFixed( range.max, 0 )
+    } ) ), tandem.createTandem( 'maxLabelText' ) ) );
 
     for ( let i = range.min + 1; i < range.max; i++ ) {
       if ( Math.abs( i - midpoint ) > 1E-6 ) {

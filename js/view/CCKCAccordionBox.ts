@@ -65,7 +65,7 @@ export default class CCKCAccordionBox extends AccordionBox {
           new Text( title, {
             fontSize: CCKCConstants.FONT_SIZE,
             maxWidth: 175,
-            tandem: tandem.createTandem( 'titleNode' )
+            tandem: tandem.createTandem( 'titleText' )
           } )
         ]
       } ),

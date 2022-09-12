@@ -59,7 +59,7 @@ export default class DisplayOptionsPanel extends CCKCPanel {
 
     // Create an instrumented label
     const createLabel = ( stringProperty: TReadOnlyProperty<string>, parentTandem: Tandem ) => new Text( stringProperty, {
-      tandem: parentTandem.createTandem( 'label' ),
+      tandem: parentTandem.createTandem( 'labelText' ),
       fontSize: CCKCConstants.FONT_SIZE,
       maxWidth: 120
     } );
