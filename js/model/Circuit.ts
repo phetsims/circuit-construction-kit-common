@@ -881,8 +881,8 @@ export default class Circuit {
       }
 
       // If the dragged vertex had no label, take the label of the replaced vertex
-      if ( targetVertex.labelTextProperty.value === '' ) {
-        targetVertex.labelTextProperty.value = oldVertex.labelTextProperty.value;
+      if ( targetVertex.labelStringProperty.value === '' ) {
+        targetVertex.labelStringProperty.value = oldVertex.labelStringProperty.value;
       }
 
       this.vertexGroup.disposeElement( oldVertex );

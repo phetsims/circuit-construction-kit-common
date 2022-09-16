@@ -37,7 +37,7 @@ export type CircuitElementToolNodeOptions = SelfOptions & VBoxOptions;
 export default class CircuitElementToolNode extends VBox {
 
   /**
-   * @param labelTextProperty
+   * @param labelStringProperty
    * @param showLabelsProperty
    * @param viewTypeProperty
    * @param circuit
@@ -51,13 +51,13 @@ export default class CircuitElementToolNode extends VBox {
    *                                 - in the center of the socket
    * @param [providedOptions]
    */
-  public constructor( labelTextProperty: TReadOnlyProperty<string>, showLabelsProperty: Property<boolean>, viewTypeProperty: Property<CircuitElementViewType>,
+  public constructor( labelStringProperty: TReadOnlyProperty<string>, showLabelsProperty: Property<boolean>, viewTypeProperty: Property<CircuitElementViewType>,
                       circuit: Circuit, globalToCircuitLayerNodePoint: ( v: Vector2 ) => Vector2, iconNode: Node, maxNumber: number,
                       count: () => number, createElement: ( v: Vector2 ) => CircuitElement, providedOptions?: CircuitElementToolNodeOptions ) {
 
     let labelText: Node | null = null;
-    if ( labelTextProperty.value.length > 0 && providedOptions && providedOptions.tandem ) {
-      labelText = new Text( labelTextProperty, {
+    if ( labelStringProperty.value.length > 0 && providedOptions && providedOptions.tandem ) {
+      labelText = new Text( labelStringProperty, {
         fontSize: 12, maxWidth: TOOLBOX_ICON_WIDTH,
         tandem: providedOptions.tandem.createTandem( 'labelText' ),
         visiblePropertyOptions: {

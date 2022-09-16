@@ -80,7 +80,7 @@ export default class Vertex extends PhetioObject {
   // for black box study
   public outerWireStub: boolean;
   public isCuttableProperty: BooleanProperty;
-  public labelTextProperty: TProperty<string>;
+  public labelStringProperty: TProperty<string>;
   private readonly localizedString: LocalizedString;
 
   public static VertexIO: IOType;
@@ -142,8 +142,8 @@ export default class Vertex extends PhetioObject {
       tandem: options.tandem.createTandem( 'isCuttableProperty' )
     } );
 
-    this.localizedString = new LocalizedString( '', options.tandem.createTandem( 'labelTextProperty' ) );
-    this.labelTextProperty = this.localizedString.property;
+    this.localizedString = new LocalizedString( '', options.tandem.createTandem( 'labelStringProperty' ) );
+    this.labelStringProperty = this.localizedString.property;
   }
 
   /**

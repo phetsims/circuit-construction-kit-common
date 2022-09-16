@@ -134,7 +134,7 @@ export default class VertexNode extends Node {
       } );
     }
 
-    vertex.labelTextProperty.link( labelText => {
+    vertex.labelStringProperty.link( labelText => {
       customLabelText.text = labelText;
       this.updateReadoutTextPosition();
     } );

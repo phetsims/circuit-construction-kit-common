@@ -27,13 +27,13 @@ export type ProbeTextNodeOptions = StrictOmit<SelfOptions & VBoxOptions, 'childr
 export default class ProbeTextNode extends VBox {
 
   /**
-   * @param textProperty - the text that should be displayed
+   * @param stringProperty - the text that should be displayed
    * @param showResultsProperty - true if the text should be displayed
    * @param title - the title
    * @param tandem
    * @param [providedOptions]
    */
-  public constructor( textProperty: TReadOnlyProperty<string>, showResultsProperty: TReadOnlyProperty<boolean>, title: TReadOnlyProperty<string>, tandem: Tandem,
+  public constructor( stringProperty: TReadOnlyProperty<string>, showResultsProperty: TReadOnlyProperty<boolean>, title: TReadOnlyProperty<string>, tandem: Tandem,
                       providedOptions?: ProbeTextNodeOptions ) {
 
     const options = optionize<ProbeTextNodeOptions, SelfOptions, VBoxOptions>()( {
@@ -42,11 +42,11 @@ export default class ProbeTextNode extends VBox {
       pickable: false
     }, providedOptions );
 
-    const readout = new Text( textProperty, {
+    const readout = new Text( stringProperty, {
       fontSize: options.seriesAmmeter ? 46 : 40,
       maxWidth: TEXT_BOX_WIDTH - 20,
       tandem: tandem.createTandem( 'readoutText' ),
-      textPropertyOptions: {
+      stringPropertyOptions: {
         phetioReadOnly: true
       }
     } );

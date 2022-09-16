@@ -122,7 +122,7 @@ export default abstract class CircuitElement extends PhetioObject {
   public readonly isEditableProperty: BooleanProperty;
   public readonly isDisposableProperty: BooleanProperty;
   public isValueDisplayableProperty: BooleanProperty;
-  public labelTextProperty: StringProperty;
+  public labelStringProperty: StringProperty;
 
   public constructor( startVertex: Vertex, endVertex: Vertex, chargePathLength: number, tandem: Tandem, providedOptions?: CircuitElementOptions ) {
     assert && assert( startVertex !== endVertex, 'startVertex cannot be the same as endVertex' );
@@ -223,8 +223,8 @@ export default abstract class CircuitElement extends PhetioObject {
       phetioDocumentation: 'Whether the CircuitElement\'s value can be displayed when the "values" checkbox is selected'
     } );
 
-    this.labelTextProperty = new StringProperty( '', {
-      tandem: tandem.createTandem( 'labelTextProperty' ),
+    this.labelStringProperty = new StringProperty( '', {
+      tandem: tandem.createTandem( 'labelStringProperty' ),
       phetioDocumentation: 'Shows a custom text label next to the circuit element'
     } );
   }
@@ -336,7 +336,7 @@ export default abstract class CircuitElement extends PhetioObject {
     this.isValueDisplayableProperty.dispose();
     this.startVertexProperty.dispose();
     this.endVertexProperty.dispose();
-    this.labelTextProperty.dispose();
+    this.labelStringProperty.dispose();
     this.currentProperty.dispose();
 
     super.dispose();

@@ -56,10 +56,10 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
   public constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, seriesAmmeter: SeriesAmmeter,
                       tandem: Tandem, isValueDepictionEnabledProperty: TReadOnlyProperty<boolean>, providedOptions?: FixedCircuitElementNodeOptions ) {
 
-    const textProperty = new Property( MathSymbols.NO_VALUE );
+    const stringProperty = new Property( MathSymbols.NO_VALUE );
 
     const probeTextNode = new ProbeTextNode(
-      textProperty, isValueDepictionEnabledProperty, currentStringProperty, tandem.createTandem( 'probeTextNode' ), {
+      stringProperty, isValueDepictionEnabledProperty, currentStringProperty, tandem.createTandem( 'probeTextNode' ), {
         seriesAmmeter: true
       } );
 
@@ -83,7 +83,7 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
         }
       }
 
-      textProperty.value = readout;
+      stringProperty.value = readout;
     };
 
     seriesAmmeter.currentProperty.link( updateText );
