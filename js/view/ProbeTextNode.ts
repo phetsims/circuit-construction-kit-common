@@ -25,6 +25,8 @@ type SelfOptions = {
 export type ProbeTextNodeOptions = StrictOmit<SelfOptions & VBoxOptions, 'children'>;
 
 export default class ProbeTextNode extends VBox {
+  private readonly readoutText: Text;
+  private readonly titleText: Text;
 
   /**
    * @param stringProperty - the text that should be displayed
@@ -42,7 +44,7 @@ export default class ProbeTextNode extends VBox {
       pickable: false
     }, providedOptions );
 
-    const readout = new Text( stringProperty, {
+    const readoutText = new Text( stringProperty, {
       fontSize: options.seriesAmmeter ? 46 : 40,
       maxWidth: TEXT_BOX_WIDTH - 20,
       tandem: tandem.createTandem( 'readoutText' ),
@@ -59,32 +61,33 @@ export default class ProbeTextNode extends VBox {
     } );
 
     // Text bounds is not updated eagerly, so wait for the bounds to change for layout
-    readout.boundsProperty.link( bounds => {
-      if ( readout.text === MathSymbols.NO_VALUE ) {
+    readoutText.boundsProperty.link( bounds => {
+      if ( readoutText.text === MathSymbols.NO_VALUE ) {
 
         // --- is centered
-        readout.centerX = textBox.centerX;
+        readoutText.centerX = textBox.centerX;
       }
       else {
 
         // numbers are right-aligned
-        readout.right = textBox.right - 10;
+        readoutText.right = textBox.right - 10;
       }
 
       // vertically center
-      readout.centerY = textBox.centerY;
+      readoutText.centerY = textBox.centerY;
     } );
 
     // Update visibility when show results property changes
-    showResultsProperty.linkAttribute( readout, 'visible' );
+    showResultsProperty.linkAttribute( readoutText, 'visible' );
 
     // set the children
-    options.children = [ new Text( title, {
+    const titleText = new Text( title, {
       fontSize: options.seriesAmmeter ? 33 : 42,
       maxWidth: TEXT_BOX_WIDTH,
       tandem: tandem.createTandem( 'titleText' )
-    } ), new Node( {
-      children: [ textBox, readout ]
+    } );
+    options.children = [ titleText, new Node( {
+      children: [ textBox, readoutText ]
     } ) ];
 
     if ( options.seriesAmmeter ) {
@@ -92,6 +95,15 @@ export default class ProbeTextNode extends VBox {
     }
 
     super( options );
+
+    this.readoutText = readoutText;
+    this.titleText = titleText;
+  }
+
+  public override dispose(): void {
+    this.readoutText.dispose();
+    this.titleText.dispose();
+    super.dispose();
   }
 }
 
