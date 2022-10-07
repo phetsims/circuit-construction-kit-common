@@ -70,15 +70,13 @@ export default class ViewRadioButtonGroup extends RectangularRadioButtonGroup<Ci
       isIcon: true,
       scale: SCALE
     } );
-    const lifelikeIcon = createBatteryNode( CircuitElementViewType.LIFELIKE, tandem.createTandem( 'lifelikeIcon' ) );
-    const schematicIcon = createBatteryNode( CircuitElementViewType.SCHEMATIC, tandem.createTandem( 'schematicIcon' ) );
     super( viewTypeProperty, [ {
       value: CircuitElementViewType.LIFELIKE,
-      node: lifelikeIcon,
+      createNode: tandem => createBatteryNode( CircuitElementViewType.LIFELIKE, tandem.createTandem( 'lifelikeIcon' ) ),
       tandemName: 'lifelikeRadioButton'
     }, {
       value: CircuitElementViewType.SCHEMATIC,
-      node: schematicIcon,
+      createNode: tandem => createBatteryNode( CircuitElementViewType.SCHEMATIC, tandem.createTandem( 'schematicIcon' ) ),
       tandemName: 'schematicRadioButton'
     } ], options );
   }
