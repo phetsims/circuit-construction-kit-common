@@ -290,7 +290,10 @@ export default class VertexNode extends Node {
       // https://github.com/phetsims/circuit-construction-kit-common/issues/307
       domEvent!.preventDefault();
 
-      this.cutButton.enabled && this.circuit.cutVertex( this.circuit.getSelectedVertex()! );
+      // Double guard to work around errors in fuzzing
+      if ( this.cutButton.enabled && this.circuit.getSelectedVertex() ) {
+        this.circuit.cutVertex( this.circuit.getSelectedVertex()! );
+      }
     }
   }
 
