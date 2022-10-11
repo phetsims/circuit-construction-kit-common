@@ -75,8 +75,8 @@ export default class CCKCChartNode extends Node {
 
   // emits when the CCKCChartNode has been dropped
   private readonly droppedEmitter: TEmitter;
-  protected readonly aboveBottomLeft1: TReadOnlyProperty<Vector2>;
-  protected readonly aboveBottomLeft2: TReadOnlyProperty<Vector2>;
+  protected readonly aboveBottomLeft1Property: TReadOnlyProperty<Vector2>;
+  protected readonly aboveBottomLeft2Property: TReadOnlyProperty<Vector2>;
   private readonly zoomLevelProperty: RangedProperty;
   protected readonly updatePen: () => void;
 
@@ -130,13 +130,13 @@ export default class CCKCChartNode extends Node {
     this.droppedEmitter = new Emitter();
 
     // for attaching probes
-    this.aboveBottomLeft1 = new DerivedProperty(
+    this.aboveBottomLeft1Property = new DerivedProperty(
       [ leftBottomProperty ],
       ( position: Vector2 ) => position.isFinite() ? position.plusXY( 0, -20 ) : Vector2.ZERO
     );
 
     // for attaching probes
-    this.aboveBottomLeft2 = new DerivedProperty(
+    this.aboveBottomLeft2Property = new DerivedProperty(
       [ leftBottomProperty ],
       ( position: Vector2 ) => position.isFinite() ? position.plusXY( 0, -10 ) : Vector2.ZERO
     );

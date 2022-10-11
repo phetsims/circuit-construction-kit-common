@@ -45,7 +45,7 @@ export default class CurrentChartNode extends CCKCChartNode {
       CCKCConstants.CHART_SERIES_COLOR,
       5,
       10,
-      this.aboveBottomLeft1,
+      this.aboveBottomLeft1Property,
       options.tandem.createTandem( 'probeNode' )
     );
     this.lastStepTime = null;
