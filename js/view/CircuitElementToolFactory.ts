@@ -149,18 +149,16 @@ export default class CircuitElementToolFactory {
       return node1;
     };
 
-    const lifelikeIcon = wrap( createIcon( Tandem.OPT_OUT, LIFELIKE_PROPERTY ), options.lifelikeIconHeight );
-    const schematicIcon = wrap( createIcon( Tandem.OPT_OUT, SCHEMATIC_PROPERTY ), options.schematicIconHeight );
-
     const toggleNode = new ToggleNode( this.viewTypeProperty, [
-      { value: CircuitElementViewType.LIFELIKE, node: lifelikeIcon },
-      { value: CircuitElementViewType.SCHEMATIC, node: schematicIcon }
+      {
+        value: CircuitElementViewType.LIFELIKE,
+        createNode: tandem => wrap( createIcon( Tandem.OPT_OUT, LIFELIKE_PROPERTY ), options.lifelikeIconHeight )
+      },
+      {
+        value: CircuitElementViewType.SCHEMATIC,
+        createNode: tandem => wrap( createIcon( Tandem.OPT_OUT, SCHEMATIC_PROPERTY ), options.schematicIconHeight )
+      }
     ] );
-
-    this.viewTypeProperty.link( viewType => {
-      lifelikeIcon.visible = viewType === CircuitElementViewType.LIFELIKE;
-      schematicIcon.visible = viewType === CircuitElementViewType.SCHEMATIC;
-    } );
 
     return new CircuitElementToolNode(
       labelString,
