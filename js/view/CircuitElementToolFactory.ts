@@ -85,7 +85,7 @@ type CreateCircuitElementToolNodeSelfOptions = {
 type CreateResistorToolNodeSelfOptions = {
   count?: number;
   resistorType?: ResistorType;
-  labelString?: TReadOnlyProperty<string>;
+  labelStringProperty?: TReadOnlyProperty<string>;
   tandemName?: string;
 };
 
@@ -292,10 +292,10 @@ export default class CircuitElementToolFactory {
       resistorType: ResistorType.RESISTOR,
       lifelikeIconHeight: 15,
       schematicIconHeight: 14,
-      labelString: resistorStringProperty,
+      labelStringProperty: resistorStringProperty,
       tandemName: 'resistorToolNode'
     }, providedOptions );
-    const labelStringProperty = options.labelString;
+    const labelStringProperty = options.labelStringProperty;
     const resistorType = options.resistorType;
 
     // Create the icon model without using the PhetioGroup, so it will not be PhET-iO instrumented.
@@ -402,7 +402,7 @@ export default class CircuitElementToolFactory {
       count: 1,
       resistorType: ResistorType.PAPER_CLIP,
       tandemName: 'paperClipToolNode',
-      labelString: paperClipStringProperty
+      labelStringProperty: paperClipStringProperty
     } );
   }
 
@@ -412,7 +412,7 @@ export default class CircuitElementToolFactory {
       count: 1,
       resistorType: ResistorType.COIN,
       tandemName: 'coinToolNode',
-      labelString: coinStringProperty,
+      labelStringProperty: coinStringProperty,
       lifelikeIconHeight: 30
     } );
   }
@@ -423,7 +423,7 @@ export default class CircuitElementToolFactory {
       count: 1,
       resistorType: ResistorType.DOLLAR_BILL,
       tandemName: 'dollarBillToolNode',
-      labelString: dollarBillStringProperty,
+      labelStringProperty: dollarBillStringProperty,
       lifelikeIconHeight: 22
     } );
   }
@@ -434,7 +434,7 @@ export default class CircuitElementToolFactory {
       count: 1,
       resistorType: ResistorType.ERASER,
       tandemName: 'eraserToolNode',
-      labelString: eraserStringProperty,
+      labelStringProperty: eraserStringProperty,
       lifelikeIconHeight: 17
     } );
   }
@@ -445,7 +445,7 @@ export default class CircuitElementToolFactory {
       count: 1,
       resistorType: ResistorType.PENCIL,
       tandemName: 'pencilToolNode',
-      labelString: pencilStringProperty,
+      labelStringProperty: pencilStringProperty,
       lifelikeIconHeight: 12
     } );
   }
@@ -456,7 +456,7 @@ export default class CircuitElementToolFactory {
       count: 1,
       resistorType: ResistorType.HAND,
       tandemName: 'handToolNode',
-      labelString: handStringProperty,
+      labelStringProperty: handStringProperty,
       lifelikeIconHeight: 30
     } );
   }
@@ -467,7 +467,7 @@ export default class CircuitElementToolFactory {
       count: 1,
       resistorType: ResistorType.DOG,
       tandemName: 'dogToolNode',
-      labelString: dogStringProperty,
+      labelStringProperty: dogStringProperty,
       lifelikeIconHeight: 30
     } );
   }
@@ -478,7 +478,7 @@ export default class CircuitElementToolFactory {
       count: 4,
       resistorType: ResistorType.HIGH_RESISTANCE_RESISTOR,
       tandemName: 'highResistanceResistorToolNode',
-      labelString: resistorStringProperty
+      labelStringProperty: resistorStringProperty
     } );
   }
 
