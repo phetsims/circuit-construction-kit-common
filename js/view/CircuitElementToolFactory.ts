@@ -295,7 +295,7 @@ export default class CircuitElementToolFactory {
       labelString: resistorStringProperty,
       tandemName: 'resistorToolNode'
     }, providedOptions );
-    const labelString = options.labelString;
+    const labelStringProperty = options.labelString;
     const resistorType = options.resistorType;
 
     // Create the icon model without using the PhetioGroup, so it will not be PhET-iO instrumented.
@@ -306,7 +306,7 @@ export default class CircuitElementToolFactory {
       Tandem.OPTIONAL
     );
 
-    return this.createCircuitElementToolNode( labelString, options.count,
+    return this.createCircuitElementToolNode( labelStringProperty, options.count,
       ( tandem, viewTypeProperty ) => new ResistorNode( null, null, resistorModel, viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
         isIcon: true
       } ),

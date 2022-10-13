@@ -163,7 +163,7 @@ export default class SensorToolbox extends CCKCPanel {
         touchAreaExpansionBottom: 0,
         tandem: circuit.includeLabElements ? tandem.createTandem( 'seriesAmmeterToolNode' ) : Tandem.OPT_OUT
       } );
-    const allSeriesAmmetersInPlayArea = new DerivedProperty( [ circuit.circuitElements.lengthProperty ], ( () => {
+    const allSeriesAmmetersInPlayAreaProperty = new DerivedProperty( [ circuit.circuitElements.lengthProperty ], ( () => {
       return circuit.circuitElements.count( circuitElement => circuitElement instanceof SeriesAmmeter ) === MAX_SERIES_AMMETERS;
     } ) );
 
@@ -187,7 +187,7 @@ export default class SensorToolbox extends CCKCPanel {
     Multilink.multilink( [ circuitLayerNode.model.showLabelsProperty, allVoltmetersVisibleProperty ], ( showLabels, allVoltmetersVisible ) => {
       voltmeterText.visible = showLabels && !allVoltmetersVisible;
     } );
-    Multilink.multilink( [ circuitLayerNode.model.showLabelsProperty, allAmmetersVisibleProperty, allSeriesAmmetersInPlayArea ],
+    Multilink.multilink( [ circuitLayerNode.model.showLabelsProperty, allAmmetersVisibleProperty, allSeriesAmmetersInPlayAreaProperty ],
       ( showLabels, allAmmetersInPlayArea, allSeriesAmmetersInPlayArea ) => {
 
         let isAmmeterInToolbox = false;
@@ -238,7 +238,7 @@ export default class SensorToolbox extends CCKCPanel {
 
     const rows: Node[] = [ topBox ];
     if ( options.showCharts ) {
-      const everything = new Property( Bounds2.EVERYTHING );
+      const everythingProperty = new Property( Bounds2.EVERYTHING );
 
       const createChartToolIcon = ( chartNodes: Node[], chartNodeIcon: VoltageChartNode | CurrentChartNode, labelNode: Text, tandem: Tandem ) => {
 
@@ -272,7 +272,7 @@ export default class SensorToolbox extends CCKCPanel {
       };
 
       // Make the voltage chart the same width as the voltmeter, since the icons will be aligned in a grid
-      const voltageChartNodeIconContents = new VoltageChartNode( circuitLayerNode, new NumberProperty( 0 ), everything );
+      const voltageChartNodeIconContents = new VoltageChartNode( circuitLayerNode, new NumberProperty( 0 ), everythingProperty );
       const scale = voltmeterToolIcon.width / voltageChartNodeIconContents.width;
       voltageChartNodeIconContents.scale( scale );
 
@@ -287,7 +287,7 @@ export default class SensorToolbox extends CCKCPanel {
         tandem.createTandem( 'voltageChartToolIcon' )
       );
       const currentChartToolIcon = createChartToolIcon( currentChartNodes,
-        new CurrentChartNode( circuitLayerNode, new NumberProperty( 0 ), everything, { scale: scale, tandem: Tandem.OPT_OUT } ),
+        new CurrentChartNode( circuitLayerNode, new NumberProperty( 0 ), everythingProperty, { scale: scale, tandem: Tandem.OPT_OUT } ),
         new Text( currentChartStringProperty, {
           maxWidth: 60,
           visiblePropertyOptions: {
