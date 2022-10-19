@@ -304,7 +304,8 @@ export default class ChargeAnimator {
             distanceToClosestElectron = circuitElement.chargePathLength - ( _.maxBy( charges, 'distance' )! ).distance;
           }
 
-          assert && assert( typeof distance === 'number', 'distance should be a number' );
+          assert && assert( distance !== null, 'distance should be a number' );
+
           if ( typeof distance === 'number' ) {
             circuitPositions.push( {
               circuitElement: circuitElement,
@@ -322,7 +323,7 @@ export default class ChargeAnimator {
 
             // find the one with the closest electron
             const nearest = _.minBy( positions, 'distanceToClosestElectron' )!;
-            assert && assert( typeof distance === 'number', 'distance should be a number' );
+            assert && assert( distance !== null, 'distance should be a number' );
             if ( typeof distance === 'number' ) {
               circuitPositions.push( {
                 circuitElement: circuitElement,

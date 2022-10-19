@@ -645,7 +645,6 @@ export default class CircuitLayerNode extends Node {
     const fixedNeighbors = neighbors.filter( neighbor => neighbor.getOppositeVertex( vertex ).blackBoxInterfaceProperty.get() );
     if ( fixedNeighbors.length === 1 ) {
       const fixedNeighbor = fixedNeighbors[ 0 ];
-      assert && assert( fixedNeighbor instanceof FixedCircuitElement, 'should be a fixed length circuit element' );
       if ( fixedNeighbor instanceof FixedCircuitElement ) {
         const fixedVertex = fixedNeighbor.getOppositeVertex( vertex );
         const desiredAngle = position.minus( fixedVertex.positionProperty.get() ).angle;
@@ -811,8 +810,6 @@ export default class CircuitLayerNode extends Node {
    * @param dragged - true if the vertex actually moved with at least 1 drag call
    */
   public endDrag( vertex: Vertex, dragged: boolean ): void {
-    assert && assert( typeof dragged === 'boolean', 'didDrag must be supplied' );
-
     const vertexNode = this.getVertexNode( vertex );
 
     // Find all vertices connected by fixed length nodes.

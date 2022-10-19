@@ -126,7 +126,6 @@ export default abstract class CircuitElement extends PhetioObject {
 
   public constructor( startVertex: Vertex, endVertex: Vertex, chargePathLength: number, tandem: Tandem, providedOptions?: CircuitElementOptions ) {
     assert && assert( startVertex !== endVertex, 'startVertex cannot be the same as endVertex' );
-    assert && assert( typeof chargePathLength === 'number', 'charge path length should be a number' );
     assert && assert( chargePathLength > 0, 'charge path length must be positive' );
 
     const options = optionize<CircuitElementOptions, SelfOptions, PhetioObjectOptions>()( {
