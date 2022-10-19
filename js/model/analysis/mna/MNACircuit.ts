@@ -15,7 +15,6 @@ import QRDecomposition from '../../../../../dot/js/QRDecomposition.js';
 import Matrix from '../../../../../dot/js/Matrix.js';
 import Utils from '../../../../../dot/js/Utils.js';
 import arrayRemove from '../../../../../phet-core/js/arrayRemove.js';
-import CCKCUtils from '../../../CCKCUtils.js';
 import circuitConstructionKitCommon from '../../../circuitConstructionKitCommon.js';
 import MNASolution from './MNASolution.js';
 import MNACircuitElement from './MNACircuitElement.js';
@@ -52,8 +51,6 @@ export default class MNACircuit {
     this.nodeSet = {};
     for ( let k = 0; k < this.elements.length; k++ ) {
       const element = this.elements[ k ];
-      assert && CCKCUtils.validateNodeIndex( element.nodeId0 );
-      assert && CCKCUtils.validateNodeIndex( element.nodeId1 );
       this.nodeSet[ element.nodeId0 ] = element.nodeId0;
       this.nodeSet[ element.nodeId1 ] = element.nodeId1;
     }
@@ -130,8 +127,6 @@ export default class MNACircuit {
    * @param nodeTerms - to accumulate the result
    */
   private getCurrentTerms( node: string, side: 'nodeId0' | 'nodeId1', sign: number, nodeTerms: Term[] ): Term[] {
-    assert && CCKCUtils.validateNodeIndex( node );
-
     // Each battery introduces an unknown current through the battery
     for ( let i = 0; i < this.batteries.length; i++ ) {
       const battery = this.batteries[ i ];
@@ -201,7 +196,6 @@ export default class MNACircuit {
         const element = this.elements[ i ];
         if ( element.containsNodeId( nodeToVisit ) ) {
           const oppositeNode = element.getOppositeNode( nodeToVisit );
-          assert && CCKCUtils.validateNodeIndex( oppositeNode );
           if ( !visited.includes( oppositeNode ) ) {
             toVisit.push( oppositeNode );
           }
@@ -438,7 +432,6 @@ class UnknownVoltage {
   public readonly node: string; // the index of the node
 
   public constructor( node: string ) {
-    assert && CCKCUtils.validateNodeIndex( node );
     this.node = node;
   }
 

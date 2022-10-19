@@ -7,7 +7,6 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import CCKCUtils from '../../../CCKCUtils.js';
 import circuitConstructionKitCommon from '../../../circuitConstructionKitCommon.js';
 
 export default class MNACircuitElement {
@@ -15,9 +14,6 @@ export default class MNACircuitElement {
   public readonly nodeId1: string; // index of the end node
 
   public constructor( nodeId0: string, nodeId1: string ) {
-    assert && CCKCUtils.validateNodeIndex( nodeId0 );
-    assert && CCKCUtils.validateNodeIndex( nodeId1 );
-
     this.nodeId0 = nodeId0;
     this.nodeId1 = nodeId1;
   }

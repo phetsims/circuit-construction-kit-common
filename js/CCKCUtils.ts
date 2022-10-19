@@ -108,15 +108,6 @@ const CCKCUtils = {
     else {
       return value;
     }
-  },
-
-  validateNodeIndex( nodeIndex: string ): void {
-    if ( assert ) {
-      assert && assert( typeof nodeIndex === 'string' || typeof nodeIndex === 'number', 'nodeIndex must be string or number' );
-      if ( typeof nodeIndex === 'number' ) {
-        assert && assert( !isNaN( nodeIndex ), 'nodeIndex may not be NaN' );
-      }
-    }
   }
 };
 
