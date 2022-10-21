@@ -81,7 +81,6 @@ export default abstract class CircuitElementNode extends Node {
       keydown: ( event: SceneryEvent<KeyboardEvent> ) => {
 
         // on delete or backspace, the focused circuit element should be deleted
-        // @ts-ignore
         if ( KeyboardUtils.isAnyKeyEvent( event.domEvent, [ KeyboardUtils.KEY_DELETE, KeyboardUtils.KEY_BACKSPACE ] ) ) {
 
           // prevent default so 'backspace' and 'delete' don't navigate back a page in Firefox, see
