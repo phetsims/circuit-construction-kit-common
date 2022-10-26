@@ -9,7 +9,7 @@
 import Emitter from '../../../axon/js/Emitter.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import merge from '../../../phet-core/js/merge.js';
-import { KeyboardUtils, Node, NodeOptions, SceneryEvent } from '../../../scenery/js/imports.js';
+import { KeyboardListener, Node, NodeOptions, SceneryEvent } from '../../../scenery/js/imports.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Circuit from '../model/Circuit.js';
@@ -76,28 +76,26 @@ export default abstract class CircuitElementNode extends Node {
     } );
 
     // keyboard listener so that delete or backspace deletes the element - must be disposed
-    const keyListener = {
+    const keyListener = new KeyboardListener( {
+      keys: [ 'delete', 'backspace' ],
+      callback( event ) {
 
-      keydown: ( event: SceneryEvent<KeyboardEvent> ) => {
+        assert && assert( event, 'should not be called from any spot without a direct dom event' );
 
-        // on delete or backspace, the focused circuit element should be deleted
-        if ( KeyboardUtils.isAnyKeyEvent( event.domEvent, [ KeyboardUtils.KEY_DELETE, KeyboardUtils.KEY_BACKSPACE ] ) ) {
+        // prevent default so 'backspace' and 'delete' don't navigate back a page in Firefox, see
+        // https://github.com/phetsims/circuit-construction-kit-common/issues/307
+        event!.domEvent!.preventDefault();
 
-          // prevent default so 'backspace' and 'delete' don't navigate back a page in Firefox, see
-          // https://github.com/phetsims/circuit-construction-kit-common/issues/307
-          event.domEvent!.preventDefault();
+        // Only permit deletion when not being dragged, see https://github.com/phetsims/circuit-construction-kit-common/issues/414
+        if ( !circuitElement.startVertexProperty.value.isDragged && !circuitElement.endVertexProperty.value.isDragged ) {
 
-          // Only permit deletion when not being dragged, see https://github.com/phetsims/circuit-construction-kit-common/issues/414
-          if ( !circuitElement.startVertexProperty.value.isDragged && !circuitElement.endVertexProperty.value.isDragged ) {
-
-            // Only permit deletion if the circuit element is marked as disposable
-            if ( circuitElement.isDisposableProperty.value ) {
-              circuit!.disposeCircuitElement( circuitElement );
-            }
+          // Only permit deletion if the circuit element is marked as disposable
+          if ( circuitElement.isDisposableProperty.value ) {
+            circuit!.disposeCircuitElement( circuitElement );
           }
         }
       }
-    };
+    } );
     this.addInputListener( keyListener );
 
     this.disposeEmitterCircuitElementNode = new Emitter();
