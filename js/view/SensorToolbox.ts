@@ -14,8 +14,7 @@ import Property from '../../../axon/js/Property.js';
 import ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import Vector2 from '../../../dot/js/Vector2.js';
-import { AlignGroup, DragListener, HBox, Node, Rectangle, SceneryEvent, Text, VBox } from '../../../scenery/js/imports.js';
-import HSeparatorDeprecated from '../../../sun/js/HSeparatorDeprecated.js';
+import { AlignGroup, DragListener, HBox, HSeparator, Node, Rectangle, SceneryEvent, Text, VBox } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
@@ -302,7 +301,7 @@ export default class SensorToolbox extends CCKCPanel {
         children: [ voltageChartToolIcon, currentChartToolIcon ]
       } );
 
-      rows.push( new HSeparatorDeprecated( 160 ) );
+      rows.push( new HSeparator() );
       rows.push( chartBox );
     }
 

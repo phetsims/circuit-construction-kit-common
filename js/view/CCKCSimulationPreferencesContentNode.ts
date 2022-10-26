@@ -5,8 +5,7 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-import { Text, VBox } from '../../../scenery/js/imports.js';
-import HSeparatorDeprecated from '../../../sun/js/HSeparatorDeprecated.js';
+import { HSeparator, Text, VBox } from '../../../scenery/js/imports.js';
 import VerticalAquaRadioButtonGroup from '../../../sun/js/VerticalAquaRadioButtonGroup.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -64,7 +63,7 @@ export default class CCKCSimulationPreferencesContentNode extends VBox {
       children: [
         new Text( CircuitConstructionKitCommonStrings.schematicStandardStringProperty, PreferencesDialog.PANEL_SECTION_LABEL_OPTIONS ),
         schematicStandardRadioButtonGroup,
-        new HSeparatorDeprecated( 200 ),
+        new HSeparator(),
         new Text( CircuitConstructionKitCommonStrings.ammeterReadoutStringProperty, PreferencesDialog.PANEL_SECTION_LABEL_OPTIONS ),
         ammeterReadoutRadioButtonGroup
       ]
