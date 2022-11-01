@@ -170,7 +170,7 @@ export default class ValueNode extends Panel {
       readoutValueNode = createRichText( tandem.createTandem( 'switchText' ) );
 
       const updateResistance = ( resistance: number ) => {
-        ( readoutValueNode as Text ).text = StringUtils.fillIn( resistanceOhmsSymbolStringProperty, {
+        ( readoutValueNode as RichText ).string = StringUtils.fillIn( resistanceOhmsSymbolStringProperty, {
 
           // Using a serif font makes the infinity symbol look less lopsided
           resistance: resistance > 100000 ? infinitySpan : '0'
@@ -191,7 +191,7 @@ export default class ValueNode extends Panel {
         ( resistance, currentRating ) => {
           const milliOhmString = resistance === CCKCConstants.MAX_RESISTANCE ? infinitySpan :
                                  Utils.toFixed( resistance * 1000, circuitElement.numberOfDecimalPlaces );
-          ( readoutValueNode as Text ).text = StringUtils.fillIn( fuseValueStringProperty, {
+          ( readoutValueNode as RichText ).string = StringUtils.fillIn( fuseValueStringProperty, {
 
             // Convert to milli
             resistance: milliOhmString,
