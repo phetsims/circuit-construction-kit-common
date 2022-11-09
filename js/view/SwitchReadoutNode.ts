@@ -23,6 +23,8 @@ const theSwitchIsOpenStringProperty = CircuitConstructionKitCommonStrings.theSwi
 const MAX_TEXT_WIDTH = 300;
 
 export default class SwitchReadoutNode extends Node {
+  private readonly _updateLayout: () => void;
+
   public constructor( circuit: Circuit, tandem: Tandem, trashButton: Node ) {
 
     // Create both texts and display both so they remain aligned as the value changes
@@ -74,6 +76,12 @@ export default class SwitchReadoutNode extends Node {
       children: [ messageNode, trashButton ],
       tandem: tandem
     } );
+
+    this._updateLayout = update;
+  }
+
+  public updateLayout(): void {
+    this._updateLayout();
   }
 }
 

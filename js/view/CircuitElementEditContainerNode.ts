@@ -363,6 +363,10 @@ export default class CircuitElementEditContainerNode extends Node {
         else if ( selectedCircuitElement instanceof Switch ) {
 
           editNode = switchReadoutNode;
+
+          // The trashButton is shared between different components, so we must trigger a relayout to get the relative
+          // position correct before displaying.
+          switchReadoutNode.updateLayout();
         }
         else if ( selectedCircuitElement instanceof SeriesAmmeter || selectedCircuitElement instanceof Wire ) {
 
