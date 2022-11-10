@@ -177,7 +177,7 @@ export default class FuseNode extends FixedCircuitElementNode {
 
     // Update the look when the fuse is tripped
     const updateTripped = ( isTripped: boolean ) => {
-      if ( isTripped ) {
+      if ( isTripped && !phet.joist.sim.isSettingPhetioStateProperty.value ) {
         circuitLayerNode!.addChild( new FuseTripAnimation( { center: this.center } ) );
       }
       // @ts-ignore
