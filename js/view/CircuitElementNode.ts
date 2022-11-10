@@ -6,7 +6,6 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import Emitter from '../../../axon/js/Emitter.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import merge from '../../../phet-core/js/merge.js';
 import { KeyboardListener, Node, NodeOptions, SceneryEvent } from '../../../scenery/js/imports.js';
@@ -20,7 +19,6 @@ import CircuitLayerNode from './CircuitLayerNode.js';
 import Vertex from '../model/Vertex.js';
 import IOType from '../../../tandem/js/types/IOType.js';
 import DisplayClickToDismissListener from '../../../joist/js/DisplayClickToDismissListener.js';
-import TEmitter from '../../../axon/js/TEmitter.js';
 
 type SelfOptions = {
   useHitTestForSensors?: boolean;
@@ -32,7 +30,6 @@ export default abstract class CircuitElementNode extends Node {
   private readonly useHitTestForSensors: boolean;
   private readonly circuit: Circuit | null;
   public readonly circuitElement: CircuitElement;
-  private readonly disposeEmitterCircuitElementNode: TEmitter;
   private readonly disposeCircuitElementNode: () => void;
   private dirty: boolean;
   private static CircuitElementNodeIO: IOType;
@@ -98,8 +95,6 @@ export default abstract class CircuitElementNode extends Node {
     } );
     this.addInputListener( keyListener );
 
-    this.disposeEmitterCircuitElementNode = new Emitter();
-
     this.updateOpacityOnInteractiveChange();
 
     /**
@@ -114,16 +109,13 @@ export default abstract class CircuitElementNode extends Node {
 
       // remove the keyboard listener
       this.removeInputListener( keyListener );
-
-      this.disposeEmitterCircuitElementNode.emit();
-      this.disposeEmitterCircuitElementNode.dispose();
     };
 
     circuitElement.startDragEmitter.addListener( startDragListener );
 
     // Flag to indicate when updating view is necessary, in order to avoid duplicate work when both vertices move
     this.dirty = true;
-    this.disposeEmitterCircuitElementNode.addListener( () => circuitElement.startDragEmitter.removeListener( startDragListener ) );
+    this.disposeEmitter.addListener( () => circuitElement.startDragEmitter.removeListener( startDragListener ) );
   }
 
   /**
@@ -153,7 +145,7 @@ export default abstract class CircuitElementNode extends Node {
     };
     this.circuitElement.interactiveProperty.link( interactivityChanged );
 
-    this.disposeEmitterCircuitElementNode.addListener( () => this.circuitElement.interactiveProperty.unlink( interactivityChanged ) );
+    this.disposeEmitter.addListener( () => this.circuitElement.interactiveProperty.unlink( interactivityChanged ) );
   }
 
   /**
@@ -258,8 +250,8 @@ export default abstract class CircuitElementNode extends Node {
 
         if ( trails.length === 0 ) {
           disposeListener();
-          if ( this.disposeEmitterCircuitElementNode.hasListener( disposeListener ) ) {
-            this.disposeEmitterCircuitElementNode.removeListener( disposeListener );
+          if ( this.disposeEmitter.hasListener( disposeListener ) ) {
+            this.disposeEmitter.removeListener( disposeListener );
           }
           circuitLayerNode.circuit.selectionProperty.set( null );
         }
@@ -271,7 +263,7 @@ export default abstract class CircuitElementNode extends Node {
       // If the user deletes the element with the delete button, make sure to detach the display input listener
       // so the next drag will work right away,
       // see https://github.com/phetsims/circuit-construction-kit-common/issues/368
-      this.disposeEmitterCircuitElementNode.addListener( disposeListener );
+      this.disposeEmitter.addListener( disposeListener );
     }
     else {
 

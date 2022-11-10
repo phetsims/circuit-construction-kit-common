@@ -6,7 +6,6 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import Emitter from '../../../axon/js/Emitter.js';
 import Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import Utils from '../../../dot/js/Utils.js';
@@ -77,7 +76,10 @@ export default class ValueNode extends Panel {
    * @param tandem
    */
   public constructor( sourceResistanceProperty: Property<number>, circuitElement: CircuitElement, showValuesProperty: Property<boolean>, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem ) {
-    const disposeEmitterValueNode = new Emitter();
+
+    const contentNode = new VBox( {
+      maxWidth: 130
+    } );
 
     let readoutValueNode: Node | null;
     let update: null | ( () => void ) = null;
@@ -118,7 +120,7 @@ export default class ValueNode extends Panel {
       };
       sourceResistanceProperty.link( sourceResistanceListener );
 
-      disposeEmitterValueNode.addListener( () => {
+      contentNode.disposeEmitter.addListener( () => {
         circuitElement.voltageProperty.unlink( voltageListener );
         sourceResistanceProperty.unlink( sourceResistanceListener );
       } );
@@ -136,7 +138,7 @@ export default class ValueNode extends Panel {
         update && update();
       };
       circuitElement.resistanceProperty.link( linkResistance );
-      disposeEmitterValueNode.addListener( () => circuitElement.resistanceProperty.unlink( linkResistance ) );
+      contentNode.disposeEmitter.addListener( () => circuitElement.resistanceProperty.unlink( linkResistance ) );
     }
     else if ( circuitElement instanceof Capacitor ) {
       readoutValueNode = createText( tandem.createTandem( 'capacitorText' ) );
@@ -150,7 +152,7 @@ export default class ValueNode extends Panel {
         update && update();
       };
       circuitElement.capacitanceProperty.link( linkCapacitance );
-      disposeEmitterValueNode.addListener( () => circuitElement.capacitanceProperty.unlink( linkCapacitance ) );
+      contentNode.disposeEmitter.addListener( () => circuitElement.capacitanceProperty.unlink( linkCapacitance ) );
     }
     else if ( circuitElement instanceof Inductor ) {
       readoutValueNode = createText( tandem.createTandem( 'inductorText' ) );
@@ -162,7 +164,7 @@ export default class ValueNode extends Panel {
         update && update();
       };
       circuitElement.inductanceProperty.link( linkInductance );
-      disposeEmitterValueNode.addListener( () => circuitElement.inductanceProperty.unlink( linkInductance ) );
+      contentNode.disposeEmitter.addListener( () => circuitElement.inductanceProperty.unlink( linkInductance ) );
     }
     else if ( circuitElement instanceof Switch ) {
 
@@ -181,7 +183,7 @@ export default class ValueNode extends Panel {
         update && update();
       };
       circuitElement.resistanceProperty.link( updateResistance );
-      disposeEmitterValueNode.addListener( () => circuitElement.resistanceProperty.unlink( updateResistance ) );
+      contentNode.disposeEmitter.addListener( () => circuitElement.resistanceProperty.unlink( updateResistance ) );
     }
     else if ( circuitElement instanceof Fuse ) {
       readoutValueNode = createRichText( tandem.createTandem( 'fuseText' ), {
@@ -200,7 +202,7 @@ export default class ValueNode extends Panel {
           update && update();
         }
       );
-      disposeEmitterValueNode.addListener( () => multilink.dispose() );
+      contentNode.disposeEmitter.addListener( () => multilink.dispose() );
     }
     else {
       throw new Error( `ValueNode cannot be shown for ${circuitElement.constructor.name}` );
@@ -218,13 +220,10 @@ export default class ValueNode extends Panel {
     }
 
     const customLabelNode = new Text( '', { font: FONT } );
-    const contentNode = new VBox( {
-      children: [
-        customLabelNode,
-        readoutValueNode
-      ],
-      maxWidth: 130
-    } );
+    contentNode.children = [
+      customLabelNode,
+      readoutValueNode
+    ];
 
     super( contentNode, {
       stroke: null,
@@ -273,11 +272,11 @@ export default class ValueNode extends Panel {
     circuitElement.labelStringProperty.link( update );
 
     this.disposeValueNode = () => {
+      contentNode.dispose();
       circuitElement.vertexMovedEmitter.removeListener( update! );
       showValuesProperty.unlink( update! );
       viewTypeProperty.unlink( update! );
       circuitElement.labelStringProperty.unlink( update! );
-      disposeEmitterValueNode.emit();
     };
   }
 

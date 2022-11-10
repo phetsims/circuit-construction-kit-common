@@ -58,7 +58,8 @@ export default class ChargeNode extends Node {
 
     super( {
       pickable: false,
-      children: [ child ]
+      children: [ child ],
+      disposer: charge
     } );
 
     // to look up the CapacitorNode for clipping
@@ -76,8 +77,6 @@ export default class ChargeNode extends Node {
     charge.changedEmitter.addListener( this.updateTransformListener );
     charge.visibleProperty.link( this.updateVisibleListener );
     this.outsideOfBlackBoxProperty.link( this.updateVisibleListener );
-
-    charge.disposeEmitterCharge.addListener( this.dispose.bind( this ) );
 
     this.updateTransformListener();
   }

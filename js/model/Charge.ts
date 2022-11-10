@@ -12,8 +12,9 @@ import Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitElement from './CircuitElement.js';
+import Disposable from '../../../axon/js/Disposable.js';
 
-export default class Charge {
+export default class Charge extends Disposable {
 
   //the amount of charge
   public readonly charge: number;
@@ -33,9 +34,6 @@ export default class Charge {
   // Indicate when the position and/or angle changed
   public readonly changedEmitter: TEmitter;
 
-  // Send notifications when the charge is disposed, so the view can be disposed
-  public readonly disposeEmitterCharge: TEmitter;
-
   /**
    * @param circuitElement - the circuit element the charge is in.
    * @param distance - how far along the circuit element it has traveled (in screen coordinates)
@@ -43,6 +41,8 @@ export default class Charge {
    * @param charge - +1 for conventional current and -1 for electrons
    */
   public constructor( circuitElement: CircuitElement, distance: number, visibleProperty: Property<boolean>, charge: number ) {
+
+    super();
 
     assert && assert( charge === 1 || charge === -1, 'charge should be 1 or -1' );
 
@@ -58,7 +58,6 @@ export default class Charge {
     this.matrix = Matrix3.identity();
     this.visibleProperty = visibleProperty;
     this.changedEmitter = new Emitter();
-    this.disposeEmitterCharge = new Emitter();
 
     this.updatePositionAndAngle();
   }
@@ -75,10 +74,9 @@ export default class Charge {
   }
 
   // Dispose the charge when it will never be used again.
-  public dispose(): void {
-    this.disposeEmitterCharge.emit();
-    this.disposeEmitterCharge.removeAllListeners();
+  public override dispose(): void {
     this.changedEmitter.dispose();
+    super.dispose();
   }
 }
 
