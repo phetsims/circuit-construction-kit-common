@@ -36,7 +36,7 @@ export default class Battery extends VoltageSource {
   public constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, batteryType: BatteryType,
                tandem: Tandem, providedOptions?: BatteryOptions ) {
     assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );
-    const filledOptions = optionize<BatteryOptions, EmptySelfOptions, VoltageSourceOptions>()( {
+    const options = optionize<BatteryOptions, EmptySelfOptions, VoltageSourceOptions>()( {
       initialOrientation: 'right',
       voltage: Battery.VOLTAGE_DEFAULT,
       isFlammable: true,
@@ -45,9 +45,9 @@ export default class Battery extends VoltageSource {
         range: batteryType === 'normal' ? Battery.VOLTAGE_RANGE : Battery.HIGH_VOLTAGE_RANGE
       }
     }, providedOptions );
-    super( startVertex, endVertex, internalResistanceProperty, BATTERY_LENGTH, tandem, filledOptions );
+    super( startVertex, endVertex, internalResistanceProperty, BATTERY_LENGTH, tandem, options );
 
-    this.initialOrientation = filledOptions.initialOrientation;
+    this.initialOrientation = options.initialOrientation;
     this.batteryType = batteryType;
     this.isReversibleProperty = new BooleanProperty( true, {
       tandem: tandem.createTandem( 'isReversibleProperty' )

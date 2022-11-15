@@ -108,22 +108,22 @@ export default class LightBulb extends FixedCircuitElement {
     viewTypeProperty: Property<CircuitElementViewType>,
     tandem: Tandem,
     providedOptions?: LightBulbOptions ) {
-    const filledOptions = optionize<LightBulbOptions, SelfOptions, FixedCircuitElementOptions>()( {
+    const options = optionize<LightBulbOptions, SelfOptions, FixedCircuitElementOptions>()( {
       highResistance: false,
       real: false
     }, providedOptions );
-    assert && assert( !filledOptions.hasOwnProperty( 'numberOfDecimalPlaces' ), 'supplied by LightBulb' );
-    filledOptions.numberOfDecimalPlaces = filledOptions.highResistance ? 0 : 1;
+    assert && assert( !options.hasOwnProperty( 'numberOfDecimalPlaces' ), 'supplied by LightBulb' );
+    options.numberOfDecimalPlaces = options.highResistance ? 0 : 1;
 
     // getPathLength not available yet, so use a nonzero charge path length then override.
-    super( startVertex, endVertex, 1, tandem, filledOptions );
+    super( startVertex, endVertex, 1, tandem, options );
 
-    this.real = filledOptions.real;
-    this.highResistance = filledOptions.highResistance;
+    this.real = options.real;
+    this.highResistance = options.highResistance;
     this.resistanceProperty = new NumberProperty( resistance, {
       tandem: tandem.createTandem( 'resistanceProperty' ),
-      range: filledOptions.highResistance ? new Range( 100, 10000 ) :
-             filledOptions.real ? new Range( 0, Number.MAX_VALUE ) : // The non-ohmic bulb has its resistance computed in LinearTransientAnalysis.js
+      range: options.highResistance ? new Range( 100, 10000 ) :
+             options.real ? new Range( 0, Number.MAX_VALUE ) : // The non-ohmic bulb has its resistance computed in LinearTransientAnalysis.js
              new Range( 0, 120 )
     } );
 
