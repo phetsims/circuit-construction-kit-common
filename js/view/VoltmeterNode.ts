@@ -12,7 +12,7 @@ import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
 import WireNode from '../../../scenery-phet/js/WireNode.js';
-import { Color, DragListener, Image, Node, NodeOptions, PressListenerEvent, Rectangle } from '../../../scenery/js/imports.js';
+import { Color, DragListener, Image, Node, NodeOptions, PressListenerEvent, Rectangle, Text } from '../../../scenery/js/imports.js';
 import probeBlack_png from '../../mipmaps/probeBlack_png.js';
 import probeRed_png from '../../mipmaps/probeRed_png.js';
 import voltmeterBody_png from '../../mipmaps/voltmeterBody_png.js';
@@ -30,6 +30,7 @@ import Bounds2 from '../../../dot/js/Bounds2.js';
 import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
 import ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
+import StringIO from '../../../tandem/js/types/StringIO.js';
 
 const voltageStringProperty = CircuitConstructionKitCommonStrings.voltageStringProperty;
 
@@ -118,11 +119,18 @@ export default class VoltmeterNode extends Node {
 
     // Displays the voltage reading
     const voltageReadoutProperty = new DerivedProperty( [ voltmeter.voltageProperty ], voltage =>
-      voltage === null ? MathSymbols.NO_VALUE : CCKCUtils.createVoltageReadout( voltage )
+        voltage === null ? MathSymbols.NO_VALUE : CCKCUtils.createVoltageReadout( voltage ), {
+        tandem: tandem.createTandem( 'readoutText' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME ),
+        phetioValueType: StringIO
+      }
     );
 
     const probeTextNode = new ProbeTextNode(
-      voltageReadoutProperty, options.showResultsProperty, voltageStringProperty, tandem.createTandem( 'probeTextNode' ), {
+      voltageReadoutProperty, options.showResultsProperty, voltageStringProperty,
+
+      // No need for an extra level of nesting in the tandem tree, since that is just an implementation detail
+      // and not a feature
+      tandem, {
         centerX: voltmeterBody_png[ 0 ].width / 2,
         centerY: voltmeterBody_png[ 0 ].height / 2
       } );

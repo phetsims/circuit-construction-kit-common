@@ -6,7 +6,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import { Node, Rectangle, RectangleOptions } from '../../../scenery/js/imports.js';
+import { Node, Rectangle, RectangleOptions, Text } from '../../../scenery/js/imports.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCUtils from '../CCKCUtils.js';
 import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
@@ -25,6 +25,7 @@ import ProbeTextNode from './ProbeTextNode.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import Panel from '../../../sun/js/Panel.js';
 import Property from '../../../axon/js/Property.js';
+import StringIO from '../../../tandem/js/types/StringIO.js';
 
 const currentStringProperty = CircuitConstructionKitCommonStrings.currentStringProperty;
 
@@ -56,10 +57,18 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
   public constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, seriesAmmeter: SeriesAmmeter,
                       tandem: Tandem, isValueDepictionEnabledProperty: TReadOnlyProperty<boolean>, providedOptions?: FixedCircuitElementNodeOptions ) {
 
-    const stringProperty = new Property( MathSymbols.NO_VALUE );
+    const stringProperty = new Property( MathSymbols.NO_VALUE, {
+      tandem: tandem.createTandem( 'readoutText' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME ),
+      phetioValueType: StringIO,
+      phetioReadOnly: true
+    } );
 
     const probeTextNode = new ProbeTextNode(
-      stringProperty, isValueDepictionEnabledProperty, currentStringProperty, tandem.createTandem( 'probeTextNode' ), {
+      stringProperty, isValueDepictionEnabledProperty, currentStringProperty,
+
+      // No need for an extra level of nesting in the tandem tree, since that is just an implementation detail
+      // and not a feature
+      tandem, {
         seriesAmmeter: true
       } );
 
