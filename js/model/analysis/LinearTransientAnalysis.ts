@@ -213,10 +213,6 @@ export default class LinearTransientAnalysis {
         solvedVertices.push( vertex );
       }
       else {
-
-        // Unconnected vertices like those in the black box may not have an entry in the matrix, so mark them as zero.
-        // Other vertices will be visited in the search below.
-        vertex.voltageProperty.value = 0;
         unsolvedVertices.push( vertex );
       }
     } );
@@ -288,6 +284,10 @@ export default class LinearTransientAnalysis {
     visited.length = 0;
     allVertices.forEach( vertex => dfs( vertex, visitCurrent ) );
     // circuit.checkCurrentConservation( 'after' );
+
+    unsolvedVertices.forEach( v => {
+      assert && assert( visited.includes( v ), 'unsolved vertex ' + v.tandem.phetioID + ' should be visited.' );
+    } );
   }
 }
 
