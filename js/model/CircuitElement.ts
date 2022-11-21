@@ -10,7 +10,7 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
-import Property from '../../../axon/js/Property.js';
+import Property, { PropertyOptions } from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import { SceneryEvent } from '../../../scenery/js/imports.js';
@@ -23,7 +23,7 @@ import Circuit from './Circuit.js';
 import CurrentSense from './CurrentSense.js';
 import Vertex from './Vertex.js';
 import TReadOnlyProperty, { PropertyLinkListener } from '../../../axon/js/TReadOnlyProperty.js';
-import optionize from '../../../phet-core/js/optionize.js';
+import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import StringProperty from '../../../axon/js/StringProperty.js';
 import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
@@ -39,6 +39,10 @@ type SelfOptions = {
   isCurrentReentrant?: boolean;
   interactive?: boolean;
   insideTrueBlackBox?: boolean;
+
+  isEditablePropertyOptions?: Pick<PropertyOptions<boolean>, 'tandem'>;
+  isValueDisplayablePropertyOptions?: Pick<PropertyOptions<boolean>, 'tandem'>;
+  labelStringPropertyOptions?: Pick<PropertyOptions<boolean>, 'tandem'>;
 };
 
 export type CircuitElementOptions = SelfOptions & PhetioObjectOptions;
@@ -137,7 +141,11 @@ export default abstract class CircuitElement extends PhetioObject {
       tandem: tandem,
       isCurrentReentrant: false,
       phetioDynamicElement: true,
-      phetioType: CircuitElement.CircuitElementIO
+      phetioType: CircuitElement.CircuitElementIO,
+
+      isEditablePropertyOptions: {},
+      isValueDisplayablePropertyOptions: {},
+      labelStringPropertyOptions: {}
     }, providedOptions );
 
     super( options );
@@ -207,25 +215,25 @@ export default abstract class CircuitElement extends PhetioObject {
     this.lengthProperty = undefined;
 
     // PhET-iO-specific Properties
-    this.isEditableProperty = new BooleanProperty( true, {
+    this.isEditableProperty = new BooleanProperty( true, combineOptions<PropertyOptions<boolean>>( {
       tandem: tandem.createTandem( 'isEditableProperty' ),
       phetioDocumentation: 'Whether the CircuitElement can have its numerical characteristics changed by the user'
-    } );
+    }, options.isEditablePropertyOptions ) );
 
     this.isDisposableProperty = new BooleanProperty( true, {
       tandem: tandem.createTandem( 'isDisposableProperty' ),
       phetioDocumentation: 'Whether the CircuitElement can be disposed. Set this to false to make the CircuitElement persisent'
     } );
 
-    this.isValueDisplayableProperty = new BooleanProperty( true, {
+    this.isValueDisplayableProperty = new BooleanProperty( true, combineOptions<PropertyOptions<boolean>>( {
       tandem: tandem.createTandem( 'isValueDisplayableProperty' ),
       phetioDocumentation: 'Whether the CircuitElement\'s value can be displayed when the "values" checkbox is selected'
-    } );
+    }, options.isValueDisplayablePropertyOptions ) );
 
-    this.labelStringProperty = new StringProperty( '', {
+    this.labelStringProperty = new StringProperty( '', combineOptions<PropertyOptions<string>>( {
       tandem: tandem.createTandem( 'labelStringProperty' ),
       phetioDocumentation: 'Shows a custom text label next to the circuit element'
-    } );
+    }, options.labelStringPropertyOptions ) );
   }
 
   /**
