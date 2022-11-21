@@ -50,7 +50,18 @@ export default class Wire extends CircuitElement {
     assert && assert( !endVertex.isDisposed, 'vertex should not be disposed' );
     const options = optionize<WireOptions, SelfOptions, CircuitElementOptions>()( {
       wireStub: false,
-      isMetallic: true
+      isMetallic: true,
+
+      // Wires do not have these features, so opt out of PhET-iO instrumentation here
+      isEditablePropertyOptions: {
+        tandem: Tandem.OPT_OUT
+      },
+      isValueDisplayablePropertyOptions: {
+        tandem: Tandem.OPT_OUT
+      },
+      labelStringPropertyOptions: {
+        tandem: Tandem.OPT_OUT
+      }
     }, providedOptions );
     const chargePathLength = startVertex.positionProperty.get().distance( endVertex.positionProperty.get() );
     super( startVertex, endVertex, chargePathLength, tandem, options );

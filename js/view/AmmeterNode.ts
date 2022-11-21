@@ -13,7 +13,7 @@ import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
 import ProbeNode from '../../../scenery-phet/js/ProbeNode.js';
 import WireNode from '../../../scenery-phet/js/WireNode.js';
-import { Color, DragListener, Image, Node, NodeOptions, Rectangle, SceneryEvent } from '../../../scenery/js/imports.js';
+import { Color, DragListener, Image, Node, NodeOptions, Rectangle, Text, SceneryEvent } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ammeterBody_png from '../../images/ammeterBody_png.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -27,6 +27,7 @@ import Bounds2 from '../../../dot/js/Bounds2.js';
 import Property from '../../../axon/js/Property.js';
 import ammeterReadoutTypeProperty from './ammeterReadoutTypeProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
+import StringIO from '../../../tandem/js/types/StringIO.js';
 
 const currentStringProperty = CircuitConstructionKitCommonStrings.currentStringProperty;
 
@@ -98,10 +99,17 @@ export default class AmmeterNode extends Node {
     const currentReadoutProperty = new DerivedProperty( [ ammeter.currentProperty, ammeterReadoutTypeProperty ],
       ( ( current, ammeterReadoutType ) => {
         return CCKCUtils.createCurrentReadout( current, options.blackBoxStudy );
-      } ) );
+      } ), {
+        tandem: tandem.createTandem( 'readoutText' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME ),
+        phetioValueType: StringIO
+      } );
 
     const probeTextNode = new ProbeTextNode(
-      currentReadoutProperty, options.showResultsProperty, currentStringProperty, tandem.createTandem( 'probeTextNode' ), {
+      currentReadoutProperty, options.showResultsProperty, currentStringProperty,
+
+      // No need for an extra level of nesting in the tandem tree, since that is just an implementation detail
+      // and not a feature
+      tandem, {
         centerX: ammeterBody_png.width / 2,
         centerY: ammeterBody_png.height / 2 + 7 // adjust for the top notch design
       } );
