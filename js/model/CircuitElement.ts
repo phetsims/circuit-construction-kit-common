@@ -123,26 +123,7 @@ export default abstract class CircuitElement extends PhetioObject {
   // See https://github.com/phetsims/circuit-construction-kit-common/issues/418
   public circuitElementDisposed: boolean;
 
-  public static readonly CircuitElementIO = new IOType<CircuitElement, CircuitElementState>( 'CircuitElementIO', {
-
-    // @ts-ignore https://github.com/phetsims/tandem/issues/261
-    valueType: CircuitElement,
-    documentation: 'A Circuit Element, such as battery, resistor or wire',
-    toStateObject: ( circuitElement: CircuitElement ) => ( {
-      startVertexID: VertexReferenceIO.toStateObject( circuitElement.startVertexProperty.value ),
-      endVertexID: VertexReferenceIO.toStateObject( circuitElement.endVertexProperty.value )
-    } ),
-    stateSchema: {
-      startVertexID: VertexReferenceIO,
-      endVertexID: VertexReferenceIO
-    },
-    stateToArgsForConstructor: ( stateObject: CircuitElementState ) => {
-      return [
-        VertexReferenceIO.fromStateObject( stateObject.startVertexID ),
-        VertexReferenceIO.fromStateObject( stateObject.endVertexID )
-      ];
-    }
-  } );
+  public static CircuitElementIO: IOType;
   public readonly lengthProperty: Property<number> | undefined;
   public readonly isEditableProperty: BooleanProperty;
   public readonly isDisposableProperty: BooleanProperty;
@@ -465,4 +446,26 @@ export type CircuitElementState = {
   startVertexID: string;
   endVertexID: string;
 };
+
+CircuitElement.CircuitElementIO = new IOType<CircuitElement, CircuitElementState>( 'CircuitElementIO', {
+
+  // @ts-ignore https://github.com/phetsims/tandem/issues/261
+  valueType: CircuitElement,
+  documentation: 'A Circuit Element, such as battery, resistor or wire',
+  toStateObject: ( circuitElement: CircuitElement ) => ( {
+    startVertexID: VertexReferenceIO.toStateObject( circuitElement.startVertexProperty.value ),
+    endVertexID: VertexReferenceIO.toStateObject( circuitElement.endVertexProperty.value )
+  } ),
+  stateSchema: {
+    startVertexID: VertexReferenceIO,
+    endVertexID: VertexReferenceIO
+  },
+  stateToArgsForConstructor: ( stateObject: CircuitElementState ) => {
+    return [
+      VertexReferenceIO.fromStateObject( stateObject.startVertexID ),
+      VertexReferenceIO.fromStateObject( stateObject.endVertexID )
+    ];
+  }
+} );
+
 circuitConstructionKitCommon.register( 'CircuitElement', CircuitElement );
