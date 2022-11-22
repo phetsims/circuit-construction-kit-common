@@ -8,7 +8,7 @@
 
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Property from '../../../axon/js/Property.js';
-import { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
+import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -25,7 +25,21 @@ export default class SeriesAmmeter extends FixedCircuitElement {
   public readonly resistanceProperty: NumberProperty;
 
   public constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: SeriesAmmeterOptions ) {
-    super( startVertex, endVertex, CCKCConstants.SERIES_AMMETER_LENGTH, tandem, providedOptions );
+
+    const options = optionize<SeriesAmmeterOptions, SelfOptions, FixedCircuitElementOptions>()( {
+
+      // SeriesAmmeters do not have these features, so opt out of PhET-iO instrumentation here
+      isEditablePropertyOptions: {
+        tandem: Tandem.OPT_OUT
+      },
+      isValueDisplayablePropertyOptions: {
+        tandem: Tandem.OPT_OUT
+      },
+      labelStringPropertyOptions: {
+        tandem: Tandem.OPT_OUT
+      }
+    }, providedOptions );
+    super( startVertex, endVertex, CCKCConstants.SERIES_AMMETER_LENGTH, tandem, options );
     this.resistanceProperty = new NumberProperty( 0 );
   }
 
