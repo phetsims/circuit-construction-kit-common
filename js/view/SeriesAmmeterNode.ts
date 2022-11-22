@@ -179,6 +179,7 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
       this.frontPanelContainer.dispose();
       probeTextNode.dispose();
       circuitLayerNode && circuitLayerNode.circuit.circuitChangedEmitter.removeListener( updateText );
+      stringProperty.dispose();
     };
   }
 
