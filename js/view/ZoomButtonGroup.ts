@@ -21,8 +21,8 @@ const ZOOMED_OUT = 0.5;
 const BUTTON_SPACING = 20;
 
 export default class ZoomButtonGroup extends MagnifyingGlassZoomButtonGroup {
-  public static ZOOMED_IN: number;
-  public static ZOOMED_OUT: number;
+  public static readonly ZOOMED_IN = ZOOMED_IN;
+  public static readonly ZOOMED_OUT = ZOOMED_OUT;
 
   public constructor( selectedZoomProperty: RangedProperty, providedOptions?: MagnifyingGlassZoomButtonGroupOptions ) {
     providedOptions = combineOptions<MagnifyingGlassZoomButtonGroupOptions>( {
@@ -41,8 +41,5 @@ export default class ZoomButtonGroup extends MagnifyingGlassZoomButtonGroup {
     super( selectedZoomProperty, providedOptions );
   }
 }
-
-ZoomButtonGroup.ZOOMED_OUT = ZOOMED_OUT;
-ZoomButtonGroup.ZOOMED_IN = ZOOMED_IN;
 
 circuitConstructionKitCommon.register( 'ZoomButtonGroup', ZoomButtonGroup );

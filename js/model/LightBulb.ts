@@ -77,7 +77,7 @@ export default class LightBulb extends FixedCircuitElement {
     return new LightBulb( startVertex, endVertex, resistance, viewTypeProperty, tandem, providedOptions );
   };
 
-  public static createVertexPair = ( position: Vector2, circuit: Circuit, icon = false ): { startVertex: Vertex; endVertex: Vertex } => {
+  public static readonly createVertexPair = ( position: Vector2, circuit: Circuit, icon = false ): { startVertex: Vertex; endVertex: Vertex } => {
     const points = LightBulb.createSamplePoints( position );
 
     // start vertex is at the bottom

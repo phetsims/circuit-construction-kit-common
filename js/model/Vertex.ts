@@ -83,7 +83,14 @@ export default class Vertex extends PhetioObject {
   public labelStringProperty: TProperty<string>;
   private readonly localizedString: LocalizedString;
 
-  public static VertexIO: IOType;
+  public static readonly VertexIO = new IOType<Vertex, VertexState>( 'VertexIO', {
+    valueType: Vertex,
+    toStateObject: ( vertex: Vertex ) => ( { position: Vector2.Vector2IO.toStateObject( vertex.positionProperty.value ) } ),
+    stateToArgsForConstructor: ( stateObject: VertexState ) => [ Vector2.Vector2IO.fromStateObject( stateObject.position ) ],
+    stateSchema: {
+      position: Vector2.Vector2IO
+    }
+  } );
   public readonly selectionProperty: TProperty<Vertex | CircuitElement | null>;
 
   public constructor( position: Vector2, selectionProperty: TProperty<CircuitElement | Vertex | null>, providedOptions?: VertexOptions ) {
@@ -174,15 +181,5 @@ export default class Vertex extends PhetioObject {
 type VertexState = {
   position: Vector2;
 };
-
-// {IOType}
-Vertex.VertexIO = new IOType<Vertex, VertexState>( 'VertexIO', {
-  valueType: Vertex,
-  toStateObject: ( vertex: Vertex ) => ( { position: Vector2.Vector2IO.toStateObject( vertex.positionProperty.value ) } ),
-  stateToArgsForConstructor: ( stateObject: VertexState ) => [ Vector2.Vector2IO.fromStateObject( stateObject.position ) ],
-  stateSchema: {
-    position: Vector2.Vector2IO
-  }
-} );
 
 circuitConstructionKitCommon.register( 'Vertex', Vertex );

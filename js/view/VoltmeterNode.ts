@@ -65,7 +65,7 @@ export default class VoltmeterNode extends Node {
 
   // so events can be forwarded from the toolbox
   private readonly dragHandler: DragListener | null;
-  public static PROBE_ANGLE: number;
+  public static readonly PROBE_ANGLE = PROBE_ANGLE;
 
   /**
    * @param voltmeter - the model Voltmeter to be shown by this node
@@ -357,7 +357,5 @@ export default class VoltmeterNode extends Node {
     this.dragHandler!.press( event );
   }
 }
-
-VoltmeterNode.PROBE_ANGLE = PROBE_ANGLE;
 
 circuitConstructionKitCommon.register( 'VoltmeterNode', VoltmeterNode );

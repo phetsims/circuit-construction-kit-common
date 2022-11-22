@@ -40,7 +40,13 @@ export default class CustomLightBulbNode extends Node {
   private readonly brightnessProperty: Property<number>;
   private readonly brightnessObserver: ( ( brightness: number ) => void ) | null;
   private readonly disposeCustomLightBulbNode: () => void;
-  public static webglSpriteNodes: Image[];
+
+  // Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
+  public static readonly webglSpriteNodes = [
+    new Image( lightBulbBack_png ),
+    new Image( lightBulbMiddle_png ),
+    new Image( lightBulbFront_png ),
+    new Image( lightBulbFrontHigh_png ) ];
 
   /**
    * @param brightnessProperty 0 (off) to 1 (full brightness)
@@ -184,14 +190,5 @@ export default class CustomLightBulbNode extends Node {
     }
   }
 }
-
-/**
- * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
- */
-CustomLightBulbNode.webglSpriteNodes = [
-  new Image( lightBulbBack_png ),
-  new Image( lightBulbMiddle_png ),
-  new Image( lightBulbFront_png ),
-  new Image( lightBulbFrontHigh_png ) ];
 
 circuitConstructionKitCommon.register( 'CustomLightBulbNode', CustomLightBulbNode );

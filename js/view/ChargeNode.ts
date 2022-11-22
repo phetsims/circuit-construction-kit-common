@@ -46,7 +46,9 @@ export default class ChargeNode extends Node {
   private readonly outsideOfBlackBoxProperty: BooleanProperty;
   private readonly updateVisibleListener: () => void;
   private readonly updateTransformListener: () => void;
-  public static webglSpriteNodes: Node[];
+
+  // Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
+  public static readonly webglSpriteNodes = [ ELECTRON_CHARGE_NODE, ARROW_NODE ];
 
   /**
    * @param charge - the model element
@@ -154,10 +156,5 @@ export default class ChargeNode extends Node {
                    this.outsideOfBlackBoxProperty.get();
   }
 }
-
-/**
- * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
- */
-ChargeNode.webglSpriteNodes = [ ELECTRON_CHARGE_NODE, ARROW_NODE ];
 
 circuitConstructionKitCommon.register( 'ChargeNode', ChargeNode );

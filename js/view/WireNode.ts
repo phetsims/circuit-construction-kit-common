@@ -144,7 +144,14 @@ export default class WireNode extends CircuitElementNode {
   private readonly highlightNode: Path;
   private readonly dragListener: CircuitLayerNodeDragListener | null;
   private readonly disposeWireNode: () => void;
-  public static webglSpriteNodes: Node[];
+
+  // Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
+  public static webglSpriteNodes = [
+    BLACK_LINE_NODE,
+    lifelikeNodeNormal,
+    lifelikeNodeReversed,
+    lifelikeRoundedCapNormal
+  ];
 
   /**
    * @param screenView - the icon is created separately in CircuitElementToolFactory, so (unlike
@@ -406,15 +413,5 @@ export default class WireNode extends CircuitElementNode {
     super.dispose();
   }
 }
-
-/**
- * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
- */
-WireNode.webglSpriteNodes = [
-  BLACK_LINE_NODE,
-  lifelikeNodeNormal,
-  lifelikeNodeReversed,
-  lifelikeRoundedCapNormal
-];
 
 circuitConstructionKitCommon.register( 'WireNode', WireNode );

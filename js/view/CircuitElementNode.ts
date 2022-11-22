@@ -32,7 +32,7 @@ export default abstract class CircuitElementNode extends Node {
   public readonly circuitElement: CircuitElement;
   private readonly disposeCircuitElementNode: () => void;
   private dirty: boolean;
-  private static CircuitElementNodeIO: IOType;
+  private static readonly CircuitElementNodeIO: IOType;
 
   /**
    * @param circuitElement - the CircuitElement to be rendered

@@ -27,10 +27,12 @@ export default class SolderNode extends Node {
   // added by CircuitLayerNode during dragging, used for relative drag position.
   private readonly startOffset: Vector2 | null;
   private readonly disposeSolderNode: () => void;
-  public static webglSpriteNodes: Node[];
+
+  // Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
+  public static readonly webglSpriteNodes = [ CIRCLE_NODE ];
 
   // radius of solder in model=view coordinates, for hit testing with probes
-  public static SOLDER_RADIUS: number;
+  public static readonly SOLDER_RADIUS = SOLDER_RADIUS;
 
   public constructor( circuitLayerNode: CircuitLayerNode, vertex: Vertex ) {
     assert && assert( CIRCLE_NODE, 'solder image should exist before creating SolderNode' );
@@ -93,11 +95,5 @@ export default class SolderNode extends Node {
     super.dispose();
   }
 }
-
-/**
- * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
- */
-SolderNode.webglSpriteNodes = [ CIRCLE_NODE ];
-SolderNode.SOLDER_RADIUS = SOLDER_RADIUS;
 
 circuitConstructionKitCommon.register( 'SolderNode', SolderNode );

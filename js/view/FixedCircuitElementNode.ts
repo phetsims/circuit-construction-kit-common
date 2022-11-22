@@ -65,7 +65,11 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
   protected readonly pickableListener: ( pickable: boolean | null ) => Node;
   private readonly fixedCircuitElementNodePickable: boolean | null;
   private readonly dragListener: CircuitLayerNodeDragListener | null;
-  public static webglSpriteNodes: Node[];
+
+  // Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
+  public static webglSpriteNodes = [
+    new Image( fire_png )
+  ];
   private readonly updateHighlightVisibility: ( ( circuitElement: CircuitElement | Vertex | null ) => void ) | null;
   private readonly updateFireMultilink: UnknownMultilink | null;
 
@@ -347,12 +351,5 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
     return this.contentNode.localBounds.dilated( HIGHLIGHT_PADDING );
   }
 }
-
-/**
- * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
- */
-FixedCircuitElementNode.webglSpriteNodes = [
-  new Image( fire_png )
-];
 
 circuitConstructionKitCommon.register( 'FixedCircuitElementNode', FixedCircuitElementNode );

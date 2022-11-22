@@ -57,8 +57,12 @@ export default class VertexNode extends Node {
   private readonly dragListener: CircuitLayerNodeDragListener;
   private readonly interruptionListener: ( draggable: boolean ) => void;
   private readonly updateVertexNodePositionListener: () => void;
-  public static VERTEX_RADIUS: number;
-  public static webglSpriteNodes: Node[];
+  public static readonly VERTEX_RADIUS = VERTEX_RADIUS;
+
+  // Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
+  public static readonly webglSpriteNodes = [
+  BLACK_CIRCLE_NODE, RED_CIRCLE_NODE
+  ];
 
   /**
    * @param circuitLayerNode - the entire CircuitLayerNode
@@ -412,12 +416,4 @@ export default class VertexNode extends Node {
   }
 }
 
-VertexNode.VERTEX_RADIUS = VERTEX_RADIUS;
-
-/**
- * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
- */
-VertexNode.webglSpriteNodes = [
-  BLACK_CIRCLE_NODE, RED_CIRCLE_NODE
-];
 circuitConstructionKitCommon.register( 'VertexNode', VertexNode );
