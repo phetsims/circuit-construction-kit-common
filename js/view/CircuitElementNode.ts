@@ -17,7 +17,6 @@ import CircuitElementEditContainerNode from './CircuitElementEditContainerNode.j
 import CCKCScreenView from './CCKCScreenView.js';
 import CircuitLayerNode from './CircuitLayerNode.js';
 import Vertex from '../model/Vertex.js';
-import IOType from '../../../tandem/js/types/IOType.js';
 import DisplayClickToDismissListener from '../../../joist/js/DisplayClickToDismissListener.js';
 
 type SelfOptions = {
@@ -32,7 +31,6 @@ export default abstract class CircuitElementNode extends Node {
   public readonly circuitElement: CircuitElement;
   private readonly disposeCircuitElementNode: () => void;
   private dirty: boolean;
-  private static readonly CircuitElementNodeIO: IOType;
 
   /**
    * @param circuitElement - the CircuitElement to be rendered
