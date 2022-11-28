@@ -122,7 +122,8 @@ export default class CircuitElementEditContainerNode extends Node {
     const trashButtonContainer = new HBox( { children: [ trashButton ] } ); // Use the "nested node" pattern for gated visibilty
 
     const repairFuseButton = new RepairFuseButton( circuit, tandem.createTandem( 'repairFuseButton' ) );
-    const clearDynamicsButton = new ClearDynamicsButton( circuit, tandem.createTandem( 'clearButton' ) );
+    const clearDynamicsButton = new ClearDynamicsButton( circuit,
+      circuit.includeACElements ? tandem.createTandem( 'clearButton' ) : Tandem.OPT_OUT );
 
     const reverseBatteryButton = new ReverseBatteryButton( circuit, tandem.createTandem( 'reverseBatteryButton' ) );
     const switchReadoutNode = new SwitchReadoutNode( circuit, tandem.createTandem( 'switchReadoutNode' ), trashButtonContainer );
