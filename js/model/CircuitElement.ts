@@ -183,7 +183,10 @@ export default abstract class CircuitElement extends PhetioObject {
 
     // we assign the directionality based on the initial current direction, so the initial current is always positive.
     // see https://github.com/phetsims/circuit-construction-kit-common/issues/508
-    this.currentSenseProperty = new EnumerationProperty( CurrentSense.UNSPECIFIED );
+    this.currentSenseProperty = new EnumerationProperty( CurrentSense.UNSPECIFIED, {
+      tandem: tandem.createTandem( 'currentSenseProperty' ),
+      disposer: this
+    } );
 
     this.interactiveProperty = new BooleanProperty( options.interactive );
     this.insideTrueBlackBoxProperty = new BooleanProperty( options.insideTrueBlackBox );
