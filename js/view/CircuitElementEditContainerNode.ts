@@ -434,7 +434,7 @@ class EditHBox extends HBox {
   public constructor( children: Node[] ) {
     super( {
       spacing: 25,
-      align: 'bottom',
+      align: 'center',
       children: children
     } );
   }
