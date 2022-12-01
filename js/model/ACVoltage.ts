@@ -43,10 +43,10 @@ export default class ACVoltage extends VoltageSource {
   public isPhaseEditableProperty: BooleanProperty;
   public isFrequencyEditableProperty: BooleanProperty;
   public isVoltageEditableProperty: BooleanProperty;
-  private static VOLTAGE_RANGE = new Range( -MAX_VOLTAGE, MAX_VOLTAGE );
-  public static DEFAULT_FREQUENCY = 0.5;
-  public static FREQUENCY_RANGE = new Range( 0.1, 2.0 );
-  public static MAX_VOLTAGE_RANGE = new Range( 0, MAX_VOLTAGE );
+  private static readonly VOLTAGE_RANGE = new Range( -MAX_VOLTAGE, MAX_VOLTAGE );
+  public static readonly DEFAULT_FREQUENCY = 0.5;
+  public static readonly FREQUENCY_RANGE = new Range( 0.1, 2.0 );
+  public static readonly MAX_VOLTAGE_RANGE = new Range( 0, MAX_VOLTAGE );
 
   public constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, tandem: Tandem, providedOptions?: ACVoltageOptions ) {
     assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );
