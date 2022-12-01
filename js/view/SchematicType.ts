@@ -10,10 +10,10 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
  * @author Sam Reid (PhET Interactive Simulations)
  */
 export default class SchematicType extends EnumerationValue {
-  public static IEC = new SchematicType();
-  public static IEEE = new SchematicType();
-  public static BRITISH = new SchematicType();
-  private static enumeration = new Enumeration( SchematicType );
+  public static readonly IEC = new SchematicType();
+  public static readonly IEEE = new SchematicType();
+  public static readonly BRITISH = new SchematicType();
+  private static readonly enumeration = new Enumeration( SchematicType );
 }
 
 circuitConstructionKitCommon.register( 'SchematicType', SchematicType );

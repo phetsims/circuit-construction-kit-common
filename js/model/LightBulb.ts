@@ -73,20 +73,22 @@ export default class LightBulb extends FixedCircuitElement {
   private readonly viewTypeProperty: Property<CircuitElementViewType>;
 
   // TODO: improve types
-  public static createAtPosition = ( startVertex: Vertex, endVertex: Vertex, circuit: Circuit, resistance: number, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: LightBulbOptions ): LightBulb => {
+  public static createAtPosition( startVertex: Vertex, endVertex: Vertex, circuit: Circuit, resistance: number,
+                                  viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem,
+                                  providedOptions?: LightBulbOptions ): LightBulb {
     return new LightBulb( startVertex, endVertex, resistance, viewTypeProperty, tandem, providedOptions );
-  };
+  }
 
-  public static readonly createVertexPair = ( position: Vector2, circuit: Circuit, icon = false ): { startVertex: Vertex; endVertex: Vertex } => {
+  public static createVertexPair( position: Vector2, circuit: Circuit, icon = false ): { startVertex: Vertex; endVertex: Vertex } {
     const points = LightBulb.createSamplePoints( position );
 
     // start vertex is at the bottom
     const startVertex = icon ? new Vertex( points[ 0 ], circuit.selectionProperty ) : circuit.vertexGroup.createNextElement( points[ 0 ] );
     const endVertex = icon ? new Vertex( points[ 1 ], circuit.selectionProperty ) : circuit.vertexGroup.createNextElement( points[ 1 ] );
     return { startVertex: startVertex, endVertex: endVertex };
-  };
+  }
 
-  public static createSamplePoints = ( position: Vector2 ): [ Vector2, Vector2 ] => {
+  public static createSamplePoints( position: Vector2 ): [ Vector2, Vector2 ] {
     const translation = new Vector2( 19, 10 );
 
     // Connect at the side and bottom
@@ -96,7 +98,7 @@ export default class LightBulb extends FixedCircuitElement {
     const endPoint = startPoint.plus( Vector2.createPolar( DISTANCE_BETWEEN_VERTICES, -Math.PI / 4 ) );
 
     return [ startPoint, endPoint ];
-  };
+  }
 
   public static vertexDelta: Vector2;
   private readonly powerDissipatedProperty: PowerDissipatedProperty;
@@ -237,7 +239,7 @@ export default class LightBulb extends FixedCircuitElement {
     throw new Error( 'exceeded charge path bounds' );
   }
 
-  public static REAL_BULB_COLD_RESISTANCE = 10;
+  public static readonly REAL_BULB_COLD_RESISTANCE = 10;
 }
 
 const samplePoints = LightBulb.createSamplePoints( Vector2.ZERO );

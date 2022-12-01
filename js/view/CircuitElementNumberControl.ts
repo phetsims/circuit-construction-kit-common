@@ -37,7 +37,7 @@ type CircuitElementNumberControlOptions<T extends CircuitElement> = SelfOptions<
 
 // Extend HBox so an invisible parent will auto-layout (not leave a blank hole)
 export default class CircuitElementNumberControl<T extends CircuitElement> extends HBox {
-  public static NUMBER_CONTROL_ELEMENT_MAX_WIDTH = 115;
+  public static readonly NUMBER_CONTROL_ELEMENT_MAX_WIDTH = 115;
 
   public constructor( title: TReadOnlyProperty<string>, valuePattern: string, valueProperty: Property<number>, range: Range, circuit: Circuit,
                       numberOfDecimalPlaces: number, providedOptions?: CircuitElementNumberControlOptions<T> ) {

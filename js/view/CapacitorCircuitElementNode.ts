@@ -77,6 +77,9 @@ export default class CapacitorCircuitElementNode extends FixedCircuitElementNode
   private readonly rightSchematicHitAreaPath: Path;
   private readonly disposeCapacitorCircuitElementNode: () => void;
 
+  // Identifies the images used to render this node so they can be pre-populated in the WebGL sprite sheet.
+  public static override readonly webglSpriteNodes = [ new Image( wireIcon_png ) ];
+
   /**
    * @param screenView - main screen view, null for isIcon
    * @param circuitLayerNode, null for icon
@@ -285,11 +288,5 @@ export default class CapacitorCircuitElementNode extends FixedCircuitElementNode
            this.contentNode.localBounds.dilatedX( 10 ).dilatedY( 10 );
   }
 }
-
-/**
- * Identifies the images used to render this node so they can be pre-populated in the WebGL sprite sheet.
- * {Array.<Image>}
- */
-CapacitorCircuitElementNode.webglSpriteNodes = [ new Image( wireIcon_png ) ];
 
 circuitConstructionKitCommon.register( 'CapacitorCircuitElementNode', CapacitorCircuitElementNode );

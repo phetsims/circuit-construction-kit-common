@@ -11,10 +11,10 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
  */
 
 export default class CircuitElementViewType extends EnumerationValue {
-  public static LIFELIKE = new CircuitElementViewType();
-  public static SCHEMATIC = new CircuitElementViewType();
+  public static readonly LIFELIKE = new CircuitElementViewType();
+  public static readonly SCHEMATIC = new CircuitElementViewType();
 
-  private static enumeration = new Enumeration( CircuitElementViewType, {
+  private static readonly enumeration = new Enumeration( CircuitElementViewType, {
     phetioDocumentation: 'Enumeration that determines how the circuit elements are rendered: lifelike or schematic'
   } );
 }

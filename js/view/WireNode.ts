@@ -146,7 +146,7 @@ export default class WireNode extends CircuitElementNode {
   private readonly disposeWireNode: () => void;
 
   // Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
-  public static webglSpriteNodes = [
+  public static readonly webglSpriteNodes = [
     BLACK_LINE_NODE,
     lifelikeNodeNormal,
     lifelikeNodeReversed,

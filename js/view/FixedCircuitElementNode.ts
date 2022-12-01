@@ -67,7 +67,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
   private readonly dragListener: CircuitLayerNodeDragListener | null;
 
   // Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
-  public static webglSpriteNodes: Node[] = [
+  public static readonly webglSpriteNodes: Node[] = [
     new Image( fire_png )
   ];
   private readonly updateHighlightVisibility: ( ( circuitElement: CircuitElement | Vertex | null ) => void ) | null;

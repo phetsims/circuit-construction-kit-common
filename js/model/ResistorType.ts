@@ -8,19 +8,19 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 export default class ResistorType extends EnumerationValue {
 
-  public static RESISTOR = new ResistorType( 10, new Range( 0, 120 ), false, CCKCConstants.RESISTOR_LENGTH );
-  public static HIGH_RESISTANCE_RESISTOR = new ResistorType( 1000, new Range( 100, 10000 ), false, CCKCConstants.RESISTOR_LENGTH );
-  public static COIN = ResistorType.fixed( 0, true, CCKCConstants.COIN_LENGTH );
-  public static PAPER_CLIP = ResistorType.fixed( 0, true, CCKCConstants.PAPER_CLIP_LENGTH );
-  public static PENCIL = ResistorType.fixed( 25, false, CCKCConstants.PENCIL_LENGTH );
-  public static ERASER = ResistorType.fixed( 1000000000, false, CCKCConstants.ERASER_LENGTH );
-  public static HAND = ResistorType.fixed( 100000, false, CCKCConstants.HAND_LENGTH, 15 );
+  public static readonly RESISTOR = new ResistorType( 10, new Range( 0, 120 ), false, CCKCConstants.RESISTOR_LENGTH );
+  public static readonly HIGH_RESISTANCE_RESISTOR = new ResistorType( 1000, new Range( 100, 10000 ), false, CCKCConstants.RESISTOR_LENGTH );
+  public static readonly COIN = ResistorType.fixed( 0, true, CCKCConstants.COIN_LENGTH );
+  public static readonly PAPER_CLIP = ResistorType.fixed( 0, true, CCKCConstants.PAPER_CLIP_LENGTH );
+  public static readonly PENCIL = ResistorType.fixed( 25, false, CCKCConstants.PENCIL_LENGTH );
+  public static readonly ERASER = ResistorType.fixed( 1000000000, false, CCKCConstants.ERASER_LENGTH );
+  public static readonly HAND = ResistorType.fixed( 100000, false, CCKCConstants.HAND_LENGTH, 15 );
 
   // Adjust the dog so the charges travel along the tail/legs, see https://github.com/phetsims/circuit-construction-kit-common/issues/364
-  public static DOG = ResistorType.fixed( 100000, false, CCKCConstants.DOG_LENGTH, -40 );
-  public static DOLLAR_BILL = ResistorType.fixed( 1000000000, false, CCKCConstants.DOLLAR_BILL_LENGTH );
+  public static readonly DOG = ResistorType.fixed( 100000, false, CCKCConstants.DOG_LENGTH, -40 );
+  public static readonly DOLLAR_BILL = ResistorType.fixed( 1000000000, false, CCKCConstants.DOLLAR_BILL_LENGTH );
 
-  public static enumeration = new Enumeration( ResistorType );
+  public static readonly enumeration = new Enumeration( ResistorType );
 
   // In ohms
   public readonly defaultResistance: number;

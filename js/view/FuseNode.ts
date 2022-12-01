@@ -43,6 +43,11 @@ export default class FuseNode extends FixedCircuitElementNode {
   private readonly fuse: Fuse;
   private readonly disposeFuseNode: () => void;
 
+  // Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
+  public static override readonly webglSpriteNodes = [
+    new Image( fuse_png )
+  ];
+
   /**
    * @param screenView - main screen view, null for isIcon
    * @param circuitLayerNode, null for isIcon
@@ -203,12 +208,5 @@ export default class FuseNode extends FixedCircuitElementNode {
     super.dispose();
   }
 }
-
-/**
- * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
- */
-FuseNode.webglSpriteNodes = [
-  new Image( fuse_png )
-];
 
 circuitConstructionKitCommon.register( 'FuseNode', FuseNode );

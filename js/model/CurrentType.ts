@@ -10,9 +10,9 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
  * @author Sam Reid (PhET Interactive Simulations)
  */
 export default class CurrentType extends EnumerationValue {
-  public static ELECTRONS = new CurrentType();
-  public static CONVENTIONAL = new CurrentType();
-  private static enumeration = new Enumeration( CurrentType );
+  public static readonly ELECTRONS = new CurrentType();
+  public static readonly CONVENTIONAL = new CurrentType();
+  private static readonly enumeration = new Enumeration( CurrentType );
 }
 
 circuitConstructionKitCommon.register( 'CurrentType', CurrentType );

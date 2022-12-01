@@ -62,6 +62,12 @@ schematicNode.touchArea = schematicNode.bounds.shiftedY( schematicNode.height / 
 export default class BatteryNode extends FixedCircuitElementNode {
   private readonly battery: Battery;
 
+  // Identifies the images used to render this node so they can be pre-populated in the WebGL sprite sheet.
+  public static override readonly webglSpriteNodes = [
+    new Image( battery_png ),
+    new Image( batteryHigh_png )
+  ];
+
   /**
    * @param screenView - main screen view, null for isIcon
    * @param circuitLayerNode, null for icon
@@ -96,13 +102,5 @@ export default class BatteryNode extends FixedCircuitElementNode {
     this.battery = battery;
   }
 }
-
-/**
- * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
- */
-BatteryNode.webglSpriteNodes = [
-  new Image( battery_png ),
-  new Image( batteryHigh_png )
-];
 
 circuitConstructionKitCommon.register( 'BatteryNode', BatteryNode );

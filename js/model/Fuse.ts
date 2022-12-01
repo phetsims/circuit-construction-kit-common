@@ -122,8 +122,8 @@ export default class Fuse extends FixedCircuitElement {
     return [ this.resistanceProperty, this.isTrippedProperty ];
   }
 
-  public static RANGE = new Range( 0.5, 20 );
-  public static DEFAULT_CURRENT_RATING = 4;
+  public static readonly RANGE = new Range( 0.5, 20 );
+  public static readonly DEFAULT_CURRENT_RATING = 4;
 }
 
 circuitConstructionKitCommon.register( 'Fuse', Fuse );

@@ -25,16 +25,16 @@ type BatteryOptions = VoltageSourceOptions;
 
 export default class Battery extends VoltageSource {
   public readonly batteryType: BatteryType;
-  public static VOLTAGE_DEFAULT = 9.0;
-  public static VOLTAGE_RANGE = new Range( 0, 120 );
-  public static VOLTAGE_DECIMAL_PLACES = 1;
-  public static HIGH_VOLTAGE_DEFAULT = 1000;
-  public static HIGH_VOLTAGE_RANGE = new Range( 100, 100000 );
-  public static HIGH_VOLTAGE_DECIMAL_PLACES = 0;
+  public static readonly VOLTAGE_DEFAULT = 9.0;
+  public static readonly VOLTAGE_RANGE = new Range( 0, 120 );
+  public static readonly VOLTAGE_DECIMAL_PLACES = 1;
+  public static readonly HIGH_VOLTAGE_DEFAULT = 1000;
+  public static readonly HIGH_VOLTAGE_RANGE = new Range( 100, 100000 );
+  public static readonly HIGH_VOLTAGE_DECIMAL_PLACES = 0;
   public isReversibleProperty: BooleanProperty;
 
   public constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, batteryType: BatteryType,
-               tandem: Tandem, providedOptions?: BatteryOptions ) {
+                      tandem: Tandem, providedOptions?: BatteryOptions ) {
     assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );
     const options = optionize<BatteryOptions, EmptySelfOptions, VoltageSourceOptions>()( {
       initialOrientation: 'right',

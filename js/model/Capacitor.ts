@@ -27,9 +27,9 @@ export default class Capacitor extends DynamicCircuitElement {
 
   // the capacitance in farads
   public readonly capacitanceProperty: NumberProperty;
-  public static CAPACITANCE_RANGE = new Range( CCKCQueryParameters.capacitanceMin, CCKCQueryParameters.capacitanceMax );
-  public static NUMBER_OF_DECIMAL_PLACES = CCKCQueryParameters.capacitorNumberDecimalPlaces;
-  public static CAPACITANCE_DEFAULT = CCKCQueryParameters.capacitanceDefault;
+  public static readonly CAPACITANCE_RANGE = new Range( CCKCQueryParameters.capacitanceMin, CCKCQueryParameters.capacitanceMax );
+  public static readonly NUMBER_OF_DECIMAL_PLACES = CCKCQueryParameters.capacitorNumberDecimalPlaces;
+  public static readonly CAPACITANCE_DEFAULT = CCKCQueryParameters.capacitanceDefault;
 
   public constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: CapacitorOptions ) {
     const options = optionize<CapacitorOptions, SelfOptions, DynamicCircuitElementOptions>()( {

@@ -30,9 +30,9 @@ export default class Inductor extends DynamicCircuitElement {
 
   // the inductance in Henries
   public readonly inductanceProperty: NumberProperty;
-  public static INDUCTANCE_DEFAULT = CCKCQueryParameters.inductanceDefault;
-  public static INDUCTANCE_RANGE = new Range( CCKCQueryParameters.inductanceMin, CCKCQueryParameters.inductanceMax );
-  public static INDUCTANCE_NUMBER_OF_DECIMAL_PLACES = CCKCQueryParameters.inductorNumberDecimalPlaces;
+  public static readonly INDUCTANCE_DEFAULT = CCKCQueryParameters.inductanceDefault;
+  public static readonly INDUCTANCE_RANGE = new Range( CCKCQueryParameters.inductanceMin, CCKCQueryParameters.inductanceMax );
+  public static readonly INDUCTANCE_NUMBER_OF_DECIMAL_PLACES = CCKCQueryParameters.inductorNumberDecimalPlaces;
 
   public constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: InductorOptions ) {
     const options = optionize<InductorOptions, SelfOptions, DynamicCircuitElementOptions>()( {
