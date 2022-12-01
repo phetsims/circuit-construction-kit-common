@@ -224,12 +224,12 @@ export default class CircuitElementToolFactory {
       new NumberProperty( 0 ), 'normal', Tandem.OPTIONAL
     );
     return this.createCircuitElementToolNode( batteryStringProperty, count,
-      ( tandem, viewTypeProperty ) => new BatteryNode( null, null, batteryModel, viewTypeProperty, tandem.createTandem( 'rightBatteryIcon' ), { isIcon: true } ),
+      ( tandem, viewTypeProperty ) => new BatteryNode( null, null, batteryModel, viewTypeProperty, tandem.createTandem( 'batteryIcon' ), { isIcon: true } ),
       circuitElement => circuitElement instanceof Battery &&
                         circuitElement.initialOrientation === 'right' &&
                         circuitElement.batteryType === 'normal',
       ( position: Vector2 ) => this.circuit.batteryGroup.createNextElement( ...this.circuit.createVertexPairArray( position, BATTERY_LENGTH ) ), {
-        tandem: this.parentTandem.createTandem( 'rightBatteryToolNode' ),
+        tandem: this.parentTandem.createTandem( 'batteryToolNode' ),
         lifelikeIconHeight: 15
       } );
   }
