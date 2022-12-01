@@ -28,6 +28,10 @@ type SelfOptions = {
 };
 export type ResistorOptions = SelfOptions & FixedCircuitElementOptions;
 
+type ResistorState = {
+  resistorType: ResistorType;
+} & CircuitElementState;
+
 export default class Resistor extends FixedCircuitElement {
 
   // the resistance in ohms
@@ -35,11 +39,11 @@ export default class Resistor extends FixedCircuitElement {
 
   public readonly resistorType: ResistorType;
 
-  public static ResistorIO: IOType;
-  public static RESISTANCE_DECIMAL_PLACES = 1;
-  public static HIGH_RESISTANCE_DECIMAL_PLACES = 0;
   public isColorCodeVisibleProperty: BooleanProperty;
   private readonly powerDissipatedProperty: PowerDissipatedProperty;
+
+  public static readonly RESISTANCE_DECIMAL_PLACES = 1;
+  public static readonly HIGH_RESISTANCE_DECIMAL_PLACES = 0;
 
   /**
    * @param startVertex
@@ -109,29 +113,25 @@ export default class Resistor extends FixedCircuitElement {
   public getCircuitProperties(): Property<IntentionalAny>[] {
     return [ this.resistanceProperty ];
   }
+
+  public static readonly ResistorIO = new IOType<Resistor, ResistorState>( 'ResistorIO', {
+    valueType: Resistor,
+    supertype: CircuitElement.CircuitElementIO,
+    stateSchema: {
+      resistorType: EnumerationIO( ResistorType )
+    },
+    toStateObject: ( resistor: Resistor ) => {
+      const stateObject = CircuitElement.CircuitElementIO.toStateObject( resistor );
+      stateObject.resistorType = EnumerationIO( ResistorType ).toStateObject( resistor.resistorType );
+      return stateObject;
+    },
+
+    stateToArgsForConstructor( stateObject: ResistorState ) {
+      const args = CircuitElement.CircuitElementIO.stateToArgsForConstructor( stateObject );
+      args.push( EnumerationIO( ResistorType ).fromStateObject( stateObject.resistorType ) );
+      return args;
+    }
+  } );
 }
-
-type ResistorState = {
-  resistorType: ResistorType;
-} & CircuitElementState;
-
-Resistor.ResistorIO = new IOType<Resistor, ResistorState>( 'ResistorIO', {
-  valueType: Resistor,
-  supertype: CircuitElement.CircuitElementIO,
-  stateSchema: {
-    resistorType: EnumerationIO( ResistorType )
-  },
-  toStateObject: ( resistor: Resistor ) => {
-    const stateObject = CircuitElement.CircuitElementIO.toStateObject( resistor );
-    stateObject.resistorType = EnumerationIO( ResistorType ).toStateObject( resistor.resistorType );
-    return stateObject;
-  },
-
-  stateToArgsForConstructor( stateObject: ResistorState ) {
-    const args = CircuitElement.CircuitElementIO.stateToArgsForConstructor( stateObject );
-    args.push( EnumerationIO( ResistorType ).fromStateObject( stateObject.resistorType ) );
-    return args;
-  }
-} );
 
 circuitConstructionKitCommon.register( 'Resistor', Resistor );
