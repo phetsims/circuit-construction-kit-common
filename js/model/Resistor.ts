@@ -122,10 +122,10 @@ export default class Resistor extends FixedCircuitElement {
     },
     toStateObject: ( resistor: Resistor ): ResistorState => {
       const stateObject = CircuitElement.CircuitElementIO.toStateObject( resistor );
-      // @ts-ignore stateObject has type CircuitElement, which does not have field resistorType
-      stateObject.resistorType = EnumerationIO( ResistorType ).toStateObject( resistor.resistorType );
-      // @ts-ignore stateObject has type CircuitElement
-      return stateObject;
+      return {
+        ...stateObject,
+        resistorType: EnumerationIO( ResistorType ).toStateObject( resistor.resistorType )
+      };
     },
 
     stateToArgsForConstructor( stateObject: ResistorState ) {
