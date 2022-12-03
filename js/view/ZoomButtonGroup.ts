@@ -7,7 +7,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import { RangedProperty } from '../../../axon/js/NumberProperty.js';
+import NumberProperty from '../../../axon/js/NumberProperty.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
 import MagnifyingGlassZoomButtonGroup, { MagnifyingGlassZoomButtonGroupOptions } from '../../../scenery-phet/js/MagnifyingGlassZoomButtonGroup.js';
 import PhetColorScheme from '../../../scenery-phet/js/PhetColorScheme.js';
@@ -24,7 +24,7 @@ export default class ZoomButtonGroup extends MagnifyingGlassZoomButtonGroup {
   public static readonly ZOOMED_IN = ZOOMED_IN;
   public static readonly ZOOMED_OUT = ZOOMED_OUT;
 
-  public constructor( selectedZoomProperty: RangedProperty, providedOptions?: MagnifyingGlassZoomButtonGroupOptions ) {
+  public constructor( selectedZoomProperty: NumberProperty, providedOptions?: MagnifyingGlassZoomButtonGroupOptions ) {
     providedOptions = combineOptions<MagnifyingGlassZoomButtonGroupOptions>( {
       spacing: BUTTON_SPACING,
       tandem: Tandem.REQUIRED,

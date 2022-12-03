@@ -8,7 +8,7 @@
 
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
-import NumberProperty, { RangedProperty } from '../../../axon/js/NumberProperty.js';
+import NumberProperty from '../../../axon/js/NumberProperty.js';
 import CanvasLinePlot from '../../../bamboo/js/CanvasLinePlot.js';
 import ChartCanvasNode from '../../../bamboo/js/ChartCanvasNode.js';
 import ChartRectangle from '../../../bamboo/js/ChartRectangle.js';
@@ -77,7 +77,7 @@ export default class CCKCChartNode extends Node {
   private readonly droppedEmitter: TEmitter;
   protected readonly aboveBottomLeft1Property: TReadOnlyProperty<Vector2>;
   protected readonly aboveBottomLeft2Property: TReadOnlyProperty<Vector2>;
-  private readonly zoomLevelProperty: RangedProperty;
+  private readonly zoomLevelProperty: NumberProperty;
   protected readonly updatePen: () => void;
 
   /**
@@ -184,7 +184,7 @@ export default class CCKCChartNode extends Node {
     this.zoomLevelProperty = new NumberProperty( initialZoomIndex, {
       range: new Range( 0, zoomRanges.length - 1 ),
       tandem: tandem.createTandem( 'zoomLevelProperty' )
-    } ).asRanged();
+    } );
 
     const gridLineOptions = {
       stroke: 'lightGray',

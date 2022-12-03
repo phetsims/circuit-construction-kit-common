@@ -11,7 +11,7 @@ import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
 import Property from '../../../axon/js/Property.js';
-import NumberProperty, { RangedProperty } from '../../../axon/js/NumberProperty.js';
+import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Utils from '../../../dot/js/Utils.js';
 import Range from '../../../dot/js/Range.js';
 import Stopwatch from '../../../scenery-phet/js/Stopwatch.js';
@@ -59,7 +59,7 @@ export default class CircuitConstructionKitModel {
 
   // true if the values in the toolbox should be shown
   public readonly showValuesProperty: BooleanProperty;
-  public readonly selectedZoomProperty: RangedProperty;
+  public readonly selectedZoomProperty: NumberProperty;
 
   // the animated value of the zoom level
   public readonly currentZoomProperty: NumberProperty;
@@ -145,7 +145,7 @@ export default class CircuitConstructionKitModel {
       range: new Range( 0, 1 ),
       validValues: [ 0, 1 ],
       phetioDocumentation: 'Zoom level for the sim.  0=zoomed out, 1=zoomed in (magnified)'
-    } ).asRanged();
+    } );
 
     // For PhET-iO: Use an enumeration pattern for the API
     this.zoomProperty = new EnumerationProperty( ZoomLevel.NORMAL, {
