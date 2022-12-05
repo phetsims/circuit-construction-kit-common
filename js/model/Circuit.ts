@@ -273,6 +273,10 @@ export default class Circuit {
     // Stop watching the vertex positions for updating the voltmeter and ammeter
     this.vertexGroup.elementDisposedEmitter.addListener( vertex => {
 
+      if ( vertex.isSelected() ) {
+        this.selectionProperty.value = null;
+      }
+
       // Sanity checks for the listeners
       // assert && assert( vertex.positionProperty.hasListener( emitCircuitChanged ), 'should have had the listener' );
       // vertex.positionProperty.unlink( emitCircuitChanged );
