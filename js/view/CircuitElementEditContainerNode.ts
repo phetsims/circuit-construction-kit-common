@@ -329,11 +329,8 @@ export default class CircuitElementEditContainerNode extends Node {
     circuit.selectionProperty.link( selectedCircuitElement => {
       if ( editNode ) {
         this.hasChild( editNode ) && this.removeChild( editNode );
-
-        // editNode.children.forEach( child => child.detach() );
         if ( editNode !== tapInstructionText && editNode !== trashButtonContainer && editNode !== switchReadoutNode ) {
           editNode.dispose();
-
         }
       }
 
