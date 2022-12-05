@@ -121,7 +121,12 @@ export default class CircuitElementEditContainerNode extends Node {
     const trashButton = new CCKCTrashButton( circuit, tandem.createTandem( 'trashButton' ) );
     const trashButtonContainer = new HBox( { children: [ trashButton ] } ); // Use the "nested node" pattern for gated visibilty
 
-    const repairFuseButton = new RepairFuseButton( circuit, tandem.createTandem( 'repairFuseButton' ) );
+    const repairFuseButton = new RepairFuseButton( circuit, {
+      tandem: tandem.createTandem( 'repairFuseButton' ),
+
+      // NOTE: This only works if the trash button was originally smaller
+      maxHeight: trashButton.height
+    } );
     const clearDynamicsButton = new ClearDynamicsButton( circuit,
       circuit.includeACElements ? tandem.createTandem( 'clearButton' ) : Tandem.OPT_OUT );
 
@@ -315,8 +320,11 @@ export default class CircuitElementEditContainerNode extends Node {
     circuit.selectionProperty.link( selectedCircuitElement => {
       if ( editNode ) {
         this.hasChild( editNode ) && this.removeChild( editNode );
+
+        editNode.children.forEach( child => child.detach() );
         if ( editNode !== tapInstructionText && editNode !== trashButtonContainer && editNode !== switchReadoutNode ) {
           editNode.dispose();
+
         }
       }
 
@@ -434,7 +442,7 @@ class EditHBox extends HBox {
   public constructor( children: Node[] ) {
     super( {
       spacing: 25,
-      align: 'center',
+      align: 'bottom',
       children: children
     } );
   }

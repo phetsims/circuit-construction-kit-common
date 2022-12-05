@@ -8,18 +8,22 @@
 
 import Vector2 from '../../../dot/js/Vector2.js';
 import { Shape } from '../../../kite/js/imports.js';
-import { Circle, HBox, Node, Path } from '../../../scenery/js/imports.js';
-import Tandem from '../../../tandem/js/Tandem.js';
+import { Circle, Node, Path } from '../../../scenery/js/imports.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Circuit from '../model/Circuit.js';
 import Fuse from '../model/Fuse.js';
 import CCKCRoundPushButton from './CCKCRoundPushButton.js';
 import CircuitElement from '../model/CircuitElement.js';
 import Vertex from '../model/Vertex.js';
+import { RoundPushButtonOptions } from '../../../sun/js/buttons/RoundPushButton.js';
+import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 
-export default class RepairFuseButton extends HBox {
+type SelfOptions = EmptySelfOptions;
+type RepairFuseButtonOptions = SelfOptions & RoundPushButtonOptions;
 
-  public constructor( circuit: Circuit, tandem: Tandem ) {
+export default class RepairFuseButton extends CCKCRoundPushButton {
+
+  public constructor( circuit: Circuit, providedOptions?: RepairFuseButtonOptions ) {
 
     const shape = new Shape().moveTo( 0, 0 ).zigZagToPoint( new Vector2( 35, 0 ), 4.7, 4, false );
 
@@ -33,7 +37,7 @@ export default class RepairFuseButton extends HBox {
       scale: 0.9 // to match the size of the trash can icon
     } );
 
-    const button = new CCKCRoundPushButton( {
+    const options = optionize<RepairFuseButtonOptions, SelfOptions, RoundPushButtonOptions>()( {
       touchAreaDilation: 5, // radius dilation for touch area
       content: icon,
       listener: () => {
@@ -44,9 +48,10 @@ export default class RepairFuseButton extends HBox {
         if ( fuse instanceof Fuse ) {
           fuse.resetFuse();
         }
-      },
-      tandem: tandem
-    } );
+      }
+    }, providedOptions );
+
+    super( options );
 
     const isTrippedListener = ( isTripped: boolean ) => this.setEnabled( isTripped );
 
@@ -63,8 +68,6 @@ export default class RepairFuseButton extends HBox {
       oldCircuitElement instanceof Fuse && oldCircuitElement.isTrippedProperty.unlink( isTrippedListener );
       newCircuitElement instanceof Fuse && newCircuitElement.isTrippedProperty.link( isTrippedListener );
     } );
-
-    super( { children: [ button ] } );
   }
 
   public override dispose(): void {
