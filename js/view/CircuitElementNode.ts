@@ -226,8 +226,11 @@ export default abstract class CircuitElementNode extends Node {
       circuitLayerNode.circuit.selectionProperty.set( this.circuitElement );
 
       // focus the element for keyboard interaction
-      // @ts-ignore
-      this.focus();
+      // in the state wrapper, the destination frame tries to apply this delete first, which steals it from the upstream frame
+      const ignoreFocus = phet.preloads.phetio && phet.preloads.phetio.queryParameters.frameTitle === 'destination';
+      if ( !ignoreFocus ) {
+        this.focus();
+      }
 
       const disposeListener = () => {
         phet.joist.display.removeInputListener( clickToDismissListener );

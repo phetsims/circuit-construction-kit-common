@@ -61,7 +61,7 @@ export default class VertexNode extends Node {
 
   // Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
   public static readonly webglSpriteNodes = [
-  BLACK_CIRCLE_NODE, RED_CIRCLE_NODE
+    BLACK_CIRCLE_NODE, RED_CIRCLE_NODE
   ];
 
   /**
@@ -315,8 +315,11 @@ export default class VertexNode extends Node {
       }
       this.moveToFront();
 
-      // @ts-ignore
-      this.focus();
+      // in the state wrapper, the destination frame tries to apply this delete first, which steals it from the upstream frame
+      const ignoreFocus = phet.preloads.phetio && phet.preloads.phetio.queryParameters.frameTitle === 'destination';
+      if ( !ignoreFocus ) {
+        this.focus();
+      }
     }
     CCKCUtils.setInSceneGraph( selected, this.circuitLayerNode.highlightLayer, this.highlightNode );
     const numberConnections = neighborCircuitElements.length;
