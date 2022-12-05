@@ -330,7 +330,7 @@ export default class CircuitElementEditContainerNode extends Node {
       if ( editNode ) {
         this.hasChild( editNode ) && this.removeChild( editNode );
 
-        editNode.children.forEach( child => child.detach() );
+        // editNode.children.forEach( child => child.detach() );
         if ( editNode !== tapInstructionText && editNode !== trashButtonContainer && editNode !== switchReadoutNode ) {
           editNode.dispose();
 
