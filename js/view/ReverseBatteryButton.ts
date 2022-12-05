@@ -6,26 +6,30 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import { Color, HBox, Path, VBox } from '../../../scenery/js/imports.js';
+import { Color, Path, VBox } from '../../../scenery/js/imports.js';
 import syncAltSolidString from '../../../sherpa/js/fontawesome-5/syncAltSolidString.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Battery from '../model/Battery.js';
 import CCKCRoundPushButton from './CCKCRoundPushButton.js';
 import Circuit from '../model/Circuit.js';
-import Tandem from '../../../tandem/js/Tandem.js';
 import CircuitElement from '../model/CircuitElement.js';
 import Vertex from '../model/Vertex.js';
+import { RoundPushButtonOptions } from '../../../sun/js/buttons/RoundPushButton.js';
+import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 
 // constants
 const ARROW_ICON_SCALE = 0.035;
 
-export default class ReverseBatteryButton extends HBox {
+type SelfOptions = EmptySelfOptions;
+type ReverseBatteryButtonOptions = SelfOptions & RoundPushButtonOptions;
+
+export default class ReverseBatteryButton extends CCKCRoundPushButton {
 
   /**
    * @param circuit - the circuit that contains the battery
    * @param tandem
    */
-  public constructor( circuit: Circuit, tandem: Tandem ) {
+  public constructor( circuit: Circuit, providedOptions?: ReverseBatteryButtonOptions ) {
 
     // This SVG data was exported from assets/flip_battery_icon.ai, which was created by @arouinfar.  Using illustrator,
     // save the AI file as SVG, then inspect the file to get the path declaration.
@@ -43,37 +47,36 @@ export default class ReverseBatteryButton extends HBox {
     const topShapeString = `M${syncAltSolidStringParts[ 1 ]}`;
     const bottomShapeString = `M${syncAltSolidStringParts[ 2 ]}`;
 
-    const child = new CCKCRoundPushButton( {
-        touchAreaDilation: 5, // radius dilation for touch area
-        content: new VBox( {
-          spacing: 3,
-          children: [
+    const options = optionize<ReverseBatteryButtonOptions, SelfOptions, RoundPushButtonOptions>()( {
+      touchAreaDilation: 5, // radius dilation for touch area
+      content: new VBox( {
+        spacing: 3,
+        children: [
 
-            new Path( topShapeString, {
-              fill: Color.BLACK,
-              scale: ARROW_ICON_SCALE
-            } ),
-            batteryIcon,
+          new Path( topShapeString, {
+            fill: Color.BLACK,
+            scale: ARROW_ICON_SCALE
+          } ),
+          batteryIcon,
 
-            new Path( bottomShapeString, {
-              fill: Color.BLACK,
-              scale: ARROW_ICON_SCALE
-            } )
-          ]
-        } ),
-        listener: () => {
-          const battery = circuit.selectionProperty.value;
+          new Path( bottomShapeString, {
+            fill: Color.BLACK,
+            scale: ARROW_ICON_SCALE
+          } )
+        ]
+      } ),
+      listener: () => {
+        const battery = circuit.selectionProperty.value;
 
-          if ( battery instanceof Battery ) {
-            circuit.flip( battery );
-          }
-          else {
-            assert && assert( false, 'selected circuit element should have been a battery' );
-          }
-        },
-        tandem: tandem
+        if ( battery instanceof Battery ) {
+          circuit.flip( battery );
+        }
+        else {
+          assert && assert( false, 'selected circuit element should have been a battery' );
+        }
       }
-    );
+    }, providedOptions );
+    super( options );
 
     const isReversibleListener = ( isReversible: boolean ) => {
       this.visible = isReversible;
@@ -85,8 +88,6 @@ export default class ReverseBatteryButton extends HBox {
       oldCircuitElement instanceof Battery && oldCircuitElement.isReversibleProperty.unlink( isReversibleListener );
       newCircuitElement instanceof Battery && newCircuitElement.isReversibleProperty.link( isReversibleListener );
     } );
-
-    super( { children: [ child ] } );
   }
 
   public override dispose(): void {
