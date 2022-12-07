@@ -11,7 +11,7 @@ import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Property from '../../../axon/js/Property.js';
 import ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
 import Vector2 from '../../../dot/js/Vector2.js';
-import { DragListener, Node, SceneryEvent, Text, VBox, VBoxOptions } from '../../../scenery/js/imports.js';
+import { DragListener, Grayscale, Node, SceneryEvent, Text, VBox, VBoxOptions } from '../../../scenery/js/imports.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Circuit from '../model/Circuit.js';
@@ -117,7 +117,12 @@ export default class CircuitElementToolNode extends VBox {
     Multilink.multilink( [ circuit.circuitElements.lengthProperty, options.additionalProperty ], ( length, additionalValue: boolean ) => {
       const currentCount = count();
       if ( lastCount !== currentCount || lastValue !== additionalValue ) {
-        this.setVisible( ( currentCount < maxNumber ) && additionalValue );
+
+        // Gray out circuit elements that cannot be dragged out, this includes the real bulb when it is not selected
+        const isAvailable = ( currentCount < maxNumber ) && additionalValue;
+        this.setOpacity( isAvailable ? 1 : 0.4 );
+        this.filters = isAvailable ? [] : [ Grayscale.FULL ];
+        this.inputEnabled = isAvailable;
       }
       lastCount = currentCount;
       lastValue = additionalValue;
