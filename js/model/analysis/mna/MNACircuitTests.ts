@@ -203,7 +203,7 @@ QUnit.test( 'test_resistors_in_parallel_should_have_harmonic_mean_of_resistance'
 //       const combo = [];
 //       for ( let x = 0; x < n; x++ ) {
 //         //shift bit and and it with 1
-//         if ( ( y >> x ) & 1 ) { // eslint-disable-line
+//         if ( ( y >> x ) & 1 ) {
 //           combo.push( true );
 //         }
 //         else {
