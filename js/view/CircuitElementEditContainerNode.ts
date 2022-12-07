@@ -128,9 +128,11 @@ export default class CircuitElementEditContainerNode extends Node {
       maxHeight: trashButton.height
     } );
 
-    // TODO: Apply pattern from ReverseBatteryButton, see https://github.com/phetsims/circuit-construction-kit-common/issues/902
-    const clearDynamicsButton = new ClearDynamicsButton( circuit,
-      circuit.includeACElements ? tandem.createTandem( 'clearButton' ) : Tandem.OPT_OUT );
+    const clearDynamicsButton = new ClearDynamicsButton( circuit, {
+      tandem: circuit.includeACElements ? tandem.createTandem( 'clearButton' ) : Tandem.OPT_OUT,
+      // NOTE: This only works if the trash button was originally smaller
+      maxHeight: trashButton.height
+    } );
 
     const reverseBatteryButton = new ReverseBatteryButton( circuit, {
       tandem: tandem.createTandem( 'reverseBatteryButton' ),
@@ -139,7 +141,6 @@ export default class CircuitElementEditContainerNode extends Node {
       maxHeight: trashButton.height
     } );
 
-    // TODO: Apply pattern from ReverseBatteryButton, see https://github.com/phetsims/circuit-construction-kit-common/issues/902
     const switchReadoutNode = new SwitchReadoutNode( circuit, tandem.createTandem( 'switchReadoutNode' ), trashButtonContainer );
 
     const listener = ( isDisposable: boolean ) => trashButtonContainer.setVisible( isDisposable );

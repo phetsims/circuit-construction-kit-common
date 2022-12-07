@@ -10,14 +10,15 @@ import Matrix3 from '../../../dot/js/Matrix3.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import { Shape } from '../../../kite/js/imports.js';
 import BannedNode from '../../../scenery-phet/js/BannedNode.js';
-import { Color, HBox, Node, Path } from '../../../scenery/js/imports.js';
+import { Color, Node, Path } from '../../../scenery/js/imports.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import DynamicCircuitElement from '../model/DynamicCircuitElement.js';
 import CCKCRoundPushButton from './CCKCRoundPushButton.js';
 import Circuit from '../model/Circuit.js';
-import Tandem from '../../../tandem/js/Tandem.js';
 import CircuitElement from '../model/CircuitElement.js';
 import Vertex from '../model/Vertex.js';
+import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
+import { RoundPushButtonOptions } from '../../../sun/js/buttons/RoundPushButton.js';
 
 // constants
 const SCALE = 0.032;
@@ -25,9 +26,12 @@ const SCALE = 0.032;
 // @ts-ignore
 const SHAPE_MATRIX = Matrix3.pool.create( SCALE, 0, 0, 0, -SCALE, 0, 0, 0, 1 ); // to create a unity-scale icon
 
-export default class ClearDynamicsButton extends HBox {
+type SelfOptions = EmptySelfOptions;
+type ClearDynamicsButtonOptions = SelfOptions & RoundPushButtonOptions;
 
-  public constructor( circuit: Circuit, tandem: Tandem ) {
+export default class ClearDynamicsButton extends CCKCRoundPushButton {
+
+  public constructor( circuit: Circuit, providedOptions?: ClearDynamicsButtonOptions ) {
 
     // This SVG data was exported from assets/flip_battery_icon.ai, which was created by @arouinfar.  Using illustrator,
     // save the AI file as SVG, then inspect the file to get the path declaration.
@@ -37,7 +41,7 @@ export default class ClearDynamicsButton extends HBox {
       center: Vector2.ZERO
     } );
 
-    const button = new CCKCRoundPushButton( {
+    const options = optionize<ClearDynamicsButtonOptions, SelfOptions, RoundPushButtonOptions>()( {
       touchAreaDilation: 5, // radius dilation for touch area
       content: new Node( {
         children: [
@@ -53,11 +57,10 @@ export default class ClearDynamicsButton extends HBox {
         if ( dynamicCircuitElement instanceof DynamicCircuitElement ) {
           dynamicCircuitElement.clear();
         }
-      },
-      tandem: tandem
-    } );
+      }
+    }, providedOptions );
 
-    super( { children: [ button ] } );
+    super( options );
 
     const isClearableListener = ( isClearable: boolean ) => {
       this.visible = isClearable;
