@@ -34,7 +34,7 @@ export default class CircuitLayerNodeDragListener extends DragListener {
    *                              forwarded presses.
    * @param [callback] - to be run at the end of the function, but only on success
    */
-  // @ts-ignore
+  // @ts-expect-error
   private press( event: SceneryEvent, targetNode: Node | undefined, callback: () => void ): boolean {
 
     const vertices = this.vertexGetters.map( vertexGetter => vertexGetter() );
@@ -42,7 +42,7 @@ export default class CircuitLayerNodeDragListener extends DragListener {
     const allVerticesDraggable = _.every( vertices, vertex => this.circuitLayerNode.canDragVertex( vertex ) );
     if ( allVerticesDraggable ) {
 
-      // @ts-ignore
+      // @ts-expect-error
       const success = super.press( event, targetNode, callback );
 
       if ( success ) {

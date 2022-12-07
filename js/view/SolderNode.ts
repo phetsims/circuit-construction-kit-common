@@ -68,12 +68,10 @@ export default class SolderNode extends Node {
 
     const updateSolderNodePosition = this.setTranslation.bind( this );
 
-    // @ts-ignore
     vertex.positionProperty.link( updateSolderNodePosition );
 
     this.disposeSolderNode = () => {
 
-      // @ts-ignore
       vertex.positionProperty.unlink( updateSolderNodePosition );
 
       circuit.vertexGroup.elementCreatedEmitter.removeListener( updateFill );

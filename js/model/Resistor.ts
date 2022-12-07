@@ -62,7 +62,7 @@ export default class Resistor extends FixedCircuitElement {
     assert && assert( !options.hasOwnProperty( 'resistance' ), 'Resistance should be passed through resistorType' );
 
     // validate resistor type
-    // @ts-ignore
+    // @ts-expect-error
     validate( resistorType, { valueType: Resistor.ResistorType } );
 
     assert && assert( !options.hasOwnProperty( 'isMetallic' ), 'isMetallic is given by the resistorType' );

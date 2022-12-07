@@ -255,7 +255,6 @@ export default class CCKCChartNode extends Node {
       // Show 4 seconds, plus a lead time of 0.25 sec
       chartTransform.setModelXRange( new Range( time - 4, time + 0.25 ) );
 
-      // @ts-ignore
       verticalGridLineSet.setLineDashOffset( time * chartTransform.modelToViewDelta( Orientation.HORIZONTAL, 1 ) );
       this.updatePen();
     } );

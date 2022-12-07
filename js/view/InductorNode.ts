@@ -122,7 +122,7 @@ export default class InductorNode extends FixedCircuitElementNode {
         // Using a single path with fill+stroke leaves an artifact at the corners.  As a workaround, use two fills,
         // see https://github.com/phetsims/circuit-construction-kit-common/issues/537#issuecomment-558917786
         // and the corresponding kite issue https://github.com/phetsims/kite/issues/83
-        // @ts-ignore
+        // @ts-expect-error
         const createPath = ( lineStyles, fill ) => new Path( pathShape.getStrokedShape( lineStyles ), { fill: fill } );
         children.push( createPath( LIFELIKE_PATH_OUTLINE_STYLES, 'black' ) );
         children.push( createPath( LIFELIKE_PATH_FILL_STYLES, '#dc9180' ) );

@@ -90,13 +90,13 @@ export default class SensorToolbox extends CCKCPanel {
         // Select a non-visible meter node
         const meterNode = _.find( meterNodes, ( meterNode: Node ) => !meterNode.visible );
         if ( meterNode ) {
-          // @ts-ignore
+          // @ts-expect-error
           const meterModel = meterNode[ meterModelName ];
           const viewPosition = circuitLayerNode.globalToLocalPoint( event.pointer.point );
           meterModel.draggingProbesWithBodyProperty.value = true;
           meterModel.visibleProperty.value = true;
           meterModel.bodyPositionProperty.value = viewPosition;
-          // @ts-ignore
+          // @ts-expect-error
           meterNode.startDrag( event );
         }
       }, {
@@ -253,13 +253,13 @@ export default class SensorToolbox extends CCKCPanel {
           tandem: tandem
         } );
 
-        // @ts-ignore
+        // @ts-expect-error
         const allInPlayAreaProperty = DerivedProperty.and( chartNodes.map( chartNode => chartNode.meter.visibleProperty ) );
         allInPlayAreaProperty.link( allInPlayArea => {
           chartNodeIcon.setVisible( !allInPlayArea );
           chartToolIcon.inputEnabledProperty.value = !allInPlayArea;
         } );
-        // @ts-ignore
+        // @ts-expect-error
         overlay.addInputListener( createListenerMulti( chartNodes, 'meter' ) );
 
         // Alter the visibility of the labels when the labels checkbox is toggled.

@@ -23,7 +23,6 @@ import { RoundPushButtonOptions } from '../../../sun/js/buttons/RoundPushButton.
 // constants
 const SCALE = 0.032;
 
-// @ts-ignore
 const SHAPE_MATRIX = Matrix3.pool.create( SCALE, 0, 0, 0, -SCALE, 0, 0, 0, 1 ); // to create a unity-scale icon
 
 type SelfOptions = EmptySelfOptions;

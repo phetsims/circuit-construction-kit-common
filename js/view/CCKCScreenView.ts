@@ -62,7 +62,6 @@ const CONTROL_PANEL_ALIGN_GROUP = new AlignGroup( {
 // is complete
 document.addEventListener( 'keydown', event => {
 
-  // @ts-ignore
   if ( KeyboardUtils.isKeyEvent( event, KeyboardUtils.KEY_TAB ) ) {
     event.preventDefault();
   }

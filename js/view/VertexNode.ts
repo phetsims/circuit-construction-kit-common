@@ -286,7 +286,6 @@ export default class VertexNode extends Node {
     const domEvent = event.domEvent;
 
     // on delete or backspace, the focused Vertex should be cut
-    // @ts-ignore
     if ( KeyboardUtils.isAnyKeyEvent( domEvent, [ KeyboardUtils.KEY_DELETE, KeyboardUtils.KEY_BACKSPACE ] ) ) {
 
       // prevent default so 'backspace' and 'delete' don't navigate back a page in Firefox, see

@@ -21,7 +21,6 @@ let id = 0;
 
 let worstError = 0;
 
-// @ts-ignore
 // window.string = `{v}  {r}  {c}  {t}  {desiredVoltageAtTPlusDT}  {voltage}  {error}
 // `;
 // Check the values coming from an RC circuit (may be an equivalent capacitance)
@@ -41,7 +40,6 @@ const iterateCapacitor = ( circuit: LTACircuit, resistor: MNAResistor, v: number
       // console.log( 'new worst error: ' + worstError );
     }
 
-    // @ts-ignore
     // window.string = window.string + `${v}  ${r}  ${c}  ${t}  ${desiredVoltageAtTPlusDT}  ${voltage}  ${error}
 // `;
 

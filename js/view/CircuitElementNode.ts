@@ -66,7 +66,7 @@ export default abstract class CircuitElementNode extends Node {
     // Make it easy to get back to circuitElements
     this.addLinkedElement( circuitElement, {
 
-      // @ts-ignore
+      // @ts-expect-error
       tandem: providedOptions.tandem.createTandem( 'circuitElement' )
     } );
 
@@ -100,7 +100,7 @@ export default abstract class CircuitElementNode extends Node {
      * dragging.
      * @param event - scenery event
      */
-      // @ts-ignore
+      // @ts-expect-error
     const startDragListener = ( event: SceneryEvent ) => this.dragListener.down( event );
 
     this.disposeCircuitElementNode = () => {

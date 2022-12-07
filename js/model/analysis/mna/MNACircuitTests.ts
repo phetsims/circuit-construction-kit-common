@@ -222,7 +222,7 @@ QUnit.test( 'test_resistors_in_parallel_should_have_harmonic_mean_of_resistance'
 //   for ( let x = 0; x < combos.length; x++ ) {
 //     // console.log( combos[ x ].join( ',' ) );
 //
-//     // @ts-ignore
+//     // @ts-expect-error
 //     window.signs = combos[ x ].map( t => t ? 1 : -1 );
 //
 //     const v1 = new MNABattery( '1', '0', 24 );
@@ -252,7 +252,7 @@ QUnit.test( 'test_resistors_in_parallel_should_have_harmonic_mean_of_resistance'
 //
 //     console.log( 'wins: ' + wins );
 //     if ( wins === 6 ) {
-//       // @ts-ignore
+//       // @ts-expect-error
 //       console.log( window.signs );
 //     }
 //   }

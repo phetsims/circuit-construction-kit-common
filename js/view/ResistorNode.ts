@@ -139,8 +139,6 @@ export default class ResistorNode extends FixedCircuitElementNode {
           // Show all 4 colors bands and hide the 0-resistance band
           singleColorBand.fill = null;
           for ( let i = 0; i < colorBands.length; i++ ) {
-
-            // @ts-ignore
             colorBands[ i ].fill = colors[ i ];
           }
         }

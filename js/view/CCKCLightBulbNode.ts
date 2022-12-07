@@ -224,7 +224,7 @@ export default class CCKCLightBulbNode extends FixedCircuitElementNode {
     // node that contains the light rays so they can be easily positioned
     this.rayNodeContainer = new Node( {
 
-      // @ts-ignore
+      // @ts-expect-error
       children: lightBulbNode.raysNode ? [ lightBulbNode.raysNode ] : [] // keep centering and translation
     } );
 

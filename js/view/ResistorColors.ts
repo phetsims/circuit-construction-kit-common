@@ -45,7 +45,7 @@ const colorTable: Entry[] = [
  * @param value - the value to search for
  * @returns entry from the color table, see above
  */
-// @ts-ignore
+// @ts-expect-error
 const getEntry = ( keyName: string, value: string | number | null ) => _.find( colorTable, colorTableEntry => colorTableEntry[ keyName ] === value )!;
 
 const ResistorColors = {

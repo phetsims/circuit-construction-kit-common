@@ -86,9 +86,7 @@ export default class FuseNode extends FixedCircuitElementNode {
     } );
 
     // Fuse filament thickness is proportional to its current rating
-    // @ts-ignore
     const updateFilamentPathLineWidth = ( currentRating: number ) => filamentPath.setLineWidth( Utils.linear(
-      // @ts-ignore
       fuse.currentRatingProperty.range.min, fuse.currentRatingProperty.range.max, 1, 4, currentRating
     ) );
     fuse.currentRatingProperty.link( updateFilamentPathLineWidth );
@@ -185,7 +183,6 @@ export default class FuseNode extends FixedCircuitElementNode {
       if ( isTripped && !phet.joist.sim.isSettingPhetioStateProperty.value ) {
         circuitLayerNode!.addChild( new FuseTripAnimation( { center: this.center } ) );
       }
-      // @ts-ignore
       glassNode.fill = isTripped ? '#4e4e4e' : DEFAULT_GLASS_FILL;
       filamentPath.shape = isTripped ? brokenFilamentShape : filamentShape;
     };

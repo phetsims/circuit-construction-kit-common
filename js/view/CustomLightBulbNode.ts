@@ -179,7 +179,7 @@ export default class CustomLightBulbNode extends Node {
       this.backNode.visible = ( brightness > 0 );
       if ( this.backNode.visible ) {
 
-        // @ts-ignore
+        // @ts-expect-error
         this.backNode.imageOpacity = Utils.clamp( Utils.linear( 0, 0.5, 0, 1, brightness ), 0, 1 );
       }
 

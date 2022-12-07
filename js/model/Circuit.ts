@@ -441,33 +441,32 @@ export default class Circuit {
         tandem: this.includeLabElements ? tandem.createTandem( 'realLightBulbGroup' ) : Tandem.OPT_OUT
       } );
 
-    // @ts-ignore
     this.groups = [
-      // @ts-ignore
+      // @ts-expect-error
       this.wireGroup,
-      // @ts-ignore
+      // @ts-expect-error
       this.batteryGroup,
-      // @ts-ignore
+      // @ts-expect-error
       this.highVoltageBatteryGroup,
-      // @ts-ignore
+      // @ts-expect-error
       this.acVoltageGroup,
-      // @ts-ignore
+      // @ts-expect-error
       this.resistorGroup,
-      // @ts-ignore
+      // @ts-expect-error
       this.fuseGroup,
-      // @ts-ignore
+      // @ts-expect-error
       this.capacitorGroup,
-      // @ts-ignore
+      // @ts-expect-error
       this.inductorGroup,
-      // @ts-ignore
+      // @ts-expect-error
       this.switchGroup,
-      // @ts-ignore
+      // @ts-expect-error
       this.lightBulbGroup,
-      // @ts-ignore
+      // @ts-expect-error
       this.realLightBulbGroup,
-      // @ts-ignore
+      // @ts-expect-error
       this.highResistanceLightBulbGroup,
-      // @ts-ignore
+      // @ts-expect-error
       this.seriesAmmeterGroup
     ];
     this.dirty = false;

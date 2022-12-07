@@ -91,7 +91,7 @@ export default class CircuitElementNumberControl<T extends CircuitElement> exten
       oldCircuitElement instanceof ACVoltage && multilink && Multilink.unmultilink( multilink );
       if ( newCircuitElement instanceof CircuitElement ) {
 
-        // @ts-ignore
+        // @ts-expect-error
         const otherGates = options.getAdditionalVisibilityProperties( newCircuitElement );
 
         multilink = Multilink.multilinkAny( [ newCircuitElement.isEditableProperty, ...otherGates ], listener );

@@ -215,9 +215,7 @@ export default abstract class CircuitElement extends PhetioObject {
 
     this.vertexVoltageListener = () => this.voltageDifferenceProperty.set( this.computeVoltageDifference() );
 
-    // @ts-ignore
     this.startVertexProperty.link( this.linkVertexListener );
-    // @ts-ignore
     this.endVertexProperty.link( this.linkVertexListener );
     this.chargePathLength = chargePathLength;
     this.circuitElementDisposed = false;
@@ -450,7 +448,6 @@ export default abstract class CircuitElement extends PhetioObject {
 
   public static readonly CircuitElementIO = new IOType<CircuitElement, CircuitElementState>( 'CircuitElementIO', {
 
-    // @ts-ignore https://github.com/phetsims/tandem/issues/261
     valueType: CircuitElement,
     documentation: 'A Circuit Element, such as battery, resistor or wire',
     toStateObject: ( circuitElement: CircuitElement ) => ( {
