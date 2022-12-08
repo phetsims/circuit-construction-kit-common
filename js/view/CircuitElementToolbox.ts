@@ -8,7 +8,7 @@
  */
 
 import Property from '../../../axon/js/Property.js';
-import merge from '../../../phet-core/js/merge.js';
+import optionize from '../../../phet-core/js/optionize.js';
 import { Node, Color, HBox, HBoxOptions } from '../../../scenery/js/imports.js';
 import Carousel, { CarouselOptions } from '../../../sun/js/Carousel.js';
 import PageControl from '../../../sun/js/PageControl.js';
@@ -38,7 +38,7 @@ export default class CircuitElementToolbox extends HBox {
    */
   public constructor( viewTypeProperty: Property<CircuitElementViewType>, circuitElementToolNodes: Node[], tandem: Tandem, providedOptions?: CircuitElementToolboxOptions ) {
 
-    providedOptions = merge( {
+    providedOptions = optionize<CircuitElementToolboxOptions, SelfOptions, HBoxOptions>()( {
       carouselOptions: {
 
         itemsPerPage: 5,
@@ -54,7 +54,9 @@ export default class CircuitElementToolbox extends HBox {
         // Expand the touch area above the up button and below the down button
         buttonTouchAreaYDilation: 8,
 
-        tandem: tandem.createTandem( 'carousel' )
+        tandem: tandem.createTandem( 'carousel' ),
+
+        isScrollingNodeLayoutBox: true
       }
     }, providedOptions );
 

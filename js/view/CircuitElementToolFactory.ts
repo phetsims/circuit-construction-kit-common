@@ -75,6 +75,9 @@ const iconAlignGroup = new AlignGroup();
 const LIFELIKE_PROPERTY = new EnumerationProperty( CircuitElementViewType.LIFELIKE );
 const SCHEMATIC_PROPERTY = new EnumerationProperty( CircuitElementViewType.SCHEMATIC );
 
+// Increment tandems for wire tool nodes
+let wireToolNodeCount = 0;
+
 // createCircuitElementToolNode
 
 type CreateCircuitElementToolNodeSelfOptions = {
@@ -191,28 +194,22 @@ export default class CircuitElementToolFactory {
   }
 
   public createWireToolNode(): Node {
-    if ( !this.wireToolNode ) {
-
-      // Cache a single instance to simplify PhET-iO
-      this.wireToolNode = this.createCircuitElementToolNode( wireStringProperty, CCKCConstants.NUMBER_OF_WIRES,
-        ( tandem: Tandem, viewTypeProperty: Property<CircuitElementViewType> ) => {
-          return viewTypeProperty.value === CircuitElementViewType.LIFELIKE ? ( new Image( wireIcon_png, {
-            tandem: tandem
-          } ) ) : new Line( 0, 0, 120, 0, {
-            stroke: Color.BLACK,
-            lineWidth: 4.5, // match with other toolbox icons
-            tandem: tandem
-          } );
-        },
-        circuitElement => circuitElement instanceof Wire,
-        ( position: Vector2 ) => this.circuit.wireGroup.createNextElement( ...this.circuit.createVertexPairArray( position, WIRE_LENGTH ) ), {
-          tandem: this.parentTandem.createTandem( 'wireToolNode' ),
-          lifelikeIconHeight: 9,
-          schematicIconHeight: 2
+    return this.createCircuitElementToolNode( wireStringProperty, CCKCConstants.NUMBER_OF_WIRES,
+      ( tandem: Tandem, viewTypeProperty: Property<CircuitElementViewType> ) => {
+        return viewTypeProperty.value === CircuitElementViewType.LIFELIKE ? ( new Image( wireIcon_png, {
+          tandem: tandem
+        } ) ) : new Line( 0, 0, 120, 0, {
+          stroke: Color.BLACK,
+          lineWidth: 4.5, // match with other toolbox icons
+          tandem: tandem
         } );
-    }
-
-    return new Node( { children: [ this.wireToolNode ] } );
+      },
+      circuitElement => circuitElement instanceof Wire,
+      ( position: Vector2 ) => this.circuit.wireGroup.createNextElement( ...this.circuit.createVertexPairArray( position, WIRE_LENGTH ) ), {
+        tandem: this.parentTandem.createTandem( 'wireToolNode' + ( wireToolNodeCount++ ) ),
+        lifelikeIconHeight: 9,
+        schematicIconHeight: 2
+      } );
   }
 
   /**
