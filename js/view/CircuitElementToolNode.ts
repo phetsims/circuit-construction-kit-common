@@ -114,18 +114,21 @@ export default class CircuitElementToolNode extends VBox {
     let lastCount: number | null = null;
     let lastValue: boolean | null = null;
 
-    Multilink.multilink( [ circuit.circuitElements.lengthProperty, options.additionalProperty ], ( length, additionalValue: boolean ) => {
+    Multilink.multilink( [ circuit.circuitElements.lengthProperty, options.additionalProperty ], ( length, existsAtAll: boolean ) => {
       const currentCount = count();
-      if ( lastCount !== currentCount || lastValue !== additionalValue ) {
+      if ( lastCount !== currentCount || lastValue !== existsAtAll ) {
 
-        // Gray out circuit elements that cannot be dragged out, this includes the real bulb when it is not selected
-        const isAvailable = ( currentCount < maxNumber ) && additionalValue;
-        this.setOpacity( isAvailable ? 1 : 0.4 );
-        this.filters = isAvailable ? [] : [ Grayscale.FULL ];
-        this.inputEnabled = isAvailable;
+        // Gray out circuit elements that cannot be dragged out
+        const hasMoreAvailable = ( currentCount < maxNumber );
+        this.setOpacity( hasMoreAvailable ? 1 : 0.4 );
+        this.filters = hasMoreAvailable ? [] : [ Grayscale.FULL ];
+        this.inputEnabled = hasMoreAvailable;
+
+        // For the non-ohmic real bulb, when it is not selected in the advanced control panel, the icon should not appear at all
+        this.visible = existsAtAll;
       }
       lastCount = currentCount;
-      lastValue = additionalValue;
+      lastValue = existsAtAll;
     } );
 
     // Update touch areas when lifelike/schematic changes
