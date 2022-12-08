@@ -1,4 +1,6 @@
 // Copyright 2021-2022, University of Colorado Boulder
+
+import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import LTACircuit from './LTACircuit.js';
 import LTASolution from './LTASolution.js';
 
@@ -36,5 +38,4 @@ export default class LTAState {
     return currents;
   }
 }
-
-// TODO: Register namespace
+circuitConstructionKitCommon.register( 'LTAState', LTAState );

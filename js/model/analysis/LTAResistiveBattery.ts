@@ -1,6 +1,7 @@
 // Copyright 2021-2022, University of Colorado Boulder
 
 import CoreModel from './CoreModel.js';
+import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 
 class LTAResistiveBattery extends CoreModel {
   public readonly voltage: number;
@@ -13,4 +14,5 @@ class LTAResistiveBattery extends CoreModel {
   }
 }
 
+circuitConstructionKitCommon.register( 'LTAResistiveBattery', LTAResistiveBattery );
 export default LTAResistiveBattery;
