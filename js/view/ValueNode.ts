@@ -213,7 +213,7 @@ export default class ValueNode extends Panel {
     if ( CCKCQueryParameters.showCurrents ) {
       const text = new Text( '' );
       Multilink.multilink( [ circuitElement.currentProperty, circuitElement.currentSenseProperty ], ( current, sense ) => {
-        text.text = sense.toString() + ', ' + current.toFixed( 4 );// eslint-disable-line
+        text.text = sense.toString() + ', ' + current.toFixed( 4 );// eslint-disable-line bad-sim-text
       } );
 
       readoutValueNode = new VBox( { children: [ readoutValueNode, text ] } );
