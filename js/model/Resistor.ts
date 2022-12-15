@@ -7,7 +7,6 @@
  */
 
 import NumberProperty from '../../../axon/js/NumberProperty.js';
-import validate from '../../../axon/js/validate.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import IOType from '../../../tandem/js/types/IOType.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -60,12 +59,8 @@ export default class Resistor extends FixedCircuitElement {
     }, providedOptions );
 
     assert && assert( !options.hasOwnProperty( 'resistance' ), 'Resistance should be passed through resistorType' );
-
-    // validate resistor type
-    // @ts-expect-error
-    validate( resistorType, { valueType: Resistor.ResistorType } );
-
     assert && assert( !options.hasOwnProperty( 'isMetallic' ), 'isMetallic is given by the resistorType' );
+
     options.isMetallic = resistorType.isMetallic;
 
     super( startVertex, endVertex, resistorType.length, tandem, options );
