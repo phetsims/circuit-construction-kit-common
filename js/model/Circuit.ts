@@ -50,6 +50,7 @@ import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import TEmitter from '../../../axon/js/TEmitter.js';
 import OrIO from '../../../tandem/js/types/OrIO.js';
+import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 
 // constants
 const SNAP_RADIUS = 30; // For two vertices to join together, they must be this close, in view coordinates
@@ -145,7 +146,7 @@ export default class Circuit {
   public readonly switchGroup: PhetioGroup<Switch, [ Vertex, Vertex ]>;
   public readonly lightBulbGroup: PhetioGroup<LightBulb, [ Vertex, Vertex ]>;
   public readonly realLightBulbGroup: PhetioGroup<LightBulb, [ Vertex, Vertex ]>;
-  private readonly groups: PhetioGroup<CircuitElement>[];
+  private readonly groups: PhetioGroup<IntentionalAny, IntentionalAny>[];
   public readonly includeACElements: boolean;
   public readonly includeLabElements: boolean;
 
@@ -442,31 +443,18 @@ export default class Circuit {
       } );
 
     this.groups = [
-      // @ts-expect-error
       this.wireGroup,
-      // @ts-expect-error
       this.batteryGroup,
-      // @ts-expect-error
       this.highVoltageBatteryGroup,
-      // @ts-expect-error
       this.acVoltageGroup,
-      // @ts-expect-error
       this.resistorGroup,
-      // @ts-expect-error
       this.fuseGroup,
-      // @ts-expect-error
       this.capacitorGroup,
-      // @ts-expect-error
       this.inductorGroup,
-      // @ts-expect-error
       this.switchGroup,
-      // @ts-expect-error
       this.lightBulbGroup,
-      // @ts-expect-error
       this.realLightBulbGroup,
-      // @ts-expect-error
       this.highResistanceLightBulbGroup,
-      // @ts-expect-error
       this.seriesAmmeterGroup
     ];
     this.dirty = false;
