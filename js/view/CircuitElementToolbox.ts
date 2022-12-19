@@ -13,7 +13,6 @@ import { Node, Color, HBox, HBoxOptions } from '../../../scenery/js/imports.js';
 import Carousel, { CarouselOptions } from '../../../sun/js/Carousel.js';
 import PageControl from '../../../sun/js/PageControl.js';
 import Tandem from '../../../tandem/js/Tandem.js';
-import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 
@@ -24,6 +23,7 @@ const CAROUSEL_ITEM_SPACING = 11;
 
 type SelfOptions = {
   carouselOptions?: CarouselOptions;
+  carouselScale: number;
 };
 export type CircuitElementToolboxOptions = SelfOptions & HBoxOptions;
 
@@ -62,7 +62,7 @@ export default class CircuitElementToolbox extends HBox {
 
     // create the carousel
     const carousel = new Carousel( circuitElementToolNodes, providedOptions.carouselOptions );
-    carousel.mutate( { scale: CCKCConstants.CAROUSEL_SCALE } );
+    carousel.mutate( { scale: providedOptions.carouselScale } );
 
     const pageControl = new PageControl( carousel.pageNumberProperty, carousel.numberOfPages, {
       orientation: 'vertical',

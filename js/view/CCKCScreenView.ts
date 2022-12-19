@@ -69,9 +69,7 @@ document.addEventListener( 'keydown', event => {
 
 type SelfOptions = {
   showResetAllButton?: boolean;
-
   circuitElementToolboxOptions: CircuitElementToolboxOptions;
-
   showSeriesAmmeters?: boolean;
   showTimeControls?: boolean;
   showNoncontactAmmeters?: boolean;
@@ -239,7 +237,10 @@ export default class CCKCScreenView extends ScreenView {
         maxWidth: this.circuitElementToolbox.carousel.backgroundWidth
       }
     );
-    this.viewRadioButtonGroup.mutate( { scale: this.circuitElementToolbox.carousel.backgroundWidth / this.viewRadioButtonGroup.width * CCKCConstants.CAROUSEL_SCALE } );
+    this.viewRadioButtonGroup.mutate( {
+      scale: this.circuitElementToolbox.carousel.backgroundWidth /
+             this.viewRadioButtonGroup.width * options.circuitElementToolboxOptions.carouselScale
+    } );
 
     this.displayOptionsPanel = new DisplayOptionsPanel(
       CONTROL_PANEL_ALIGN_GROUP,
@@ -329,7 +330,8 @@ export default class CCKCScreenView extends ScreenView {
       tandem: tandem.createTandem( 'zoomButtonGroup' )
     } );
     zoomButtonGroup.mutate( {
-      scale: this.circuitElementToolbox.carousel.backgroundWidth / zoomButtonGroup.width * CCKCConstants.CAROUSEL_SCALE
+      scale: this.circuitElementToolbox.carousel.backgroundWidth /
+             zoomButtonGroup.width * options.circuitElementToolboxOptions.carouselScale
     } );
 
     // Add the optional Play/Pause button
