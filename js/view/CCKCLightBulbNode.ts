@@ -109,21 +109,6 @@ export default class CCKCLightBulbNode extends FixedCircuitElementNode {
       }
     }
 
-    /**
-     * TODO - https://github.com/phetsims/circuit-construction-kit-common/issues/914
-     I cannot find contentWidth or contentHeight anywhere else and these don't look like Node options. Ideas @SamReid?
-
-    // General filledOptions used throughout bulb node
-    filledOptions = merge( {
-
-      // Override the dimensions of the bulb node because the invisible rays contribute to the bounds. Used to set up
-      // the highlight region.
-      contentWidth: 3.6,
-      contentHeight: 11
-    }, filledOptions ) as FixedCircuitElementNodeOptions;
-
-     **/
-
     // Schematic creation begins here.
 
     // In order to support phet-io customization at an angle, we must use the normalized (upright) positions.
