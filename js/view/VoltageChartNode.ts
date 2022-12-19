@@ -37,9 +37,6 @@ export default class VoltageChartNode extends CCKCChartNode {
 
     providedOptions = combineOptions<CCKCChartNodeOptions>( {
       defaultZoomLevel: new Range( -10, 10 ),
-
-      // TODO: This option doesn't look like it's being used anywhere else. @SamReid okay to remove? See - https://github.com/phetsims/circuit-construction-kit-common/issues/914
-      // timeDivisions: CCKCConstants.NUMBER_OF_TIME_DIVISIONS,
       tandem: Tandem.OPTIONAL
     }, providedOptions );
 
