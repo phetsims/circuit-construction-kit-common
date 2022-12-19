@@ -17,8 +17,9 @@ import SourceResistanceControl from './SourceResistanceControl.js';
 import WireResistivityControl from './WireResistivityControl.js';
 import Circuit from '../model/Circuit.js';
 import Tandem from '../../../tandem/js/Tandem.js';
-import optionize from '../../../phet-core/js/optionize.js';
+import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import { CheckboxOptions } from '../../../sun/js/Checkbox.js';
 
 type SelfOptions = {
   showRealBulbsCheckbox?: boolean;
@@ -54,7 +55,7 @@ export default class AdvancedAccordionBox extends CCKCAccordionBox {
       const addRealBulbsCheckboxTandem = tandem.createTandem( 'addRealBulbsCheckbox' );
       children.push(
         new VStrut( 20 ),
-        new CCKCCheckbox( circuit.addRealBulbsProperty, new Text( CircuitConstructionKitCommonStrings.addRealBulbsStringProperty, _.merge( {
+        new CCKCCheckbox( circuit.addRealBulbsProperty, new Text( CircuitConstructionKitCommonStrings.addRealBulbsStringProperty, combineOptions<CheckboxOptions>( {
           tandem: addRealBulbsCheckboxTandem.createTandem( 'labelText' )
         }, TEXT_OPTIONS ) ), {
           tandem: addRealBulbsCheckboxTandem
