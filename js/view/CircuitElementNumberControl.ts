@@ -54,7 +54,7 @@ export default class CircuitElementNumberControl<T extends CircuitElement> exten
         font: CCKCConstants.DEFAULT_FONT
       },
       numberDisplayOptions: {
-        maxWidth: 80,
+        maxWidth: 94,
         valuePattern: valuePattern,
         decimalPlaces: numberOfDecimalPlaces,
         textOptions: {
