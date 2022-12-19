@@ -7,7 +7,6 @@
  */
 
 import Vector2 from '../../../dot/js/Vector2.js';
-import merge from '../../../phet-core/js/merge.js';
 import { KeyboardListener, Node, NodeOptions, SceneryEvent } from '../../../scenery/js/imports.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -18,6 +17,7 @@ import CCKCScreenView from './CCKCScreenView.js';
 import CircuitLayerNode from './CircuitLayerNode.js';
 import Vertex from '../model/Vertex.js';
 import DisplayClickToDismissListener from '../../../joist/js/DisplayClickToDismissListener.js';
+import optionize from '../../../phet-core/js/optionize.js';
 
 type SelfOptions = {
   useHitTestForSensors?: boolean;
@@ -39,19 +39,20 @@ export default abstract class CircuitElementNode extends Node {
    */
   public constructor( circuitElement: CircuitElement, circuit: Circuit | null, providedOptions?: CircuitElementNodeOptions ) {
 
-    providedOptions = merge( {
+    providedOptions = optionize<CircuitElementNodeOptions, SelfOptions, NodeOptions>()( {
       useHitTestForSensors: false // if true, use the scenery mouse region hit test for fine-grained region. Otherwise, use bounds test.
     }, providedOptions );
 
     // When not an icon, enable keyboard navigation
     if ( circuit ) {
-      providedOptions = merge( {
+      providedOptions = optionize<CircuitElementNodeOptions, SelfOptions, NodeOptions>()( {
         tagName: 'div', // HTML tag name for representative element in the document, see ParallelDOM.js
         focusable: true,
         focusHighlight: 'invisible', // highlights are drawn by the simulation, invisible is deprecated don't use in future
         phetioDynamicElement: true,
         phetioState: false,
-        phetioInputEnabledPropertyInstrumented: true
+        phetioInputEnabledPropertyInstrumented: true,
+        useHitTestForSensors: false
       }, providedOptions );
     }
 

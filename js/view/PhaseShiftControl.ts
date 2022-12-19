@@ -9,7 +9,6 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Property from '../../../axon/js/Property.js';
 import Range from '../../../dot/js/Range.js';
-import merge from '../../../phet-core/js/merge.js';
 import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
 import { Text, VBox, VBoxOptions } from '../../../scenery/js/imports.js';
 import NumberSpinner, { NumberSpinnerOptions } from '../../../sun/js/NumberSpinner.js';
@@ -23,12 +22,13 @@ import ACVoltage from '../model/ACVoltage.js';
 import Multilink, { UnknownMultilink } from '../../../axon/js/Multilink.js';
 import PickRequired from '../../../phet-core/js/types/PickRequired.js';
 import Vertex from '../model/Vertex.js';
+import { combineOptions } from '../../../phet-core/js/optionize.js';
 
 type PhaseShiftControlOptions = VBoxOptions & PickRequired<VBoxOptions, 'tandem'>;
 export default class PhaseShiftControl extends VBox {
 
   public constructor( phaseProperty: Property<number>, circuit: Circuit, providedOptions?: PhaseShiftControlOptions ) {
-    providedOptions = merge( {
+    providedOptions = combineOptions<PhaseShiftControlOptions>( {
       spacing: 7
     }, providedOptions );
     assert && assert( !providedOptions.children, 'children not supported' );

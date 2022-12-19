@@ -13,7 +13,6 @@ import Matrix3 from '../../../dot/js/Matrix3.js';
 import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import { Shape } from '../../../kite/js/imports.js';
-import merge from '../../../phet-core/js/merge.js';
 import { Color, Image, Node, Path } from '../../../scenery/js/imports.js';
 import lightBulbMiddleHigh_png from '../../mipmaps/lightBulbMiddleHigh_png.js';
 import lightBulbMiddleReal_png from '../../mipmaps/lightBulbMiddleReal_png.js';
@@ -32,6 +31,7 @@ import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import SchematicType from './SchematicType.js';
 import Multilink from '../../../axon/js/Multilink.js';
+import { combineOptions } from '../../../phet-core/js/optionize.js';
 
 // constants
 const SCRATCH_MATRIX = new Matrix3();
@@ -71,10 +71,12 @@ export default class CCKCLightBulbNode extends FixedCircuitElementNode {
    */
   public constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, lightBulb: LightBulb,
                       showResultsProperty: Property<boolean>, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: FixedCircuitElementNodeOptions ) {
-    let filledOptions = merge( {
+
+    const filledOptions = combineOptions<FixedCircuitElementNodeOptions>( {
       isIcon: false,
       useHitTestForSensors: true
-    }, providedOptions ) as FixedCircuitElementNodeOptions;
+    }, providedOptions );
+
     const brightnessProperty = new NumberProperty( 0 );
     const updateBrightness = Multilink.multilink(
       [ lightBulb.currentProperty, showResultsProperty, lightBulb.resistanceProperty ],
@@ -107,6 +109,10 @@ export default class CCKCLightBulbNode extends FixedCircuitElementNode {
       }
     }
 
+    /**
+     * TODO - https://github.com/phetsims/circuit-construction-kit-common/issues/914
+     I cannot find contentWidth or contentHeight anywhere else and these don't look like Node options. Ideas @SamReid?
+
     // General filledOptions used throughout bulb node
     filledOptions = merge( {
 
@@ -115,6 +121,8 @@ export default class CCKCLightBulbNode extends FixedCircuitElementNode {
       contentWidth: 3.6,
       contentHeight: 11
     }, filledOptions ) as FixedCircuitElementNodeOptions;
+
+     **/
 
     // Schematic creation begins here.
 

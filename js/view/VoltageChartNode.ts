@@ -9,7 +9,6 @@
 import createObservableArray from '../../../axon/js/createObservableArray.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Range from '../../../dot/js/Range.js';
-import merge from '../../../phet-core/js/merge.js';
 import { Color, Rectangle } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -21,6 +20,7 @@ import CircuitLayerNode from './CircuitLayerNode.js';
 import Property from '../../../axon/js/Property.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import CCKCProbeNode from './CCKCProbeNode.js';
+import { combineOptions } from '../../../phet-core/js/optionize.js';
 
 const voltageWithUnitsStringProperty = CircuitConstructionKitCommonStrings.voltageWithUnitsStringProperty;
 
@@ -35,9 +35,11 @@ export default class VoltageChartNode extends CCKCChartNode {
 
   public constructor( circuitLayerNode: CircuitLayerNode, timeProperty: Property<number>, visibleBoundsProperty: Property<Bounds2>, providedOptions?: CCKCChartNodeOptions ) {
 
-    providedOptions = merge( {
+    providedOptions = combineOptions<CCKCChartNodeOptions>( {
       defaultZoomLevel: new Range( -10, 10 ),
-      timeDivisions: CCKCConstants.NUMBER_OF_TIME_DIVISIONS,
+
+      // TODO: This option doesn't look like it's being used anywhere else. @SamReid okay to remove? See - https://github.com/phetsims/circuit-construction-kit-common/issues/914
+      // timeDivisions: CCKCConstants.NUMBER_OF_TIME_DIVISIONS,
       tandem: Tandem.OPTIONAL
     }, providedOptions );
 

@@ -10,7 +10,6 @@ import Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
-import merge from '../../../phet-core/js/merge.js';
 import StringUtils from '../../../phetcommon/js/util/StringUtils.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import { Color, Node, RichText, RichTextOptions, Text, TextOptions, VBox } from '../../../scenery/js/imports.js';
@@ -30,6 +29,7 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import CircuitElement from '../model/CircuitElement.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import Multilink from '../../../axon/js/Multilink.js';
+import { combineOptions } from '../../../phet-core/js/optionize.js';
 
 const capacitanceFaradsSymbolStringProperty = CircuitConstructionKitCommonStrings.capacitanceFaradsSymbolStringProperty;
 const fuseValueStringProperty = CircuitConstructionKitCommonStrings.fuseValueStringProperty;
@@ -48,7 +48,7 @@ const FONT = new PhetFont( { size: 22 } );
  * @param tandem
  * @param [providedOptions]
  */
-const createText = ( tandem: Tandem, providedOptions?: TextOptions ) => new Text( '', merge( {
+const createText = ( tandem: Tandem, providedOptions?: TextOptions ) => new Text( '', combineOptions<TextOptions>( {
   tandem: tandem,
   font: FONT
 }, providedOptions ) );
@@ -58,7 +58,7 @@ const createText = ( tandem: Tandem, providedOptions?: TextOptions ) => new Text
  * @param tandem
  * @param [providedOptions]
  */
-const createRichText = ( tandem: Tandem, providedOptions?: RichTextOptions ) => new RichText( '', merge( {
+const createRichText = ( tandem: Tandem, providedOptions?: RichTextOptions ) => new RichText( '', combineOptions<TextOptions>( {
   tandem: tandem,
   font: FONT
 }, providedOptions ) );

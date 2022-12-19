@@ -9,7 +9,7 @@
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
-import merge from '../../../phet-core/js/merge.js';
+import { combineOptions } from '../../../phet-core/js/optionize.js';
 import { Rectangle } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -45,7 +45,7 @@ export default class LightBulbSocketNode extends FixedCircuitElementNode {
 
     // Interferes with Cut Button selection when the foreground is in front, see
     // https://github.com/phetsims/circuit-construction-kit-black-box-study/issues/18
-    providedOptions = merge( {
+    providedOptions = combineOptions<FixedCircuitElementNodeOptions>( {
       pickable: false,
 
       // Suppress the highlight for the socket, the highlight is shown by the CCKCLightBulbNode

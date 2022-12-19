@@ -10,7 +10,7 @@ import Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import Utils from '../../../dot/js/Utils.js';
 import { LineStyles, Shape } from '../../../kite/js/imports.js';
-import merge from '../../../phet-core/js/merge.js';
+import { combineOptions } from '../../../phet-core/js/optionize.js';
 import { Color, Node, Path } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -70,7 +70,7 @@ export default class InductorNode extends FixedCircuitElementNode {
   public constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, inductor: Inductor,
                       viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: FixedCircuitElementNodeOptions ) {
 
-    providedOptions = merge( { isIcon: false, useHitTestForSensors: true }, providedOptions );
+    providedOptions = combineOptions<FixedCircuitElementNodeOptions>( { isIcon: false, useHitTestForSensors: true }, providedOptions );
 
     // Padding on the left and right for the lifelike cylinder
     const inset = 7;

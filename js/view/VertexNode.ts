@@ -8,8 +8,7 @@
 
 import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
-import merge from '../../../phet-core/js/merge.js';
-import { Circle, Color, Grayscale, KeyboardUtils, Node, SceneryConstants, SceneryEvent, SceneryListenerFunction, Text, VBox } from '../../../scenery/js/imports.js';
+import { Circle, CircleOptions, Color, Grayscale, KeyboardUtils, Node, SceneryConstants, SceneryEvent, SceneryListenerFunction, Text, VBox } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
@@ -20,6 +19,7 @@ import Vertex from '../model/Vertex.js';
 import CircuitLayerNode from './CircuitLayerNode.js';
 import CircuitLayerNodeDragListener from './CircuitLayerNodeDragListener.js';
 import DisplayClickToDismissListener from '../../../joist/js/DisplayClickToDismissListener.js';
+import { combineOptions } from '../../../phet-core/js/optionize.js';
 
 // constants
 const DISTANCE_TO_CUT_BUTTON = 70; // How far in view coordinates the cut button appears from the vertex node
@@ -30,10 +30,10 @@ const CIRCLE_OPTIONS = {
   lineWidth: 1.3,
   lineDash: [ 6, 4 ]
 };
-const RED_CIRCLE_NODE = new Circle( VERTEX_RADIUS, merge( CIRCLE_OPTIONS, {
+const RED_CIRCLE_NODE = new Circle( VERTEX_RADIUS, combineOptions<CircleOptions>( CIRCLE_OPTIONS, {
   stroke: Color.RED
 } ) ).rasterized( { wrap: false } );
-const BLACK_CIRCLE_NODE = new Circle( VERTEX_RADIUS, merge( CIRCLE_OPTIONS, {
+const BLACK_CIRCLE_NODE = new Circle( VERTEX_RADIUS, combineOptions<CircleOptions>( CIRCLE_OPTIONS, {
   stroke: Color.BLACK
 } ) ).rasterized( { wrap: false } );
 

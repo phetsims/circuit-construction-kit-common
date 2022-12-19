@@ -6,12 +6,12 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import merge from '../../../phet-core/js/merge.js';
 import Panel, { PanelOptions } from '../../../sun/js/Panel.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import { Node } from '../../../scenery/js/imports.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import { combineOptions } from '../../../phet-core/js/optionize.js';
 
 export type CCKCPanelOptions = PanelOptions;
 
@@ -23,7 +23,7 @@ export default class CCKCPanel extends Panel {
    * @param [providedOptions]
    */
   public constructor( content: Node, tandem: Tandem, providedOptions?: PanelOptions ) {
-    providedOptions = merge( {
+    providedOptions = combineOptions<PanelOptions>( {
       fill: CCKCConstants.PANEL_COLOR,
       lineWidth: CCKCConstants.PANEL_LINE_WIDTH,
       xMargin: 15,

@@ -6,7 +6,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import merge from '../../../phet-core/js/merge.js';
+import { combineOptions } from '../../../phet-core/js/optionize.js';
 import PhetColorScheme from '../../../scenery-phet/js/PhetColorScheme.js';
 import RoundPushButton, { RoundPushButtonOptions } from '../../../sun/js/buttons/RoundPushButton.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -17,7 +17,7 @@ export default class CCKCRoundPushButton extends RoundPushButton {
    * @param [providedOptions]
    */
   public constructor( providedOptions?: RoundPushButtonOptions ) {
-    super( merge( {
+    super( combineOptions<RoundPushButtonOptions>( {
       baseColor: PhetColorScheme.BUTTON_YELLOW,
       xMargin: 10,
       yMargin: 10

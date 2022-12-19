@@ -9,7 +9,7 @@
 import Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import { Shape } from '../../../kite/js/imports.js';
-import merge from '../../../phet-core/js/merge.js';
+import { combineOptions } from '../../../phet-core/js/optionize.js';
 import { Color, Image, Path } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import batteryHigh_png from '../../images/batteryHigh_png.js';
@@ -78,7 +78,8 @@ export default class BatteryNode extends FixedCircuitElementNode {
    */
   public constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, battery: Battery, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: FixedCircuitElementNodeOptions ) {
 
-    providedOptions = merge( { useHitTestForSensors: true }, providedOptions );
+    providedOptions = combineOptions<FixedCircuitElementNodeOptions>( { useHitTestForSensors: true }, providedOptions );
+
     const lifelikeNode = new Image( battery.batteryType === 'normal' ? battery_png : batteryHigh_png );
 
     lifelikeNode.mutate( {

@@ -12,12 +12,11 @@ import Property from '../../../axon/js/Property.js';
 import Bounds3 from '../../../dot/js/Bounds3.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import { Shape } from '../../../kite/js/imports.js';
-import merge from '../../../phet-core/js/merge.js';
 import Orientation from '../../../phet-core/js/Orientation.js';
 import CapacitorConstants from '../../../scenery-phet/js/capacitor/CapacitorConstants.js';
 import CapacitorNode from '../../../scenery-phet/js/capacitor/CapacitorNode.js';
 import YawPitchModelViewTransform3 from '../../../scenery-phet/js/capacitor/YawPitchModelViewTransform3.js';
-import { Color, Image, Node, Path } from '../../../scenery/js/imports.js';
+import { Color, Image, ImageOptions, Node, Path } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import wireIcon_png from '../../images/wireIcon_png.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -30,6 +29,7 @@ import FixedCircuitElementNode, { FixedCircuitElementNodeOptions } from './Fixed
 import Vector2 from '../../../dot/js/Vector2.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import Multilink from '../../../axon/js/Multilink.js';
+import { combineOptions } from '../../../phet-core/js/optionize.js';
 
 // constants
 // dimensions for schematic
@@ -90,7 +90,7 @@ export default class CapacitorCircuitElementNode extends FixedCircuitElementNode
    */
   public constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, capacitor: Capacitor, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: FixedCircuitElementNodeOptions ) {
 
-    providedOptions = merge( {
+    providedOptions = combineOptions<FixedCircuitElementNodeOptions>( {
       isIcon: false
     }, providedOptions );
 
@@ -147,11 +147,11 @@ export default class CapacitorCircuitElementNode extends FixedCircuitElementNode
       circuit.capacitor.plateChargeProperty.set( -q );
     } );
 
-    const leftWireStub = new Image( wireIcon_png, merge( {
+    const leftWireStub = new Image( wireIcon_png, combineOptions<ImageOptions>( {
       centerX: lifelikeNode.centerX,
       centerY: lifelikeNode.centerY
     }, wireStubOptions ) );
-    const rightWireStub = new Image( wireIcon_png, merge( {
+    const rightWireStub = new Image( wireIcon_png, combineOptions<ImageOptions>( {
       centerX: lifelikeNode.centerX,
       centerY: lifelikeNode.centerY
     }, wireStubOptions ) );

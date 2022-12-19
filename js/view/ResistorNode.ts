@@ -9,7 +9,6 @@
 import Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import { Shape } from '../../../kite/js/imports.js';
-import merge from '../../../phet-core/js/merge.js';
 import { Color, Image, Node, Path, Rectangle } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import coin_png from '../../images/coin_png.js';
@@ -32,6 +31,7 @@ import ResistorColors from './ResistorColors.js';
 import schematicTypeProperty from './schematicTypeProperty.js';
 import SchematicType from './SchematicType.js';
 import ResistorType from '../model/ResistorType.js';
+import { combineOptions } from '../../../phet-core/js/optionize.js';
 
 // constants
 
@@ -95,7 +95,7 @@ export default class ResistorNode extends FixedCircuitElementNode {
   public constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, resistor: Resistor,
                       viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: FixedCircuitElementNodeOptions ) {
 
-    providedOptions = merge( { isIcon: false, useHitTestForSensors: true }, providedOptions );
+    providedOptions = combineOptions<FixedCircuitElementNodeOptions>( { isIcon: false, useHitTestForSensors: true }, providedOptions );
 
     // Assigned to instance variable after super()
     const lifelikeResistorImageNode = new Image( RESISTOR_IMAGE_MAP.get( resistor.resistorType )! );

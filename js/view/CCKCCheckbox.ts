@@ -5,11 +5,11 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import merge from '../../../phet-core/js/merge.js';
 import Checkbox, { CheckboxOptions } from '../../../sun/js/Checkbox.js';
 import { Node } from '../../../scenery/js/imports.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Property from '../../../axon/js/Property.js';
+import { combineOptions } from '../../../phet-core/js/optionize.js';
 
 // constants
 const BOX_WIDTH = 16;
@@ -18,7 +18,7 @@ export default class CCKCCheckbox extends Checkbox {
 
   public constructor( property: Property<boolean>, content: Node, providedOptions?: CheckboxOptions ) {
 
-    providedOptions = merge( { boxWidth: BOX_WIDTH }, providedOptions );
+    providedOptions = combineOptions<CheckboxOptions>( { boxWidth: BOX_WIDTH }, providedOptions );
     super( property, content, providedOptions );
   }
 }

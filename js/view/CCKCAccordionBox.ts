@@ -9,8 +9,7 @@
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
-import merge from '../../../phet-core/js/merge.js';
-import optionize from '../../../phet-core/js/optionize.js';
+import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import { HBox, HStrut, Node, Text } from '../../../scenery/js/imports.js';
 import AccordionBox, { AccordionBoxOptions } from '../../../sun/js/AccordionBox.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -39,7 +38,7 @@ export default class CCKCAccordionBox extends AccordionBox {
       strutWidth: 10
     }, providedOptions );
 
-    super( content, merge( {
+    super( content, combineOptions<AccordionBoxOptions>( {
       fill: CCKCConstants.PANEL_COLOR,
       cornerRadius: CCKCConstants.CORNER_RADIUS,
       titleXMargin: 10,
