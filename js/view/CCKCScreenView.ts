@@ -79,6 +79,7 @@ type SelfOptions = {
   showStopwatchCheckbox?: boolean;
   showPhaseShiftControl?: boolean;
   hasACandDCVoltageSources?: boolean;
+  showMeterPhetioIndex?: boolean;
 };
 export type CCKCScreenViewOptions = SelfOptions & ScreenViewOptions;
 
@@ -117,13 +118,13 @@ export default class CCKCScreenView extends ScreenView {
       showSeriesAmmeters: false,
       showTimeControls: false,
       showNoncontactAmmeters: true,
-
       showAdvancedControls: true,
       showCharts: false,
       blackBoxStudy: false,
       showStopwatchCheckbox: false,
       showPhaseShiftControl: false,
-      hasACandDCVoltageSources: false // determines the string shown in the AdvancedAccordionBox
+      hasACandDCVoltageSources: false, // determines the string shown in the AdvancedAccordionBox
+      showMeterPhetioIndex: false
     }, providedOptions );
 
     super( { tandem: tandem } );
@@ -140,11 +141,13 @@ export default class CCKCScreenView extends ScreenView {
     );
 
     const meterNodesTandem = tandem.createTandem( 'meterNodes' );
+
     const voltmeterNodes = model.voltmeters.map( voltmeter => {
       const voltmeterTandem = meterNodesTandem.createTandem( `voltmeterNode${voltmeter.phetioIndex}` );
       const voltmeterNode = new VoltmeterNode( voltmeter, model, this.circuitLayerNode, voltmeterTandem, {
         showResultsProperty: model.isValueDepictionEnabledProperty,
-        visibleBoundsProperty: this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty
+        visibleBoundsProperty: this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty,
+        showPhetioIndex: options.showMeterPhetioIndex
       } );
       voltmeter.droppedEmitter.addListener( bodyNodeGlobalBounds => {
         if ( bodyNodeGlobalBounds.intersectsBounds( this.sensorToolbox.globalBounds ) ) {
@@ -159,7 +162,8 @@ export default class CCKCScreenView extends ScreenView {
         tandem: meterNodesTandem.createTandem( `ammeterNode${ammeter.phetioIndex}` ),
         showResultsProperty: model.isValueDepictionEnabledProperty,
         visibleBoundsProperty: this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty,
-        blackBoxStudy: options.blackBoxStudy
+        blackBoxStudy: options.blackBoxStudy,
+        showPhetioIndex: options.showMeterPhetioIndex
       } );
       ammeter.droppedEmitter.addListener( bodyNodeGlobalBounds => {
         if ( bodyNodeGlobalBounds.intersectsBounds( this.sensorToolbox.globalBounds ) ) {

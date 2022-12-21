@@ -47,6 +47,7 @@ type SelfOptions = {
   visibleBoundsProperty?: Property<Bounds2> | null;
   showResultsProperty?: BooleanProperty;
   blackBoxStudy?: boolean;
+  showPhetioIndex?: boolean;
 };
 type AmmeterNodeOptions = SelfOptions & NodeOptions;
 
@@ -79,6 +80,8 @@ export default class AmmeterNode extends Node {
       // For the black box study, there is a different current threshold in the readout
       blackBoxStudy: false,
 
+      showPhetioIndex: false,
+
       tandem: Tandem.REQUIRED
     }, providedOptions );
     const tandem = options.tandem;
@@ -104,8 +107,15 @@ export default class AmmeterNode extends Node {
         phetioValueType: StringIO
       } );
 
+    const probeTextProperty = new DerivedProperty( [ currentStringProperty ], currentString =>
+        options.showPhetioIndex ? currentString + ' ' + ammeter.phetioIndex : currentString, {
+        tandem: tandem.createTandem( 'probeText' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME ),
+        phetioValueType: StringIO
+      }
+    );
+
     const probeTextNode = new ProbeTextNode(
-      currentReadoutProperty, options.showResultsProperty, currentStringProperty,
+      currentReadoutProperty, options.showResultsProperty, probeTextProperty,
 
       // No need for an extra level of nesting in the tandem tree, since that is just an implementation detail
       // and not a feature

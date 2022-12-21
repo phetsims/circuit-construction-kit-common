@@ -54,6 +54,7 @@ type SelfOptions = {
   isIcon?: boolean;
   visibleBoundsProperty?: ReadOnlyProperty<Bounds2> | null;
   showResultsProperty?: ReadOnlyProperty<boolean>;
+  showPhetioIndex?: boolean;
 };
 type VoltmeterNodeOptions = SelfOptions & NodeOptions;
 
@@ -86,7 +87,10 @@ export default class VoltmeterNode extends Node {
       visibleBoundsProperty: null,
 
       // Whether values can be displayed (hidden after user makes a change in some Black Box modes).
-      showResultsProperty: new BooleanProperty( true )
+      showResultsProperty: new BooleanProperty( true ),
+
+      // Whether the phet-io index of the meter appears in the label
+      showPhetioIndex: false
     }, providedOptions );
 
     const blackProbeNode = new Rectangle( -2, -2, 4, 4, { // the hit area
@@ -125,8 +129,15 @@ export default class VoltmeterNode extends Node {
       }
     );
 
+    const probeTextProperty = new DerivedProperty( [ voltageStringProperty ], voltageString =>
+        options.showPhetioIndex ? voltageString + ' ' + voltmeter.phetioIndex : voltageString, {
+        tandem: tandem.createTandem( 'probeText' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME ),
+        phetioValueType: StringIO
+      }
+    );
+
     const probeTextNode = new ProbeTextNode(
-      voltageReadoutProperty, options.showResultsProperty, voltageStringProperty,
+      voltageReadoutProperty, options.showResultsProperty, probeTextProperty,
 
       // No need for an extra level of nesting in the tandem tree, since that is just an implementation detail
       // and not a feature
