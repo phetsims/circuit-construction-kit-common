@@ -156,6 +156,10 @@ const CCKCQueryParameters = QueryStringMachine.getAll( {
   searchTimeStep: {
     type: 'boolean',
     defaultValue: true
+  },
+
+  codap: {
+    type: 'flag'
   }
 } );
 
