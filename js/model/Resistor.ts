@@ -123,8 +123,8 @@ export default class Resistor extends FixedCircuitElement {
       };
     },
 
-    stateToArgsForConstructor( stateObject: ResistorState ) {
-      const args = CircuitElement.CircuitElementIO.stateToArgsForConstructor( stateObject );
+    stateObjectToCreateElementArguments( stateObject: ResistorState ) {
+      const args = CircuitElement.CircuitElementIO.stateObjectToCreateElementArguments( stateObject );
       args.push( EnumerationIO( ResistorType ).fromStateObject( stateObject.resistorType ) );
       return args;
     }

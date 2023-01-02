@@ -458,7 +458,7 @@ export default abstract class CircuitElement extends PhetioObject {
       startVertexID: VertexReferenceIO,
       endVertexID: VertexReferenceIO
     },
-    stateToArgsForConstructor: ( stateObject: CircuitElementState ) => {
+    stateObjectToCreateElementArguments: ( stateObject: CircuitElementState ) => {
       return [
         VertexReferenceIO.fromStateObject( stateObject.startVertexID ),
         VertexReferenceIO.fromStateObject( stateObject.endVertexID )

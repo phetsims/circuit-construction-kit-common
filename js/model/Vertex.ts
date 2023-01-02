@@ -86,7 +86,7 @@ export default class Vertex extends PhetioObject {
   public static readonly VertexIO = new IOType<Vertex, VertexState>( 'VertexIO', {
     valueType: Vertex,
     toStateObject: ( vertex: Vertex ) => ( { position: Vector2.Vector2IO.toStateObject( vertex.positionProperty.value ) } ),
-    stateToArgsForConstructor: ( stateObject: VertexState ) => [ Vector2.Vector2IO.fromStateObject( stateObject.position ) ],
+    stateObjectToCreateElementArguments: ( stateObject: VertexState ) => [ Vector2.Vector2IO.fromStateObject( stateObject.position ) ],
     stateSchema: {
       position: Vector2.Vector2IO
     }
