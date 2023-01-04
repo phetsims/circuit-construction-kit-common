@@ -35,7 +35,7 @@ type CustomLightBulbNodeOptions = SelfOptions & NodeOptions;
 
 export default class CustomLightBulbNode extends Node {
   private readonly baseOnly: boolean;
-  private readonly backNode: Node;
+  private readonly backNode: Image;
   public readonly raysNode: LightRaysNode | null;
   private readonly brightnessProperty: Property<number>;
   private readonly brightnessObserver: ( ( brightness: number ) => void ) | null;
@@ -178,8 +178,6 @@ export default class CustomLightBulbNode extends Node {
       assert && assert( brightness >= 0 && brightness <= 1 );
       this.backNode.visible = ( brightness > 0 );
       if ( this.backNode.visible ) {
-
-        // @ts-expect-error
         this.backNode.imageOpacity = Utils.clamp( Utils.linear( 0, 0.5, 0, 1, brightness ), 0, 1 );
       }
 
