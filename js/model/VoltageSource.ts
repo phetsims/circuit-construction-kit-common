@@ -21,7 +21,7 @@ import optionize from '../../../phet-core/js/optionize.js';
 import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 
 type SelfOptions = {
-  initialOrientation?: string; // TODO: enum
+  initialOrientation?: 'right' | 'left';
   voltage?: number;
   voltagePropertyOptions?: {
     range?: Range;
@@ -41,7 +41,7 @@ export default abstract class VoltageSource extends FixedCircuitElement {
   // track which way the battery "button" (plus side) was facing the initial state so
   // the user can only create a certain number of "left" or "right" batteries from the toolbox.
   // @readonly
-  public initialOrientation: string; // TODO: enum
+  public initialOrientation: 'right' | 'left';
   private powerDissipatedProperty: PowerDissipatedProperty;
   private powerGeneratedProperty: TReadOnlyProperty<number>;
 
