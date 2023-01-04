@@ -11,7 +11,7 @@ import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Property from '../../../axon/js/Property.js';
 import ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
 import Vector2 from '../../../dot/js/Vector2.js';
-import { DragListener, Grayscale, IndexedNodeIO, Node, SceneryEvent, Text, VBox, VBoxOptions } from '../../../scenery/js/imports.js';
+import { DragListener, Grayscale, IndexedNodeIO, Node, PressListenerEvent, Text, VBox, VBoxOptions } from '../../../scenery/js/imports.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Circuit from '../model/Circuit.js';
@@ -89,7 +89,7 @@ export default class CircuitElementToolNode extends VBox {
     }, providedOptions );
     super( options );
 
-    this.addInputListener( DragListener.createForwardingListener( ( event: SceneryEvent ) => {
+    this.addInputListener( DragListener.createForwardingListener( ( event: PressListenerEvent ) => {
 
       // initial position of the pointer in the coordinate frame of the CircuitLayerNode
       const v: Vector2 = event.pointer.point;

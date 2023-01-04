@@ -7,7 +7,7 @@
  */
 
 import Vector2 from '../../../dot/js/Vector2.js';
-import { KeyboardListener, Node, NodeOptions, SceneryEvent } from '../../../scenery/js/imports.js';
+import { KeyboardListener, Node, NodeOptions, PressListenerEvent, SceneryEvent } from '../../../scenery/js/imports.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Circuit from '../model/Circuit.js';
@@ -18,6 +18,7 @@ import CircuitLayerNode from './CircuitLayerNode.js';
 import Vertex from '../model/Vertex.js';
 import DisplayClickToDismissListener from '../../../joist/js/DisplayClickToDismissListener.js';
 import optionize from '../../../phet-core/js/optionize.js';
+import CircuitLayerNodeDragListener from './CircuitLayerNodeDragListener.js';
 
 type SelfOptions = {
   useHitTestForSensors?: boolean;
@@ -31,6 +32,7 @@ export default abstract class CircuitElementNode extends Node {
   public readonly circuitElement: CircuitElement;
   private readonly disposeCircuitElementNode: () => void;
   private dirty: boolean;
+  public readonly abstract dragListener: CircuitLayerNodeDragListener | null;
 
   /**
    * @param circuitElement - the CircuitElement to be rendered
@@ -99,8 +101,7 @@ export default abstract class CircuitElementNode extends Node {
      * dragging.
      * @param event - scenery event
      */
-      // @ts-expect-error
-    const startDragListener = ( event: SceneryEvent ) => this.dragListener.down( event );
+    const startDragListener = ( event: PressListenerEvent ) => this.dragListener!.down( event );
 
     this.disposeCircuitElementNode = () => {
 

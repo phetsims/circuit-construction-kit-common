@@ -142,7 +142,7 @@ export default class WireNode extends CircuitElementNode {
   private readonly lineNodeParent: Node;
   private readonly lineNode: Node;
   private readonly highlightNode: Path;
-  private readonly dragListener: CircuitLayerNodeDragListener | null;
+  public readonly dragListener: CircuitLayerNodeDragListener | null;
   private readonly disposeWireNode: () => void;
 
   // Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.

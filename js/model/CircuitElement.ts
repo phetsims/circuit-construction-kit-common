@@ -13,7 +13,7 @@ import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Property, { PropertyOptions } from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import Vector2 from '../../../dot/js/Vector2.js';
-import { SceneryEvent } from '../../../scenery/js/imports.js';
+import { PressListenerEvent, SceneryEvent } from '../../../scenery/js/imports.js';
 import PhetioObject, { PhetioObjectOptions } from '../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import IOType from '../../../tandem/js/types/IOType.js';
@@ -106,7 +106,7 @@ export default abstract class CircuitElement extends PhetioObject {
   public readonly moveToFrontEmitter: TEmitter;
 
   // indicate when the circuit element has started being dragged, when it is created in the toolbox
-  public readonly startDragEmitter: TEmitter<[ SceneryEvent ]>;
+  public readonly startDragEmitter: TEmitter<[ PressListenerEvent ]>;
 
   // indicate when the circuit element has been disposed
   public readonly disposeEmitterCircuitElement: TEmitter;
