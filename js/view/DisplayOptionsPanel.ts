@@ -132,7 +132,9 @@ export default class DisplayOptionsPanel extends CCKCPanel {
           new CCKCCheckbox( showCurrentProperty, createLabel( showCurrentStringProperty, showCurrentCheckboxTandem ), {
             tandem: showCurrentCheckboxTandem
           } ),
-          new AlignBox( // TODO: is alignbox needed here?
+
+          // AlignBox necessary to indent the children radio buttons
+          new AlignBox(
             currentTypeRadioButtonGroup, {
               leftMargin: LEFT_MARGIN
             }
