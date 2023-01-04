@@ -107,9 +107,6 @@ export default class ACVoltageNode extends FixedCircuitElementNode {
   public constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, acSource: ACVoltage,
                       viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: ACVoltageNodeOptions ) {
     const options = optionize<ACVoltageNodeOptions, SelfOptions, FixedCircuitElementNodeOptions>()( {
-
-      // @ts-expect-error
-      numberOfDecimalPlaces: 1,
       useHitTestForSensors: true
     }, providedOptions );
 
