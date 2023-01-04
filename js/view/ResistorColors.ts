@@ -41,12 +41,11 @@ const colorTable: Entry[] = [
 
 /**
  * Gets the color table entry for the specified column in the colorTable
- * @param keyName - the name of the key, such as 'significantFigure'|'multiplier'|'tolerance'
+ * @param keyName - the name of the key
  * @param value - the value to search for
  * @returns entry from the color table, see above
  */
-// @ts-expect-error
-const getEntry = ( keyName: string, value: string | number | null ) => _.find( colorTable, colorTableEntry => colorTableEntry[ keyName ] === value )!;
+const getEntry = ( keyName: 'name' | 'significantFigure' | 'multiplier' | 'tolerance', value: string | number | null ) => _.find( colorTable, colorTableEntry => colorTableEntry[ keyName ] === value )!;
 
 const ResistorColors = {
 
