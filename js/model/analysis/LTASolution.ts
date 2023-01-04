@@ -5,7 +5,12 @@ import CoreModel from './CoreModel.js';
 import MNAResistor from './mna/MNAResistor.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 
-// TODO: Docs
+/**
+ * LTASolution is a class that represents the solution of a linear time-invariant (LTI) circuit. It provides methods for
+ * getting node voltages, component currents, and voltages between nodes, as well as looking up companion model values.
+ *
+ * @author Sam Reid (PhET Interactive Simulations)
+ */
 export default class LTASolution {
 
   private readonly circuit: LTACircuit;
