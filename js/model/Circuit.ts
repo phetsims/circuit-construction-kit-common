@@ -1048,7 +1048,7 @@ export default class Circuit {
           wasSenseAssigned = true;
 
           // Run the next iteration of the loop, which will search out from the newly marked node
-          // TODO: Only search from the newly marked node?
+          // TODO (AC): Only search from the newly marked node?
         }
       }
 
