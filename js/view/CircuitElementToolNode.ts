@@ -1,4 +1,4 @@
-// Copyright 2017-2022, University of Colorado Boulder
+// Copyright 2017-2023, University of Colorado Boulder
 
 /**
  * An icon in the circuit element toolbox/carousel that can be used to create circuit elements. Exists for the life of

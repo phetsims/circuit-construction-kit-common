@@ -1,4 +1,4 @@
-// Copyright 2016-2022, University of Colorado Boulder
+// Copyright 2016-2023, University of Colorado Boulder
 
 /**
  * Displays the Voltmeter, which has 2 probes and detects potential differences. Exists for the life of the sim and
