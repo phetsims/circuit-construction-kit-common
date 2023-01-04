@@ -25,29 +25,29 @@ import { SliderOptions } from '../../../sun/js/Slider.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import Vertex from '../model/Vertex.js';
 
-type SelfOptions<T extends CircuitElement> = {
+type SelfOptions = {
   titleNodeOptions?: TextOptions;
   numberDisplayOptions?: NumberDisplayOptions;
   layoutFunction?: LayoutFunction;
   sliderOptions?: SliderOptions;
-  getAdditionalVisibilityProperties?: ( circuitElement: T ) => ReadOnlyProperty<boolean>[];
+  getAdditionalVisibilityProperties?: ( circuitElement: CircuitElement ) => ReadOnlyProperty<boolean>[];
   delta?: number;
 };
-type CircuitElementNumberControlOptions<T extends CircuitElement> = SelfOptions<T> & HBoxOptions;
+type CircuitElementNumberControlOptions = SelfOptions & HBoxOptions;
 
 // Extend HBox so an invisible parent will auto-layout (not leave a blank hole)
-export default class CircuitElementNumberControl<T extends CircuitElement> extends HBox {
+export default class CircuitElementNumberControl extends HBox {
   public static readonly NUMBER_CONTROL_ELEMENT_MAX_WIDTH = 115;
 
   public constructor( title: TReadOnlyProperty<string>, valuePattern: string, valueProperty: Property<number>, range: Range, circuit: Circuit,
-                      numberOfDecimalPlaces: number, providedOptions?: CircuitElementNumberControlOptions<T> ) {
+                      numberOfDecimalPlaces: number, providedOptions?: CircuitElementNumberControlOptions ) {
 
     // When the user changes any parameter of any circuit element, signify it.
     const valuePropertyListener = () => circuit.componentEditedEmitter.emit();
 
     valueProperty.lazyLink( valuePropertyListener );
 
-    const options = optionize<CircuitElementNumberControlOptions<T>, SelfOptions<T>, HBoxOptions>()( {
+    const options = optionize<CircuitElementNumberControlOptions, SelfOptions, HBoxOptions>()( {
       delta: 0.01,
       titleNodeOptions: {
         maxWidth: CircuitElementNumberControl.NUMBER_CONTROL_ELEMENT_MAX_WIDTH,
@@ -70,7 +70,7 @@ export default class CircuitElementNumberControl<T extends CircuitElement> exten
         trackSize: new Dimension2( 120, 4 )
       },
       tandem: Tandem.OPT_OUT,
-      getAdditionalVisibilityProperties: () => {return [];}
+      getAdditionalVisibilityProperties: ( c: CircuitElement ) => {return [];}
     }, providedOptions );
     const numberControl = new NumberControl( title, valueProperty, range, options );
 
@@ -91,9 +91,7 @@ export default class CircuitElementNumberControl<T extends CircuitElement> exten
       oldCircuitElement instanceof ACVoltage && multilink && Multilink.unmultilink( multilink );
       if ( newCircuitElement instanceof CircuitElement ) {
 
-        // @ts-expect-error
         const otherGates = options.getAdditionalVisibilityProperties( newCircuitElement );
-
         multilink = Multilink.multilinkAny( [ newCircuitElement.isEditableProperty, ...otherGates ], listener );
       }
     } );

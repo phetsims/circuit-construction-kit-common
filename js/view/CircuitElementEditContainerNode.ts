@@ -272,7 +272,9 @@ export default class CircuitElementEditContainerNode extends Node {
       circuit,
       2, {
         tandem: circuit.includeACElements ? tandem.createTandem( 'acVoltageControl' ) : Tandem.OPT_OUT,
-        getAdditionalVisibilityProperties: ( c: ACVoltage ) => c.isVoltageEditableProperty ? [ c.isVoltageEditableProperty ] : []
+        getAdditionalVisibilityProperties: ( c: CircuitElement ) => {
+          return c instanceof ACVoltage ? [ c.isVoltageEditableProperty ] : [];
+        }
       }
     );
 
@@ -287,7 +289,9 @@ export default class CircuitElementEditContainerNode extends Node {
       2, {
         tandem: circuit.includeACElements ? tandem.createTandem( 'frequencyControl' ) : Tandem.OPT_OUT,
         delta: 0.01,
-        getAdditionalVisibilityProperties: ( c: ACVoltage ) => c.isFrequencyEditableProperty ? [ c.isFrequencyEditableProperty ] : []
+        getAdditionalVisibilityProperties: ( c: CircuitElement ) => {
+          return c instanceof ACVoltage ? [ c.isFrequencyEditableProperty ] : [];
+        }
       }
     );
 
