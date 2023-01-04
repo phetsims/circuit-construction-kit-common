@@ -1127,7 +1127,6 @@ export default class Circuit {
               }
             }
 
-            // TODO: Stop the search if we crossed a circuit element that already has a sense, since it is already marked for visit?
             if ( !visited.includes( neighborVertex ) && !toVisit.includes( neighborVertex ) ) {
               toVisit.push( neighborVertex );
             }
