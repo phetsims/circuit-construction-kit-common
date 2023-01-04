@@ -66,9 +66,7 @@ export default abstract class CircuitElementNode extends Node {
 
     // Make it easy to get back to circuitElements
     this.addLinkedElement( circuitElement, {
-
-      // @ts-expect-error
-      tandem: providedOptions.tandem.createTandem( 'circuitElement' )
+      tandem: providedOptions.tandem!.createTandem( 'circuitElement' )
     } );
 
     // keyboard listener so that delete or backspace deletes the element - must be disposed
