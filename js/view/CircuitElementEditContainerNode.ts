@@ -76,7 +76,8 @@ const HIGH_SLIDER_KNOB_DELTA = 100;
 const NORMAL_TWEAKER_DELTA = 0.1;
 const HIGH_TWEAKER_DELTA = 10;
 
-// TODO: Consider moving this into CircuitElementNumberControl once we have built them all?
+// a singleton adapter property allows for the same EditContainerNode to be repurposed for different circuit components of the same type
+// this is because we want to have a single control for editing any component of that type
 const createSingletonAdapterProperty = <T extends CircuitElement>(
   initialValue: number,
   CircuitElementType: GConstructor<T>,
