@@ -677,7 +677,7 @@ export default class Circuit {
     }
 
     const separation = Math.PI * 2 / neighborCircuitElements.length;
-    let results: Vector2[] = []; // TODO: tuple?
+    let results: Vector2[] = [];
 
     const centerAngle = _.sum( angles ) / angles.length;
 
