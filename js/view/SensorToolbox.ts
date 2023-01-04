@@ -80,18 +80,19 @@ export default class SensorToolbox extends CCKCPanel {
 
     /**
      * @param meterNodes
-     * @param meterModelName 'ammeter'|'voltmeter'|'meter' for looking up the corresponding models
+     * @param meterModelName for looking up the corresponding models
      * @returns a listener
      */
-    const createListenerMulti = ( meterNodes: VoltmeterNode[] | AmmeterNode[] | VoltageChartNode[] | CurrentChartNode[], meterModelName: string ): object =>
+    const createListenerMulti = ( meterNodes: ( VoltmeterNode[] | AmmeterNode[] | VoltageChartNode[] | CurrentChartNode[] ), meterModelName: 'ammeter' | 'voltmeter' | 'meter' ): object =>
 
       DragListener.createForwardingListener( ( event: SceneryEvent ) => {
 
         // Select a non-visible meter node
-        const meterNode = _.find( meterNodes, ( meterNode: Node ) => !meterNode.visible );
+        const meterNode = _.find( meterNodes, ( meterNode: Node ) => !meterNode.visible ) as ( VoltmeterNode | AmmeterNode | VoltageChartNode | CurrentChartNode );
         if ( meterNode ) {
-          // @ts-expect-error
-          const meterModel = meterNode[ meterModelName ];
+          const meterModel = meterNode instanceof VoltmeterNode ? meterNode.voltmeter :
+                             meterNode instanceof AmmeterNode ? meterNode.ammeter :
+                             meterNode.meter;
           const viewPosition = circuitLayerNode.globalToLocalPoint( event.pointer.point );
           meterModel.draggingProbesWithBodyProperty.value = true;
           meterModel.visibleProperty.value = true;

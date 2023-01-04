@@ -62,7 +62,7 @@ type SelfOptions = {
 export type CCKCChartNodeOptions = SelfOptions & NodeOptions & PickRequired<NodeOptions, 'tandem'>;
 
 export default class CCKCChartNode extends Node {
-  protected readonly meter: Meter;
+  public readonly meter: Meter;
   protected readonly series: ObservableArray<Vector2 | null>;
   protected readonly circuitLayerNode: CircuitLayerNode;
   protected readonly timeProperty: Property<number>;
