@@ -11,7 +11,7 @@ import Matrix3 from '../../../dot/js/Matrix3.js';
 import Utils from '../../../dot/js/Utils.js';
 import { LineStyles, Shape } from '../../../kite/js/imports.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
-import { Color, Node, Path } from '../../../scenery/js/imports.js';
+import { Color, Node, Path, TPaint } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -122,8 +122,7 @@ export default class InductorNode extends FixedCircuitElementNode {
         // Using a single path with fill+stroke leaves an artifact at the corners.  As a workaround, use two fills,
         // see https://github.com/phetsims/circuit-construction-kit-common/issues/537#issuecomment-558917786
         // and the corresponding kite issue https://github.com/phetsims/kite/issues/83
-        // @ts-expect-error
-        const createPath = ( lineStyles, fill ) => new Path( pathShape.getStrokedShape( lineStyles ), { fill: fill } );
+        const createPath = ( lineStyles: LineStyles, fill: TPaint ) => new Path( pathShape.getStrokedShape( lineStyles ), { fill: fill } );
         children.push( createPath( LIFELIKE_PATH_OUTLINE_STYLES, 'black' ) );
         children.push( createPath( LIFELIKE_PATH_FILL_STYLES, '#dc9180' ) );
       }
