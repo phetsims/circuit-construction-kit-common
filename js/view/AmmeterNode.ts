@@ -13,7 +13,7 @@ import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
 import ProbeNode from '../../../scenery-phet/js/ProbeNode.js';
 import WireNode from '../../../scenery-phet/js/WireNode.js';
-import { Color, DragListener, Image, Node, NodeOptions, Rectangle, Text, SceneryEvent } from '../../../scenery/js/imports.js';
+import { Color, DragListener, Image, Node, NodeOptions, Rectangle, Text, PressListenerEvent } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ammeterBody_png from '../../images/ammeterBody_png.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -257,7 +257,7 @@ export default class AmmeterNode extends Node {
   /**
    * Forward a drag from the toolbox to the play area node.
    */
-  private startDrag( event: SceneryEvent<MouseEvent | TouchEvent | PointerEvent> ): void {
+  public startDrag( event: PressListenerEvent ): void {
     this.dragHandler && this.dragHandler.press( event );
   }
 }

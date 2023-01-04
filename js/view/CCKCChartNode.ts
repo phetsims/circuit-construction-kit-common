@@ -415,7 +415,7 @@ export default class CCKCChartNode extends Node {
    * Forward an event from the toolbox to start dragging the node in the play area.  This triggers the probes (if any)
    * to drag together with the chart.  This is accomplished by calling this.alignProbes() at each drag event.
    */
-  private startDrag( event: PressListenerEvent ): void {
+  public startDrag( event: PressListenerEvent ): void {
 
     // Forward the event to the drag listener
     this.backgroundDragListener && this.backgroundDragListener.press( event );

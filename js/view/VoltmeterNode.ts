@@ -364,7 +364,7 @@ export default class VoltmeterNode extends Node {
   /**
    * Forward a drag from the toolbox to the play area node.
    */
-  private startDrag( event: PressListenerEvent ): void {
+  public startDrag( event: PressListenerEvent ): void {
     this.dragHandler!.press( event );
   }
 }

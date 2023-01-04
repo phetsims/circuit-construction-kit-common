@@ -14,7 +14,7 @@ import Property from '../../../axon/js/Property.js';
 import ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import Vector2 from '../../../dot/js/Vector2.js';
-import { AlignGroup, DragListener, HBox, HSeparator, Node, Rectangle, SceneryEvent, Text, VBox } from '../../../scenery/js/imports.js';
+import { AlignGroup, DragListener, HBox, HSeparator, Node, PressListenerEvent, Rectangle, Text, VBox } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
@@ -85,7 +85,7 @@ export default class SensorToolbox extends CCKCPanel {
      */
     const createListenerMulti = ( meterNodes: ( VoltmeterNode[] | AmmeterNode[] | ( VoltageChartNode | CurrentChartNode )[] ) ): object =>
 
-      DragListener.createForwardingListener( ( event: SceneryEvent ) => {
+      DragListener.createForwardingListener( ( event: PressListenerEvent ) => {
 
         // Select a non-visible meter node
         const meterNode = _.find( meterNodes, ( meterNode: Node ) => !meterNode.visible ) as ( VoltmeterNode | AmmeterNode | VoltageChartNode | CurrentChartNode );
@@ -97,7 +97,6 @@ export default class SensorToolbox extends CCKCPanel {
           meterModel.draggingProbesWithBodyProperty.value = true;
           meterModel.visibleProperty.value = true;
           meterModel.bodyPositionProperty.value = viewPosition;
-          // @ts-expect-error
           meterNode.startDrag( event );
         }
       }, {
