@@ -93,7 +93,7 @@ export default class CCKCLightBulbNode extends FixedCircuitElementNode {
 
         brightnessProperty.value = Utils.clamp( brightness, 0, 1 );
       } );
-    let lightBulbNode: Node = new CustomLightBulbNode( brightnessProperty, {
+    let lightBulbNode: CustomLightBulbNode | Image = new CustomLightBulbNode( brightnessProperty, {
       real: lightBulb.real
     } );
 
@@ -217,8 +217,8 @@ export default class CCKCLightBulbNode extends FixedCircuitElementNode {
     // node that contains the light rays so they can be easily positioned
     this.rayNodeContainer = new Node( {
 
-      // @ts-expect-error
-      children: lightBulbNode.raysNode ? [ lightBulbNode.raysNode ] : [] // keep centering and translation
+      // keep centering and translation
+      children: lightBulbNode instanceof CustomLightBulbNode ? [ lightBulbNode.raysNode! ] : []
     } );
 
     let viewListener: ( ( view: CircuitElementViewType ) => void ) | null = null;

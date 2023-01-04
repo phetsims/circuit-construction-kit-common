@@ -36,7 +36,7 @@ type CustomLightBulbNodeOptions = SelfOptions & NodeOptions;
 export default class CustomLightBulbNode extends Node {
   private readonly baseOnly: boolean;
   private readonly backNode: Node;
-  private readonly raysNode: LightRaysNode | null;
+  public readonly raysNode: LightRaysNode | null;
   private readonly brightnessProperty: Property<number>;
   private readonly brightnessObserver: ( ( brightness: number ) => void ) | null;
   private readonly disposeCustomLightBulbNode: () => void;
