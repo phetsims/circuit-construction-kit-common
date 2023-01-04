@@ -146,9 +146,7 @@ export default class CircuitElementEditContainerNode extends Node {
 
     const listener = ( isDisposable: boolean ) => trashButtonContainer.setVisible( isDisposable );
 
-    // TODO: Can we use DynamicProperty for this part?  But DynamicProperty probably cannot handle cases like subtypes,
-    // where Battery has isReversableProperty but not all CircuitElements do.  But maybe we should add support for that
-    // in DynamicProperty?
+    // Connect the listener dynamically to the selected circuit element
     circuit.selectionProperty.link( ( newCircuitElement, oldCircuitElement ) => {
       newCircuitElement instanceof CircuitElement && newCircuitElement.isDisposableProperty.link( listener );
       oldCircuitElement instanceof CircuitElement && oldCircuitElement.isDisposableProperty.unlink( listener );
