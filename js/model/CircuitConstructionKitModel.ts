@@ -291,8 +291,8 @@ export default class CircuitConstructionKitModel {
     }
 
     if ( this.zoomAnimation ) {
-      const animationRatio = this.zoomAnimation.step( dt );
-      if ( animationRatio >= 1 ) {
+      const animationComplete = this.zoomAnimation.step( dt );
+      if ( animationComplete ) {
         this.zoomAnimation = null;
       }
     }

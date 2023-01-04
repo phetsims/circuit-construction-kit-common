@@ -29,9 +29,9 @@ export default class ZoomAnimation {
 
   /**
    * @param dt - elapsed time in seconds
-   * TODO: Explain return value
+   * @returns - a boolean for whether the zoom animation is complete
    */
-  public step( dt: number ): number {
+  public step( dt: number ): boolean {
     const oldRatio = this.ratio;
 
     if ( oldRatio < 1 ) {
@@ -42,10 +42,10 @@ export default class ZoomAnimation {
       this.ratio = newRatio;
       const ratioDelta = Easing.CUBIC_IN_OUT.value( newRatio ) - Easing.CUBIC_IN_OUT.value( oldRatio );
       this.zoomCallback( ratioDelta * this.totalDelta );
-      return newRatio;
+      return newRatio >= 1;
     }
     else {
-      return oldRatio;
+      return oldRatio >= 1;
     }
   }
 }
