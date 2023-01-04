@@ -773,6 +773,16 @@ export default class Circuit {
   }
 
   /**
+   * Get all of the CircuitElements that are connected to the given CircuitElement
+   */
+  private getNeighborCircuitElementsForCircuitElement( element: CircuitElement ): CircuitElement[] {
+    return [ ...this.getNeighborCircuitElements( element.startVertexProperty.value ),
+      ...this.getNeighborCircuitElements( element.endVertexProperty.value ) ].filter( el => {
+      return el !== element;
+    } );
+  }
+
+  /**
    * Gets the number of CircuitElements connected to the specified Vertex
    */
   public countCircuitElements( vertex: Vertex ): number {
@@ -1054,7 +1064,11 @@ export default class Circuit {
 
       if ( !wasSenseAssigned ) {
 
-        // TODO: Prefer a circuit element that has only 2 neighbors, so it is a series element?
+        // Choose the circuit element with the smallest number of neighbors, ie favoring series elements
+        requiresSenseAfterVisit.sort( ( a, b ) => {
+          return this.getNeighborCircuitElementsForCircuitElement( a ).length - this.getNeighborCircuitElementsForCircuitElement( b ).length;
+        } );
+
         const targetElement = requiresSenseAfterVisit[ 0 ];
         targetElement.currentSenseProperty.value = getSenseForPositive( targetElement.currentProperty.value );
         wasSenseAssigned = true;
