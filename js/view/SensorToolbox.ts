@@ -83,7 +83,7 @@ export default class SensorToolbox extends CCKCPanel {
      * @param meterModelName for looking up the corresponding models
      * @returns a listener
      */
-    const createListenerMulti = ( meterNodes: ( VoltmeterNode[] | AmmeterNode[] | VoltageChartNode[] | CurrentChartNode[] ), meterModelName: 'ammeter' | 'voltmeter' | 'meter' ): object =>
+    const createListenerMulti = ( meterNodes: ( VoltmeterNode[] | AmmeterNode[] | ( VoltageChartNode | CurrentChartNode )[] ) ): object =>
 
       DragListener.createForwardingListener( ( event: SceneryEvent ) => {
 
@@ -114,7 +114,7 @@ export default class SensorToolbox extends CCKCPanel {
     voltmeterNodeIcon.mutate( {
       scale: TOOLBOX_ICON_HEIGHT * VOLTMETER_ICON_SCALE / Math.max( voltmeterNodeIcon.width, voltmeterNodeIcon.height )
     } );
-    voltmeterNodeIcon.addInputListener( createListenerMulti( voltmeterNodes, 'voltmeter' ) );
+    voltmeterNodeIcon.addInputListener( createListenerMulti( voltmeterNodes ) );
 
     // Icon for the ammeter
     const ammeter = new Ammeter( tandem.createTandem( 'ammeterIconModel' ), 0 );
@@ -127,7 +127,7 @@ export default class SensorToolbox extends CCKCPanel {
     ammeterToolNode.mutate( {
       scale: TOOLBOX_ICON_HEIGHT / Math.max( ammeterToolNode.width, ammeterToolNode.height )
     } );
-    ammeterToolNode.addInputListener( createListenerMulti( ammeterNodes, 'ammeter' ) );
+    ammeterToolNode.addInputListener( createListenerMulti( ammeterNodes ) );
 
     // Icon for the series ammeter
     const seriesAmmeterIcon = new SeriesAmmeter(
@@ -240,7 +240,7 @@ export default class SensorToolbox extends CCKCPanel {
     if ( options.showCharts ) {
       const everythingProperty = new Property( Bounds2.EVERYTHING );
 
-      const createChartToolIcon = ( chartNodes: Node[], chartNodeIcon: VoltageChartNode | CurrentChartNode, labelNode: Text, tandem: Tandem ) => {
+      const createChartToolIcon = ( chartNodes: ( VoltageChartNode | CurrentChartNode )[], chartNodeIcon: VoltageChartNode | CurrentChartNode, labelNode: Text, tandem: Tandem ) => {
 
         // Rasterization comes out blurry, instead put an overlay to intercept input events.
         const overlay = Rectangle.bounds( chartNodeIcon.bounds, { fill: 'blue', opacity: 0 } );
@@ -254,14 +254,12 @@ export default class SensorToolbox extends CCKCPanel {
           tandem: tandem
         } );
 
-        // @ts-expect-error
         const allInPlayAreaProperty = DerivedProperty.and( chartNodes.map( chartNode => chartNode.meter.visibleProperty ) );
         allInPlayAreaProperty.link( allInPlayArea => {
           chartNodeIcon.setVisible( !allInPlayArea );
           chartToolIcon.inputEnabledProperty.value = !allInPlayArea;
         } );
-        // @ts-expect-error
-        overlay.addInputListener( createListenerMulti( chartNodes, 'meter' ) );
+        overlay.addInputListener( createListenerMulti( chartNodes ) );
 
         // Alter the visibility of the labels when the labels checkbox is toggled.
         Multilink.multilink( [ circuitLayerNode.model.showLabelsProperty, allInPlayAreaProperty ], ( showLabels, allInPlayArea ) => {
