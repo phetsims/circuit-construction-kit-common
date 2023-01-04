@@ -51,8 +51,7 @@ export default class LinearTransientAnalysis {
     const nonParticipants = [];
     const participants = [];
 
-    // TODO: Factor out a type that has the commonalities of these things
-    const resistorMap = new Map<MNAResistor, Resistor | Fuse | Wire | LightBulb | SeriesAmmeter | Switch>();
+    const resistorMap = new Map<MNAResistor, CircuitElement>(); // Should be something like Resistor | Fuse | Wire | LightBulb | SeriesAmmeter | Switch
     const voltageSourceMap = new Map<LTAResistiveBattery, VoltageSource>();
     const capacitorMap = new Map<LTACapacitor, Capacitor>();
     const inductorMap = new Map<LTAInductor, Inductor>();
