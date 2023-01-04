@@ -72,9 +72,12 @@ export default class LightBulb extends FixedCircuitElement {
   public readonly resistanceProperty: NumberProperty;
   private readonly viewTypeProperty: Property<CircuitElementViewType>;
 
-  // TODO: improve types
-  public static createAtPosition( startVertex: Vertex, endVertex: Vertex, circuit: Circuit, resistance: number,
-                                  viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem,
+  public static createAtPosition( startVertex: Vertex,
+                                  endVertex: Vertex,
+                                  circuit: Circuit,
+                                  resistance: number,
+                                  viewTypeProperty: Property<CircuitElementViewType>,
+                                  tandem: Tandem,
                                   providedOptions?: LightBulbOptions ): LightBulb {
     return new LightBulb( startVertex, endVertex, resistance, viewTypeProperty, tandem, providedOptions );
   }
