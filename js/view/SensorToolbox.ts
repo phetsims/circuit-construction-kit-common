@@ -105,15 +105,15 @@ export default class SensorToolbox extends CCKCPanel {
 
     // Draggable isIcon for the voltmeter
     const voltmeter = new Voltmeter( Tandem.OPTIONAL, 0 );
-    const voltmeterNodeIcon = new VoltmeterNode( voltmeter, null, null, tandem.createTandem( 'voltmeterToolNode' ), {
+    const voltmeterToolNode = new VoltmeterNode( voltmeter, null, null, tandem.createTandem( 'voltmeterToolNode' ), {
       isIcon: true
     } );
-    const allVoltmetersVisibleProperty = DerivedProperty.and( voltmeterNodes.map( voltmeterNode => voltmeterNode.voltmeter.visibleProperty ) );
-    allVoltmetersVisibleProperty.link( visible => voltmeterNodeIcon.setVisible( !visible ) );
-    voltmeterNodeIcon.mutate( {
-      scale: TOOLBOX_ICON_HEIGHT * VOLTMETER_ICON_SCALE / Math.max( voltmeterNodeIcon.width, voltmeterNodeIcon.height )
+    const allVoltmetersInPlayAreaProperty = DerivedProperty.and( voltmeterNodes.map( voltmeterNode => voltmeterNode.voltmeter.visibleProperty ) );
+    allVoltmetersInPlayAreaProperty.link( visible => voltmeterToolNode.setVisible( !visible ) );
+    voltmeterToolNode.mutate( {
+      scale: TOOLBOX_ICON_HEIGHT * VOLTMETER_ICON_SCALE / Math.max( voltmeterToolNode.width, voltmeterToolNode.height )
     } );
-    voltmeterNodeIcon.addInputListener( createListenerMulti( voltmeterNodes ) );
+    voltmeterToolNode.addInputListener( createListenerMulti( voltmeterNodes ) );
 
     // Icon for the ammeter
     const ammeter = new Ammeter( tandem.createTandem( 'ammeterIconModel' ), 0 );
@@ -121,8 +121,8 @@ export default class SensorToolbox extends CCKCPanel {
       isIcon: true,
       tandem: tandem.createTandem( 'ammeterToolNode' )
     } );
-    const allAmmetersVisibleProperty = DerivedProperty.and( ammeterNodes.map( ammeterNode => ammeterNode.ammeter.visibleProperty ) );
-    allAmmetersVisibleProperty.link( visible => ammeterToolNode.setVisible( !visible ) );
+    const allAmmetersInPlayAreaProperty = DerivedProperty.and( ammeterNodes.map( ammeterNode => ammeterNode.ammeter.visibleProperty ) );
+    allAmmetersInPlayAreaProperty.link( visible => ammeterToolNode.setVisible( !visible ) );
     ammeterToolNode.mutate( {
       scale: TOOLBOX_ICON_HEIGHT / Math.max( ammeterToolNode.width, ammeterToolNode.height )
     } );
@@ -183,13 +183,15 @@ export default class SensorToolbox extends CCKCPanel {
     } );
 
     // Alter the visibility of the labels when the labels checkbox is toggled.
-    Multilink.multilink( [ circuitLayerNode.model.showLabelsProperty, allVoltmetersVisibleProperty ], ( showLabels, allVoltmetersVisible ) => {
-      voltmeterText.visible = showLabels && !allVoltmetersVisible;
+    Multilink.multilink( [ circuitLayerNode.model.showLabelsProperty, allVoltmetersInPlayAreaProperty, voltmeterToolNode.visibleProperty ], ( showLabels, allVoltmetersInPlayArea, voltmeterToolNodeVisible ) => {
+      voltmeterText.visible = showLabels && !allVoltmetersInPlayArea && voltmeterToolNodeVisible;
     } );
-    Multilink.multilink( [ circuitLayerNode.model.showLabelsProperty, allAmmetersVisibleProperty, allSeriesAmmetersInPlayAreaProperty ],
-      ( showLabels, allAmmetersInPlayArea, allSeriesAmmetersInPlayArea ) => {
+    Multilink.multilink(
+      [ circuitLayerNode.model.showLabelsProperty, allAmmetersInPlayAreaProperty, allSeriesAmmetersInPlayAreaProperty, ammeterToolNode.visibleProperty, seriesAmmeterNodeIcon.visibleProperty ],
+      ( showLabels, allAmmetersInPlayArea, allSeriesAmmetersInPlayArea, ammeterToolNodeVisible, seriesAmmeterToolNodeVisible ) => {
 
         let isAmmeterInToolbox = false;
+
         if ( options.showSeriesAmmeters && !allSeriesAmmetersInPlayArea ) {
           isAmmeterInToolbox = true;
         }
@@ -197,13 +199,21 @@ export default class SensorToolbox extends CCKCPanel {
           isAmmeterInToolbox = true;
         }
 
-        ammeterText.visible = showLabels && isAmmeterInToolbox;
+        let isToolShowing = false;
+        if ( options.showSeriesAmmeters && seriesAmmeterToolNodeVisible ) {
+          isToolShowing = true;
+        }
+        if ( options.showNoncontactAmmeters && ammeterToolNodeVisible ) {
+          isToolShowing = true;
+        }
+
+        ammeterText.visible = showLabels && isAmmeterInToolbox && isToolShowing;
       } );
 
     const voltmeterToolIcon = new VBox( {
       spacing: ICON_TEXT_SPACING,
       children: [
-        voltmeterNodeIcon,
+        voltmeterToolNode,
         voltmeterText
       ],
       excludeInvisibleChildrenFromBounds: false,
