@@ -105,7 +105,7 @@ export default class SensorToolbox extends CCKCPanel {
 
     // Draggable isIcon for the voltmeter
     const voltmeter = new Voltmeter( Tandem.OPTIONAL, 0 );
-    const voltmeterNodeIcon = new VoltmeterNode( voltmeter, null, null, tandem.createTandem( 'voltmeterNodeIcon' ), {
+    const voltmeterNodeIcon = new VoltmeterNode( voltmeter, null, null, tandem.createTandem( 'voltmeterToolNode' ), {
       isIcon: true
     } );
     const allVoltmetersVisibleProperty = DerivedProperty.and( voltmeterNodes.map( voltmeterNode => voltmeterNode.voltmeter.visibleProperty ) );
