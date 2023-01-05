@@ -146,6 +146,8 @@ export default class SensorToolbox extends CCKCPanel {
     };
     seriesAmmeterNodeIcon.mutate( { scale: TOOLBOX_ICON_HEIGHT / seriesAmmeterNodeIcon.width } );
     const MAX_SERIES_AMMETERS = 6;
+
+    // This is the real tool node
     const seriesAmmeterToolNode = new CircuitElementToolNode(
       new Property( '' ),
       new BooleanProperty( false ),
@@ -187,8 +189,8 @@ export default class SensorToolbox extends CCKCPanel {
       voltmeterText.visible = showLabels && !allVoltmetersInPlayArea && voltmeterToolNodeVisible;
     } );
     Multilink.multilink(
-      [ circuitLayerNode.model.showLabelsProperty, allAmmetersInPlayAreaProperty, allSeriesAmmetersInPlayAreaProperty, ammeterToolNode.visibleProperty, seriesAmmeterNodeIcon.visibleProperty ],
-      ( showLabels, allAmmetersInPlayArea, allSeriesAmmetersInPlayArea, ammeterToolNodeVisible, seriesAmmeterToolNodeVisible ) => {
+      [ circuitLayerNode.model.showLabelsProperty, allAmmetersInPlayAreaProperty, allSeriesAmmetersInPlayAreaProperty, ammeterToolNode.visibleProperty, seriesAmmeterNodeIcon.visibleProperty, seriesAmmeterToolNode.visibleProperty ],
+      ( showLabels, allAmmetersInPlayArea, allSeriesAmmetersInPlayArea, ammeterToolNodeVisible, seriesAmmeterNodeIconVisible, seriesAmmeterToolNodeVisible ) => {
 
         let isAmmeterInToolbox = false;
 
@@ -200,7 +202,8 @@ export default class SensorToolbox extends CCKCPanel {
         }
 
         let isToolShowing = false;
-        if ( options.showSeriesAmmeters && seriesAmmeterToolNodeVisible ) {
+        // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/858 why are there 2 levels for this?
+        if ( options.showSeriesAmmeters && seriesAmmeterNodeIconVisible && seriesAmmeterToolNodeVisible ) {
           isToolShowing = true;
         }
         if ( options.showNoncontactAmmeters && ammeterToolNodeVisible ) {
