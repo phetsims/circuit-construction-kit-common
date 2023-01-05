@@ -1,4 +1,4 @@
-// Copyright 2019-2022, University of Colorado Boulder
+// Copyright 2019-2023, University of Colorado Boulder
 
 /**
  * Takes a Circuit, creates a corresponding LTACircuit, solves the LTACircuit and applies the results back
