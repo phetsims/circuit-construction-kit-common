@@ -64,7 +64,7 @@ export default class CircuitElementToolbox extends HBox {
     const carousel = new Carousel( circuitElementToolNodes, providedOptions.carouselOptions );
     carousel.mutate( { scale: providedOptions.carouselScale } );
 
-    const pageControl = new PageControl( carousel.pageNumberProperty, carousel.numberOfPages, {
+    const pageControl = new PageControl( carousel.pageNumberProperty, carousel.numberOfPagesProperty, {
       orientation: 'vertical',
       pageFill: Color.WHITE,
       pageStroke: Color.BLACK,
