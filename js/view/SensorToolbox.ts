@@ -219,8 +219,7 @@ export default class SensorToolbox extends CCKCPanel {
         voltmeterToolNode,
         voltmeterText
       ],
-      excludeInvisibleChildrenFromBounds: false,
-      tandem: tandem.createTandem( 'voltmeterToolIconWithLabel' )
+      excludeInvisibleChildrenFromBounds: false
     } );
 
     const children = [];
@@ -238,8 +237,7 @@ export default class SensorToolbox extends CCKCPanel {
         } ),
         ammeterText
       ],
-      excludeInvisibleChildrenFromBounds: false,
-      tandem: tandem.createTandem( 'ammeterToolIconWithLabel' )
+      excludeInvisibleChildrenFromBounds: false
     } );
 
     const topBox = alignGroup.createBox( new HBox( {
