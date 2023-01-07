@@ -44,19 +44,15 @@ export default class CircuitElementToolbox extends HBox {
         itemsPerPage: 5,
 
         orientation: 'vertical',
-
-        // Determines the vertical margins
         spacing: CAROUSEL_ITEM_SPACING,
-
-        // this is only the horizontal margin
-        margin: 13,
+        margin: CAROUSEL_ITEM_SPACING,
 
         // Expand the touch area above the up button and below the down button
         buttonTouchAreaYDilation: 8,
 
-        tandem: tandem.createTandem( 'carousel' ),
+        separatorsVisible: true,
 
-        isScrollingNodeLayoutBox: true
+        tandem: tandem.createTandem( 'carousel' )
       }
     }, providedOptions );
 
