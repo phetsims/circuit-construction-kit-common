@@ -18,9 +18,6 @@ import CircuitElementViewType from '../model/CircuitElementViewType.js';
 
 // constants
 
-// This specifies the spacing between items and also the space before and after the first and last items
-const CAROUSEL_ITEM_SPACING = 11;
-
 type SelfOptions = {
   carouselOptions?: CarouselOptions;
   carouselScale: number;
@@ -44,8 +41,6 @@ export default class CircuitElementToolbox extends HBox {
         itemsPerPage: 5,
 
         orientation: 'vertical',
-        spacing: CAROUSEL_ITEM_SPACING,
-        margin: CAROUSEL_ITEM_SPACING,
 
         // Expand the touch area above the up button and below the down button
         buttonTouchAreaYDilation: 8,

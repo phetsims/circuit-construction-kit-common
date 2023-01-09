@@ -81,7 +81,7 @@ export default class CircuitElementToolNode extends VBox {
 
       excludeInvisibleChildrenFromBounds: false,
       additionalProperty: new BooleanProperty( true ),
-      phetioType: IndexedNodeIO,
+      phetioType: IndexedNodeIO( 2 ),
       phetioState: true,
       visiblePropertyOptions: {
         phetioFeatured: true
