@@ -156,6 +156,7 @@ export default class Circuit {
     this.viewTypeProperty = viewTypeProperty;
     this.addRealBulbsProperty = addRealBulbsProperty;
 
+    // @ts-expect-error TODO SR can you help with "blackBoxStudy" defined here, it is required https://github.com/phetsims/chipper/issues/1360
     const options = optionize<CircuitOptions>()( { blackBoxStudy: false }, providedOptions );
 
     this.includeACElements = options.includeACElements;
