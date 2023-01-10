@@ -75,11 +75,6 @@ const iconAlignGroup = new AlignGroup();
 const LIFELIKE_PROPERTY = new EnumerationProperty( CircuitElementViewType.LIFELIKE );
 const SCHEMATIC_PROPERTY = new EnumerationProperty( CircuitElementViewType.SCHEMATIC );
 
-// Increment tandems for wire tool nodes
-let wireToolNodeCount = 0;
-
-// createCircuitElementToolNode
-
 type CreateCircuitElementToolNodeSelfOptions = {
   lifelikeIconHeight?: number;
   schematicIconHeight?: number;
@@ -193,7 +188,7 @@ export default class CircuitElementToolFactory {
       ).length;
   }
 
-  public createWireToolNode(): Node {
+  public createWireToolNode( tandem: Tandem ): Node {
     return this.createCircuitElementToolNode( wireStringProperty, CCKCConstants.NUMBER_OF_WIRES,
       ( tandem: Tandem, viewTypeProperty: Property<CircuitElementViewType> ) => {
         return viewTypeProperty.value === CircuitElementViewType.LIFELIKE ? ( new Image( wireIcon_png, {
@@ -206,7 +201,7 @@ export default class CircuitElementToolFactory {
       },
       circuitElement => circuitElement instanceof Wire,
       ( position: Vector2 ) => this.circuit.wireGroup.createNextElement( ...this.circuit.createVertexPairArray( position, WIRE_LENGTH ) ), {
-        tandem: this.parentTandem.createTandem( 'wireToolNode' + ( wireToolNodeCount++ ) ),
+        tandem: tandem,
         lifelikeIconHeight: 9,
         schematicIconHeight: 2
       } );
@@ -215,7 +210,7 @@ export default class CircuitElementToolFactory {
   /**
    * @param count - the number that can be dragged out at once
    */
-  public createRightBatteryToolNode( count = 10 ): CircuitElementToolNode {
+  public createRightBatteryToolNode( tandem: Tandem, count = 10 ): CircuitElementToolNode {
     const batteryModel = new Battery(
       new Vertex( Vector2.ZERO, this.circuit.selectionProperty ), new Vertex( new Vector2( CCKCConstants.BATTERY_LENGTH, 0 ), this.circuit.selectionProperty ),
       new NumberProperty( 0 ), 'normal', Tandem.OPTIONAL
@@ -226,7 +221,7 @@ export default class CircuitElementToolFactory {
                         circuitElement.initialOrientation === 'right' &&
                         circuitElement.batteryType === 'normal',
       ( position: Vector2 ) => this.circuit.batteryGroup.createNextElement( ...this.circuit.createVertexPairArray( position, BATTERY_LENGTH ) ), {
-        tandem: this.parentTandem.createTandem( 'batteryToolNode' ),
+        tandem: tandem,
         lifelikeIconHeight: 15
       } );
   }
@@ -234,7 +229,7 @@ export default class CircuitElementToolFactory {
   /**
    * @param count - the number that can be dragged out at once
    */
-  public createACVoltageToolNode( count = 10 ): CircuitElementToolNode {
+  public createACVoltageToolNode( tandem: Tandem, count = 10 ): CircuitElementToolNode {
     const acSource = new ACVoltage(
       new Vertex( Vector2.ZERO, this.circuit.selectionProperty ),
       new Vertex( new Vector2( AC_VOLTAGE_LENGTH, 0 ), this.circuit.selectionProperty ),
@@ -248,15 +243,15 @@ export default class CircuitElementToolFactory {
       } ),
       circuitElement => circuitElement instanceof ACVoltage,
       ( position: Vector2 ) => this.circuit.acVoltageGroup.createNextElement( ...this.circuit.createVertexPairArray( position, AC_VOLTAGE_LENGTH ) ), {
-        tandem: this.parentTandem.createTandem( 'acVoltageToolNode' ),
+        tandem: tandem,
         lifelikeIconHeight: 27,
         schematicIconHeight: 27
       }
     );
   }
 
-  public createLightBulbToolNode( lightBulbGroup = this.circuit.lightBulbGroup, string = lightBulbStringProperty,
-                                  real = false, addRealBulbsProperty: BooleanProperty | null = null, tandemName = 'lightBulbToolNode' ): CircuitElementToolNode {
+  public createLightBulbToolNode( tandem: Tandem, lightBulbGroup = this.circuit.lightBulbGroup, string = lightBulbStringProperty,
+                                  real = false, addRealBulbsProperty: BooleanProperty | null = null ): CircuitElementToolNode {
     const vertexPair = LightBulb.createVertexPair( Vector2.ZERO, this.circuit, true );
     const lightBulbModel = LightBulb.createAtPosition(
       vertexPair.startVertex,
@@ -277,13 +272,13 @@ export default class CircuitElementToolFactory {
         const vertexPair = LightBulb.createVertexPair( position, this.circuit );
         return lightBulbGroup.createNextElement( vertexPair.startVertex, vertexPair.endVertex );
       }, {
-        tandem: this.parentTandem.createTandem( tandemName ),
+        tandem: tandem,
         additionalProperty: addRealBulbsProperty || new BooleanProperty( true ),
         schematicIconHeight: 27
       } );
   }
 
-  public createResistorToolNode( providedOptions?: CreateResistorToolNodeProvidedOptions ): CircuitElementToolNode {
+  public createResistorToolNode( tandem: Tandem, providedOptions?: CreateResistorToolNodeProvidedOptions ): CircuitElementToolNode {
     const options = optionize<CreateResistorToolNodeProvidedOptions, CreateResistorToolNodeSelfOptions, CreateCircuitElementToolNodeSelfOptions>()( {
       count: 10,
       resistorType: ResistorType.RESISTOR,
@@ -312,13 +307,13 @@ export default class CircuitElementToolFactory {
         const vertices = this.circuit.createVertexPairArray( position, resistorType.length );
         return this.circuit.resistorGroup.createNextElement( vertices[ 0 ], vertices[ 1 ], resistorType );
       }, {
-        tandem: this.parentTandem.createTandem( options.tandemName ),
+        tandem: tandem,
         lifelikeIconHeight: options.lifelikeIconHeight,
         schematicIconHeight: options.schematicIconHeight
       } );
   }
 
-  public createFuseToolNode(): CircuitElementToolNode {
+  public createFuseToolNode( tandem: Tandem ): CircuitElementToolNode {
     const fuseModel = new Fuse(
       new Vertex( Vector2.ZERO, this.circuit.selectionProperty ),
       new Vertex( new Vector2( CCKCConstants.RESISTOR_LENGTH, 0 ), this.circuit.selectionProperty ),
@@ -330,7 +325,7 @@ export default class CircuitElementToolFactory {
       } ),
       circuitElement => circuitElement instanceof Fuse,
       ( position: Vector2 ) => this.circuit.fuseGroup.createNextElement( ...this.circuit.createVertexPairArray( position, FUSE_LENGTH ) ), {
-        tandem: this.parentTandem.createTandem( 'fuseToolNode' ),
+        tandem: tandem,
         lifelikeIconHeight: 15,
         schematicIconHeight: 14
       }
@@ -340,7 +335,7 @@ export default class CircuitElementToolFactory {
   /**
    * @param count - the number that can be dragged out at once
    */
-  public createCapacitorToolNode( count = 10 ): CircuitElementToolNode {
+  public createCapacitorToolNode( tandem: Tandem, count = 10 ): CircuitElementToolNode {
     const capacitor = new Capacitor(
       new Vertex( Vector2.ZERO, this.circuit.selectionProperty ),
       new Vertex( new Vector2( CCKCConstants.CAPACITOR_LENGTH, 0 ), this.circuit.selectionProperty ),
@@ -352,11 +347,11 @@ export default class CircuitElementToolFactory {
       } ),
       circuitElement => circuitElement instanceof Capacitor,
       ( position: Vector2 ) => this.circuit.capacitorGroup.createNextElement( ...this.circuit.createVertexPairArray( position, CCKCConstants.CAPACITOR_LENGTH ) ), {
-        tandem: this.parentTandem.createTandem( 'capacitorToolNode' )
+        tandem: tandem
       } );
   }
 
-  public createInductorToolNode(): CircuitElementToolNode {
+  public createInductorToolNode( tandem: Tandem ): CircuitElementToolNode {
     const inductorModel = new Inductor(
       new Vertex( Vector2.ZERO, this.circuit.selectionProperty ),
       new Vertex( new Vector2( CCKCConstants.INDUCTOR_LENGTH, 0 ), this.circuit.selectionProperty ),
@@ -370,13 +365,13 @@ export default class CircuitElementToolFactory {
       } ),
       circuitElement => circuitElement instanceof Inductor,
       ( position: Vector2 ) => this.circuit.inductorGroup.createNextElement( ...this.circuit.createVertexPairArray( position, CCKCConstants.INDUCTOR_LENGTH ) ), {
-        tandem: this.parentTandem.createTandem( 'inductorToolNode' ),
+        tandem: tandem,
         lifelikeIconHeight: 22,
         schematicIconHeight: 6
       } );
   }
 
-  public createSwitchToolNode(): CircuitElementToolNode {
+  public createSwitchToolNode( tandem: Tandem ): CircuitElementToolNode {
     return this.createCircuitElementToolNode( switchStringProperty, 5,
       ( tandem, viewTypeProperty ) => new SwitchNode( null, null,
         new Switch(
@@ -388,14 +383,14 @@ export default class CircuitElementToolFactory {
         } ),
       circuitElement => circuitElement instanceof Switch,
       ( position: Vector2 ) => this.circuit.switchGroup.createNextElement( ...this.circuit.createVertexPairArray( position, SWITCH_LENGTH ) ), {
-        tandem: this.parentTandem.createTandem( 'switchToolNode' ),
+        tandem: tandem,
         lifelikeIconHeight: 22,
         schematicIconHeight: 16
       } );
   }
 
-  public createPaperClipToolNode(): CircuitElementToolNode {
-    return this.createResistorToolNode( {
+  public createPaperClipToolNode( tandem: Tandem ): CircuitElementToolNode {
+    return this.createResistorToolNode( tandem, {
       count: 1,
       resistorType: ResistorType.PAPER_CLIP,
       tandemName: 'paperClipToolNode',
@@ -404,8 +399,8 @@ export default class CircuitElementToolFactory {
   }
 
   // Same docs as for createPaperClipToolNode
-  public createCoinToolNode(): CircuitElementToolNode {
-    return this.createResistorToolNode( {
+  public createCoinToolNode( tandem: Tandem ): CircuitElementToolNode {
+    return this.createResistorToolNode( tandem, {
       count: 1,
       resistorType: ResistorType.COIN,
       tandemName: 'coinToolNode',
@@ -415,8 +410,8 @@ export default class CircuitElementToolFactory {
   }
 
   // Same docs as as for createPaperClipToolNode
-  public createDollarBillToolNode(): CircuitElementToolNode {
-    return this.createResistorToolNode( {
+  public createDollarBillToolNode( tandem: Tandem ): CircuitElementToolNode {
+    return this.createResistorToolNode( tandem, {
       count: 1,
       resistorType: ResistorType.DOLLAR_BILL,
       tandemName: 'dollarBillToolNode',
@@ -426,8 +421,8 @@ export default class CircuitElementToolFactory {
   }
 
   // Same docs as for createPaperClipToolNode
-  public createEraserToolNode(): CircuitElementToolNode {
-    return this.createResistorToolNode( {
+  public createEraserToolNode( tandem: Tandem ): CircuitElementToolNode {
+    return this.createResistorToolNode( tandem, {
       count: 1,
       resistorType: ResistorType.ERASER,
       tandemName: 'eraserToolNode',
@@ -437,8 +432,8 @@ export default class CircuitElementToolFactory {
   }
 
   // Same docs as for createPaperClipToolNode
-  public createPencilToolNode(): CircuitElementToolNode {
-    return this.createResistorToolNode( {
+  public createPencilToolNode( tandem: Tandem ): CircuitElementToolNode {
+    return this.createResistorToolNode( tandem, {
       count: 1,
       resistorType: ResistorType.PENCIL,
       tandemName: 'pencilToolNode',
@@ -448,8 +443,8 @@ export default class CircuitElementToolFactory {
   }
 
   // Same docs as for createPaperClipToolNode
-  public createHandToolNode(): CircuitElementToolNode {
-    return this.createResistorToolNode( {
+  public createHandToolNode( tandem: Tandem ): CircuitElementToolNode {
+    return this.createResistorToolNode( tandem, {
       count: 1,
       resistorType: ResistorType.HAND,
       tandemName: 'handToolNode',
@@ -459,8 +454,8 @@ export default class CircuitElementToolFactory {
   }
 
   // Same docs as for createPaperClipToolNode
-  public createDogToolNode(): CircuitElementToolNode {
-    return this.createResistorToolNode( {
+  public createDogToolNode( tandem: Tandem ): CircuitElementToolNode {
+    return this.createResistorToolNode( tandem, {
       count: 1,
       resistorType: ResistorType.DOG,
       tandemName: 'dogToolNode',
@@ -470,8 +465,8 @@ export default class CircuitElementToolFactory {
   }
 
   // Same docs as for createPaperClipToolNode
-  public createHighResistanceResistorToolNode(): CircuitElementToolNode {
-    return this.createResistorToolNode( {
+  public createHighResistanceResistorToolNode( tandem: Tandem ): CircuitElementToolNode {
+    return this.createResistorToolNode( tandem, {
       count: 4,
       resistorType: ResistorType.HIGH_RESISTANCE_RESISTOR,
       tandemName: 'highResistanceResistorToolNode',
@@ -479,7 +474,7 @@ export default class CircuitElementToolFactory {
     } );
   }
 
-  public createHighVoltageBatteryToolNode(): CircuitElementToolNode {
+  public createHighVoltageBatteryToolNode( tandem: Tandem ): CircuitElementToolNode {
     return this.createCircuitElementToolNode( batteryStringProperty, 4,
       ( tandem, viewTypeProperty ) => new BatteryNode( null, null,
         new Battery(
@@ -497,12 +492,12 @@ export default class CircuitElementToolFactory {
                         circuitElement.batteryType === 'high-voltage', ( position: Vector2 ) => {
         return this.circuit.highVoltageBatteryGroup.createNextElement( ...this.circuit.createVertexPairArray( position, SWITCH_LENGTH ) );
       }, {
-        tandem: this.parentTandem.createTandem( 'highVoltageBatteryToolNode' ),
+        tandem: tandem,
         lifelikeIconHeight: 15
       } );
   }
 
-  public createHighResistanceBulbToolNode(): CircuitElementToolNode {
+  public createHighResistanceBulbToolNode( tandem: Tandem ): CircuitElementToolNode {
     const vertexPair = LightBulb.createVertexPair( Vector2.ZERO, this.circuit, true );
     return this.createCircuitElementToolNode( lightBulbStringProperty, 4,
       ( tandem, viewTypeProperty ) => new CCKCLightBulbNode(
@@ -527,7 +522,7 @@ export default class CircuitElementToolFactory {
         const vertexPair = LightBulb.createVertexPair( position, this.circuit, false );
         return this.circuit.highResistanceLightBulbGroup.createNextElement( vertexPair.startVertex, vertexPair.endVertex );
       }, {
-        tandem: this.parentTandem.createTandem( 'highResistanceBulbToolNode' )
+        tandem: tandem
       } );
   }
 }

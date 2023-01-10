@@ -9,8 +9,8 @@
 
 import Property from '../../../axon/js/Property.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import { Node, Color, HBox, HBoxOptions } from '../../../scenery/js/imports.js';
-import Carousel, { CarouselOptions } from '../../../sun/js/Carousel.js';
+import { Color, HBox, HBoxOptions } from '../../../scenery/js/imports.js';
+import Carousel, { CarouselItem, CarouselOptions } from '../../../sun/js/Carousel.js';
 import PageControl from '../../../sun/js/PageControl.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -33,7 +33,7 @@ export default class CircuitElementToolbox extends HBox {
    * @param tandem
    * @param [providedOptions]
    */
-  public constructor( viewTypeProperty: Property<CircuitElementViewType>, circuitElementToolNodes: Node[], tandem: Tandem, providedOptions?: CircuitElementToolboxOptions ) {
+  public constructor( viewTypeProperty: Property<CircuitElementViewType>, circuitElementToolNodes: CarouselItem[], tandem: Tandem, providedOptions?: CircuitElementToolboxOptions ) {
 
     providedOptions = optionize<CircuitElementToolboxOptions, SelfOptions, HBoxOptions>()( {
       carouselOptions: {

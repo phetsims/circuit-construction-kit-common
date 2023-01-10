@@ -18,6 +18,7 @@ import ResetAllButton from '../../../scenery-phet/js/buttons/ResetAllButton.js';
 import StopwatchNode from '../../../scenery-phet/js/StopwatchNode.js';
 import TimeControlNode from '../../../scenery-phet/js/TimeControlNode.js';
 import { AlignBox, AlignGroup, KeyboardUtils, Node, VBox } from '../../../scenery/js/imports.js';
+import { CarouselItem } from '../../../sun/js/Carousel.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
@@ -105,7 +106,7 @@ export default class CCKCScreenView extends ScreenView {
    * @param tandem
    * @param [providedOptions]
    */
-  protected constructor( model: CircuitConstructionKitModel, circuitElementToolNodes: Node[], tandem: Tandem, providedOptions?: CCKCScreenViewOptions ) {
+  protected constructor( model: CircuitConstructionKitModel, circuitElementToolNodes: CarouselItem[], tandem: Tandem, providedOptions?: CCKCScreenViewOptions ) {
 
     const options = optionize<CCKCScreenViewOptions, SelfOptions, ScreenViewOptions>()( {
 
