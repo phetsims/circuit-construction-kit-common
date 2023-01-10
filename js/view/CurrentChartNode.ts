@@ -8,7 +8,6 @@
 
 import createObservableArray from '../../../axon/js/createObservableArray.js';
 import Vector2 from '../../../dot/js/Vector2.js';
-import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -34,9 +33,7 @@ export default class CurrentChartNode extends CCKCChartNode {
   public constructor( circuitLayerNode: CircuitLayerNode, timeProperty: Property<number>, visibleBoundsProperty: Property<Bounds2>,
                       providedOptions?: CCKCChartNodeOptions ) {
 
-    const options = optionize<CCKCChartNodeOptions, EmptySelfOptions, CCKCChartNodeOptions>()( {
-      tandem: Tandem.OPTIONAL
-    }, providedOptions );
+    const options = optionize<CCKCChartNodeOptions, EmptySelfOptions, CCKCChartNodeOptions>()( {}, providedOptions );
 
     super( circuitLayerNode, timeProperty, visibleBoundsProperty, createObservableArray(), currentWithUnitsStringProperty, providedOptions );
 

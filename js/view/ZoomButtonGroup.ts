@@ -12,7 +12,6 @@ import { combineOptions } from '../../../phet-core/js/optionize.js';
 import MagnifyingGlassZoomButtonGroup, { MagnifyingGlassZoomButtonGroupOptions } from '../../../scenery-phet/js/MagnifyingGlassZoomButtonGroup.js';
 import PhetColorScheme from '../../../scenery-phet/js/PhetColorScheme.js';
 import RectangularButton from '../../../sun/js/buttons/RectangularButton.js';
-import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 // constants
@@ -20,14 +19,15 @@ const ZOOMED_IN = 1;
 const ZOOMED_OUT = 0.5;
 const BUTTON_SPACING = 20;
 
+type ZoomButtonGroupOptions = MagnifyingGlassZoomButtonGroupOptions;
+
 export default class ZoomButtonGroup extends MagnifyingGlassZoomButtonGroup {
   public static readonly ZOOMED_IN = ZOOMED_IN;
   public static readonly ZOOMED_OUT = ZOOMED_OUT;
 
-  public constructor( selectedZoomProperty: NumberProperty, providedOptions?: MagnifyingGlassZoomButtonGroupOptions ) {
-    providedOptions = combineOptions<MagnifyingGlassZoomButtonGroupOptions>( {
+  public constructor( selectedZoomProperty: NumberProperty, providedOptions?: ZoomButtonGroupOptions ) {
+    providedOptions = combineOptions<ZoomButtonGroupOptions>( {
       spacing: BUTTON_SPACING,
-      tandem: Tandem.REQUIRED,
       buttonOptions: {
         buttonAppearanceStrategy: RectangularButton.ThreeDAppearanceStrategy,
         baseColor: PhetColorScheme.BUTTON_YELLOW

@@ -132,8 +132,8 @@ export default class CircuitElementToolFactory {
 
     assert && assert( Number.isInteger( count ), 'count should be an integer' );
 
+    // TODO SR: please make sure that we PickRequired<ParentOptions, 'tandem'> here if applicable
     const options = optionize<CreateCircuitElementToolNodeProvidedOptions, CreateCircuitElementToolNodeSelfOptions, CircuitElementToolNodeOptions>()( {
-      tandem: Tandem.REQUIRED,
       additionalProperty: new BooleanProperty( true ),
       lifelikeIconHeight: CCKCConstants.TOOLBOX_ICON_HEIGHT,
       schematicIconHeight: CCKCConstants.TOOLBOX_ICON_HEIGHT

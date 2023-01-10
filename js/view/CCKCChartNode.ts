@@ -95,8 +95,7 @@ export default class CCKCChartNode extends Node {
 
       // Prevent adjustment of the control panel rendering while dragging,
       // see https://github.com/phetsims/wave-interference/issues/212
-      preventFit: true,
-      tandem: Tandem.OPTIONAL
+      preventFit: true
     }, providedOptions ) as CCKCChartNodeOptions;
     const backgroundNode = new Node( { cursor: 'pointer' } );
 
