@@ -273,7 +273,7 @@ export default class CircuitElementToolFactory {
         return lightBulbGroup.createNextElement( vertexPair.startVertex, vertexPair.endVertex );
       }, {
         tandem: tandem,
-        additionalProperty: addRealBulbsProperty || new BooleanProperty( true ),
+        additionalProperty: new BooleanProperty( true ),
         schematicIconHeight: 27
       } );
   }
