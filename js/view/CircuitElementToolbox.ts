@@ -45,6 +45,10 @@ export default class CircuitElementToolbox extends HBox {
         // Expand the touch area above the up button and below the down button
         buttonTouchAreaYDilation: 8,
 
+        spacing: 24,
+
+        margin: 12,
+
         separatorsVisible: true,
 
         tandem: tandem.createTandem( 'carousel' )
