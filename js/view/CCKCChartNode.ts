@@ -269,7 +269,7 @@ export default class CCKCChartNode extends Node {
       } ) ] );
 
     // Show a text message when there is data, but none of the data is in range.
-    const dataOutOfRangeMessage = new Text( CircuitConstructionKitCommonStrings.dataOutOfRange, {
+    const dataOutOfRangeMessage = new Text( CircuitConstructionKitCommonStrings.dataOutOfRangeStringProperty, {
       fill: 'red',
       centerX: linePlot.centerX,
       centerY: linePlot.centerY,
