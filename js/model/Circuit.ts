@@ -47,7 +47,6 @@ import ResistorType from './ResistorType.js';
 import InteractionMode from './InteractionMode.js';
 import CurrentSense from './CurrentSense.js';
 import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
-import optionize from '../../../phet-core/js/optionize.js';
 import TEmitter from '../../../axon/js/TEmitter.js';
 import OrIO from '../../../tandem/js/types/OrIO.js';
 import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
@@ -151,13 +150,12 @@ export default class Circuit {
   public readonly includeLabElements: boolean;
 
   public constructor( viewTypeProperty: Property<CircuitElementViewType>, addRealBulbsProperty: Property<boolean>, tandem: Tandem,
-                      providedOptions?: CircuitOptions ) {
+                      providedOptions: CircuitOptions ) {
 
     this.viewTypeProperty = viewTypeProperty;
     this.addRealBulbsProperty = addRealBulbsProperty;
 
-    // @ts-expect-error TODO SR can you help with "blackBoxStudy" defined here, it is required https://github.com/phetsims/chipper/issues/1360
-    const options = optionize<CircuitOptions>()( { blackBoxStudy: false }, providedOptions );
+    const options = providedOptions;
 
     this.includeACElements = options.includeACElements;
     this.includeLabElements = options.includeLabElements;
