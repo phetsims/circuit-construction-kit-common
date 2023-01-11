@@ -63,6 +63,7 @@ export default class CircuitElementToolbox extends HBox {
       orientation: 'vertical',
       pageFill: Color.WHITE,
       pageStroke: Color.BLACK,
+      currentPageStroke: Color.TRANSPARENT,
       interactive: true,
       dotTouchAreaDilation: 4,
       dotMouseAreaDilation: 4,
