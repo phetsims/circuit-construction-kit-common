@@ -56,7 +56,7 @@ export default class PhaseShiftControl extends VBox {
       tandem: providedOptions.tandem.createTandem( 'numberSpinner' )
     };
 
-    const title = new Text( CircuitConstructionKitCommonStrings.phaseShift, {
+    const title = new Text( CircuitConstructionKitCommonStrings.phaseShiftStringProperty, {
       font: CCKCConstants.DEFAULT_FONT,
       maxWidth: CircuitElementNumberControl.NUMBER_CONTROL_ELEMENT_MAX_WIDTH
     } );
