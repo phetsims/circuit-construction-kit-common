@@ -330,7 +330,7 @@ export default class CCKCScreenView extends ScreenView {
     this.chartNodes.forEach( chartNode => this.circuitLayerNode.sensorLayer.addChild( chartNode ) );
 
     // Create the zoom button group
-    const zoomButtonGroup = new ZoomButtonGroup( model.selectedZoomProperty, {
+    const zoomButtonGroup = new ZoomButtonGroup( model.zoomLevelProperty, {
       tandem: tandem.createTandem( 'zoomButtonGroup' )
     } );
     zoomButtonGroup.mutate( {
@@ -406,7 +406,7 @@ export default class CCKCScreenView extends ScreenView {
     this.circuitLayerNodeBackLayer.setTranslation( this.layoutBounds.centerX, this.layoutBounds.centerY );
 
     // Continuously zoom in and out as the current zoom interpolates, and update when the visible bounds change
-    Multilink.multilink( [ model.currentZoomProperty, this.visibleBoundsProperty ], ( currentZoom, visibleBounds ) => {
+    Multilink.multilink( [ model.currentZoomScaleProperty, this.visibleBoundsProperty ], ( currentZoom, visibleBounds ) => {
       this.circuitLayerNode.setScaleMagnitude( currentZoom );
       this.circuitLayerNodeBackLayer.setScaleMagnitude( currentZoom );
       this.circuitLayerNode.updateTransform( visibleBounds );

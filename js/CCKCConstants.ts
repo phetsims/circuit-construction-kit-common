@@ -24,6 +24,9 @@ const CCKCConstants = {
   // Still need physics to update, like capacitors clearing and electrons updating.  But don't propagate time very far!
   PAUSED_DT: 1E-6,
 
+  // Available scale factors for the sim stage
+  ZOOM_SCALES: [ 0.6, 1, 1.6, 2.4 ],
+
   // Maximum size for Width or height of icons in the circuit element toolbox or sensor toolbox
   TOOLBOX_ICON_HEIGHT: 31,
   TOOLBOX_ICON_WIDTH: 60,

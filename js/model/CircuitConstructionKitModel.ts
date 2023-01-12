@@ -12,13 +12,11 @@ import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
 import Property from '../../../axon/js/Property.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
-import Utils from '../../../dot/js/Utils.js';
 import Range from '../../../dot/js/Range.js';
 import Stopwatch from '../../../scenery-phet/js/Stopwatch.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import ZoomButtonGroup from '../view/ZoomButtonGroup.js';
 import Ammeter from './Ammeter.js';
 import Circuit from './Circuit.js';
 import Voltmeter from './Voltmeter.js';
@@ -28,9 +26,11 @@ import Bounds2 from '../../../dot/js/Bounds2.js';
 import CircuitElementViewType from './CircuitElementViewType.js';
 import LightBulb from './LightBulb.js';
 import InteractionMode from './InteractionMode.js';
-import ZoomLevel from './ZoomLevel.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import TEmitter from '../../../axon/js/TEmitter.js';
+import NumberIO from '../../../tandem/js/types/NumberIO.js';
+import DerivedProperty from '../../../axon/js/DerivedProperty.js';
+import Utils from '../../../dot/js/Utils.js';
 
 type CircuitConstructionKitModelOptions = {
   blackBoxStudy?: boolean;
@@ -59,10 +59,15 @@ export default class CircuitConstructionKitModel {
 
   // true if the values in the toolbox should be shown
   public readonly showValuesProperty: BooleanProperty;
-  public readonly selectedZoomProperty: NumberProperty;
 
-  // the animated value of the zoom level
-  public readonly currentZoomProperty: NumberProperty;
+  // the index of zoomScaleProperty in the CCKConstants.ZOOM_LEVEL array
+  public zoomLevelProperty: NumberProperty;
+
+  // the target zoom level of the objects in the view after zoom animation completes
+  public readonly zoomScaleProperty: DerivedProperty<number, number, unknown, unknown, unknown, unknown, unknown, unknown, unknown, unknown, unknown, unknown, unknown, unknown, unknown, unknown>;
+
+  // the animated value of the zoom level, changes during zoom animation
+  public readonly currentZoomScaleProperty: NumberProperty;
 
   // True if the simulation is playing, controlled by the TimeControlNode
   public readonly isPlayingProperty: BooleanProperty;
@@ -80,7 +85,6 @@ export default class CircuitConstructionKitModel {
 
   // Indicates when the model has updated, some views need to update accordingly
   public readonly stepEmitter: TEmitter<[ number ]>;
-  private readonly zoomProperty: EnumerationProperty<ZoomLevel>;
 
   protected constructor( includeACElements: boolean, includeLabElements: boolean, tandem: Tandem, providedOptions?: CircuitConstructionKitModelOptions ) {
 
@@ -137,35 +141,43 @@ export default class CircuitConstructionKitModel {
       tandem: tandem.createTandem( 'showValuesProperty' )
     } );
 
-    // Scaling applied to the circuit node so the user can zoom out and make larger circuits.
-    // 0 = zoomed out fully, 1 = zoomed in fully.  This NumberProperty is an implementation detail necessary to wire up
-    // to MagnifyingGlassZoomButton
-    this.selectedZoomProperty = new NumberProperty( 1, {
-      tandem: tandem.createTandem( 'selectedZoomProperty' ),
-      range: new Range( 0, 1 ),
-      validValues: [ 0, 1 ],
-      phetioDocumentation: 'Zoom level for the sim.  0=zoomed out, 1=zoomed in (magnified)'
+    assert && assert( CCKCConstants.ZOOM_SCALES.includes( 1 ), 'Zoom scales must include 1 as an option' );
+
+    // Zoom level for scenes
+    this.zoomLevelProperty = new NumberProperty( CCKCConstants.ZOOM_SCALES.indexOf( 1 ), {
+      numberType: 'Integer',
+      range: new Range( 0, CCKCConstants.ZOOM_SCALES.length - 1 ),
+      tandem: tandem.createTandem( 'zoomLevelProperty' ),
+      phetioDocumentation: 'This Property is controlled by the zoom buttons. ' +
+                           'It is integer index that tells the sim how to scale the view. ' +
+                           'Smaller values are more zoomed out. ' +
+                           'See zoomScaleProperty for the actual scale value.'
     } );
 
-    // For PhET-iO: Use an enumeration pattern for the API
-    this.zoomProperty = new EnumerationProperty( ZoomLevel.NORMAL, {
-      tandem: tandem.createTandem( 'zoomProperty' ),
-      phetioDocumentation: 'Selected zoom level for the simulation'
-    } );
-    this.selectedZoomProperty.lazyLink( selectedZoom => this.zoomProperty.set( selectedZoom === 0 ? ZoomLevel.ZOOMED_OUT : ZoomLevel.NORMAL ) );
-    this.zoomProperty.lazyLink( zoom => this.selectedZoomProperty.set( zoom === ZoomLevel.ZOOMED_OUT ? 0 : 1 ) );
+    // Scale factor for the current zoom level
+    this.zoomScaleProperty = new DerivedProperty(
+      [ this.zoomLevelProperty ],
+      ( zoomLevel: number ) => CCKCConstants.ZOOM_SCALES[ zoomLevel ], {
+        validValues: CCKCConstants.ZOOM_SCALES,
+        tandem: tandem.createTandem( 'zoomScaleProperty' ),
+        phetioValueType: NumberIO,
+        phetioDocumentation: 'Scale that is applied to the view. This Property is derived from zoomLevelProperty, ' +
+                             ' which is controlled by the zoom buttons.'
+      } );
 
-    this.currentZoomProperty = new NumberProperty( this.selectedZoomProperty.get() );
+    this.currentZoomScaleProperty = new NumberProperty( this.zoomScaleProperty.get() );
 
-    this.selectedZoomProperty.lazyLink( ( newValue: number ) => {
+    this.zoomScaleProperty.lazyLink( ( newValue: number ) => {
       if ( phet.joist.sim.isSettingPhetioStateProperty.value ) {
-        this.currentZoomProperty.value = newValue === 0 ? ZoomButtonGroup.ZOOMED_OUT : ZoomButtonGroup.ZOOMED_IN;
+        this.currentZoomScaleProperty.value = newValue;
       }
       else {
-        this.zoomAnimation = new ZoomAnimation( this.currentZoomProperty.get(), newValue, ( delta: number ) => {
-          const proposedZoomValue = this.currentZoomProperty.value + delta;
-          const boundedValue = Utils.clamp( proposedZoomValue, ZoomButtonGroup.ZOOMED_OUT, ZoomButtonGroup.ZOOMED_IN );
-          this.currentZoomProperty.value = boundedValue;
+        this.zoomAnimation = new ZoomAnimation( this.currentZoomScaleProperty.get(), newValue, ( delta: number ) => {
+          const proposedZoomValue = this.currentZoomScaleProperty.value + delta;
+          const minZoomScale = Math.min( ...CCKCConstants.ZOOM_SCALES );
+          const maxZoomScale = Math.max( ...CCKCConstants.ZOOM_SCALES );
+          const boundedValue = Utils.clamp( proposedZoomValue, minZoomScale, maxZoomScale );
+          this.currentZoomScaleProperty.value = boundedValue;
         } );
       }
     } );
@@ -316,8 +328,8 @@ export default class CircuitConstructionKitModel {
     this.voltmeters.forEach( voltmeter => voltmeter.reset() );
     this.ammeters.forEach( ammeter => ammeter.reset() );
     this.viewTypeProperty.reset();
-    this.currentZoomProperty.reset();
-    this.selectedZoomProperty.reset();
+    this.zoomLevelProperty.reset();
+    this.currentZoomScaleProperty.reset();
     this.stopwatch.reset();
     this.isPlayingProperty.reset();
     this.addRealBulbsProperty.reset();
