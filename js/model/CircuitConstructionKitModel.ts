@@ -31,6 +31,7 @@ import TEmitter from '../../../axon/js/TEmitter.js';
 import NumberIO from '../../../tandem/js/types/NumberIO.js';
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import Utils from '../../../dot/js/Utils.js';
+import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 
 type CircuitConstructionKitModelOptions = {
   blackBoxStudy?: boolean;
@@ -61,15 +62,13 @@ export default class CircuitConstructionKitModel {
   public readonly showValuesProperty: BooleanProperty;
 
   // the index of zoomScaleProperty in the CCKConstants.ZOOM_LEVEL array
-  // REVIEW: This property should be marked as readonly so it cannot be swapped out
-  public zoomLevelProperty: NumberProperty;
+  public readonly zoomLevelProperty: NumberProperty;
 
   // the target zoom level of the objects in the view after zoom animation completes
-  // REVIEW: This type could be written as TReadOnlyProperty<number>
-  public readonly zoomScaleProperty: DerivedProperty<number, number, unknown, unknown, unknown, unknown, unknown, unknown, unknown, unknown, unknown, unknown, unknown, unknown, unknown, unknown>;
+  public readonly zoomScaleProperty: TReadOnlyProperty<number>;
 
   // the animated value of the zoom level, changes during zoom animation
-  public readonly currentZoomScaleProperty: NumberProperty;
+  public readonly animatedZoomScaleProperty: NumberProperty;
 
   // True if the simulation is playing, controlled by the TimeControlNode
   public readonly isPlayingProperty: BooleanProperty;
@@ -167,19 +166,19 @@ export default class CircuitConstructionKitModel {
                              'which is controlled by the zoom buttons.'
       } );
 
-    this.currentZoomScaleProperty = new NumberProperty( this.zoomScaleProperty.get() );
+    this.animatedZoomScaleProperty = new NumberProperty( this.zoomScaleProperty.get() );
 
     this.zoomScaleProperty.lazyLink( ( newValue: number ) => {
       if ( phet.joist.sim.isSettingPhetioStateProperty.value ) {
-        this.currentZoomScaleProperty.value = newValue;
+        this.animatedZoomScaleProperty.value = newValue;
       }
       else {
-        this.zoomAnimation = new ZoomAnimation( this.currentZoomScaleProperty.get(), newValue, ( delta: number ) => {
-          const proposedZoomValue = this.currentZoomScaleProperty.value + delta;
+        this.zoomAnimation = new ZoomAnimation( this.animatedZoomScaleProperty.get(), newValue, ( delta: number ) => {
+          const proposedZoomValue = this.animatedZoomScaleProperty.value + delta;
           const minZoomScale = Math.min( ...CCKCConstants.ZOOM_SCALES );
           const maxZoomScale = Math.max( ...CCKCConstants.ZOOM_SCALES );
           const boundedValue = Utils.clamp( proposedZoomValue, minZoomScale, maxZoomScale );
-          this.currentZoomScaleProperty.value = boundedValue;
+          this.animatedZoomScaleProperty.value = boundedValue;
         } );
       }
     } );
@@ -331,7 +330,7 @@ export default class CircuitConstructionKitModel {
     this.ammeters.forEach( ammeter => ammeter.reset() );
     this.viewTypeProperty.reset();
     this.zoomLevelProperty.reset();
-    this.currentZoomScaleProperty.reset();
+    this.animatedZoomScaleProperty.reset();
     this.stopwatch.reset();
     this.isPlayingProperty.reset();
     this.addRealBulbsProperty.reset();
