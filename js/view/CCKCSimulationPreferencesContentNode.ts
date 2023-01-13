@@ -23,15 +23,15 @@ export default class CCKCSimulationPreferencesContentNode extends VBox {
 
     const textOptions = PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS;
     const schematicStandardRadioButtonGroup = new VerticalAquaRadioButtonGroup<SchematicType>( schematicTypeProperty, [ {
-      createNode: tandem => new Text( CircuitConstructionKitCommonStrings.ieeeStringProperty, textOptions ),
+      createNode: () => new Text( CircuitConstructionKitCommonStrings.ieeeStringProperty, textOptions ),
       value: SchematicType.IEEE,
       tandemName: 'ieeeRadioButton'
     }, {
-      createNode: tandem => new Text( CircuitConstructionKitCommonStrings.iecStringProperty, textOptions ),
+      createNode: () => new Text( CircuitConstructionKitCommonStrings.iecStringProperty, textOptions ),
       value: SchematicType.IEC,
       tandemName: 'iecRadioButton'
     }, {
-      createNode: tandem => new Text( CircuitConstructionKitCommonStrings.britishStringProperty, textOptions ),
+      createNode: () => new Text( CircuitConstructionKitCommonStrings.britishStringProperty, textOptions ),
       value: SchematicType.BRITISH,
       tandemName: 'britishRadioButton'
     } ], {
@@ -42,11 +42,11 @@ export default class CCKCSimulationPreferencesContentNode extends VBox {
     } );
 
     const ammeterReadoutRadioButtonGroup = new VerticalAquaRadioButtonGroup<AmmeterReadoutType>( ammeterReadoutTypeProperty, [ {
-      createNode: tandem => new Text( CircuitConstructionKitCommonStrings.magnitudeStringProperty, textOptions ),
+      createNode: () => new Text( CircuitConstructionKitCommonStrings.magnitudeStringProperty, textOptions ),
       value: AmmeterReadoutType.MAGNITUDE,
       tandemName: 'magnitudeRadioButton'
     }, {
-      createNode: tandem => new Text( CircuitConstructionKitCommonStrings.signedStringProperty, textOptions ),
+      createNode: () => new Text( CircuitConstructionKitCommonStrings.signedStringProperty, textOptions ),
       value: AmmeterReadoutType.SIGNED,
       tandemName: 'signedRadioButton'
     } ], {

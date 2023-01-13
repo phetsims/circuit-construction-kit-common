@@ -155,11 +155,11 @@ export default class CircuitElementToolFactory {
     const toggleNode = new ToggleNode( this.viewTypeProperty, [
       {
         value: CircuitElementViewType.LIFELIKE,
-        createNode: tandem => wrap( createIcon( Tandem.OPT_OUT, LIFELIKE_PROPERTY ), options.lifelikeIconHeight )
+        createNode: () => wrap( createIcon( Tandem.OPT_OUT, LIFELIKE_PROPERTY ), options.lifelikeIconHeight )
       },
       {
         value: CircuitElementViewType.SCHEMATIC,
-        createNode: tandem => wrap( createIcon( Tandem.OPT_OUT, SCHEMATIC_PROPERTY ), options.schematicIconHeight )
+        createNode: () => wrap( createIcon( Tandem.OPT_OUT, SCHEMATIC_PROPERTY ), options.schematicIconHeight )
       }
     ] );
 
