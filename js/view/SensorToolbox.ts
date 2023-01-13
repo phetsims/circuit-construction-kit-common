@@ -116,7 +116,7 @@ export default class SensorToolbox extends CCKCPanel {
     voltmeterToolNode.addInputListener( createListenerMulti( voltmeterNodes ) );
 
     // Icon for the ammeter
-    const ammeter = new Ammeter( tandem.createTandem( 'ammeterIconModel' ), 0 );
+    const ammeter = new Ammeter( Tandem.OPTIONAL, 0 );
     const ammeterToolNode = new AmmeterNode( ammeter, null, {
       isIcon: true,
       tandem: tandem.createTandem( 'ammeterToolNode' )
