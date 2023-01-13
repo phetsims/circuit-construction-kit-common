@@ -61,9 +61,11 @@ export default class CircuitConstructionKitModel {
   public readonly showValuesProperty: BooleanProperty;
 
   // the index of zoomScaleProperty in the CCKConstants.ZOOM_LEVEL array
+  // REVIEW: This property should be marked as readonly so it cannot be swapped out
   public zoomLevelProperty: NumberProperty;
 
   // the target zoom level of the objects in the view after zoom animation completes
+  // REVIEW: This type could be written as TReadOnlyProperty<number>
   public readonly zoomScaleProperty: DerivedProperty<number, number, unknown, unknown, unknown, unknown, unknown, unknown, unknown, unknown, unknown, unknown, unknown, unknown, unknown, unknown>;
 
   // the animated value of the zoom level, changes during zoom animation
@@ -149,7 +151,7 @@ export default class CircuitConstructionKitModel {
       range: new Range( 0, CCKCConstants.ZOOM_SCALES.length - 1 ),
       tandem: tandem.createTandem( 'zoomLevelProperty' ),
       phetioDocumentation: 'This Property is controlled by the zoom buttons. ' +
-                           'It is integer index that tells the sim how to scale the view. ' +
+                           'It is an integer index that tells the sim how much to scale the view. ' +
                            'Smaller values are more zoomed out. ' +
                            'See zoomScaleProperty for the actual scale value.'
     } );
@@ -162,7 +164,7 @@ export default class CircuitConstructionKitModel {
         tandem: tandem.createTandem( 'zoomScaleProperty' ),
         phetioValueType: NumberIO,
         phetioDocumentation: 'Scale that is applied to the view. This Property is derived from zoomLevelProperty, ' +
-                             ' which is controlled by the zoom buttons.'
+                             'which is controlled by the zoom buttons.'
       } );
 
     this.currentZoomScaleProperty = new NumberProperty( this.zoomScaleProperty.get() );
