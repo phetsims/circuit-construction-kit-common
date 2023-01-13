@@ -25,7 +25,7 @@ const CCKCConstants = {
   PAUSED_DT: 1E-6,
 
   // Available scale factors for the sim stage
-  ZOOM_SCALES: [ 0.6, 1, 1.8 ],
+  ZOOM_SCALES: [ 0.5, 1, 1.8 ],
 
   // Maximum size for Width or height of icons in the circuit element toolbox or sensor toolbox
   TOOLBOX_ICON_HEIGHT: 31,
