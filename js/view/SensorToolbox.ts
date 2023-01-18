@@ -134,10 +134,9 @@ export default class SensorToolbox extends CCKCPanel {
       new Vertex( new Vector2( CCKCConstants.SERIES_AMMETER_LENGTH, 0 ), circuit.selectionProperty ),
       Tandem.OPTIONAL
     );
-    const seriesAmmeterNodeIcon = new SeriesAmmeterNode( null, null, seriesAmmeterIcon,
-      circuit.includeLabElements ? tandem.createTandem( 'seriesAmmeterNodeIcon' ) : Tandem.OPT_OUT, options.showResultsProperty, {
-        isIcon: true
-      } );
+    const seriesAmmeterNodeIcon = new SeriesAmmeterNode( null, null, seriesAmmeterIcon, Tandem.OPT_OUT, options.showResultsProperty, {
+      isIcon: true
+    } );
     const createSeriesAmmeter = ( position: Vector2 ) => {
       const halfLength = CCKCConstants.SERIES_AMMETER_LENGTH / 2;
       const startVertex = circuit.vertexGroup.createNextElement( position.plusXY( -halfLength, 0 ) );
