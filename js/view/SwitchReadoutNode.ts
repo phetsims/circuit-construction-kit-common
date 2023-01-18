@@ -49,8 +49,8 @@ export default class SwitchReadoutNode extends Node {
 
     // This is reused across all switches
     circuit.selectionProperty.link( ( newCircuitElement: CircuitElement | Vertex | null, oldCircuitElement: CircuitElement | Vertex | null ) => {
-      oldCircuitElement instanceof Switch && oldCircuitElement.closedProperty.unlink( closedListener );
-      newCircuitElement instanceof Switch && newCircuitElement.closedProperty.link( closedListener );
+      oldCircuitElement instanceof Switch && oldCircuitElement.isClosedProperty.unlink( closedListener );
+      newCircuitElement instanceof Switch && newCircuitElement.isClosedProperty.link( closedListener );
     } );
 
     const update = () => {

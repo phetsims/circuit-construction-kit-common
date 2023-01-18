@@ -35,7 +35,7 @@ export default class Switch extends FixedCircuitElement {
   public readonly resistanceProperty: Property<number>;
 
   // whether the switch is closed (and current can flow through it)
-  public readonly closedProperty: Property<boolean>;
+  public readonly isClosedProperty: Property<boolean>;
 
   public constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: SwitchOptions ) {
 
@@ -51,11 +51,11 @@ export default class Switch extends FixedCircuitElement {
 
     this.resistanceProperty = new NumberProperty( 0 );
 
-    this.closedProperty = new BooleanProperty( options.closed, {
-      tandem: tandem.createTandem( 'closedProperty' )
+    this.isClosedProperty = new BooleanProperty( options.closed, {
+      tandem: tandem.createTandem( 'isClosedProperty' )
     } );
 
-    this.closedProperty.link( closed => {
+    this.isClosedProperty.link( closed => {
       this.resistanceProperty.value = closed ? 0 : CCKCConstants.MAX_RESISTANCE;
     } );
   }
@@ -64,7 +64,7 @@ export default class Switch extends FixedCircuitElement {
    * Dispose of this and PhET-iO instrumented children, so they will be unregistered.
    */
   public override dispose(): void {
-    this.closedProperty.dispose();
+    this.isClosedProperty.dispose();
     super.dispose();
   }
 
@@ -80,7 +80,7 @@ export default class Switch extends FixedCircuitElement {
     const fractionAlongWire = distanceAlongWire / this.chargePathLength;
 
     // If the charge is halfway up the switch lever for an open switch, show it along the raised lever
-    if ( fractionAlongWire > SWITCH_START && fractionAlongWire < SWITCH_END && !this.closedProperty.get() ) {
+    if ( fractionAlongWire > SWITCH_START && fractionAlongWire < SWITCH_END && !this.isClosedProperty.get() ) {
       const pivot = startPosition.blend( endPosition, SWITCH_START );
 
       const twoThirdsPoint = startPosition.blend( endPosition, SWITCH_END );
@@ -101,7 +101,7 @@ export default class Switch extends FixedCircuitElement {
    * Get the properties so that the circuit can be solved when changed.
    */
   public getCircuitProperties(): Property<IntentionalAny>[] {
-    return [ this.resistanceProperty, this.closedProperty ];
+    return [ this.resistanceProperty, this.isClosedProperty ];
   }
 }
 

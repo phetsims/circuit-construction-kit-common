@@ -829,7 +829,7 @@ export default class Circuit {
         // If the circuit element has a closed property (like a Switch), it is only OK to traverse if the element is
         // closed.
         if ( circuitElement instanceof Switch ) {
-          return circuitElement.closedProperty.get();
+          return circuitElement.isClosedProperty.get();
         }
         else {
 
@@ -1189,7 +1189,7 @@ export default class Circuit {
     // cannot be in a loop since their vertices are not directly connected.  Note the search
     // algorithm below gives the wrong answer because the start vertex and end vertex can be connected
     // by other circuit elements.
-    if ( circuitElement instanceof Switch && !circuitElement.closedProperty.value ) {
+    if ( circuitElement instanceof Switch && !circuitElement.isClosedProperty.value ) {
       return false;
     }
 
@@ -1221,7 +1221,7 @@ export default class Circuit {
                neighbor !== circuitElement &&
 
                // can't cross an open switch
-               !( neighbor instanceof Switch && !neighbor.closedProperty.value ) ) {
+               !( neighbor instanceof Switch && !neighbor.isClosedProperty.value ) ) {
             const opposite = neighbor.getOppositeVertex( vertex );
             if ( opposite === circuitElement.endVertexProperty.value ) {
 
