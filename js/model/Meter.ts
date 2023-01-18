@@ -52,9 +52,7 @@ export default class Meter extends PhetioObject {
       tandem: tandem.createTandem( 'bodyPositionProperty' )
     } );
 
-    this.draggingProbesWithBodyProperty = new BooleanProperty( true, {
-      tandem: tandem.createTandem( 'draggingProbesWithBodyProperty' )
-    } );
+    this.draggingProbesWithBodyProperty = new BooleanProperty( true );
 
     this.droppedEmitter = new Emitter( { parameters: [ { valueType: Bounds2 } ] } );
   }
