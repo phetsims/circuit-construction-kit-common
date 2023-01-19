@@ -1,4 +1,4 @@
-// Copyright 2017-2022, University of Colorado Boulder
+// Copyright 2017-2023, University of Colorado Boulder
 
 /**
  * Readout that appears in the CircuitElementEditContainerNode that displays whether the switch is open or closed.
