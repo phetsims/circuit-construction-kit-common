@@ -23,9 +23,6 @@ const wireResistivityStringProperty = CircuitConstructionKitCommonStrings.wireRe
 // constants
 const TICK_LABEL_TEXT_OPTIONS = { fontSize: 12, maxWidth: 45 };
 
-// Chosen so that current through battery+long wire+long wire+resistor would match prior version, see https://github.com/phetsims/circuit-construction-kit-common/issues/553
-const MAX_RESISTIVITY = 0.0168;
-
 export default class WireResistivityControl extends VBox {
 
   /**
@@ -39,8 +36,8 @@ export default class WireResistivityControl extends VBox {
     const titleNode = new Text( wireResistivityStringProperty, titleConfig );
 
     const slider = new HSlider( wireResistivityProperty, new Range(
-      CCKCConstants.DEFAULT_RESISTIVITY,
-      MAX_RESISTIVITY // large enough so that max resistance in a 9v battery slows to a good rate
+      CCKCConstants.MIN_WIRE_RESISTIVITY,
+      CCKCConstants.MAX_WIRE_RESISTIVITY // large enough so that max resistance in a 9v battery slows to a good rate
     ), {
       trackSize: CCKCConstants.SLIDER_TRACK_SIZE,
       thumbSize: CCKCConstants.THUMB_SIZE,
@@ -49,7 +46,7 @@ export default class WireResistivityControl extends VBox {
     } );
 
     slider.addMajorTick( 0, new Text( tinyStringProperty, TICK_LABEL_TEXT_OPTIONS ) );
-    slider.addMajorTick( MAX_RESISTIVITY, new Text( lotsStringProperty, TICK_LABEL_TEXT_OPTIONS ) );
+    slider.addMajorTick( CCKCConstants.MAX_WIRE_RESISTIVITY, new Text( lotsStringProperty, TICK_LABEL_TEXT_OPTIONS ) );
 
     super( {
       children: [ titleNode, slider ],
