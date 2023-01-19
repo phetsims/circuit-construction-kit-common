@@ -7,7 +7,6 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import Range from '../../../dot/js/Range.js';
 import { AlignGroup, Text, VBox } from '../../../scenery/js/imports.js';
 import HSlider from '../../../sun/js/HSlider.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -35,10 +34,7 @@ export default class WireResistivityControl extends VBox {
 
     const titleNode = new Text( wireResistivityStringProperty, titleConfig );
 
-    const slider = new HSlider( wireResistivityProperty, new Range(
-      CCKCConstants.MIN_WIRE_RESISTIVITY,
-      CCKCConstants.MAX_WIRE_RESISTIVITY // large enough so that max resistance in a 9v battery slows to a good rate
-    ), {
+    const slider = new HSlider( wireResistivityProperty, CCKCConstants.WIRE_RESISTIVITY_RANGE, {
       trackSize: CCKCConstants.SLIDER_TRACK_SIZE,
       thumbSize: CCKCConstants.THUMB_SIZE,
       majorTickLength: CCKCConstants.MAJOR_TICK_LENGTH,
@@ -46,7 +42,7 @@ export default class WireResistivityControl extends VBox {
     } );
 
     slider.addMajorTick( 0, new Text( tinyStringProperty, TICK_LABEL_TEXT_OPTIONS ) );
-    slider.addMajorTick( CCKCConstants.MAX_WIRE_RESISTIVITY, new Text( lotsStringProperty, TICK_LABEL_TEXT_OPTIONS ) );
+    slider.addMajorTick( CCKCConstants.WIRE_RESISTIVITY_RANGE.max, new Text( lotsStringProperty, TICK_LABEL_TEXT_OPTIONS ) );
 
     super( {
       children: [ titleNode, slider ],

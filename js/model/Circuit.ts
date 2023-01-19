@@ -13,7 +13,6 @@ import NumberProperty from '../../../axon/js/NumberProperty.js';
 import createObservableArray, { ObservableArray } from '../../../axon/js/createObservableArray.js';
 import Property from '../../../axon/js/Property.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
-import Range from '../../../dot/js/Range.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import PhetioGroup from '../../../tandem/js/PhetioGroup.js';
 import NullableIO from '../../../tandem/js/types/NullableIO.js';
@@ -161,13 +160,14 @@ export default class Circuit {
     this.includeACElements = options.includeACElements;
     this.includeLabElements = options.includeLabElements;
     this.blackBoxStudy = options.blackBoxStudy;
-    this.wireResistivityProperty = new NumberProperty( CCKCConstants.MIN_WIRE_RESISTIVITY, {
+    this.wireResistivityProperty = new NumberProperty( CCKCConstants.WIRE_RESISTIVITY_RANGE.min, {
       tandem: tandem.parentTandem!.createTandem( 'wireResistivityProperty' ),
-      range: new Range( CCKCConstants.MIN_WIRE_RESISTIVITY, CCKCConstants.MAX_WIRE_RESISTIVITY )
+      range: CCKCConstants.WIRE_RESISTIVITY_RANGE
     } );
 
     this.sourceResistanceProperty = new NumberProperty( CCKCConstants.DEFAULT_BATTERY_RESISTANCE, {
-      tandem: tandem.parentTandem!.createTandem( 'sourceResistanceProperty' )
+      tandem: tandem.parentTandem!.createTandem( 'sourceResistanceProperty' ),
+      range: CCKCConstants.BATTERY_RESISTANCE_RANGE
     } );
 
     this.circuitElements = createObservableArray( {

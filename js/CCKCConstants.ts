@@ -72,8 +72,8 @@ const CCKCConstants = {
   // R = rho * L / A.  Resistance = resistivity * Length / cross sectional area.
   // https://en.wikipedia.org/wiki/Electrical_resistivity_and_conductivity says copper has rho=1.68E-8 Ohm * m
   // According to http://www.sengpielaudio.com/calculator-cross-section.htm AWG Wire Gauge of 20 has 0.52mm^2 = 5.2e-7m^2
-  MIN_WIRE_RESISTIVITY: CCKCQueryParameters.wireResistivity, // Ohm * m
-  MAX_WIRE_RESISTIVITY: 0.0168, // Ohm * m
+  // Maximum is large enough so that max resistance in a 9v battery slows to a good rate
+  WIRE_RESISTIVITY_RANGE: new Range( CCKCQueryParameters.wireResistivity, 0.0168 ), // Ohm * m
 
   WIRE_CROSS_SECTIONAL_AREA: 5E-4, // meters squared
 
