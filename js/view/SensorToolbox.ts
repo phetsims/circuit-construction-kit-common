@@ -119,7 +119,7 @@ export default class SensorToolbox extends CCKCPanel {
     const ammeter = new Ammeter( Tandem.OPTIONAL, 0 );
     const ammeterToolIcon = new AmmeterNode( ammeter, null, {
       isIcon: true,
-      tandem: circuit.includeLabElements ? tandem.createTandem( 'noncontactAmmeterToolNode' ) : Tandem.OPT_OUT
+      tandem: tandem.createTandem( 'noncontactAmmeterToolNode' )
     } );
     const allAmmetersInPlayAreaProperty = DerivedProperty.and( ammeterNodes.map( ammeterNode => ammeterNode.ammeter.visibleProperty ) );
     allAmmetersInPlayAreaProperty.link( visible => ammeterToolIcon.setVisible( !visible ) );
@@ -229,7 +229,7 @@ export default class SensorToolbox extends CCKCPanel {
     options.showSeriesAmmeters && children.push( seriesAmmeterToolNode );
 
     const ammeterToolNode = new VBox( {
-      tandem: tandem.createTandem( 'ammeterToolNode' ),
+      tandem: Tandem.OPT_OUT,
       spacing: ICON_TEXT_SPACING,
       children: [
         new HBox( {
