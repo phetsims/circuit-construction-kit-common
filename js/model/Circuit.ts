@@ -134,12 +134,12 @@ export default class Circuit {
   private readonly stepActions: ( () => void )[];
   public readonly wireGroup: PhetioGroup<Wire, [ Vertex, Vertex ]>;
   public readonly batteryGroup: PhetioGroup<Battery, [ Vertex, Vertex ]>;
-  public readonly highVoltageBatteryGroup: PhetioGroup<Battery, [ Vertex, Vertex ]>;
+  public readonly extremeBatteryGroup: PhetioGroup<Battery, [ Vertex, Vertex ]>;
   public readonly acVoltageGroup: PhetioGroup<ACVoltage, [ Vertex, Vertex ]>;
   public readonly resistorGroup: PhetioGroup<Resistor, [ Vertex, Vertex, ResistorType ]>;
   public readonly fuseGroup: PhetioGroup<Fuse, [ Vertex, Vertex ]>;
   public readonly seriesAmmeterGroup: PhetioGroup<SeriesAmmeter, [ Vertex, Vertex ]>;
-  public readonly highResistanceLightBulbGroup: PhetioGroup<LightBulb, [ Vertex, Vertex ]>;
+  public readonly extremeLightBulbGroup: PhetioGroup<LightBulb, [ Vertex, Vertex ]>;
   public readonly capacitorGroup: PhetioGroup<Capacitor, [ Vertex, Vertex ]>;
   public readonly inductorGroup: PhetioGroup<Inductor, [ Vertex, Vertex ]>;
   public readonly switchGroup: PhetioGroup<Switch, [ Vertex, Vertex ]>;
@@ -347,7 +347,7 @@ export default class Circuit {
       tandem: tandem.createTandem( 'batteryGroup' )
     } );
 
-    this.highVoltageBatteryGroup = new PhetioGroup( ( tandem, startVertex, endVertex ) => {
+    this.extremeBatteryGroup = new PhetioGroup( ( tandem, startVertex, endVertex ) => {
       return new Battery( startVertex, endVertex, this.sourceResistanceProperty, 'high-voltage',
         tandem, {
           voltage: 1000,
@@ -355,8 +355,8 @@ export default class Circuit {
         } );
     }, () => createVertices( BATTERY_LENGTH ), {
       phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
-      tandem: this.includeLabElements ? tandem.createTandem( 'highVoltageBatteryGroup' ) : Tandem.OPT_OUT,
-      phetioDynamicElementName: 'highVoltageBattery'
+      tandem: this.includeLabElements ? tandem.createTandem( 'extremeBatteryGroup' ) : Tandem.OPT_OUT,
+      phetioDynamicElementName: 'extremeBattery'
     } );
 
     this.acVoltageGroup = new PhetioGroup( ( tandem, startVertex, endVertex ) => {
@@ -392,15 +392,15 @@ export default class Circuit {
         tandem: this.includeLabElements ? tandem.createTandem( 'seriesAmmeterGroup' ) : Tandem.OPT_OUT
       } );
 
-    this.highResistanceLightBulbGroup = new PhetioGroup(
+    this.extremeLightBulbGroup = new PhetioGroup(
       ( tandem, startVertex, endVertex ) => {
         return LightBulb.createAtPosition( startVertex, endVertex, this, CCKCConstants.HIGH_RESISTANCE,
           this.viewTypeProperty, tandem, {
-            highResistance: true
+            extreme: true
           } );
       }, () => createVertices( 100 ), {
         phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
-        tandem: this.includeLabElements ? tandem.createTandem( 'highResistanceLightBulbGroup' ) : Tandem.OPT_OUT
+        tandem: this.includeLabElements ? tandem.createTandem( 'extremeLightBulbGroup' ) : Tandem.OPT_OUT
       } );
 
     this.capacitorGroup = new PhetioGroup(
@@ -444,7 +444,7 @@ export default class Circuit {
     this.groups = [
       this.wireGroup,
       this.batteryGroup,
-      this.highVoltageBatteryGroup,
+      this.extremeBatteryGroup,
       this.acVoltageGroup,
       this.resistorGroup,
       this.fuseGroup,
@@ -453,7 +453,7 @@ export default class Circuit {
       this.switchGroup,
       this.lightBulbGroup,
       this.realLightBulbGroup,
-      this.highResistanceLightBulbGroup,
+      this.extremeLightBulbGroup,
       this.seriesAmmeterGroup
     ];
     this.dirty = false;

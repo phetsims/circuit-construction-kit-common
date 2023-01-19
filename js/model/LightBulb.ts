@@ -54,7 +54,7 @@ const SCHEMATIC_SAMPLE_POINTS = [
 ];
 
 type SelfOptions = {
-  highResistance?: boolean;
+  extreme?: boolean;
   real?: boolean;
 };
 
@@ -66,7 +66,7 @@ export default class LightBulb extends FixedCircuitElement {
   public readonly real: boolean;
 
   // true if the light bulb is a high resistance light bulb
-  public readonly highResistance: boolean;
+  public readonly extreme: boolean;
 
   // the resistance of the light bulb which can be edited with the UI
   public readonly resistanceProperty: NumberProperty;
@@ -114,20 +114,20 @@ export default class LightBulb extends FixedCircuitElement {
     tandem: Tandem,
     providedOptions?: LightBulbOptions ) {
     const options = optionize<LightBulbOptions, SelfOptions, FixedCircuitElementOptions>()( {
-      highResistance: false,
+      extreme: false,
       real: false
     }, providedOptions );
     assert && assert( !options.hasOwnProperty( 'numberOfDecimalPlaces' ), 'supplied by LightBulb' );
-    options.numberOfDecimalPlaces = options.highResistance ? 0 : 1;
+    options.numberOfDecimalPlaces = options.extreme ? 0 : 1;
 
     // getPathLength not available yet, so use a nonzero charge path length then override.
     super( startVertex, endVertex, 1, tandem, options );
 
     this.real = options.real;
-    this.highResistance = options.highResistance;
+    this.extreme = options.extreme;
     this.resistanceProperty = new NumberProperty( resistance, {
       tandem: tandem.createTandem( 'resistanceProperty' ),
-      range: options.highResistance ? new Range( 100, 10000 ) :
+      range: options.extreme ? new Range( 100, 10000 ) :
              options.real ? new Range( 0, Number.MAX_VALUE ) : // The non-ohmic bulb has its resistance computed in LinearTransientAnalysis.js
              new Range( 0, 120 )
     } );

@@ -39,7 +39,7 @@ export default class LightBulbSocketNode extends FixedCircuitElementNode {
     // Render the bulb socket only
     const lightBulbNode = new CustomLightBulbNode( new NumberProperty( 0 ), {
       baseOnly: true,
-      highResistance: lightBulb.highResistance,
+      extreme: lightBulb.extreme,
       real: lightBulb.real
     } );
 

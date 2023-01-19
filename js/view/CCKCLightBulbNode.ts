@@ -99,7 +99,7 @@ export default class CCKCLightBulbNode extends FixedCircuitElementNode {
 
     // The isIcon must show the socket as well
     if ( filledOptions.isIcon ) {
-      lightBulbNode = new Image( lightBulb.highResistance ? lightBulbMiddleHigh_png :
+      lightBulbNode = new Image( lightBulb.extreme ? lightBulbMiddleHigh_png :
                                  lightBulb.real ? lightBulbMiddleReal_png :
                                  lightBulbMiddle_png, { scale: 0.37 } );
 

@@ -198,7 +198,7 @@ export default class CircuitElementEditContainerNode extends Node {
       StringUtils.fillIn( resistanceOhmsValuePatternStringProperty, { resistance: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
       createSingletonAdapterProperty( ResistorType.RESISTOR.defaultResistance, CircuitElementType, circuit, ( c: LightBulb | Resistor ) => c.resistanceProperty,
         ( c: LightBulb | Resistor ) =>
-          ( c instanceof LightBulb && !c.highResistance ) ||
+          ( c instanceof LightBulb && !c.extreme ) ||
           ( c instanceof Resistor && c.resistorType !== ResistorType.HIGH_RESISTANCE_RESISTOR )
       ),
       ResistorType.RESISTOR.range, circuit, Resistor.RESISTANCE_DECIMAL_PLACES, {
@@ -209,11 +209,11 @@ export default class CircuitElementEditContainerNode extends Node {
         },
         numberDisplayOptions: { decimalPlaces: Resistor.RESISTANCE_DECIMAL_PLACES }
       } );
-    const createHighResistanceNumberControl = ( tandemName: string, CircuitElementType: GConstructor<LightBulb | Resistor> ) => new CircuitElementNumberControl( resistanceStringProperty,
+    const createExtremeResistanceNumberControl = ( tandemName: string, CircuitElementType: GConstructor<LightBulb | Resistor> ) => new CircuitElementNumberControl( resistanceStringProperty,
       StringUtils.fillIn( resistanceOhmsValuePatternStringProperty, { resistance: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
       createSingletonAdapterProperty( ResistorType.HIGH_RESISTANCE_RESISTOR.defaultResistance, CircuitElementType, circuit, ( c: LightBulb | Resistor ) => c.resistanceProperty,
         ( c: LightBulb | Resistor ) =>
-          ( c instanceof LightBulb && c.highResistance ) ||
+          ( c instanceof LightBulb && c.extreme ) ||
           ( c instanceof Resistor && c.resistorType === ResistorType.HIGH_RESISTANCE_RESISTOR )
       ),
       ResistorType.HIGH_RESISTANCE_RESISTOR.range, circuit, Resistor.HIGH_RESISTANCE_DECIMAL_PLACES, {
@@ -225,10 +225,10 @@ export default class CircuitElementEditContainerNode extends Node {
         numberDisplayOptions: { decimalPlaces: Resistor.HIGH_RESISTANCE_DECIMAL_PLACES }
       } );
 
-    const resistanceNumberControl = createResistanceNumberControl( 'resistanceNumberControl', Resistor );
+    const resistorResistanceNumberControl = createResistanceNumberControl( 'resistorResistanceNumberControl', Resistor );
     const lightBulbResistanceNumberControl = createResistanceNumberControl( 'lightBulbResistanceNumberControl', LightBulb );
-    const highResistanceNumberControl = createHighResistanceNumberControl( 'highResistanceNumberControl', Resistor );
-    const lightBulbHighResistanceNumberControl = createHighResistanceNumberControl( 'lightBulbHighResistanceNumberControl', LightBulb );
+    const extremeResistorResistanceNumberControl = createExtremeResistanceNumberControl( 'extremeResistorResistanceNumberControl', Resistor );
+    const extremeLightBulbResistanceNumberControl = createExtremeResistanceNumberControl( 'extremeLightBulbResistanceNumberControl', LightBulb );
 
     const voltageNumberControl = new CircuitElementNumberControl( voltageStringProperty,
       StringUtils.fillIn( voltageVoltsValuePatternStringProperty, { voltage: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
@@ -243,13 +243,13 @@ export default class CircuitElementEditContainerNode extends Node {
         },
         numberDisplayOptions: { decimalPlaces: Battery.VOLTAGE_DECIMAL_PLACES }
       } );
-    const highVoltageNumberControl = new CircuitElementNumberControl( voltageStringProperty,
+    const extremeBatteryVoltageNumberControl = new CircuitElementNumberControl( voltageStringProperty,
       StringUtils.fillIn( voltageVoltsValuePatternStringProperty, { voltage: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
       createSingletonAdapterProperty( Battery.HIGH_VOLTAGE_DEFAULT, Battery, circuit, ( c: Battery ) => c.voltageProperty, ( c: Battery ) => c.batteryType === 'high-voltage' ),
       Battery.HIGH_VOLTAGE_RANGE,
       circuit,
       Battery.HIGH_VOLTAGE_DECIMAL_PLACES, {
-        tandem: circuit.includeLabElements ? tandem.createTandem( 'highVoltageNumberControl' ) : Tandem.OPT_OUT,
+        tandem: circuit.includeLabElements ? tandem.createTandem( 'extremeBatteryVoltageNumberControl' ) : Tandem.OPT_OUT,
         delta: HIGH_TWEAKER_DELTA,
         sliderOptions: { // For dragging the slider knob
           constrainValue: ( value: number ) => Utils.roundToInterval( value, HIGH_SLIDER_KNOB_DELTA )
@@ -343,9 +343,9 @@ export default class CircuitElementEditContainerNode extends Node {
       if ( selectedCircuitElement ) {
 
         if ( selectedCircuitElement instanceof Resistor && selectedCircuitElement.isResistanceEditable() ) {
-          const isHighResistance = selectedCircuitElement.resistorType === ResistorType.HIGH_RESISTANCE_RESISTOR;
+          const isExtreme = selectedCircuitElement.resistorType === ResistorType.HIGH_RESISTANCE_RESISTOR;
           editNode = new EditPanel( [
-            isHighResistance ? highResistanceNumberControl : resistanceNumberControl,
+            isExtreme ? extremeResistorResistanceNumberControl : resistorResistanceNumberControl,
             trashButtonContainer
           ] );
         }
@@ -353,7 +353,7 @@ export default class CircuitElementEditContainerNode extends Node {
         // Real bulb has no resistance control
         else if ( selectedCircuitElement instanceof LightBulb && !selectedCircuitElement.real ) {
           editNode = new EditPanel( [
-              selectedCircuitElement.highResistance ? lightBulbHighResistanceNumberControl : lightBulbResistanceNumberControl,
+            selectedCircuitElement.extreme ? extremeLightBulbResistanceNumberControl : lightBulbResistanceNumberControl,
               trashButtonContainer
             ]
           );
@@ -366,7 +366,7 @@ export default class CircuitElementEditContainerNode extends Node {
         else if ( selectedCircuitElement instanceof Battery ) {
           editNode = new EditPanel( [
               reverseBatteryButton, // Batteries can be reversed
-              selectedCircuitElement.batteryType === 'high-voltage' ? highVoltageNumberControl : voltageNumberControl,
+              selectedCircuitElement.batteryType === 'high-voltage' ? extremeBatteryVoltageNumberControl : voltageNumberControl,
               trashButtonContainer
             ]
           );
