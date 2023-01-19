@@ -27,6 +27,9 @@ const CCKCConstants = {
   // Available scale factors for the sim stage
   ZOOM_SCALES: [ 0.5, 1, 1.8 ],
 
+  // When trying to drop an item back in the toolbox, this is the width the hit box
+  RETURN_ITEM_BOUNDS_TOLERANCE: 25,
+
   // Maximum size for Width or height of icons in the circuit element toolbox or sensor toolbox
   TOOLBOX_ICON_HEIGHT: 31,
   TOOLBOX_ICON_WIDTH: 60,
