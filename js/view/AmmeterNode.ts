@@ -86,6 +86,9 @@ export default class AmmeterNode extends Node {
     }, providedOptions );
     const tandem = options.tandem;
 
+    // if the AmmeterNode is an icon, do not instrument the details of the children
+    const tandemForChildren = options.isIcon ? Tandem.OPT_OUT : tandem;
+
     const wireBodyPositionProperty = new Vector2Property( new Vector2( 0, 0 ) );
     const wireProbePositionProperty = new Vector2Property( new Vector2( 0, 0 ) );
     const wireNode = new WireNode(
@@ -103,13 +106,13 @@ export default class AmmeterNode extends Node {
       ( ( current, ammeterReadoutType ) => {
         return CCKCUtils.createCurrentReadout( current, options.blackBoxStudy );
       } ), {
-        tandem: tandem.createTandem( 'readoutText' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME ),
+        tandem: tandemForChildren.createTandem( 'readoutText' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME ),
         phetioValueType: StringIO
       } );
 
     const probeTextProperty = new DerivedProperty( [ currentStringProperty ], currentString =>
         options.showPhetioIndex ? currentString + ' ' + ammeter.phetioIndex : currentString, {
-        tandem: tandem.createTandem( 'probeText' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME ),
+        tandem: tandemForChildren.createTandem( 'probeText' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME ),
         phetioValueType: StringIO
       }
     );
@@ -119,7 +122,7 @@ export default class AmmeterNode extends Node {
 
       // No need for an extra level of nesting in the tandem tree, since that is just an implementation detail
       // and not a feature
-      tandem, {
+      tandemForChildren, {
         centerX: ammeterBody_png.width / 2,
         centerY: ammeterBody_png.height / 2 + 7 // adjust for the top notch design
       } );
@@ -194,7 +197,7 @@ export default class AmmeterNode extends Node {
       const probeDragHandler = new DragListener( {
         positionProperty: ammeter.probePositionProperty,
         useParentOffset: true,
-        tandem: tandem.createTandem( 'probeDragHandler' ),
+        tandem: tandemForChildren.createTandem( 'probeDragHandler' ),
         start: () => this.moveToFront(),
         dragBoundsProperty: erodedDragBoundsProperty
       } );
@@ -202,7 +205,7 @@ export default class AmmeterNode extends Node {
       this.dragHandler = new DragListener( {
         useParentOffset: true,
         positionProperty: ammeter.bodyPositionProperty,
-        tandem: tandem.createTandem( 'dragHandler' ),
+        tandem: tandemForChildren.createTandem( 'dragHandler' ),
         start: () => this.moveToFront(),
         end: function() {
           ammeter.droppedEmitter.emit( bodyNode.globalBounds );
@@ -250,7 +253,7 @@ export default class AmmeterNode extends Node {
     }
 
     this.addLinkedElement( ammeter, {
-      tandem: tandem.createTandem( 'ammeter' )
+      tandem: tandemForChildren.createTandem( 'ammeter' )
     } );
   }
 
