@@ -42,6 +42,11 @@ export default class Switch extends FixedCircuitElement {
     const options = optionize<SwitchOptions, SelfOptions, FixedCircuitElementOptions>()( {
       closed: false,
 
+      // Do not instrument isEditableProperty for switches as there is nothing to edit
+      isEditablePropertyOptions: {
+        tandem: Tandem.OPT_OUT
+      },
+
       // Use the bounding box of the open lifelike switch to show bounds for all combinations of open/closed x lifelike/schematic
       // See https://github.com/phetsims/circuit-construction-kit-dc/issues/132
       isSizeChangedOnViewChange: false
