@@ -236,7 +236,7 @@ export default class CircuitElementEditContainerNode extends Node {
       Battery.VOLTAGE_RANGE,
       circuit,
       Battery.VOLTAGE_DECIMAL_PLACES, {
-        tandem: tandem.createTandem( 'voltageNumberControl' ),
+        tandem: tandem.createTandem( 'batteryVoltageNumberControl' ),
         delta: NORMAL_TWEAKER_DELTA,
         sliderOptions: { // For dragging the slider knob
           constrainValue: ( value: number ) => Utils.roundToInterval( value, NORMAL_SLIDER_KNOB_DELTA )
