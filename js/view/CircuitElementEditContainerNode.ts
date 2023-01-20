@@ -35,7 +35,7 @@ import Wire from '../model/Wire.js';
 import CircuitElementNumberControl from './CircuitElementNumberControl.js';
 import ClearDynamicsButton from './ClearDynamicsButton.js';
 import PhaseShiftControl from './PhaseShiftControl.js';
-import RepairFuseButton from './RepairFuseButton.js';
+import FuseRepairButton from './FuseRepairButton.js';
 import ReverseBatteryButton from './ReverseBatteryButton.js';
 import SwitchReadoutNode from './SwitchReadoutNode.js';
 import CCKCTrashButton from './CCKCTrashButton.js';
@@ -122,8 +122,8 @@ export default class CircuitElementEditContainerNode extends Node {
     const trashButton = new CCKCTrashButton( circuit, tandem.createTandem( 'trashButton' ) );
     const trashButtonContainer = new HBox( { children: [ trashButton ] } ); // Use the "nested node" pattern for gated visibilty
 
-    const repairFuseButton = new RepairFuseButton( circuit, {
-      tandem: tandem.createTandem( 'repairFuseButton' ),
+    const fuseRepairButton = new FuseRepairButton( circuit, {
+      tandem: tandem.createTandem( 'fuseRepairButton' ),
 
       // NOTE: This only works if the trash button was originally smaller
       maxHeight: trashButton.height
@@ -373,7 +373,7 @@ export default class CircuitElementEditContainerNode extends Node {
         }
         else if ( selectedCircuitElement instanceof Fuse ) {
           editNode = new EditPanel( [
-              repairFuseButton,
+              fuseRepairButton,
               fuseCurrentRatingControl,
               trashButtonContainer
             ]
