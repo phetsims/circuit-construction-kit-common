@@ -50,7 +50,8 @@ export default class CCKCAccordionBox extends AccordionBox {
       lineWidth: CCKCConstants.PANEL_LINE_WIDTH,
       minWidth: CCKCConstants.RIGHT_SIDE_PANEL_MIN_WIDTH,
       expandedProperty: new BooleanProperty( false, {
-        tandem: tandem.createTandem( 'expandedProperty' )
+        tandem: tandem.createTandem( 'expandedProperty' ),
+        phetioFeatured: true
       } ),
 
       // Expand touch area to match the margins
