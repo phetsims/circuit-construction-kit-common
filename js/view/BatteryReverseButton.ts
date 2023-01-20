@@ -23,7 +23,7 @@ const ARROW_ICON_SCALE = 0.035;
 type SelfOptions = EmptySelfOptions;
 type ReverseBatteryButtonOptions = SelfOptions & RoundPushButtonOptions;
 
-export default class ReverseBatteryButton extends CCKCRoundPushButton {
+export default class BatteryReverseButton extends CCKCRoundPushButton {
 
   /**
    * @param circuit - the circuit that contains the battery
@@ -95,4 +95,4 @@ export default class ReverseBatteryButton extends CCKCRoundPushButton {
   }
 }
 
-circuitConstructionKitCommon.register( 'ReverseBatteryButton', ReverseBatteryButton );
+circuitConstructionKitCommon.register( 'BatteryReverseButton', BatteryReverseButton );

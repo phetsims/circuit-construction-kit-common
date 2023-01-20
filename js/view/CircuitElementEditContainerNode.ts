@@ -36,7 +36,7 @@ import CircuitElementNumberControl from './CircuitElementNumberControl.js';
 import ClearDynamicsButton from './ClearDynamicsButton.js';
 import PhaseShiftControl from './PhaseShiftControl.js';
 import FuseRepairButton from './FuseRepairButton.js';
-import ReverseBatteryButton from './ReverseBatteryButton.js';
+import BatteryReverseButton from './BatteryReverseButton.js';
 import SwitchReadoutNode from './SwitchReadoutNode.js';
 import CCKCTrashButton from './CCKCTrashButton.js';
 import CircuitElement from '../model/CircuitElement.js';
@@ -135,8 +135,8 @@ export default class CircuitElementEditContainerNode extends Node {
       maxHeight: trashButton.height
     } );
 
-    const reverseBatteryButton = new ReverseBatteryButton( circuit, {
-      tandem: tandem.createTandem( 'reverseBatteryButton' ),
+    const batteryReverseButton = new BatteryReverseButton( circuit, {
+      tandem: tandem.createTandem( 'batteryReverseButton' ),
 
       // NOTE: This only works if the trash button was originally smaller
       maxHeight: trashButton.height
@@ -365,7 +365,7 @@ export default class CircuitElementEditContainerNode extends Node {
         }
         else if ( selectedCircuitElement instanceof Battery ) {
           editNode = new EditPanel( [
-              reverseBatteryButton, // Batteries can be reversed
+              batteryReverseButton, // Batteries can be reversed
               selectedCircuitElement.batteryType === 'high-voltage' ? extremeBatteryVoltageNumberControl : voltageNumberControl,
               trashButtonContainer
             ]
