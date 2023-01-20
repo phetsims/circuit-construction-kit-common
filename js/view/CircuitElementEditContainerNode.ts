@@ -142,7 +142,7 @@ export default class CircuitElementEditContainerNode extends Node {
       maxHeight: trashButton.height
     } );
 
-    const switchReadoutNode = new SwitchReadoutNode( circuit, tandem.createTandem( 'switchReadoutNode' ), trashButtonContainer );
+    const switchReadoutNode = new SwitchReadoutNode( circuit, tandem.createTandem( 'switchReadoutNode' ) );
 
     const listener = ( isDisposable: boolean ) => trashButtonContainer.setVisible( isDisposable );
 
@@ -333,7 +333,7 @@ export default class CircuitElementEditContainerNode extends Node {
     circuit.selectionProperty.link( selectedCircuitElement => {
       if ( editNode ) {
         this.hasChild( editNode ) && this.removeChild( editNode );
-        if ( editNode !== tapInstructionText && editNode !== trashButtonContainer && editNode !== switchReadoutNode ) {
+        if ( editNode !== tapInstructionText && editNode !== trashButtonContainer ) {
           editNode.dispose();
         }
       }
@@ -353,7 +353,7 @@ export default class CircuitElementEditContainerNode extends Node {
         // Real bulb has no resistance control
         else if ( selectedCircuitElement instanceof LightBulb && !selectedCircuitElement.real ) {
           editNode = new EditPanel( [
-            selectedCircuitElement.extreme ? extremeLightBulbResistanceNumberControl : lightBulbResistanceNumberControl,
+              selectedCircuitElement.extreme ? extremeLightBulbResistanceNumberControl : lightBulbResistanceNumberControl,
               trashButtonContainer
             ]
           );
@@ -381,11 +381,14 @@ export default class CircuitElementEditContainerNode extends Node {
         }
         else if ( selectedCircuitElement instanceof Switch ) {
 
-          editNode = switchReadoutNode;
-
-          // The trashButton is shared between different components, so we must trigger a relayout to get the relative
-          // position correct before displaying.
-          switchReadoutNode.updateLayout();
+          editNode = new HBox( {
+            children: [
+              switchReadoutNode,
+              trashButtonContainer
+            ],
+            spacing: 25,
+            align: 'bottom'
+          } );
         }
         else if ( selectedCircuitElement instanceof SeriesAmmeter || selectedCircuitElement instanceof Wire ) {
 
