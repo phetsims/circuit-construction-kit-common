@@ -160,7 +160,7 @@ export default class CircuitElementEditContainerNode extends Node {
       createSingletonAdapterProperty( Fuse.DEFAULT_CURRENT_RATING, Fuse, circuit, ( c: Fuse ) => c.currentRatingProperty ),
       Fuse.RANGE, circuit,
       1, {
-        tandem: tandem.createTandem( 'currentRatingControl' ),
+        tandem: tandem.createTandem( 'fuseCurrentRatingControl' ),
         delta: NORMAL_TWEAKER_DELTA, // For the tweakers
         sliderOptions: {
           constrainValue: ( value: number ) => Utils.roundToInterval( value, 0.5 )
