@@ -1,4 +1,4 @@
-// Copyright 2016-2022, University of Colorado Boulder
+// Copyright 2016-2023, University of Colorado Boulder
 
 /**
  * Renders a single charge. Electrons are shown as a sphere with a minus sign and conventional current is shown as an
