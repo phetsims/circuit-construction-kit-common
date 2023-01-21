@@ -445,6 +445,7 @@ export default class CircuitElementEditContainerNode extends Node {
     } );
 
     visibleBoundsProperty.link( updatePosition );
+    this.localBoundsProperty.link( updatePosition );
   }
 }
 
