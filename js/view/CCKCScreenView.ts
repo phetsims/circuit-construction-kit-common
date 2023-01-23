@@ -521,13 +521,8 @@ export default class CCKCScreenView extends ScreenView {
 
     // Detect whether the midpoint between the vertices overlaps the toolbox
     const globalMidpoint = circuitElementNode.localToGlobalPoint( circuitElement.getMidpoint() );
+    const hitBox = Bounds2.point( globalMidpoint ).dilate( CCKCConstants.RETURN_ITEM_BOUNDS_TOLERANCE );
 
-    const hitBoxMinX = globalMidpoint.x - CCKCConstants.RETURN_ITEM_BOUNDS_TOLERANCE;
-    const hitBoxMinY = globalMidpoint.y - CCKCConstants.RETURN_ITEM_BOUNDS_TOLERANCE;
-    const hitBoxMaxX = globalMidpoint.x + CCKCConstants.RETURN_ITEM_BOUNDS_TOLERANCE;
-    const hitBoxMaxY = globalMidpoint.y + CCKCConstants.RETURN_ITEM_BOUNDS_TOLERANCE;
-
-    const hitBox = new Bounds2( hitBoxMinX, hitBoxMinY, hitBoxMaxX, hitBoxMaxY );
     const overToolbox = toolbox.globalBounds.intersectsBounds( hitBox );
 
     return isSingle && overToolbox && circuitElement.isDisposableProperty.value;
