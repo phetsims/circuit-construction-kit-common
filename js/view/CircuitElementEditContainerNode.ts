@@ -198,7 +198,7 @@ export default class CircuitElementEditContainerNode extends Node {
       StringUtils.fillIn( resistanceOhmsValuePatternStringProperty, { resistance: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
       createSingletonAdapterProperty( ResistorType.RESISTOR.defaultResistance, CircuitElementType, circuit, ( c: LightBulb | Resistor ) => c.resistanceProperty,
         ( c: LightBulb | Resistor ) =>
-          ( c instanceof LightBulb && !c.extreme ) ||
+          ( c instanceof LightBulb && !c.isExtreme ) ||
           ( c instanceof Resistor && c.resistorType !== ResistorType.HIGH_RESISTANCE_RESISTOR )
       ),
       ResistorType.RESISTOR.range, circuit, Resistor.RESISTANCE_DECIMAL_PLACES, {
@@ -213,7 +213,7 @@ export default class CircuitElementEditContainerNode extends Node {
       StringUtils.fillIn( resistanceOhmsValuePatternStringProperty, { resistance: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
       createSingletonAdapterProperty( ResistorType.HIGH_RESISTANCE_RESISTOR.defaultResistance, CircuitElementType, circuit, ( c: LightBulb | Resistor ) => c.resistanceProperty,
         ( c: LightBulb | Resistor ) =>
-          ( c instanceof LightBulb && c.extreme ) ||
+          ( c instanceof LightBulb && c.isExtreme ) ||
           ( c instanceof Resistor && c.resistorType === ResistorType.HIGH_RESISTANCE_RESISTOR )
       ),
       ResistorType.HIGH_RESISTANCE_RESISTOR.range, circuit, Resistor.HIGH_RESISTANCE_DECIMAL_PLACES, {
@@ -351,16 +351,16 @@ export default class CircuitElementEditContainerNode extends Node {
         }
 
         // Real bulb has no resistance control
-        else if ( selectedCircuitElement instanceof LightBulb && !selectedCircuitElement.real ) {
+        else if ( selectedCircuitElement instanceof LightBulb && !selectedCircuitElement.isReal ) {
           editNode = new EditPanel( [
-              selectedCircuitElement.extreme ? extremeLightBulbResistanceNumberControl : lightBulbResistanceNumberControl,
+            selectedCircuitElement.isExtreme ? extremeLightBulbResistanceNumberControl : lightBulbResistanceNumberControl,
               trashButtonContainer
             ]
           );
         }
-        else if ( selectedCircuitElement instanceof Resistor || ( selectedCircuitElement instanceof LightBulb && selectedCircuitElement.real ) ) {
+        else if ( selectedCircuitElement instanceof Resistor || ( selectedCircuitElement instanceof LightBulb && selectedCircuitElement.isReal ) ) {
 
-          // Just show a trash button for non-editable resistors which are household items and for real bulbs
+          // Just show a trash button for non-editable resistors which are household items and for isReal bulbs
           editNode = trashButtonContainer;
         }
         else if ( selectedCircuitElement instanceof Battery ) {

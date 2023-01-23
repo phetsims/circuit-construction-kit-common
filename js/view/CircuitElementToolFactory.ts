@@ -265,14 +265,14 @@ export default class CircuitElementToolFactory {
       CCKCConstants.DEFAULT_RESISTANCE,
       this.viewTypeProperty,
       Tandem.OPTIONAL, {
-        extreme: false,
-        real: real
+        isExtreme: false,
+        isReal: real
       } );
     return this.createCircuitElementToolNode( string, 10,
       ( tandem, viewTypeProperty ) => new CCKCLightBulbNode( null, null,
         lightBulbModel,
         new BooleanProperty( true ), viewTypeProperty, Tandem.OPT_OUT, { isIcon: true, scale: 0.85 } ),
-      circuitElement => circuitElement instanceof LightBulb && !circuitElement.extreme,
+      circuitElement => circuitElement instanceof LightBulb && !circuitElement.isExtreme,
       ( position: Vector2 ) => {
         const vertexPair = LightBulb.createVertexPair( position, this.circuit );
         return lightBulbGroup.createNextElement( vertexPair.startVertex, vertexPair.endVertex );
@@ -515,14 +515,14 @@ export default class CircuitElementToolFactory {
           1000,
           this.viewTypeProperty,
           Tandem.OPTIONAL, {
-            extreme: true
+            isExtreme: true
           } ),
         new BooleanProperty( true ),
         viewTypeProperty,
         tandem.createTandem( 'extremeLightBulbToolNode' ), {
           isIcon: true
         } ),
-      circuitElement => circuitElement instanceof LightBulb && circuitElement.extreme,
+      circuitElement => circuitElement instanceof LightBulb && circuitElement.isExtreme,
       ( position: Vector2 ) => {
         const vertexPair = LightBulb.createVertexPair( position, this.circuit, false );
         return this.circuit.extremeLightBulbGroup.createNextElement( vertexPair.startVertex, vertexPair.endVertex );

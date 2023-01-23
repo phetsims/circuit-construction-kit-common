@@ -94,17 +94,17 @@ export default class CCKCLightBulbNode extends FixedCircuitElementNode {
         brightnessProperty.value = Utils.clamp( brightness, 0, 1 );
       } );
     let lightBulbNode: CustomLightBulbNode | Image = new CustomLightBulbNode( brightnessProperty, {
-      real: lightBulb.real
+      isReal: lightBulb.isReal
     } );
 
     // The isIcon must show the socket as well
     if ( filledOptions.isIcon ) {
-      lightBulbNode = new Image( lightBulb.extreme ? lightBulbMiddleHigh_png :
-                                 lightBulb.real ? lightBulbMiddleReal_png :
+      lightBulbNode = new Image( lightBulb.isExtreme ? lightBulbMiddleHigh_png :
+                                 lightBulb.isReal ? lightBulbMiddleReal_png :
                                  lightBulbMiddle_png, { scale: 0.37 } );
 
       // tack on the socket
-      if ( lightBulb.real ) {
+      if ( lightBulb.isReal ) {
         lightBulbNode.addChild( new Image( lightBulbFrontReal_png ) );
       }
     }

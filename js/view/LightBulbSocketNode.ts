@@ -39,8 +39,8 @@ export default class LightBulbSocketNode extends FixedCircuitElementNode {
     // Render the bulb socket only
     const lightBulbNode = new CustomLightBulbNode( new NumberProperty( 0 ), {
       baseOnly: true,
-      extreme: lightBulb.extreme,
-      real: lightBulb.real
+      isExtreme: lightBulb.isExtreme,
+      isReal: lightBulb.isReal
     } );
 
     // Interferes with Cut Button selection when the foreground is in front, see

@@ -139,7 +139,7 @@ export default class LinearTransientAnalysis {
 
     ltaResistors.forEach( resistorAdapter => {
       const circuitElement = resistorMap.get( resistorAdapter )!;
-      if ( circuitElement instanceof LightBulb && circuitElement.real ) {
+      if ( circuitElement instanceof LightBulb && circuitElement.isReal ) {
 
         const logWithBase = ( value: number, base: number ) => Math.log( value ) / Math.log( base );
 
@@ -194,8 +194,8 @@ export default class LinearTransientAnalysis {
     nonParticipants.forEach( circuitElement => {
       circuitElement.currentProperty.value = 0;
 
-      // Clear disconnected real light bulbs
-      if ( circuitElement instanceof LightBulb && circuitElement.real ) {
+      // Clear disconnected isReal light bulbs
+      if ( circuitElement instanceof LightBulb && circuitElement.isReal ) {
         circuitElement.resistanceProperty.value = LightBulb.REAL_BULB_COLD_RESISTANCE;
       }
     } );

@@ -398,7 +398,7 @@ export default class Circuit {
       ( tandem, startVertex, endVertex ) => {
         return LightBulb.createAtPosition( startVertex, endVertex, this, CCKCConstants.HIGH_RESISTANCE,
           this.viewTypeProperty, tandem, {
-            extreme: true
+            isExtreme: true
           } );
       }, () => createVertices( 100 ), {
         phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
@@ -436,7 +436,7 @@ export default class Circuit {
     this.realLightBulbGroup = new PhetioGroup(
       ( tandem, startVertex, endVertex ) => {
         return new LightBulb( startVertex, endVertex, CCKCConstants.DEFAULT_RESISTANCE, this.viewTypeProperty, tandem, {
-          real: true
+          isReal: true
         } );
       }, () => createVertices( 100 ), {
         phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
