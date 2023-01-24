@@ -70,13 +70,13 @@ rather a single view property.
 * Likewise, ChargeNode can render positive or negative charges, though they are cleared and re-added when the charge view
 is changed.
 * The CircuitElementNode subtypes like BatteryNode, ResistorNode, etc have the same signature because they are invoked
-dynamically from CircuitLayerNode.initializeCircuitElementType.
-* View Layering: the CircuitLayerNode shows circuit elements, highlights, solder, and sensors.  Each CircuitElementNode
+dynamically from CircuitNode.initializeCircuitElementType.
+* View Layering: the CircuitNode shows circuit elements, highlights, solder, and sensors.  Each CircuitElementNode
 may have node parts that appear in different layers, such as the highlight and the light bulb socket.  Having the light
 bulb socket in another layer makes it possible to show the electrons going "through" the socket (in z-ordering). The
-CircuitElementNode constructors populate different layers of the CircuitLayerNode in their constructors and depopulate
+CircuitElementNode constructors populate different layers of the CircuitNode in their constructors and depopulate
 in their dispose functions.
-* To attain reasonable performance on iPad2, some of the CircuitLayerNode child node layers have been implemented in
+* To attain reasonable performance on iPad2, some of the CircuitNode child node layers have been implemented in
 WebGL using `renderer:'webgl'`.  This means all of the nodes must be rendered with solid-fill Rectangle (without rounded
 corners or gradients), and images.  Node.rasterized is used throughout these view layers to rasterize as
 images.

@@ -10,15 +10,15 @@ import ArrowNode from '../../../scenery-phet/js/ArrowNode.js';
 import { Node, Text } from '../../../scenery/js/imports.js';
 import Panel from '../../../sun/js/Panel.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitLayerNode from './CircuitLayerNode.js';
+import CircuitNode from './CircuitNode.js';
 import CurrentSense from '../model/CurrentSense.js';
 
 export default class CircuitDebugLayer extends Node {
-  private readonly circuitLayerNode: CircuitLayerNode;
+  private readonly circuitNode: CircuitNode;
 
-  public constructor( circuitLayerNode: CircuitLayerNode ) {
+  public constructor( circuitNode: CircuitNode ) {
     super();
-    this.circuitLayerNode = circuitLayerNode;
+    this.circuitNode = circuitNode;
     this.rebuild();
   }
 
@@ -28,7 +28,7 @@ export default class CircuitDebugLayer extends Node {
 
   private rebuild(): void {
     this.removeAllChildren();
-    this.circuitLayerNode.circuit.circuitElements.forEach( circuitElement => {
+    this.circuitNode.circuit.circuitElements.forEach( circuitElement => {
       const start = circuitElement.startVertexProperty.value.positionProperty.value;
       const end = circuitElement.endVertexProperty.value.positionProperty.value;
 

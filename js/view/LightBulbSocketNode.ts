@@ -16,7 +16,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import LightBulb from '../model/LightBulb.js';
 import CCKCScreenView from './CCKCScreenView.js';
-import CircuitLayerNode from './CircuitLayerNode.js';
+import CircuitNode from './CircuitNode.js';
 import CustomLightBulbNode from './CustomLightBulbNode.js';
 import FixedCircuitElementNode, { FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
 
@@ -27,14 +27,14 @@ export default class LightBulbSocketNode extends FixedCircuitElementNode {
 
   /**
    * @param screenView - main screen view, null for icon
-   * @param circuitLayerNode, null for icon
+   * @param circuitNode, null for icon
    * @param lightBulb - the light bulb model
    * @param viewTypeProperty
    * @param tandem
    * @param [providedOptions]
    */
-  public constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, lightBulb: LightBulb,
-               viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: FixedCircuitElementNodeOptions ) {
+  public constructor( screenView: CCKCScreenView | null, circuitNode: CircuitNode | null, lightBulb: LightBulb,
+                      viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: FixedCircuitElementNodeOptions ) {
 
     // Render the bulb socket only
     const lightBulbNode = new CustomLightBulbNode( new NumberProperty( 0 ), {
@@ -51,7 +51,7 @@ export default class LightBulbSocketNode extends FixedCircuitElementNode {
       // Suppress the highlight for the socket, the highlight is shown by the CCKCLightBulbNode
       showHighlight: false
     }, providedOptions );
-    super( screenView, circuitLayerNode, lightBulb, viewTypeProperty, lightBulbNode, new Rectangle( 0, 0, 10, 10 ),
+    super( screenView, circuitNode, lightBulb, viewTypeProperty, lightBulbNode, new Rectangle( 0, 0, 10, 10 ),
       tandem, providedOptions );
   }
 

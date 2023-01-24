@@ -33,7 +33,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import Meter from '../model/Meter.js';
 import CCKCProbeNode from './CCKCProbeNode.js';
-import CircuitLayerNode from './CircuitLayerNode.js';
+import CircuitNode from './CircuitNode.js';
 import Property from '../../../axon/js/Property.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import CCKCScreenView from './CCKCScreenView.js';
@@ -64,7 +64,7 @@ export type CCKCChartNodeOptions = SelfOptions & NodeOptions & PickRequired<Node
 export default class CCKCChartNode extends Node {
   public readonly meter: Meter;
   protected readonly series: ObservableArray<Vector2 | null>;
-  protected readonly circuitLayerNode: CircuitLayerNode;
+  protected readonly circuitNode: CircuitNode;
   protected readonly timeProperty: Property<number>;
   private readonly visibleBoundsProperty: Property<Bounds2>;
   private readonly backgroundNode: Node;
@@ -81,14 +81,14 @@ export default class CCKCChartNode extends Node {
   protected readonly updatePen: () => void;
 
   /**
-   * @param circuitLayerNode
+   * @param circuitNode
    * @param timeProperty
    * @param visibleBoundsProperty
    * @param series
    * @param verticalAxisLabel
    * @param [providedOptions]
    */
-  public constructor( circuitLayerNode: CircuitLayerNode, timeProperty: Property<number>, visibleBoundsProperty: Property<Bounds2>,
+  public constructor( circuitNode: CircuitNode, timeProperty: Property<number>, visibleBoundsProperty: Property<Bounds2>,
                       series: ObservableArray<Vector2 | null>, verticalAxisLabel: TReadOnlyProperty<string>, providedOptions?: CCKCChartNodeOptions ) {
     const options = optionize<CCKCChartNodeOptions, SelfOptions, NodeOptions>()( {
       defaultZoomLevel: new Range( -2, 2 ),
@@ -105,7 +105,7 @@ export default class CCKCChartNode extends Node {
 
     this.meter = new Meter( tandem.createTandem( 'meter' ), 0 );
     this.series = series;
-    this.circuitLayerNode = circuitLayerNode;
+    this.circuitNode = circuitNode;
     this.timeProperty = timeProperty;
     this.visibleBoundsProperty = visibleBoundsProperty;
 
@@ -481,7 +481,7 @@ export default class CCKCChartNode extends Node {
     };
     screenView.visibleBoundsProperty.link( update );
 
-    this.circuitLayerNode.transformEmitter.addListener( update );
+    this.circuitNode.transformEmitter.addListener( update );
     this.backgroundDragListener = dragListener;
     this.backgroundNode.addInputListener( dragListener );
   }

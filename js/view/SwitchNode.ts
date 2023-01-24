@@ -16,7 +16,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import Switch from '../model/Switch.js';
 import CCKCScreenView from './CCKCScreenView.js';
-import CircuitLayerNode from './CircuitLayerNode.js';
+import CircuitNode from './CircuitNode.js';
 import FixedCircuitElementNode, { FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
 
 // constants
@@ -154,13 +154,13 @@ export default class SwitchNode extends FixedCircuitElementNode {
 
   /**
    * @param screenView - main screen view, null for icon
-   * @param circuitLayerNode, null for icon
+   * @param circuitNode, null for icon
    * @param circuitSwitch
    * @param viewTypeProperty
    * @param tandem
    * @param [providedOptions]
    */
-  public constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, circuitSwitch: Switch,
+  public constructor( screenView: CCKCScreenView | null, circuitNode: CircuitNode | null, circuitSwitch: Switch,
                       viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: FixedCircuitElementNodeOptions ) {
 
     const lifelikeNode = new Node();
@@ -173,7 +173,7 @@ export default class SwitchNode extends FixedCircuitElementNode {
 
     super(
       screenView,
-      circuitLayerNode,
+      circuitNode,
       circuitSwitch,
       viewTypeProperty,
       lifelikeNode,
@@ -191,12 +191,12 @@ export default class SwitchNode extends FixedCircuitElementNode {
       tandem: tandem.createTandem( 'fireListener' ),
       attach: false,
       press: event => {
-        downPoint = circuitLayerNode!.globalToLocalPoint( event.pointer.point );
+        downPoint = circuitNode!.globalToLocalPoint( event.pointer.point );
       },
       fire: event => {
 
-        // Measure how far the switch was dragged in CircuitLayerNode coordinates (if any)
-        const distance = circuitLayerNode!.globalToLocalPoint( event.pointer.point ).distance( downPoint! );
+        // Measure how far the switch was dragged in CircuitNode coordinates (if any)
+        const distance = circuitNode!.globalToLocalPoint( event.pointer.point ).distance( downPoint! );
 
         // Toggle the state of the switch, but only if the event is classified as a tap and not a drag
         if ( distance < CCKCConstants.TAP_THRESHOLD ) {

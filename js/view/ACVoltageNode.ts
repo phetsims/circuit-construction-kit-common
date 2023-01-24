@@ -18,7 +18,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import ACVoltage from '../model/ACVoltage.js';
 import FixedCircuitElementNode, { FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
 import CCKCScreenView from './CCKCScreenView.js';
-import CircuitLayerNode from './CircuitLayerNode.js';
+import CircuitNode from './CircuitNode.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 
@@ -98,13 +98,13 @@ export default class ACVoltageNode extends FixedCircuitElementNode {
 
   /**
    * @param screenView - main screen view, null for isIcon
-   * @param circuitLayerNode, null for icon
+   * @param circuitNode, null for icon
    * @param acSource
    * @param viewTypeProperty
    * @param tandem
    * @param [providedOptions]
    */
-  public constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, acSource: ACVoltage,
+  public constructor( screenView: CCKCScreenView | null, circuitNode: CircuitNode | null, acSource: ACVoltage,
                       viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: ACVoltageNodeOptions ) {
     const options = optionize<ACVoltageNodeOptions, SelfOptions, FixedCircuitElementNodeOptions>()( {
       useHitTestForSensors: true
@@ -115,7 +115,7 @@ export default class ACVoltageNode extends FixedCircuitElementNode {
 
     super(
       screenView,
-      circuitLayerNode,
+      circuitNode,
       acSource,
       viewTypeProperty,
       lifelikeNode,

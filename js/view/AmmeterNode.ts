@@ -22,7 +22,7 @@ import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommon
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import ProbeTextNode from './ProbeTextNode.js';
 import Ammeter from '../model/Ammeter.js';
-import CircuitLayerNode from './CircuitLayerNode.js';
+import CircuitNode from './CircuitNode.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import Property from '../../../axon/js/Property.js';
 import ammeterReadoutTypeProperty from './ammeterReadoutTypeProperty.js';
@@ -62,10 +62,10 @@ export default class AmmeterNode extends Node {
 
   /**
    * @param ammeter
-   * @param circuitLayerNode - for getting the currents, or null if rendering an icon
+   * @param circuitNode - for getting the currents, or null if rendering an icon
    * @param [providedOptions]
    */
-  public constructor( ammeter: Ammeter, circuitLayerNode: CircuitLayerNode | null, providedOptions?: AmmeterNodeOptions ) {
+  public constructor( ammeter: Ammeter, circuitNode: CircuitNode | null, providedOptions?: AmmeterNodeOptions ) {
     const options = optionize<AmmeterNodeOptions, SelfOptions, NodeOptions>()( {
 
       // true if it will be used as a toolbox icon
@@ -234,11 +234,11 @@ export default class AmmeterNode extends Node {
 
         // Skip work when ammeter is not out, to improve performance.
         if ( ammeter.visibleProperty.get() ) {
-          const current = circuitLayerNode!.getCurrent( this.probeNode );
+          const current = circuitNode!.getCurrent( this.probeNode );
           ammeter.currentProperty.value = current;
         }
       };
-      circuitLayerNode!.circuit.circuitChangedEmitter.addListener( updateAmmeter );
+      circuitNode!.circuit.circuitChangedEmitter.addListener( updateAmmeter );
       ammeter.probePositionProperty.link( updateAmmeter );
     }
     else {

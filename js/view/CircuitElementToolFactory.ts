@@ -99,7 +99,7 @@ export default class CircuitElementToolFactory {
   private readonly circuit: Circuit;
   private readonly showLabelsProperty: Property<boolean>;
   private readonly viewTypeProperty: Property<CircuitElementViewType>;
-  private readonly globalToCircuitLayerNodePoint: ( v: Vector2 ) => Vector2;
+  private readonly globalToCircuitNodePoint: ( v: Vector2 ) => Vector2;
   private readonly parentTandem: Tandem;
   private wireToolNode: CircuitElementToolNode | null;
 
@@ -107,14 +107,14 @@ export default class CircuitElementToolFactory {
    * @param circuit
    * @param showLabelsProperty
    * @param viewTypeProperty
-   * @param globalToCircuitLayerNodePoint Vector2=>Vector2 global point to coordinate frame of circuitLayerNode
+   * @param globalToCircuitNodePoint Vector2=>Vector2 global point to coordinate frame of circuitNode
    * @param parentTandem - parent tandem for the created tool nodes
    */
-  public constructor( circuit: Circuit, showLabelsProperty: Property<boolean>, viewTypeProperty: Property<CircuitElementViewType>, globalToCircuitLayerNodePoint: ( v: Vector2 ) => Vector2, parentTandem: Tandem ) {
+  public constructor( circuit: Circuit, showLabelsProperty: Property<boolean>, viewTypeProperty: Property<CircuitElementViewType>, globalToCircuitNodePoint: ( v: Vector2 ) => Vector2, parentTandem: Tandem ) {
     this.circuit = circuit;
     this.showLabelsProperty = showLabelsProperty;
     this.viewTypeProperty = viewTypeProperty;
-    this.globalToCircuitLayerNodePoint = globalToCircuitLayerNodePoint;
+    this.globalToCircuitNodePoint = globalToCircuitNodePoint;
     this.parentTandem = parentTandem;
     this.wireToolNode = null;
   }
@@ -168,7 +168,7 @@ export default class CircuitElementToolFactory {
       this.showLabelsProperty,
       this.viewTypeProperty,
       this.circuit,
-      this.globalToCircuitLayerNodePoint,
+      this.globalToCircuitNodePoint,
       iconAlignGroup.createBox( toggleNode, { yAlign: 'bottom' } ),
       count,
       this.createCounter( predicate ),

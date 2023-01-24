@@ -16,7 +16,7 @@ import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CCKCChartNode, { CCKCChartNodeOptions } from './CCKCChartNode.js';
-import CircuitLayerNode from './CircuitLayerNode.js';
+import CircuitNode from './CircuitNode.js';
 import Property from '../../../axon/js/Property.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import CCKCProbeNode from './CCKCProbeNode.js';
@@ -33,14 +33,14 @@ export default class VoltageChartNode extends CCKCChartNode {
   private readonly probeNode2: CCKCProbeNode;
   private lastStepTime: number | null;
 
-  public constructor( circuitLayerNode: CircuitLayerNode, timeProperty: Property<number>, visibleBoundsProperty: Property<Bounds2>, providedOptions?: CCKCChartNodeOptions ) {
+  public constructor( circuitNode: CircuitNode, timeProperty: Property<number>, visibleBoundsProperty: Property<Bounds2>, providedOptions?: CCKCChartNodeOptions ) {
 
     providedOptions = combineOptions<CCKCChartNodeOptions>( {
       defaultZoomLevel: new Range( -10, 10 ),
       tandem: Tandem.OPTIONAL
     }, providedOptions );
 
-    super( circuitLayerNode, timeProperty, visibleBoundsProperty, createObservableArray(), voltageWithUnitsStringProperty, providedOptions );
+    super( circuitNode, timeProperty, visibleBoundsProperty, createObservableArray(), voltageWithUnitsStringProperty, providedOptions );
 
     this.probeNode1 = this.addProbeNode( SERIES_1_COLOR, SERIES_1_COLOR, 5, 10, this.aboveBottomLeft1Property, providedOptions.tandem.createTandem( 'probeNode1' ) );
     this.probeNode2 = this.addProbeNode( SERIES_2_COLOR, SERIES_2_COLOR, 36, 54, this.aboveBottomLeft2Property, providedOptions.tandem.createTandem( 'probeNode2' ) );
@@ -49,12 +49,12 @@ export default class VoltageChartNode extends CCKCChartNode {
   }
 
   public sampleValue( time: number ): Vector2 | null {
-    const redPoint = this.circuitLayerNode.globalToLocalPoint( this.localToGlobalPoint( this.probeNode1.translation ) );
-    const blackPoint = this.circuitLayerNode.globalToLocalPoint( this.localToGlobalPoint( this.probeNode2.translation ) );
+    const redPoint = this.circuitNode.globalToLocalPoint( this.localToGlobalPoint( this.probeNode1.translation ) );
+    const blackPoint = this.circuitNode.globalToLocalPoint( this.localToGlobalPoint( this.probeNode2.translation ) );
 
-    const redConnection = this.circuitLayerNode.getVoltageConnection( redPoint );
-    const blackConnection = this.circuitLayerNode.getVoltageConnection( blackPoint );
-    const voltage = this.circuitLayerNode.circuit.getVoltageBetweenConnections( redConnection, blackConnection, false );
+    const redConnection = this.circuitNode.getVoltageConnection( redPoint );
+    const blackConnection = this.circuitNode.getVoltageConnection( blackPoint );
+    const voltage = this.circuitNode.circuit.getVoltageBetweenConnections( redConnection, blackConnection, false );
 
     return voltage === null ? null : new Vector2( time, voltage );
   }
@@ -73,9 +73,9 @@ export default class VoltageChartNode extends CCKCChartNode {
       if ( CCKCQueryParameters.showVoltmeterSamplePoints ) {
 
         // These get erased when changing between lifelike/schematic
-        this.circuitLayerNode.addChild( new Rectangle( -1, -1, 2, 2, {
+        this.circuitNode.addChild( new Rectangle( -1, -1, 2, 2, {
           fill: Color.BLACK,
-          translation: this.circuitLayerNode.globalToLocalPoint( this.localToGlobalPoint( this.probeNode1.translation ) )
+          translation: this.circuitNode.globalToLocalPoint( this.localToGlobalPoint( this.probeNode1.translation ) )
         } ) );
       }
 

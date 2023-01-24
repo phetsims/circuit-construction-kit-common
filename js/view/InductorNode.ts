@@ -18,7 +18,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import Inductor from '../model/Inductor.js';
 import CCKCScreenView from './CCKCScreenView.js';
-import CircuitLayerNode from './CircuitLayerNode.js';
+import CircuitNode from './CircuitNode.js';
 import FixedCircuitElementNode, { FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
 
 // constants
@@ -61,13 +61,13 @@ export default class InductorNode extends FixedCircuitElementNode {
 
   /**
    * @param screenView - main screen view, null for isIcon
-   * @param circuitLayerNode, null for icon
+   * @param circuitNode, null for icon
    * @param inductor
    * @param viewTypeProperty
    * @param tandem
    * @param [providedOptions]
    */
-  public constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, inductor: Inductor,
+  public constructor( screenView: CCKCScreenView | null, circuitNode: CircuitNode | null, inductor: Inductor,
                       viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: FixedCircuitElementNodeOptions ) {
 
     providedOptions = combineOptions<FixedCircuitElementNodeOptions>( { isIcon: false, useHitTestForSensors: true }, providedOptions );
@@ -149,7 +149,7 @@ export default class InductorNode extends FixedCircuitElementNode {
 
     super(
       screenView,
-      circuitLayerNode,
+      circuitNode,
       inductor,
       viewTypeProperty,
       lifelikeNode,

@@ -30,7 +30,7 @@ import CurrentChartNode from './CurrentChartNode.js';
 import SeriesAmmeterNode from './SeriesAmmeterNode.js';
 import VoltageChartNode from './VoltageChartNode.js';
 import VoltmeterNode from './VoltmeterNode.js';
-import CircuitLayerNode from './CircuitLayerNode.js';
+import CircuitNode from './CircuitNode.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import Multilink from '../../../axon/js/Multilink.js';
@@ -58,7 +58,7 @@ export default class SensorToolbox extends CCKCPanel {
 
   /**
    * @param alignGroup - for alignment with other controls
-   * @param circuitLayerNode - the main circuit node to use as a coordinate frame
+   * @param circuitNode - the main circuit node to use as a coordinate frame
    * @param voltmeterNodes - nodes that display the Voltmeters
    * @param ammeterNodes - nodes that display the Ammeters
    * @param voltageChartNodes - nodes for the VoltageChartNode, if present
@@ -66,13 +66,13 @@ export default class SensorToolbox extends CCKCPanel {
    * @param tandem
    * @param [providedOptions]
    */
-  public constructor( alignGroup: AlignGroup, circuitLayerNode: CircuitLayerNode, voltmeterNodes: VoltmeterNode[],
+  public constructor( alignGroup: AlignGroup, circuitNode: CircuitNode, voltmeterNodes: VoltmeterNode[],
                       ammeterNodes: AmmeterNode[], voltageChartNodes: VoltageChartNode[], currentChartNodes: CurrentChartNode[],
                       tandem: Tandem, providedOptions?: SensorToolboxOptions ) {
-    const circuit = circuitLayerNode.circuit;
+    const circuit = circuitNode.circuit;
 
     const options = optionize<SensorToolboxOptions, SelfOptions, CCKCPanelOptions>()( {
-      showResultsProperty: circuitLayerNode.model.isValueDepictionEnabledProperty,
+      showResultsProperty: circuitNode.model.isValueDepictionEnabledProperty,
       showSeriesAmmeters: true, // whether the series ammeters should be shown in the toolbox
       showNoncontactAmmeters: true, // whether the noncontact ammeters should be shown in the toolbox
       showCharts: false
@@ -93,7 +93,7 @@ export default class SensorToolbox extends CCKCPanel {
           const meterModel = meterNode instanceof VoltmeterNode ? meterNode.voltmeter :
                              meterNode instanceof AmmeterNode ? meterNode.ammeter :
                              meterNode.meter;
-          const viewPosition = circuitLayerNode.globalToLocalPoint( event.pointer.point );
+          const viewPosition = circuitNode.globalToLocalPoint( event.pointer.point );
           meterModel.draggingProbesWithBodyProperty.value = true;
           meterModel.visibleProperty.value = true;
           meterModel.bodyPositionProperty.value = viewPosition;
@@ -154,7 +154,7 @@ export default class SensorToolbox extends CCKCPanel {
       new BooleanProperty( false ),
       new EnumerationProperty( CircuitElementViewType.SCHEMATIC ),
       circuit,
-      point => circuitLayerNode.globalToLocalPoint( point ),
+      point => circuitNode.globalToLocalPoint( point ),
       seriesAmmeterNodeIcon,
       MAX_SERIES_AMMETERS,
       () => circuit.circuitElements.count( circuitElement => circuitElement instanceof SeriesAmmeter ),
@@ -186,11 +186,11 @@ export default class SensorToolbox extends CCKCPanel {
     } );
 
     // Alter the visibility of the labels when the labels checkbox is toggled.
-    Multilink.multilink( [ circuitLayerNode.model.showLabelsProperty, allVoltmetersInPlayAreaProperty, voltmeterToolIcon.visibleProperty ], ( showLabels, allVoltmetersInPlayArea, voltmeterToolNodeVisible ) => {
+    Multilink.multilink( [ circuitNode.model.showLabelsProperty, allVoltmetersInPlayAreaProperty, voltmeterToolIcon.visibleProperty ], ( showLabels, allVoltmetersInPlayArea, voltmeterToolNodeVisible ) => {
       voltmeterText.visible = showLabels && !allVoltmetersInPlayArea && voltmeterToolNodeVisible;
     } );
     Multilink.multilink(
-      [ circuitLayerNode.model.showLabelsProperty, allAmmetersInPlayAreaProperty, allSeriesAmmetersInPlayAreaProperty, ammeterToolIcon.visibleProperty, seriesAmmeterNodeIcon.visibleProperty, seriesAmmeterToolNode.visibleProperty ],
+      [ circuitNode.model.showLabelsProperty, allAmmetersInPlayAreaProperty, allSeriesAmmetersInPlayAreaProperty, ammeterToolIcon.visibleProperty, seriesAmmeterNodeIcon.visibleProperty, seriesAmmeterToolNode.visibleProperty ],
       ( showLabels, allAmmetersInPlayArea, allSeriesAmmetersInPlayArea, ammeterToolNodeVisible, seriesAmmeterNodeIconVisible, seriesAmmeterToolNodeVisible ) => {
 
         let isAmmeterInToolbox = false;
@@ -275,7 +275,7 @@ export default class SensorToolbox extends CCKCPanel {
         overlay.addInputListener( createListenerMulti( chartNodes ) );
 
         // Alter the visibility of the labels when the labels checkbox is toggled.
-        Multilink.multilink( [ circuitLayerNode.model.showLabelsProperty, allInPlayAreaProperty ], ( showLabels, allInPlayArea ) => {
+        Multilink.multilink( [ circuitNode.model.showLabelsProperty, allInPlayAreaProperty ], ( showLabels, allInPlayArea ) => {
           labelNode.visible = showLabels && !allInPlayArea;
         } );
 
@@ -283,7 +283,7 @@ export default class SensorToolbox extends CCKCPanel {
       };
 
       // Make the voltage chart the same width as the voltmeter, since the icons will be aligned in a grid
-      const voltageChartNodeIconContents = new VoltageChartNode( circuitLayerNode, new NumberProperty( 0 ), everythingProperty );
+      const voltageChartNodeIconContents = new VoltageChartNode( circuitNode, new NumberProperty( 0 ), everythingProperty );
       const scale = voltmeterToolNode.width / voltageChartNodeIconContents.width;
       voltageChartNodeIconContents.scale( scale );
 
@@ -298,7 +298,7 @@ export default class SensorToolbox extends CCKCPanel {
         tandem.createTandem( 'voltageChartToolIcon' )
       );
       const currentChartToolIcon = createChartToolIcon( currentChartNodes,
-        new CurrentChartNode( circuitLayerNode, new NumberProperty( 0 ), everythingProperty, { scale: scale, tandem: Tandem.OPT_OUT } ),
+        new CurrentChartNode( circuitNode, new NumberProperty( 0 ), everythingProperty, { scale: scale, tandem: Tandem.OPT_OUT } ),
         new Text( currentChartStringProperty, {
           maxWidth: 60,
           visiblePropertyOptions: {

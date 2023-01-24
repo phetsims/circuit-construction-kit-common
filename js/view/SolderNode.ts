@@ -10,7 +10,7 @@ import Vector2 from '../../../dot/js/Vector2.js';
 import { Circle, Node } from '../../../scenery/js/imports.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Vertex from '../model/Vertex.js';
-import CircuitLayerNode from './CircuitLayerNode.js';
+import CircuitNode from './CircuitNode.js';
 
 // constants
 const SOLDER_COLOR = '#ae9f9e';
@@ -24,7 +24,7 @@ const CIRCLE_NODE = new Circle( SOLDER_RADIUS, { fill: SOLDER_COLOR } ).rasteriz
 export default class SolderNode extends Node {
   public readonly vertex: Vertex;
 
-  // added by CircuitLayerNode during dragging, used for relative drag position.
+  // added by CircuitNode during dragging, used for relative drag position.
   private readonly startOffset: Vector2 | null;
   private readonly disposeSolderNode: () => void;
 
@@ -34,10 +34,10 @@ export default class SolderNode extends Node {
   // radius of solder in model=view coordinates, for hit testing with probes
   public static readonly SOLDER_RADIUS = SOLDER_RADIUS;
 
-  public constructor( circuitLayerNode: CircuitLayerNode, vertex: Vertex ) {
+  public constructor( circuitNode: CircuitNode, vertex: Vertex ) {
     assert && assert( CIRCLE_NODE, 'solder image should exist before creating SolderNode' );
 
-    const circuit = circuitLayerNode.circuit;
+    const circuit = circuitNode.circuit;
 
     super( {
       children: [ CIRCLE_NODE ],

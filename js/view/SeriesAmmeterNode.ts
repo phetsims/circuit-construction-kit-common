@@ -13,7 +13,7 @@ import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommon
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import FixedCircuitElementNode, { FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
 import CCKCScreenView from './CCKCScreenView.js';
-import CircuitLayerNode from './CircuitLayerNode.js';
+import CircuitNode from './CircuitNode.js';
 import SeriesAmmeter from '../model/SeriesAmmeter.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
@@ -54,7 +54,7 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
   private readonly frontPanelContainer: Node;
   private readonly disposeSeriesAmmeterNode: () => void;
 
-  public constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, seriesAmmeter: SeriesAmmeter,
+  public constructor( screenView: CCKCScreenView | null, circuitNode: CircuitNode | null, seriesAmmeter: SeriesAmmeter,
                       tandem: Tandem, isValueDepictionEnabledProperty: TReadOnlyProperty<boolean>, providedOptions?: FixedCircuitElementNodeOptions ) {
 
     const stringProperty = new Property( MathSymbols.NO_VALUE, {
@@ -100,7 +100,7 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
     seriesAmmeter.endVertexProperty.lazyLink( updateText );
     seriesAmmeter.currentSenseProperty.lazyLink( updateText );
     ammeterReadoutTypeProperty.lazyLink( updateText );
-    circuitLayerNode && circuitLayerNode.circuit.circuitChangedEmitter.addListener( updateText );
+    circuitNode && circuitNode.circuit.circuitChangedEmitter.addListener( updateText );
 
     // This node only has a lifelike representation because it is a sensor
     const lifelikeNode = new Node( {
@@ -129,7 +129,7 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
 
     super(
       screenView,
-      circuitLayerNode,
+      circuitNode,
       seriesAmmeter,
       new EnumerationProperty( CircuitElementViewType.LIFELIKE ),
       lifelikeNode,
@@ -155,9 +155,9 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
       } ) );
     }
     else {
-      assert && assert( !!circuitLayerNode );
-      if ( circuitLayerNode && !seriesAmmeter.phetioIsArchetype && seriesAmmeter.tandem.supplied ) {
-        circuitLayerNode.seriesAmmeterNodeReadoutPanelLayer.addChild( this.frontPanelContainer );
+      assert && assert( !!circuitNode );
+      if ( circuitNode && !seriesAmmeter.phetioIsArchetype && seriesAmmeter.tandem.supplied ) {
+        circuitNode.seriesAmmeterNodeReadoutPanelLayer.addChild( this.frontPanelContainer );
       }
     }
 
@@ -170,15 +170,15 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
       seriesAmmeter.endVertexProperty.unlink( updateText );
       ammeterReadoutTypeProperty.unlink( updateText );
       if ( !this.isIcon ) {
-        assert && assert( !!circuitLayerNode );
-        if ( circuitLayerNode ) {
-          circuitLayerNode.seriesAmmeterNodeReadoutPanelLayer.removeChild( this.frontPanelContainer );
+        assert && assert( !!circuitNode );
+        if ( circuitNode ) {
+          circuitNode.seriesAmmeterNodeReadoutPanelLayer.removeChild( this.frontPanelContainer );
         }
       }
       lifelikeNode.dispose();
       this.frontPanelContainer.dispose();
       probeTextNode.dispose();
-      circuitLayerNode && circuitLayerNode.circuit.circuitChangedEmitter.removeListener( updateText );
+      circuitNode && circuitNode.circuit.circuitChangedEmitter.removeListener( updateText );
       stringProperty.dispose();
     };
   }

@@ -719,7 +719,7 @@ export default class Circuit {
   /**
    * Translate all vertices connected to the mainVertex by FixedCircuitElements by the given distance
    *
-   * Note: do not confuse this with CircuitLayerNode.translateVertexGroup which proposes connections while dragging
+   * Note: do not confuse this with CircuitNode.translateVertexGroup which proposes connections while dragging
    *
    * @param mainVertex - the vertex whose group will be translated
    * @param delta - the vector by which to move the vertex group

@@ -12,7 +12,7 @@ import CCKCConstants from '../CCKCConstants.js';
 import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CCKCChartNode, { CCKCChartNodeOptions } from './CCKCChartNode.js';
-import CircuitLayerNode from './CircuitLayerNode.js';
+import CircuitNode from './CircuitNode.js';
 import Property from '../../../axon/js/Property.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import CCKCProbeNode from './CCKCProbeNode.js';
@@ -25,17 +25,17 @@ export default class CurrentChartNode extends CCKCChartNode {
   private lastStepTime: number | null;
 
   /**
-   * @param circuitLayerNode
+   * @param circuitNode
    * @param timeProperty
    * @param visibleBoundsProperty
    * @param [providedOptions]
    */
-  public constructor( circuitLayerNode: CircuitLayerNode, timeProperty: Property<number>, visibleBoundsProperty: Property<Bounds2>,
+  public constructor( circuitNode: CircuitNode, timeProperty: Property<number>, visibleBoundsProperty: Property<Bounds2>,
                       providedOptions?: CCKCChartNodeOptions ) {
 
     const options = optionize<CCKCChartNodeOptions, EmptySelfOptions, CCKCChartNodeOptions>()( {}, providedOptions );
 
-    super( circuitLayerNode, timeProperty, visibleBoundsProperty, createObservableArray(), currentWithUnitsStringProperty, providedOptions );
+    super( circuitNode, timeProperty, visibleBoundsProperty, createObservableArray(), currentWithUnitsStringProperty, providedOptions );
 
     this.probeNode1 = this.addProbeNode(
       CCKCConstants.CHART_SERIES_COLOR,
@@ -55,7 +55,7 @@ export default class CurrentChartNode extends CCKCChartNode {
    */
   public step( time: number, dt: number ): void {
     if ( this.meter.visibleProperty.value ) {
-      const current = this.circuitLayerNode.getCurrent( this.probeNode1 );
+      const current = this.circuitNode.getCurrent( this.probeNode1 );
       this.series.push( current === null ? null : new Vector2( time, current || 0 ) );
       while ( ( this.series[ 0 ] === null ) ||
               ( this.series.length > 0 && this.series[ 0 ].x < this.timeProperty.value - CCKCConstants.NUMBER_OF_TIME_DIVISIONS ) ) {
@@ -74,7 +74,7 @@ export default class CurrentChartNode extends CCKCChartNode {
     }
 
     this.series.pop();
-    const current = this.circuitLayerNode.getCurrent( this.probeNode1 );
+    const current = this.circuitNode.getCurrent( this.probeNode1 );
     assert && assert( typeof this.lastStepTime === 'number' );
     if ( typeof this.lastStepTime === 'number' ) {
       this.series.push( current === null ? null : new Vector2( this.lastStepTime, current || 0 ) );
