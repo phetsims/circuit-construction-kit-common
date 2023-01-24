@@ -444,7 +444,7 @@ export default class CircuitLayerNode extends Node {
       content: cutIcon,
       xMargin: 10,
       yMargin: 10,
-      tandem: tandem.createTandem( 'cutButton' ),
+      tandem: screenView.tandem.createTandem( 'vertexCutButton' ),
       enabledPropertyOptions: {
         phetioReadOnly: true
       }
