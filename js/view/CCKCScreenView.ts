@@ -331,7 +331,11 @@ export default class CCKCScreenView extends ScreenView {
 
     // Create the zoom button group
     const zoomButtonGroup = new ZoomButtonGroup( model.zoomLevelProperty, {
-      tandem: tandem.createTandem( 'zoomButtonGroup' )
+      tandem: tandem.createTandem( 'zoomButtonGroup' ),
+      buttonOptions: {
+        phetioReadOnly: true,
+        phetioVisiblePropertyInstrumented: false
+      }
     } );
     zoomButtonGroup.mutate( {
       scale: this.circuitElementToolbox.carousel.backgroundWidth /
