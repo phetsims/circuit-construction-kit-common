@@ -135,7 +135,7 @@ export default class CircuitLayerNode extends Node {
 
   // Map of Vertex.index => VertexNode
   private readonly vertexNodes: Record<number, VertexNode>;
-  public readonly cutButton: RoundPushButton;
+  public readonly vertexCutButton: RoundPushButton;
   private readonly circuitDebugLayer: CircuitDebugLayer | null;
 
   /**
@@ -429,7 +429,7 @@ export default class CircuitLayerNode extends Node {
         } ) );
 
     // When a vertex is selected, a cut button is shown near to the vertex.  If the vertex is connected to >1 circuit
-    // element, the button is enabled.  Pressing the button will cut the vertex from the neighbors.  Only one cutButton
+    // element, the button is enabled.  Pressing the button will cut the vertex from the neighbors.  Only one vertexCutButton
     // is allocated for all vertices (per screen) to use because it is too performance demanding to create these
     // dynamically when circuit elements are dragged from the toolbox.  Also, only one vertex can be selected at once
     // so there is only a need for one cut button.
@@ -439,7 +439,7 @@ export default class CircuitLayerNode extends Node {
       maxWidth: 36
     } );
 
-    this.cutButton = new RoundPushButton( {
+    this.vertexCutButton = new RoundPushButton( {
       baseColor: 'yellow',
       content: cutIcon,
       xMargin: 10,
@@ -449,7 +449,7 @@ export default class CircuitLayerNode extends Node {
         phetioReadOnly: true
       }
     } );
-    this.cutButton.addListener( () => {
+    this.vertexCutButton.addListener( () => {
       const selectedVertex = circuit.getSelectedVertex();
       assert && assert( selectedVertex, 'Button should only be available if a vertex is selected' );
       if ( selectedVertex ) {

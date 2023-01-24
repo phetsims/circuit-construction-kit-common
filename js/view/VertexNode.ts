@@ -39,7 +39,7 @@ const BLACK_CIRCLE_NODE = new Circle( VERTEX_RADIUS, combineOptions<CircleOption
 
 export default class VertexNode extends Node {
   private readonly circuit: Circuit;
-  private readonly cutButtonContainer: Node;
+  private readonly vertexCutButtonContainer: Node;
   private readonly circuitLayerNode: CircuitLayerNode;
   private readonly vertexLabelNode: VBox;
   private readonly updateReadoutTextPosition: ( () => void );
@@ -85,8 +85,8 @@ export default class VertexNode extends Node {
     const circuit = circuitLayerNode.circuit;
 
     this.circuit = circuit;
-    this.cutButtonContainer = new Node( {
-      children: [ circuitLayerNode.cutButton ]
+    this.vertexCutButtonContainer = new Node( {
+      children: [ circuitLayerNode.vertexCutButton ]
     } );
 
     this.circuitLayerNode = circuitLayerNode;
@@ -214,7 +214,7 @@ export default class VertexNode extends Node {
           vertex.selectionProperty.value = vertex;
 
           const dismissListener = ( event: SceneryEvent ) => {
-            if ( !_.includes( event.trail.nodes, this ) && !_.includes( event.trail.nodes, this.cutButtonContainer ) ) {
+            if ( !_.includes( event.trail.nodes, this ) && !_.includes( event.trail.nodes, this.vertexCutButtonContainer ) ) {
               vertex.selectionProperty.value = null;
               this.clearClickListeners();
             }
@@ -249,13 +249,13 @@ export default class VertexNode extends Node {
   public override dispose(): void {
     const vertex = this.vertex;
     const circuit = this.circuit;
-    const cutButton = this.cutButtonContainer;
+    const vertexCutButton = this.vertexCutButtonContainer;
     const circuitLayerNode = this.circuitLayerNode;
     vertex.positionProperty.unlink( this.updateVertexNodePositionListener );
     vertex.selectionProperty.unlink( this.updateVertexNodePositionListener );
     vertex.interactiveProperty.unlink( this.updatePickableListener );
     vertex.relayerEmitter.removeListener( this.updateMoveToFront );
-    CCKCUtils.setInSceneGraph( false, circuitLayerNode.buttonLayer, cutButton );
+    CCKCUtils.setInSceneGraph( false, circuitLayerNode.buttonLayer, vertexCutButton );
     CCKCUtils.setInSceneGraph( false, circuitLayerNode.highlightLayer, this.highlightNode );
     circuit.vertexGroup.elementCreatedEmitter.removeListener( this.updateStrokeListener );
     circuit.vertexGroup.elementDisposedEmitter.removeListener( this.updateStrokeListener );
@@ -293,7 +293,7 @@ export default class VertexNode extends Node {
       domEvent!.preventDefault();
 
       // Double guard to work around errors in fuzzing
-      if ( this.cutButtonContainer.inputEnabled && this.circuit.getSelectedVertex() ) {
+      if ( this.vertexCutButtonContainer.inputEnabled && this.circuit.getSelectedVertex() ) {
         this.circuit.cutVertex( this.circuit.getSelectedVertex()! );
       }
     }
@@ -322,16 +322,16 @@ export default class VertexNode extends Node {
     }
     CCKCUtils.setInSceneGraph( selected, this.circuitLayerNode.highlightLayer, this.highlightNode );
     const numberConnections = neighborCircuitElements.length;
-    CCKCUtils.setInSceneGraph( selected && this.vertex.isCuttableProperty.value, this.circuitLayerNode.buttonLayer, this.cutButtonContainer );
-    selected && this.updateCutButtonPosition();
+    CCKCUtils.setInSceneGraph( selected && this.vertex.isCuttableProperty.value, this.circuitLayerNode.buttonLayer, this.vertexCutButtonContainer );
+    selected && this.updateVertexCutButtonPosition();
 
     // Show a disabled button as a cue that the vertex could be cuttable, but it isn't right now.
     const isConnectedBlackBoxVertex = numberConnections === 1 && !this.vertex.isDraggableProperty.get();
 
     const enabled = numberConnections > 1 || isConnectedBlackBoxVertex;
-    this.cutButtonContainer.filters = enabled ? [] : [ Grayscale.FULL ];
-    this.cutButtonContainer.opacity = enabled ? 1 : SceneryConstants.DISABLED_OPACITY;
-    this.cutButtonContainer.inputEnabled = enabled;
+    this.vertexCutButtonContainer.filters = enabled ? [] : [ Grayscale.FULL ];
+    this.vertexCutButtonContainer.opacity = enabled ? 1 : SceneryConstants.DISABLED_OPACITY;
+    this.vertexCutButtonContainer.inputEnabled = enabled;
   }
 
   private updateStroke(): void {
@@ -351,7 +351,7 @@ export default class VertexNode extends Node {
   }
 
   // update the position of the cut button
-  private updateCutButtonPosition(): void {
+  private updateVertexCutButtonPosition(): void {
     const position = this.vertex.positionProperty.get();
 
     const neighbors = this.circuit.getNeighborCircuitElements( this.vertex );
@@ -376,8 +376,8 @@ export default class VertexNode extends Node {
     // Property doesn't exist until the node is attached to scene graph
     const bounds = this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty.get();
 
-    const availableBounds = bounds.eroded( this.cutButtonContainer.width / 2 );
-    this.cutButtonContainer.center = availableBounds.closestPointTo( proposedPosition );
+    const availableBounds = bounds.eroded( this.vertexCutButtonContainer.width / 2 );
+    this.vertexCutButtonContainer.center = availableBounds.closestPointTo( proposedPosition );
   }
 
   /**
@@ -394,7 +394,7 @@ export default class VertexNode extends Node {
     this.updateReadoutTextPosition && this.updateReadoutTextPosition();
 
     // Update the cut button position, but only if the cut button is showing (to save on CPU)
-    this.vertex.isSelected() && this.updateCutButtonPosition();
+    this.vertex.isSelected() && this.updateVertexCutButtonPosition();
   }
 
   /**
