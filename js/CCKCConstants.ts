@@ -25,7 +25,7 @@ const CCKCConstants = {
   PAUSED_DT: 1E-6,
 
   // Available scale factors for the sim stage
-  ZOOM_SCALES: [ 0.5, 1, 1.8 ],
+  ZOOM_SCALES: [ 0.5, 1, 1.6 ],
 
   // When trying to drop an item back in the toolbox, this is the width the hit box
   RETURN_ITEM_BOUNDS_TOLERANCE: 25,
