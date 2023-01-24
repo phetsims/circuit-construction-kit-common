@@ -28,7 +28,7 @@ const CCKCConstants = {
   ZOOM_SCALES: [ 0.5, 1, 1.6 ],
 
   // When trying to drop an item back in the toolbox, this is the width the hit box
-  RETURN_ITEM_BOUNDS_TOLERANCE: 25,
+  RETURN_ITEM_BOUNDS_TOLERANCE: 20,
 
   // Maximum size for Width or height of icons in the circuit element toolbox or sensor toolbox
   TOOLBOX_ICON_HEIGHT: 31,
