@@ -97,9 +97,17 @@ export default class DisplayOptionsPanel extends CCKCPanel {
       tandemName: CONVENTIONAL_RADIO_BUTTON_TANDEM
     }
     ], {
-      tandem: currentTypeRadioButtonGroupTandem,
+      tandem: Tandem.OPT_OUT,
       spacing: 6
     } );
+
+    // AlignBox necessary to indent the children radio buttons
+    const currentTypeRadioButtonGroupContainer = new AlignBox(
+      currentTypeRadioButtonGroup, {
+        tandem: currentTypeRadioButtonGroupTandem,
+        leftMargin: LEFT_MARGIN
+      }
+    );
 
     // Gray out current view options when current is not selected.
     showCurrentProperty.linkAttribute( currentTypeRadioButtonGroup, 'enabled' );
@@ -132,13 +140,7 @@ export default class DisplayOptionsPanel extends CCKCPanel {
           new CCKCCheckbox( showCurrentProperty, createLabel( showCurrentStringProperty, showCurrentCheckboxTandem ), {
             tandem: showCurrentCheckboxTandem
           } ),
-
-          // AlignBox necessary to indent the children radio buttons
-          new AlignBox(
-            currentTypeRadioButtonGroup, {
-              leftMargin: LEFT_MARGIN
-            }
-          )
+          currentTypeRadioButtonGroupContainer
         ]
       } ),
       showLabelsCheckbox,
