@@ -79,7 +79,8 @@ export default class VertexNode extends Node {
       tagName: 'div', // HTML tag name for representative element in the document, see ParallelDOM.js
       focusable: true,
       focusHighlight: 'invisible', // highlights are drawn by the simulation, invisible is deprecated don't use in future
-      phetioDynamicElement: true
+      phetioDynamicElement: true,
+      phetioVisiblePropertyInstrumented: false
     } );
 
     const circuit = circuitNode.circuit;
