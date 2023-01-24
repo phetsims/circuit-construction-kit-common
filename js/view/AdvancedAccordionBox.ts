@@ -45,6 +45,7 @@ export default class AdvancedAccordionBox extends CCKCAccordionBox {
       fontSize: CCKCConstants.FONT_SIZE,
       maxWidth: 120
     }; // Factor out titles
+
     const children = [
       new WireResistivityControl( circuit.wireResistivityProperty, alignGroup, TEXT_OPTIONS, tandem.createTandem( 'wireResistivityControl' ) ),
       new VStrut( 10 ),
