@@ -53,6 +53,7 @@ export default abstract class CircuitElementNode extends Node {
         focusHighlight: 'invisible', // highlights are drawn by the simulation, invisible is deprecated don't use in future
         phetioDynamicElement: true,
         phetioState: false,
+        phetioVisiblePropertyInstrumented: false,
         phetioInputEnabledPropertyInstrumented: true,
         useHitTestForSensors: false
       }, providedOptions );
