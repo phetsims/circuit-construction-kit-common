@@ -281,8 +281,15 @@ export default class CCKCScreenView extends ScreenView {
       this.addChild( resetAllButton );
     }
 
-    this.addChild( this.circuitElementToolbox );
-    this.addChild( this.viewRadioButtonGroup );
+    const toolboxContainer = new VBox( {
+      align: 'right',
+      spacing: 5,
+      children: [
+        this.circuitElementToolbox,
+        this.viewRadioButtonGroup
+      ]
+    } );
+    this.addChild( toolboxContainer );
 
     const controlPanelVBox = new VBox( {
       spacing: VERTICAL_MARGIN,
@@ -375,35 +382,38 @@ export default class CCKCScreenView extends ScreenView {
     // Add it in front of everything (should never be obscured by a CircuitElement)
     this.addChild( zoomButtonGroup );
 
-    this.visibleBoundsProperty.link( ( visibleBounds: Bounds2 ) => {
+    Multilink.multilink(
+      [ this.visibleBoundsProperty, toolboxContainer.localBoundsProperty ],
+      ( visibleBounds: Bounds2 ) => {
+        toolboxContainer.left = visibleBounds.left + HORIZONTAL_MARGIN;
+        toolboxContainer.top = visibleBounds.top + VERTICAL_MARGIN;
 
-      this.circuitElementToolbox.left = visibleBounds.left + VERTICAL_MARGIN +
-                                        ( this.circuitElementToolbox.carousel ? 0 : 12 );
-      this.circuitElementToolbox.top = visibleBounds.top + VERTICAL_MARGIN;
-      this.viewRadioButtonGroup.top = this.circuitElementToolbox.bottom + 14;
-      this.viewRadioButtonGroup.centerX = this.circuitElementToolbox.right - this.circuitElementToolbox.carousel.width / 2;
+        // Float the resetAllButton to the bottom right
+        options.showResetAllButton && resetAllButton && resetAllButton.mutate( {
+          right: visibleBounds.right - HORIZONTAL_MARGIN,
+          bottom: visibleBounds.bottom - VERTICAL_MARGIN
+        } );
 
-      // Float the resetAllButton to the bottom right
-      options.showResetAllButton && resetAllButton && resetAllButton.mutate( {
-        right: visibleBounds.right - HORIZONTAL_MARGIN,
-        bottom: visibleBounds.bottom - HORIZONTAL_MARGIN
+        timeControlNode && timeControlNode.mutate( {
+          left: controlPanelVBox.left,
+          bottom: visibleBounds.bottom - VERTICAL_MARGIN
+        } );
+
+        if ( Number.isFinite( toolboxContainer.right ) ) {
+          zoomButtonGroup.right = toolboxContainer.right;
+        }
+        else {
+          zoomButtonGroup.left = visibleBounds.left + HORIZONTAL_MARGIN;
+        }
+        zoomButtonGroup.bottom = visibleBounds.bottom - VERTICAL_MARGIN;
+
+        playAreaCenterXProperty.value = ( controlPanelVBox.left + this.circuitElementToolbox.right ) / 2;
+
+        chargeSpeedThrottlingReadoutNode.mutate( {
+          centerX: playAreaCenterXProperty.value,
+          bottom: visibleBounds.bottom - 100 // so it doesn't overlap the component controls
+        } );
       } );
-
-      timeControlNode && timeControlNode.mutate( {
-        left: controlPanelVBox.left,
-        bottom: visibleBounds.bottom - HORIZONTAL_MARGIN
-      } );
-
-      zoomButtonGroup.left = visibleBounds.left + HORIZONTAL_MARGIN;
-      zoomButtonGroup.bottom = visibleBounds.bottom - VERTICAL_MARGIN;
-
-      playAreaCenterXProperty.value = ( controlPanelVBox.left + this.circuitElementToolbox.right ) / 2;
-
-      chargeSpeedThrottlingReadoutNode.mutate( {
-        centerX: playAreaCenterXProperty.value,
-        bottom: visibleBounds.bottom - 100 // so it doesn't overlap the component controls
-      } );
-    } );
 
     // Center the circuit node so that zooms will remain centered.
     this.circuitNode.setTranslation( this.layoutBounds.centerX, this.layoutBounds.centerY );
