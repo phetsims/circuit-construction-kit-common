@@ -466,7 +466,7 @@ export default class CircuitElementToolFactory {
 
   // Same docs as for createPaperClipToolNode
   public createExtremeResistorToolNode( tandem: Tandem ): CircuitElementToolNode {
-    return this.createResistorToolNode( tandem,{
+    return this.createResistorToolNode( tandem, {
       count: 4,
       resistorType: ResistorType.HIGH_RESISTANCE_RESISTOR,
       tandemName: 'extremeResistorToolNode',

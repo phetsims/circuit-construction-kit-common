@@ -42,8 +42,10 @@ export default class CircuitElementToolbox extends HBox {
 
         orientation: 'vertical',
 
-        // Expand the touch area above the up button and below the down button
-        buttonTouchAreaYDilation: 8,
+        buttonOptions: {
+          // Expand the touch area above the up button and below the down button
+          touchAreaXDilation: 8
+        },
 
         spacing: 24,
 
