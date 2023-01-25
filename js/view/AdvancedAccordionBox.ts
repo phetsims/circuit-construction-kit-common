@@ -68,7 +68,7 @@ export default class AdvancedAccordionBox extends CCKCAccordionBox {
     } ) ), CircuitConstructionKitCommonStrings.advancedStringProperty, tandem, {
 
       // Left align the title, with no padding
-      titleAlignX: 'center',
+      titleAlignX: 'left',
       titleXSpacing: 0
     } );
 
