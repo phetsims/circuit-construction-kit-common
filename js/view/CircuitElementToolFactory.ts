@@ -465,8 +465,8 @@ export default class CircuitElementToolFactory {
   }
 
   // Same docs as for createPaperClipToolNode
-  public createExtremeResistorToolNode(): CircuitElementToolNode {
-    return this.createResistorToolNode( {
+  public createExtremeResistorToolNode( tandem: Tandem ): CircuitElementToolNode {
+    return this.createResistorToolNode( tandem,{
       count: 4,
       resistorType: ResistorType.HIGH_RESISTANCE_RESISTOR,
       tandemName: 'extremeResistorToolNode',
@@ -474,7 +474,7 @@ export default class CircuitElementToolFactory {
     } );
   }
 
-  public createExtremeBatteryToolNode(): CircuitElementToolNode {
+  public createExtremeBatteryToolNode( tandem: Tandem ): CircuitElementToolNode {
     return this.createCircuitElementToolNode( batteryStringProperty, 4,
       ( tandem, viewTypeProperty ) => new BatteryNode( null, null,
         new Battery(
@@ -492,12 +492,12 @@ export default class CircuitElementToolFactory {
                         circuitElement.batteryType === 'high-voltage', ( position: Vector2 ) => {
         return this.circuit.extremeBatteryGroup.createNextElement( ...this.circuit.createVertexPairArray( position, SWITCH_LENGTH ) );
       }, {
-        tandem: this.parentTandem.createTandem( 'extremeBatteryToolNode' ),
+        tandem: tandem,
         lifelikeIconHeight: 15
       } );
   }
 
-  public createExtremeBulbToolNode(): CircuitElementToolNode {
+  public createExtremeBulbToolNode( tandem: Tandem ): CircuitElementToolNode {
     const vertexPair = LightBulb.createVertexPair( Vector2.ZERO, this.circuit, true );
     return this.createCircuitElementToolNode( lightBulbStringProperty, 4,
       ( tandem, viewTypeProperty ) => new CCKCLightBulbNode(
@@ -522,7 +522,7 @@ export default class CircuitElementToolFactory {
         const vertexPair = LightBulb.createVertexPair( position, this.circuit, false );
         return this.circuit.extremeLightBulbGroup.createNextElement( vertexPair.startVertex, vertexPair.endVertex );
       }, {
-        tandem: this.parentTandem.createTandem( 'extremeBulbToolNode' )
+        tandem: tandem
       } );
   }
 }
