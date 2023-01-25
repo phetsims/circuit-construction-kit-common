@@ -54,19 +54,19 @@ const SCHEMATIC_SAMPLE_POINTS = [
 ];
 
 type SelfOptions = {
-  highResistance?: boolean;
-  real?: boolean;
+  isExtreme?: boolean;
+  isReal?: boolean;
 };
 
 type LightBulbOptions = SelfOptions & FixedCircuitElementOptions;
 
 export default class LightBulb extends FixedCircuitElement {
 
-  // true if R is a function of current. Not an enum because in the future we may have a real high resistance bulb.
-  public readonly real: boolean;
+  // true if R is a function of current. Not an enum because in the future we may have a isReal high resistance bulb.
+  public readonly isReal: boolean;
 
   // true if the light bulb is a high resistance light bulb
-  public readonly highResistance: boolean;
+  public readonly isExtreme: boolean;
 
   // the resistance of the light bulb which can be edited with the UI
   public readonly resistanceProperty: NumberProperty;
@@ -114,21 +114,21 @@ export default class LightBulb extends FixedCircuitElement {
     tandem: Tandem,
     providedOptions?: LightBulbOptions ) {
     const options = optionize<LightBulbOptions, SelfOptions, FixedCircuitElementOptions>()( {
-      highResistance: false,
-      real: false
+      isExtreme: false,
+      isReal: false
     }, providedOptions );
     assert && assert( !options.hasOwnProperty( 'numberOfDecimalPlaces' ), 'supplied by LightBulb' );
-    options.numberOfDecimalPlaces = options.highResistance ? 0 : 1;
+    options.numberOfDecimalPlaces = options.isExtreme ? 0 : 1;
 
     // getPathLength not available yet, so use a nonzero charge path length then override.
     super( startVertex, endVertex, 1, tandem, options );
 
-    this.real = options.real;
-    this.highResistance = options.highResistance;
+    this.isReal = options.isReal;
+    this.isExtreme = options.isExtreme;
     this.resistanceProperty = new NumberProperty( resistance, {
       tandem: tandem.createTandem( 'resistanceProperty' ),
-      range: options.highResistance ? new Range( 100, 10000 ) :
-             options.real ? new Range( 0, Number.MAX_VALUE ) : // The non-ohmic bulb has its resistance computed in LinearTransientAnalysis.js
+      range: options.isExtreme ? new Range( 100, 10000 ) :
+             options.isReal ? new Range( 0, Number.MAX_VALUE ) : // The non-ohmic bulb has its resistance computed in LinearTransientAnalysis.js
              new Range( 0, 120 )
     } );
 

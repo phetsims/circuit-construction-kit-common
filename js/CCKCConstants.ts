@@ -1,4 +1,4 @@
-// Copyright 2015-2022, University of Colorado Boulder
+// Copyright 2015-2023, University of Colorado Boulder
 
 /**
  * Constants used in all of the Circuit Construction Kit sims/screens/scenes.
@@ -23,6 +23,12 @@ const CCKCConstants = {
   // and refined in https://github.com/phetsims/circuit-construction-kit-common/issues/772
   // Still need physics to update, like capacitors clearing and electrons updating.  But don't propagate time very far!
   PAUSED_DT: 1E-6,
+
+  // Available scale factors for the sim stage
+  ZOOM_SCALES: [ 0.5, 1, 1.8 ],
+
+  // When trying to drop an item back in the toolbox, this is the width the hit box
+  RETURN_ITEM_BOUNDS_TOLERANCE: 25,
 
   // Maximum size for Width or height of icons in the circuit element toolbox or sensor toolbox
   TOOLBOX_ICON_HEIGHT: 31,
@@ -66,7 +72,8 @@ const CCKCConstants = {
   // R = rho * L / A.  Resistance = resistivity * Length / cross sectional area.
   // https://en.wikipedia.org/wiki/Electrical_resistivity_and_conductivity says copper has rho=1.68E-8 Ohm * m
   // According to http://www.sengpielaudio.com/calculator-cross-section.htm AWG Wire Gauge of 20 has 0.52mm^2 = 5.2e-7m^2
-  DEFAULT_RESISTIVITY: CCKCQueryParameters.wireResistivity, // Ohm * m
+  // Maximum is large enough so that max resistance in a 9v battery slows to a good rate
+  WIRE_RESISTIVITY_RANGE: new Range( CCKCQueryParameters.wireResistivity, 0.0168 ), // Ohm * m
 
   WIRE_CROSS_SECTIONAL_AREA: 5E-4, // meters squared
 

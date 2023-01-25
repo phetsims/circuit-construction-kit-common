@@ -1,4 +1,4 @@
-// Copyright 2016-2022, University of Colorado Boulder
+// Copyright 2016-2023, University of Colorado Boulder
 
 /**
  * Base class for Ammeter and Voltmeter.  Meters for the life of the sim and hence do not need a dispose implementation.
@@ -52,9 +52,7 @@ export default class Meter extends PhetioObject {
       tandem: tandem.createTandem( 'bodyPositionProperty' )
     } );
 
-    this.draggingProbesWithBodyProperty = new BooleanProperty( true, {
-      tandem: tandem.createTandem( 'draggingProbesWithBodyProperty' )
-    } );
+    this.draggingProbesWithBodyProperty = new BooleanProperty( true );
 
     this.droppedEmitter = new Emitter( { parameters: [ { valueType: Bounds2 } ] } );
   }

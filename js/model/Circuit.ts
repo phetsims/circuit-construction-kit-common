@@ -134,12 +134,12 @@ export default class Circuit {
   private readonly stepActions: ( () => void )[];
   public readonly wireGroup: PhetioGroup<Wire, [ Vertex, Vertex ]>;
   public readonly batteryGroup: PhetioGroup<Battery, [ Vertex, Vertex ]>;
-  public readonly highVoltageBatteryGroup: PhetioGroup<Battery, [ Vertex, Vertex ]>;
+  public readonly extremeBatteryGroup: PhetioGroup<Battery, [ Vertex, Vertex ]>;
   public readonly acVoltageGroup: PhetioGroup<ACVoltage, [ Vertex, Vertex ]>;
   public readonly resistorGroup: PhetioGroup<Resistor, [ Vertex, Vertex, ResistorType ]>;
   public readonly fuseGroup: PhetioGroup<Fuse, [ Vertex, Vertex ]>;
   public readonly seriesAmmeterGroup: PhetioGroup<SeriesAmmeter, [ Vertex, Vertex ]>;
-  public readonly highResistanceLightBulbGroup: PhetioGroup<LightBulb, [ Vertex, Vertex ]>;
+  public readonly extremeLightBulbGroup: PhetioGroup<LightBulb, [ Vertex, Vertex ]>;
   public readonly capacitorGroup: PhetioGroup<Capacitor, [ Vertex, Vertex ]>;
   public readonly inductorGroup: PhetioGroup<Inductor, [ Vertex, Vertex ]>;
   public readonly switchGroup: PhetioGroup<Switch, [ Vertex, Vertex ]>;
@@ -160,12 +160,14 @@ export default class Circuit {
     this.includeACElements = options.includeACElements;
     this.includeLabElements = options.includeLabElements;
     this.blackBoxStudy = options.blackBoxStudy;
-    this.wireResistivityProperty = new NumberProperty( CCKCConstants.DEFAULT_RESISTIVITY, {
-      tandem: tandem.parentTandem!.createTandem( 'wireResistivityProperty' )
+    this.wireResistivityProperty = new NumberProperty( CCKCConstants.WIRE_RESISTIVITY_RANGE.min, {
+      tandem: tandem.parentTandem!.createTandem( 'wireResistivityProperty' ),
+      range: CCKCConstants.WIRE_RESISTIVITY_RANGE
     } );
 
     this.sourceResistanceProperty = new NumberProperty( CCKCConstants.DEFAULT_BATTERY_RESISTANCE, {
-      tandem: tandem.parentTandem!.createTandem( 'sourceResistanceProperty' )
+      tandem: tandem.parentTandem!.createTandem( 'sourceResistanceProperty' ),
+      range: CCKCConstants.BATTERY_RESISTANCE_RANGE
     } );
 
     this.circuitElements = createObservableArray( {
@@ -347,7 +349,7 @@ export default class Circuit {
       tandem: tandem.createTandem( 'batteryGroup' )
     } );
 
-    this.highVoltageBatteryGroup = new PhetioGroup( ( tandem, startVertex, endVertex ) => {
+    this.extremeBatteryGroup = new PhetioGroup( ( tandem, startVertex, endVertex ) => {
       return new Battery( startVertex, endVertex, this.sourceResistanceProperty, 'high-voltage',
         tandem, {
           voltage: 1000,
@@ -355,8 +357,8 @@ export default class Circuit {
         } );
     }, () => createVertices( BATTERY_LENGTH ), {
       phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
-      tandem: this.includeLabElements ? tandem.createTandem( 'highVoltageBatteryGroup' ) : Tandem.OPT_OUT,
-      phetioDynamicElementName: 'highVoltageBattery'
+      tandem: this.includeLabElements ? tandem.createTandem( 'extremeBatteryGroup' ) : Tandem.OPT_OUT,
+      phetioDynamicElementName: 'extremeBattery'
     } );
 
     this.acVoltageGroup = new PhetioGroup( ( tandem, startVertex, endVertex ) => {
@@ -392,15 +394,15 @@ export default class Circuit {
         tandem: this.includeLabElements ? tandem.createTandem( 'seriesAmmeterGroup' ) : Tandem.OPT_OUT
       } );
 
-    this.highResistanceLightBulbGroup = new PhetioGroup(
+    this.extremeLightBulbGroup = new PhetioGroup(
       ( tandem, startVertex, endVertex ) => {
         return LightBulb.createAtPosition( startVertex, endVertex, this, CCKCConstants.HIGH_RESISTANCE,
           this.viewTypeProperty, tandem, {
-            highResistance: true
+            isExtreme: true
           } );
       }, () => createVertices( 100 ), {
         phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
-        tandem: this.includeLabElements ? tandem.createTandem( 'highResistanceLightBulbGroup' ) : Tandem.OPT_OUT
+        tandem: this.includeLabElements ? tandem.createTandem( 'extremeLightBulbGroup' ) : Tandem.OPT_OUT
       } );
 
     this.capacitorGroup = new PhetioGroup(
@@ -434,7 +436,7 @@ export default class Circuit {
     this.realLightBulbGroup = new PhetioGroup(
       ( tandem, startVertex, endVertex ) => {
         return new LightBulb( startVertex, endVertex, CCKCConstants.DEFAULT_RESISTANCE, this.viewTypeProperty, tandem, {
-          real: true
+          isReal: true
         } );
       }, () => createVertices( 100 ), {
         phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
@@ -444,7 +446,7 @@ export default class Circuit {
     this.groups = [
       this.wireGroup,
       this.batteryGroup,
-      this.highVoltageBatteryGroup,
+      this.extremeBatteryGroup,
       this.acVoltageGroup,
       this.resistorGroup,
       this.fuseGroup,
@@ -453,7 +455,7 @@ export default class Circuit {
       this.switchGroup,
       this.lightBulbGroup,
       this.realLightBulbGroup,
-      this.highResistanceLightBulbGroup,
+      this.extremeLightBulbGroup,
       this.seriesAmmeterGroup
     ];
     this.dirty = false;
@@ -829,7 +831,7 @@ export default class Circuit {
         // If the circuit element has a closed property (like a Switch), it is only OK to traverse if the element is
         // closed.
         if ( circuitElement instanceof Switch ) {
-          return circuitElement.closedProperty.get();
+          return circuitElement.isClosedProperty.get();
         }
         else {
 
@@ -1189,7 +1191,7 @@ export default class Circuit {
     // cannot be in a loop since their vertices are not directly connected.  Note the search
     // algorithm below gives the wrong answer because the start vertex and end vertex can be connected
     // by other circuit elements.
-    if ( circuitElement instanceof Switch && !circuitElement.closedProperty.value ) {
+    if ( circuitElement instanceof Switch && !circuitElement.isClosedProperty.value ) {
       return false;
     }
 
@@ -1221,7 +1223,7 @@ export default class Circuit {
                neighbor !== circuitElement &&
 
                // can't cross an open switch
-               !( neighbor instanceof Switch && !neighbor.closedProperty.value ) ) {
+               !( neighbor instanceof Switch && !neighbor.isClosedProperty.value ) ) {
             const opposite = neighbor.getOppositeVertex( vertex );
             if ( opposite === circuitElement.endVertexProperty.value ) {
 

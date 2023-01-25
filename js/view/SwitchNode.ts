@@ -1,4 +1,4 @@
-// Copyright 2015-2022, University of Colorado Boulder
+// Copyright 2015-2023, University of Colorado Boulder
 
 /**
  * Renders the lifelike/schematic view for a Switch.
@@ -169,7 +169,7 @@ export default class SwitchNode extends FixedCircuitElementNode {
       lifelikeNode.children = [ closed ? lifelikeClosedImage : lifelikeOpenImage ];
       schematicNode.children = [ closed ? schematicClosedImage : schematicOpenImage ];
     };
-    circuitSwitch.closedProperty.link( closeListener );
+    circuitSwitch.isClosedProperty.link( closeListener );
 
     super(
       screenView,
@@ -200,7 +200,7 @@ export default class SwitchNode extends FixedCircuitElementNode {
 
         // Toggle the state of the switch, but only if the event is classified as a tap and not a drag
         if ( distance < CCKCConstants.TAP_THRESHOLD ) {
-          circuitSwitch.closedProperty.value = !circuitSwitch.closedProperty.value;
+          circuitSwitch.isClosedProperty.value = !circuitSwitch.isClosedProperty.value;
         }
       }
     } );
@@ -214,7 +214,7 @@ export default class SwitchNode extends FixedCircuitElementNode {
     );
 
     this.disposeSwitchNode = () => {
-      circuitSwitch.closedProperty.unlink( closeListener );
+      circuitSwitch.isClosedProperty.unlink( closeListener );
       screenView && this.contentNode.removeInputListener( fireListener );
 
       // Make sure the lifelikeNode and schematicNode are not listed as parents for their children because the children
@@ -233,7 +233,7 @@ export default class SwitchNode extends FixedCircuitElementNode {
   public startSideContainsSensorPoint( point: Vector2 ): boolean {
     const localPoint = this.contentNode.parentToLocalPoint( point );
     const leftSegmentContainsPoint = lifelikeOpenNode.leftSegmentNode.containsPoint( localPoint );
-    const node = this.circuitSwitch.closedProperty.get() ? lifelikeClosedNode : lifelikeOpenNode;
+    const node = this.circuitSwitch.isClosedProperty.get() ? lifelikeClosedNode : lifelikeOpenNode;
     const rotatingSegmentContainsPoint = node.rotatingSegmentNode.containsPoint( localPoint );
     return leftSegmentContainsPoint || rotatingSegmentContainsPoint;
   }

@@ -1,4 +1,4 @@
-// Copyright 2017-2022, University of Colorado Boulder
+// Copyright 2017-2023, University of Colorado Boulder
 
 /**
  * Controls for showing and changing the wire resistivity.  Exists for the life of the sim and hence does not require a
@@ -7,7 +7,6 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import Range from '../../../dot/js/Range.js';
 import { AlignGroup, Text, VBox } from '../../../scenery/js/imports.js';
 import HSlider from '../../../sun/js/HSlider.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -23,9 +22,6 @@ const wireResistivityStringProperty = CircuitConstructionKitCommonStrings.wireRe
 // constants
 const TICK_LABEL_TEXT_OPTIONS = { fontSize: 12, maxWidth: 45 };
 
-// Chosen so that current through battery+long wire+long wire+resistor would match prior version, see https://github.com/phetsims/circuit-construction-kit-common/issues/553
-const MAX_RESISTIVITY = 0.0168;
-
 export default class WireResistivityControl extends VBox {
 
   /**
@@ -38,10 +34,7 @@ export default class WireResistivityControl extends VBox {
 
     const titleNode = new Text( wireResistivityStringProperty, titleConfig );
 
-    const slider = new HSlider( wireResistivityProperty, new Range(
-      CCKCConstants.DEFAULT_RESISTIVITY,
-      MAX_RESISTIVITY // large enough so that max resistance in a 9v battery slows to a good rate
-    ), {
+    const slider = new HSlider( wireResistivityProperty, CCKCConstants.WIRE_RESISTIVITY_RANGE, {
       trackSize: CCKCConstants.SLIDER_TRACK_SIZE,
       thumbSize: CCKCConstants.THUMB_SIZE,
       majorTickLength: CCKCConstants.MAJOR_TICK_LENGTH,
@@ -49,7 +42,7 @@ export default class WireResistivityControl extends VBox {
     } );
 
     slider.addMajorTick( 0, new Text( tinyStringProperty, TICK_LABEL_TEXT_OPTIONS ) );
-    slider.addMajorTick( MAX_RESISTIVITY, new Text( lotsStringProperty, TICK_LABEL_TEXT_OPTIONS ) );
+    slider.addMajorTick( CCKCConstants.WIRE_RESISTIVITY_RANGE.max, new Text( lotsStringProperty, TICK_LABEL_TEXT_OPTIONS ) );
 
     super( {
       children: [ titleNode, slider ],

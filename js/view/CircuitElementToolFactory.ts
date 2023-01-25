@@ -150,11 +150,11 @@ export default class CircuitElementToolFactory {
     const toggleNode = new ToggleNode( this.viewTypeProperty, [
       {
         value: CircuitElementViewType.LIFELIKE,
-        createNode: tandem => wrap( createIcon( Tandem.OPT_OUT, LIFELIKE_PROPERTY ), options.lifelikeIconHeight )
+        createNode: () => wrap( createIcon( Tandem.OPT_OUT, LIFELIKE_PROPERTY ), options.lifelikeIconHeight )
       },
       {
         value: CircuitElementViewType.SCHEMATIC,
-        createNode: tandem => wrap( createIcon( Tandem.OPT_OUT, SCHEMATIC_PROPERTY ), options.schematicIconHeight )
+        createNode: () => wrap( createIcon( Tandem.OPT_OUT, SCHEMATIC_PROPERTY ), options.schematicIconHeight )
       }
     ] );
 
@@ -260,14 +260,14 @@ export default class CircuitElementToolFactory {
       CCKCConstants.DEFAULT_RESISTANCE,
       this.viewTypeProperty,
       Tandem.OPTIONAL, {
-        highResistance: false,
-        real: real
+        isExtreme: false,
+        isReal: real
       } );
     return this.createCircuitElementToolNode( string, 10,
       ( tandem, viewTypeProperty ) => new CCKCLightBulbNode( null, null,
         lightBulbModel,
         new BooleanProperty( true ), viewTypeProperty, Tandem.OPT_OUT, { isIcon: true, scale: 0.85 } ),
-      circuitElement => circuitElement instanceof LightBulb && !circuitElement.highResistance,
+      circuitElement => circuitElement instanceof LightBulb && !circuitElement.isExtreme,
       ( position: Vector2 ) => {
         const vertexPair = LightBulb.createVertexPair( position, this.circuit );
         return lightBulbGroup.createNextElement( vertexPair.startVertex, vertexPair.endVertex );
@@ -465,16 +465,16 @@ export default class CircuitElementToolFactory {
   }
 
   // Same docs as for createPaperClipToolNode
-  public createHighResistanceResistorToolNode( tandem: Tandem ): CircuitElementToolNode {
-    return this.createResistorToolNode( tandem, {
+  public createExtremeResistorToolNode(): CircuitElementToolNode {
+    return this.createResistorToolNode( {
       count: 4,
       resistorType: ResistorType.HIGH_RESISTANCE_RESISTOR,
-      tandemName: 'highResistanceResistorToolNode',
+      tandemName: 'extremeResistorToolNode',
       labelStringProperty: resistorStringProperty
     } );
   }
 
-  public createHighVoltageBatteryToolNode( tandem: Tandem ): CircuitElementToolNode {
+  public createExtremeBatteryToolNode(): CircuitElementToolNode {
     return this.createCircuitElementToolNode( batteryStringProperty, 4,
       ( tandem, viewTypeProperty ) => new BatteryNode( null, null,
         new Battery(
@@ -486,18 +486,18 @@ export default class CircuitElementToolFactory {
             voltage: 1000,
             numberOfDecimalPlaces: Battery.HIGH_VOLTAGE_DECIMAL_PLACES
           }
-        ), viewTypeProperty, tandem.createTandem( 'highVoltageBatteryToolNode' ), { isIcon: true } ),
+        ), viewTypeProperty, tandem.createTandem( 'extremeBatteryToolNode' ), { isIcon: true } ),
       circuitElement => circuitElement instanceof Battery &&
                         circuitElement.initialOrientation === 'right' &&
                         circuitElement.batteryType === 'high-voltage', ( position: Vector2 ) => {
-        return this.circuit.highVoltageBatteryGroup.createNextElement( ...this.circuit.createVertexPairArray( position, SWITCH_LENGTH ) );
+        return this.circuit.extremeBatteryGroup.createNextElement( ...this.circuit.createVertexPairArray( position, SWITCH_LENGTH ) );
       }, {
-        tandem: tandem,
+        tandem: this.parentTandem.createTandem( 'extremeBatteryToolNode' ),
         lifelikeIconHeight: 15
       } );
   }
 
-  public createHighResistanceBulbToolNode( tandem: Tandem ): CircuitElementToolNode {
+  public createExtremeBulbToolNode(): CircuitElementToolNode {
     const vertexPair = LightBulb.createVertexPair( Vector2.ZERO, this.circuit, true );
     return this.createCircuitElementToolNode( lightBulbStringProperty, 4,
       ( tandem, viewTypeProperty ) => new CCKCLightBulbNode(
@@ -510,19 +510,19 @@ export default class CircuitElementToolFactory {
           1000,
           this.viewTypeProperty,
           Tandem.OPTIONAL, {
-            highResistance: true
+            isExtreme: true
           } ),
         new BooleanProperty( true ),
         viewTypeProperty,
-        tandem.createTandem( 'highResistanceLightBulbToolNode' ), {
+        tandem.createTandem( 'extremeLightBulbToolNode' ), {
           isIcon: true
         } ),
-      circuitElement => circuitElement instanceof LightBulb && circuitElement.highResistance,
+      circuitElement => circuitElement instanceof LightBulb && circuitElement.isExtreme,
       ( position: Vector2 ) => {
         const vertexPair = LightBulb.createVertexPair( position, this.circuit, false );
-        return this.circuit.highResistanceLightBulbGroup.createNextElement( vertexPair.startVertex, vertexPair.endVertex );
+        return this.circuit.extremeLightBulbGroup.createNextElement( vertexPair.startVertex, vertexPair.endVertex );
       }, {
-        tandem: tandem
+        tandem: this.parentTandem.createTandem( 'extremeBulbToolNode' )
       } );
   }
 }

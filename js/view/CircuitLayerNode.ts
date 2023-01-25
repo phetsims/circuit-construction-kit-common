@@ -1,4 +1,4 @@
-// Copyright 2015-2022, University of Colorado Boulder
+// Copyright 2015-2023, University of Colorado Boulder
 
 /**
  * The Node that represents a Circuit, including all Wires and FixedCircuitElements, Charge, Solder and Sensors.
@@ -353,21 +353,21 @@ export default class CircuitLayerNode extends Node {
       new PhetioGroup<CircuitElementNode, [ CircuitElement ]>( ( tandem: Tandem, circuitElement: CircuitElement ) => new BatteryNode( screenView, this, circuitElement as Battery, this.model.viewTypeProperty, tandem ),
         () => [ this.circuit.batteryGroup.archetype ], {
           phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
-          tandem: circuit.includeLabElements ? tandem.createTandem( 'highVoltageBatteryNodeGroup' ) : Tandem.OPT_OUT,
+          tandem: circuit.includeLabElements ? tandem.createTandem( 'extremeBatteryNodeGroup' ) : Tandem.OPT_OUT,
           supportsDynamicState: false
         } ) );
-    initializeCircuitElementType( ( e: CircuitElement ) => e instanceof LightBulb && !e.highResistance, this.fixedCircuitElementLayer,
+    initializeCircuitElementType( ( e: CircuitElement ) => e instanceof LightBulb && !e.isExtreme, this.fixedCircuitElementLayer,
       new PhetioGroup<CircuitElementNode, [ CircuitElement ]>( ( tandem: Tandem, circuitElement: CircuitElement ) => new CCKCLightBulbNode( screenView, this, circuitElement as LightBulb, this.model.isValueDepictionEnabledProperty, this.model.viewTypeProperty, tandem ),
         () => [ this.circuit.lightBulbGroup.archetype ], {
           phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
           tandem: tandem.createTandem( 'lightBulbNodeGroup' ),
           supportsDynamicState: false
         } ) );
-    initializeCircuitElementType( ( e: CircuitElement ) => e instanceof LightBulb && e.highResistance, this.fixedCircuitElementLayer,
+    initializeCircuitElementType( ( e: CircuitElement ) => e instanceof LightBulb && e.isExtreme, this.fixedCircuitElementLayer,
       new PhetioGroup<CircuitElementNode, [ CircuitElement ]>( ( tandem: Tandem, circuitElement: CircuitElement ) => new CCKCLightBulbNode( screenView, this, circuitElement as LightBulb, this.model.isValueDepictionEnabledProperty, this.model.viewTypeProperty, tandem ),
         () => [ this.circuit.lightBulbGroup.archetype ], {
           phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
-          tandem: circuit.includeLabElements ? tandem.createTandem( 'highResistanceLightBulbNodeGroup' ) : Tandem.OPT_OUT,
+          tandem: circuit.includeLabElements ? tandem.createTandem( 'extremeLightBulbNodeGroup' ) : Tandem.OPT_OUT,
           supportsDynamicState: false
         } ) );
     initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Resistor, this.fixedCircuitElementLayer,

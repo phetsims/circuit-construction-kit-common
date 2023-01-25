@@ -27,8 +27,8 @@ const BULB_IMAGE_SCALE = 0.125;
 
 type SelfOptions = {
   baseOnly?: boolean;
-  highResistance?: boolean;
-  real?: boolean;
+  isExtreme?: boolean;
+  isReal?: boolean;
   scale?: number; // Note this differs from NodeOptions['scale']
 };
 type CustomLightBulbNodeOptions = SelfOptions & NodeOptions;
@@ -57,18 +57,18 @@ export default class CustomLightBulbNode extends Node {
 
     const options = optionize<CustomLightBulbNodeOptions, SelfOptions, NodeOptions>()( {
       baseOnly: false,
-      highResistance: true,
+      isExtreme: true,
       scale: CCKCConstants.BULB_SCALE,
-      real: false
+      isReal: false
     }, providedOptions );
 
     const baseOnly = options.baseOnly;
 
-    const selectedSocketImage = options.highResistance ? lightBulbFrontHigh_png :
-                                options.real ? lightBulbFrontReal_png :
+    const selectedSocketImage = options.isExtreme ? lightBulbFrontHigh_png :
+                                options.isReal ? lightBulbFrontReal_png :
                                 lightBulbFront_png;
 
-    const selectedMiddleImage = options.real ? lightBulbMiddleReal_png :
+    const selectedMiddleImage = options.isReal ? lightBulbMiddleReal_png :
                                 lightBulbMiddle_png;
 
     const backNode = new Image( options.baseOnly ? selectedSocketImage : lightBulbBack_png, {

@@ -1,4 +1,4 @@
-// Copyright 2017-2022, University of Colorado Boulder
+// Copyright 2017-2023, University of Colorado Boulder
 
 /**
  * AccordionBox that is customized with constants for Circuit Construction Kit.
@@ -50,7 +50,8 @@ export default class CCKCAccordionBox extends AccordionBox {
       lineWidth: CCKCConstants.PANEL_LINE_WIDTH,
       minWidth: CCKCConstants.RIGHT_SIDE_PANEL_MIN_WIDTH,
       expandedProperty: new BooleanProperty( false, {
-        tandem: tandem.createTandem( 'expandedProperty' )
+        tandem: tandem.createTandem( 'expandedProperty' ),
+        phetioFeatured: true
       } ),
 
       // Expand touch area to match the margins

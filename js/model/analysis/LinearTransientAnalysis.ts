@@ -80,7 +80,7 @@ export default class LinearTransientAnalysis {
                   circuitElement instanceof SeriesAmmeter ||
 
                   // Since no closed circuit there; see below where current is zeroed out
-                  ( circuitElement instanceof Switch && circuitElement.closedProperty.value ) ) {
+                  ( circuitElement instanceof Switch && circuitElement.isClosedProperty.value ) ) {
 
           // If a resistor goes to 0 resistance, then we cannot compute the current through as I=V/R.  Therefore,
           // simulate a small amount of resistance.
@@ -94,7 +94,7 @@ export default class LinearTransientAnalysis {
           resistorMap.set( resistorAdapter, circuitElement );
           ltaResistors.push( resistorAdapter );
         }
-        else if ( circuitElement instanceof Switch && !circuitElement.closedProperty.value ) {
+        else if ( circuitElement instanceof Switch && !circuitElement.isClosedProperty.value ) {
 
           // no element for an open switch
         }
@@ -139,7 +139,7 @@ export default class LinearTransientAnalysis {
 
     ltaResistors.forEach( resistorAdapter => {
       const circuitElement = resistorMap.get( resistorAdapter )!;
-      if ( circuitElement instanceof LightBulb && circuitElement.real ) {
+      if ( circuitElement instanceof LightBulb && circuitElement.isReal ) {
 
         const logWithBase = ( value: number, base: number ) => Math.log( value ) / Math.log( base );
 
@@ -194,8 +194,8 @@ export default class LinearTransientAnalysis {
     nonParticipants.forEach( circuitElement => {
       circuitElement.currentProperty.value = 0;
 
-      // Clear disconnected real light bulbs
-      if ( circuitElement instanceof LightBulb && circuitElement.real ) {
+      // Clear disconnected isReal light bulbs
+      if ( circuitElement instanceof LightBulb && circuitElement.isReal ) {
         circuitElement.resistanceProperty.value = LightBulb.REAL_BULB_COLD_RESISTANCE;
       }
     } );
@@ -227,7 +227,7 @@ export default class LinearTransientAnalysis {
 
         // compute end voltage from start voltage
         if ( circuitElement instanceof Resistor || circuitElement instanceof Wire || circuitElement instanceof LightBulb ||
-             ( circuitElement instanceof Switch && circuitElement.closedProperty.value ) || circuitElement instanceof Fuse ||
+             ( circuitElement instanceof Switch && circuitElement.isClosedProperty.value ) || circuitElement instanceof Fuse ||
              circuitElement instanceof SeriesAmmeter
         ) {
 
@@ -244,7 +244,7 @@ export default class LinearTransientAnalysis {
           endVertex.voltageProperty.value = startVertex.voltageProperty.value - sign * circuitElement.mnaVoltageDrop;
           solvedVertices.push( endVertex );
         }
-        else if ( circuitElement instanceof Switch && !circuitElement.closedProperty.value ) {
+        else if ( circuitElement instanceof Switch && !circuitElement.isClosedProperty.value ) {
           // for an open switch, the node voltages are independent
         }
         else {
@@ -259,7 +259,7 @@ export default class LinearTransientAnalysis {
       circuit.circuitElements.forEach( circuitElement => {
         if ( circuitElement.containsVertex( vertex ) ) {
           const opposite = circuitElement.getOppositeVertex( vertex );
-          if ( !visited.includes( opposite ) && !( circuitElement instanceof Switch && !circuitElement.closedProperty.value ) ) {
+          if ( !visited.includes( opposite ) && !( circuitElement instanceof Switch && !circuitElement.isClosedProperty.value ) ) {
             visit( vertex, circuitElement, opposite );
             dfs( opposite, visit );
           }

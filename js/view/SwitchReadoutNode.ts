@@ -1,4 +1,4 @@
-// Copyright 2017-2022, University of Colorado Boulder
+// Copyright 2017-2023, University of Colorado Boulder
 
 /**
  * Readout that appears in the CircuitElementEditContainerNode that displays whether the switch is open or closed.
@@ -23,9 +23,8 @@ const theSwitchIsOpenStringProperty = CircuitConstructionKitCommonStrings.theSwi
 const MAX_TEXT_WIDTH = 300;
 
 export default class SwitchReadoutNode extends Node {
-  private readonly _updateLayout: () => void;
 
-  public constructor( circuit: Circuit, tandem: Tandem, trashButton: Node ) {
+  public constructor( circuit: Circuit, tandem: Tandem ) {
 
     // Create both texts and display both so they remain aligned as the value changes
     const createText = ( string: TReadOnlyProperty<string>, tandem: Tandem ) =>
@@ -38,9 +37,8 @@ export default class SwitchReadoutNode extends Node {
         }
       } );
 
-    const messageNodeTandem = tandem.createTandem( 'messageNode' );
-    const closedText = createText( theSwitchIsClosedStringProperty, messageNodeTandem.createTandem( 'closedText' ) );
-    const openText = createText( theSwitchIsOpenStringProperty, messageNodeTandem.createTandem( 'openText' ) );
+    const closedText = createText( theSwitchIsClosedStringProperty, tandem.createTandem( 'closedText' ) );
+    const openText = createText( theSwitchIsOpenStringProperty, tandem.createTandem( 'openText' ) );
 
     const closedListener = ( closed: boolean ) => {
       closedText.visible = closed;
@@ -49,39 +47,18 @@ export default class SwitchReadoutNode extends Node {
 
     // This is reused across all switches
     circuit.selectionProperty.link( ( newCircuitElement: CircuitElement | Vertex | null, oldCircuitElement: CircuitElement | Vertex | null ) => {
-      oldCircuitElement instanceof Switch && oldCircuitElement.closedProperty.unlink( closedListener );
-      newCircuitElement instanceof Switch && newCircuitElement.closedProperty.link( closedListener );
+      oldCircuitElement instanceof Switch && oldCircuitElement.isClosedProperty.unlink( closedListener );
+      newCircuitElement instanceof Switch && newCircuitElement.isClosedProperty.link( closedListener );
     } );
 
-    const update = () => {
-      const maxWidth = Math.max( closedText.width, openText.width );
-
-      // Show a trash button to the right of the text
-      trashButton.mutate( {
-        left: maxWidth + 10,
-        centerY: closedText.centerY
-      } );
-    };
-
-    update();
-    closedText.boundsProperty.link( update );
-    openText.boundsProperty.link( update );
-
     const messageNode = new Node( {
-      children: [ closedText, openText ],
-      tandem: messageNodeTandem
+      children: [ closedText, openText ]
     } );
 
     super( {
-      children: [ messageNode, trashButton ],
+      children: [ messageNode ],
       tandem: tandem
     } );
-
-    this._updateLayout = update;
-  }
-
-  public updateLayout(): void {
-    this._updateLayout();
   }
 }
 

@@ -1,4 +1,4 @@
-// Copyright 2015-2022, University of Colorado Boulder
+// Copyright 2015-2023, University of Colorado Boulder
 
 /**
  * Shows the socket (base) of the light bulb only, so that it will appear that the charges go "inside" the base.
@@ -39,8 +39,8 @@ export default class LightBulbSocketNode extends FixedCircuitElementNode {
     // Render the bulb socket only
     const lightBulbNode = new CustomLightBulbNode( new NumberProperty( 0 ), {
       baseOnly: true,
-      highResistance: lightBulb.highResistance,
-      real: lightBulb.real
+      isExtreme: lightBulb.isExtreme,
+      isReal: lightBulb.isReal
     } );
 
     // Interferes with Cut Button selection when the foreground is in front, see

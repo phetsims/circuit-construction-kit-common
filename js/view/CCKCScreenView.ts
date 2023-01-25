@@ -1,4 +1,4 @@
-// Copyright 2015-2022, University of Colorado Boulder
+// Copyright 2015-2023, University of Colorado Boulder
 
 /**
  * Node that represents a single scene or screen, with a circuit, toolbox, sensors, etc. Exists for the life of the sim
@@ -331,7 +331,7 @@ export default class CCKCScreenView extends ScreenView {
     this.chartNodes.forEach( chartNode => this.circuitLayerNode.sensorLayer.addChild( chartNode ) );
 
     // Create the zoom button group
-    const zoomButtonGroup = new ZoomButtonGroup( model.selectedZoomProperty, {
+    const zoomButtonGroup = new ZoomButtonGroup( model.zoomLevelProperty, {
       tandem: tandem.createTandem( 'zoomButtonGroup' )
     } );
     zoomButtonGroup.mutate( {
@@ -407,7 +407,7 @@ export default class CCKCScreenView extends ScreenView {
     this.circuitLayerNodeBackLayer.setTranslation( this.layoutBounds.centerX, this.layoutBounds.centerY );
 
     // Continuously zoom in and out as the current zoom interpolates, and update when the visible bounds change
-    Multilink.multilink( [ model.currentZoomProperty, this.visibleBoundsProperty ], ( currentZoom, visibleBounds ) => {
+    Multilink.multilink( [ model.animatedZoomScaleProperty, this.visibleBoundsProperty ], ( currentZoom, visibleBounds ) => {
       this.circuitLayerNode.setScaleMagnitude( currentZoom );
       this.circuitLayerNodeBackLayer.setScaleMagnitude( currentZoom );
       this.circuitLayerNode.updateTransform( visibleBounds );
@@ -522,7 +522,14 @@ export default class CCKCScreenView extends ScreenView {
 
     // Detect whether the midpoint between the vertices overlaps the toolbox
     const globalMidpoint = circuitElementNode.localToGlobalPoint( circuitElement.getMidpoint() );
-    const overToolbox = toolbox.globalBounds.containsPoint( globalMidpoint );
+
+    const hitBoxMinX = globalMidpoint.x - CCKCConstants.RETURN_ITEM_BOUNDS_TOLERANCE;
+    const hitBoxMinY = globalMidpoint.y - CCKCConstants.RETURN_ITEM_BOUNDS_TOLERANCE;
+    const hitBoxMaxX = globalMidpoint.x + CCKCConstants.RETURN_ITEM_BOUNDS_TOLERANCE;
+    const hitBoxMaxY = globalMidpoint.y + CCKCConstants.RETURN_ITEM_BOUNDS_TOLERANCE;
+
+    const hitBox = new Bounds2( hitBoxMinX, hitBoxMinY, hitBoxMaxX, hitBoxMaxY );
+    const overToolbox = toolbox.globalBounds.intersectsBounds( hitBox );
 
     return isSingle && overToolbox && circuitElement.isDisposableProperty.value;
   }

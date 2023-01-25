@@ -35,8 +35,8 @@ import Wire from '../model/Wire.js';
 import CircuitElementNumberControl from './CircuitElementNumberControl.js';
 import ClearDynamicsButton from './ClearDynamicsButton.js';
 import PhaseShiftControl from './PhaseShiftControl.js';
-import RepairFuseButton from './RepairFuseButton.js';
-import ReverseBatteryButton from './ReverseBatteryButton.js';
+import FuseRepairButton from './FuseRepairButton.js';
+import BatteryReverseButton from './BatteryReverseButton.js';
 import SwitchReadoutNode from './SwitchReadoutNode.js';
 import CCKCTrashButton from './CCKCTrashButton.js';
 import CircuitElement from '../model/CircuitElement.js';
@@ -122,8 +122,8 @@ export default class CircuitElementEditContainerNode extends Node {
     const trashButton = new CCKCTrashButton( circuit, tandem.createTandem( 'trashButton' ) );
     const trashButtonContainer = new HBox( { children: [ trashButton ] } ); // Use the "nested node" pattern for gated visibilty
 
-    const repairFuseButton = new RepairFuseButton( circuit, {
-      tandem: tandem.createTandem( 'repairFuseButton' ),
+    const fuseRepairButton = new FuseRepairButton( circuit, {
+      tandem: tandem.createTandem( 'fuseRepairButton' ),
 
       // NOTE: This only works if the trash button was originally smaller
       maxHeight: trashButton.height
@@ -135,14 +135,14 @@ export default class CircuitElementEditContainerNode extends Node {
       maxHeight: trashButton.height
     } );
 
-    const reverseBatteryButton = new ReverseBatteryButton( circuit, {
-      tandem: tandem.createTandem( 'reverseBatteryButton' ),
+    const batteryReverseButton = new BatteryReverseButton( circuit, {
+      tandem: tandem.createTandem( 'batteryReverseButton' ),
 
       // NOTE: This only works if the trash button was originally smaller
       maxHeight: trashButton.height
     } );
 
-    const switchReadoutNode = new SwitchReadoutNode( circuit, tandem.createTandem( 'switchReadoutNode' ), trashButtonContainer );
+    const switchReadoutNode = new SwitchReadoutNode( circuit, tandem.createTandem( 'switchReadoutNode' ) );
 
     const listener = ( isDisposable: boolean ) => trashButtonContainer.setVisible( isDisposable );
 
@@ -160,7 +160,7 @@ export default class CircuitElementEditContainerNode extends Node {
       createSingletonAdapterProperty( Fuse.DEFAULT_CURRENT_RATING, Fuse, circuit, ( c: Fuse ) => c.currentRatingProperty ),
       Fuse.RANGE, circuit,
       1, {
-        tandem: tandem.createTandem( 'currentRatingControl' ),
+        tandem: tandem.createTandem( 'fuseCurrentRatingControl' ),
         delta: NORMAL_TWEAKER_DELTA, // For the tweakers
         sliderOptions: {
           constrainValue: ( value: number ) => Utils.roundToInterval( value, 0.5 )
@@ -198,7 +198,7 @@ export default class CircuitElementEditContainerNode extends Node {
       StringUtils.fillIn( resistanceOhmsValuePatternStringProperty, { resistance: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
       createSingletonAdapterProperty( ResistorType.RESISTOR.defaultResistance, CircuitElementType, circuit, ( c: LightBulb | Resistor ) => c.resistanceProperty,
         ( c: LightBulb | Resistor ) =>
-          ( c instanceof LightBulb && !c.highResistance ) ||
+          ( c instanceof LightBulb && !c.isExtreme ) ||
           ( c instanceof Resistor && c.resistorType !== ResistorType.HIGH_RESISTANCE_RESISTOR )
       ),
       ResistorType.RESISTOR.range, circuit, Resistor.RESISTANCE_DECIMAL_PLACES, {
@@ -209,11 +209,11 @@ export default class CircuitElementEditContainerNode extends Node {
         },
         numberDisplayOptions: { decimalPlaces: Resistor.RESISTANCE_DECIMAL_PLACES }
       } );
-    const createHighResistanceNumberControl = ( tandemName: string, CircuitElementType: GConstructor<LightBulb | Resistor> ) => new CircuitElementNumberControl( resistanceStringProperty,
+    const createExtremeResistanceNumberControl = ( tandemName: string, CircuitElementType: GConstructor<LightBulb | Resistor> ) => new CircuitElementNumberControl( resistanceStringProperty,
       StringUtils.fillIn( resistanceOhmsValuePatternStringProperty, { resistance: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
       createSingletonAdapterProperty( ResistorType.HIGH_RESISTANCE_RESISTOR.defaultResistance, CircuitElementType, circuit, ( c: LightBulb | Resistor ) => c.resistanceProperty,
         ( c: LightBulb | Resistor ) =>
-          ( c instanceof LightBulb && c.highResistance ) ||
+          ( c instanceof LightBulb && c.isExtreme ) ||
           ( c instanceof Resistor && c.resistorType === ResistorType.HIGH_RESISTANCE_RESISTOR )
       ),
       ResistorType.HIGH_RESISTANCE_RESISTOR.range, circuit, Resistor.HIGH_RESISTANCE_DECIMAL_PLACES, {
@@ -225,10 +225,10 @@ export default class CircuitElementEditContainerNode extends Node {
         numberDisplayOptions: { decimalPlaces: Resistor.HIGH_RESISTANCE_DECIMAL_PLACES }
       } );
 
-    const resistanceNumberControl = createResistanceNumberControl( 'resistanceNumberControl', Resistor );
+    const resistorResistanceNumberControl = createResistanceNumberControl( 'resistorResistanceNumberControl', Resistor );
     const lightBulbResistanceNumberControl = createResistanceNumberControl( 'lightBulbResistanceNumberControl', LightBulb );
-    const highResistanceNumberControl = createHighResistanceNumberControl( 'highResistanceNumberControl', Resistor );
-    const lightBulbHighResistanceNumberControl = createHighResistanceNumberControl( 'lightBulbHighResistanceNumberControl', LightBulb );
+    const extremeResistorResistanceNumberControl = createExtremeResistanceNumberControl( 'extremeResistorResistanceNumberControl', Resistor );
+    const extremeLightBulbResistanceNumberControl = createExtremeResistanceNumberControl( 'extremeLightBulbResistanceNumberControl', LightBulb );
 
     const voltageNumberControl = new CircuitElementNumberControl( voltageStringProperty,
       StringUtils.fillIn( voltageVoltsValuePatternStringProperty, { voltage: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
@@ -236,20 +236,20 @@ export default class CircuitElementEditContainerNode extends Node {
       Battery.VOLTAGE_RANGE,
       circuit,
       Battery.VOLTAGE_DECIMAL_PLACES, {
-        tandem: tandem.createTandem( 'voltageNumberControl' ),
+        tandem: tandem.createTandem( 'batteryVoltageNumberControl' ),
         delta: NORMAL_TWEAKER_DELTA,
         sliderOptions: { // For dragging the slider knob
           constrainValue: ( value: number ) => Utils.roundToInterval( value, NORMAL_SLIDER_KNOB_DELTA )
         },
         numberDisplayOptions: { decimalPlaces: Battery.VOLTAGE_DECIMAL_PLACES }
       } );
-    const highVoltageNumberControl = new CircuitElementNumberControl( voltageStringProperty,
+    const extremeBatteryVoltageNumberControl = new CircuitElementNumberControl( voltageStringProperty,
       StringUtils.fillIn( voltageVoltsValuePatternStringProperty, { voltage: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
       createSingletonAdapterProperty( Battery.HIGH_VOLTAGE_DEFAULT, Battery, circuit, ( c: Battery ) => c.voltageProperty, ( c: Battery ) => c.batteryType === 'high-voltage' ),
       Battery.HIGH_VOLTAGE_RANGE,
       circuit,
       Battery.HIGH_VOLTAGE_DECIMAL_PLACES, {
-        tandem: circuit.includeLabElements ? tandem.createTandem( 'highVoltageNumberControl' ) : Tandem.OPT_OUT,
+        tandem: circuit.includeLabElements ? tandem.createTandem( 'extremeBatteryVoltageNumberControl' ) : Tandem.OPT_OUT,
         delta: HIGH_TWEAKER_DELTA,
         sliderOptions: { // For dragging the slider knob
           constrainValue: ( value: number ) => Utils.roundToInterval( value, HIGH_SLIDER_KNOB_DELTA )
@@ -333,7 +333,7 @@ export default class CircuitElementEditContainerNode extends Node {
     circuit.selectionProperty.link( selectedCircuitElement => {
       if ( editNode ) {
         this.hasChild( editNode ) && this.removeChild( editNode );
-        if ( editNode !== tapInstructionText && editNode !== trashButtonContainer && editNode !== switchReadoutNode ) {
+        if ( editNode !== tapInstructionText && editNode !== trashButtonContainer ) {
           editNode.dispose();
         }
       }
@@ -343,37 +343,37 @@ export default class CircuitElementEditContainerNode extends Node {
       if ( selectedCircuitElement ) {
 
         if ( selectedCircuitElement instanceof Resistor && selectedCircuitElement.isResistanceEditable() ) {
-          const isHighResistance = selectedCircuitElement.resistorType === ResistorType.HIGH_RESISTANCE_RESISTOR;
+          const isExtreme = selectedCircuitElement.resistorType === ResistorType.HIGH_RESISTANCE_RESISTOR;
           editNode = new EditPanel( [
-            isHighResistance ? highResistanceNumberControl : resistanceNumberControl,
+            isExtreme ? extremeResistorResistanceNumberControl : resistorResistanceNumberControl,
             trashButtonContainer
           ] );
         }
 
         // Real bulb has no resistance control
-        else if ( selectedCircuitElement instanceof LightBulb && !selectedCircuitElement.real ) {
+        else if ( selectedCircuitElement instanceof LightBulb && !selectedCircuitElement.isReal ) {
           editNode = new EditPanel( [
-              selectedCircuitElement.highResistance ? lightBulbHighResistanceNumberControl : lightBulbResistanceNumberControl,
+            selectedCircuitElement.isExtreme ? extremeLightBulbResistanceNumberControl : lightBulbResistanceNumberControl,
               trashButtonContainer
             ]
           );
         }
-        else if ( selectedCircuitElement instanceof Resistor || ( selectedCircuitElement instanceof LightBulb && selectedCircuitElement.real ) ) {
+        else if ( selectedCircuitElement instanceof Resistor || ( selectedCircuitElement instanceof LightBulb && selectedCircuitElement.isReal ) ) {
 
-          // Just show a trash button for non-editable resistors which are household items and for real bulbs
+          // Just show a trash button for non-editable resistors which are household items and for isReal bulbs
           editNode = trashButtonContainer;
         }
         else if ( selectedCircuitElement instanceof Battery ) {
           editNode = new EditPanel( [
-              reverseBatteryButton, // Batteries can be reversed
-              selectedCircuitElement.batteryType === 'high-voltage' ? highVoltageNumberControl : voltageNumberControl,
+              batteryReverseButton, // Batteries can be reversed
+              selectedCircuitElement.batteryType === 'high-voltage' ? extremeBatteryVoltageNumberControl : voltageNumberControl,
               trashButtonContainer
             ]
           );
         }
         else if ( selectedCircuitElement instanceof Fuse ) {
           editNode = new EditPanel( [
-              repairFuseButton,
+              fuseRepairButton,
               fuseCurrentRatingControl,
               trashButtonContainer
             ]
@@ -381,11 +381,14 @@ export default class CircuitElementEditContainerNode extends Node {
         }
         else if ( selectedCircuitElement instanceof Switch ) {
 
-          editNode = switchReadoutNode;
-
-          // The trashButton is shared between different components, so we must trigger a relayout to get the relative
-          // position correct before displaying.
-          switchReadoutNode.updateLayout();
+          editNode = new HBox( {
+            children: [
+              switchReadoutNode,
+              trashButtonContainer
+            ],
+            spacing: 25,
+            align: 'bottom'
+          } );
         }
         else if ( selectedCircuitElement instanceof SeriesAmmeter || selectedCircuitElement instanceof Wire ) {
 
@@ -442,6 +445,7 @@ export default class CircuitElementEditContainerNode extends Node {
     } );
 
     visibleBoundsProperty.link( updatePosition );
+    this.localBoundsProperty.link( updatePosition );
   }
 }
 

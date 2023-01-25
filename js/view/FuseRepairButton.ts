@@ -1,4 +1,4 @@
-// Copyright 2019-2022, University of Colorado Boulder
+// Copyright 2019-2023, University of Colorado Boulder
 
 /**
  * Button that resets a Fuse.
@@ -21,7 +21,7 @@ import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js'
 type SelfOptions = EmptySelfOptions;
 type RepairFuseButtonOptions = SelfOptions & RoundPushButtonOptions;
 
-export default class RepairFuseButton extends CCKCRoundPushButton {
+export default class FuseRepairButton extends CCKCRoundPushButton {
 
   public constructor( circuit: Circuit, providedOptions?: RepairFuseButtonOptions ) {
 
@@ -75,4 +75,4 @@ export default class RepairFuseButton extends CCKCRoundPushButton {
   }
 }
 
-circuitConstructionKitCommon.register( 'RepairFuseButton', RepairFuseButton );
+circuitConstructionKitCommon.register( 'FuseRepairButton', FuseRepairButton );
