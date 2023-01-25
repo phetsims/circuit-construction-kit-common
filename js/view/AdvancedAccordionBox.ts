@@ -37,7 +37,7 @@ export default class AdvancedAccordionBox extends CCKCAccordionBox {
    */
   public constructor( circuit: Circuit, alignGroup: AlignGroup, batteryResistanceControlString: TReadOnlyProperty<string>, tandem: Tandem, providedOptions?: AdvancedAccordionBoxOptions ) {
 
-    const options = optionize<AdvancedAccordionBoxOptions, SelfOptions, CCKCAccordionBox>()( {
+    const options = optionize<AdvancedAccordionBoxOptions, SelfOptions, CCKCAccordionBoxOptions>()( {
       showRealBulbsCheckbox: true
     }, providedOptions );
 
