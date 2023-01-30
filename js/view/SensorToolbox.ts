@@ -224,6 +224,7 @@ export default class SensorToolbox extends CCKCPanel {
       excludeInvisibleChildrenFromBounds: false
     } );
 
+    // This provides some space above the series ammeter icon when all other meter icons are hidden
     const seriesAmmeterToolNodeContainer = new HBox( {
       topMargin: 10,
       children: [
