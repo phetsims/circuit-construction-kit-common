@@ -55,7 +55,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
   private readonly schematicNode: Node;
   protected isIcon: boolean;
   private readonly circuitNode: CircuitNode | null;
-  protected readonly contentNode: Node;
+  public readonly contentNode: Node;
   private readonly fireNode: Node | null;
   protected readonly viewTypeProperty: Property<CircuitElementViewType>;
   private readonly viewPropertyListener: ( viewType: CircuitElementViewType ) => void;

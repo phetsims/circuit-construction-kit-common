@@ -39,6 +39,7 @@ import ViewRadioButtonGroup from './ViewRadioButtonGroup.js';
 import VoltageChartNode from './VoltageChartNode.js';
 import VoltmeterNode from './VoltmeterNode.js';
 import ZoomButtonGroup from './ZoomButtonGroup.js';
+import FixedCircuitElementNode from './FixedCircuitElementNode.js';
 
 const batteryResistanceStringProperty = CircuitConstructionKitCommonStrings.batteryResistanceStringProperty;
 const sourceResistanceStringProperty = CircuitConstructionKitCommonStrings.sourceResistanceStringProperty;
@@ -530,14 +531,21 @@ export default class CCKCScreenView extends ScreenView {
     // Only single (unconnected) elements can be dropped into the toolbox
     const isSingle = this.model.circuit.isSingle( circuitElement );
 
+    const componentImage = circuitElementNode instanceof FixedCircuitElementNode ? circuitElementNode.contentNode : circuitElementNode;
+    const elementNodeBounds = this.globalToLocalBounds( componentImage.globalBounds );
+
+    const erosionPercent = 0.5 * ( 1 - CCKCConstants.RETURN_ITEM_HITBOX_PERCENT );
+    const elementNodeBoundsEroded = elementNodeBounds.erodedXY( erosionPercent * elementNodeBounds.width,
+      erosionPercent * elementNodeBounds.height );
+
     // SeriesAmmeters should be dropped in the sensor toolbox
-    const toolbox = circuitElement instanceof SeriesAmmeter ? this.sensorToolbox : this.circuitElementToolbox;
+    const toolbox = circuitElement instanceof SeriesAmmeter ? this.sensorToolbox : this.circuitElementToolbox.carousel;
 
-    // Detect whether the midpoint between the vertices overlaps the toolbox
-    const globalMidpoint = circuitElementNode.localToGlobalPoint( circuitElement.getMidpoint() );
-    const hitBox = Bounds2.point( globalMidpoint ).dilate( CCKCConstants.RETURN_ITEM_BOUNDS_TOLERANCE );
+    const globalCarouselBounds = toolbox.localToGlobalBounds( toolbox.localBounds );
+    const carouselBounds = this.globalToLocalBounds( globalCarouselBounds );
 
-    const overToolbox = toolbox.globalBounds.intersectsBounds( hitBox );
+    // Detect whether eroded component image bounds intersects the toolbox bounds
+    const overToolbox = carouselBounds.intersectsBounds( elementNodeBoundsEroded );
 
     return isSingle && overToolbox && circuitElement.isDisposableProperty.value;
   }
