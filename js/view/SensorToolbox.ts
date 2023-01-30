@@ -224,9 +224,16 @@ export default class SensorToolbox extends CCKCPanel {
       excludeInvisibleChildrenFromBounds: false
     } );
 
+    const seriesAmmeterToolNodeContainer = new HBox( {
+      topMargin: 10,
+      children: [
+        seriesAmmeterToolNode
+      ]
+    } );
+
     const children = [];
     options.showNoncontactAmmeters && children.push( ammeterToolIcon );
-    options.showSeriesAmmeters && children.push( seriesAmmeterToolNode );
+    options.showSeriesAmmeters && children.push( seriesAmmeterToolNodeContainer );
 
     const ammeterToolNode = new VBox( {
       tandem: Tandem.OPT_OUT,
