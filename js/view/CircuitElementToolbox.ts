@@ -27,13 +27,7 @@ export type CircuitElementToolboxOptions = SelfOptions & HBoxOptions;
 export default class CircuitElementToolbox extends HBox {
   public readonly carousel: Carousel;
 
-  /**
-   * @param viewTypeProperty
-   * @param circuitElementToolNodes
-   * @param tandem
-   * @param [providedOptions]
-   */
-  public constructor( viewTypeProperty: Property<CircuitElementViewType>, circuitElementToolNodes: CarouselItem[], tandem: Tandem, providedOptions?: CircuitElementToolboxOptions ) {
+  public constructor( viewTypeProperty: Property<CircuitElementViewType>, circuitElementToolItems: CarouselItem[], tandem: Tandem, providedOptions?: CircuitElementToolboxOptions ) {
 
     providedOptions = optionize<CircuitElementToolboxOptions, SelfOptions, HBoxOptions>()( {
       carouselOptions: {
@@ -58,7 +52,7 @@ export default class CircuitElementToolbox extends HBox {
     }, providedOptions );
 
     // create the carousel
-    const carousel = new Carousel( circuitElementToolNodes, providedOptions.carouselOptions );
+    const carousel = new Carousel( circuitElementToolItems, providedOptions.carouselOptions );
     carousel.mutate( { scale: providedOptions.carouselScale } );
 
     const pageControl = new PageControl( carousel.pageNumberProperty, carousel.numberOfPagesProperty, {

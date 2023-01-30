@@ -13,6 +13,7 @@ import Bounds2 from '../../../dot/js/Bounds2.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import ScreenView, { ScreenViewOptions } from '../../../joist/js/ScreenView.js';
 import optionize from '../../../phet-core/js/optionize.js';
+import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
 import PlayPauseButton from '../../../scenery-phet/js/buttons/PlayPauseButton.js';
 import ResetAllButton from '../../../scenery-phet/js/buttons/ResetAllButton.js';
 import StopwatchNode from '../../../scenery-phet/js/StopwatchNode.js';
@@ -82,7 +83,7 @@ type SelfOptions = {
   hasACandDCVoltageSources?: boolean;
   showMeterPhetioIndex?: boolean;
 };
-export type CCKCScreenViewOptions = SelfOptions & ScreenViewOptions;
+export type CCKCScreenViewOptions = SelfOptions & StrictOmit<ScreenViewOptions, 'tandem'>;
 
 export default class CCKCScreenView extends ScreenView {
   public readonly model: CircuitConstructionKitModel;
@@ -102,11 +103,11 @@ export default class CCKCScreenView extends ScreenView {
 
   /**
    * @param model
-   * @param circuitElementToolNodes - to be shown in the carousel
+   * @param circuitElementToolItems - to be shown in the carousel
    * @param tandem
    * @param [providedOptions]
    */
-  protected constructor( model: CircuitConstructionKitModel, circuitElementToolNodes: CarouselItem[], tandem: Tandem, providedOptions?: CCKCScreenViewOptions ) {
+  protected constructor( model: CircuitConstructionKitModel, circuitElementToolItems: CarouselItem[], tandem: Tandem, providedOptions?: CCKCScreenViewOptions ) {
 
     const options = optionize<CCKCScreenViewOptions, SelfOptions, ScreenViewOptions>()( {
 
@@ -128,6 +129,7 @@ export default class CCKCScreenView extends ScreenView {
       showMeterPhetioIndex: false
     }, providedOptions );
 
+    // TODO: provide providedOptions somehow up to the super
     super( { tandem: tandem } );
 
     this.model = model;
@@ -217,7 +219,7 @@ export default class CCKCScreenView extends ScreenView {
     // Toolbox from which CircuitElements can be dragged
     this.circuitElementToolbox = new CircuitElementToolbox(
       model.viewTypeProperty,
-      circuitElementToolNodes,
+      circuitElementToolItems,
       tandem.createTandem( 'circuitElementToolbox' ),
       options.circuitElementToolboxOptions
     );
