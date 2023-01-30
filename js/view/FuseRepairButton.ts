@@ -38,6 +38,7 @@ export default class FuseRepairButton extends CCKCRoundPushButton {
     } );
 
     const options = optionize<RepairFuseButtonOptions, SelfOptions, RoundPushButtonOptions>()( {
+      phetioReadOnly: true,
       touchAreaDilation: 5, // radius dilation for touch area
       content: icon,
       listener: () => {
