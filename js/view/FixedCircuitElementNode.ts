@@ -20,8 +20,8 @@ import FixedCircuitElement from '../model/FixedCircuitElement.js';
 import Resistor from '../model/Resistor.js';
 import CCKCScreenView from './CCKCScreenView.js';
 import CircuitElementNode, { CircuitElementNodeOptions } from './CircuitElementNode.js';
-import CircuitLayerNode from './CircuitLayerNode.js';
-import CircuitLayerNodeDragListener from './CircuitLayerNodeDragListener.js';
+import CircuitNode from './CircuitNode.js';
+import CircuitNodeDragListener from './CircuitNodeDragListener.js';
 import FixedCircuitElementHighlightNode from './FixedCircuitElementHighlightNode.js';
 import CircuitElement from '../model/CircuitElement.js';
 import Multilink, { UnknownMultilink } from '../../../axon/js/Multilink.js';
@@ -54,7 +54,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
   private readonly lifelikeNode: Node;
   private readonly schematicNode: Node;
   protected isIcon: boolean;
-  private readonly circuitLayerNode: CircuitLayerNode | null;
+  private readonly circuitNode: CircuitNode | null;
   protected readonly contentNode: Node;
   private readonly fireNode: Node | null;
   protected readonly viewTypeProperty: Property<CircuitElementViewType>;
@@ -64,7 +64,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
   private readonly moveToFrontListener: () => void;
   protected readonly pickableListener: ( pickable: boolean | null ) => Node;
   private readonly fixedCircuitElementNodePickable: boolean | null;
-  public readonly dragListener: CircuitLayerNodeDragListener | null;
+  public readonly dragListener: CircuitNodeDragListener | null;
 
   // Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
   public static readonly webglSpriteNodes: Node[] = [
@@ -75,7 +75,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
 
   /**
    * @param screenView - the main screen view, null for isIcon
-   * @param circuitLayerNode - Null if an isIcon is created
+   * @param circuitNode - Null if an isIcon is created
    * @param circuitElement - the corresponding model element
    * @param viewTypeProperty
    * @param lifelikeNode - the Node that will display the component as a lifelike object.  Origin must be
@@ -84,12 +84,12 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
    * @param tandem
    * @param [providedOptions]
    */
-  public constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, circuitElement: FixedCircuitElement,
+  public constructor( screenView: CCKCScreenView | null, circuitNode: CircuitNode | null, circuitElement: FixedCircuitElement,
                       viewTypeProperty: Property<CircuitElementViewType>, lifelikeNode: Node, schematicNode: Node, tandem: Tandem,
                       providedOptions?: FixedCircuitElementNodeOptions ) {
     assert && assert( lifelikeNode !== schematicNode, 'schematicNode should be different than lifelikeNode' );
 
-    const circuit = circuitLayerNode && circuitLayerNode.circuit;
+    const circuit = circuitNode && circuitNode.circuit;
 
     const contentNode = new Node();
 
@@ -113,7 +113,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
     // whether an isIcon is being rendered
     this.isIcon = options.isIcon;
 
-    this.circuitLayerNode = circuitLayerNode;
+    this.circuitNode = circuitNode;
 
     // node that shows the component, separate from the part that shows the highlight and the fire
     this.contentNode = contentNode;
@@ -158,15 +158,15 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
     let latestPoint: Vector2 | null = null;
     let dragged = false;
 
-    if ( !options.isIcon && circuitLayerNode ) {
+    if ( !options.isIcon && circuitNode ) {
 
-      this.dragListener = new CircuitLayerNodeDragListener( circuitLayerNode, [ () => circuitElement.endVertexProperty.get() ], {
+      this.dragListener = new CircuitNodeDragListener( circuitNode, [ () => circuitElement.endVertexProperty.get() ], {
         start: ( event: SceneryEvent ) => {
           this.moveToFront();
           if ( event.pointer && event.pointer.point ) {
             initialPoint = event.pointer.point.copy();
             latestPoint = event.pointer.point.copy();
-            circuitElement.interactiveProperty.get() && circuitLayerNode.startDragVertex(
+            circuitElement.interactiveProperty.get() && circuitNode.startDragVertex(
               event.pointer.point,
               circuitElement.endVertexProperty.get()
             );
@@ -177,7 +177,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
         drag: ( event: SceneryEvent ) => {
           if ( event.pointer.point ) {
             latestPoint = event.pointer.point.copy();
-            circuitElement.interactiveProperty.get() && circuitLayerNode.dragVertex(
+            circuitElement.interactiveProperty.get() && circuitNode.dragVertex(
               event.pointer.point,
               circuitElement.endVertexProperty.get(),
               false
@@ -186,7 +186,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
           }
         },
         end: () =>
-          this.endDrag( this.contentNode, [ circuitElement.endVertexProperty.get() ], screenView!, circuitLayerNode,
+          this.endDrag( this.contentNode, [ circuitElement.endVertexProperty.get() ], screenView!, circuitNode,
             initialPoint!, latestPoint!, dragged ),
         tandem: tandem.createTandem( 'dragListener' )
       } );
@@ -195,7 +195,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
       if ( options.showHighlight ) {
 
         this.updateHighlightVisibility = this.setSelectedCircuitElement.bind( this );
-        circuitLayerNode.circuit.selectionProperty.link( this.updateHighlightVisibility );
+        circuitNode.circuit.selectionProperty.link( this.updateHighlightVisibility );
       }
       else {
         this.updateHighlightVisibility = null;
@@ -271,7 +271,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
     matrix.setToTranslationRotationPoint( startPosition, angle );
     this.contentNode.setMatrix( matrix );
 
-    if ( this.highlightNode && this.circuitLayerNode!.circuit.selectionProperty.get() === this.circuitElement ) {
+    if ( this.highlightNode && this.circuitNode!.circuit.selectionProperty.get() === this.circuitElement ) {
       this.highlightNode.setMatrix( matrix );
     }
 
@@ -306,7 +306,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
   private setSelectedCircuitElement( circuitElement: CircuitElement | Vertex | null ): void {
     if ( this.highlightNode ) {
       const visible = ( circuitElement === this.circuitElement );
-      CCKCUtils.setInSceneGraph( visible, this.circuitLayerNode!.highlightLayer, this.highlightNode );
+      CCKCUtils.setInSceneGraph( visible, this.circuitNode!.highlightLayer, this.highlightNode );
       this.markAsDirty();
     }
     else {
@@ -320,11 +320,11 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
     this.dragListener && this.dragListener.interrupt();
     this.dragListener && this.dragListener.dispose();
     this.circuitElement.vertexMovedEmitter.removeListener( this.markDirtyListener );
-    this.updateHighlightVisibility && this.circuitLayerNode!.circuit.selectionProperty.unlink( this.updateHighlightVisibility );
+    this.updateHighlightVisibility && this.circuitNode!.circuit.selectionProperty.unlink( this.updateHighlightVisibility );
     this.circuitElement.connectedEmitter.removeListener( this.moveToFrontListener );
     this.circuitElement.vertexSelectedEmitter.removeListener( this.moveToFrontListener );
     this.fixedCircuitElementNodePickable && this.circuitElement.interactiveProperty.unlink( this.pickableListener );
-    this.circuitLayerNode && this.highlightNode && CCKCUtils.setInSceneGraph( false, this.circuitLayerNode.highlightLayer, this.highlightNode );
+    this.circuitNode && this.highlightNode && CCKCUtils.setInSceneGraph( false, this.circuitNode.highlightLayer, this.highlightNode );
     this.viewTypeProperty.unlink( this.viewPropertyListener );
 
     if ( !this.isIcon && this.updateFireMultilink ) {

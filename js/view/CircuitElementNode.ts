@@ -14,11 +14,11 @@ import Circuit from '../model/Circuit.js';
 import CircuitElement from '../model/CircuitElement.js';
 import CircuitElementEditContainerNode from './CircuitElementEditContainerNode.js';
 import CCKCScreenView from './CCKCScreenView.js';
-import CircuitLayerNode from './CircuitLayerNode.js';
+import CircuitNode from './CircuitNode.js';
 import Vertex from '../model/Vertex.js';
 import DisplayClickToDismissListener from '../../../joist/js/DisplayClickToDismissListener.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import CircuitLayerNodeDragListener from './CircuitLayerNodeDragListener.js';
+import CircuitNodeDragListener from './CircuitNodeDragListener.js';
 
 type SelfOptions = {
   useHitTestForSensors?: boolean;
@@ -32,7 +32,7 @@ export default abstract class CircuitElementNode extends Node {
   public readonly circuitElement: CircuitElement;
   private readonly disposeCircuitElementNode: () => void;
   private dirty: boolean;
-  public readonly abstract dragListener: CircuitLayerNodeDragListener | null;
+  public readonly abstract dragListener: CircuitNodeDragListener | null;
 
   /**
    * @param circuitElement - the CircuitElement to be rendered
@@ -53,6 +53,7 @@ export default abstract class CircuitElementNode extends Node {
         focusHighlight: 'invisible', // highlights are drawn by the simulation, invisible is deprecated don't use in future
         phetioDynamicElement: true,
         phetioState: false,
+        phetioVisiblePropertyInstrumented: false,
         phetioInputEnabledPropertyInstrumented: true,
         useHitTestForSensors: false
       }, providedOptions );
@@ -186,12 +187,12 @@ export default abstract class CircuitElementNode extends Node {
    * @param node - the node the input listener is attached to
    * @param vertices - the vertices that are dragged
    * @param screenView - the main screen view, null for icon
-   * @param circuitLayerNode
+   * @param circuitNode
    * @param initialPoint
    * @param latestPoint
    * @param dragged
    */
-  protected endDrag( node: Node, vertices: Vertex[], screenView: CCKCScreenView, circuitLayerNode: CircuitLayerNode, initialPoint: Vector2, latestPoint: Vector2, dragged: boolean ): void {
+  protected endDrag( node: Node, vertices: Vertex[], screenView: CCKCScreenView, circuitNode: CircuitNode, initialPoint: Vector2, latestPoint: Vector2, dragged: boolean ): void {
     const circuitElement = this.circuitElement;
 
     if ( circuitElement.interactiveProperty.get() ) {
@@ -205,13 +206,13 @@ export default abstract class CircuitElementNode extends Node {
         // End drag for each of the vertices
         vertices.forEach( vertex => {
           if ( screenView.model.circuit.vertexGroup.includes( vertex ) ) {
-            circuitLayerNode.endDrag( vertex, dragged );
+            circuitNode.endDrag( vertex, dragged );
           }
         } );
 
         // Only show the editor when tapped, not on every drag.  Also, event could be undefined if this end() was
         // triggered by dispose()
-        this.selectCircuitElementNodeWhenNear( circuitLayerNode, initialPoint, latestPoint );
+        this.selectCircuitElementNodeWhenNear( circuitNode, initialPoint, latestPoint );
       }
     }
   }
@@ -219,11 +220,11 @@ export default abstract class CircuitElementNode extends Node {
   /**
    * On tap events, select the CircuitElement (if it is close enough to the tap)
    */
-  private selectCircuitElementNodeWhenNear( circuitLayerNode: CircuitLayerNode, startPoint: Vector2, latestPoint: Vector2 | null ): void {
+  private selectCircuitElementNodeWhenNear( circuitNode: CircuitNode, startPoint: Vector2, latestPoint: Vector2 | null ): void {
 
     if ( !this.circuitElement.isDisposed && latestPoint && latestPoint.distance( startPoint ) < CCKCConstants.TAP_THRESHOLD ) {
 
-      circuitLayerNode.circuit.selectionProperty.set( this.circuitElement );
+      circuitNode.circuit.selectionProperty.set( this.circuitElement );
 
       // focus the element for keyboard interaction
       // in the state wrapper, the destination frame tries to apply this delete first, which steals it from the upstream frame
@@ -254,7 +255,7 @@ export default abstract class CircuitElementNode extends Node {
           if ( this.disposeEmitter.hasListener( disposeListener ) ) {
             this.disposeEmitter.removeListener( disposeListener );
           }
-          circuitLayerNode.circuit.selectionProperty.set( null );
+          circuitNode.circuit.selectionProperty.set( null );
         }
       };
 
@@ -269,7 +270,7 @@ export default abstract class CircuitElementNode extends Node {
     else {
 
       // deselect after dragging
-      circuitLayerNode.circuit.selectionProperty.set( null );
+      circuitNode.circuit.selectionProperty.set( null );
     }
   }
 }

@@ -1,4 +1,4 @@
-// Copyright 2015-2022, University of Colorado Boulder
+// Copyright 2015-2023, University of Colorado Boulder
 
 /**
  * Renders the lifelike/schematic view for a Battery.
@@ -19,7 +19,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Battery from '../model/Battery.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import CCKCScreenView from './CCKCScreenView.js';
-import CircuitLayerNode from './CircuitLayerNode.js';
+import CircuitNode from './CircuitNode.js';
 import FixedCircuitElementNode, { FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
 
 // constants
@@ -70,13 +70,13 @@ export default class BatteryNode extends FixedCircuitElementNode {
 
   /**
    * @param screenView - main screen view, null for isIcon
-   * @param circuitLayerNode, null for icon
+   * @param circuitNode, null for icon
    * @param battery
    * @param viewTypeProperty
    * @param tandem
    * @param [providedOptions]
    */
-  public constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, battery: Battery, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: FixedCircuitElementNodeOptions ) {
+  public constructor( screenView: CCKCScreenView | null, circuitNode: CircuitNode | null, battery: Battery, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: FixedCircuitElementNodeOptions ) {
 
     providedOptions = combineOptions<FixedCircuitElementNodeOptions>( { useHitTestForSensors: true }, providedOptions );
 
@@ -91,7 +91,7 @@ export default class BatteryNode extends FixedCircuitElementNode {
 
     super(
       screenView,
-      circuitLayerNode,
+      circuitNode,
       battery,
       viewTypeProperty,
       lifelikeNode,

@@ -36,7 +36,7 @@ type VertexOptions = SelfOptions & PhetioObjectOptions;
 
 export default class Vertex extends PhetioObject {
 
-  // Index counter for hashing in CircuitLayerNode.  Also useful for debugging and can be shown with ?vertexDisplay=index
+  // Index counter for hashing in CircuitNode.  Also useful for debugging and can be shown with ?vertexDisplay=index
   public readonly index: number;
   private readonly vertexTandem: Tandem;
 

@@ -1,4 +1,4 @@
-// Copyright 2020-2022, University of Colorado Boulder
+// Copyright 2020-2023, University of Colorado Boulder
 
 /**
  * The DogNode is a ResistorNode that barks
@@ -15,7 +15,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import BarkNode from './BarkNode.js';
 import CCKCScreenView from './CCKCScreenView.js';
-import CircuitLayerNode from './CircuitLayerNode.js';
+import CircuitNode from './CircuitNode.js';
 import ResistorNode from './ResistorNode.js';
 import Dog from '../model/Dog.js';
 import { FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
@@ -28,15 +28,15 @@ export default class DogNode extends ResistorNode {
 
   /**
    * @param screenView - main screen view, null for isIcon
-   * @param circuitLayerNode, null for isIcon
+   * @param circuitNode, null for isIcon
    * @param dog
    * @param viewTypeProperty
    * @param tandem
    * @param [providedOptions]
    */
-  public constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, dog: Dog,
+  public constructor( screenView: CCKCScreenView | null, circuitNode: CircuitNode | null, dog: Dog,
                       viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: FixedCircuitElementNodeOptions ) {
-    super( screenView, circuitLayerNode, dog, viewTypeProperty, tandem, providedOptions );
+    super( screenView, circuitNode, dog, viewTypeProperty, tandem, providedOptions );
 
     const soundClip = new SoundClip( dogBark_mp3 );
     soundManager.addSoundGenerator( soundClip );

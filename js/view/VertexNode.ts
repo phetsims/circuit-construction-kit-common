@@ -1,4 +1,4 @@
-// Copyright 2016-2022, University of Colorado Boulder
+// Copyright 2016-2023, University of Colorado Boulder
 
 /**
  * The interactive scenery node for a vertex in the circuit graph.
@@ -16,8 +16,8 @@ import CCKCUtils from '../CCKCUtils.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Circuit from '../model/Circuit.js';
 import Vertex from '../model/Vertex.js';
-import CircuitLayerNode from './CircuitLayerNode.js';
-import CircuitLayerNodeDragListener from './CircuitLayerNodeDragListener.js';
+import CircuitNode from './CircuitNode.js';
+import CircuitNodeDragListener from './CircuitNodeDragListener.js';
 import DisplayClickToDismissListener from '../../../joist/js/DisplayClickToDismissListener.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
 
@@ -39,13 +39,13 @@ const BLACK_CIRCLE_NODE = new Circle( VERTEX_RADIUS, combineOptions<CircleOption
 
 export default class VertexNode extends Node {
   private readonly circuit: Circuit;
-  private readonly cutButtonContainer: Node;
-  private readonly circuitLayerNode: CircuitLayerNode;
+  private readonly vertexCutButtonContainer: Node;
+  private readonly circuitNode: CircuitNode;
   private readonly vertexLabelNode: VBox;
   private readonly updateReadoutTextPosition: ( () => void );
   private readonly vertex: Vertex;
 
-  // added by CircuitLayerNode during dragging, used for relative drag position, or null if not being dragged
+  // added by CircuitNode during dragging, used for relative drag position, or null if not being dragged
   public startOffset: Vector2 | null;
   private readonly highlightNode: Circle;
   private readonly keyListener: { keydown: SceneryListenerFunction<KeyboardEvent> };
@@ -54,7 +54,7 @@ export default class VertexNode extends Node {
   protected readonly updateMoveToFront: () => Node;
   protected readonly updatePickableListener: ( pickable: boolean | null ) => Node;
   private readonly clickToDismissListeners: DisplayClickToDismissListener[];
-  private readonly dragListener: CircuitLayerNodeDragListener;
+  private readonly dragListener: CircuitNodeDragListener;
   private readonly interruptionListener: ( draggable: boolean ) => void;
   private readonly updateVertexNodePositionListener: () => void;
   public static readonly VERTEX_RADIUS = VERTEX_RADIUS;
@@ -65,11 +65,11 @@ export default class VertexNode extends Node {
   ];
 
   /**
-   * @param circuitLayerNode - the entire CircuitLayerNode
+   * @param circuitNode - the entire CircuitNode
    * @param vertex - the Vertex that will be displayed
    * @param tandem
    */
-  public constructor( circuitLayerNode: CircuitLayerNode, vertex: Vertex, tandem: Tandem ) {
+  public constructor( circuitNode: CircuitNode, vertex: Vertex, tandem: Tandem ) {
 
     super( {
       tandem: tandem,
@@ -79,17 +79,18 @@ export default class VertexNode extends Node {
       tagName: 'div', // HTML tag name for representative element in the document, see ParallelDOM.js
       focusable: true,
       focusHighlight: 'invisible', // highlights are drawn by the simulation, invisible is deprecated don't use in future
-      phetioDynamicElement: true
+      phetioDynamicElement: true,
+      phetioVisiblePropertyInstrumented: false
     } );
 
-    const circuit = circuitLayerNode.circuit;
+    const circuit = circuitNode.circuit;
 
     this.circuit = circuit;
-    this.cutButtonContainer = new Node( {
-      children: [ circuitLayerNode.cutButton ]
+    this.vertexCutButtonContainer = new Node( {
+      children: [ circuitNode.vertexCutButton ]
     } );
 
-    this.circuitLayerNode = circuitLayerNode;
+    this.circuitNode = circuitNode;
 
     this.addLinkedElement( vertex, {
       tandem: tandem.createTandem( 'vertex' )
@@ -190,23 +191,23 @@ export default class VertexNode extends Node {
     // called when the user clicks away from the selected vertex
     this.clickToDismissListeners = [];
 
-    this.dragListener = new CircuitLayerNodeDragListener( circuitLayerNode, [ () => vertex ], {
+    this.dragListener = new CircuitNodeDragListener( circuitNode, [ () => vertex ], {
       tandem: tandem.createTandem( 'dragListener' ),
       start: ( event: SceneryEvent ) => {
         initialPoint = event.pointer.point;
         latestPoint = event.pointer.point.copy();
-        circuitLayerNode.startDragVertex( event.pointer.point, vertex );
+        circuitNode.startDragVertex( event.pointer.point, vertex );
         dragged = false;
       },
       drag: ( event: SceneryEvent ) => {
         latestPoint = event.pointer.point.copy();
         dragged = true;
-        circuitLayerNode.dragVertex( event.pointer.point, vertex, true );
+        circuitNode.dragVertex( event.pointer.point, vertex, true );
       },
       end: () => {
 
         // The vertex can only connect to something if it was actually moved.
-        circuitLayerNode.endDrag( vertex, dragged );
+        circuitNode.endDrag( vertex, dragged );
 
         // Only show on a tap, not on every drag.
         if ( vertex.interactiveProperty.get() && latestPoint!.distance( initialPoint! ) < CCKCConstants.TAP_THRESHOLD ) {
@@ -214,7 +215,7 @@ export default class VertexNode extends Node {
           vertex.selectionProperty.value = vertex;
 
           const dismissListener = ( event: SceneryEvent ) => {
-            if ( !_.includes( event.trail.nodes, this ) && !_.includes( event.trail.nodes, this.cutButtonContainer ) ) {
+            if ( !_.includes( event.trail.nodes, this ) && !_.includes( event.trail.nodes, this.vertexCutButtonContainer ) ) {
               vertex.selectionProperty.value = null;
               this.clearClickListeners();
             }
@@ -249,14 +250,14 @@ export default class VertexNode extends Node {
   public override dispose(): void {
     const vertex = this.vertex;
     const circuit = this.circuit;
-    const cutButton = this.cutButtonContainer;
-    const circuitLayerNode = this.circuitLayerNode;
+    const vertexCutButton = this.vertexCutButtonContainer;
+    const circuitNode = this.circuitNode;
     vertex.positionProperty.unlink( this.updateVertexNodePositionListener );
     vertex.selectionProperty.unlink( this.updateVertexNodePositionListener );
     vertex.interactiveProperty.unlink( this.updatePickableListener );
     vertex.relayerEmitter.removeListener( this.updateMoveToFront );
-    CCKCUtils.setInSceneGraph( false, circuitLayerNode.buttonLayer, cutButton );
-    CCKCUtils.setInSceneGraph( false, circuitLayerNode.highlightLayer, this.highlightNode );
+    CCKCUtils.setInSceneGraph( false, circuitNode.buttonLayer, vertexCutButton );
+    CCKCUtils.setInSceneGraph( false, circuitNode.highlightLayer, this.highlightNode );
     circuit.vertexGroup.elementCreatedEmitter.removeListener( this.updateStrokeListener );
     circuit.vertexGroup.elementDisposedEmitter.removeListener( this.updateStrokeListener );
 
@@ -293,7 +294,7 @@ export default class VertexNode extends Node {
       domEvent!.preventDefault();
 
       // Double guard to work around errors in fuzzing
-      if ( this.cutButtonContainer.inputEnabled && this.circuit.getSelectedVertex() ) {
+      if ( this.vertexCutButtonContainer.inputEnabled && this.circuit.getSelectedVertex() ) {
         this.circuit.cutVertex( this.circuit.getSelectedVertex()! );
       }
     }
@@ -320,25 +321,25 @@ export default class VertexNode extends Node {
         this.focus();
       }
     }
-    CCKCUtils.setInSceneGraph( selected, this.circuitLayerNode.highlightLayer, this.highlightNode );
+    CCKCUtils.setInSceneGraph( selected, this.circuitNode.highlightLayer, this.highlightNode );
     const numberConnections = neighborCircuitElements.length;
-    CCKCUtils.setInSceneGraph( selected && this.vertex.isCuttableProperty.value, this.circuitLayerNode.buttonLayer, this.cutButtonContainer );
-    selected && this.updateCutButtonPosition();
+    CCKCUtils.setInSceneGraph( selected && this.vertex.isCuttableProperty.value, this.circuitNode.buttonLayer, this.vertexCutButtonContainer );
+    selected && this.updateVertexCutButtonPosition();
 
     // Show a disabled button as a cue that the vertex could be cuttable, but it isn't right now.
     const isConnectedBlackBoxVertex = numberConnections === 1 && !this.vertex.isDraggableProperty.get();
 
     const enabled = numberConnections > 1 || isConnectedBlackBoxVertex;
-    this.cutButtonContainer.filters = enabled ? [] : [ Grayscale.FULL ];
-    this.cutButtonContainer.opacity = enabled ? 1 : SceneryConstants.DISABLED_OPACITY;
-    this.cutButtonContainer.inputEnabled = enabled;
+    this.vertexCutButtonContainer.filters = enabled ? [] : [ Grayscale.FULL ];
+    this.vertexCutButtonContainer.opacity = enabled ? 1 : SceneryConstants.DISABLED_OPACITY;
+    this.vertexCutButtonContainer.inputEnabled = enabled;
   }
 
   private updateStroke(): void {
 
     // A memory leak was being caused by children getting added after dispose was called.
-    // This is because the itemRemoved listener in CircuitLayerNode is added (and hence called) before this callback.
-    // The CircuitLayerNode listener calls dispose but this listener still gets called back because emitter gets
+    // This is because the itemRemoved listener in CircuitNode is added (and hence called) before this callback.
+    // The CircuitNode listener calls dispose but this listener still gets called back because emitter gets
     // a defensive copy of listeners.
     if ( !this.isDisposed ) {
 
@@ -351,7 +352,7 @@ export default class VertexNode extends Node {
   }
 
   // update the position of the cut button
-  private updateCutButtonPosition(): void {
+  private updateVertexCutButtonPosition(): void {
     const position = this.vertex.positionProperty.get();
 
     const neighbors = this.circuit.getNeighborCircuitElements( this.vertex );
@@ -374,10 +375,10 @@ export default class VertexNode extends Node {
     const proposedPosition = position.plus( sumOfDirections.normalized().timesScalar( DISTANCE_TO_CUT_BUTTON ) );
 
     // Property doesn't exist until the node is attached to scene graph
-    const bounds = this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty.get();
+    const bounds = this.circuitNode.visibleBoundsInCircuitCoordinateFrameProperty.get();
 
-    const availableBounds = bounds.eroded( this.cutButtonContainer.width / 2 );
-    this.cutButtonContainer.center = availableBounds.closestPointTo( proposedPosition );
+    const availableBounds = bounds.eroded( this.vertexCutButtonContainer.width / 2 );
+    this.vertexCutButtonContainer.center = availableBounds.closestPointTo( proposedPosition );
   }
 
   /**
@@ -394,7 +395,7 @@ export default class VertexNode extends Node {
     this.updateReadoutTextPosition && this.updateReadoutTextPosition();
 
     // Update the cut button position, but only if the cut button is showing (to save on CPU)
-    this.vertex.isSelected() && this.updateCutButtonPosition();
+    this.vertex.isSelected() && this.updateVertexCutButtonPosition();
   }
 
   /**

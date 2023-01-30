@@ -19,8 +19,8 @@ import Vertex from '../model/Vertex.js';
 import Wire from '../model/Wire.js';
 import CCKCScreenView from './CCKCScreenView.js';
 import CircuitElementNode from './CircuitElementNode.js';
-import CircuitLayerNode from './CircuitLayerNode.js';
-import CircuitLayerNodeDragListener from './CircuitLayerNodeDragListener.js';
+import CircuitNode from './CircuitNode.js';
+import CircuitNodeDragListener from './CircuitNodeDragListener.js';
 
 // constants
 const LIFELIKE_LINE_WIDTH = 16; // line width in screen coordinates
@@ -135,14 +135,14 @@ const getTouchArea = ( wire: Wire ) => {
 
 export default class WireNode extends CircuitElementNode {
   private readonly viewTypeProperty: Property<CircuitElementViewType>;
-  private readonly circuitLayerNode: CircuitLayerNode | null;
+  private readonly circuitNode: CircuitNode | null;
   private readonly wire: Wire;
   private readonly startCapParent: Node;
   private readonly endCapParent: Node;
   private readonly lineNodeParent: Node;
   private readonly lineNode: Node;
   private readonly highlightNode: Path;
-  public readonly dragListener: CircuitLayerNodeDragListener | null;
+  public readonly dragListener: CircuitNodeDragListener | null;
   private readonly disposeWireNode: () => void;
 
   // Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
@@ -156,12 +156,12 @@ export default class WireNode extends CircuitElementNode {
   /**
    * @param screenView - the icon is created separately in CircuitElementToolFactory, so (unlike
    *                                    - other CircuitElement types) the screenView is required
-   * @param circuitLayerNode
+   * @param circuitNode
    * @param wire
    * @param viewTypeProperty
    * @param tandem
    */
-  public constructor( screenView: CCKCScreenView, circuitLayerNode: CircuitLayerNode | null, wire: Wire, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem ) {
+  public constructor( screenView: CCKCScreenView, circuitNode: CircuitNode | null, wire: Wire, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem ) {
 
     const startCapParent = new Node( {
       children: [ lifelikeRoundedCapNormal ]
@@ -191,9 +191,9 @@ export default class WireNode extends CircuitElementNode {
       children: [ highlightNode ]
     } );
 
-    circuitLayerNode && circuitLayerNode.highlightLayer.addChild( highlightNodeParent );
+    circuitNode && circuitNode.highlightLayer.addChild( highlightNodeParent );
 
-    const circuit = circuitLayerNode && circuitLayerNode.circuit;
+    const circuit = circuitNode && circuitNode.circuit;
     super( wire, circuit, {
       children: [
         startCapParent,
@@ -205,7 +205,7 @@ export default class WireNode extends CircuitElementNode {
 
     this.viewTypeProperty = viewTypeProperty;
 
-    this.circuitLayerNode = circuitLayerNode;
+    this.circuitNode = circuitNode;
 
     this.wire = wire;
 
@@ -225,7 +225,7 @@ export default class WireNode extends CircuitElementNode {
       this.markAsDirty();
 
       // For the icon, we must update right away since no step() is called
-      if ( !circuitLayerNode ) {
+      if ( !circuitNode ) {
         this.updateRender();
       }
     };
@@ -258,10 +258,10 @@ export default class WireNode extends CircuitElementNode {
 
     if ( screenView ) {
 
-      assert && assert( circuitLayerNode !== null );
+      assert && assert( circuitNode !== null );
 
       // Input listener for dragging the body of the wire, to translate it.
-      this.dragListener = new CircuitLayerNodeDragListener( circuitLayerNode!, [
+      this.dragListener = new CircuitNodeDragListener( circuitNode!, [
         () => wire.startVertexProperty.get(),
         () => wire.endVertexProperty.get()
       ], {
@@ -270,8 +270,8 @@ export default class WireNode extends CircuitElementNode {
           if ( wire.interactiveProperty.get() ) {
 
             // Start drag by starting a drag on start and end vertices
-            circuitLayerNode!.startDragVertex( event.pointer.point, wire.startVertexProperty.get() );
-            circuitLayerNode!.startDragVertex( event.pointer.point, wire.endVertexProperty.get() );
+            circuitNode!.startDragVertex( event.pointer.point, wire.startVertexProperty.get() );
+            circuitNode!.startDragVertex( event.pointer.point, wire.endVertexProperty.get() );
             dragged = false;
             initialPoint = event.pointer.point.copy();
             latestPoint = event.pointer.point.copy();
@@ -283,8 +283,8 @@ export default class WireNode extends CircuitElementNode {
             latestPoint = event.pointer.point.copy();
 
             // Drag by translating both of the vertices
-            circuitLayerNode!.dragVertex( event.pointer.point, wire.startVertexProperty.get(), false );
-            circuitLayerNode!.dragVertex( event.pointer.point, wire.endVertexProperty.get(), false );
+            circuitNode!.dragVertex( event.pointer.point, wire.startVertexProperty.get(), false );
+            circuitNode!.dragVertex( event.pointer.point, wire.endVertexProperty.get(), false );
             dragged = true;
           }
         },
@@ -292,12 +292,12 @@ export default class WireNode extends CircuitElementNode {
           this.endDrag( this, [
             wire.startVertexProperty.get(),
             wire.endVertexProperty.get()
-          ], screenView, circuitLayerNode!, initialPoint!, latestPoint!, dragged );
+          ], screenView, circuitNode!, initialPoint!, latestPoint!, dragged );
         }
       } );
       this.addInputListener( this.dragListener );
 
-      circuitLayerNode!.circuit.selectionProperty.link( markAsDirty );
+      circuitNode!.circuit.selectionProperty.link( markAsDirty );
     }
     else {
       this.dragListener = null;
@@ -325,7 +325,7 @@ export default class WireNode extends CircuitElementNode {
       wire.startVertexProperty.unlink( doUpdateTransform );
       wire.endVertexProperty.unlink( doUpdateTransform );
 
-      circuitLayerNode && circuitLayerNode.circuit.selectionProperty.unlink( markAsDirty );
+      circuitNode && circuitNode.circuit.selectionProperty.unlink( markAsDirty );
       wire.interactiveProperty.unlink( updatePickable );
 
       wire.startPositionProperty.unlink( markAsDirty );
@@ -333,7 +333,7 @@ export default class WireNode extends CircuitElementNode {
 
       wire.connectedEmitter.removeListener( moveToBack );
 
-      circuitLayerNode && circuitLayerNode.highlightLayer.removeChild( highlightNodeParent );
+      circuitNode && circuitNode.highlightLayer.removeChild( highlightNodeParent );
 
       viewTypeProperty.unlink( markAsDirty );
 
@@ -346,7 +346,7 @@ export default class WireNode extends CircuitElementNode {
     };
 
     // For icons, update the end caps
-    !circuitLayerNode && this.updateRender();
+    !circuitNode && this.updateRender();
   }
 
   /**
@@ -396,8 +396,8 @@ export default class WireNode extends CircuitElementNode {
     MATRIX.multiplyMatrix( Matrix3.scaling( magnitude / WIRE_RASTER_LENGTH, 1 ) );
     this.lineNodeParent.setMatrix( MATRIX );
 
-    if ( this.circuitLayerNode ) {
-      const selectedCircuitElement = this.circuitLayerNode.circuit.selectionProperty.get();
+    if ( this.circuitNode ) {
+      const selectedCircuitElement = this.circuitNode.circuit.selectionProperty.get();
       const isCurrentlyHighlighted = selectedCircuitElement === this.wire;
       this.highlightNode.visible = isCurrentlyHighlighted;
       if ( isCurrentlyHighlighted ) {

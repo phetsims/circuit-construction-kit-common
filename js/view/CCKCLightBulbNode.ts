@@ -25,7 +25,7 @@ import FixedCircuitElementNode, { FixedCircuitElementNodeOptions } from './Fixed
 import LightBulbSocketNode from './LightBulbSocketNode.js';
 import schematicTypeProperty from './schematicTypeProperty.js';
 import CCKCScreenView from './CCKCScreenView.js';
-import CircuitLayerNode from './CircuitLayerNode.js';
+import CircuitNode from './CircuitNode.js';
 import LightBulb from '../model/LightBulb.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -62,14 +62,14 @@ export default class CCKCLightBulbNode extends FixedCircuitElementNode {
 
   /**
    * @param screenView - main screen view, null for icon
-   * @param circuitLayerNode, null for icon
+   * @param circuitNode, null for icon
    * @param lightBulb - the light bulb model
    * @param showResultsProperty - true if the sim can display values
    * @param viewTypeProperty
    * @param tandem
    * @param [providedOptions]
    */
-  public constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, lightBulb: LightBulb,
+  public constructor( screenView: CCKCScreenView | null, circuitNode: CircuitNode | null, lightBulb: LightBulb,
                       showResultsProperty: Property<boolean>, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: FixedCircuitElementNodeOptions ) {
 
     const filledOptions = combineOptions<FixedCircuitElementNodeOptions>( {
@@ -205,7 +205,7 @@ export default class CCKCLightBulbNode extends FixedCircuitElementNode {
 
     super(
       screenView,
-      circuitLayerNode,
+      circuitNode,
       lightBulb,
       viewTypeProperty,
       lightBulbNode,
@@ -222,12 +222,12 @@ export default class CCKCLightBulbNode extends FixedCircuitElementNode {
     } );
 
     let viewListener: ( ( view: CircuitElementViewType ) => void ) | null = null;
-    if ( circuitLayerNode ) {
+    if ( circuitNode ) {
 
       // Render the socket node in the front
       this.socketNode = new LightBulbSocketNode(
         screenView,
-        circuitLayerNode,
+        circuitNode,
         lightBulb,
         viewTypeProperty,
         Tandem.OPT_OUT,
@@ -237,11 +237,11 @@ export default class CCKCLightBulbNode extends FixedCircuitElementNode {
         this.rayNodeContainer.visible = view === CircuitElementViewType.LIFELIKE;
       };
       viewTypeProperty.link( viewListener );
-      circuitLayerNode && !lightBulb.phetioIsArchetype && circuitLayerNode.lightBulbSocketLayer.addChild( this.socketNode );
+      circuitNode && !lightBulb.phetioIsArchetype && circuitNode.lightBulbSocketLayer.addChild( this.socketNode );
 
       // Light rays are supposed to be behind everything else,
       // see https://github.com/phetsims/circuit-construction-kit-common/issues/161
-      circuitLayerNode && circuitLayerNode.addChildToBackground( this.rayNodeContainer );
+      circuitNode && circuitNode.addChildToBackground( this.rayNodeContainer );
     }
     else {
       this.socketNode = null;
@@ -250,11 +250,11 @@ export default class CCKCLightBulbNode extends FixedCircuitElementNode {
     this.disposeCircuitConstructionKitLightBulbNode = () => {
       updateBrightness.dispose();
       if ( this.socketNode ) {
-        this.socketNode && circuitLayerNode && circuitLayerNode.lightBulbSocketLayer.removeChild( this.socketNode );
+        this.socketNode && circuitNode && circuitNode.lightBulbSocketLayer.removeChild( this.socketNode );
 
         // Light rays are supposed to be behind everything else,
         // see https://github.com/phetsims/circuit-construction-kit-common/issues/161
-        circuitLayerNode && circuitLayerNode.removeChildFromBackground( this.rayNodeContainer );
+        circuitNode && circuitNode.removeChildFromBackground( this.rayNodeContainer );
         viewTypeProperty.unlink( viewListener! );
         this.socketNode.dispose();
         schematicTypeProperty.unlink( updateSchematicType );

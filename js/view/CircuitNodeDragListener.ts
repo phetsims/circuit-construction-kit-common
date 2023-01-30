@@ -8,21 +8,21 @@
 import { DragListener, DragListenerOptions, Node, PressListenerEvent } from '../../../scenery/js/imports.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Vertex from '../model/Vertex.js';
-import CircuitLayerNode from './CircuitLayerNode.js';
+import CircuitNode from './CircuitNode.js';
 
-export default class CircuitLayerNodeDragListener extends DragListener {
-  private readonly circuitLayerNode: CircuitLayerNode;
+export default class CircuitNodeDragListener extends DragListener {
+  private readonly circuitNode: CircuitNode;
   private readonly vertexGetters: ( () => Vertex )[];
 
   /**
-   * @param circuitLayerNode
+   * @param circuitNode
    * @param vertexGetters
    * @param [providedOptions]
    */
-  public constructor( circuitLayerNode: CircuitLayerNode, vertexGetters: ( () => Vertex )[], providedOptions?: DragListenerOptions<DragListener> ) {
+  public constructor( circuitNode: CircuitNode, vertexGetters: ( () => Vertex )[], providedOptions?: DragListenerOptions<DragListener> ) {
     super( providedOptions );
 
-    this.circuitLayerNode = circuitLayerNode;
+    this.circuitNode = circuitNode;
     this.vertexGetters = vertexGetters;
   }
 
@@ -38,13 +38,13 @@ export default class CircuitLayerNodeDragListener extends DragListener {
 
     const vertices = this.vertexGetters.map( vertexGetter => vertexGetter() );
 
-    const allVerticesDraggable = _.every( vertices, vertex => this.circuitLayerNode.canDragVertex( vertex ) );
+    const allVerticesDraggable = _.every( vertices, vertex => this.circuitNode.canDragVertex( vertex ) );
     if ( allVerticesDraggable ) {
 
       const success = super.press( event, targetNode, callback );
 
       if ( success ) {
-        vertices.forEach( vertex => this.circuitLayerNode.setVerticesDragging( vertex ) );
+        vertices.forEach( vertex => this.circuitNode.setVerticesDragging( vertex ) );
         return true;
       }
     }
@@ -52,4 +52,4 @@ export default class CircuitLayerNodeDragListener extends DragListener {
   }
 }
 
-circuitConstructionKitCommon.register( 'CircuitLayerNodeDragListener', CircuitLayerNodeDragListener );
+circuitConstructionKitCommon.register( 'CircuitNodeDragListener', CircuitNodeDragListener );

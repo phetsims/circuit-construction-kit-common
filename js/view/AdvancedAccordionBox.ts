@@ -1,4 +1,4 @@
-// Copyright 2020-2022, University of Colorado Boulder
+// Copyright 2020-2023, University of Colorado Boulder
 
 /**
  * Advanced control panel that appears in "Lab" screens which allows the user to adjust the resistivity of wires
@@ -7,7 +7,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import { AlignGroup, Text, VBox, VStrut } from '../../../scenery/js/imports.js';
+import { AlignGroup, Node, Text, VBox } from '../../../scenery/js/imports.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -37,7 +37,7 @@ export default class AdvancedAccordionBox extends CCKCAccordionBox {
    */
   public constructor( circuit: Circuit, alignGroup: AlignGroup, batteryResistanceControlString: TReadOnlyProperty<string>, tandem: Tandem, providedOptions?: AdvancedAccordionBoxOptions ) {
 
-    const options = optionize<AdvancedAccordionBoxOptions, SelfOptions, CCKCAccordionBox>()( {
+    const options = optionize<AdvancedAccordionBoxOptions, SelfOptions, CCKCAccordionBoxOptions>()( {
       showRealBulbsCheckbox: true
     }, providedOptions );
 
@@ -45,16 +45,15 @@ export default class AdvancedAccordionBox extends CCKCAccordionBox {
       fontSize: CCKCConstants.FONT_SIZE,
       maxWidth: 120
     }; // Factor out titles
-    const children = [
+
+    const children: Node[] = [
       new WireResistivityControl( circuit.wireResistivityProperty, alignGroup, TEXT_OPTIONS, tandem.createTandem( 'wireResistivityControl' ) ),
-      new VStrut( 10 ),
       new SourceResistanceControl( circuit.sourceResistanceProperty, alignGroup, batteryResistanceControlString, TEXT_OPTIONS, tandem.createTandem( 'sourceResistanceControl' ) )
     ];
 
     if ( options.showRealBulbsCheckbox ) {
       const addRealBulbsCheckboxTandem = tandem.createTandem( 'addRealBulbsCheckbox' );
       children.push(
-        new VStrut( 20 ),
         new CCKCCheckbox( circuit.addRealBulbsProperty, new Text( CircuitConstructionKitCommonStrings.addRealBulbsStringProperty, combineOptions<CheckboxOptions>( {
           tandem: addRealBulbsCheckboxTandem.createTandem( 'labelText' )
         }, TEXT_OPTIONS ) ), {
@@ -64,6 +63,7 @@ export default class AdvancedAccordionBox extends CCKCAccordionBox {
     }
     super( alignGroup.createBox( new VBox( {
       align: 'left',
+      spacing: 15,
       children: children
     } ) ), CircuitConstructionKitCommonStrings.advancedStringProperty, tandem, {
 

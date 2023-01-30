@@ -24,7 +24,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import ProbeTextNode from './ProbeTextNode.js';
 import Voltmeter from '../model/Voltmeter.js';
 import CircuitConstructionKitModel from '../model/CircuitConstructionKitModel.js';
-import CircuitLayerNode from './CircuitLayerNode.js';
+import CircuitNode from './CircuitNode.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
@@ -59,7 +59,7 @@ type SelfOptions = {
 type VoltmeterNodeOptions = SelfOptions & NodeOptions;
 
 export default class VoltmeterNode extends Node {
-  private readonly circuitLayerNode: CircuitLayerNode | null;
+  private readonly circuitNode: CircuitNode | null;
   public readonly voltmeter: Voltmeter;
   private readonly redProbeNode: Rectangle;
   private readonly blackProbeNode: Rectangle;
@@ -71,11 +71,11 @@ export default class VoltmeterNode extends Node {
   /**
    * @param voltmeter - the model Voltmeter to be shown by this node
    * @param model
-   * @param circuitLayerNode
+   * @param circuitNode
    * @param tandem
    * @param [providedOptions]
    */
-  public constructor( voltmeter: Voltmeter, model: CircuitConstructionKitModel | null, circuitLayerNode: CircuitLayerNode | null,
+  public constructor( voltmeter: Voltmeter, model: CircuitConstructionKitModel | null, circuitNode: CircuitNode | null,
                       tandem: Tandem, providedOptions?: VoltmeterNodeOptions ) {
 
     const options = optionize<VoltmeterNodeOptions, SelfOptions, NodeOptions>()( {
@@ -236,7 +236,7 @@ export default class VoltmeterNode extends Node {
       ]
     } );
 
-    this.circuitLayerNode = circuitLayerNode;
+    this.circuitNode = circuitNode;
 
     this.voltmeter = voltmeter;
     this.redProbeNode = redProbeNode;
@@ -312,13 +312,13 @@ export default class VoltmeterNode extends Node {
         const probeTipTail = probeTip.plus( probeTipVector );
         for ( let i = 0; i < VOLTMETER_NUMBER_SAMPLE_POINTS; i++ ) {
           const samplePoint = probeTip.blend( probeTipTail, i / VOLTMETER_NUMBER_SAMPLE_POINTS );
-          const voltageConnection = circuitLayerNode!.getVoltageConnection( samplePoint );
+          const voltageConnection = circuitNode!.getVoltageConnection( samplePoint );
 
           // For debugging, depict the points where the sampling happens
           if ( CCKCQueryParameters.showVoltmeterSamplePoints ) {
 
             // Note, these get erased when changing between lifelike/schematic
-            this.circuitLayerNode!.addChild( new Rectangle( -1, -1, 2, 2, {
+            this.circuitNode!.addChild( new Rectangle( -1, -1, 2, 2, {
               fill: Color.BLACK,
               translation: samplePoint
             } ) );
@@ -337,7 +337,7 @@ export default class VoltmeterNode extends Node {
         if ( voltmeter.visibleProperty.get() ) {
           const blackConnection = findConnection( blackProbeNode, voltmeter.blackProbePositionProperty.get(), +1 );
           const redConnection = findConnection( redProbeNode, voltmeter.redProbePositionProperty.get(), -1 );
-          const voltage = this.circuitLayerNode!.circuit.getVoltageBetweenConnections( redConnection, blackConnection, false );
+          const voltage = this.circuitNode!.circuit.getVoltageBetweenConnections( redConnection, blackConnection, false );
           voltmeter.voltageProperty.value = voltage;
         }
       };

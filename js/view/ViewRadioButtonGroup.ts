@@ -1,4 +1,4 @@
-// Copyright 2017-2022, University of Colorado Boulder
+// Copyright 2017-2023, University of Colorado Boulder
 
 /**
  * Radio buttons that allow the user to choose between Schematic and Lifelike views. Exists for the life of the sim and
@@ -50,7 +50,8 @@ export default class ViewRadioButtonGroup extends RectangularRadioButtonGroup<Ci
         buttonAppearanceStrategyOptions: {
           deselectedButtonOpacity: 0.4,
           overButtonOpacity: 0.7
-        }
+        },
+        phetioVisiblePropertyInstrumented: false
       },
       tandem: tandem
     }, providedOptions );
@@ -72,11 +73,11 @@ export default class ViewRadioButtonGroup extends RectangularRadioButtonGroup<Ci
     } );
     super( viewTypeProperty, [ {
       value: CircuitElementViewType.LIFELIKE,
-      createNode: tandem => createBatteryNode( CircuitElementViewType.LIFELIKE, tandem.createTandem( 'lifelikeIcon' ) ),
+      createNode: tandem => createBatteryNode( CircuitElementViewType.LIFELIKE, Tandem.OPT_OUT ),
       tandemName: 'lifelikeRadioButton'
     }, {
       value: CircuitElementViewType.SCHEMATIC,
-      createNode: tandem => createBatteryNode( CircuitElementViewType.SCHEMATIC, tandem.createTandem( 'schematicIcon' ) ),
+      createNode: tandem => createBatteryNode( CircuitElementViewType.SCHEMATIC, Tandem.OPT_OUT ),
       tandemName: 'schematicRadioButton'
     } ], options );
   }

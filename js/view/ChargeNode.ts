@@ -16,7 +16,7 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Capacitor from '../model/Capacitor.js';
 import Charge from '../model/Charge.js';
-import CircuitLayerNode from './CircuitLayerNode.js';
+import CircuitNode from './CircuitNode.js';
 import ConventionalCurrentArrowNode from './ConventionalCurrentArrowNode.js';
 import CapacitorCircuitElementNode from './CapacitorCircuitElementNode.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
@@ -39,7 +39,7 @@ const ARROW_NODE = new ConventionalCurrentArrowNode( Tandem.OPT_OUT ).rasterized
 const CONVENTIONAL_CHARGE_THRESHOLD = 1E-6;
 
 export default class ChargeNode extends Node {
-  private readonly circuitLayerNode: CircuitLayerNode;
+  private readonly circuitNode: CircuitNode;
 
   // the model depicted by this node
   private readonly charge: Charge;
@@ -52,9 +52,9 @@ export default class ChargeNode extends Node {
 
   /**
    * @param charge - the model element
-   * @param circuitLayerNode
+   * @param circuitNode
    */
-  public constructor( charge: Charge, circuitLayerNode: CircuitLayerNode ) {
+  public constructor( charge: Charge, circuitNode: CircuitNode ) {
 
     const child = charge.charge > 0 ? ARROW_NODE : ELECTRON_CHARGE_NODE;
 
@@ -65,7 +65,7 @@ export default class ChargeNode extends Node {
     } );
 
     // to look up the CapacitorNode for clipping
-    this.circuitLayerNode = circuitLayerNode;
+    this.circuitNode = circuitNode;
 
     this.charge = charge;
 
@@ -116,13 +116,13 @@ export default class ChargeNode extends Node {
 
     // In order to show that no actual charges transfer between the plates of a capacitor, we clip their rendering.
     if ( this.charge.circuitElement instanceof Capacitor ) {
-      const capacitorCircuitElementNode = this.circuitLayerNode.getCircuitElementNode( this.charge.circuitElement );
+      const capacitorCircuitElementNode = this.circuitNode.getCircuitElementNode( this.charge.circuitElement );
       if ( capacitorCircuitElementNode instanceof CapacitorCircuitElementNode ) {
 
         // For unknown reasons, the x and y coordinates are swapped here.  The values were determined empirically.
         let globalClipShape = null;
 
-        const isLifelike = this.circuitLayerNode.model.viewTypeProperty.value === CircuitElementViewType.LIFELIKE;
+        const isLifelike = this.circuitNode.model.viewTypeProperty.value === CircuitElementViewType.LIFELIKE;
         if ( isLifelike ) {
 
           // For the lifelike view, we clip based on the pseudo-3d effect, so the charges come from "behind" the edge

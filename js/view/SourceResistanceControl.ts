@@ -1,4 +1,4 @@
-// Copyright 2020-2022, University of Colorado Boulder
+// Copyright 2020-2023, University of Colorado Boulder
 
 /**
  * Controls for showing and changing the battery internal resistance.  Exists for the life of the sim and hence does not
@@ -18,6 +18,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Property from '../../../axon/js/Property.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import { combineOptions } from '../../../phet-core/js/optionize.js';
 
 const resistanceOhmsSymbolStringProperty = CircuitConstructionKitCommonStrings.resistanceOhmsSymbolStringProperty;
 
@@ -30,14 +31,15 @@ export default class SourceResistanceControl extends VBox {
    * @param titleConfig
    * @param tandem
    */
-  public constructor( sourceResistanceProperty: Property<number>, alignGroup: AlignGroup, batteryResistanceControlString: TReadOnlyProperty<string>, titleConfig: TextOptions, tandem: Tandem ) {
+  public constructor( sourceResistanceProperty: Property<number>, alignGroup: AlignGroup,
+                      batteryResistanceControlString: TReadOnlyProperty<string>, titleConfig: TextOptions, tandem: Tandem ) {
 
     /**
      * Creates label to be used for slider
      */
     const createLabel = ( string: TReadOnlyProperty<string>, tandem: Tandem ) => new Text( string, {
       fontSize: 12,
-      tandem: tandem,
+      tandem: tandem.createTandem( 'titleText' ),
       maxWidth: 45
     } );
 
@@ -51,6 +53,7 @@ export default class SourceResistanceControl extends VBox {
 
       // Snap to the nearest whole number.
       constrainValue: ( value: number ) => range.constrainValue( Utils.roundSymmetric( value ) ),
+      phetioVisiblePropertyInstrumented: false,
       tandem: tandem.createTandem( 'slider' )
     } );
     slider.addMajorTick( range.min, createLabel( CircuitConstructionKitCommonStrings.tinyStringProperty, tandem.createTandem( 'tinyLabelText' ) ) );
@@ -65,7 +68,7 @@ export default class SourceResistanceControl extends VBox {
       }
     }
 
-    const titleNode = new Text( batteryResistanceControlString, titleConfig );
+    const titleNode = new Text( batteryResistanceControlString, combineOptions<TextOptions>( { tandem: tandem.createTandem( 'titleText' ) }, titleConfig ) );
     super( {
       children: [ titleNode, slider ],
       tandem: tandem,

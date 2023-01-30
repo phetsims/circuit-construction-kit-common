@@ -1,4 +1,4 @@
-// Copyright 2019-2022, University of Colorado Boulder
+// Copyright 2019-2023, University of Colorado Boulder
 
 /**
  * This node shows a fuse.
@@ -19,7 +19,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import Fuse from '../model/Fuse.js';
 import CCKCScreenView from './CCKCScreenView.js';
-import CircuitLayerNode from './CircuitLayerNode.js';
+import CircuitNode from './CircuitNode.js';
 import FixedCircuitElementNode, { FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
 import FuseTripAnimation from './FuseTripAnimation.js';
 import schematicTypeProperty from './schematicTypeProperty.js';
@@ -50,13 +50,13 @@ export default class FuseNode extends FixedCircuitElementNode {
 
   /**
    * @param screenView - main screen view, null for isIcon
-   * @param circuitLayerNode, null for isIcon
+   * @param circuitNode, null for isIcon
    * @param fuse
    * @param viewTypeProperty
    * @param tandem
    * @param [providedOptions]
    */
-  public constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, fuse: Fuse,
+  public constructor( screenView: CCKCScreenView | null, circuitNode: CircuitNode | null, fuse: Fuse,
                       viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: FuseNodeOptions ) {
 
     const options = optionize<FuseNodeOptions, SelfOptions, FixedCircuitElementNodeOptions>()( {
@@ -174,14 +174,14 @@ export default class FuseNode extends FixedCircuitElementNode {
     schematicNode.mouseArea = schematicNode.bounds.copy();
     schematicNode.touchArea = schematicNode.bounds.copy();
 
-    super( screenView, circuitLayerNode, fuse, viewTypeProperty, lifelikeFuseNode, schematicNode, tandem, options );
+    super( screenView, circuitNode, fuse, viewTypeProperty, lifelikeFuseNode, schematicNode, tandem, options );
 
     this.fuse = fuse;
 
     // Update the look when the fuse is tripped
     const updateTripped = ( isTripped: boolean ) => {
       if ( isTripped && !phet.joist.sim.isSettingPhetioStateProperty.value ) {
-        circuitLayerNode!.addChild( new FuseTripAnimation( { center: this.center } ) );
+        circuitNode!.addChild( new FuseTripAnimation( { center: this.center } ) );
       }
       glassNode.fill = isTripped ? '#4e4e4e' : DEFAULT_GLASS_FILL;
       filamentPath.shape = isTripped ? brokenFilamentShape : filamentShape;

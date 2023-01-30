@@ -1,4 +1,4 @@
-// Copyright 2015-2022, University of Colorado Boulder
+// Copyright 2015-2023, University of Colorado Boulder
 
 /**
  * This node shows a resistor.
@@ -25,7 +25,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import Resistor from '../model/Resistor.js';
 import CCKCScreenView from './CCKCScreenView.js';
-import CircuitLayerNode from './CircuitLayerNode.js';
+import CircuitNode from './CircuitNode.js';
 import FixedCircuitElementNode, { FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
 import ResistorColors from './ResistorColors.js';
 import schematicTypeProperty from './schematicTypeProperty.js';
@@ -86,13 +86,13 @@ export default class ResistorNode extends FixedCircuitElementNode {
 
   /**
    * @param screenView - main screen view, null for isIcon
-   * @param circuitLayerNode, null for isIcon
+   * @param circuitNode, null for isIcon
    * @param resistor
    * @param viewTypeProperty
    * @param tandem
    * @param [providedOptions]
    */
-  public constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, resistor: Resistor,
+  public constructor( screenView: CCKCScreenView | null, circuitNode: CircuitNode | null, resistor: Resistor,
                       viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: FixedCircuitElementNodeOptions ) {
 
     providedOptions = combineOptions<FixedCircuitElementNodeOptions>( { isIcon: false, useHitTestForSensors: true }, providedOptions );
@@ -232,7 +232,7 @@ export default class ResistorNode extends FixedCircuitElementNode {
     // Super call
     super(
       screenView,
-      circuitLayerNode,
+      circuitNode,
       resistor,
       viewTypeProperty,
       lifelikeResistorImageNode,

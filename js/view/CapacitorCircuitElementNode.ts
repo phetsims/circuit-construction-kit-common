@@ -24,7 +24,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Capacitor from '../model/Capacitor.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import CCKCScreenView from './CCKCScreenView.js';
-import CircuitLayerNode from './CircuitLayerNode.js';
+import CircuitNode from './CircuitNode.js';
 import FixedCircuitElementNode, { FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
@@ -82,13 +82,13 @@ export default class CapacitorCircuitElementNode extends FixedCircuitElementNode
 
   /**
    * @param screenView - main screen view, null for isIcon
-   * @param circuitLayerNode, null for icon
+   * @param circuitNode, null for icon
    * @param capacitor
    * @param viewTypeProperty
    * @param tandem
    * @param [providedOptions]
    */
-  public constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, capacitor: Capacitor, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: FixedCircuitElementNodeOptions ) {
+  public constructor( screenView: CCKCScreenView | null, circuitNode: CircuitNode | null, capacitor: Capacitor, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, providedOptions?: FixedCircuitElementNodeOptions ) {
 
     providedOptions = combineOptions<FixedCircuitElementNodeOptions>( {
       isIcon: false
@@ -190,7 +190,7 @@ export default class CapacitorCircuitElementNode extends FixedCircuitElementNode
     } );
     super(
       screenView,
-      circuitLayerNode,
+      circuitNode,
       capacitor,
       viewTypeProperty,
       lifelikeNodeContainer,

@@ -32,7 +32,7 @@ import ChargeSpeedThrottlingReadoutNode from './ChargeSpeedThrottlingReadoutNode
 import CircuitElementEditContainerNode from './CircuitElementEditContainerNode.js';
 import CircuitElementNode from './CircuitElementNode.js';
 import CircuitElementToolbox, { CircuitElementToolboxOptions } from './CircuitElementToolbox.js';
-import CircuitLayerNode from './CircuitLayerNode.js';
+import CircuitNode from './CircuitNode.js';
 import CurrentChartNode from './CurrentChartNode.js';
 import DisplayOptionsPanel from './DisplayOptionsPanel.js';
 import SensorToolbox from './SensorToolbox.js';
@@ -86,8 +86,8 @@ export type CCKCScreenViewOptions = SelfOptions & ScreenViewOptions;
 
 export default class CCKCScreenView extends ScreenView {
   public readonly model: CircuitConstructionKitModel;
-  public readonly circuitLayerNodeBackLayer: Node;
-  protected readonly circuitLayerNode: CircuitLayerNode;
+  public readonly circuitNodeBackLayer: Node;
+  protected readonly circuitNode: CircuitNode;
   private readonly chartNodes: ( VoltageChartNode | CurrentChartNode )[];
   private readonly voltageChartNode1: VoltageChartNode | null;
   private readonly voltageChartNode2: VoltageChartNode | null;
@@ -135,19 +135,19 @@ export default class CCKCScreenView extends ScreenView {
     // TODO (black-box-study): change background color to gray when isValueDepictionEnabledProperty goes false
 
     // contains parts of the circuit that should be shown behind the controls
-    this.circuitLayerNodeBackLayer = new Node();
+    this.circuitNodeBackLayer = new Node();
 
-    this.circuitLayerNode = new CircuitLayerNode(
-      model.circuit, this, tandem.createTandem( 'circuitLayerNode' )
+    this.circuitNode = new CircuitNode(
+      model.circuit, this, tandem.createTandem( 'circuitNode' )
     );
 
     const meterNodesTandem = tandem.createTandem( 'meterNodes' );
 
     const voltmeterNodes = model.voltmeters.map( voltmeter => {
       const voltmeterTandem = meterNodesTandem.createTandem( `voltmeterNode${voltmeter.phetioIndex}` );
-      const voltmeterNode = new VoltmeterNode( voltmeter, model, this.circuitLayerNode, voltmeterTandem, {
+      const voltmeterNode = new VoltmeterNode( voltmeter, model, this.circuitNode, voltmeterTandem, {
         showResultsProperty: model.isValueDepictionEnabledProperty,
-        visibleBoundsProperty: this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty,
+        visibleBoundsProperty: this.circuitNode.visibleBoundsInCircuitCoordinateFrameProperty,
         showPhetioIndex: options.showMeterPhetioIndex
       } );
       voltmeter.droppedEmitter.addListener( bodyNodeGlobalBounds => {
@@ -159,10 +159,10 @@ export default class CCKCScreenView extends ScreenView {
     } );
 
     const ammeterNodes = model.ammeters.map( ammeter => {
-      const ammeterNode = new AmmeterNode( ammeter, this.circuitLayerNode, {
+      const ammeterNode = new AmmeterNode( ammeter, this.circuitNode, {
         tandem: meterNodesTandem.createTandem( `ammeterNode${ammeter.phetioIndex}` ),
         showResultsProperty: model.isValueDepictionEnabledProperty,
-        visibleBoundsProperty: this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty,
+        visibleBoundsProperty: this.circuitNode.visibleBoundsInCircuitCoordinateFrameProperty,
         blackBoxStudy: options.blackBoxStudy,
         showPhetioIndex: options.showMeterPhetioIndex
       } );
@@ -180,8 +180,8 @@ export default class CCKCScreenView extends ScreenView {
     if ( options.showCharts ) {
 
       const createVoltageChartNode = ( tandemName: string ) => {
-        const voltageChartNode = new VoltageChartNode( this.circuitLayerNode, model.circuit.timeProperty,
-          this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty, {
+        const voltageChartNode = new VoltageChartNode( this.circuitNode, model.circuit.timeProperty,
+          this.circuitNode.visibleBoundsInCircuitCoordinateFrameProperty, {
             tandem: meterNodesTandem.createTandem( tandemName )
           }
         );
@@ -189,8 +189,8 @@ export default class CCKCScreenView extends ScreenView {
         return voltageChartNode;
       };
       const createCurrentChartNode = ( tandemName: string ) => {
-        const currentChartNode = new CurrentChartNode( this.circuitLayerNode, model.circuit.timeProperty,
-          this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty, {
+        const currentChartNode = new CurrentChartNode( this.circuitNode, model.circuit.timeProperty,
+          this.circuitNode.visibleBoundsInCircuitCoordinateFrameProperty, {
             tandem: meterNodesTandem.createTandem( tandemName )
           }
         );
@@ -225,7 +225,7 @@ export default class CCKCScreenView extends ScreenView {
     // so that subclasses can add a layout circuit element near it
     this.sensorToolbox = new SensorToolbox(
       CONTROL_PANEL_ALIGN_GROUP,
-      this.circuitLayerNode,
+      this.circuitNode,
       voltmeterNodes,
       ammeterNodes,
       [ this.voltageChartNode1!, this.voltageChartNode2! ],
@@ -267,7 +267,7 @@ export default class CCKCScreenView extends ScreenView {
       }
     ) : null;
 
-    this.addChild( this.circuitLayerNodeBackLayer );
+    this.addChild( this.circuitNodeBackLayer );
 
     // Reset All button
     let resetAllButton: ResetAllButton | null = null;
@@ -282,8 +282,15 @@ export default class CCKCScreenView extends ScreenView {
       this.addChild( resetAllButton );
     }
 
-    this.addChild( this.circuitElementToolbox );
-    this.addChild( this.viewRadioButtonGroup );
+    const toolboxContainer = new VBox( {
+      align: 'right',
+      spacing: 5,
+      children: [
+        this.circuitElementToolbox,
+        this.viewRadioButtonGroup
+      ]
+    } );
+    this.addChild( toolboxContainer );
 
     const controlPanelVBox = new VBox( {
       spacing: VERTICAL_MARGIN,
@@ -301,7 +308,7 @@ export default class CCKCScreenView extends ScreenView {
     this.visibleBoundsProperty.linkAttribute( box, 'alignBounds' );
 
     this.addChild( box );
-    this.addChild( this.circuitLayerNode );
+    this.addChild( this.circuitNode );
 
     const chargeSpeedThrottlingReadoutNode = new ChargeSpeedThrottlingReadoutNode(
       model.circuit.chargeAnimator.timeScaleProperty,
@@ -326,13 +333,17 @@ export default class CCKCScreenView extends ScreenView {
     this.addChild( circuitElementEditContainerNode );
 
     // The voltmeter and ammeter are rendered with the circuit node so they will scale up and down with the circuit
-    voltmeterNodes.forEach( voltmeterNode => this.circuitLayerNode.sensorLayer.addChild( voltmeterNode ) );
-    ammeterNodes.forEach( ammeterNode => this.circuitLayerNode.sensorLayer.addChild( ammeterNode ) );
-    this.chartNodes.forEach( chartNode => this.circuitLayerNode.sensorLayer.addChild( chartNode ) );
+    voltmeterNodes.forEach( voltmeterNode => this.circuitNode.sensorLayer.addChild( voltmeterNode ) );
+    ammeterNodes.forEach( ammeterNode => this.circuitNode.sensorLayer.addChild( ammeterNode ) );
+    this.chartNodes.forEach( chartNode => this.circuitNode.sensorLayer.addChild( chartNode ) );
 
     // Create the zoom button group
     const zoomButtonGroup = new ZoomButtonGroup( model.zoomLevelProperty, {
-      tandem: tandem.createTandem( 'zoomButtonGroup' )
+      tandem: tandem.createTandem( 'zoomButtonGroup' ),
+      buttonOptions: {
+        phetioReadOnly: true,
+        phetioVisiblePropertyInstrumented: false
+      }
     } );
     zoomButtonGroup.mutate( {
       scale: this.circuitElementToolbox.carousel.backgroundWidth /
@@ -372,45 +383,48 @@ export default class CCKCScreenView extends ScreenView {
     // Add it in front of everything (should never be obscured by a CircuitElement)
     this.addChild( zoomButtonGroup );
 
-    this.visibleBoundsProperty.link( ( visibleBounds: Bounds2 ) => {
+    Multilink.multilink(
+      [ this.visibleBoundsProperty, toolboxContainer.localBoundsProperty ],
+      ( visibleBounds: Bounds2 ) => {
+        toolboxContainer.left = visibleBounds.left + HORIZONTAL_MARGIN;
+        toolboxContainer.top = visibleBounds.top + VERTICAL_MARGIN;
 
-      this.circuitElementToolbox.left = visibleBounds.left + VERTICAL_MARGIN +
-                                        ( this.circuitElementToolbox.carousel ? 0 : 12 );
-      this.circuitElementToolbox.top = visibleBounds.top + VERTICAL_MARGIN;
-      this.viewRadioButtonGroup.top = this.circuitElementToolbox.bottom + 14;
-      this.viewRadioButtonGroup.centerX = this.circuitElementToolbox.right - this.circuitElementToolbox.carousel.width / 2;
+        // Float the resetAllButton to the bottom right
+        options.showResetAllButton && resetAllButton && resetAllButton.mutate( {
+          right: visibleBounds.right - HORIZONTAL_MARGIN,
+          bottom: visibleBounds.bottom - VERTICAL_MARGIN
+        } );
 
-      // Float the resetAllButton to the bottom right
-      options.showResetAllButton && resetAllButton && resetAllButton.mutate( {
-        right: visibleBounds.right - HORIZONTAL_MARGIN,
-        bottom: visibleBounds.bottom - HORIZONTAL_MARGIN
+        timeControlNode && timeControlNode.mutate( {
+          left: controlPanelVBox.left,
+          bottom: visibleBounds.bottom - VERTICAL_MARGIN
+        } );
+
+        if ( Number.isFinite( toolboxContainer.right ) ) {
+          zoomButtonGroup.right = toolboxContainer.right;
+        }
+        else {
+          zoomButtonGroup.left = visibleBounds.left + HORIZONTAL_MARGIN;
+        }
+        zoomButtonGroup.bottom = visibleBounds.bottom - VERTICAL_MARGIN;
+
+        playAreaCenterXProperty.value = ( controlPanelVBox.left + this.circuitElementToolbox.right ) / 2;
+
+        chargeSpeedThrottlingReadoutNode.mutate( {
+          centerX: playAreaCenterXProperty.value,
+          bottom: visibleBounds.bottom - 100 // so it doesn't overlap the component controls
+        } );
       } );
-
-      timeControlNode && timeControlNode.mutate( {
-        left: controlPanelVBox.left,
-        bottom: visibleBounds.bottom - HORIZONTAL_MARGIN
-      } );
-
-      zoomButtonGroup.left = visibleBounds.left + HORIZONTAL_MARGIN;
-      zoomButtonGroup.bottom = visibleBounds.bottom - VERTICAL_MARGIN;
-
-      playAreaCenterXProperty.value = ( controlPanelVBox.left + this.circuitElementToolbox.right ) / 2;
-
-      chargeSpeedThrottlingReadoutNode.mutate( {
-        centerX: playAreaCenterXProperty.value,
-        bottom: visibleBounds.bottom - 100 // so it doesn't overlap the component controls
-      } );
-    } );
 
     // Center the circuit node so that zooms will remain centered.
-    this.circuitLayerNode.setTranslation( this.layoutBounds.centerX, this.layoutBounds.centerY );
-    this.circuitLayerNodeBackLayer.setTranslation( this.layoutBounds.centerX, this.layoutBounds.centerY );
+    this.circuitNode.setTranslation( this.layoutBounds.centerX, this.layoutBounds.centerY );
+    this.circuitNodeBackLayer.setTranslation( this.layoutBounds.centerX, this.layoutBounds.centerY );
 
     // Continuously zoom in and out as the current zoom interpolates, and update when the visible bounds change
     Multilink.multilink( [ model.animatedZoomScaleProperty, this.visibleBoundsProperty ], ( currentZoom, visibleBounds ) => {
-      this.circuitLayerNode.setScaleMagnitude( currentZoom );
-      this.circuitLayerNodeBackLayer.setScaleMagnitude( currentZoom );
-      this.circuitLayerNode.updateTransform( visibleBounds );
+      this.circuitNode.setScaleMagnitude( currentZoom );
+      this.circuitNodeBackLayer.setScaleMagnitude( currentZoom );
+      this.circuitNode.updateTransform( visibleBounds );
     } );
 
     // When a Vertex is dropped and the CircuitElement is over the CircuitElementToolbox, the CircuitElement will go back
@@ -420,7 +434,7 @@ export default class CCKCScreenView extends ScreenView {
       const neighbors = this.model.circuit.getNeighborCircuitElements( vertex );
       if ( neighbors.length === 1 ) {
         const circuitElement = neighbors[ 0 ];
-        const circuitElementNode = this.circuitLayerNode.getCircuitElementNode( circuitElement );
+        const circuitElementNode = this.circuitNode.getCircuitElementNode( circuitElement );
 
         if ( this.canNodeDropInToolbox( circuitElementNode ) ) {
           this.model.circuit.disposeCircuitElement( circuitElement );
@@ -489,7 +503,7 @@ export default class CCKCScreenView extends ScreenView {
   public override step( dt: number ): void {
 
     // noting from the main step
-    this.circuitLayerNode.step();
+    this.circuitNode.step();
 
     // if the model is stepping, the charts will sample new values.  Otherwise, take a reading at the current point,
     // for updating the pen location
@@ -522,13 +536,8 @@ export default class CCKCScreenView extends ScreenView {
 
     // Detect whether the midpoint between the vertices overlaps the toolbox
     const globalMidpoint = circuitElementNode.localToGlobalPoint( circuitElement.getMidpoint() );
+    const hitBox = Bounds2.point( globalMidpoint ).dilate( CCKCConstants.RETURN_ITEM_BOUNDS_TOLERANCE );
 
-    const hitBoxMinX = globalMidpoint.x - CCKCConstants.RETURN_ITEM_BOUNDS_TOLERANCE;
-    const hitBoxMinY = globalMidpoint.y - CCKCConstants.RETURN_ITEM_BOUNDS_TOLERANCE;
-    const hitBoxMaxX = globalMidpoint.x + CCKCConstants.RETURN_ITEM_BOUNDS_TOLERANCE;
-    const hitBoxMaxY = globalMidpoint.y + CCKCConstants.RETURN_ITEM_BOUNDS_TOLERANCE;
-
-    const hitBox = new Bounds2( hitBoxMinX, hitBoxMinY, hitBoxMaxX, hitBoxMaxY );
     const overToolbox = toolbox.globalBounds.intersectsBounds( hitBox );
 
     return isSingle && overToolbox && circuitElement.isDisposableProperty.value;

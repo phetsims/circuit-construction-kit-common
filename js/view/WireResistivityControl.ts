@@ -7,13 +7,14 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import { AlignGroup, Text, VBox } from '../../../scenery/js/imports.js';
+import { AlignGroup, Text, TextOptions, VBox } from '../../../scenery/js/imports.js';
 import HSlider from '../../../sun/js/HSlider.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Property from '../../../axon/js/Property.js';
 import Tandem from '../../../tandem/js/Tandem.js';
+import { combineOptions } from '../../../phet-core/js/optionize.js';
 
 const lotsStringProperty = CircuitConstructionKitCommonStrings.lotsStringProperty;
 const tinyStringProperty = CircuitConstructionKitCommonStrings.tinyStringProperty;
@@ -30,14 +31,16 @@ export default class WireResistivityControl extends VBox {
    * @param titleConfig
    * @param tandem
    */
-  public constructor( wireResistivityProperty: Property<number>, alignGroup: AlignGroup, titleConfig: object, tandem: Tandem ) {
+  public constructor( wireResistivityProperty: Property<number>, alignGroup: AlignGroup, titleConfig: TextOptions, tandem: Tandem ) {
 
-    const titleNode = new Text( wireResistivityStringProperty, titleConfig );
+    const titleNode = new Text( wireResistivityStringProperty,
+      combineOptions<TextOptions>( { tandem: tandem.createTandem( 'titleText' ) }, titleConfig ) );
 
     const slider = new HSlider( wireResistivityProperty, CCKCConstants.WIRE_RESISTIVITY_RANGE, {
       trackSize: CCKCConstants.SLIDER_TRACK_SIZE,
       thumbSize: CCKCConstants.THUMB_SIZE,
       majorTickLength: CCKCConstants.MAJOR_TICK_LENGTH,
+      phetioVisiblePropertyInstrumented: false,
       tandem: tandem.createTandem( 'slider' )
     } );
 

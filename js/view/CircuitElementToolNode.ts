@@ -41,7 +41,7 @@ export default class CircuitElementToolNode extends VBox {
    * @param showLabelsProperty
    * @param viewTypeProperty
    * @param circuit
-   * @param globalToCircuitLayerNodePoint Vector2=>Vector2 global point to coordinate frame of circuitLayerNode
+   * @param globalToCircuitNodePoint Vector2=>Vector2 global point to coordinate frame of circuitNode
    * @param iconNode
    * @param maxNumber
    * @param count - () => number, gets the number of that kind of object in the model, so the icon can be
@@ -52,7 +52,7 @@ export default class CircuitElementToolNode extends VBox {
    * @param [providedOptions]
    */
   public constructor( labelStringProperty: TReadOnlyProperty<string>, showLabelsProperty: Property<boolean>, viewTypeProperty: Property<CircuitElementViewType>,
-                      circuit: Circuit, globalToCircuitLayerNodePoint: ( v: Vector2 ) => Vector2, iconNode: Node, maxNumber: number,
+                      circuit: Circuit, globalToCircuitNodePoint: ( v: Vector2 ) => Vector2, iconNode: Node, maxNumber: number,
                       count: () => number, createElement: ( v: Vector2 ) => CircuitElement, providedOptions?: CircuitElementToolNodeOptions ) {
 
     let labelText: Node | null = null;
@@ -91,9 +91,9 @@ export default class CircuitElementToolNode extends VBox {
 
     this.addInputListener( DragListener.createForwardingListener( ( event: PressListenerEvent ) => {
 
-      // initial position of the pointer in the coordinate frame of the CircuitLayerNode
+      // initial position of the pointer in the coordinate frame of the CircuitNode
       const v: Vector2 = event.pointer.point;
-      const viewPosition = globalToCircuitLayerNodePoint( v );
+      const viewPosition = globalToCircuitNodePoint( v );
 
       // Adjust for touch.  The object should appear centered on the mouse but vertically above the finger so the finger
       // doesn't obscure the object

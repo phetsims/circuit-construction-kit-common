@@ -6,7 +6,7 @@
  *
  * Each CircuitElementNode may node parts that appear in different layers, such as the highlight and the light bulb
  * socket.  Having the light bulb socket in another layer makes it possible to show the charges going "through" the
- * socket (in z-ordering). The CircuitElementNode constructors populate different layers of the CircuitLayerNode in
+ * socket (in z-ordering). The CircuitElementNode constructors populate different layers of the CircuitNode in
  * their constructors and depopulate in their dispose functions.
  *
  * Exists for the life of the sim and hence does not require a dispose implementation.
@@ -74,11 +74,11 @@ import Multilink from '../../../axon/js/Multilink.js';
 // leave in all of the WebGL code in case we have performance problems on a platform that require WebGL to be restored?
 const RENDERER = 'svg';
 
-export default class CircuitLayerNode extends Node {
+export default class CircuitNode extends Node {
   private readonly viewTypeProperty: Property<CircuitElementViewType>;
   public readonly model: CircuitConstructionKitModel;
   private readonly visibleBoundsProperty: Property<Bounds2>;
-  private readonly circuitLayerNodeBackLayer: Node;
+  private readonly circuitNodeBackLayer: Node;
 
   // CircuitElementNodes add highlights directly to this layer when they are constructed
   public readonly highlightLayer: Node;
@@ -135,7 +135,7 @@ export default class CircuitLayerNode extends Node {
 
   // Map of Vertex.index => VertexNode
   private readonly vertexNodes: Record<number, VertexNode>;
-  public readonly cutButton: RoundPushButton;
+  public readonly vertexCutButton: RoundPushButton;
   private readonly circuitDebugLayer: CircuitDebugLayer | null;
 
   /**
@@ -152,7 +152,7 @@ export default class CircuitLayerNode extends Node {
     this.visibleBoundsProperty = screenView.visibleBoundsProperty;
 
     // the layer behind the control panels
-    this.circuitLayerNodeBackLayer = screenView.circuitLayerNodeBackLayer;
+    this.circuitNodeBackLayer = screenView.circuitNodeBackLayer;
 
     this.highlightLayer = new Node();
 
@@ -274,7 +274,7 @@ export default class CircuitLayerNode extends Node {
       this.buttonLayer
     ];
 
-    // choose layering for schematic vs lifelike.  HEADS UP, this means circuitLayerNode.addChild() will get overwritten
+    // choose layering for schematic vs lifelike.  HEADS UP, this means circuitNode.addChild() will get overwritten
     // so all nodes must be added as children in the array above.
     screenView.model.viewTypeProperty.link( viewType => {
       this.children = ( viewType === CircuitElementViewType.LIFELIKE ) ? lifelikeLayering : schematicLayering;
@@ -429,7 +429,7 @@ export default class CircuitLayerNode extends Node {
         } ) );
 
     // When a vertex is selected, a cut button is shown near to the vertex.  If the vertex is connected to >1 circuit
-    // element, the button is enabled.  Pressing the button will cut the vertex from the neighbors.  Only one cutButton
+    // element, the button is enabled.  Pressing the button will cut the vertex from the neighbors.  Only one vertexCutButton
     // is allocated for all vertices (per screen) to use because it is too performance demanding to create these
     // dynamically when circuit elements are dragged from the toolbox.  Also, only one vertex can be selected at once
     // so there is only a need for one cut button.
@@ -439,17 +439,17 @@ export default class CircuitLayerNode extends Node {
       maxWidth: 36
     } );
 
-    this.cutButton = new RoundPushButton( {
+    this.vertexCutButton = new RoundPushButton( {
       baseColor: 'yellow',
       content: cutIcon,
       xMargin: 10,
       yMargin: 10,
-      tandem: tandem.createTandem( 'cutButton' ),
+      tandem: screenView.tandem.createTandem( 'vertexCutButton' ),
       enabledPropertyOptions: {
         phetioReadOnly: true
       }
     } );
-    this.cutButton.addListener( () => {
+    this.vertexCutButton.addListener( () => {
       const selectedVertex = circuit.getSelectedVertex();
       assert && assert( selectedVertex, 'Button should only be available if a vertex is selected' );
       if ( selectedVertex ) {
@@ -846,18 +846,18 @@ export default class CircuitLayerNode extends Node {
    * Adds a child to a layer behind the control panels.
    */
   public addChildToBackground( child: Node ): void {
-    this.circuitLayerNodeBackLayer.addChild( child );
+    this.circuitNodeBackLayer.addChild( child );
   }
 
   /**
    * Removes a child from the layer behind the control panels.
    */
   public removeChildFromBackground( child: Node ): void {
-    this.circuitLayerNodeBackLayer.removeChild( child );
+    this.circuitNodeBackLayer.removeChild( child );
   }
 
   /**
-   * When the zoom level changes, recompute the visible bounds in the coordinate frame of the CircuitLayerNode so
+   * When the zoom level changes, recompute the visible bounds in the coordinate frame of the CircuitNode so
    * that objects cannot be dragged outside the boundary.
    * @param visibleBounds - view coordinates for the visible region
    */
@@ -904,7 +904,7 @@ export default class CircuitLayerNode extends Node {
   /**
    * Find where the voltmeter probe node intersects the wire, for computing the voltage difference to display in the
    * voltmeter.
-   * @param probePosition - in the local coordinate frame of the CircuitLayerNode
+   * @param probePosition - in the local coordinate frame of the CircuitNode
    * @returns VoltageConnection if connected, otherwise null
    */
   public getVoltageConnection( probePosition: Vector2 ): VoltageConnection | null {
@@ -1026,4 +1026,4 @@ export default class CircuitLayerNode extends Node {
   }
 }
 
-circuitConstructionKitCommon.register( 'CircuitLayerNode', CircuitLayerNode );
+circuitConstructionKitCommon.register( 'CircuitNode', CircuitNode );
