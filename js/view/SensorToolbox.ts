@@ -95,7 +95,7 @@ export default class SensorToolbox extends CCKCPanel {
                              meterNode.meter;
           const viewPosition = circuitNode.globalToLocalPoint( event.pointer.point );
           meterModel.draggingProbesWithBodyProperty.value = true;
-          meterModel.visibleProperty.value = true;
+          meterModel.isActiveProperty.value = true;
           meterModel.bodyPositionProperty.value = viewPosition;
           meterNode.startDrag( event );
         }
@@ -105,10 +105,11 @@ export default class SensorToolbox extends CCKCPanel {
 
     // Draggable isIcon for the voltmeter
     const voltmeter = new Voltmeter( Tandem.OPTIONAL, 0 );
-    const voltmeterToolIcon = new VoltmeterNode( voltmeter, null, null, Tandem.OPT_OUT, {
+    const voltmeterToolIcon = new VoltmeterNode( voltmeter, null, null, {
+      tandem: Tandem.OPT_OUT,
       isIcon: true
     } );
-    const allVoltmetersInPlayAreaProperty = DerivedProperty.and( voltmeterNodes.map( voltmeterNode => voltmeterNode.voltmeter.visibleProperty ) );
+    const allVoltmetersInPlayAreaProperty = DerivedProperty.and( voltmeterNodes.map( voltmeterNode => voltmeterNode.voltmeter.isActiveProperty ) );
     allVoltmetersInPlayAreaProperty.link( visible => voltmeterToolIcon.setVisible( !visible ) );
     voltmeterToolIcon.mutate( {
       scale: TOOLBOX_ICON_HEIGHT * VOLTMETER_ICON_SCALE / Math.max( voltmeterToolIcon.width, voltmeterToolIcon.height )
@@ -121,7 +122,7 @@ export default class SensorToolbox extends CCKCPanel {
       isIcon: true,
       tandem: tandem.createTandem( 'noncontactAmmeterToolNode' )
     } );
-    const allAmmetersInPlayAreaProperty = DerivedProperty.and( ammeterNodes.map( ammeterNode => ammeterNode.ammeter.visibleProperty ) );
+    const allAmmetersInPlayAreaProperty = DerivedProperty.and( ammeterNodes.map( ammeterNode => ammeterNode.ammeter.isActiveProperty ) );
     allAmmetersInPlayAreaProperty.link( visible => ammeterToolIcon.setVisible( !visible ) );
     ammeterToolIcon.mutate( {
       scale: TOOLBOX_ICON_HEIGHT / Math.max( ammeterToolIcon.width, ammeterToolIcon.height )
@@ -275,7 +276,7 @@ export default class SensorToolbox extends CCKCPanel {
           tandem: tandem
         } );
 
-        const allInPlayAreaProperty = DerivedProperty.and( chartNodes.map( chartNode => chartNode.meter.visibleProperty ) );
+        const allInPlayAreaProperty = DerivedProperty.and( chartNodes.map( chartNode => chartNode.meter.isActiveProperty ) );
         allInPlayAreaProperty.link( allInPlayArea => {
           chartNodeIcon.setVisible( !allInPlayArea );
           chartToolIcon.inputEnabledProperty.value = !allInPlayArea;

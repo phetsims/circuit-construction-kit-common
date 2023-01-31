@@ -144,15 +144,15 @@ export default class CCKCScreenView extends ScreenView {
     const meterNodesTandem = tandem.createTandem( 'meterNodes' );
 
     const voltmeterNodes = model.voltmeters.map( voltmeter => {
-      const voltmeterTandem = meterNodesTandem.createTandem( `voltmeterNode${voltmeter.phetioIndex}` );
-      const voltmeterNode = new VoltmeterNode( voltmeter, model, this.circuitNode, voltmeterTandem, {
+      const voltmeterNode = new VoltmeterNode( voltmeter, model, this.circuitNode, {
+        tandem: meterNodesTandem.createTandem( `voltmeterNode${voltmeter.phetioIndex}` ),
         showResultsProperty: model.isValueDepictionEnabledProperty,
         visibleBoundsProperty: this.circuitNode.visibleBoundsInCircuitCoordinateFrameProperty,
         showPhetioIndex: options.showMeterPhetioIndex
       } );
       voltmeter.droppedEmitter.addListener( bodyNodeGlobalBounds => {
         if ( bodyNodeGlobalBounds.intersectsBounds( this.sensorToolbox.globalBounds ) ) {
-          voltmeter.visibleProperty.value = false;
+          voltmeter.isActiveProperty.value = false;
         }
       } );
       return voltmeterNode;
@@ -168,7 +168,7 @@ export default class CCKCScreenView extends ScreenView {
       } );
       ammeter.droppedEmitter.addListener( bodyNodeGlobalBounds => {
         if ( bodyNodeGlobalBounds.intersectsBounds( this.sensorToolbox.globalBounds ) ) {
-          ammeter.visibleProperty.value = false;
+          ammeter.isActiveProperty.value = false;
         }
       } );
       return ammeterNode;

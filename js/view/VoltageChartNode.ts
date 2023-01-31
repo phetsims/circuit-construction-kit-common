@@ -65,7 +65,7 @@ export default class VoltageChartNode extends CCKCChartNode {
    * @param dt - delta time since last update
    */
   public step( time: number, dt: number ): void {
-    if ( this.meter.visibleProperty.value ) {
+    if ( this.meter.isActiveProperty.value ) {
 
       this.series.push( this.sampleValue( time ) );
 

@@ -354,7 +354,7 @@ export default class CCKCChartNode extends Node {
     shadedRectangle.addChild( chartNode );
     backgroundNode.addChild( shadedRectangle );
 
-    this.meter.visibleProperty.link( visible => this.setVisible( visible ) );
+    this.meter.isActiveProperty.link( isActive => this.setVisible( isActive ) );
     this.meter.bodyPositionProperty.link( bodyPosition => backgroundNode.setCenter( bodyPosition ) );
   }
 
@@ -429,7 +429,7 @@ export default class CCKCChartNode extends Node {
   public initializeBodyDragListener( screenView: CCKCScreenView ): void {
 
     // Since this will be shown from the toolbox, make the play area icon invisible and prepare to drag with probes
-    this.meter.visibleProperty.value = false;
+    this.meter.isActiveProperty.value = false;
     this.meter.draggingProbesWithBodyProperty.value = true;
 
     const dragBoundsProperty = new Property<Bounds2 | null>( null );

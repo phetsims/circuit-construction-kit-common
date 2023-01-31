@@ -21,7 +21,7 @@ export default class Meter extends PhetioObject {
   public phetioIndex: number;
 
   // indicates whether the meter is in the play area
-  public readonly visibleProperty: Property<boolean>;
+  public readonly isActiveProperty: Property<boolean>;
 
   // the position of the body of the meter
   public readonly bodyPositionProperty: Property<Vector2>;
@@ -44,8 +44,8 @@ export default class Meter extends PhetioObject {
     } );
 
     this.phetioIndex = phetioIndex;
-    this.visibleProperty = new BooleanProperty( false, {
-      tandem: tandem.createTandem( 'visibleProperty' )
+    this.isActiveProperty = new BooleanProperty( false, {
+      tandem: tandem.createTandem( 'isActiveProperty' )
     } );
 
     this.bodyPositionProperty = new Vector2Property( Vector2.ZERO, {
@@ -61,7 +61,7 @@ export default class Meter extends PhetioObject {
    * Resets the meter.  This is overridden by Ammeter and Voltmeter.
    */
   public reset(): void {
-    this.visibleProperty.reset();
+    this.isActiveProperty.reset();
     this.bodyPositionProperty.reset();
     this.draggingProbesWithBodyProperty.reset();
   }

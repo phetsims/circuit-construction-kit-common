@@ -82,6 +82,8 @@ export default class AmmeterNode extends Node {
 
       showPhetioIndex: false,
 
+      phetioVisiblePropertyInstrumented: false,
+
       tandem: Tandem.REQUIRED
     }, providedOptions );
     const tandem = options.tandem;
@@ -187,8 +189,8 @@ export default class AmmeterNode extends Node {
     if ( !options.isIcon ) {
 
       // Show the ammeter in the play area when dragged from toolbox
-      ammeter.visibleProperty.linkAttribute( this, 'visible' );
-      ammeter.visibleProperty.link( alignProbeToBody );
+      ammeter.isActiveProperty.linkAttribute( this, 'visible' );
+      ammeter.isActiveProperty.link( alignProbeToBody );
 
       const erodedDragBoundsProperty = new DerivedProperty( [ options.visibleBoundsProperty! ], visibleBounds => {
         return visibleBounds.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
@@ -233,7 +235,7 @@ export default class AmmeterNode extends Node {
       const updateAmmeter = () => {
 
         // Skip work when ammeter is not out, to improve performance.
-        if ( ammeter.visibleProperty.get() ) {
+        if ( ammeter.isActiveProperty.get() ) {
           const current = circuitNode!.getCurrent( this.probeNode );
           ammeter.currentProperty.value = current;
         }

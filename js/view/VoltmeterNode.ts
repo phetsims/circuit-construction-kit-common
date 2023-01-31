@@ -72,13 +72,16 @@ export default class VoltmeterNode extends Node {
    * @param voltmeter - the model Voltmeter to be shown by this node
    * @param model
    * @param circuitNode
-   * @param tandem
    * @param [providedOptions]
    */
   public constructor( voltmeter: Voltmeter, model: CircuitConstructionKitModel | null, circuitNode: CircuitNode | null,
-                      tandem: Tandem, providedOptions?: VoltmeterNodeOptions ) {
+                      providedOptions?: VoltmeterNodeOptions ) {
 
     const options = optionize<VoltmeterNodeOptions, SelfOptions, NodeOptions>()( {
+
+      tandem: Tandem.REQUIRED,
+
+      pickable: true,
 
       // Whether this will be used as an icon or not.
       isIcon: false,
@@ -90,7 +93,11 @@ export default class VoltmeterNode extends Node {
       showResultsProperty: new BooleanProperty( true ),
 
       // Whether the phet-io index of the meter appears in the label
-      showPhetioIndex: false
+      showPhetioIndex: false,
+
+      // Instrumentation is handled in Meter.isActiveProperty
+      phetioVisiblePropertyInstrumented: false
+
     }, providedOptions );
 
     const blackProbeNode = new Rectangle( -2, -2, 4, 4, { // the hit area
@@ -124,14 +131,14 @@ export default class VoltmeterNode extends Node {
     // Displays the voltage reading
     const voltageReadoutProperty = new DerivedProperty( [ voltmeter.voltageProperty ], voltage =>
         voltage === null ? MathSymbols.NO_VALUE : CCKCUtils.createVoltageReadout( voltage ), {
-        tandem: tandem.createTandem( 'readoutText' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME ),
+        tandem: options.tandem.createTandem( 'readoutText' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME ),
         phetioValueType: StringIO
       }
     );
 
     const probeTextProperty = new DerivedProperty( [ voltageStringProperty ], voltageString =>
         options.showPhetioIndex ? voltageString + ' ' + voltmeter.phetioIndex : voltageString, {
-        tandem: tandem.createTandem( 'probeText' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME ),
+        tandem: options.tandem.createTandem( 'probeText' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME ),
         phetioValueType: StringIO
       }
     );
@@ -141,7 +148,7 @@ export default class VoltmeterNode extends Node {
 
       // No need for an extra level of nesting in the tandem tree, since that is just an implementation detail
       // and not a feature
-      tandem, {
+      options.tandem, {
         centerX: voltmeterBody_png[ 0 ].width / 2,
         centerY: voltmeterBody_png[ 0 ].height / 2
       } );
@@ -222,19 +229,13 @@ export default class VoltmeterNode extends Node {
     voltmeter.redProbePositionProperty.link( probeMovedCallback( redProbeNode, redWireProbePositionProperty, +1 ) );
     voltmeter.blackProbePositionProperty.link( probeMovedCallback( blackProbeNode, blackWireProbePositionProperty, -1 ) );
 
-    super( {
-      pickable: true,
-      tandem: tandem,
-      children: [
-        bodyNode,
+    super( options );
 
-        blackWireNode,
-        blackProbeNode,
-
-        redWireNode,
-        redProbeNode
-      ]
-    } );
+    super.addChild( bodyNode );
+    super.addChild( blackWireNode );
+    super.addChild( blackProbeNode );
+    super.addChild( redWireNode );
+    super.addChild( redProbeNode );
 
     this.circuitNode = circuitNode;
 
@@ -246,7 +247,7 @@ export default class VoltmeterNode extends Node {
     if ( !options.isIcon ) {
 
       // Show the voltmeter when icon dragged out of the toolbox
-      voltmeter.visibleProperty.linkAttribute( this, 'visible' );
+      voltmeter.isActiveProperty.linkAttribute( this, 'visible' );
 
       /**
        * Gets a drag handler for one of the probes.
@@ -263,8 +264,8 @@ export default class VoltmeterNode extends Node {
         return probeDragListener;
       };
 
-      const redProbeDragListener = createProbeDragListener( voltmeter.redProbePositionProperty, tandem.createTandem( 'redProbeDragListener' ) );
-      const blackProbeDragListener = createProbeDragListener( voltmeter.blackProbePositionProperty, tandem.createTandem( 'blackProbeDragListener' ) );
+      const redProbeDragListener = createProbeDragListener( voltmeter.redProbePositionProperty, options.tandem.createTandem( 'redProbeDragListener' ) );
+      const blackProbeDragListener = createProbeDragListener( voltmeter.blackProbePositionProperty, options.tandem.createTandem( 'blackProbeDragListener' ) );
 
       this.redProbeNode.addInputListener( redProbeDragListener );
       this.blackProbeNode.addInputListener( blackProbeDragListener );
@@ -276,7 +277,7 @@ export default class VoltmeterNode extends Node {
       this.dragHandler = new DragListener( {
 
         positionProperty: voltmeter.bodyPositionProperty,
-        tandem: tandem.createTandem( 'dragHandler' ),
+        tandem: options.tandem.createTandem( 'dragHandler' ),
         useParentOffset: true,
         dragBoundsProperty: erodedBoundsProperty,
         start: event => {
@@ -334,7 +335,7 @@ export default class VoltmeterNode extends Node {
        * Detection for voltmeter probe + circuit intersection is done in the view since view bounds are used
        */
       const updateVoltmeter = () => {
-        if ( voltmeter.visibleProperty.get() ) {
+        if ( voltmeter.isActiveProperty.get() ) {
           const blackConnection = findConnection( blackProbeNode, voltmeter.blackProbePositionProperty.get(), +1 );
           const redConnection = findConnection( redProbeNode, voltmeter.redProbePositionProperty.get(), -1 );
           const voltage = this.circuitNode!.circuit.getVoltageBetweenConnections( redConnection, blackConnection, false );
