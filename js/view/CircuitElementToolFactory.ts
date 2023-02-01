@@ -87,13 +87,17 @@ type CreateCircuitElementToolNodeSelfOptions = {
 
 type CreateResistorToolNodeSelfOptions = {
   count?: number;
-  resistorType?: ResistorType;
   labelStringProperty?: TReadOnlyProperty<string>;
   tandemName?: string;
 };
 
+type CreateHouseholdObjectToolNodeSelfOptions = {
+  resistorType?: ResistorType;
+};
+
 type CreateCircuitElementToolNodeProvidedOptions = CreateCircuitElementToolNodeSelfOptions & CircuitElementToolNodeOptions;
 type CreateResistorToolNodeProvidedOptions = CreateResistorToolNodeSelfOptions & CreateCircuitElementToolNodeProvidedOptions;
+type CreateHouseholdObjectToolNodeProvidedOptions = CreateHouseholdObjectToolNodeSelfOptions & CreateResistorToolNodeProvidedOptions;
 
 export default class CircuitElementToolFactory {
   private readonly circuit: Circuit;
@@ -286,14 +290,13 @@ export default class CircuitElementToolFactory {
   public createResistorToolNode( providedOptions?: CreateResistorToolNodeProvidedOptions ): CircuitElementToolNode {
     const options = optionize<CreateResistorToolNodeProvidedOptions, CreateResistorToolNodeSelfOptions, CreateCircuitElementToolNodeSelfOptions>()( {
       count: 10,
-      resistorType: ResistorType.RESISTOR,
       lifelikeIconHeight: 15,
       schematicIconHeight: 14,
       labelStringProperty: resistorStringProperty,
       tandemName: 'resistorToolNode'
     }, providedOptions );
     const labelStringProperty = options.labelStringProperty;
-    const resistorType = options.resistorType;
+    const resistorType = ResistorType.RESISTOR;
 
     // Create the icon model without using the PhetioGroup, so it will not be PhET-iO instrumented.
     const resistorModel = new Resistor(
@@ -310,11 +313,78 @@ export default class CircuitElementToolFactory {
       circuitElement => circuitElement instanceof Resistor && circuitElement.resistorType === resistorType,
       ( position: Vector2 ) => {
         const vertices = this.circuit.createVertexPairArray( position, resistorType.length );
-        return this.circuit.resistorGroup.createNextElement( vertices[ 0 ], vertices[ 1 ], resistorType );
+        return this.circuit.resistorGroup.createNextElement( vertices[ 0 ], vertices[ 1 ] );
       }, {
         tandem: this.parentTandem.createTandem( options.tandemName ),
         lifelikeIconHeight: options.lifelikeIconHeight,
         schematicIconHeight: options.schematicIconHeight
+      } );
+  }
+
+  public createExtremeResistorToolNode( providedOptions?: CreateResistorToolNodeProvidedOptions ): CircuitElementToolNode {
+    const options = optionize<CreateResistorToolNodeProvidedOptions, CreateResistorToolNodeSelfOptions, CreateCircuitElementToolNodeSelfOptions>()( {
+      count: 4,
+      lifelikeIconHeight: 15,
+      schematicIconHeight: 14,
+      labelStringProperty: resistorStringProperty,
+      tandemName: 'extremeResistorToolNode'
+    }, providedOptions );
+    const labelStringProperty = options.labelStringProperty;
+    const resistorType = ResistorType.HIGH_RESISTANCE_RESISTOR;
+
+    // Create the icon model without using the PhetioGroup, so it will not be PhET-iO instrumented.
+    const resistorModel = new Resistor(
+      new Vertex( Vector2.ZERO, this.circuit.selectionProperty ),
+      new Vertex( new Vector2( resistorType.length, 0 ), this.circuit.selectionProperty ),
+      resistorType,
+      Tandem.OPTIONAL
+    );
+
+    return this.createCircuitElementToolNode( labelStringProperty, options.count,
+      ( tandem, viewTypeProperty ) => new ResistorNode( null, null, resistorModel, viewTypeProperty, tandem.createTandem( 'extremeResistorIcon' ), {
+        isIcon: true
+      } ),
+      circuitElement => circuitElement instanceof Resistor && circuitElement.resistorType === resistorType,
+      ( position: Vector2 ) => {
+        const vertices = this.circuit.createVertexPairArray( position, resistorType.length );
+        return this.circuit.extremeResistorGroup.createNextElement( vertices[ 0 ], vertices[ 1 ] );
+      }, {
+        tandem: this.parentTandem.createTandem( options.tandemName ),
+        lifelikeIconHeight: options.lifelikeIconHeight,
+        schematicIconHeight: options.schematicIconHeight
+      } );
+  }
+
+  public createHouseholdObjectToolNode( providedOptions?: CreateHouseholdObjectToolNodeProvidedOptions ): CircuitElementToolNode {
+    const options = optionize<CreateHouseholdObjectToolNodeProvidedOptions, CreateHouseholdObjectToolNodeSelfOptions, CreateResistorToolNodeSelfOptions>()( {
+      count: 10,
+      resistorType: ResistorType.RESISTOR,
+      labelStringProperty: resistorStringProperty,
+      tandemName: 'householdObjectToolNode'
+    }, providedOptions );
+    const labelStringProperty = options.labelStringProperty;
+    const resistorType = options.resistorType;
+
+    // Create the icon model without using the PhetioGroup, so it will not be PhET-iO instrumented.
+    const resistorModel = new Resistor(
+      new Vertex( Vector2.ZERO, this.circuit.selectionProperty ),
+      new Vertex( new Vector2( resistorType.length, 0 ), this.circuit.selectionProperty ),
+      resistorType,
+      Tandem.OPTIONAL
+    );
+
+    return this.createCircuitElementToolNode( labelStringProperty, options.count,
+      ( tandem, viewTypeProperty ) => new ResistorNode( null, null, resistorModel, viewTypeProperty, tandem.createTandem( 'houseIcon' ), {
+        isIcon: true
+      } ),
+      circuitElement => circuitElement instanceof Resistor && circuitElement.resistorType === resistorType,
+      ( position: Vector2 ) => {
+        const vertices = this.circuit.createVertexPairArray( position, resistorType.length );
+        return this.circuit.householdObjectGroup.createNextElement( vertices[ 0 ], vertices[ 1 ], resistorType );
+      }, {
+        tandem: this.parentTandem.createTandem( options.tandemName ),
+        lifelikeIconHeight: options.lifelikeIconHeight,
+        schematicIconHeight: 14
       } );
   }
 
@@ -395,17 +465,18 @@ export default class CircuitElementToolFactory {
   }
 
   public createPaperClipToolNode(): CircuitElementToolNode {
-    return this.createResistorToolNode( {
+    return this.createHouseholdObjectToolNode( {
       count: 1,
       resistorType: ResistorType.PAPER_CLIP,
       tandemName: 'paperClipToolNode',
-      labelStringProperty: paperClipStringProperty
+      labelStringProperty: paperClipStringProperty,
+      lifelikeIconHeight: 15
     } );
   }
 
   // Same docs as for createPaperClipToolNode
   public createCoinToolNode(): CircuitElementToolNode {
-    return this.createResistorToolNode( {
+    return this.createHouseholdObjectToolNode( {
       count: 1,
       resistorType: ResistorType.COIN,
       tandemName: 'coinToolNode',
@@ -416,7 +487,7 @@ export default class CircuitElementToolFactory {
 
   // Same docs as as for createPaperClipToolNode
   public createDollarBillToolNode(): CircuitElementToolNode {
-    return this.createResistorToolNode( {
+    return this.createHouseholdObjectToolNode( {
       count: 1,
       resistorType: ResistorType.DOLLAR_BILL,
       tandemName: 'dollarBillToolNode',
@@ -427,7 +498,7 @@ export default class CircuitElementToolFactory {
 
   // Same docs as for createPaperClipToolNode
   public createEraserToolNode(): CircuitElementToolNode {
-    return this.createResistorToolNode( {
+    return this.createHouseholdObjectToolNode( {
       count: 1,
       resistorType: ResistorType.ERASER,
       tandemName: 'eraserToolNode',
@@ -438,7 +509,7 @@ export default class CircuitElementToolFactory {
 
   // Same docs as for createPaperClipToolNode
   public createPencilToolNode(): CircuitElementToolNode {
-    return this.createResistorToolNode( {
+    return this.createHouseholdObjectToolNode( {
       count: 1,
       resistorType: ResistorType.PENCIL,
       tandemName: 'pencilToolNode',
@@ -449,7 +520,7 @@ export default class CircuitElementToolFactory {
 
   // Same docs as for createPaperClipToolNode
   public createHandToolNode(): CircuitElementToolNode {
-    return this.createResistorToolNode( {
+    return this.createHouseholdObjectToolNode( {
       count: 1,
       resistorType: ResistorType.HAND,
       tandemName: 'handToolNode',
@@ -460,22 +531,12 @@ export default class CircuitElementToolFactory {
 
   // Same docs as for createPaperClipToolNode
   public createDogToolNode(): CircuitElementToolNode {
-    return this.createResistorToolNode( {
+    return this.createHouseholdObjectToolNode( {
       count: 1,
       resistorType: ResistorType.DOG,
       tandemName: 'dogToolNode',
       labelStringProperty: dogStringProperty,
       lifelikeIconHeight: 30
-    } );
-  }
-
-  // Same docs as for createPaperClipToolNode
-  public createExtremeResistorToolNode(): CircuitElementToolNode {
-    return this.createResistorToolNode( {
-      count: 4,
-      resistorType: ResistorType.HIGH_RESISTANCE_RESISTOR,
-      tandemName: 'extremeResistorToolNode',
-      labelStringProperty: resistorStringProperty
     } );
   }
 
