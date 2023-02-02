@@ -408,7 +408,11 @@ export default class CCKCScreenView extends ScreenView {
         }
         zoomButtonGroup.bottom = visibleBounds.bottom - VERTICAL_MARGIN;
 
-        playAreaCenterXProperty.value = ( controlPanelVBox.left + this.circuitElementToolbox.right ) / 2;
+        // Center some things between the panels, but gracefully accommodate when phet-io has made them disappear
+        const leftEdge = this.circuitElementToolbox.bounds.isEmpty() ? visibleBounds.left : this.circuitElementToolbox.right;
+        const rightEdge = controlPanelVBox.bounds.isEmpty() ? visibleBounds.right : controlPanelVBox.left;
+
+        playAreaCenterXProperty.value = ( leftEdge + rightEdge ) / 2;
 
         chargeSpeedThrottlingReadoutNode.mutate( {
           centerX: playAreaCenterXProperty.value,
