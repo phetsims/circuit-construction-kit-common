@@ -26,7 +26,8 @@ export default class CCKZoomButtonGroup extends MagnifyingGlassZoomButtonGroup {
       spacing: BUTTON_SPACING,
       buttonOptions: {
         buttonAppearanceStrategy: RectangularButton.ThreeDAppearanceStrategy,
-        baseColor: PhetColorScheme.BUTTON_YELLOW
+        baseColor: PhetColorScheme.BUTTON_YELLOW,
+        phetioReadOnly: true
       },
       magnifyingGlassNodeOptions: {
         scale: 0.7
