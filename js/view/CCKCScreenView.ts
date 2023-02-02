@@ -38,7 +38,7 @@ import SensorToolbox from './SensorToolbox.js';
 import ViewRadioButtonGroup from './ViewRadioButtonGroup.js';
 import VoltageChartNode from './VoltageChartNode.js';
 import VoltmeterNode from './VoltmeterNode.js';
-import ZoomButtonGroup from './ZoomButtonGroup.js';
+import CCKZoomButtonGroup from './CCKZoomButtonGroup.js';
 import FixedCircuitElementNode from './FixedCircuitElementNode.js';
 
 const batteryResistanceStringProperty = CircuitConstructionKitCommonStrings.batteryResistanceStringProperty;
@@ -338,7 +338,7 @@ export default class CCKCScreenView extends ScreenView {
     this.chartNodes.forEach( chartNode => this.circuitNode.sensorLayer.addChild( chartNode ) );
 
     // Create the zoom button group
-    const zoomButtonGroup = new ZoomButtonGroup( model.zoomLevelProperty, {
+    const zoomButtonGroup = new CCKZoomButtonGroup( model.zoomLevelProperty, {
       tandem: tandem.createTandem( 'zoomButtonGroup' ),
       buttonOptions: {
         phetioReadOnly: true,
