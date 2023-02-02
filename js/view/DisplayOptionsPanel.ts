@@ -8,7 +8,7 @@
  */
 
 import ElectronChargeNode from '../../../scenery-phet/js/ElectronChargeNode.js';
-import { AlignBox, AlignGroup, HBox, Text, VBox } from '../../../scenery/js/imports.js';
+import { AlignBox, AlignGroup, HBox, Text, VBox, Node } from '../../../scenery/js/imports.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -148,15 +148,17 @@ export default class DisplayOptionsPanel extends CCKCPanel {
       ...( showStopwatchCheckbox ? [ stopwatchCheckbox! ] : [] )
     ];
 
-    super( alignGroup.createBox( new VBox( {
+    // Align with neighboring controls, unless empty. Then OK to let the Panel collapse.
+    const vBox = new VBox( {
       children: children,
       spacing: SPACING,
       align: 'left'
-    } ), {
+    } );
+    const alignBox = alignGroup.createBox( vBox, { xAlign: 'left' } );
+    const content = new Node( { excludeInvisibleChildrenFromBounds: true } );
+    vBox.boundsProperty.link( bounds => content.setChildren( bounds.isValid() ? [ alignBox ] : [] ) );
 
-      // left align within the box
-      xAlign: 'left'
-    } ), tandem, {
+    super( content, tandem, {
       yMargin: 10
     } );
 
