@@ -97,14 +97,14 @@ export default class DisplayOptionsPanel extends CCKCPanel {
       tandemName: CONVENTIONAL_RADIO_BUTTON_TANDEM
     }
     ], {
-      tandem: Tandem.OPT_OUT,
+      tandem: currentTypeRadioButtonGroupTandem,
       spacing: 6
     } );
 
     // AlignBox necessary to indent the children radio buttons
     const currentTypeRadioButtonGroupContainer = new AlignBox(
       currentTypeRadioButtonGroup, {
-        tandem: currentTypeRadioButtonGroupTandem,
+        tandem: Tandem.OPT_OUT,
         leftMargin: LEFT_MARGIN
       }
     );
