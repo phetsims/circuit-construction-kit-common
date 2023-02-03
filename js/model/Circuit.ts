@@ -379,8 +379,8 @@ export default class Circuit {
 
     this.extremeResistorGroup = new PhetioGroup(
       ( tandem, startVertex, endVertex ) =>
-        new Resistor( startVertex, endVertex, ResistorType.HIGH_RESISTANCE_RESISTOR, tandem ),
-      () => createVertices( ResistorType.HIGH_RESISTANCE_RESISTOR.length ), {
+        new Resistor( startVertex, endVertex, ResistorType.EXTREME_RESISTOR, tandem ),
+      () => createVertices( ResistorType.EXTREME_RESISTOR.length ), {
         phetioType: PhetioGroup.PhetioGroupIO( Resistor.ResistorIO ),
         tandem: tandem.createTandem( 'extremeResistorGroup' )
       } );

@@ -379,7 +379,7 @@ export default class CircuitNode extends Node {
           tandem: tandem.createTandem( 'resistorNodeGroup' ),
           supportsDynamicState: false
         } ) );
-    initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Resistor && e.resistorType === ResistorType.HIGH_RESISTANCE_RESISTOR, this.fixedCircuitElementLayer,
+    initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Resistor && e.resistorType === ResistorType.EXTREME_RESISTOR, this.fixedCircuitElementLayer,
       new PhetioGroup<CircuitElementNode, [ CircuitElement ]>( ( tandem: Tandem, circuitElement: CircuitElement ) =>
           new ResistorNode( screenView, this, circuitElement as Resistor, this.model.viewTypeProperty, tandem ),
         () => [ this.circuit.extremeResistorGroup.archetype ], {
@@ -387,7 +387,7 @@ export default class CircuitNode extends Node {
           tandem: tandem.createTandem( 'extremeResistorNodeGroup' ),
           supportsDynamicState: false
         } ) );
-    initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Resistor && e.resistorType !== ResistorType.RESISTOR && e.resistorType !== ResistorType.HIGH_RESISTANCE_RESISTOR, this.fixedCircuitElementLayer,
+    initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Resistor && e.resistorType !== ResistorType.RESISTOR && e.resistorType !== ResistorType.EXTREME_RESISTOR, this.fixedCircuitElementLayer,
       new PhetioGroup<CircuitElementNode, [ CircuitElement ]>( ( tandem: Tandem, circuitElement: CircuitElement ) => {
           if ( circuitElement instanceof Dog ) {
             return new DogNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem );

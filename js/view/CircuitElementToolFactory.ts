@@ -474,7 +474,7 @@ export default class CircuitElementToolFactory {
   public createExtremeResistorToolNode(): CircuitElementToolNode {
     return this.createResistorToolNode( this.circuit.extremeResistorGroup, {
       count: 4,
-      resistorType: ResistorType.HIGH_RESISTANCE_RESISTOR,
+      resistorType: ResistorType.EXTREME_RESISTOR,
       tandemName: 'extremeResistorToolNode',
       labelStringProperty: resistorStringProperty
     } );
