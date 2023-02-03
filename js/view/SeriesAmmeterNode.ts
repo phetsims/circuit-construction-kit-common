@@ -58,7 +58,7 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
                       tandem: Tandem, isValueDepictionEnabledProperty: TReadOnlyProperty<boolean>, providedOptions?: FixedCircuitElementNodeOptions ) {
 
     const stringProperty = new Property( MathSymbols.NO_VALUE, {
-      tandem: tandem.createTandem( 'readoutText' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME ),
+      tandem: tandem.createTandem( 'probeReadoutText' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME ),
       phetioValueType: StringIO,
       phetioReadOnly: true
     } );
