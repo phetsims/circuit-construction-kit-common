@@ -284,7 +284,7 @@ export default class CircuitElementToolFactory {
       } );
   }
 
-  public createResistorToolNode( group: PhetioGroup<Resistor, [ Vertex, Vertex ]> | PhetioGroup<Resistor, [ Vertex, Vertex, ResistorType ]>, providedOptions?: CreateResistorToolNodeProvidedOptions ): CircuitElementToolNode {
+  public createResistorToolNode( group: PhetioGroup<Resistor, [ Vertex, Vertex ]> | PhetioGroup<Resistor, [ Vertex, Vertex, ResistorType ]> = this.circuit.resistorGroup, providedOptions?: CreateResistorToolNodeProvidedOptions ): CircuitElementToolNode {
     const options = optionize<CreateResistorToolNodeProvidedOptions, CreateResistorToolNodeSelfOptions, CreateCircuitElementToolNodeSelfOptions>()( {
       count: 10,
       resistorType: ResistorType.RESISTOR,
