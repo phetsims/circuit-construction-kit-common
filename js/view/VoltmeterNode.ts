@@ -131,14 +131,14 @@ export default class VoltmeterNode extends Node {
     // Displays the voltage reading
     const voltageReadoutProperty = new DerivedProperty( [ voltmeter.voltageProperty ], voltage =>
         voltage === null ? MathSymbols.NO_VALUE : CCKCUtils.createVoltageReadout( voltage ), {
-        tandem: options.tandem.createTandem( 'readoutText' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME ),
+        tandem: options.tandem.createTandem( 'probeReadoutText' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME ),
         phetioValueType: StringIO
       }
     );
 
     const probeTextProperty = new DerivedProperty( [ voltageStringProperty ], voltageString =>
         options.showPhetioIndex ? voltageString + ' ' + voltmeter.phetioIndex : voltageString, {
-        tandem: options.tandem.createTandem( 'probeText' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME ),
+        tandem: options.tandem.createTandem( 'probeTitleText' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME ),
         phetioValueType: StringIO
       }
     );

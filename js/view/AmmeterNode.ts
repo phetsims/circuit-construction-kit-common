@@ -108,13 +108,13 @@ export default class AmmeterNode extends Node {
       ( ( current, ammeterReadoutType ) => {
         return CCKCUtils.createCurrentReadout( current, options.blackBoxStudy );
       } ), {
-        tandem: tandemForChildren.createTandem( 'readoutText' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME ),
+        tandem: tandemForChildren.createTandem( 'probeReadoutText' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME ),
         phetioValueType: StringIO
       } );
 
     const probeTextProperty = new DerivedProperty( [ currentStringProperty ], currentString =>
         options.showPhetioIndex ? currentString + ' ' + ammeter.phetioIndex : currentString, {
-        tandem: tandemForChildren.createTandem( 'probeText' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME ),
+        tandem: tandemForChildren.createTandem( 'probeTitleText' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME ),
         phetioValueType: StringIO
       }
     );

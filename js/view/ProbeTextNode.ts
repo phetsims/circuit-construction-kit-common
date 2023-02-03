@@ -47,7 +47,7 @@ export default class ProbeTextNode extends VBox {
     const readoutText = new Text( stringProperty, {
       fontSize: options.seriesAmmeter ? 46 : 40,
       maxWidth: TEXT_BOX_WIDTH - 20,
-      tandem: tandem.createTandem( 'readoutText' ),
+      tandem: tandem.createTandem( 'probeReadoutText' ),
       stringPropertyOptions: {
         phetioReadOnly: true
       }
@@ -84,7 +84,7 @@ export default class ProbeTextNode extends VBox {
     const titleText = new Text( title, {
       fontSize: options.seriesAmmeter ? 33 : 42,
       maxWidth: TEXT_BOX_WIDTH,
-      tandem: tandem.createTandem( 'titleText' )
+      tandem: options.seriesAmmeter ? tandem.createTandem( 'probeTitleText' ) : Tandem.OPT_OUT
     } );
     options.children = [ titleText, new Node( {
       children: [ textBox, readoutText ]
