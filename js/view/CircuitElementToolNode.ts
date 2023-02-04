@@ -83,6 +83,7 @@ export default class CircuitElementToolNode extends VBox {
       excludeInvisibleChildrenFromBounds: false,
       additionalProperty: new BooleanProperty( true )
     }, providedOptions );
+
     super( options );
 
     this.addInputListener( DragListener.createForwardingListener( ( event: PressListenerEvent ) => {
@@ -144,8 +145,6 @@ export default class CircuitElementToolNode extends VBox {
     viewTypeProperty.link( updatePointerAreas );
 
     this.localBoundsProperty.link( updatePointerAreas );
-
-    this.mutate();
   }
 }
 
