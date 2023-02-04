@@ -53,7 +53,7 @@ export default class CircuitElementToolNode extends VBox {
    */
   public constructor( labelStringProperty: TReadOnlyProperty<string>, showLabelsProperty: Property<boolean>, viewTypeProperty: Property<CircuitElementViewType>,
                       circuit: Circuit, globalToCircuitNodePoint: ( v: Vector2 ) => Vector2, iconNode: Node, maxNumber: number,
-                      count: () => number, createElement: ( v: Vector2 ) => CircuitElement, providedOptions?: CircuitElementToolNodeOptions ) {
+                      count: () => number, createElement: ( v: Vector2 ) => CircuitElement, providedOptions: CircuitElementToolNodeOptions ) {
 
     let labelText: Node | null = null;
     if ( labelStringProperty.value.length > 0 && providedOptions && providedOptions.tandem ) {

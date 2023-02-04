@@ -117,7 +117,7 @@ export default class CircuitElementToolFactory {
 
   /**
    * Utility function that creates a CircuitElementToolNode
-   * @param labelString
+   * @param labelStringProperty
    * @param count
    * @param createIcon
    * @param predicate - CircuitElement => boolean, used to count circuit elements of that kind.
@@ -128,7 +128,7 @@ export default class CircuitElementToolFactory {
    *                                 - in the center of the socket
    * @param [providedOptions]
    */
-  public createCircuitElementToolNode( labelString: TReadOnlyProperty<string>, count: number, createIcon: ( t: Tandem, p: Property<CircuitElementViewType> ) => Node,
+  public createCircuitElementToolNode( labelStringProperty: TReadOnlyProperty<string>, count: number, createIcon: ( t: Tandem, p: Property<CircuitElementViewType> ) => Node,
                                        predicate: ( circuitElement: CircuitElement ) => boolean, createElement: ( v: Vector2 ) => CircuitElement, providedOptions?: CreateCircuitElementToolNodeProvidedOptions ): CircuitElementToolNode {
 
     assert && assert( Number.isInteger( count ), 'count should be an integer' );
@@ -160,7 +160,7 @@ export default class CircuitElementToolFactory {
     ] );
 
     return new CircuitElementToolNode(
-      labelString,
+      labelStringProperty,
       this.showLabelsProperty,
       this.viewTypeProperty,
       this.circuit,
@@ -308,7 +308,7 @@ export default class CircuitElementToolFactory {
         const vertices = this.circuit.createVertexPairArray( position, resistorType.length );
         return group.createNextElement( vertices[ 0 ], vertices[ 1 ], resistorType );// last arg ignored by some groups
       }, {
-        tandem: options.tandem,
+        tandem: tandem,
         lifelikeIconHeight: options.lifelikeIconHeight,
         schematicIconHeight: options.schematicIconHeight
       } );

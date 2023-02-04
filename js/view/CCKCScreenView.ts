@@ -13,7 +13,6 @@ import Bounds2 from '../../../dot/js/Bounds2.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import ScreenView, { ScreenViewOptions } from '../../../joist/js/ScreenView.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
 import PlayPauseButton from '../../../scenery-phet/js/buttons/PlayPauseButton.js';
 import ResetAllButton from '../../../scenery-phet/js/buttons/ResetAllButton.js';
 import StopwatchNode from '../../../scenery-phet/js/StopwatchNode.js';
@@ -42,6 +41,7 @@ import VoltageChartNode from './VoltageChartNode.js';
 import VoltmeterNode from './VoltmeterNode.js';
 import CCKZoomButtonGroup from './CCKZoomButtonGroup.js';
 import FixedCircuitElementNode from './FixedCircuitElementNode.js';
+import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
 
 const batteryResistanceStringProperty = CircuitConstructionKitCommonStrings.batteryResistanceStringProperty;
 const sourceResistanceStringProperty = CircuitConstructionKitCommonStrings.sourceResistanceStringProperty;
@@ -130,7 +130,6 @@ export default class CCKCScreenView extends ScreenView {
       showMeterPhetioIndex: false
     }, providedOptions );
 
-    // TODO: provide providedOptions somehow up to the super
     super( { tandem: tandem } );
 
     this.model = model;
