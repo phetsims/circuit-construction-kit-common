@@ -171,7 +171,7 @@ const CCKCConstants = {
 
   DC_CAROUSEL_SCALE: 1.2,
 
-  AC_CAROUSEL_SCALE: 1,
+  AC_CAROUSEL_SCALE: 0.85,
 
   MAX_DT: 0.5 // see https://github.com/phetsims/circuit-construction-kit-common/issues/476 and https://github.com/phetsims/joist/issues/130
 };
