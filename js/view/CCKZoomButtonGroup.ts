@@ -19,14 +19,15 @@ const BUTTON_SPACING = 20;
 
 type ZoomButtonGroupOptions = MagnifyingGlassZoomButtonGroupOptions;
 
-export default class ZoomButtonGroup extends MagnifyingGlassZoomButtonGroup {
+export default class CCKZoomButtonGroup extends MagnifyingGlassZoomButtonGroup {
 
   public constructor( selectedZoomProperty: NumberProperty, providedOptions?: ZoomButtonGroupOptions ) {
     providedOptions = combineOptions<ZoomButtonGroupOptions>( {
       spacing: BUTTON_SPACING,
       buttonOptions: {
         buttonAppearanceStrategy: RectangularButton.ThreeDAppearanceStrategy,
-        baseColor: PhetColorScheme.BUTTON_YELLOW
+        baseColor: PhetColorScheme.BUTTON_YELLOW,
+        phetioReadOnly: true
       },
       magnifyingGlassNodeOptions: {
         scale: 0.7
@@ -38,4 +39,4 @@ export default class ZoomButtonGroup extends MagnifyingGlassZoomButtonGroup {
   }
 }
 
-circuitConstructionKitCommon.register( 'ZoomButtonGroup', ZoomButtonGroup );
+circuitConstructionKitCommon.register( 'CCKZoomButtonGroup', CCKZoomButtonGroup );

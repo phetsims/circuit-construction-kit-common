@@ -9,7 +9,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 export default class ResistorType extends EnumerationValue {
 
   public static readonly RESISTOR = new ResistorType( 10, new Range( 0, 120 ), false, CCKCConstants.RESISTOR_LENGTH );
-  public static readonly HIGH_RESISTANCE_RESISTOR = new ResistorType( 1000, new Range( 100, 10000 ), false, CCKCConstants.RESISTOR_LENGTH );
+  public static readonly EXTREME_RESISTOR = new ResistorType( 1000, new Range( 100, 10000 ), false, CCKCConstants.RESISTOR_LENGTH );
   public static readonly COIN = ResistorType.fixed( 0, true, CCKCConstants.COIN_LENGTH );
   public static readonly PAPER_CLIP = ResistorType.fixed( 0, true, CCKCConstants.PAPER_CLIP_LENGTH );
   public static readonly PENCIL = ResistorType.fixed( 25, false, CCKCConstants.PENCIL_LENGTH );

@@ -82,6 +82,8 @@ export default class AmmeterNode extends Node {
 
       showPhetioIndex: false,
 
+      phetioVisiblePropertyInstrumented: false,
+
       tandem: Tandem.REQUIRED
     }, providedOptions );
     const tandem = options.tandem;
@@ -106,13 +108,13 @@ export default class AmmeterNode extends Node {
       ( ( current, ammeterReadoutType ) => {
         return CCKCUtils.createCurrentReadout( current, options.blackBoxStudy );
       } ), {
-        tandem: tandemForChildren.createTandem( 'readoutText' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME ),
+        tandem: tandemForChildren.createTandem( 'probeReadoutText' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME ),
         phetioValueType: StringIO
       } );
 
     const probeTextProperty = new DerivedProperty( [ currentStringProperty ], currentString =>
         options.showPhetioIndex ? currentString + ' ' + ammeter.phetioIndex : currentString, {
-        tandem: tandemForChildren.createTandem( 'probeText' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME ),
+        tandem: tandemForChildren.createTandem( 'probeTitleText' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME ),
         phetioValueType: StringIO
       }
     );
@@ -187,8 +189,8 @@ export default class AmmeterNode extends Node {
     if ( !options.isIcon ) {
 
       // Show the ammeter in the play area when dragged from toolbox
-      ammeter.visibleProperty.linkAttribute( this, 'visible' );
-      ammeter.visibleProperty.link( alignProbeToBody );
+      ammeter.isActiveProperty.linkAttribute( this, 'visible' );
+      ammeter.isActiveProperty.link( alignProbeToBody );
 
       const erodedDragBoundsProperty = new DerivedProperty( [ options.visibleBoundsProperty! ], visibleBounds => {
         return visibleBounds.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
@@ -233,7 +235,7 @@ export default class AmmeterNode extends Node {
       const updateAmmeter = () => {
 
         // Skip work when ammeter is not out, to improve performance.
-        if ( ammeter.visibleProperty.get() ) {
+        if ( ammeter.isActiveProperty.get() ) {
           const current = circuitNode!.getCurrent( this.probeNode );
           ammeter.currentProperty.value = current;
         }

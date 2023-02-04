@@ -40,7 +40,8 @@ import SensorToolbox from './SensorToolbox.js';
 import ViewRadioButtonGroup from './ViewRadioButtonGroup.js';
 import VoltageChartNode from './VoltageChartNode.js';
 import VoltmeterNode from './VoltmeterNode.js';
-import ZoomButtonGroup from './ZoomButtonGroup.js';
+import CCKZoomButtonGroup from './CCKZoomButtonGroup.js';
+import FixedCircuitElementNode from './FixedCircuitElementNode.js';
 
 const batteryResistanceStringProperty = CircuitConstructionKitCommonStrings.batteryResistanceStringProperty;
 const sourceResistanceStringProperty = CircuitConstructionKitCommonStrings.sourceResistanceStringProperty;
@@ -146,15 +147,15 @@ export default class CCKCScreenView extends ScreenView {
     const meterNodesTandem = tandem.createTandem( 'meterNodes' );
 
     const voltmeterNodes = model.voltmeters.map( voltmeter => {
-      const voltmeterTandem = meterNodesTandem.createTandem( `voltmeterNode${voltmeter.phetioIndex}` );
-      const voltmeterNode = new VoltmeterNode( voltmeter, model, this.circuitNode, voltmeterTandem, {
+      const voltmeterNode = new VoltmeterNode( voltmeter, model, this.circuitNode, {
+        tandem: meterNodesTandem.createTandem( `voltmeterNode${voltmeter.phetioIndex}` ),
         showResultsProperty: model.isValueDepictionEnabledProperty,
         visibleBoundsProperty: this.circuitNode.visibleBoundsInCircuitCoordinateFrameProperty,
         showPhetioIndex: options.showMeterPhetioIndex
       } );
       voltmeter.droppedEmitter.addListener( bodyNodeGlobalBounds => {
         if ( bodyNodeGlobalBounds.intersectsBounds( this.sensorToolbox.globalBounds ) ) {
-          voltmeter.visibleProperty.value = false;
+          voltmeter.isActiveProperty.value = false;
         }
       } );
       return voltmeterNode;
@@ -170,7 +171,7 @@ export default class CCKCScreenView extends ScreenView {
       } );
       ammeter.droppedEmitter.addListener( bodyNodeGlobalBounds => {
         if ( bodyNodeGlobalBounds.intersectsBounds( this.sensorToolbox.globalBounds ) ) {
-          ammeter.visibleProperty.value = false;
+          ammeter.isActiveProperty.value = false;
         }
       } );
       return ammeterNode;
@@ -340,12 +341,8 @@ export default class CCKCScreenView extends ScreenView {
     this.chartNodes.forEach( chartNode => this.circuitNode.sensorLayer.addChild( chartNode ) );
 
     // Create the zoom button group
-    const zoomButtonGroup = new ZoomButtonGroup( model.zoomLevelProperty, {
-      tandem: tandem.createTandem( 'zoomButtonGroup' ),
-      buttonOptions: {
-        phetioReadOnly: true,
-        phetioVisiblePropertyInstrumented: false
-      }
+    const zoomButtonGroup = new CCKZoomButtonGroup( model.zoomLevelProperty, {
+      tandem: tandem.createTandem( 'zoomButtonGroup' )
     } );
     zoomButtonGroup.mutate( {
       scale: this.circuitElementToolbox.carousel.backgroundWidth /
@@ -410,7 +407,11 @@ export default class CCKCScreenView extends ScreenView {
         }
         zoomButtonGroup.bottom = visibleBounds.bottom - VERTICAL_MARGIN;
 
-        playAreaCenterXProperty.value = ( controlPanelVBox.left + this.circuitElementToolbox.right ) / 2;
+        // Center some things between the panels, but gracefully accommodate when phet-io has made them disappear
+        const leftEdge = this.circuitElementToolbox.bounds.isEmpty() ? visibleBounds.left : this.circuitElementToolbox.right;
+        const rightEdge = controlPanelVBox.bounds.isEmpty() ? visibleBounds.right : controlPanelVBox.left;
+
+        playAreaCenterXProperty.value = ( leftEdge + rightEdge ) / 2;
 
         chargeSpeedThrottlingReadoutNode.mutate( {
           centerX: playAreaCenterXProperty.value,
@@ -533,14 +534,21 @@ export default class CCKCScreenView extends ScreenView {
     // Only single (unconnected) elements can be dropped into the toolbox
     const isSingle = this.model.circuit.isSingle( circuitElement );
 
+    const componentImage = circuitElementNode instanceof FixedCircuitElementNode ? circuitElementNode.contentNode : circuitElementNode;
+    const elementNodeBounds = this.globalToLocalBounds( componentImage.globalBounds );
+
+    const erosionPercent = 0.5 * ( 1 - CCKCConstants.RETURN_ITEM_HITBOX_PERCENT );
+    const elementNodeBoundsEroded = elementNodeBounds.erodedXY( erosionPercent * elementNodeBounds.width,
+      erosionPercent * elementNodeBounds.height );
+
     // SeriesAmmeters should be dropped in the sensor toolbox
-    const toolbox = circuitElement instanceof SeriesAmmeter ? this.sensorToolbox : this.circuitElementToolbox;
+    const toolbox = circuitElement instanceof SeriesAmmeter ? this.sensorToolbox : this.circuitElementToolbox.carousel;
 
-    // Detect whether the midpoint between the vertices overlaps the toolbox
-    const globalMidpoint = circuitElementNode.localToGlobalPoint( circuitElement.getMidpoint() );
-    const hitBox = Bounds2.point( globalMidpoint ).dilate( CCKCConstants.RETURN_ITEM_BOUNDS_TOLERANCE );
+    const globalCarouselBounds = toolbox.localToGlobalBounds( toolbox.localBounds );
+    const carouselBounds = this.globalToLocalBounds( globalCarouselBounds );
 
-    const overToolbox = toolbox.globalBounds.intersectsBounds( hitBox );
+    // Detect whether eroded component image bounds intersects the toolbox bounds
+    const overToolbox = carouselBounds.intersectsBounds( elementNodeBoundsEroded );
 
     return isSingle && overToolbox && circuitElement.isDisposableProperty.value;
   }

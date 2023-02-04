@@ -98,7 +98,7 @@ export default class Resistor extends FixedCircuitElement {
    * Returns true if the resistance is editable.  Household item resistance is not editable.
    */
   public isResistanceEditable(): boolean {
-    return this.resistorType === ResistorType.HIGH_RESISTANCE_RESISTOR ||
+    return this.resistorType === ResistorType.EXTREME_RESISTOR ||
            this.resistorType === ResistorType.RESISTOR;
   }
 

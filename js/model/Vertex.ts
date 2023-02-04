@@ -116,7 +116,7 @@ export default class Vertex extends PhetioObject {
 
     this.positionProperty = new Vector2Property( position, {
       tandem: options.tandem && options.tandem.createTandem( 'positionProperty' ),
-      useDeepEquality: true,
+      valueComparisonStrategy: 'equalsFunction',
       isValidValue: ( position: Vector2 ) => position.isFinite(),
       phetioReadOnly: true,
       phetioHighFrequency: true

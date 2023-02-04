@@ -27,8 +27,8 @@ const CCKCConstants = {
   // Available scale factors for the sim stage
   ZOOM_SCALES: [ 0.5, 1, 1.6 ],
 
-  // When trying to drop an item back in the toolbox, this is the width the hit box
-  RETURN_ITEM_BOUNDS_TOLERANCE: 20,
+  // When trying to drop an item back in the toolbox, this is the percent of its width and height used for the hitbox
+  RETURN_ITEM_HITBOX_PERCENT: 0.2,
 
   // Maximum size for Width or height of icons in the circuit element toolbox or sensor toolbox
   TOOLBOX_ICON_HEIGHT: 31,
@@ -51,7 +51,7 @@ const CCKCConstants = {
 
   // Padding for placement of control panels
   VERTICAL_MARGIN: 5,
-  HORIZONTAL_MARGIN: 17,
+  HORIZONTAL_MARGIN: 10,
 
   // Number of pixels (screen coordinates) that constitutes a tap instead of a drag
   TAP_THRESHOLD: 15,

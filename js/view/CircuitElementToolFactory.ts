@@ -45,6 +45,7 @@ import ResistorType from '../model/ResistorType.js';
 import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import PhetioGroup from '../../../tandem/js/PhetioGroup.js';
 
 const acSourceStringProperty = CircuitConstructionKitCommonStrings.acSourceStringProperty;
 const capacitorStringProperty = CircuitConstructionKitCommonStrings.capacitorStringProperty;
@@ -278,7 +279,7 @@ export default class CircuitElementToolFactory {
       } );
   }
 
-  public createResistorToolNode( tandem: Tandem, providedOptions?: CreateResistorToolNodeProvidedOptions ): CircuitElementToolNode {
+  public createResistorToolNode( tandem: Tandem, group: PhetioGroup<Resistor, [ Vertex, Vertex ]> | PhetioGroup<Resistor, [ Vertex, Vertex, ResistorType ]> = this.circuit.resistorGroup, providedOptions?: CreateResistorToolNodeProvidedOptions ): CircuitElementToolNode {
     const options = optionize<CreateResistorToolNodeProvidedOptions, CreateResistorToolNodeSelfOptions, CreateCircuitElementToolNodeSelfOptions>()( {
       count: 10,
       resistorType: ResistorType.RESISTOR,
@@ -305,9 +306,9 @@ export default class CircuitElementToolFactory {
       circuitElement => circuitElement instanceof Resistor && circuitElement.resistorType === resistorType,
       ( position: Vector2 ) => {
         const vertices = this.circuit.createVertexPairArray( position, resistorType.length );
-        return this.circuit.resistorGroup.createNextElement( vertices[ 0 ], vertices[ 1 ], resistorType );
+        return group.createNextElement( vertices[ 0 ], vertices[ 1 ], resistorType );// last arg ignored by some groups
       }, {
-        tandem: tandem,
+        tandem: options.tandem,
         lifelikeIconHeight: options.lifelikeIconHeight,
         schematicIconHeight: options.schematicIconHeight
       } );
@@ -390,7 +391,7 @@ export default class CircuitElementToolFactory {
   }
 
   public createPaperClipToolNode( tandem: Tandem ): CircuitElementToolNode {
-    return this.createResistorToolNode( tandem, {
+    return this.createResistorToolNode( tandem, this.circuit.householdObjectGroup, {
       count: 1,
       resistorType: ResistorType.PAPER_CLIP,
       tandemName: 'paperClipToolNode',
@@ -400,7 +401,7 @@ export default class CircuitElementToolFactory {
 
   // Same docs as for createPaperClipToolNode
   public createCoinToolNode( tandem: Tandem ): CircuitElementToolNode {
-    return this.createResistorToolNode( tandem, {
+    return this.createResistorToolNode( tandem, this.circuit.householdObjectGroup, {
       count: 1,
       resistorType: ResistorType.COIN,
       tandemName: 'coinToolNode',
@@ -411,7 +412,7 @@ export default class CircuitElementToolFactory {
 
   // Same docs as as for createPaperClipToolNode
   public createDollarBillToolNode( tandem: Tandem ): CircuitElementToolNode {
-    return this.createResistorToolNode( tandem, {
+    return this.createResistorToolNode( tandem, this.circuit.householdObjectGroup, {
       count: 1,
       resistorType: ResistorType.DOLLAR_BILL,
       tandemName: 'dollarBillToolNode',
@@ -422,7 +423,7 @@ export default class CircuitElementToolFactory {
 
   // Same docs as for createPaperClipToolNode
   public createEraserToolNode( tandem: Tandem ): CircuitElementToolNode {
-    return this.createResistorToolNode( tandem, {
+    return this.createResistorToolNode( tandem, this.circuit.householdObjectGroup, {
       count: 1,
       resistorType: ResistorType.ERASER,
       tandemName: 'eraserToolNode',
@@ -433,7 +434,7 @@ export default class CircuitElementToolFactory {
 
   // Same docs as for createPaperClipToolNode
   public createPencilToolNode( tandem: Tandem ): CircuitElementToolNode {
-    return this.createResistorToolNode( tandem, {
+    return this.createResistorToolNode( tandem, this.circuit.householdObjectGroup, {
       count: 1,
       resistorType: ResistorType.PENCIL,
       tandemName: 'pencilToolNode',
@@ -444,7 +445,7 @@ export default class CircuitElementToolFactory {
 
   // Same docs as for createPaperClipToolNode
   public createHandToolNode( tandem: Tandem ): CircuitElementToolNode {
-    return this.createResistorToolNode( tandem, {
+    return this.createResistorToolNode( tandem, this.circuit.householdObjectGroup, {
       count: 1,
       resistorType: ResistorType.HAND,
       tandemName: 'handToolNode',
@@ -455,7 +456,7 @@ export default class CircuitElementToolFactory {
 
   // Same docs as for createPaperClipToolNode
   public createDogToolNode( tandem: Tandem ): CircuitElementToolNode {
-    return this.createResistorToolNode( tandem, {
+    return this.createResistorToolNode( tandem, this.circuit.householdObjectGroup, {
       count: 1,
       resistorType: ResistorType.DOG,
       tandemName: 'dogToolNode',
@@ -466,9 +467,9 @@ export default class CircuitElementToolFactory {
 
   // Same docs as for createPaperClipToolNode
   public createExtremeResistorToolNode( tandem: Tandem ): CircuitElementToolNode {
-    return this.createResistorToolNode( tandem, {
+    return this.createResistorToolNode( tandem, this.circuit.extremeResistorGroup, {
       count: 4,
-      resistorType: ResistorType.HIGH_RESISTANCE_RESISTOR,
+      resistorType: ResistorType.EXTREME_RESISTOR,
       tandemName: 'extremeResistorToolNode',
       labelStringProperty: resistorStringProperty
     } );

@@ -9,7 +9,6 @@
  */
 
 import Utils from '../../../dot/js/Utils.js';
-import StringUtils from '../../../phetcommon/js/util/StringUtils.js';
 import { AlignGroup, Text, TextOptions, VBox } from '../../../scenery/js/imports.js';
 import HSlider from '../../../sun/js/HSlider.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -19,6 +18,7 @@ import Property from '../../../axon/js/Property.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
+import PatternStringProperty from '../../../axon/js/PatternStringProperty.js';
 
 const resistanceOhmsSymbolStringProperty = CircuitConstructionKitCommonStrings.resistanceOhmsSymbolStringProperty;
 
@@ -39,7 +39,7 @@ export default class SourceResistanceControl extends VBox {
      */
     const createLabel = ( string: TReadOnlyProperty<string>, tandem: Tandem ) => new Text( string, {
       fontSize: 12,
-      tandem: tandem.createTandem( 'titleText' ),
+      tandem: tandem,
       maxWidth: 45
     } );
 
@@ -58,9 +58,11 @@ export default class SourceResistanceControl extends VBox {
     } );
     slider.addMajorTick( range.min, createLabel( CircuitConstructionKitCommonStrings.tinyStringProperty, tandem.createTandem( 'tinyLabelText' ) ) );
     slider.addMajorTick( midpoint );
-    slider.addMajorTick( range.max, createLabel( new Property( StringUtils.fillIn( resistanceOhmsSymbolStringProperty, {
+    slider.addMajorTick( range.max, createLabel( new PatternStringProperty( resistanceOhmsSymbolStringProperty, {
       resistance: Utils.toFixed( range.max, 0 )
-    } ) ), tandem.createTandem( 'maxLabelText' ) ) );
+    }, {
+      tandem: tandem.createTandem( 'maxLabelText' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME )
+    } ), tandem.createTandem( 'maxLabelText' ) ) );
 
     for ( let i = range.min + 1; i < range.max; i++ ) {
       if ( Math.abs( i - midpoint ) > 1E-6 ) {

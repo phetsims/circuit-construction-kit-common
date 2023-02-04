@@ -54,7 +54,7 @@ export default class CurrentChartNode extends CCKCChartNode {
    * @param dt - delta time since last update
    */
   public step( time: number, dt: number ): void {
-    if ( this.meter.visibleProperty.value ) {
+    if ( this.meter.isActiveProperty.value ) {
       const current = this.circuitNode.getCurrent( this.probeNode1 );
       this.series.push( current === null ? null : new Vector2( time, current || 0 ) );
       while ( ( this.series[ 0 ] === null ) ||

@@ -29,7 +29,6 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import ACVoltage from '../model/ACVoltage.js';
 import Battery from '../model/Battery.js';
 import Capacitor from '../model/Capacitor.js';
-import Dog from '../model/Dog.js';
 import FixedCircuitElement from '../model/FixedCircuitElement.js';
 import Fuse from '../model/Fuse.js';
 import Inductor from '../model/Inductor.js';
@@ -46,7 +45,6 @@ import CCKCLightBulbNode from './CCKCLightBulbNode.js';
 import ChargeNode from './ChargeNode.js';
 import CircuitElementNode from './CircuitElementNode.js';
 import CustomLightBulbNode from './CustomLightBulbNode.js';
-import DogNode from './DogNode.js';
 import FixedCircuitElementNode from './FixedCircuitElementNode.js';
 import FuseNode from './FuseNode.js';
 import InductorNode from './InductorNode.js';
@@ -66,6 +64,9 @@ import CircuitConstructionKitModel from '../model/CircuitConstructionKitModel.js
 import PhetioGroup from '../../../tandem/js/PhetioGroup.js';
 import CurrentSense from '../model/CurrentSense.js';
 import Multilink from '../../../axon/js/Multilink.js';
+import Dog from '../model/Dog.js';
+import DogNode from './DogNode.js';
+import ResistorType from '../model/ResistorType.js';
 
 // constants
 
@@ -370,7 +371,23 @@ export default class CircuitNode extends Node {
           tandem: circuit.includeLabElements ? tandem.createTandem( 'extremeLightBulbNodeGroup' ) : Tandem.OPT_OUT,
           supportsDynamicState: false
         } ) );
-    initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Resistor, this.fixedCircuitElementLayer,
+    initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Resistor && e.resistorType === ResistorType.RESISTOR, this.fixedCircuitElementLayer,
+      new PhetioGroup<CircuitElementNode, [ CircuitElement ]>( ( tandem: Tandem, circuitElement: CircuitElement ) =>
+          new ResistorNode( screenView, this, circuitElement as Resistor, this.model.viewTypeProperty, tandem ),
+        () => [ this.circuit.resistorGroup.archetype ], {
+          phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
+          tandem: tandem.createTandem( 'resistorNodeGroup' ),
+          supportsDynamicState: false
+        } ) );
+    initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Resistor && e.resistorType === ResistorType.EXTREME_RESISTOR, this.fixedCircuitElementLayer,
+      new PhetioGroup<CircuitElementNode, [ CircuitElement ]>( ( tandem: Tandem, circuitElement: CircuitElement ) =>
+          new ResistorNode( screenView, this, circuitElement as Resistor, this.model.viewTypeProperty, tandem ),
+        () => [ this.circuit.extremeResistorGroup.archetype ], {
+          phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
+          tandem: tandem.createTandem( 'extremeResistorNodeGroup' ),
+          supportsDynamicState: false
+        } ) );
+    initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Resistor && e.resistorType !== ResistorType.RESISTOR && e.resistorType !== ResistorType.EXTREME_RESISTOR, this.fixedCircuitElementLayer,
       new PhetioGroup<CircuitElementNode, [ CircuitElement ]>( ( tandem: Tandem, circuitElement: CircuitElement ) => {
           if ( circuitElement instanceof Dog ) {
             return new DogNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem );
@@ -379,9 +396,9 @@ export default class CircuitNode extends Node {
             return new ResistorNode( screenView, this, circuitElement as Resistor, this.model.viewTypeProperty, tandem );
           }
         },
-        () => [ this.circuit.resistorGroup.archetype ], {
+        () => [ this.circuit.householdObjectGroup.archetype ], {
           phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
-          tandem: tandem.createTandem( 'resistorNodeGroup' ),
+          tandem: tandem.createTandem( 'householdObjectNodeGroup' ),
           supportsDynamicState: false
         } ) );
     initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Capacitor, this.fixedCircuitElementLayer,
@@ -444,6 +461,9 @@ export default class CircuitNode extends Node {
       content: cutIcon,
       xMargin: 10,
       yMargin: 10,
+
+      // The cut button should appear at the top level of the view in the PhET-iO tree (consistent
+      // with other global-use buttons), so we are using the screenView tandem here
       tandem: screenView.tandem.createTandem( 'vertexCutButton' ),
       enabledPropertyOptions: {
         phetioReadOnly: true

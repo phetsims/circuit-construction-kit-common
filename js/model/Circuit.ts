@@ -27,7 +27,6 @@ import Charge from './Charge.js';
 import ChargeAnimator from './ChargeAnimator.js';
 import CircuitElement from './CircuitElement.js';
 import CurrentType from './CurrentType.js';
-import Dog from './Dog.js';
 import DynamicCircuitElement from './DynamicCircuitElement.js';
 import FixedCircuitElement from './FixedCircuitElement.js';
 import Fuse from './Fuse.js';
@@ -136,7 +135,9 @@ export default class Circuit {
   public readonly batteryGroup: PhetioGroup<Battery, [ Vertex, Vertex ]>;
   public readonly extremeBatteryGroup: PhetioGroup<Battery, [ Vertex, Vertex ]>;
   public readonly acVoltageGroup: PhetioGroup<ACVoltage, [ Vertex, Vertex ]>;
-  public readonly resistorGroup: PhetioGroup<Resistor, [ Vertex, Vertex, ResistorType ]>;
+  public readonly resistorGroup: PhetioGroup<Resistor, [ Vertex, Vertex ]>;
+  public readonly extremeResistorGroup: PhetioGroup<Resistor, [ Vertex, Vertex ]>;
+  public readonly householdObjectGroup: PhetioGroup<Resistor, [ Vertex, Vertex, ResistorType ]>;
   public readonly fuseGroup: PhetioGroup<Fuse, [ Vertex, Vertex ]>;
   public readonly seriesAmmeterGroup: PhetioGroup<SeriesAmmeter, [ Vertex, Vertex ]>;
   public readonly extremeLightBulbGroup: PhetioGroup<LightBulb, [ Vertex, Vertex ]>;
@@ -369,15 +370,29 @@ export default class Circuit {
     } );
 
     this.resistorGroup = new PhetioGroup(
-      ( tandem, startVertex, endVertex, resistorType ) => resistorType === ResistorType.DOG ?
-                                                          new Dog( startVertex, endVertex, tandem ) :
-                                                          new Resistor( startVertex, endVertex, resistorType, tandem ),
+      ( tandem, startVertex, endVertex ) =>
+        new Resistor( startVertex, endVertex, ResistorType.RESISTOR, tandem ),
+      () => createVertices( ResistorType.RESISTOR.length ), {
+        phetioType: PhetioGroup.PhetioGroupIO( Resistor.ResistorIO ),
+        tandem: tandem.createTandem( 'resistorGroup' )
+      } );
 
+    this.extremeResistorGroup = new PhetioGroup(
+      ( tandem, startVertex, endVertex ) =>
+        new Resistor( startVertex, endVertex, ResistorType.EXTREME_RESISTOR, tandem ),
+      () => createVertices( ResistorType.EXTREME_RESISTOR.length ), {
+        phetioType: PhetioGroup.PhetioGroupIO( Resistor.ResistorIO ),
+        tandem: tandem.createTandem( 'extremeResistorGroup' )
+      } );
+
+    this.householdObjectGroup = new PhetioGroup(
+      ( tandem, startVertex, endVertex, resistorType ) =>
+        new Resistor( startVertex, endVertex, resistorType, tandem ),
       () => {
         return [ ...createVertices( ResistorType.RESISTOR.length ), ResistorType.RESISTOR ];
       }, {
         phetioType: PhetioGroup.PhetioGroupIO( Resistor.ResistorIO ),
-        tandem: tandem.createTandem( 'resistorGroup' )
+        tandem: tandem.createTandem( 'householdObjectGroup' )
       } );
 
     this.fuseGroup = new PhetioGroup(
@@ -449,6 +464,8 @@ export default class Circuit {
       this.extremeBatteryGroup,
       this.acVoltageGroup,
       this.resistorGroup,
+      this.extremeResistorGroup,
+      this.householdObjectGroup,
       this.fuseGroup,
       this.capacitorGroup,
       this.inductorGroup,

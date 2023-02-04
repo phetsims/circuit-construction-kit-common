@@ -61,7 +61,7 @@ RESISTOR_IMAGE_MAP.set( ResistorType.PAPER_CLIP, paperClip_png );
 RESISTOR_IMAGE_MAP.set( ResistorType.PENCIL, pencil_png );
 RESISTOR_IMAGE_MAP.set( ResistorType.ERASER, eraser_png );
 RESISTOR_IMAGE_MAP.set( ResistorType.HAND, hand_png );
-RESISTOR_IMAGE_MAP.set( ResistorType.HIGH_RESISTANCE_RESISTOR, resistorHigh_png );
+RESISTOR_IMAGE_MAP.set( ResistorType.EXTREME_RESISTOR, resistorHigh_png );
 RESISTOR_IMAGE_MAP.set( ResistorType.RESISTOR, resistor_png );
 RESISTOR_IMAGE_MAP.set( ResistorType.DOG, dog_png );
 RESISTOR_IMAGE_MAP.set( ResistorType.DOLLAR_BILL, dollar_png );
