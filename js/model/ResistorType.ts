@@ -1,4 +1,4 @@
-// Copyright 2021-2022, University of Colorado Boulder
+// Copyright 2021-2023, University of Colorado Boulder
 
 import CCKCConstants from '../CCKCConstants.js';
 import Range from '../../../dot/js/Range.js';
