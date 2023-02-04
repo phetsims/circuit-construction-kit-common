@@ -49,6 +49,10 @@ import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import TEmitter from '../../../axon/js/TEmitter.js';
 import OrIO from '../../../tandem/js/types/OrIO.js';
 import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
+import IOType from '../../../tandem/js/types/IOType.js';
+import StringIO from '../../../tandem/js/types/StringIO.js';
+import VoidIO from '../../../tandem/js/types/VoidIO.js';
+import PhetioObject from '../../../tandem/js/PhetioObject.js';
 
 // constants
 const SNAP_RADIUS = 30; // For two vertices to join together, they must be this close, in view coordinates
@@ -78,7 +82,7 @@ type CircuitOptions = {
 
 type Pair = { v1: Vertex; v2: Vertex };
 
-export default class Circuit {
+export default class Circuit extends PhetioObject {
   private readonly viewTypeProperty: Property<CircuitElementViewType>;
   public readonly addRealBulbsProperty: Property<boolean>;
   private readonly blackBoxStudy: boolean;
@@ -152,6 +156,14 @@ export default class Circuit {
 
   public constructor( viewTypeProperty: Property<CircuitElementViewType>, addRealBulbsProperty: Property<boolean>, tandem: Tandem,
                       providedOptions: CircuitOptions ) {
+
+    super( {
+      tandem: tandem,
+      phetioType: CircuitStateIO,
+
+      // Used for get/set for the circuit on one screen but the entire state is already instrumented via the PhetioGroups
+      phetioState: false
+    } );
 
     this.viewTypeProperty = viewTypeProperty;
     this.addRealBulbsProperty = addRealBulbsProperty;
@@ -1565,7 +1577,7 @@ export default class Circuit {
   }
 
   // only works in unbuilt mode
-  private toString(): string {
+  public override toString(): string {
     return this.circuitElements.map( c => c.constructor.name ).join( ', ' );
   }
 
@@ -1582,5 +1594,54 @@ export default class Circuit {
     this.selectionProperty.reset();
   }
 }
+
+const CircuitStateIO = new IOType( 'CircuitStateIO', {
+  valueType: Circuit,
+  methods: {
+    getValue: {
+      returnType: StringIO,
+      parameterTypes: [],
+      implementation: function( this: Circuit ) {
+        const state = phet.phetio.phetioEngine.phetioStateEngine.getState( this );
+        return JSON.stringify( state, null, 2 );
+      },
+      documentation: 'Gets the current value of the circuit on this screen.'
+    },
+    getValidationError: {
+      returnType: NullableIO( StringIO ),
+      parameterTypes: [ StringIO ],
+      implementation: function( this: Circuit, value ) {
+        try {
+          const result = JSON.parse( value );
+
+          // check if the specified circuit corresponds to this.tandemID. To avoid pasting a circuit from screen1 into screen2
+          const keys = Array.from( Object.keys( result ) );
+
+          for ( let i = 0; i < keys.length; i++ ) {
+            const key = keys[ i ];
+            if ( !key.startsWith( this.phetioID ) ) {
+              return 'key had incorrect prefix. Expected: ' + this.phetioID + ' but got: ' + key;
+            }
+          }
+        }
+        catch( e: IntentionalAny ) {
+          return e.message;
+        }
+        return null;
+      },
+      documentation: 'Checks to see if a proposed value is valid. Returns the first validation error, or null if the value is valid.'
+    },
+
+    setValue: {
+      returnType: VoidIO,
+      parameterTypes: [ StringIO ],
+      documentation: 'Sets the circuit that was created on this screen. Trying to set a circuit from another screen results in an error.',
+      implementation: function( this: Circuit, state: string ) {
+        const test = JSON.parse( state );
+        phet.phetio.phetioEngine.phetioStateEngine.setState( test, this.tandem );
+      }
+    }
+  }
+} );
 
 circuitConstructionKitCommon.register( 'Circuit', Circuit );
