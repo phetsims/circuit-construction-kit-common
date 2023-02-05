@@ -55,7 +55,8 @@ export default class CurrentChartNode extends CCKCChartNode {
    */
   public step( time: number, dt: number ): void {
     if ( this.meter.isActiveProperty.value ) {
-      const current = this.circuitNode.getCurrent( this.probeNode1 );
+      const ammeterConnection = this.circuitNode.getCurrent( this.probeNode1 );
+      const current = ammeterConnection === null ? null : ammeterConnection.current;
       this.series.push( current === null ? null : new Vector2( time, current || 0 ) );
       while ( ( this.series[ 0 ] === null ) ||
               ( this.series.length > 0 && this.series[ 0 ].x < this.timeProperty.value - CCKCConstants.NUMBER_OF_TIME_DIVISIONS ) ) {
@@ -74,7 +75,9 @@ export default class CurrentChartNode extends CCKCChartNode {
     }
 
     this.series.pop();
-    const current = this.circuitNode.getCurrent( this.probeNode1 );
+
+    const ammeterConnection = this.circuitNode.getCurrent( this.probeNode1 );
+    const current = ammeterConnection === null ? null : ammeterConnection.current;
     assert && assert( typeof this.lastStepTime === 'number' );
     if ( typeof this.lastStepTime === 'number' ) {
       this.series.push( current === null ? null : new Vector2( this.lastStepTime, current || 0 ) );
