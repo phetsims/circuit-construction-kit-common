@@ -1,4 +1,4 @@
-// Copyright 2019-2022, University of Colorado Boulder
+// Copyright 2023, University of Colorado Boulder
 
 /**
  * Indicates a circuitElement and a current measurement at the given circuitElement.
