@@ -15,6 +15,9 @@ import NullableIO from '../../../tandem/js/types/NullableIO.js';
 import NumberIO from '../../../tandem/js/types/NumberIO.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Meter from './Meter.js';
+import AmmeterConnection from './AmmeterConnection.js';
+import CircuitElement from './CircuitElement.js';
+import ReferenceIO from '../../../tandem/js/types/ReferenceIO.js';
 
 export default class Ammeter extends Meter {
 
@@ -23,6 +26,7 @@ export default class Ammeter extends Meter {
 
   // the position of the tip of the probe
   public readonly probePositionProperty: Property<Vector2>;
+  public readonly associatedCircuitElementProperty: Property<CircuitElement | null>;
 
   public constructor( tandem: Tandem, phetioIndex: number ) {
     super( tandem, phetioIndex );
@@ -37,6 +41,18 @@ export default class Ammeter extends Meter {
     this.probePositionProperty = new Vector2Property( Vector2.ZERO, {
       tandem: tandem.createTandem( 'probePositionProperty' )
     } );
+
+    this.associatedCircuitElementProperty = new Property<CircuitElement | null>( null, {
+      tandem: tandem.createTandem( 'associatedCircuitElementProperty' ),
+      phetioValueType: NullableIO( ReferenceIO( CircuitElement.CircuitElementIO ) ),
+      phetioReadOnly: true,
+      phetioDocumentation: 'The circuit element that the ammeter is connected to, or null if not connected to a circuit element'
+    } );
+  }
+
+  public setConnectionAndCurrent( ammeterConnection: AmmeterConnection | null ): void {
+    this.currentProperty.value = ammeterConnection === null ? null : ammeterConnection.current;
+    this.associatedCircuitElementProperty.value = ammeterConnection === null ? null : ammeterConnection.circuitElement;
   }
 
   // Restore the ammeter to its initial conditions

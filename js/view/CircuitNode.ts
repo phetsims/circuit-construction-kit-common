@@ -67,6 +67,7 @@ import Multilink from '../../../axon/js/Multilink.js';
 import Dog from '../model/Dog.js';
 import DogNode from './DogNode.js';
 import ResistorType from '../model/ResistorType.js';
+import AmmeterConnection from '../model/AmmeterConnection.js';
 
 // constants
 
@@ -1008,7 +1009,7 @@ export default class CircuitNode extends Node {
   /**
    * Find the current in the given layer (if any CircuitElement hits the sensor)
    */
-  private getCurrentInLayer( probeNode: Node, layer: Node ): number | null {
+  private getCurrentInLayer( probeNode: Node, layer: Node ): AmmeterConnection | null {
 
     const globalPoint = probeNode.parentToGlobalPoint( probeNode.translation );
 
@@ -1025,7 +1026,7 @@ export default class CircuitNode extends Node {
           if ( circuitElementNode.circuitElement.currentSenseProperty.value === CurrentSense.BACKWARD ) {
             rawCurrent = -rawCurrent;
           }
-          return rawCurrent;
+          return new AmmeterConnection( circuitElementNode.circuitElement, rawCurrent );
         }
       }
     }
@@ -1035,10 +1036,10 @@ export default class CircuitNode extends Node {
   /**
    * Find the current under the given probe
    */
-  public getCurrent( probeNode: Node ): number | null {
-    const mainCurrent = this.getCurrentInLayer( probeNode, this.fixedCircuitElementLayer );
-    if ( mainCurrent !== null ) {
-      return mainCurrent;
+  public getCurrent( probeNode: Node ): AmmeterConnection | null {
+    const mainAmmeterConnection = this.getCurrentInLayer( probeNode, this.fixedCircuitElementLayer );
+    if ( mainAmmeterConnection !== null ) {
+      return mainAmmeterConnection;
     }
     else {
       return this.getCurrentInLayer( probeNode, this.wireLayer );

@@ -236,8 +236,8 @@ export default class AmmeterNode extends Node {
 
         // Skip work when ammeter is not out, to improve performance.
         if ( ammeter.isActiveProperty.get() ) {
-          const current = circuitNode!.getCurrent( this.probeNode );
-          ammeter.currentProperty.value = current;
+          const ammeterConnection = circuitNode!.getCurrent( this.probeNode );
+          ammeter.setConnectionAndCurrent( ammeterConnection );
         }
       };
       circuitNode!.circuit.circuitChangedEmitter.addListener( updateAmmeter );
