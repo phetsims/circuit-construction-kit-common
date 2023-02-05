@@ -15,6 +15,7 @@ import NullableIO from '../../../tandem/js/types/NullableIO.js';
 import NumberIO from '../../../tandem/js/types/NumberIO.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Meter from './Meter.js';
+import VoltageConnection from './VoltageConnection.js';
 
 export default class Voltmeter extends Meter {
 
@@ -26,6 +27,9 @@ export default class Voltmeter extends Meter {
 
   // the position of the black probe in model=view coordinates
   public readonly blackProbePositionProperty: Vector2Property;
+
+  public readonly blackConnectionProperty: Property<VoltageConnection | null>;
+  public readonly redConnectionProperty: Property<VoltageConnection | null>;
 
   public constructor( tandem: Tandem, phetioIndex: number ) {
     super( tandem, phetioIndex );
@@ -43,6 +47,18 @@ export default class Voltmeter extends Meter {
 
     this.blackProbePositionProperty = new Vector2Property( Vector2.ZERO, {
       tandem: tandem.createTandem( 'blackProbePositionProperty' )
+    } );
+
+    this.blackConnectionProperty = new Property<VoltageConnection | null>( null, {
+      tandem: tandem.createTandem( 'blackConnectionProperty' ),
+      phetioValueType: NullableIO( VoltageConnection.VoltageConnectionIO ),
+      phetioReadOnly: true
+    } );
+
+    this.redConnectionProperty = new Property<VoltageConnection | null>( null, {
+      tandem: tandem.createTandem( 'redConnectionProperty' ),
+      phetioValueType: NullableIO( VoltageConnection.VoltageConnectionIO ),
+      phetioReadOnly: true
     } );
   }
 
