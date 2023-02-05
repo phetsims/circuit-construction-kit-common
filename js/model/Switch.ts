@@ -16,6 +16,7 @@ import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import Circuit from './Circuit.js';
 import FixedCircuitElement, { FixedCircuitElementOptions } from './FixedCircuitElement.js';
 import Vertex from './Vertex.js';
 
@@ -37,7 +38,7 @@ export default class Switch extends FixedCircuitElement {
   // whether the switch is closed (and current can flow through it)
   public readonly isClosedProperty: Property<boolean>;
 
-  public constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: SwitchOptions ) {
+  public constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, circuit: Circuit | null ) {
 
     const options = optionize<SwitchOptions, SelfOptions, FixedCircuitElementOptions>()( {
       closed: false,
@@ -50,7 +51,7 @@ export default class Switch extends FixedCircuitElement {
       // Use the bounding box of the open lifelike switch to show bounds for all combinations of open/closed x lifelike/schematic
       // See https://github.com/phetsims/circuit-construction-kit-dc/issues/132
       isSizeChangedOnViewChange: false
-    }, providedOptions );
+    } );
 
     super( startVertex, endVertex, SWITCH_LENGTH, tandem, options );
 
@@ -62,6 +63,7 @@ export default class Switch extends FixedCircuitElement {
 
     this.isClosedProperty.link( closed => {
       this.resistanceProperty.value = closed ? 0 : CCKCConstants.MAX_RESISTANCE;
+      circuit && circuit.componentEditedEmitter.emit();
     } );
   }
 

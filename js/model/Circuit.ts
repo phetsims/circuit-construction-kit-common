@@ -447,7 +447,7 @@ export default class Circuit extends PhetioObject {
       } );
 
     this.switchGroup = new PhetioGroup(
-      ( tandem, startVertex, endVertex ) => new Switch( startVertex, endVertex, tandem ),
+      ( tandem, startVertex, endVertex ) => new Switch( startVertex, endVertex, tandem, this ),
       () => createVertices( CCKCConstants.SWITCH_LENGTH ), {
         phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
         tandem: tandem.createTandem( 'switchGroup' )

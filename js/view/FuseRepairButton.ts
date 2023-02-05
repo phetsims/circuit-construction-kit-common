@@ -48,6 +48,7 @@ export default class FuseRepairButton extends CCKCRoundPushButton {
         assert && assert( fuse instanceof Fuse );
         if ( fuse instanceof Fuse ) {
           fuse.resetFuse();
+          circuit.componentEditedEmitter.emit();
         }
       }
     }, providedOptions );

@@ -108,6 +108,7 @@ export default class Fuse extends FixedCircuitElement {
     // Trip the fuse if it has exceeded the current rating beyond the threshold time
     if ( this.timeCurrentRatingExceeded > 0.0 ) {
       this.isTrippedProperty.value = true;
+      circuit.componentEditedEmitter.emit();
     }
 
     // The resistance varies inversely with the current rating, with 20.0 A at 3 mΩ.

@@ -378,7 +378,8 @@ export default class CircuitElementToolFactory {
         new Switch(
           new Vertex( Vector2.ZERO, this.circuit.selectionProperty ),
           new Vertex( new Vector2( SWITCH_LENGTH, 0 ), this.circuit.selectionProperty ),
-          Tandem.OPTIONAL
+          Tandem.OPTIONAL,
+          null
         ), viewTypeProperty, tandem.createTandem( 'switchIcon' ), {
           isIcon: true
         } ),
