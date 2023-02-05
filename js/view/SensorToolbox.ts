@@ -165,7 +165,8 @@ export default class SensorToolbox extends CCKCPanel {
         touchAreaExpansionTop: 15,
         touchAreaExpansionRight: 3,
         touchAreaExpansionBottom: 0,
-        tandem: circuit.includeLabElements ? tandem.createTandem( 'seriesAmmeterToolNode' ) : Tandem.OPT_OUT
+        tandem: circuit.includeLabElements ? tandem.createTandem( 'seriesAmmeterToolNode' ) : Tandem.OPT_OUT,
+        ghostOpacity: 0
       } );
     const allSeriesAmmetersInPlayAreaProperty = new DerivedProperty( [ circuit.circuitElements.lengthProperty ], ( () => {
       return circuit.circuitElements.count( circuitElement => circuitElement instanceof SeriesAmmeter ) === MAX_SERIES_AMMETERS;
@@ -187,33 +188,11 @@ export default class SensorToolbox extends CCKCPanel {
       }
     } );
 
-    // Alter the visibility of the labels when the labels checkbox is toggled.
-    Multilink.multilink( [ circuitNode.model.showLabelsProperty, allVoltmetersInPlayAreaProperty, voltmeterToolIcon.visibleProperty ], ( showLabels, allVoltmetersInPlayArea, voltmeterToolNodeVisible ) => {
-      voltmeterText.visible = showLabels && !allVoltmetersInPlayArea && voltmeterToolNodeVisible;
-    } );
     Multilink.multilink(
       [ circuitNode.model.showLabelsProperty, allAmmetersInPlayAreaProperty, allSeriesAmmetersInPlayAreaProperty, ammeterToolIcon.visibleProperty, seriesAmmeterNodeIcon.visibleProperty, seriesAmmeterToolNode.visibleProperty ],
       ( showLabels, allAmmetersInPlayArea, allSeriesAmmetersInPlayArea, ammeterToolNodeVisible, seriesAmmeterNodeIconVisible, seriesAmmeterToolNodeVisible ) => {
 
-        let isAmmeterInToolbox = false;
-
-        if ( options.showSeriesAmmeters && !allSeriesAmmetersInPlayArea ) {
-          isAmmeterInToolbox = true;
-        }
-        if ( options.showNoncontactAmmeters && !allAmmetersInPlayArea ) {
-          isAmmeterInToolbox = true;
-        }
-
-        let isToolShowing = false;
-        // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/858 why are there 2 levels for this?
-        if ( options.showSeriesAmmeters && seriesAmmeterNodeIconVisible && seriesAmmeterToolNodeVisible ) {
-          isToolShowing = true;
-        }
-        if ( options.showNoncontactAmmeters && ammeterToolNodeVisible ) {
-          isToolShowing = true;
-        }
-
-        ammeterText.visible = showLabels && isAmmeterInToolbox && isToolShowing;
+        ammeterText.visible = showLabels && ( seriesAmmeterToolNodeVisible || ammeterToolNodeVisible );
       } );
 
     const voltmeterToolNode = new VBox( {
@@ -225,6 +204,12 @@ export default class SensorToolbox extends CCKCPanel {
       ],
       excludeInvisibleChildrenFromBounds: false
     } );
+
+    // Alter the visibility of the labels when the labels checkbox is toggled.
+    Multilink.multilink( [ circuitNode.model.showLabelsProperty, allVoltmetersInPlayAreaProperty, voltmeterToolNode.visibleProperty ],
+      ( showLabels, allVoltmetersInPlayArea, voltmeterToolNodeVisible ) => {
+        voltmeterText.visible = showLabels && voltmeterToolNodeVisible;
+      } );
 
     // This provides some space above the series ammeter icon when all other meter icons are hidden
     const seriesAmmeterToolNodeContainer = new HBox( {

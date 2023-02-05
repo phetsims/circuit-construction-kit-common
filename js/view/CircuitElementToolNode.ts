@@ -31,6 +31,7 @@ type SelfOptions = {
   touchAreaExpansionBottom?: number;
 
   additionalProperty?: ReadOnlyProperty<boolean>;
+  ghostOpacity?: number;
 };
 export type CircuitElementToolNodeOptions = SelfOptions & VBoxOptions;
 
@@ -81,7 +82,9 @@ export default class CircuitElementToolNode extends VBox {
       touchAreaExpansionBottom: 0,
 
       excludeInvisibleChildrenFromBounds: false,
-      additionalProperty: new BooleanProperty( true )
+      additionalProperty: new BooleanProperty( true ),
+
+      ghostOpacity: 0.4
     }, providedOptions );
 
     super( options );
@@ -119,7 +122,7 @@ export default class CircuitElementToolNode extends VBox {
 
         // Gray out circuit elements that cannot be dragged out
         const hasMoreAvailable = ( currentCount < maxNumber );
-        this.setOpacity( hasMoreAvailable ? 1 : 0.4 );
+        this.setOpacity( hasMoreAvailable ? 1 : options.ghostOpacity );
         this.filters = hasMoreAvailable ? [] : [ Grayscale.FULL ];
         this.inputEnabled = hasMoreAvailable;
 
