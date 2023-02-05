@@ -46,6 +46,7 @@ import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import PhetioGroup from '../../../tandem/js/PhetioGroup.js';
+import PickRequired from '../../../phet-core/js/types/PickRequired.js';
 
 const acSourceStringProperty = CircuitConstructionKitCommonStrings.acSourceStringProperty;
 const capacitorStringProperty = CircuitConstructionKitCommonStrings.capacitorStringProperty;
@@ -128,12 +129,16 @@ export default class CircuitElementToolFactory {
    *                                 - in the center of the socket
    * @param [providedOptions]
    */
-  public createCircuitElementToolNode( labelStringProperty: TReadOnlyProperty<string>, count: number, createIcon: ( t: Tandem, p: Property<CircuitElementViewType> ) => Node,
-                                       predicate: ( circuitElement: CircuitElement ) => boolean, createElement: ( v: Vector2 ) => CircuitElement, providedOptions?: CreateCircuitElementToolNodeProvidedOptions ): CircuitElementToolNode {
+  public createCircuitElementToolNode(
+    labelStringProperty: TReadOnlyProperty<string>,
+    count: number,
+    createIcon: ( t: Tandem, p: Property<CircuitElementViewType> ) => Node,
+    predicate: ( circuitElement: CircuitElement ) => boolean,
+    createElement: ( v: Vector2 ) => CircuitElement,
+    providedOptions?: CreateCircuitElementToolNodeProvidedOptions & PickRequired<Node, 'tandem'> ): CircuitElementToolNode {
 
     assert && assert( Number.isInteger( count ), 'count should be an integer' );
 
-    // TODO SR: please make sure that we PickRequired<ParentOptions, 'tandem'> here if applicable
     const options = optionize<CreateCircuitElementToolNodeProvidedOptions, CreateCircuitElementToolNodeSelfOptions, CircuitElementToolNodeOptions>()( {
       additionalProperty: new BooleanProperty( true ),
       lifelikeIconHeight: CCKCConstants.TOOLBOX_ICON_HEIGHT,
