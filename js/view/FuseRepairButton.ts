@@ -17,6 +17,7 @@ import CircuitElement from '../model/CircuitElement.js';
 import Vertex from '../model/Vertex.js';
 import { RoundPushButtonOptions } from '../../../sun/js/buttons/RoundPushButton.js';
 import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 
 type SelfOptions = EmptySelfOptions;
 type RepairFuseButtonOptions = SelfOptions & RoundPushButtonOptions;
@@ -38,7 +39,7 @@ export default class FuseRepairButton extends CCKCRoundPushButton {
     } );
 
     const options = optionize<RepairFuseButtonOptions, SelfOptions, RoundPushButtonOptions>()( {
-      phetioReadOnly: true,
+      enabledPropertyOptions: { tandem: Tandem.OPT_OUT },
       touchAreaDilation: 5, // radius dilation for touch area
       content: icon,
       listener: () => {
