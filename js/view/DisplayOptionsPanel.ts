@@ -159,7 +159,10 @@ export default class DisplayOptionsPanel extends CCKCPanel {
     vBox.boundsProperty.link( bounds => content.setChildren( bounds.isValid() ? [ alignBox ] : [] ) );
 
     super( content, tandem, {
-      yMargin: 10
+      yMargin: 10,
+      visiblePropertyOptions: {
+        phetioFeatured: true
+      }
     } );
 
     // Touch & Mouse area extends to the right across the control panel

@@ -166,21 +166,24 @@ export default abstract class CircuitElement extends PhetioObject {
       phetioValueType: Vertex.VertexIO,
       tandem: tandem.createTandem( 'startVertexProperty' ),
       phetioState: false,
-      phetioReadOnly: true
+      phetioReadOnly: true,
+      phetioFeatured: true
     } );
 
     this.endVertexProperty = new Property( endVertex, {
       phetioValueType: Vertex.VertexIO,
       tandem: tandem.createTandem( 'endVertexProperty' ),
       phetioState: false,
-      phetioReadOnly: true
+      phetioReadOnly: true,
+      phetioFeatured: true
     } );
 
     this.currentProperty = new NumberProperty( 0, {
       reentrant: options.isCurrentReentrant,
       tandem: tandem.createTandem( 'currentProperty' ),
       phetioReadOnly: true,
-      phetioHighFrequency: true
+      phetioHighFrequency: true,
+      phetioFeatured: true
     } );
     this.currentProperty.link( current => {
       assert && assert( !isNaN( current ) );
@@ -224,22 +227,26 @@ export default abstract class CircuitElement extends PhetioObject {
     // PhET-iO-specific Properties
     this.isEditableProperty = new BooleanProperty( true, combineOptions<PropertyOptions<boolean>>( {
       tandem: tandem.createTandem( 'isEditableProperty' ),
-      phetioDocumentation: 'Whether the CircuitElement can have its numerical characteristics changed by the user'
+      phetioDocumentation: 'Whether the CircuitElement can have its numerical characteristics changed by the user',
+      phetioFeatured: true
     }, options.isEditablePropertyOptions ) );
 
     this.isDisposableProperty = new BooleanProperty( true, {
       tandem: tandem.createTandem( 'isDisposableProperty' ),
-      phetioDocumentation: 'Whether the CircuitElement can be disposed. Set this to false to make the CircuitElement persisent'
+      phetioDocumentation: 'Whether the CircuitElement can be disposed. Set this to false to make the CircuitElement persisent',
+      phetioFeatured: true
     } );
 
     this.isValueDisplayableProperty = new BooleanProperty( true, combineOptions<PropertyOptions<boolean>>( {
       tandem: tandem.createTandem( 'isValueDisplayableProperty' ),
-      phetioDocumentation: 'Whether the CircuitElement\'s value can be displayed when the "values" checkbox is selected'
+      phetioDocumentation: 'Whether the CircuitElement\'s value can be displayed when the "values" checkbox is selected',
+      phetioFeatured: true
     }, options.isValueDisplayablePropertyOptions ) );
 
     this.labelStringProperty = new StringProperty( '', combineOptions<PropertyOptions<string>>( {
       tandem: tandem.createTandem( 'labelStringProperty' ),
-      phetioDocumentation: 'Shows a custom text label next to the circuit element'
+      phetioDocumentation: 'Shows a custom text label next to the circuit element',
+      phetioFeatured: true
     }, options.labelStringPropertyOptions ) );
   }
 

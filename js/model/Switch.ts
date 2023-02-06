@@ -58,7 +58,8 @@ export default class Switch extends FixedCircuitElement {
     this.resistanceProperty = new NumberProperty( 0 );
 
     this.isClosedProperty = new BooleanProperty( options.closed, {
-      tandem: tandem.createTandem( 'isClosedProperty' )
+      tandem: tandem.createTandem( 'isClosedProperty' ),
+      phetioFeatured: true
     } );
 
     this.isClosedProperty.link( closed => {

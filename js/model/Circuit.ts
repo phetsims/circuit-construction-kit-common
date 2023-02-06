@@ -175,32 +175,37 @@ export default class Circuit extends PhetioObject {
     this.blackBoxStudy = options.blackBoxStudy;
     this.wireResistivityProperty = new NumberProperty( CCKCConstants.WIRE_RESISTIVITY_RANGE.min, {
       tandem: tandem.parentTandem!.createTandem( 'wireResistivityProperty' ),
-      range: CCKCConstants.WIRE_RESISTIVITY_RANGE
+      range: CCKCConstants.WIRE_RESISTIVITY_RANGE,
+      phetioFeatured: true
     } );
 
     this.sourceResistanceProperty = new NumberProperty( CCKCConstants.DEFAULT_BATTERY_RESISTANCE, {
       tandem: tandem.parentTandem!.createTandem( 'sourceResistanceProperty' ),
-      range: CCKCConstants.BATTERY_RESISTANCE_RANGE
+      range: CCKCConstants.BATTERY_RESISTANCE_RANGE,
+      phetioFeatured: true
     } );
 
     this.circuitElements = createObservableArray( {
       phetioState: true,
       phetioType: createObservableArray.ObservableArrayIO( ReferenceIO( CircuitElement.CircuitElementIO ) ),
       tandem: tandem.createTandem( 'circuitElements' ),
-      phetioDocumentation: 'All Circuit Elements, used for state save/restore'
+      phetioDocumentation: 'All Circuit Elements, used for state save/restore',
+      phetioFeatured: true
     } );
 
     this.charges = createObservableArray();
     this.currentTypeProperty = new EnumerationProperty( CCKCQueryParameters.currentType === 'electrons' ?
                                                         CurrentType.ELECTRONS : CurrentType.CONVENTIONAL, {
-      tandem: tandem.parentTandem!.createTandem( 'currentTypeProperty' )
+      tandem: tandem.parentTandem!.createTandem( 'currentTypeProperty' ),
+      phetioFeatured: true
     } );
 
     // When the current type changes, mark everything as dirty and relayout charges
     this.currentTypeProperty.lazyLink( () => this.relayoutAllCharges() );
 
     this.showCurrentProperty = new BooleanProperty( CCKCQueryParameters.showCurrent, {
-      tandem: tandem.parentTandem!.createTandem( 'showCurrentProperty' )
+      tandem: tandem.parentTandem!.createTandem( 'showCurrentProperty' ),
+      phetioFeatured: true
     } );
 
     this.timeProperty = new NumberProperty( 0 );
@@ -258,7 +263,8 @@ export default class Circuit extends PhetioObject {
 
     this.selectionProperty = new Property<CircuitElement | Vertex | null>( null, {
       tandem: tandem.createTandem( 'selectionProperty' ),
-      phetioValueType: NullableIO( ReferenceIO( OrIO( [ CircuitElement.CircuitElementIO, Vertex.VertexIO ] ) ) )
+      phetioValueType: NullableIO( ReferenceIO( OrIO( [ CircuitElement.CircuitElementIO, Vertex.VertexIO ] ) ) ),
+      phetioFeatured: true
     } );
 
     const emitCircuitChanged = () => {

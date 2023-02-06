@@ -35,11 +35,13 @@ export default class Ammeter extends Meter {
       tandem: tandem.createTandem( 'currentProperty' ),
       units: 'A',
       phetioValueType: NullableIO( NumberIO ),
-      phetioReadOnly: true
+      phetioReadOnly: true,
+      phetioFeatured: true
     } );
 
     this.probePositionProperty = new Vector2Property( Vector2.ZERO, {
-      tandem: tandem.createTandem( 'probePositionProperty' )
+      tandem: tandem.createTandem( 'probePositionProperty' ),
+      phetioFeatured: true
     } );
 
     this.associatedCircuitElementProperty = new Property<CircuitElement | null>( null, {

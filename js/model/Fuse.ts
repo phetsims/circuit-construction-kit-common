@@ -53,11 +53,13 @@ export default class Fuse extends FixedCircuitElement {
 
     this.currentRatingProperty = new NumberProperty( options.currentRating, {
       range: Fuse.RANGE,
-      tandem: tandem.createTandem( 'currentRatingProperty' )
+      tandem: tandem.createTandem( 'currentRatingProperty' ),
+      phetioFeatured: true
     } );
 
     this.isTrippedProperty = new BooleanProperty( false, {
-      tandem: tandem.createTandem( 'isTrippedProperty' )
+      tandem: tandem.createTandem( 'isTrippedProperty' ),
+      phetioFeatured: true
     } );
 
     this.resistanceProperty = new NumberProperty( CCKCConstants.MINIMUM_RESISTANCE );
@@ -66,7 +68,8 @@ export default class Fuse extends FixedCircuitElement {
     this.timeCurrentRatingExceeded = 0;
 
     this.isRepairableProperty = new BooleanProperty( true, {
-      tandem: tandem.createTandem( 'isRepairableProperty' )
+      tandem: tandem.createTandem( 'isRepairableProperty' ),
+      phetioFeatured: true
     } );
   }
 

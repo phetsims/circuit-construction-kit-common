@@ -38,15 +38,18 @@ export default class Voltmeter extends Meter {
       tandem: tandem.createTandem( 'voltageProperty' ),
       units: 'V',
       phetioValueType: NullableIO( NumberIO ),
-      phetioReadOnly: true
+      phetioReadOnly: true,
+      phetioFeatured: true
     } );
 
     this.redProbePositionProperty = new Vector2Property( Vector2.ZERO, {
-      tandem: tandem.createTandem( 'redProbePositionProperty' )
+      tandem: tandem.createTandem( 'redProbePositionProperty' ),
+      phetioFeatured: true
     } );
 
     this.blackProbePositionProperty = new Vector2Property( Vector2.ZERO, {
-      tandem: tandem.createTandem( 'blackProbePositionProperty' )
+      tandem: tandem.createTandem( 'blackProbePositionProperty' ),
+      phetioFeatured: true
     } );
 
     this.blackConnectionProperty = new Property<VoltageConnection | null>( null, {

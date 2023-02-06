@@ -26,6 +26,7 @@ type SelfOptions = {
   voltagePropertyOptions?: {
     range?: Range;
     tandem?: Tandem;
+    phetioFeatured?: boolean;
   };
 };
 export type VoltageSourceOptions = SelfOptions & FixedCircuitElementOptions;
@@ -61,7 +62,8 @@ export default abstract class VoltageSource extends FixedCircuitElement {
       isFlammable: true,
       numberOfDecimalPlaces: 1,
       voltagePropertyOptions: {
-        tandem: tandem.createTandem( 'voltageProperty' )
+        tandem: tandem.createTandem( 'voltageProperty' ),
+        phetioFeatured: true
       }
     }, providedOptions );
     super( startVertex, endVertex, length, tandem, options );
@@ -76,7 +78,8 @@ export default abstract class VoltageSource extends FixedCircuitElement {
       ( current, voltage ) => Math.abs( current * voltage ), {
         tandem: tandem.createTandem( 'powerGeneratedProperty' ),
         phetioValueType: NumberIO,
-        phetioHighFrequency: true
+        phetioHighFrequency: true,
+        phetioFeatured: true
       } );
 
     this.initialOrientation = options.initialOrientation;

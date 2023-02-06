@@ -119,7 +119,8 @@ export default class Vertex extends PhetioObject {
       valueComparisonStrategy: 'equalsFunction',
       isValidValue: ( position: Vector2 ) => position.isFinite(),
       phetioReadOnly: true,
-      phetioHighFrequency: true
+      phetioHighFrequency: true,
+      phetioFeatured: true
     } );
 
     this.unsnappedPositionProperty = new Vector2Property( position, {
@@ -130,11 +131,13 @@ export default class Vertex extends PhetioObject {
       tandem: options.tandem && options.tandem.createTandem( 'voltageProperty' ),
       units: 'V',
       phetioReadOnly: true,
-      phetioHighFrequency: true
+      phetioHighFrequency: true,
+      phetioFeatured: true
     } );
 
     this.isDraggableProperty = new BooleanProperty( options.draggable, {
-      tandem: options.tandem && options.tandem.createTandem( 'isDraggableProperty' )
+      tandem: options.tandem && options.tandem.createTandem( 'isDraggableProperty' ),
+      phetioFeatured: true
     } );
 
     this.interactiveProperty = new BooleanProperty( options.interactive );
@@ -147,7 +150,8 @@ export default class Vertex extends PhetioObject {
     this.outerWireStub = false;
 
     this.isCuttableProperty = new BooleanProperty( true, {
-      tandem: options.tandem.createTandem( 'isCuttableProperty' )
+      tandem: options.tandem.createTandem( 'isCuttableProperty' ),
+      phetioFeatured: true
     } );
 
     this.localizedString = new LocalizedString( '', options.tandem.createTandem( 'labelStringProperty' ) );

@@ -18,7 +18,8 @@ export default class PowerDissipatedProperty extends DerivedProperty2<number, nu
         tandem: tandem,
         phetioValueType: NumberIO,
         phetioDocumentation: 'The dissipated power in Watts',
-        phetioHighFrequency: true
+        phetioHighFrequency: true,
+        phetioFeatured: true
       } );
   }
 }

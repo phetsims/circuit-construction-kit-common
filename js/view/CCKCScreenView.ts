@@ -235,7 +235,10 @@ export default class CCKCScreenView extends ScreenView {
       tandem.createTandem( 'sensorToolbox' ), {
         showSeriesAmmeters: options.showSeriesAmmeters,
         showNoncontactAmmeters: options.showNoncontactAmmeters,
-        showCharts: options.showCharts
+        showCharts: options.showCharts,
+        visiblePropertyOptions: {
+          phetioFeatured: true
+        }
       } );
 
     this.viewRadioButtonGroup = new ViewRadioButtonGroup(
@@ -341,7 +344,10 @@ export default class CCKCScreenView extends ScreenView {
 
     // Create the zoom button group
     const zoomButtonGroup = new CCKZoomButtonGroup( model.zoomLevelProperty, {
-      tandem: tandem.createTandem( 'zoomButtonGroup' )
+      tandem: tandem.createTandem( 'zoomButtonGroup' ),
+      visiblePropertyOptions: {
+        phetioFeatured: true
+      }
     } );
     zoomButtonGroup.mutate( {
       scale: this.circuitElementToolbox.carousel.backgroundWidth /

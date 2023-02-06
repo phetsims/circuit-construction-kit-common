@@ -57,7 +57,10 @@ export default class SwitchReadoutNode extends Node {
 
     super( {
       children: [ messageNode ],
-      tandem: tandem
+      tandem: tandem,
+      visiblePropertyOptions: {
+        phetioFeatured: true
+      }
     } );
   }
 }

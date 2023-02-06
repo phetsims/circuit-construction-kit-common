@@ -121,7 +121,8 @@ export default class SensorToolbox extends CCKCPanel {
     const ammeterToolIcon = new AmmeterNode( ammeter, null, {
       isIcon: true,
       tandem: tandem.createTandem( 'noncontactAmmeterToolNode' ),
-      phetioVisiblePropertyInstrumented: true
+      phetioVisiblePropertyInstrumented: true,
+      phetioFeatured: true
     } );
     const allAmmetersInPlayAreaProperty = DerivedProperty.and( ammeterNodes.map( ammeterNode => ammeterNode.ammeter.isActiveProperty ) );
     allAmmetersInPlayAreaProperty.link( allInPlayArea => {
@@ -171,7 +172,8 @@ export default class SensorToolbox extends CCKCPanel {
         touchAreaExpansionRight: 3,
         touchAreaExpansionBottom: 0,
         tandem: circuit.includeLabElements ? tandem.createTandem( 'seriesAmmeterToolNode' ) : Tandem.OPT_OUT,
-        ghostOpacity: 0
+        ghostOpacity: 0,
+        phetioFeatured: true
       } );
     const allSeriesAmmetersInPlayAreaProperty = new DerivedProperty( [ circuit.circuitElements.lengthProperty ], ( () => {
       return circuit.circuitElements.count( circuitElement => circuitElement instanceof SeriesAmmeter ) === MAX_SERIES_AMMETERS;
@@ -207,7 +209,8 @@ export default class SensorToolbox extends CCKCPanel {
         voltmeterToolIcon,
         voltmeterText
       ],
-      excludeInvisibleChildrenFromBounds: false
+      excludeInvisibleChildrenFromBounds: false,
+      phetioFeatured: true
     } );
 
     // Alter the visibility of the labels when the labels checkbox is toggled.
@@ -321,7 +324,10 @@ export default class SensorToolbox extends CCKCPanel {
       spacing: 5,
       children: rows
     } ), tandem, {
-      yMargin: 8
+      yMargin: 8,
+      visiblePropertyOptions: {
+        phetioFeatured: true
+      }
     } );
   }
 }

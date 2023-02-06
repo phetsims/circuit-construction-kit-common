@@ -127,6 +127,7 @@ export default class LightBulb extends FixedCircuitElement {
     this.isExtreme = options.isExtreme;
     this.resistanceProperty = new NumberProperty( resistance, {
       tandem: tandem.createTandem( 'resistanceProperty' ),
+      phetioFeatured: true,
       range: options.isExtreme ? new Range( 100, 10000 ) :
              options.isReal ? new Range( 0, Number.MAX_VALUE ) : // The non-ohmic bulb has its resistance computed in LinearTransientAnalysis.js
              new Range( 0, 120 )

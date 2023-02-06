@@ -40,16 +40,19 @@ export default class Meter extends PhetioObject {
 
     super( {
       tandem: tandem,
-      phetioState: false
+      phetioState: false,
+      phetioFeatured: true
     } );
 
     this.phetioIndex = phetioIndex;
     this.isActiveProperty = new BooleanProperty( false, {
-      tandem: tandem.createTandem( 'isActiveProperty' )
+      tandem: tandem.createTandem( 'isActiveProperty' ),
+      phetioFeatured: true
     } );
 
     this.bodyPositionProperty = new Vector2Property( Vector2.ZERO, {
-      tandem: tandem.createTandem( 'bodyPositionProperty' )
+      tandem: tandem.createTandem( 'bodyPositionProperty' ),
+      phetioFeatured: true
     } );
 
     this.draggingProbesWithBodyProperty = new BooleanProperty( true );

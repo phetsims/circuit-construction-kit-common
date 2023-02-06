@@ -102,11 +102,13 @@ export default class CircuitConstructionKitModel {
 
     // whether to show lifelike or schematic representations
     this.viewTypeProperty = new EnumerationProperty( CircuitElementViewType.LIFELIKE, {
-      tandem: tandem.createTandem( 'viewTypeProperty' )
+      tandem: tandem.createTandem( 'viewTypeProperty' ),
+      phetioFeatured: true
     } );
 
     this.addRealBulbsProperty = new BooleanProperty( CCKCQueryParameters.addRealBulbs, {
-      tandem: includeLabElements ? tandem.createTandem( 'addRealBulbsProperty' ) : Tandem.OPT_OUT
+      tandem: includeLabElements ? tandem.createTandem( 'addRealBulbsProperty' ) : Tandem.OPT_OUT,
+      phetioFeatured: true
     } );
 
     const circuitTandem = tandem.createTandem( 'circuit' );
@@ -135,11 +137,13 @@ export default class CircuitConstructionKitModel {
       } );
 
     this.showLabelsProperty = new BooleanProperty( true, {
-      tandem: tandem.createTandem( 'showLabelsProperty' )
+      tandem: tandem.createTandem( 'showLabelsProperty' ),
+      phetioFeatured: true
     } );
 
     this.showValuesProperty = new BooleanProperty( false, {
-      tandem: tandem.createTandem( 'showValuesProperty' )
+      tandem: tandem.createTandem( 'showValuesProperty' ),
+      phetioFeatured: true
     } );
 
     assert && assert( CCKCConstants.ZOOM_SCALES.includes( 1 ), 'Zoom scales must include 1 as an option' );
@@ -152,7 +156,8 @@ export default class CircuitConstructionKitModel {
       phetioDocumentation: 'This Property is controlled by the zoom buttons. ' +
                            'It is an integer index that tells the sim how much to scale the view. ' +
                            'Smaller values are more zoomed out. ' +
-                           'See zoomScaleProperty for the actual scale value.'
+                           'See zoomScaleProperty for the actual scale value.',
+      phetioFeatured: true
     } );
 
     // Scale factor for the current zoom level
@@ -231,7 +236,8 @@ export default class CircuitConstructionKitModel {
     const circuitChangedEmitter = new Emitter( {
       tandem: circuitTandem.createTandem( 'circuitChangedEmitter' ),
       phetioDocumentation: 'Emits when any circuit model parameter or topology has changed',
-      phetioReadOnly: true
+      phetioReadOnly: true,
+      phetioFeatured: true
     } );
 
     const emitCircuitChanged = () => circuitChangedEmitter.emit();

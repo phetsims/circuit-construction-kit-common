@@ -31,7 +31,7 @@ export default class Battery extends VoltageSource {
   public static readonly HIGH_VOLTAGE_DEFAULT = 1000;
   public static readonly HIGH_VOLTAGE_RANGE = new Range( 100, 100000 );
   public static readonly HIGH_VOLTAGE_DECIMAL_PLACES = 0;
-  public isReversibleProperty: BooleanProperty;
+  public readonly isReversibleProperty: BooleanProperty;
 
   public constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, batteryType: BatteryType,
                       tandem: Tandem, providedOptions?: BatteryOptions ) {
@@ -50,7 +50,8 @@ export default class Battery extends VoltageSource {
     this.initialOrientation = options.initialOrientation;
     this.batteryType = batteryType;
     this.isReversibleProperty = new BooleanProperty( true, {
-      tandem: tandem.createTandem( 'isReversibleProperty' )
+      tandem: tandem.createTandem( 'isReversibleProperty' ),
+      phetioFeatured: true
     } );
   }
 

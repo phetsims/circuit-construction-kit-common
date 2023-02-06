@@ -467,7 +467,8 @@ export default class CircuitNode extends Node {
       // with other global-use buttons), so we are using the screenView tandem here
       tandem: screenView.tandem.createTandem( 'vertexCutButton' ),
       enabledPropertyOptions: {
-        phetioReadOnly: true
+        phetioReadOnly: true,
+        phetioFeatured: false
       }
     } );
     this.vertexCutButton.addListener( () => {

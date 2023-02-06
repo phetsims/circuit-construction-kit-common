@@ -73,14 +73,16 @@ export default class Resistor extends FixedCircuitElement {
       tandem: tandem.createTandem( 'resistanceProperty' ),
 
       // Specify the Property range for seamless PhET-iO interoperation
-      range: this.resistorType.range
+      range: this.resistorType.range,
+      phetioFeatured: true
     } );
 
     this.powerDissipatedProperty = new PowerDissipatedProperty( this.currentProperty, this.resistanceProperty, tandem.createTandem( 'powerDissipatedProperty' ) );
 
     this.isColorCodeVisibleProperty = new BooleanProperty( true, {
       tandem: tandem.createTandem( 'isColorCodeVisibleProperty' ),
-      phetioDocumentation: 'Whether the view can display the resistor color code bands'
+      phetioDocumentation: 'Whether the view can display the resistor color code bands',
+      phetioFeatured: true
     } );
   }
 
