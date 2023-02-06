@@ -15,6 +15,8 @@ import circuitConstructionKitCommon from './circuitConstructionKitCommon.js';
 import ammeterReadoutTypeProperty from './view/ammeterReadoutTypeProperty.js';
 import MathSymbols from '../../scenery-phet/js/MathSymbols.js';
 import AmmeterReadoutType from './model/AmmeterReadoutType.js';
+import CCKCConstants from './CCKCConstants.js';
+import Bounds2 from '../../dot/js/Bounds2.js';
 
 const currentUnitsStringProperty = CircuitConstructionKitCommonStrings.currentUnitsStringProperty;
 const voltageUnitsStringProperty = CircuitConstructionKitCommonStrings.voltageUnitsStringProperty;
@@ -108,6 +110,14 @@ const CCKCUtils = {
     else {
       return value;
     }
+  },
+
+  /**
+   * Erode bounds to make hit box dimensions RETURN_ITEM_HIT_BOX_RATIO * nodeBounds
+   */
+  dropItemHitBoxForBounds( nodeBounds: Bounds2 ): Bounds2 {
+    const erosionRatio = 0.5 * ( 1 - CCKCConstants.RETURN_ITEM_HIT_BOX_RATIO );
+    return nodeBounds.erodedXY( erosionRatio * nodeBounds.width, erosionRatio * nodeBounds.height );
   }
 };
 

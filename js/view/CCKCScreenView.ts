@@ -42,6 +42,7 @@ import VoltmeterNode from './VoltmeterNode.js';
 import CCKZoomButtonGroup from './CCKZoomButtonGroup.js';
 import FixedCircuitElementNode from './FixedCircuitElementNode.js';
 import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
+import CCKCUtils from '../CCKCUtils.js';
 
 const batteryResistanceStringProperty = CircuitConstructionKitCommonStrings.batteryResistanceStringProperty;
 const sourceResistanceStringProperty = CircuitConstructionKitCommonStrings.sourceResistanceStringProperty;
@@ -153,7 +154,8 @@ export default class CCKCScreenView extends ScreenView {
         showPhetioIndex: options.showMeterPhetioIndex
       } );
       voltmeter.droppedEmitter.addListener( bodyNodeGlobalBounds => {
-        if ( bodyNodeGlobalBounds.intersectsBounds( this.sensorToolbox.globalBounds ) ) {
+        const bodyNodeBoundsEroded = CCKCUtils.dropItemHitBoxForBounds( bodyNodeGlobalBounds );
+        if ( bodyNodeBoundsEroded.intersectsBounds( this.sensorToolbox.globalBounds ) ) {
           voltmeter.isActiveProperty.value = false;
         }
       } );
@@ -169,7 +171,8 @@ export default class CCKCScreenView extends ScreenView {
         showPhetioIndex: options.showMeterPhetioIndex
       } );
       ammeter.droppedEmitter.addListener( bodyNodeGlobalBounds => {
-        if ( bodyNodeGlobalBounds.intersectsBounds( this.sensorToolbox.globalBounds ) ) {
+        const bodyNodeBoundsEroded = CCKCUtils.dropItemHitBoxForBounds( bodyNodeGlobalBounds );
+        if ( bodyNodeBoundsEroded.intersectsBounds( this.sensorToolbox.globalBounds ) ) {
           ammeter.isActiveProperty.value = false;
         }
       } );
@@ -541,10 +544,7 @@ export default class CCKCScreenView extends ScreenView {
 
     const componentImage = circuitElementNode instanceof FixedCircuitElementNode ? circuitElementNode.contentNode : circuitElementNode;
     const elementNodeBounds = this.globalToLocalBounds( componentImage.globalBounds );
-
-    const erosionPercent = 0.5 * ( 1 - CCKCConstants.RETURN_ITEM_HITBOX_PERCENT );
-    const elementNodeBoundsEroded = elementNodeBounds.erodedXY( erosionPercent * elementNodeBounds.width,
-      erosionPercent * elementNodeBounds.height );
+    const elementNodeBoundsEroded = CCKCUtils.dropItemHitBoxForBounds( elementNodeBounds );
 
     // SeriesAmmeters should be dropped in the sensor toolbox
     const toolbox = circuitElement instanceof SeriesAmmeter ? this.sensorToolbox : this.circuitElementToolbox.carousel;
