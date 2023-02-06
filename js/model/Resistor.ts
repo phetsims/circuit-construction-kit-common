@@ -80,7 +80,8 @@ export default class Resistor extends FixedCircuitElement {
     this.powerDissipatedProperty = new PowerDissipatedProperty( this.currentProperty, this.resistanceProperty, tandem.createTandem( 'powerDissipatedProperty' ) );
 
     this.isColorCodeVisibleProperty = new BooleanProperty( true, {
-      tandem: tandem.createTandem( 'isColorCodeVisibleProperty' ),
+      tandem: this.resistorType === ResistorType.RESISTOR ? tandem.createTandem( 'isColorCodeVisibleProperty' ) :
+              Tandem.OPT_OUT,
       phetioDocumentation: 'Whether the view can display the resistor color code bands',
       phetioFeatured: true
     } );
