@@ -124,7 +124,12 @@ export default class SensorToolbox extends CCKCPanel {
       phetioVisiblePropertyInstrumented: true
     } );
     const allAmmetersInPlayAreaProperty = DerivedProperty.and( ammeterNodes.map( ammeterNode => ammeterNode.ammeter.isActiveProperty ) );
-    allAmmetersInPlayAreaProperty.link( visible => ammeterToolIcon.setVisible( !visible ) );
+    allAmmetersInPlayAreaProperty.link( allInPlayArea => {
+
+      // Simulate becoming visible: false, but without changing the dimensions
+      ammeterToolIcon.setOpacity( allInPlayArea ? 0 : 1 );
+      ammeterToolIcon.setInputEnabled( !allInPlayArea );
+    } );
     ammeterToolIcon.mutate( {
       scale: TOOLBOX_ICON_HEIGHT / Math.max( ammeterToolIcon.width, ammeterToolIcon.height )
     } );
