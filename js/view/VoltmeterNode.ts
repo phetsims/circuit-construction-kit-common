@@ -31,6 +31,7 @@ import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
 import ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import StringIO from '../../../tandem/js/types/StringIO.js';
+import Multilink from '../../../axon/js/Multilink.js';
 
 const voltageStringProperty = CircuitConstructionKitCommonStrings.voltageStringProperty;
 
@@ -191,7 +192,7 @@ export default class VoltmeterNode extends Node {
     );
 
     // When the voltmeter body moves, update the node and wires
-    voltmeter.bodyPositionProperty.link( bodyPosition => {
+    Multilink.multilink( [ voltmeter.bodyPositionProperty, voltmeter.isActiveProperty ], ( bodyPosition, isActive ) => {
 
       // Drag the body by the center
       bodyNode.center = bodyPosition;
