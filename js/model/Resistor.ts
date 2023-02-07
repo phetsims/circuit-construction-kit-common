@@ -63,6 +63,14 @@ export default class Resistor extends FixedCircuitElement {
 
     options.isMetallic = resistorType.isMetallic;
 
+    const isHouseholdObject = resistorType !== ResistorType.RESISTOR && resistorType !== ResistorType.EXTREME_RESISTOR;
+
+    if ( isHouseholdObject ) {
+      options.isEditablePropertyOptions = {
+        tandem: Tandem.OPT_OUT
+      };
+    }
+
     super( startVertex, endVertex, resistorType.length, tandem, options );
 
     this.resistorType = resistorType;

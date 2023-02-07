@@ -407,7 +407,7 @@ export default class Circuit extends PhetioObject {
       ( tandem, startVertex, endVertex, resistorType ) =>
         new Resistor( startVertex, endVertex, resistorType, tandem ),
       () => {
-        return [ ...createVertices( ResistorType.RESISTOR.length ), ResistorType.RESISTOR ];
+        return [ ...createVertices( ResistorType.RESISTOR.length ), ResistorType.COIN ];
       }, {
         phetioType: PhetioGroup.PhetioGroupIO( Resistor.ResistorIO ),
         tandem: tandem.createTandem( 'householdObjectGroup' )
