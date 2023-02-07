@@ -142,9 +142,7 @@ export default class CircuitElementEditContainerNode extends Node {
       children: [ fuseRepairButton ]
     } );
 
-    const isRepairableListener = ( isRepairable: boolean ) => {
-      fuseRepairButtonContainer.visible = isRepairable;
-    };
+    const isRepairableListener = ( isRepairable: boolean ) => fuseRepairButtonContainer.setVisible( isRepairable );
 
     // This is reused across all instances.  The button itself can be hidden by PhET-iO customization, but the parent
     // node is another gate for the visibility.
@@ -164,6 +162,20 @@ export default class CircuitElementEditContainerNode extends Node {
 
       // NOTE: This only works if the trash button was originally smaller
       maxHeight: trashButton.height
+    } );
+
+    // This is reused across all batteries.  The button itself can be hidden by PhET-iO customization, but the parent
+    // node is another gate for the visibility.
+    const batteryReverseContainerNode = new Node( {
+      excludeInvisibleChildrenFromBounds: true,
+      children: [ batteryReverseButton ]
+    } );
+
+    const isReversibleListener = ( isReversible: boolean ) => batteryReverseContainerNode.setVisible( isReversible );
+
+    circuit.selectionProperty.link( ( newCircuitElement: CircuitElement | Vertex | null, oldCircuitElement: CircuitElement | Vertex | null ) => {
+      oldCircuitElement instanceof Battery && oldCircuitElement.isReversibleProperty.unlink( isReversibleListener );
+      newCircuitElement instanceof Battery && newCircuitElement.isReversibleProperty.link( isReversibleListener );
     } );
 
     const switchReadoutNode = new SwitchReadoutNode( circuit, tandem.createTandem( 'switchReadoutNode' ) );
@@ -392,7 +404,7 @@ export default class CircuitElementEditContainerNode extends Node {
 
               // Batteries can be reversed, nest in a Node so the layout will reflow correctly
               new Node( {
-                children: [ batteryReverseButton ],
+                children: [ batteryReverseContainerNode ],
                 excludeInvisibleChildrenFromBounds: true
               } ),
               selectedCircuitElement.batteryType === 'high-voltage' ? extremeBatteryVoltageNumberControl : voltageNumberControl,

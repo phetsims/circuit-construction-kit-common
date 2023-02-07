@@ -12,8 +12,6 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Battery from '../model/Battery.js';
 import CCKCRoundPushButton from './CCKCRoundPushButton.js';
 import Circuit from '../model/Circuit.js';
-import CircuitElement from '../model/CircuitElement.js';
-import Vertex from '../model/Vertex.js';
 import { RoundPushButtonOptions } from '../../../sun/js/buttons/RoundPushButton.js';
 import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 
@@ -78,17 +76,6 @@ export default class BatteryReverseButton extends CCKCRoundPushButton {
       }
     }, providedOptions );
     super( options );
-
-    const isReversibleListener = ( isReversible: boolean ) => {
-      this.visible = isReversible;
-    };
-
-    // This is reused across all batteries.  The button itself can be hidden by PhET-iO customization, but the parent
-    // node is another gate for the visibility.
-    circuit.selectionProperty.link( ( newCircuitElement: CircuitElement | Vertex | null, oldCircuitElement: CircuitElement | Vertex | null ) => {
-      oldCircuitElement instanceof Battery && oldCircuitElement.isReversibleProperty.unlink( isReversibleListener );
-      newCircuitElement instanceof Battery && newCircuitElement.isReversibleProperty.link( isReversibleListener );
-    } );
   }
 
   public override dispose(): void {
