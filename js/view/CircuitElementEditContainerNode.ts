@@ -44,6 +44,7 @@ import InteractionMode from '../model/InteractionMode.js';
 import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
+import Vertex from '../model/Vertex.js';
 
 const capacitanceStringProperty = CircuitConstructionKitCommonStrings.capacitanceStringProperty;
 const capacitanceUnitsStringProperty = CircuitConstructionKitCommonStrings.capacitanceUnitsStringProperty;
@@ -134,6 +135,22 @@ export default class CircuitElementEditContainerNode extends Node {
 
       // NOTE: This only works if the trash button was originally smaller
       maxHeight: trashButton.height
+    } );
+
+    const fuseRepairButtonContainer = new Node( {
+      excludeInvisibleChildrenFromBounds: true,
+      children: [ fuseRepairButton ]
+    } );
+
+    const isRepairableListener = ( isRepairable: boolean ) => {
+      fuseRepairButtonContainer.visible = isRepairable;
+    };
+
+    // This is reused across all instances.  The button itself can be hidden by PhET-iO customization, but the parent
+    // node is another gate for the visibility.
+    circuit.selectionProperty.link( ( newCircuitElement: CircuitElement | Vertex | null, oldCircuitElement: CircuitElement | Vertex | null ) => {
+      oldCircuitElement instanceof Fuse && oldCircuitElement.isRepairableProperty.unlink( isRepairableListener );
+      newCircuitElement instanceof Fuse && newCircuitElement.isRepairableProperty.link( isRepairableListener );
     } );
 
     const clearDynamicsButton = new ClearDynamicsButton( circuit, {
@@ -385,7 +402,7 @@ export default class CircuitElementEditContainerNode extends Node {
         }
         else if ( selectedCircuitElement instanceof Fuse ) {
           editNode = new EditPanel( [
-              fuseRepairButton,
+              fuseRepairButtonContainer,
               fuseCurrentRatingControl,
               trashButtonContainer
             ]

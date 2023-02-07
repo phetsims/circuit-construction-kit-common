@@ -58,16 +58,9 @@ export default class FuseRepairButton extends CCKCRoundPushButton {
 
     const isTrippedListener = ( isTripped: boolean ) => this.setEnabled( isTripped );
 
-    const isRepairableListener = ( isRepairable: boolean ) => {
-      this.visible = isRepairable;
-    };
-
     // This is reused across all instances.  The button itself can be hidden by PhET-iO customization, but the parent
     // node is another gate for the visibility.
     circuit.selectionProperty.link( ( newCircuitElement: CircuitElement | Vertex | null, oldCircuitElement: CircuitElement | Vertex | null ) => {
-      oldCircuitElement instanceof Fuse && oldCircuitElement.isRepairableProperty.unlink( isRepairableListener );
-      newCircuitElement instanceof Fuse && newCircuitElement.isRepairableProperty.link( isRepairableListener );
-
       oldCircuitElement instanceof Fuse && oldCircuitElement.isTrippedProperty.unlink( isTrippedListener );
       newCircuitElement instanceof Fuse && newCircuitElement.isTrippedProperty.link( isTrippedListener );
     } );
