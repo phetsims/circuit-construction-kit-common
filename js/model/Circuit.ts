@@ -469,7 +469,10 @@ export default class Circuit extends PhetioObject {
     this.realLightBulbGroup = new PhetioGroup(
       ( tandem, startVertex, endVertex ) => {
         return new LightBulb( startVertex, endVertex, CCKCConstants.DEFAULT_RESISTANCE, this.viewTypeProperty, tandem, {
-          isReal: true
+          isReal: true,
+          isEditablePropertyOptions: {
+            tandem: Tandem.OPT_OUT
+          }
         } );
       }, () => createVertices( 100 ), {
         phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
