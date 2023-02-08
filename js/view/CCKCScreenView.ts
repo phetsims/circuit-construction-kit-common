@@ -154,7 +154,7 @@ export default class CCKCScreenView extends ScreenView {
         showPhetioIndex: options.showMeterPhetioIndex
       } );
       voltmeter.droppedEmitter.addListener( bodyNodeGlobalBounds => {
-        const bodyNodeBoundsEroded = CCKCUtils.dropItemHitBoxForBounds( bodyNodeGlobalBounds );
+        const bodyNodeBoundsEroded = CCKCUtils.getDropItemHitBoxForBounds( bodyNodeGlobalBounds );
         if ( bodyNodeBoundsEroded.intersectsBounds( this.sensorToolbox.globalBounds ) ) {
           voltmeter.isActiveProperty.value = false;
         }
@@ -171,7 +171,7 @@ export default class CCKCScreenView extends ScreenView {
         showPhetioIndex: options.showMeterPhetioIndex
       } );
       ammeter.droppedEmitter.addListener( bodyNodeGlobalBounds => {
-        const bodyNodeBoundsEroded = CCKCUtils.dropItemHitBoxForBounds( bodyNodeGlobalBounds );
+        const bodyNodeBoundsEroded = CCKCUtils.getDropItemHitBoxForBounds( bodyNodeGlobalBounds );
         if ( bodyNodeBoundsEroded.intersectsBounds( this.sensorToolbox.globalBounds ) ) {
           ammeter.isActiveProperty.value = false;
         }
@@ -544,7 +544,7 @@ export default class CCKCScreenView extends ScreenView {
 
     const componentImage = circuitElementNode instanceof FixedCircuitElementNode ? circuitElementNode.contentNode : circuitElementNode;
     const elementNodeBounds = this.globalToLocalBounds( componentImage.globalBounds );
-    const elementNodeBoundsEroded = CCKCUtils.dropItemHitBoxForBounds( elementNodeBounds );
+    const elementNodeBoundsEroded = CCKCUtils.getDropItemHitBoxForBounds( elementNodeBounds );
 
     // SeriesAmmeters should be dropped in the sensor toolbox
     const toolbox = circuitElement instanceof SeriesAmmeter ? this.sensorToolbox : this.circuitElementToolbox.carousel;

@@ -115,7 +115,7 @@ const CCKCUtils = {
   /**
    * Erode bounds to make hit box dimensions RETURN_ITEM_HIT_BOX_RATIO * nodeBounds
    */
-  dropItemHitBoxForBounds( nodeBounds: Bounds2 ): Bounds2 {
+  getDropItemHitBoxForBounds( nodeBounds: Bounds2 ): Bounds2 {
     const erosionRatio = 0.5 * ( 1 - CCKCConstants.RETURN_ITEM_HIT_BOX_RATIO );
     return nodeBounds.erodedXY( erosionRatio * nodeBounds.width, erosionRatio * nodeBounds.height );
   }
