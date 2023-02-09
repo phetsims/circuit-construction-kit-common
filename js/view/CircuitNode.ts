@@ -365,20 +365,62 @@ export default class CircuitNode extends Node {
           tandem: tandem.createTandem( 'lightBulbNodeGroup' ),
           supportsDynamicState: false
         } ) );
-    initializeCircuitElementType( ( e: CircuitElement ) => e instanceof LightBulb && e.isExtreme && !e.isReal, this.fixedCircuitElementLayer,
-      new PhetioGroup<CircuitElementNode, [ CircuitElement ]>( ( tandem: Tandem, circuitElement: CircuitElement ) => new CCKCLightBulbNode( screenView, this, circuitElement as LightBulb, this.model.isValueDepictionEnabledProperty, this.model.viewTypeProperty, tandem ),
-        () => [ this.circuit.lightBulbGroup.archetype ], {
-          phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
-          tandem: circuit.includeLabElements ? tandem.createTandem( 'extremeLightBulbNodeGroup' ) : Tandem.OPT_OUT,
-          supportsDynamicState: false
-        } ) );
-    initializeCircuitElementType( ( e: CircuitElement ) => e instanceof LightBulb && e.isReal, this.fixedCircuitElementLayer,
-      new PhetioGroup<CircuitElementNode, [ CircuitElement ]>( ( tandem: Tandem, circuitElement: CircuitElement ) => new CCKCLightBulbNode( screenView, this, circuitElement as LightBulb, this.model.isValueDepictionEnabledProperty, this.model.viewTypeProperty, tandem ),
-        () => [ this.circuit.realLightBulbGroup.archetype ], {
-          phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
-          tandem: circuit.includeLabElements ? tandem.createTandem( 'realLightBulbNodeGroup' ) : Tandem.OPT_OUT,
-          supportsDynamicState: false
-        } ) );
+
+    // Only create the relevant groups
+    if ( circuit.includeLabElements ) {
+      initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Battery && e.batteryType === 'high-voltage', this.fixedCircuitElementLayer,
+        new PhetioGroup<CircuitElementNode, [ CircuitElement ]>( ( tandem: Tandem, circuitElement: CircuitElement ) => new BatteryNode( screenView, this, circuitElement as Battery, this.model.viewTypeProperty, tandem ),
+          () => [ this.circuit.batteryGroup.archetype ], {
+            phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
+            tandem: tandem.createTandem( 'extremeBatteryNodeGroup' ),
+            supportsDynamicState: false
+          } ) );
+      initializeCircuitElementType( ( e: CircuitElement ) => e instanceof LightBulb && e.isExtreme && !e.isReal, this.fixedCircuitElementLayer,
+        new PhetioGroup<CircuitElementNode, [ CircuitElement ]>( ( tandem: Tandem, circuitElement: CircuitElement ) => new CCKCLightBulbNode( screenView, this, circuitElement as LightBulb, this.model.isValueDepictionEnabledProperty, this.model.viewTypeProperty, tandem ),
+          () => [ this.circuit.extremeLightBulbGroup.archetype ], {
+            phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
+            tandem: tandem.createTandem( 'extremeLightBulbNodeGroup' ),
+            supportsDynamicState: false
+          } ) );
+      initializeCircuitElementType( ( e: CircuitElement ) => e instanceof LightBulb && e.isReal, this.fixedCircuitElementLayer,
+        new PhetioGroup<CircuitElementNode, [ CircuitElement ]>( ( tandem: Tandem, circuitElement: CircuitElement ) => new CCKCLightBulbNode( screenView, this, circuitElement as LightBulb, this.model.isValueDepictionEnabledProperty, this.model.viewTypeProperty, tandem ),
+          () => [ this.circuit.realLightBulbGroup.archetype ], {
+            phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
+            tandem: tandem.createTandem( 'realLightBulbNodeGroup' ),
+            supportsDynamicState: false
+          } ) );
+      initializeCircuitElementType( ( e: CircuitElement ) => e instanceof SeriesAmmeter, this.fixedCircuitElementLayer,
+        new PhetioGroup<CircuitElementNode, [ CircuitElement ]>( ( tandem: Tandem, circuitElement: CircuitElement ) => new SeriesAmmeterNode( screenView, this, circuitElement as SeriesAmmeter, tandem,
+            this.model.isValueDepictionEnabledProperty ),
+          () => [ this.circuit.seriesAmmeterGroup.archetype ], {
+            phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
+            tandem: tandem.createTandem( 'seriesAmmeterNodeGroup' ),
+            supportsDynamicState: false
+          } ) );
+    }
+    if ( circuit.includeACElements ) {
+      initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Capacitor, this.fixedCircuitElementLayer,
+        new PhetioGroup<CircuitElementNode, [ CircuitElement ]>( ( tandem: Tandem, circuitElement: CircuitElement ) => new CapacitorCircuitElementNode( screenView, this, circuitElement as Capacitor, this.model.viewTypeProperty, tandem ),
+          () => [ this.circuit.capacitorGroup.archetype ], {
+            phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
+            tandem: tandem.createTandem( 'capacitorNodeGroup' ),
+            supportsDynamicState: false
+          } ) );
+      initializeCircuitElementType( ( e: CircuitElement ) => e instanceof ACVoltage, this.fixedCircuitElementLayer,
+        new PhetioGroup<CircuitElementNode, [ CircuitElement ]>( ( tandem: Tandem, circuitElement: CircuitElement ) => new ACVoltageNode( screenView, this, circuitElement as ACVoltage, this.model.viewTypeProperty, tandem ),
+          () => [ this.circuit.acVoltageGroup.archetype ], {
+            phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
+            tandem: tandem.createTandem( 'acVoltageNodeGroup' ),
+            supportsDynamicState: false
+          } ) );
+      initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Inductor, this.fixedCircuitElementLayer,
+        new PhetioGroup<CircuitElementNode, [ CircuitElement ]>( ( tandem: Tandem, circuitElement: CircuitElement ) => new InductorNode( screenView, this, circuitElement as Inductor, this.model.viewTypeProperty, tandem ),
+          () => [ this.circuit.inductorGroup.archetype ], {
+            phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
+            tandem: tandem.createTandem( 'inductorNodeGroup' ),
+            supportsDynamicState: false
+          } ) );
+    }
     initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Resistor && e.resistorType === ResistorType.RESISTOR, this.fixedCircuitElementLayer,
       new PhetioGroup<CircuitElementNode, [ CircuitElement ]>( ( tandem: Tandem, circuitElement: CircuitElement ) =>
           new ResistorNode( screenView, this, circuitElement as Resistor, this.model.viewTypeProperty, tandem ),
@@ -409,21 +451,7 @@ export default class CircuitNode extends Node {
           tandem: tandem.createTandem( 'householdObjectNodeGroup' ),
           supportsDynamicState: false
         } ) );
-    initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Capacitor, this.fixedCircuitElementLayer,
-      new PhetioGroup<CircuitElementNode, [ CircuitElement ]>( ( tandem: Tandem, circuitElement: CircuitElement ) => new CapacitorCircuitElementNode( screenView, this, circuitElement as Capacitor, this.model.viewTypeProperty, tandem ),
-        () => [ this.circuit.capacitorGroup.archetype ], {
-          phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
-          tandem: circuit.includeACElements ? tandem.createTandem( 'capacitorNodeGroup' ) : Tandem.OPT_OUT,
-          supportsDynamicState: false
-        } ) );
-    initializeCircuitElementType( ( e: CircuitElement ) => e instanceof SeriesAmmeter, this.fixedCircuitElementLayer,
-      new PhetioGroup<CircuitElementNode, [ CircuitElement ]>( ( tandem: Tandem, circuitElement: CircuitElement ) => new SeriesAmmeterNode( screenView, this, circuitElement as SeriesAmmeter, tandem,
-          this.model.isValueDepictionEnabledProperty ),
-        () => [ this.circuit.seriesAmmeterGroup.archetype ], {
-          phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
-          tandem: circuit.includeLabElements ? tandem.createTandem( 'seriesAmmeterNodeGroup' ) : Tandem.OPT_OUT,
-          supportsDynamicState: false
-        } ) );
+
     initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Switch, this.fixedCircuitElementLayer,
       new PhetioGroup<CircuitElementNode, [ CircuitElement ]>( ( tandem: Tandem, circuitElement: CircuitElement ) => new SwitchNode( screenView, this, circuitElement as Switch, this.model.viewTypeProperty, tandem ),
         () => [ this.circuit.switchGroup.archetype ], {
@@ -431,25 +459,12 @@ export default class CircuitNode extends Node {
           tandem: tandem.createTandem( 'switchNodeGroup' ),
           supportsDynamicState: false
         } ) );
-    initializeCircuitElementType( ( e: CircuitElement ) => e instanceof ACVoltage, this.fixedCircuitElementLayer,
-      new PhetioGroup<CircuitElementNode, [ CircuitElement ]>( ( tandem: Tandem, circuitElement: CircuitElement ) => new ACVoltageNode( screenView, this, circuitElement as ACVoltage, this.model.viewTypeProperty, tandem ),
-        () => [ this.circuit.acVoltageGroup.archetype ], {
-          phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
-          tandem: circuit.includeACElements ? tandem.createTandem( 'acVoltageNodeGroup' ) : Tandem.OPT_OUT,
-          supportsDynamicState: false
-        } ) );
+
     initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Fuse, this.fixedCircuitElementLayer,
       new PhetioGroup<CircuitElementNode, [ CircuitElement ]>( ( tandem: Tandem, circuitElement: CircuitElement ) => new FuseNode( screenView, this, circuitElement as Fuse, this.model.viewTypeProperty, tandem ),
         () => [ this.circuit.fuseGroup.archetype ], {
           phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
           tandem: tandem.createTandem( 'fuseNodeGroup' ),
-          supportsDynamicState: false
-        } ) );
-    initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Inductor, this.fixedCircuitElementLayer,
-      new PhetioGroup<CircuitElementNode, [ CircuitElement ]>( ( tandem: Tandem, circuitElement: CircuitElement ) => new InductorNode( screenView, this, circuitElement as Inductor, this.model.viewTypeProperty, tandem ),
-        () => [ this.circuit.inductorGroup.archetype ], {
-          phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
-          tandem: circuit.includeACElements ? tandem.createTandem( 'inductorNodeGroup' ) : Tandem.OPT_OUT,
           supportsDynamicState: false
         } ) );
 
