@@ -11,27 +11,30 @@ import NumberIO from '../../../tandem/js/types/NumberIO.js';
 import ReferenceIO from '../../../tandem/js/types/ReferenceIO.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Vertex from './Vertex.js';
+import CircuitElement from './CircuitElement.js';
 
-const VertexReferenceIO = ReferenceIO( Vertex.VertexIO );
 export default class VoltageConnection {
   public readonly vertex: Vertex;
   public readonly voltage: number;
+  public readonly circuitElement: CircuitElement | null;
 
-  public constructor( vertex: Vertex, voltage: number = vertex.voltageProperty.value ) {
+  public constructor( vertex: Vertex, circuitElement: CircuitElement | null, voltage: number = vertex.voltageProperty.value ) {
     this.vertex = vertex;
     this.voltage = voltage;
+    this.circuitElement = circuitElement;
   }
 
   public static VoltageConnectionIO = new IOType( 'VoltageConnectionIO', {
     valueType: VoltageConnection,
-    documentation: 'In order to describe how a Voltmeter probe is connected to a circuit. It indicates an adjacent vertex, and the voltage at the vertex. For non-ideal wires, the ' +
+    documentation: 'In order to describe how a Voltmeter probe is connected to a circuit. It indicates the measured Vertex ' +
+                   'or Circuit Element, and the voltage at that point. For non-ideal wires, the ' +
                    'voltage indicates the partial voltage dropped up to that point on the wire, like a potentiometer.',
     toStateObject: voltageConnection => ( {
-      vertex: VertexReferenceIO.toStateObject( voltageConnection.vertex ),
+      connection: ReferenceIO( IOType.ObjectIO ).toStateObject( voltageConnection.circuitElement || voltageConnection.vertex ),
       voltage: voltageConnection.voltage
     } ),
     stateSchema: {
-      vertex: VertexReferenceIO,
+      connection: ReferenceIO( IOType.ObjectIO ),
       voltage: NumberIO
     }
   } );

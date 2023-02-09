@@ -951,7 +951,7 @@ export default class CircuitNode extends Node {
       return probePosition.distance( position ) <= SolderNode.SOLDER_RADIUS;
     } );
     if ( hitSolderNode ) {
-      return new VoltageConnection( hitSolderNode.vertex );
+      return new VoltageConnection( hitSolderNode.vertex, null );
     }
 
     // Check for intersection with a metallic circuit element, which can provide voltmeter readings
@@ -972,7 +972,7 @@ export default class CircuitNode extends Node {
         distanceAlongSegment
       );
 
-      return new VoltageConnection( metallicCircuitElement.circuitElement.startVertexProperty.get(), voltageAlongWire );
+      return new VoltageConnection( metallicCircuitElement.circuitElement.startVertexProperty.get(), metallicCircuitElement.circuitElement, voltageAlongWire );
     }
     else {
 
@@ -986,10 +986,10 @@ export default class CircuitNode extends Node {
 
           // address closed switch.  Find out whether the probe was near the start or end vertex
           if ( switchNode.startSideContainsSensorPoint( probePosition ) ) {
-            return new VoltageConnection( switchNode.circuitSwitch.startVertexProperty.get() );
+            return new VoltageConnection( switchNode.circuitSwitch.startVertexProperty.get(), switchNode.circuitElement );
           }
           else if ( switchNode.endSideContainsSensorPoint( probePosition ) ) {
-            return new VoltageConnection( switchNode.circuitSwitch.endVertexProperty.get() );
+            return new VoltageConnection( switchNode.circuitSwitch.endVertexProperty.get(), switchNode.circuitElement );
           }
         }
       }
@@ -1003,10 +1003,10 @@ export default class CircuitNode extends Node {
 
           // Check front first since it visually looks like it would be touching the probe
           if ( capacitorNode.frontSideContainsSensorPoint( globalPoint ) ) {
-            return new VoltageConnection( capacitorNode.circuitElement.startVertexProperty.get() );
+            return new VoltageConnection( capacitorNode.circuitElement.startVertexProperty.get(), capacitorNode.circuitElement );
           }
           else if ( capacitorNode.backSideContainsSensorPoint( globalPoint ) ) {
-            return new VoltageConnection( capacitorNode.circuitElement.endVertexProperty.get() );
+            return new VoltageConnection( capacitorNode.circuitElement.endVertexProperty.get(), capacitorNode.circuitElement );
           }
         }
       }
