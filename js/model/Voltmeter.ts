@@ -53,15 +53,17 @@ export default class Voltmeter extends Meter {
     } );
 
     this.blackConnectionProperty = new Property<VoltageConnection | null>( null, {
-      tandem: tandem.createTandem( 'blackConnectionProperty' ),
+      tandem: tandem.createTandem( 'blackProbeConnectionProperty' ),
       phetioValueType: NullableIO( VoltageConnection.VoltageConnectionIO ),
-      phetioReadOnly: true
+      phetioReadOnly: true,
+      phetioFeatured: true
     } );
 
     this.redConnectionProperty = new Property<VoltageConnection | null>( null, {
-      tandem: tandem.createTandem( 'redConnectionProperty' ),
+      tandem: tandem.createTandem( 'redProbeConnectionProperty' ),
       phetioValueType: NullableIO( VoltageConnection.VoltageConnectionIO ),
-      phetioReadOnly: true
+      phetioReadOnly: true,
+      phetioFeatured: true
     } );
   }
 

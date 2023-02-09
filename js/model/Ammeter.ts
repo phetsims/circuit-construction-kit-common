@@ -26,7 +26,7 @@ export default class Ammeter extends Meter {
 
   // the position of the tip of the probe
   public readonly probePositionProperty: Property<Vector2>;
-  public readonly associatedCircuitElementProperty: Property<CircuitElement | null>;
+  private readonly probeConnectionProperty: Property<CircuitElement | null>;
 
   public constructor( tandem: Tandem, phetioIndex: number ) {
     super( tandem, phetioIndex );
@@ -44,8 +44,8 @@ export default class Ammeter extends Meter {
       phetioFeatured: true
     } );
 
-    this.associatedCircuitElementProperty = new Property<CircuitElement | null>( null, {
-      tandem: tandem.createTandem( 'associatedCircuitElementProperty' ),
+    this.probeConnectionProperty = new Property<CircuitElement | null>( null, {
+      tandem: tandem.createTandem( 'probeConnectionProperty' ),
       phetioValueType: NullableIO( ReferenceIO( CircuitElement.CircuitElementIO ) ),
       phetioReadOnly: true,
       phetioDocumentation: 'The circuit element that the ammeter is connected to, or null if not connected to a circuit element'
@@ -54,7 +54,7 @@ export default class Ammeter extends Meter {
 
   public setConnectionAndCurrent( ammeterConnection: AmmeterConnection | null ): void {
     this.currentProperty.value = ammeterConnection === null ? null : ammeterConnection.current;
-    this.associatedCircuitElementProperty.value = ammeterConnection === null ? null : ammeterConnection.circuitElement;
+    this.probeConnectionProperty.value = ammeterConnection === null ? null : ammeterConnection.circuitElement;
   }
 
   // Restore the ammeter to its initial conditions
