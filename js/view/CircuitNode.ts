@@ -351,13 +351,6 @@ export default class CircuitNode extends Node {
           tandem: tandem.createTandem( 'batteryNodeGroup' ),
           supportsDynamicState: false
         } ) );
-    initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Battery && e.batteryType === 'high-voltage', this.fixedCircuitElementLayer,
-      new PhetioGroup<CircuitElementNode, [ CircuitElement ]>( ( tandem: Tandem, circuitElement: CircuitElement ) => new BatteryNode( screenView, this, circuitElement as Battery, this.model.viewTypeProperty, tandem ),
-        () => [ this.circuit.batteryGroup.archetype ], {
-          phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
-          tandem: circuit.includeLabElements ? tandem.createTandem( 'extremeBatteryNodeGroup' ) : Tandem.OPT_OUT,
-          supportsDynamicState: false
-        } ) );
     initializeCircuitElementType( ( e: CircuitElement ) => e instanceof LightBulb && !e.isExtreme && !e.isReal, this.fixedCircuitElementLayer,
       new PhetioGroup<CircuitElementNode, [ CircuitElement ]>( ( tandem: Tandem, circuitElement: CircuitElement ) => new CCKCLightBulbNode( screenView, this, circuitElement as LightBulb, this.model.isValueDepictionEnabledProperty, this.model.viewTypeProperty, tandem ),
         () => [ this.circuit.lightBulbGroup.archetype ], {
