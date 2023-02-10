@@ -39,7 +39,7 @@ import SensorToolbox from './SensorToolbox.js';
 import ViewRadioButtonGroup from './ViewRadioButtonGroup.js';
 import VoltageChartNode from './VoltageChartNode.js';
 import VoltmeterNode from './VoltmeterNode.js';
-import CCKZoomButtonGroup from './CCKZoomButtonGroup.js';
+import CCKCZoomButtonGroup from './CCKCZoomButtonGroup.js';
 import FixedCircuitElementNode from './FixedCircuitElementNode.js';
 import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
 import CCKCUtils from '../CCKCUtils.js';
@@ -346,7 +346,7 @@ export default class CCKCScreenView extends ScreenView {
     this.chartNodes.forEach( chartNode => this.circuitNode.sensorLayer.addChild( chartNode ) );
 
     // Create the zoom button group
-    const zoomButtonGroup = new CCKZoomButtonGroup( model.zoomLevelProperty, {
+    const zoomButtonGroup = new CCKCZoomButtonGroup( model.zoomLevelProperty, {
       tandem: tandem.createTandem( 'zoomButtonGroup' ),
       visiblePropertyOptions: {
         phetioFeatured: true

@@ -19,7 +19,7 @@ const BUTTON_SPACING = 20;
 
 type ZoomButtonGroupOptions = MagnifyingGlassZoomButtonGroupOptions;
 
-export default class CCKZoomButtonGroup extends MagnifyingGlassZoomButtonGroup {
+export default class CCKCZoomButtonGroup extends MagnifyingGlassZoomButtonGroup {
 
   public constructor( selectedZoomProperty: NumberProperty, providedOptions?: ZoomButtonGroupOptions ) {
     providedOptions = combineOptions<ZoomButtonGroupOptions>( {
@@ -39,4 +39,4 @@ export default class CCKZoomButtonGroup extends MagnifyingGlassZoomButtonGroup {
   }
 }
 
-circuitConstructionKitCommon.register( 'CCKZoomButtonGroup', CCKZoomButtonGroup );
+circuitConstructionKitCommon.register( 'CCKCZoomButtonGroup', CCKCZoomButtonGroup );
