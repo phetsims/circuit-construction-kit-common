@@ -46,6 +46,7 @@ export default class Ammeter extends Meter {
 
     this.probeConnectionProperty = new Property<CircuitElement | null>( null, {
       tandem: tandem.createTandem( 'probeConnectionProperty' ),
+      phetioFeatured: true,
       phetioValueType: NullableIO( ReferenceIO( CircuitElement.CircuitElementIO ) ),
       phetioReadOnly: true,
       phetioDocumentation: 'The circuit element that the ammeter is connected to, or null if not connected to a circuit element'
