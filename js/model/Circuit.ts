@@ -54,6 +54,7 @@ import StringIO from '../../../tandem/js/types/StringIO.js';
 import VoidIO from '../../../tandem/js/types/VoidIO.js';
 import PhetioObject from '../../../tandem/js/PhetioObject.js';
 import ObjectLiteralIO from '../../../tandem/js/types/ObjectLiteralIO.js';
+import { PhetioState } from '../../../tandem/js/TandemConstants.js';
 
 // constants
 const SNAP_RADIUS = 30; // For two vertices to join together, they must be this close, in view coordinates
@@ -1639,7 +1640,7 @@ const CircuitStateIO = new IOType( 'CircuitStateIO', {
       returnType: VoidIO,
       parameterTypes: [ ObjectLiteralIO ],
       documentation: 'Sets the circuit that was created on this screen. Trying to set a circuit from another screen results in an error.',
-      implementation: function( this: Circuit, state: unknown ) {
+      implementation: function( this: Circuit, state: PhetioState ) {
         phet.phetio.phetioEngine.phetioStateEngine.setState( state, this.tandem );
       }
     }
