@@ -53,6 +53,7 @@ import IOType from '../../../tandem/js/types/IOType.js';
 import StringIO from '../../../tandem/js/types/StringIO.js';
 import VoidIO from '../../../tandem/js/types/VoidIO.js';
 import PhetioObject from '../../../tandem/js/PhetioObject.js';
+import ObjectLiteralIO from '../../../tandem/js/types/ObjectLiteralIO.js';
 
 // constants
 const SNAP_RADIUS = 30; // For two vertices to join together, they must be this close, in view coordinates
@@ -1608,33 +1609,26 @@ const CircuitStateIO = new IOType( 'CircuitStateIO', {
   valueType: Circuit,
   methods: {
     getValue: {
-      returnType: StringIO,
+      returnType: ObjectLiteralIO,
       parameterTypes: [],
       implementation: function( this: Circuit ) {
-        const state = phet.phetio.phetioEngine.phetioStateEngine.getState( this );
-        return JSON.stringify( state, null, 2 );
+        return phet.phetio.phetioEngine.phetioStateEngine.getState( this );
       },
       documentation: 'Gets the current value of the circuit on this screen.'
     },
     getValidationError: {
       returnType: NullableIO( StringIO ),
-      parameterTypes: [ StringIO ],
+      parameterTypes: [ ObjectLiteralIO ],
       implementation: function( this: Circuit, value ) {
-        try {
-          const result = JSON.parse( value );
 
-          // check if the specified circuit corresponds to this.tandemID. To avoid pasting a circuit from screen1 into screen2
-          const keys = Array.from( Object.keys( result ) );
+        // check if the specified circuit corresponds to this.tandemID. To avoid pasting a circuit from screen1 into screen2
+        const keys = Array.from( Object.keys( value ) );
 
-          for ( let i = 0; i < keys.length; i++ ) {
-            const key = keys[ i ];
-            if ( !key.startsWith( this.phetioID ) ) {
-              return 'key had incorrect prefix. Expected: ' + this.phetioID + ' but got: ' + key;
-            }
+        for ( let i = 0; i < keys.length; i++ ) {
+          const key = keys[ i ];
+          if ( !key.startsWith( this.phetioID ) ) {
+            return 'key had incorrect prefix. Expected: ' + this.phetioID + ' but got: ' + key;
           }
-        }
-        catch( e: IntentionalAny ) {
-          return e.message;
         }
         return null;
       },
@@ -1643,11 +1637,10 @@ const CircuitStateIO = new IOType( 'CircuitStateIO', {
 
     setValue: {
       returnType: VoidIO,
-      parameterTypes: [ StringIO ],
+      parameterTypes: [ ObjectLiteralIO ],
       documentation: 'Sets the circuit that was created on this screen. Trying to set a circuit from another screen results in an error.',
-      implementation: function( this: Circuit, state: string ) {
-        const test = JSON.parse( state );
-        phet.phetio.phetioEngine.phetioStateEngine.setState( test, this.tandem );
+      implementation: function( this: Circuit, state: unknown ) {
+        phet.phetio.phetioEngine.phetioStateEngine.setState( state, this.tandem );
       }
     }
   }
