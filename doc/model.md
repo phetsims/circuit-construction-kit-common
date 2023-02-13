@@ -8,7 +8,7 @@ solvable.
 
 Batteries can be ideal (very low resistance) or have an internal resistance (in the 2nd screen of Circuit Construction Kit: DC).
 
-Insulators such as the dollar bill, eraser and dog are modeled as having a very high resistance.
+Insulators such as the dollar bill and eraser are modeled as having a very high resistance.
 
 The ammeters and voltmeter are ideal (no resistance).
 
