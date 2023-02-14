@@ -100,6 +100,9 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
     seriesAmmeter.endVertexProperty.lazyLink( updateText );
     seriesAmmeter.currentSenseProperty.lazyLink( updateText );
     ammeterReadoutTypeProperty.lazyLink( updateText );
+    CircuitConstructionKitCommonStrings.currentUnitsStringProperty.lazyLink( updateText );
+
+    // NOTE: This is called every frame
     circuitNode && circuitNode.circuit.circuitChangedEmitter.addListener( updateText );
 
     // This node only has a lifelike representation because it is a sensor
