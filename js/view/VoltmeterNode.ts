@@ -130,7 +130,10 @@ export default class VoltmeterNode extends Node {
     } );
 
     // Displays the voltage reading
-    const voltageReadoutProperty = new DerivedProperty( [ voltmeter.voltageProperty ], voltage =>
+    const voltageReadoutProperty = new DerivedProperty( [
+        voltmeter.voltageProperty,
+        CircuitConstructionKitCommonStrings.voltageUnitsStringProperty
+      ], voltage =>
         voltage === null ? MathSymbols.NO_VALUE : CCKCUtils.createVoltageReadout( voltage ), {
         tandem: options.tandem.createTandem( 'probeReadoutText' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME ),
         phetioValueType: StringIO
