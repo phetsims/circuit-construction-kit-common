@@ -39,7 +39,7 @@ type CircuitElementNumberControlOptions = SelfOptions & HBoxOptions;
 export default class CircuitElementNumberControl extends HBox {
   public static readonly NUMBER_CONTROL_ELEMENT_MAX_WIDTH = 115;
 
-  public constructor( title: TReadOnlyProperty<string>, valuePattern: string, valueProperty: Property<number>, range: Range, circuit: Circuit,
+  public constructor( title: TReadOnlyProperty<string>, valuePattern: TReadOnlyProperty<string>, valueProperty: Property<number>, range: Range, circuit: Circuit,
                       numberOfDecimalPlaces: number, providedOptions?: CircuitElementNumberControlOptions ) {
 
     // When the user changes any parameter of any circuit element, signify it.
