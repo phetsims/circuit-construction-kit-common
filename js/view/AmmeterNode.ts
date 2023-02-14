@@ -104,10 +104,12 @@ export default class AmmeterNode extends Node {
       }
     );
 
-    const currentReadoutProperty = new DerivedProperty( [ ammeter.currentProperty, ammeterReadoutTypeProperty ],
-      ( ( current, ammeterReadoutType ) => {
-        return CCKCUtils.createCurrentReadout( current, options.blackBoxStudy );
-      } ), {
+    const currentReadoutProperty = new DerivedProperty( [
+        ammeter.currentProperty,
+        ammeterReadoutTypeProperty,
+        CircuitConstructionKitCommonStrings.currentUnitsStringProperty
+      ],
+      current => CCKCUtils.createCurrentReadout( current, options.blackBoxStudy ), {
         tandem: tandemForChildren.createTandem( 'probeReadoutText' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME ),
         phetioValueType: StringIO
       } );
