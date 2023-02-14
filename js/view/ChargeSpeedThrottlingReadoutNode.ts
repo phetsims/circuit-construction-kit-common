@@ -25,7 +25,7 @@ export default class ChargeSpeedThrottlingReadoutNode extends Text {
    * @param isValueDepictionEnabledProperty - true if the explore screen is running
    */
   public constructor( timeScaleProperty: Property<number>, showCurrentProperty: Property<boolean>, isValueDepictionEnabledProperty: Property<boolean> ) {
-    super( animationSpeedLimitReachedStringProperty, {
+    super( '', {
 
       // Reduce the width of the animation speed limit reached so it doesn't overlap controls
       // see https://github.com/phetsims/circuit-construction-kit-dc/issues/118
@@ -33,7 +33,7 @@ export default class ChargeSpeedThrottlingReadoutNode extends Text {
       maxWidth: 530
     } );
 
-    Multilink.multilink( [ timeScaleProperty, showCurrentProperty, isValueDepictionEnabledProperty ],
+    Multilink.multilink( [ timeScaleProperty, showCurrentProperty, isValueDepictionEnabledProperty, animationSpeedLimitReachedStringProperty ],
       ( timeScale, showCurrent, isValueDepictionEnabled ) => {
         const percent = timeScale * 100;
         const isThrottled = percent < 99.5;
