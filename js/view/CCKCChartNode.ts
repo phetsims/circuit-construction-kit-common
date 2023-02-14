@@ -25,7 +25,7 @@ import Orientation from '../../../phet-core/js/Orientation.js';
 import MagnifyingGlassZoomButtonGroup from '../../../scenery-phet/js/MagnifyingGlassZoomButtonGroup.js';
 import ShadedRectangle from '../../../scenery-phet/js/ShadedRectangle.js';
 import WireNode from '../../../scenery-phet/js/WireNode.js';
-import { DragListener, Node, NodeOptions, NodeProperty, PressListenerEvent, Text } from '../../../scenery/js/imports.js';
+import { DragListener, Node, NodeOptions, PressListenerEvent, Text } from '../../../scenery/js/imports.js';
 import ButtonNode from '../../../sun/js/buttons/ButtonNode.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -124,7 +124,7 @@ export default class CCKCChartNode extends Node {
     this.alignProbesEmitter = new Emitter();
 
     // These do not need to be disposed because there is no connection to the "outside world"
-    const leftBottomProperty = new NodeProperty( backgroundNode, backgroundNode.boundsProperty, 'leftBottom' );
+    const leftBottomProperty = new DerivedProperty( [ backgroundNode.boundsProperty ], bounds => bounds.leftBottom );
 
     this.droppedEmitter = new Emitter();
 
@@ -371,7 +371,7 @@ export default class CCKCChartNode extends Node {
 
     // Add the wire behind the probe.
     this.addChild( new WireNode( connectionProperty, new Vector2Property( new Vector2( -NORMAL_DISTANCE, 0 ) ),
-      new NodeProperty( probeNode, probeNode.boundsProperty, 'centerBottom' ), new Vector2Property( new Vector2( 0, NORMAL_DISTANCE ) ), {
+      new DerivedProperty( [ probeNode.boundsProperty ], bounds => bounds.centerBottom ), new Vector2Property( new Vector2( 0, NORMAL_DISTANCE ) ), {
         lineWidth: WIRE_LINE_WIDTH,
         stroke: wireColor
       }
