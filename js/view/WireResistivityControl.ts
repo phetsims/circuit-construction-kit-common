@@ -15,13 +15,14 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Property from '../../../axon/js/Property.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
+import CCKCColors from './CCKCColors.js';
 
 const lotsStringProperty = CircuitConstructionKitCommonStrings.lotsStringProperty;
 const tinyStringProperty = CircuitConstructionKitCommonStrings.tinyStringProperty;
 const wireResistivityStringProperty = CircuitConstructionKitCommonStrings.wireResistivityStringProperty;
 
 // constants
-const TICK_LABEL_TEXT_OPTIONS = { fontSize: 12, maxWidth: 45 };
+const TICK_LABEL_TEXT_OPTIONS = { fontSize: 12, maxWidth: 45, fill: CCKCColors.textFillProperty };
 
 export default class WireResistivityControl extends VBox {
 
@@ -34,7 +35,7 @@ export default class WireResistivityControl extends VBox {
   public constructor( wireResistivityProperty: Property<number>, alignGroup: AlignGroup, titleConfig: TextOptions, tandem: Tandem ) {
 
     const titleNode = new Text( wireResistivityStringProperty,
-      combineOptions<TextOptions>( { tandem: tandem.createTandem( 'titleText' ) }, titleConfig ) );
+      combineOptions<TextOptions>( { tandem: tandem.createTandem( 'titleText' ), fill: CCKCColors.textFillProperty }, titleConfig ) );
 
     const slider = new HSlider( wireResistivityProperty, CCKCConstants.WIRE_RESISTIVITY_RANGE, {
       trackSize: CCKCConstants.SLIDER_TRACK_SIZE,

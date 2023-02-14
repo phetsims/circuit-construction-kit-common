@@ -10,6 +10,7 @@ import { Rectangle } from '../../../scenery/js/imports.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import FixedCircuitElementNode from './FixedCircuitElementNode.js';
+import CCKCColors from './CCKCColors.js';
 
 // constants
 const CORNER_RADIUS = 8; // in view coordinates
@@ -21,7 +22,7 @@ export default class FixedCircuitElementHighlightNode extends Rectangle {
     super( 0, 0, 0, 0,
       CORNER_RADIUS,
       CORNER_RADIUS, {
-        stroke: CCKCConstants.HIGHLIGHT_COLOR,
+        stroke: CCKCColors.highlightStrokeProperty,
         lineWidth: CCKCConstants.HIGHLIGHT_LINE_WIDTH,
         pickable: false
       } );

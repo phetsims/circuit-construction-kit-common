@@ -30,6 +30,7 @@ import CircuitElement from '../model/CircuitElement.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import Multilink from '../../../axon/js/Multilink.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
+import CCKCColors from './CCKCColors.js';
 
 const capacitanceFaradsSymbolStringProperty = CircuitConstructionKitCommonStrings.capacitanceFaradsSymbolStringProperty;
 const fuseValueStringProperty = CircuitConstructionKitCommonStrings.fuseValueStringProperty;
@@ -50,7 +51,8 @@ const FONT = new PhetFont( { size: 22 } );
  */
 const createText = ( tandem: Tandem, providedOptions?: TextOptions ) => new Text( '', combineOptions<TextOptions>( {
   tandem: tandem,
-  font: FONT
+  font: FONT,
+  fill: CCKCColors.textFillProperty
 }, providedOptions ) );
 
 /**
@@ -187,7 +189,8 @@ export default class ValueNode extends Panel {
     }
     else if ( circuitElement instanceof Fuse ) {
       readoutValueNode = createRichText( tandem.createTandem( 'fuseText' ), {
-        align: 'right'
+        align: 'right',
+        fill: CCKCColors.textFillProperty
       } );
       const multilink = Multilink.multilink( [ circuitElement.resistanceProperty, circuitElement.currentRatingProperty ],
         ( resistance, currentRating ) => {
@@ -211,7 +214,7 @@ export default class ValueNode extends Panel {
     assert && assert( readoutValueNode, 'Content node should be defined' );
 
     if ( CCKCQueryParameters.showCurrents ) {
-      const text = new Text( '' );
+      const text = new Text( '', { fill: CCKCColors.textFillProperty } );
       Multilink.multilink( [ circuitElement.currentProperty, circuitElement.currentSenseProperty ], ( current, sense ) => {
         text.text = sense.toString() + ', ' + current.toFixed( 4 );// eslint-disable-line bad-sim-text
       } );
@@ -219,7 +222,7 @@ export default class ValueNode extends Panel {
       readoutValueNode = new VBox( { children: [ readoutValueNode, text ] } );
     }
 
-    const customLabelNode = new Text( '', { font: FONT } );
+    const customLabelNode = new Text( '', { font: FONT, fill: CCKCColors.textFillProperty } );
     contentNode.children = [
       customLabelNode,
       readoutValueNode

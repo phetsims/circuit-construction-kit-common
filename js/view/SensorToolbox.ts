@@ -35,6 +35,7 @@ import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import Multilink from '../../../axon/js/Multilink.js';
 import optionize from '../../../phet-core/js/optionize.js';
+import CCKCColors from './CCKCColors.js';
 
 const ammetersStringProperty = CircuitConstructionKitCommonStrings.ammetersStringProperty;
 const ammeterStringProperty = CircuitConstructionKitCommonStrings.ammeterStringProperty;
@@ -186,6 +187,7 @@ export default class SensorToolbox extends CCKCPanel {
     // Labels underneath the sensor tool nodes
     const voltmeterText = new Text( voltmeterStringProperty, {
       maxWidth: 60,
+      fill: CCKCColors.textFillProperty,
       tandem: tandem.createTandem( 'voltmeterText' ),
       visiblePropertyOptions: {
         phetioReadOnly: true
@@ -193,6 +195,7 @@ export default class SensorToolbox extends CCKCPanel {
     } );
     const ammeterText = new Text( options.showSeriesAmmeters && options.showNoncontactAmmeters ? ammetersStringProperty : ammeterStringProperty, {
       maxWidth: 60,
+      fill: CCKCColors.textFillProperty,
       tandem: tandem.createTandem( 'ammeterText' ),
       visiblePropertyOptions: {
         phetioReadOnly: true
@@ -300,6 +303,7 @@ export default class SensorToolbox extends CCKCPanel {
         voltageChartNodeIconContents,
         new Text( voltageChartStringProperty, {
           maxWidth: 60,
+          fill: CCKCColors.textFillProperty,
           visiblePropertyOptions: {
             phetioReadOnly: true
           }
@@ -310,6 +314,7 @@ export default class SensorToolbox extends CCKCPanel {
         new CurrentChartNode( circuitNode, new NumberProperty( 0 ), everythingProperty, { scale: scale, tandem: Tandem.OPT_OUT } ),
         new Text( currentChartStringProperty, {
           maxWidth: 60,
+          fill: CCKCColors.textFillProperty,
           visiblePropertyOptions: {
             phetioReadOnly: true
           }

@@ -20,6 +20,7 @@ import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import Multilink from '../../../axon/js/Multilink.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import CCKCColors from './CCKCColors.js';
 
 // constants
 const TOOLBOX_ICON_WIDTH = CCKCConstants.TOOLBOX_ICON_WIDTH;
@@ -60,6 +61,7 @@ export default class CircuitElementToolNode extends VBox {
     if ( labelStringProperty.value.length > 0 && providedOptions && providedOptions.tandem ) {
       labelText = new Text( labelStringProperty, {
         fontSize: 12, maxWidth: TOOLBOX_ICON_WIDTH,
+        fill: CCKCColors.textFillProperty,
         tandem: providedOptions.tandem.createTandem( 'labelText' ),
         visiblePropertyOptions: {
           phetioReadOnly: true

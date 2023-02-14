@@ -20,6 +20,7 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import { CheckboxOptions } from '../../../sun/js/Checkbox.js';
+import CCKCColors from './CCKCColors.js';
 
 type SelfOptions = {
   showRealBulbsCheckbox?: boolean;
@@ -43,7 +44,8 @@ export default class AdvancedAccordionBox extends CCKCAccordionBox {
 
     const TEXT_OPTIONS = {
       fontSize: CCKCConstants.FONT_SIZE,
-      maxWidth: 120
+      maxWidth: 120,
+      fill: CCKCColors.textFillProperty
     }; // Factor out titles
 
     const children: Node[] = [

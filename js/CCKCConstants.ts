@@ -9,7 +9,6 @@
 import Dimension2 from '../../dot/js/Dimension2.js';
 import Range from '../../dot/js/Range.js';
 import PhetFont from '../../scenery-phet/js/PhetFont.js';
-import { Color } from '../../scenery/js/imports.js';
 import CCKCQueryParameters from './CCKCQueryParameters.js';
 import circuitConstructionKitCommon from './circuitConstructionKitCommon.js';
 
@@ -62,9 +61,6 @@ const CCKCConstants = {
   // Uniform scaling for all font awesome node button icons
   FONT_AWESOME_ICON_SCALE: 0.07,
 
-  // Color for selected objects (CircuitElement and Vertex)
-  HIGHLIGHT_COLOR: new Color( 'yellow' ),
-
   // Line width for highlighting for selected objects
   HIGHLIGHT_LINE_WIDTH: 5,
 
@@ -88,10 +84,7 @@ const CCKCConstants = {
 
   // Distance between adjacent charges within a circuit element
   CHARGE_SEPARATION: 28,
-
-  // Color of the background
-  BACKGROUND_COLOR: new Color( '#99c1ff' ),
-
+  
   // Length of a battery
   BATTERY_LENGTH: 102,
 
@@ -125,9 +118,6 @@ const CCKCConstants = {
 
   // Length
   SERIES_AMMETER_LENGTH: 121,
-
-  // background for panels and radio buttons
-  PANEL_COLOR: '#f1f1f2',
 
   // radius for panels and radio buttons
   CORNER_RADIUS: 6,

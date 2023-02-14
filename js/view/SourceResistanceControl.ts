@@ -19,6 +19,7 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
 import PatternStringProperty from '../../../axon/js/PatternStringProperty.js';
+import CCKCColors from './CCKCColors.js';
 
 const resistanceOhmsSymbolStringProperty = CircuitConstructionKitCommonStrings.resistanceOhmsSymbolStringProperty;
 
@@ -39,6 +40,7 @@ export default class SourceResistanceControl extends VBox {
      */
     const createLabel = ( string: TReadOnlyProperty<string>, tandem: Tandem ) => new Text( string, {
       fontSize: 12,
+      fill: CCKCColors.textFillProperty,
       tandem: tandem,
       maxWidth: 45
     } );
@@ -70,7 +72,10 @@ export default class SourceResistanceControl extends VBox {
       }
     }
 
-    const titleNode = new Text( batteryResistanceControlString, combineOptions<TextOptions>( { tandem: tandem.createTandem( 'titleText' ) }, titleConfig ) );
+    const titleNode = new Text( batteryResistanceControlString, combineOptions<TextOptions>( {
+      fill: CCKCColors.textFillProperty,
+      tandem: tandem.createTandem( 'titleText' )
+    }, titleConfig ) );
     super( {
       children: [ titleNode, slider ],
       tandem: tandem,

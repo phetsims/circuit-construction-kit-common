@@ -15,6 +15,7 @@ import AccordionBox, { AccordionBoxOptions } from '../../../sun/js/AccordionBox.
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CCKCColors from './CCKCColors.js';
 
 // constants
 const BUTTON_MARGIN = 8;
@@ -39,7 +40,8 @@ export default class CCKCAccordionBox extends AccordionBox {
     }, providedOptions );
 
     super( content, combineOptions<AccordionBoxOptions>( {
-      fill: CCKCConstants.PANEL_COLOR,
+      fill: CCKCColors.panelFillProperty,
+      stroke: CCKCColors.panelStrokeProperty,
       cornerRadius: CCKCConstants.CORNER_RADIUS,
       titleXMargin: 10,
       buttonXMargin: BUTTON_MARGIN,
@@ -65,6 +67,7 @@ export default class CCKCAccordionBox extends AccordionBox {
           new Text( title, {
             fontSize: CCKCConstants.FONT_SIZE,
             maxWidth: 175,
+            fill: CCKCColors.textFillProperty,
             tandem: tandem.createTandem( 'titleText' )
           } )
         ]

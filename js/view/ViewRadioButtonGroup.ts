@@ -20,6 +20,7 @@ import CircuitElement from '../model/CircuitElement.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import Vertex from '../model/Vertex.js';
 import BatteryNode from './BatteryNode.js';
+import CCKCColors from './CCKCColors.js';
 
 // constants
 const BATTERY_LENGTH = CCKCConstants.BATTERY_LENGTH;
@@ -43,13 +44,15 @@ export default class ViewRadioButtonGroup extends RectangularRadioButtonGroup<Ci
       touchAreaXDilation: 9,
       touchAreaYDilation: 10,
       radioButtonOptions: {
-        baseColor: CCKCConstants.PANEL_COLOR,
+        baseColor: CCKCColors.panelFillProperty,
         cornerRadius: CCKCConstants.CORNER_RADIUS,
         xMargin: 8,
         yMargin: 11,
         buttonAppearanceStrategyOptions: {
           deselectedButtonOpacity: 0.4,
-          overButtonOpacity: 0.7
+          overButtonOpacity: 0.7,
+          selectedStroke: CCKCColors.panelStrokeProperty,
+          deselectedStroke: CCKCColors.panelStrokeProperty
         },
         phetioVisiblePropertyInstrumented: false
       },

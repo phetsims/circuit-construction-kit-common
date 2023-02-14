@@ -21,6 +21,7 @@ import CCKCScreenView from './CCKCScreenView.js';
 import CircuitElementNode from './CircuitElementNode.js';
 import CircuitNode from './CircuitNode.js';
 import CircuitNodeDragListener from './CircuitNodeDragListener.js';
+import CCKCColors from './CCKCColors.js';
 
 // constants
 const LIFELIKE_LINE_WIDTH = 16; // line width in screen coordinates
@@ -173,7 +174,7 @@ export default class WireNode extends CircuitElementNode {
 
     // The node that shows the yellow highlight for the node when selected
     const highlightNode = new Path( null, {
-      stroke: CCKCConstants.HIGHLIGHT_COLOR,
+      stroke: CCKCColors.highlightStrokeProperty,
       lineWidth: CCKCConstants.HIGHLIGHT_LINE_WIDTH,
       pickable: false,
       visible: false

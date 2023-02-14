@@ -12,6 +12,7 @@ import { Node } from '../../../scenery/js/imports.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
+import CCKCColors from './CCKCColors.js';
 
 export type CCKCPanelOptions = PanelOptions;
 
@@ -24,7 +25,8 @@ export default class CCKCPanel extends Panel {
    */
   public constructor( content: Node, tandem: Tandem, providedOptions?: PanelOptions ) {
     providedOptions = combineOptions<PanelOptions>( {
-      fill: CCKCConstants.PANEL_COLOR,
+      fill: CCKCColors.panelFillProperty,
+      stroke: CCKCColors.panelStrokeProperty,
       lineWidth: CCKCConstants.PANEL_LINE_WIDTH,
       xMargin: 15,
       yMargin: 15,

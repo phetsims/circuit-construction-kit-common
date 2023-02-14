@@ -21,6 +21,7 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import CurrentType from '../model/CurrentType.js';
 import VerticalAquaRadioButtonGroup from '../../../sun/js/VerticalAquaRadioButtonGroup.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import CCKCColors from './CCKCColors.js';
 
 const conventionalStringProperty = CircuitConstructionKitCommonStrings.conventionalStringProperty;
 const electronsStringProperty = CircuitConstructionKitCommonStrings.electronsStringProperty;
@@ -61,7 +62,8 @@ export default class DisplayOptionsPanel extends CCKCPanel {
     const createLabel = ( stringProperty: TReadOnlyProperty<string>, parentTandem: Tandem ) => new Text( stringProperty, {
       tandem: parentTandem.createTandem( 'labelText' ),
       fontSize: CCKCConstants.FONT_SIZE,
-      maxWidth: 120
+      maxWidth: 120,
+      fill: CCKCColors.textFillProperty
     } );
 
     const currentTypeRadioButtonGroupTandem = tandem.createTandem( 'currentTypeRadioButtonGroup' );

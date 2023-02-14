@@ -24,6 +24,7 @@ import { NumberDisplayOptions } from '../../../scenery-phet/js/NumberDisplay.js'
 import { SliderOptions } from '../../../sun/js/Slider.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import Vertex from '../model/Vertex.js';
+import CCKCColors from './CCKCColors.js';
 
 type SelfOptions = {
   titleNodeOptions?: TextOptions;
@@ -51,14 +52,16 @@ export default class CircuitElementNumberControl extends HBox {
       delta: 0.01,
       titleNodeOptions: {
         maxWidth: CircuitElementNumberControl.NUMBER_CONTROL_ELEMENT_MAX_WIDTH,
-        font: CCKCConstants.DEFAULT_FONT
+        font: CCKCConstants.DEFAULT_FONT,
+        fill: CCKCColors.textFillProperty
       },
       numberDisplayOptions: {
         maxWidth: 94,
         valuePattern: valuePattern,
         decimalPlaces: numberOfDecimalPlaces,
         textOptions: {
-          font: CCKCConstants.DEFAULT_FONT
+          font: CCKCConstants.DEFAULT_FONT,
+          fill: CCKCColors.textFillProperty
         }
       },
       layoutFunction: NumberControl.createLayoutFunction1( {

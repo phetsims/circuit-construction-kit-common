@@ -7,9 +7,9 @@
  */
 
 import ArrowNode from '../../../scenery-phet/js/ArrowNode.js';
-import { Color } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CCKCColors from './CCKCColors.js';
 
 // constants
 const ARROW_LENGTH = 23; // length of the arrow in view coordinates
@@ -22,8 +22,8 @@ export default class ConventionalCurrentArrowNode extends ArrowNode {
       headHeight: 10,
       headWidth: 12,
       tailWidth: 3,
-      fill: Color.RED,
-      stroke: Color.WHITE,
+      fill: CCKCColors.conventionalCurrentArrowFillProperty,
+      stroke: CCKCColors.conventionalCurrentArrowStrokeProperty,
       tandem: tandem
     } );
 

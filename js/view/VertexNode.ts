@@ -20,6 +20,7 @@ import CircuitNode from './CircuitNode.js';
 import CircuitNodeDragListener from './CircuitNodeDragListener.js';
 import DisplayClickToDismissListener from '../../../joist/js/DisplayClickToDismissListener.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
+import CCKCColors from './CCKCColors.js';
 
 // constants
 const DISTANCE_TO_CUT_BUTTON = 70; // How far in view coordinates the cut button appears from the vertex node
@@ -100,10 +101,12 @@ export default class VertexNode extends Node {
     // display for debugging only
     const customLabelText = new Text( '', {
       fontSize: 22,
+      fill: CCKCColors.textFillProperty,
       pickable: false
     } );
     const voltageReadout = new Text( '', {
       fontSize: 14,
+      fill: CCKCColors.textFillProperty,
       pickable: false
     } );
     const children = [
@@ -148,7 +151,7 @@ export default class VertexNode extends Node {
 
     // Highlight is shown when the vertex is selected.
     this.highlightNode = new Circle( 30, {
-      stroke: CCKCConstants.HIGHLIGHT_COLOR,
+      stroke: CCKCColors.highlightStrokeProperty,
       lineWidth: CCKCConstants.HIGHLIGHT_LINE_WIDTH,
       pickable: false
     } );

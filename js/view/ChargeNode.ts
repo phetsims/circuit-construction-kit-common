@@ -20,6 +20,8 @@ import CircuitNode from './CircuitNode.js';
 import ConventionalCurrentArrowNode from './ConventionalCurrentArrowNode.js';
 import CapacitorCircuitElementNode from './CapacitorCircuitElementNode.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
+import Multilink from '../../../axon/js/Multilink.js';
+import CCKCColors from './CCKCColors.js';
 
 // constants
 const ELECTRON_CHARGE_NODE = new ElectronChargeNode( {
@@ -33,7 +35,14 @@ const ELECTRON_CHARGE_NODE = new ElectronChargeNode( {
   scale: 0.78
 } ).rasterized( { wrap: false } );
 
-const ARROW_NODE = new ConventionalCurrentArrowNode( Tandem.OPT_OUT ).rasterized( { wrap: false } );
+const INITIAL_ARROW_NODE = new ConventionalCurrentArrowNode( Tandem.OPT_OUT ).rasterized( { wrap: false } );
+
+const arrowNode = new Node( { children: [ INITIAL_ARROW_NODE ] } );
+
+Multilink.multilink( [ CCKCColors.conventionalCurrentArrowFillProperty, CCKCColors.conventionalCurrentArrowStrokeProperty ],
+  ( arrowFill, arrowStroke ) => {
+    arrowNode.children = [ new ConventionalCurrentArrowNode( Tandem.OPT_OUT ).rasterized( { wrap: false } ) ];
+  } );
 
 // Below this amperage, no conventional current will be rendered.
 const CONVENTIONAL_CHARGE_THRESHOLD = 1E-6;
@@ -48,7 +57,7 @@ export default class ChargeNode extends Node {
   private readonly updateTransformListener: () => void;
 
   // Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
-  public static readonly webglSpriteNodes = [ ELECTRON_CHARGE_NODE, ARROW_NODE ];
+  public static readonly webglSpriteNodes = [ ELECTRON_CHARGE_NODE, arrowNode ];
 
   /**
    * @param charge - the model element
@@ -56,7 +65,7 @@ export default class ChargeNode extends Node {
    */
   public constructor( charge: Charge, circuitNode: CircuitNode ) {
 
-    const child = charge.charge > 0 ? ARROW_NODE : ELECTRON_CHARGE_NODE;
+    const child = charge.charge > 0 ? arrowNode : ELECTRON_CHARGE_NODE;
 
     super( {
       pickable: false,

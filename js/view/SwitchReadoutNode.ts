@@ -15,6 +15,7 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import CircuitElement from '../model/CircuitElement.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import Vertex from '../model/Vertex.js';
+import CCKCColors from './CCKCColors.js';
 
 const theSwitchIsClosedStringProperty = CircuitConstructionKitCommonStrings.theSwitchIsClosedStringProperty;
 const theSwitchIsOpenStringProperty = CircuitConstructionKitCommonStrings.theSwitchIsOpenStringProperty;
@@ -31,6 +32,7 @@ export default class SwitchReadoutNode extends Node {
       new Text( string, {
         fontSize: 24,
         maxWidth: MAX_TEXT_WIDTH,
+        fill: CCKCColors.textFillProperty,
         tandem: tandem,
         visiblePropertyOptions: {
           phetioReadOnly: true

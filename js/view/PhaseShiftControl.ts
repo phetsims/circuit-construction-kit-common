@@ -23,6 +23,7 @@ import Multilink, { UnknownMultilink } from '../../../axon/js/Multilink.js';
 import PickRequired from '../../../phet-core/js/types/PickRequired.js';
 import Vertex from '../model/Vertex.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
+import CCKCColors from './CCKCColors.js';
 
 type PhaseShiftControlOptions = VBoxOptions & PickRequired<VBoxOptions, 'tandem'>;
 export default class PhaseShiftControl extends VBox {
@@ -58,7 +59,8 @@ export default class PhaseShiftControl extends VBox {
 
     const title = new Text( CircuitConstructionKitCommonStrings.phaseShiftStringProperty, {
       font: CCKCConstants.DEFAULT_FONT,
-      maxWidth: CircuitElementNumberControl.NUMBER_CONTROL_ELEMENT_MAX_WIDTH
+      maxWidth: CircuitElementNumberControl.NUMBER_CONTROL_ELEMENT_MAX_WIDTH,
+      fill: CCKCColors.textFillProperty
     } );
 
     const numberSpinner = new NumberSpinner( phaseProperty, valueRangeProperty, spinnerOptions );

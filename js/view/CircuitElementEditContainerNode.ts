@@ -45,6 +45,7 @@ import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js'
 import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import Vertex from '../model/Vertex.js';
 import PatternStringProperty from '../../../axon/js/PatternStringProperty.js';
+import CCKCColors from './CCKCColors.js';
 
 const capacitanceStringProperty = CircuitConstructionKitCommonStrings.capacitanceStringProperty;
 const capacitanceUnitsStringProperty = CircuitConstructionKitCommonStrings.capacitanceUnitsStringProperty;
@@ -333,6 +334,7 @@ export default class CircuitElementEditContainerNode extends Node {
     const tapInstructionText = new Text( tapCircuitElementToEditStringProperty, {
       fontSize: 24,
       maxWidth: 300,
+      fill: CCKCColors.textFillProperty,
       tandem: tandem.createTandem( 'tapInstructionText' ),
       visiblePropertyOptions: {
 
@@ -503,7 +505,7 @@ class EditPanel extends Panel {
       children: children
     } );
     super( hbox, {
-      fill: '#caddfa',
+      fill: CCKCColors.editPanelFillProperty,
       stroke: null,
       xMargin: 10,
       yMargin: 10,

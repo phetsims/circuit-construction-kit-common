@@ -15,6 +15,7 @@ import PageControl from '../../../sun/js/PageControl.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
+import CCKCColors from './CCKCColors.js';
 
 // constants
 
@@ -46,6 +47,10 @@ export default class CircuitElementToolbox extends HBox {
         margin: 12,
 
         separatorsVisible: true,
+
+        fill: CCKCColors.panelFillProperty,
+
+        stroke: CCKCColors.panelStrokeProperty,
 
         tandem: tandem.createTandem( 'carousel' )
       }

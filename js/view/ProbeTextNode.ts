@@ -14,6 +14,7 @@ import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
+import CCKCColors from './CCKCColors.js';
 
 // constants
 const TEXT_BOX_WIDTH = 140;
@@ -47,6 +48,7 @@ export default class ProbeTextNode extends VBox {
     const readoutText = new Text( stringProperty, {
       fontSize: options.seriesAmmeter ? 46 : 40,
       maxWidth: TEXT_BOX_WIDTH - 20,
+      fill: CCKCColors.textFillProperty,
       tandem: tandem.createTandem( 'probeReadoutText' ),
       stringPropertyOptions: {
         phetioReadOnly: true
@@ -84,6 +86,7 @@ export default class ProbeTextNode extends VBox {
     const titleText = new Text( title, {
       fontSize: options.seriesAmmeter ? 33 : 42,
       maxWidth: TEXT_BOX_WIDTH,
+      fill: CCKCColors.textFillProperty,
       tandem: options.seriesAmmeter ? tandem.createTandem( 'probeTitleText' ) : Tandem.OPT_OUT
     } );
     options.children = [ titleText, new Node( {
