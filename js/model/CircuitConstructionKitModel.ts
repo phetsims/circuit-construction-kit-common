@@ -32,13 +32,14 @@ import NumberIO from '../../../tandem/js/types/NumberIO.js';
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import Utils from '../../../dot/js/Utils.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import TModel from '../../../joist/js/TModel.js';
 
 type CircuitConstructionKitModelOptions = {
   blackBoxStudy?: boolean;
   revealing?: boolean;
 };
 
-export default class CircuitConstructionKitModel {
+export default class CircuitConstructionKitModel implements TModel {
   private zoomAnimation: ZoomAnimation | null;
   public readonly viewTypeProperty: Property<CircuitElementViewType>;
 
