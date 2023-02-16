@@ -18,41 +18,29 @@ const CCKCColors = {
   // Background color used for all screens
   screenBackgroundColorProperty: new ProfileColorProperty( circuitConstructionKitCommon, 'screenBackgroundColor', {
     default: '#99c1ff'
-  }, {
-    tandem: tandem.createTandem( 'screenBackgroundColorProperty' )
   } ),
 
   textFillProperty: new ProfileColorProperty( circuitConstructionKitCommon, 'textFill', {
     default: 'black'
-  }, {
-    tandem: tandem.createTandem( 'textFillProperty' )
   } ),
 
   // Fill for Panel-like Containers
   panelFillProperty: new ProfileColorProperty( circuitConstructionKitCommon, 'panelFill', {
     default: '#f1f1f2'
-  }, {
-    tandem: tandem.createTandem( 'panelFillProperty' )
   } ),
 
   // Stroke for Panel-like Containers
   panelStrokeProperty: new ProfileColorProperty( circuitConstructionKitCommon, 'panelStroke', {
     default: 'black'
-  }, {
-    tandem: tandem.createTandem( 'panelStrokeProperty' )
   } ),
 
   // Color for selected objects (CircuitElement and Vertex)
   highlightStrokeProperty: new ProfileColorProperty( circuitConstructionKitCommon, 'highlightStroke', {
     default: 'yellow'
-  }, {
-    tandem: tandem.createTandem( 'highlightStrokeProperty' )
   } ),
 
   editPanelFillProperty: new ProfileColorProperty( circuitConstructionKitCommon, 'editPanelFill', {
     default: 'rgba( 255, 255, 255, 0.5 )'
-  }, {
-    tandem: tandem.createTandem( 'editPanelFillProperty' )
   } ),
 
   conventionalCurrentArrowFillProperty: new ProfileColorProperty( circuitConstructionKitCommon, 'conventionalCurrentArrowFill', {
