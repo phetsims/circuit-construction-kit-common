@@ -378,7 +378,7 @@ export default class Circuit extends PhetioObject {
         } );
     }, () => createVertices( BATTERY_LENGTH ), {
       phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
-      tandem: this.includeLabElements ? tandem.createTandem( 'extremeBatteryGroup' ) : Tandem.OPT_OUT,
+      tandem: ( this.includeLabElements && !this.includeACElements ) ? tandem.createTandem( 'extremeBatteryGroup' ) : Tandem.OPT_OUT,
       phetioDynamicElementName: 'extremeBattery'
     } );
 
@@ -402,7 +402,7 @@ export default class Circuit extends PhetioObject {
         new Resistor( startVertex, endVertex, ResistorType.EXTREME_RESISTOR, tandem ),
       () => createVertices( ResistorType.EXTREME_RESISTOR.length ), {
         phetioType: PhetioGroup.PhetioGroupIO( Resistor.ResistorIO ),
-        tandem: tandem.createTandem( 'extremeResistorGroup' )
+        tandem: ( this.includeLabElements && !this.includeACElements ) ? tandem.createTandem( 'extremeResistorGroup' ) : Tandem.OPT_OUT
       } );
 
     this.householdObjectGroup = new PhetioGroup(
@@ -437,7 +437,7 @@ export default class Circuit extends PhetioObject {
           } );
       }, () => createVertices( 100 ), {
         phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
-        tandem: this.includeLabElements ? tandem.createTandem( 'extremeLightBulbGroup' ) : Tandem.OPT_OUT
+        tandem: ( this.includeLabElements && !this.includeACElements ) ? tandem.createTandem( 'extremeLightBulbGroup' ) : Tandem.OPT_OUT
       } );
 
     this.capacitorGroup = new PhetioGroup(
@@ -478,7 +478,7 @@ export default class Circuit extends PhetioObject {
         } );
       }, () => createVertices( 100 ), {
         phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
-        tandem: this.includeLabElements ? tandem.createTandem( 'realLightBulbGroup' ) : Tandem.OPT_OUT
+        tandem: ( this.includeLabElements && !this.includeACElements ) ? tandem.createTandem( 'realLightBulbGroup' ) : Tandem.OPT_OUT
       } );
 
     this.groups = [
