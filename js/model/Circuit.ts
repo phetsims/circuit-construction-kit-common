@@ -139,19 +139,19 @@ export default class Circuit extends PhetioObject {
   private readonly stepActions: ( () => void )[];
   public readonly wireGroup: PhetioGroup<Wire, [ Vertex, Vertex ]>;
   public readonly batteryGroup: PhetioGroup<Battery, [ Vertex, Vertex ]>;
-  public readonly extremeBatteryGroup: PhetioGroup<Battery, [ Vertex, Vertex ]>;
-  public readonly acVoltageGroup: PhetioGroup<ACVoltage, [ Vertex, Vertex ]>;
+  public readonly extremeBatteryGroup: PhetioGroup<Battery, [ Vertex, Vertex ]> | null;
+  public readonly acVoltageGroup: PhetioGroup<ACVoltage, [ Vertex, Vertex ]> | null;
   public readonly resistorGroup: PhetioGroup<Resistor, [ Vertex, Vertex ]>;
-  public readonly extremeResistorGroup: PhetioGroup<Resistor, [ Vertex, Vertex ]>;
+  public readonly extremeResistorGroup: PhetioGroup<Resistor, [ Vertex, Vertex ]> | null;
   public readonly householdObjectGroup: PhetioGroup<Resistor, [ Vertex, Vertex, ResistorType ]>;
   public readonly fuseGroup: PhetioGroup<Fuse, [ Vertex, Vertex ]>;
-  public readonly seriesAmmeterGroup: PhetioGroup<SeriesAmmeter, [ Vertex, Vertex ]>;
-  public readonly extremeLightBulbGroup: PhetioGroup<LightBulb, [ Vertex, Vertex ]>;
-  public readonly capacitorGroup: PhetioGroup<Capacitor, [ Vertex, Vertex ]>;
-  public readonly inductorGroup: PhetioGroup<Inductor, [ Vertex, Vertex ]>;
+  public readonly seriesAmmeterGroup: PhetioGroup<SeriesAmmeter, [ Vertex, Vertex ]> | null;
+  public readonly extremeLightBulbGroup: PhetioGroup<LightBulb, [ Vertex, Vertex ]> | null;
+  public readonly capacitorGroup: PhetioGroup<Capacitor, [ Vertex, Vertex ]> | null;
+  public readonly inductorGroup: PhetioGroup<Inductor, [ Vertex, Vertex ]> | null;
   public readonly switchGroup: PhetioGroup<Switch, [ Vertex, Vertex ]>;
   public readonly lightBulbGroup: PhetioGroup<LightBulb, [ Vertex, Vertex ]>;
-  public readonly realLightBulbGroup: PhetioGroup<LightBulb, [ Vertex, Vertex ]>;
+  public readonly realLightBulbGroup: PhetioGroup<LightBulb, [ Vertex, Vertex ]> | null;
   private readonly groups: PhetioGroup<IntentionalAny, IntentionalAny>[];
   public readonly includeACElements: boolean;
   public readonly includeLabElements: boolean;
@@ -370,7 +370,7 @@ export default class Circuit extends PhetioObject {
       tandem: tandem.createTandem( 'batteryGroup' )
     } );
 
-    this.extremeBatteryGroup = new PhetioGroup( ( tandem, startVertex, endVertex ) => {
+    this.extremeBatteryGroup = ( this.includeLabElements && !this.includeACElements ) ? new PhetioGroup( ( tandem, startVertex, endVertex ) => {
       return new Battery( startVertex, endVertex, this.sourceResistanceProperty, 'high-voltage',
         tandem, {
           voltage: 1000,
@@ -378,16 +378,16 @@ export default class Circuit extends PhetioObject {
         } );
     }, () => createVertices( BATTERY_LENGTH ), {
       phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
-      tandem: ( this.includeLabElements && !this.includeACElements ) ? tandem.createTandem( 'extremeBatteryGroup' ) : Tandem.OPT_OUT,
+      tandem: tandem.createTandem( 'extremeBatteryGroup' ),
       phetioDynamicElementName: 'extremeBattery'
-    } );
+    } ) : null;
 
-    this.acVoltageGroup = new PhetioGroup( ( tandem, startVertex, endVertex ) => {
+    this.acVoltageGroup = this.includeACElements ? new PhetioGroup( ( tandem, startVertex, endVertex ) => {
       return new ACVoltage( startVertex, endVertex, this.sourceResistanceProperty, tandem );
     }, () => createVertices( CCKCConstants.AC_VOLTAGE_LENGTH ), {
       phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
-      tandem: options.includeACElements ? tandem.createTandem( 'acVoltageGroup' ) : Tandem.OPT_OUT
-    } );
+      tandem: tandem.createTandem( 'acVoltageGroup' )
+    } ) : null;
 
     this.resistorGroup = new PhetioGroup(
       ( tandem, startVertex, endVertex ) =>
@@ -397,13 +397,13 @@ export default class Circuit extends PhetioObject {
         tandem: tandem.createTandem( 'resistorGroup' )
       } );
 
-    this.extremeResistorGroup = new PhetioGroup(
+    this.extremeResistorGroup = ( this.includeLabElements && !this.includeACElements ) ? new PhetioGroup(
       ( tandem, startVertex, endVertex ) =>
         new Resistor( startVertex, endVertex, ResistorType.EXTREME_RESISTOR, tandem ),
       () => createVertices( ResistorType.EXTREME_RESISTOR.length ), {
         phetioType: PhetioGroup.PhetioGroupIO( Resistor.ResistorIO ),
-        tandem: ( this.includeLabElements && !this.includeACElements ) ? tandem.createTandem( 'extremeResistorGroup' ) : Tandem.OPT_OUT
-      } );
+        tandem: tandem.createTandem( 'extremeResistorGroup' )
+      } ) : null;
 
     this.householdObjectGroup = new PhetioGroup(
       ( tandem, startVertex, endVertex, resistorType ) =>
@@ -422,14 +422,14 @@ export default class Circuit extends PhetioObject {
         tandem: tandem.createTandem( 'fuseGroup' )
       } );
 
-    this.seriesAmmeterGroup = new PhetioGroup(
+    this.seriesAmmeterGroup = this.includeLabElements ? new PhetioGroup(
       ( tandem, startVertex, endVertex ) => new SeriesAmmeter( startVertex, endVertex, tandem ),
       () => createVertices( CCKCConstants.SERIES_AMMETER_LENGTH ), {
         phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
-        tandem: this.includeLabElements ? tandem.createTandem( 'seriesAmmeterGroup' ) : Tandem.OPT_OUT
-      } );
+        tandem: tandem.createTandem( 'seriesAmmeterGroup' )
+      } ) : null;
 
-    this.extremeLightBulbGroup = new PhetioGroup(
+    this.extremeLightBulbGroup = ( this.includeLabElements && !this.includeACElements ) ? new PhetioGroup(
       ( tandem, startVertex, endVertex ) => {
         return LightBulb.createAtPosition( startVertex, endVertex, this, CCKCConstants.HIGH_RESISTANCE,
           this.viewTypeProperty, tandem, {
@@ -437,22 +437,22 @@ export default class Circuit extends PhetioObject {
           } );
       }, () => createVertices( 100 ), {
         phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
-        tandem: ( this.includeLabElements && !this.includeACElements ) ? tandem.createTandem( 'extremeLightBulbGroup' ) : Tandem.OPT_OUT
-      } );
+        tandem: tandem.createTandem( 'extremeLightBulbGroup' )
+      } ) : null;
 
-    this.capacitorGroup = new PhetioGroup(
+    this.capacitorGroup = this.includeACElements ? new PhetioGroup(
       ( tandem, startVertex, endVertex ) => new Capacitor( startVertex, endVertex, tandem ),
       () => createVertices( CCKCConstants.CAPACITOR_LENGTH ), {
         phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
-        tandem: options.includeACElements ? tandem.createTandem( 'capacitorGroup' ) : Tandem.OPT_OUT
-      } );
+        tandem: tandem.createTandem( 'capacitorGroup' )
+      } ) : null;
 
-    this.inductorGroup = new PhetioGroup(
+    this.inductorGroup = this.includeACElements ? new PhetioGroup(
       ( tandem, startVertex, endVertex ) => new Inductor( startVertex, endVertex, tandem ),
       () => createVertices( CCKCConstants.INDUCTOR_LENGTH ), {
         phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
-        tandem: options.includeACElements ? tandem.createTandem( 'inductorGroup' ) : Tandem.OPT_OUT
-      } );
+        tandem: tandem.createTandem( 'inductorGroup' )
+      } ) : null;
 
     this.switchGroup = new PhetioGroup(
       ( tandem, startVertex, endVertex ) => new Switch( startVertex, endVertex, tandem, this ),
@@ -468,7 +468,7 @@ export default class Circuit extends PhetioObject {
       tandem: tandem.createTandem( 'lightBulbGroup' )
     } );
 
-    this.realLightBulbGroup = new PhetioGroup(
+    this.realLightBulbGroup = ( this.includeLabElements && !this.includeACElements ) ? new PhetioGroup(
       ( tandem, startVertex, endVertex ) => {
         return new LightBulb( startVertex, endVertex, CCKCConstants.DEFAULT_RESISTANCE, this.viewTypeProperty, tandem, {
           isReal: true,
@@ -478,26 +478,27 @@ export default class Circuit extends PhetioObject {
         } );
       }, () => createVertices( 100 ), {
         phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
-        tandem: ( this.includeLabElements && !this.includeACElements ) ? tandem.createTandem( 'realLightBulbGroup' ) : Tandem.OPT_OUT
-      } );
+        tandem: tandem.createTandem( 'realLightBulbGroup' )
+      } ) : null;
 
     this.groups = [
       this.wireGroup,
       this.batteryGroup,
-      this.extremeBatteryGroup,
-      this.acVoltageGroup,
       this.resistorGroup,
-      this.extremeResistorGroup,
-      this.householdObjectGroup,
-      this.fuseGroup,
-      this.capacitorGroup,
-      this.inductorGroup,
       this.switchGroup,
       this.lightBulbGroup,
-      this.realLightBulbGroup,
-      this.extremeLightBulbGroup,
-      this.seriesAmmeterGroup
+      this.fuseGroup,
+      this.householdObjectGroup,
+      ...( this.extremeBatteryGroup ? [ this.extremeBatteryGroup ] : [] ),
+      ...( this.extremeResistorGroup ? [ this.extremeResistorGroup ] : [] ),
+      ...( this.extremeLightBulbGroup ? [ this.extremeLightBulbGroup ] : [] ),
+      ...( this.realLightBulbGroup ? [ this.realLightBulbGroup ] : [] ),
+      ...( this.seriesAmmeterGroup ? [ this.seriesAmmeterGroup ] : [] ),
+      ...( this.acVoltageGroup ? [ this.acVoltageGroup ] : [] ),
+      ...( this.capacitorGroup ? [ this.capacitorGroup ] : [] ),
+      ...( this.inductorGroup ? [ this.inductorGroup ] : [] )
     ];
+
     this.dirty = false;
   }
 

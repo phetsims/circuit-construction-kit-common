@@ -154,7 +154,7 @@ export default class SensorToolbox extends CCKCPanel {
       const halfLength = CCKCConstants.SERIES_AMMETER_LENGTH / 2;
       const startVertex = circuit.vertexGroup.createNextElement( position.plusXY( -halfLength, 0 ) );
       const endVertex = circuit.vertexGroup.createNextElement( position.plusXY( halfLength, 0 ) );
-      return circuit.seriesAmmeterGroup.createNextElement( startVertex, endVertex );
+      return circuit.seriesAmmeterGroup!.createNextElement( startVertex, endVertex );
     };
     seriesAmmeterNodeIcon.mutate( { scale: TOOLBOX_ICON_HEIGHT / seriesAmmeterNodeIcon.width } );
     const MAX_SERIES_AMMETERS = 6;

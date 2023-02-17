@@ -248,7 +248,7 @@ export default class CircuitElementToolFactory {
         scale: 0.68
       } ),
       circuitElement => circuitElement instanceof ACVoltage,
-      ( position: Vector2 ) => this.circuit.acVoltageGroup.createNextElement( ...this.circuit.createVertexPairArray( position, AC_VOLTAGE_LENGTH ) ), {
+      ( position: Vector2 ) => this.circuit.acVoltageGroup!.createNextElement( ...this.circuit.createVertexPairArray( position, AC_VOLTAGE_LENGTH ) ), {
         tandem: tandem,
         lifelikeIconHeight: 27,
         schematicIconHeight: 27
@@ -352,7 +352,7 @@ export default class CircuitElementToolFactory {
         isIcon: true
       } ),
       circuitElement => circuitElement instanceof Capacitor,
-      ( position: Vector2 ) => this.circuit.capacitorGroup.createNextElement( ...this.circuit.createVertexPairArray( position, CCKCConstants.CAPACITOR_LENGTH ) ), {
+      ( position: Vector2 ) => this.circuit.capacitorGroup!.createNextElement( ...this.circuit.createVertexPairArray( position, CCKCConstants.CAPACITOR_LENGTH ) ), {
         tandem: tandem
       } );
   }
@@ -370,7 +370,7 @@ export default class CircuitElementToolFactory {
         scale: 0.75
       } ),
       circuitElement => circuitElement instanceof Inductor,
-      ( position: Vector2 ) => this.circuit.inductorGroup.createNextElement( ...this.circuit.createVertexPairArray( position, CCKCConstants.INDUCTOR_LENGTH ) ), {
+      ( position: Vector2 ) => this.circuit.inductorGroup!.createNextElement( ...this.circuit.createVertexPairArray( position, CCKCConstants.INDUCTOR_LENGTH ) ), {
         tandem: tandem,
         lifelikeIconHeight: 22,
         schematicIconHeight: 6
@@ -473,7 +473,7 @@ export default class CircuitElementToolFactory {
 
   // Same docs as for createPaperClipToolNode
   public createExtremeResistorToolNode( tandem: Tandem ): CircuitElementToolNode {
-    return this.createResistorToolNode( tandem, this.circuit.extremeResistorGroup, {
+    return this.createResistorToolNode( tandem, this.circuit.extremeResistorGroup!, {
       count: 4,
       resistorType: ResistorType.EXTREME_RESISTOR,
       tandemName: 'extremeResistorToolNode',
@@ -497,7 +497,7 @@ export default class CircuitElementToolFactory {
       circuitElement => circuitElement instanceof Battery &&
                         circuitElement.initialOrientation === 'right' &&
                         circuitElement.batteryType === 'high-voltage', ( position: Vector2 ) => {
-        return this.circuit.extremeBatteryGroup.createNextElement( ...this.circuit.createVertexPairArray( position, SWITCH_LENGTH ) );
+        return this.circuit.extremeBatteryGroup!.createNextElement( ...this.circuit.createVertexPairArray( position, SWITCH_LENGTH ) );
       }, {
         tandem: tandem,
         lifelikeIconHeight: 15
@@ -527,7 +527,7 @@ export default class CircuitElementToolFactory {
       circuitElement => circuitElement instanceof LightBulb && circuitElement.isExtreme,
       ( position: Vector2 ) => {
         const vertexPair = LightBulb.createVertexPair( position, this.circuit, false );
-        return this.circuit.extremeLightBulbGroup.createNextElement( vertexPair.startVertex, vertexPair.endVertex );
+        return this.circuit.extremeLightBulbGroup!.createNextElement( vertexPair.startVertex, vertexPair.endVertex );
       }, {
         tandem: tandem
       } );
