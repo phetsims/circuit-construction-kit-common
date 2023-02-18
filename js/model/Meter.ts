@@ -55,7 +55,9 @@ export default class Meter extends PhetioObject {
       phetioFeatured: true
     } );
 
-    this.draggingProbesWithBodyProperty = new BooleanProperty( true );
+    this.draggingProbesWithBodyProperty = new BooleanProperty( true, {
+      tandem: tandem.createTandem( 'draggingProbesWithBodyProperty' )
+    } );
 
     this.droppedEmitter = new Emitter( { parameters: [ { valueType: Bounds2 } ] } );
   }
