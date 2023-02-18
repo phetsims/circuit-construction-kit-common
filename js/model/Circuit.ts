@@ -370,7 +370,8 @@ export default class Circuit extends PhetioObject {
       tandem: tandem.createTandem( 'batteryGroup' )
     } );
 
-    this.extremeBatteryGroup = ( this.includeLabElements && !this.includeACElements ) ? new PhetioGroup( ( tandem, startVertex, endVertex ) => {
+    const includeExtremeElements = this.includeLabElements && !this.includeACElements;
+    this.extremeBatteryGroup = includeExtremeElements ? new PhetioGroup( ( tandem, startVertex, endVertex ) => {
       return new Battery( startVertex, endVertex, this.sourceResistanceProperty, 'high-voltage',
         tandem, {
           voltage: 1000,
@@ -397,7 +398,7 @@ export default class Circuit extends PhetioObject {
         tandem: tandem.createTandem( 'resistorGroup' )
       } );
 
-    this.extremeResistorGroup = ( this.includeLabElements && !this.includeACElements ) ? new PhetioGroup(
+    this.extremeResistorGroup = includeExtremeElements ? new PhetioGroup(
       ( tandem, startVertex, endVertex ) =>
         new Resistor( startVertex, endVertex, ResistorType.EXTREME_RESISTOR, tandem ),
       () => createVertices( ResistorType.EXTREME_RESISTOR.length ), {
@@ -429,7 +430,7 @@ export default class Circuit extends PhetioObject {
         tandem: tandem.createTandem( 'seriesAmmeterGroup' )
       } ) : null;
 
-    this.extremeLightBulbGroup = ( this.includeLabElements && !this.includeACElements ) ? new PhetioGroup(
+    this.extremeLightBulbGroup = includeExtremeElements ? new PhetioGroup(
       ( tandem, startVertex, endVertex ) => {
         return LightBulb.createAtPosition( startVertex, endVertex, this, CCKCConstants.HIGH_RESISTANCE,
           this.viewTypeProperty, tandem, {
