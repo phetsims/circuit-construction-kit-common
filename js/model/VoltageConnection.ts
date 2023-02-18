@@ -33,6 +33,13 @@ export default class VoltageConnection {
       connection: ReferenceIO( IOType.ObjectIO ).toStateObject( voltageConnection.circuitElement || voltageConnection.vertex ),
       voltage: voltageConnection.voltage
     } ),
+    fromStateObject: stateObject => {
+
+      // Like in DerivedProperty, this is a no-op because the value is not used to restore the state
+      // Will be recomputed after the model is restored. This code relies on the assumption that the VoltageConnectionIO
+      // is contained in a NullableIO()
+      return null;
+    },
     stateSchema: {
       connection: ReferenceIO( IOType.ObjectIO ),
       voltage: NumberIO
