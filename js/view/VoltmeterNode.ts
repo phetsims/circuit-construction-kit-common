@@ -204,7 +204,7 @@ export default class VoltmeterNode extends Node {
       redWireBodyPositionProperty.value = bodyNode.centerBottom.plusXY( PROBE_CONNECTION_POINT_DX, PROBE_CONNECTION_POINT_DY );
 
       // When dragging out of the toolbox, the probes move with the body
-      if ( voltmeter.draggingProbesWithBodyProperty.get() ) {
+      if ( voltmeter.isDraggingProbesWithBodyProperty.get() ) {
         const probeY = -30 - bodyNode.height / 2;
         const probeOffsetX = 78;
 
@@ -291,7 +291,7 @@ export default class VoltmeterNode extends Node {
           voltmeter.droppedEmitter.emit( bodyNode.globalBounds );
 
           // After dropping in the play area the probes move independently of the body
-          voltmeter.draggingProbesWithBodyProperty.set( false );
+          voltmeter.isDraggingProbesWithBodyProperty.set( false );
         },
 
         // adds support for zoomed coordinate frame, see

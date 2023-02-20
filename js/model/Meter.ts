@@ -27,7 +27,7 @@ export default class Meter extends PhetioObject {
   public readonly bodyPositionProperty: Property<Vector2>;
 
   // When the meter is dragged from the toolbox, all pieces drag together.
-  public readonly draggingProbesWithBodyProperty: BooleanProperty;
+  public readonly isDraggingProbesWithBodyProperty: BooleanProperty;
 
   // Fires an event when the meter is dropped
   public readonly droppedEmitter: TEmitter<[ Bounds2 ]>;
@@ -55,8 +55,8 @@ export default class Meter extends PhetioObject {
       phetioFeatured: true
     } );
 
-    this.draggingProbesWithBodyProperty = new BooleanProperty( true, {
-      tandem: tandem.createTandem( 'draggingProbesWithBodyProperty' )
+    this.isDraggingProbesWithBodyProperty = new BooleanProperty( true, {
+      tandem: tandem.createTandem( 'isDraggingProbesWithBodyProperty' )
     } );
 
     this.droppedEmitter = new Emitter( { parameters: [ { valueType: Bounds2 } ] } );
@@ -68,7 +68,7 @@ export default class Meter extends PhetioObject {
   public reset(): void {
     this.isActiveProperty.reset();
     this.bodyPositionProperty.reset();
-    this.draggingProbesWithBodyProperty.reset();
+    this.isDraggingProbesWithBodyProperty.reset();
   }
 }
 

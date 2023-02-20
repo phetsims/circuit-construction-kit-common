@@ -430,7 +430,7 @@ export default class CCKCChartNode extends Node {
 
     // Since this will be shown from the toolbox, make the play area icon invisible and prepare to drag with probes
     this.meter.isActiveProperty.value = false;
-    this.meter.draggingProbesWithBodyProperty.value = true;
+    this.meter.isDraggingProbesWithBodyProperty.value = true;
 
     const dragBoundsProperty = new Property<Bounds2 | null>( null );
 
@@ -446,14 +446,14 @@ export default class CCKCChartNode extends Node {
       tandem: this.tandem.createTandem( 'dragHandler' ),
       start: () => {
         this.moveToFront();
-        if ( this.meter.draggingProbesWithBodyProperty.value ) {
+        if ( this.meter.isDraggingProbesWithBodyProperty.value ) {
 
           // Align the probes each time the chart translates, so they will stay in sync
           this.alignProbesEmitter.emit();
         }
       },
       drag: () => {
-        if ( this.meter.draggingProbesWithBodyProperty.value ) {
+        if ( this.meter.isDraggingProbesWithBodyProperty.value ) {
 
           // Align the probes each time the chart translates, so they will stay in sync
           this.alignProbesEmitter.emit();
@@ -469,7 +469,7 @@ export default class CCKCChartNode extends Node {
 
         // Move probes to center line (if water side view model)
         this.droppedEmitter.emit();
-        this.meter.draggingProbesWithBodyProperty.value = false;
+        this.meter.isDraggingProbesWithBodyProperty.value = false;
       }
     } );
 

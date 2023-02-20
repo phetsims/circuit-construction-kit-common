@@ -95,7 +95,7 @@ export default class SensorToolbox extends CCKCPanel {
                              meterNode instanceof AmmeterNode ? meterNode.ammeter :
                              meterNode.meter;
           const viewPosition = circuitNode.globalToLocalPoint( event.pointer.point );
-          meterModel.draggingProbesWithBodyProperty.value = true;
+          meterModel.isDraggingProbesWithBodyProperty.value = true;
           meterModel.isActiveProperty.value = true;
           meterModel.bodyPositionProperty.value = viewPosition;
           meterNode.startDrag( event );

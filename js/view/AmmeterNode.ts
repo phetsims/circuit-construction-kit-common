@@ -165,7 +165,7 @@ export default class AmmeterNode extends Node {
     this.ammeter = ammeter;
 
     const alignProbeToBody = () => {
-      if ( ammeter.draggingProbesWithBodyProperty.get() ) {
+      if ( ammeter.isDraggingProbesWithBodyProperty.get() ) {
 
         const constrain = ( pt: Vector2 ) => options.visibleBoundsProperty ?
                                              options.visibleBoundsProperty.value.eroded( CCKCConstants.DRAG_BOUNDS_EROSION ).closestPointTo( pt ) :
@@ -215,7 +215,7 @@ export default class AmmeterNode extends Node {
           ammeter.droppedEmitter.emit( bodyNode.globalBounds );
 
           // After dropping in the play area the probes move independently of the body
-          ammeter.draggingProbesWithBodyProperty.set( false );
+          ammeter.isDraggingProbesWithBodyProperty.set( false );
         },
 
         // adds support for zoomed coordinate frame, see
