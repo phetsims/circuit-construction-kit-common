@@ -55,6 +55,8 @@ export default class LinearTransientAnalysis {
     const voltageSourceMap = new Map<LTAResistiveBattery, VoltageSource>();
     const capacitorMap = new Map<LTACapacitor, Capacitor>();
     const inductorMap = new Map<LTAInductor, Inductor>();
+
+    let hasRealBulbs = false;
     for ( let i = 0; i < circuit.circuitElements.length; i++ ) {
       const circuitElement = circuit.circuitElements[ i ];
 
@@ -82,9 +84,17 @@ export default class LinearTransientAnalysis {
                   // Since no closed circuit there; see below where current is zeroed out
                   ( circuitElement instanceof Switch && circuitElement.isClosedProperty.value ) ) {
 
+          // For real bulbs, we run an initial circuit solution to determine their operating characteristics.
+          // These operating characteristics are then used in a second solution to prevent a hysteresis.
+
           // If a resistor goes to 0 resistance, then we cannot compute the current through as I=V/R.  Therefore,
           // simulate a small amount of resistance.
-          const resistance = circuitElement.resistanceProperty.value || CCKCConstants.MINIMUM_RESISTANCE;
+          const resistance = ( circuitElement instanceof LightBulb && circuitElement.isReal ) ? LightBulb.REAL_BULB_COLD_RESISTANCE :
+                             ( circuitElement.resistanceProperty.value || CCKCConstants.MINIMUM_RESISTANCE );
+
+          if ( circuitElement instanceof LightBulb && circuitElement.isReal ) {
+            hasRealBulbs = true;
+          }
 
           const resistorAdapter = new MNAResistor(
             circuitElement.startVertexProperty.value.index + '',
@@ -134,33 +144,41 @@ export default class LinearTransientAnalysis {
     }
 
     // Solve the system
-    const ltaCircuit = new LTACircuit( ltaResistors, ltaBatteries, ltaCapacitors, ltaInductors );
-    const circuitResult = ltaCircuit.solveWithSubdivisions( TIMESTEP_SUBDIVISIONS, dt );
+    let ltaCircuit = new LTACircuit( ltaResistors, ltaBatteries, ltaCapacitors, ltaInductors );
+    let circuitResult = ltaCircuit.solveWithSubdivisions( TIMESTEP_SUBDIVISIONS, dt );
 
-    ltaResistors.forEach( resistorAdapter => {
-      const circuitElement = resistorMap.get( resistorAdapter )!;
-      if ( circuitElement instanceof LightBulb && circuitElement.isReal ) {
+    // the resistance of real bulbs is a function of their voltage
+    if ( hasRealBulbs ) {
+      ltaResistors.forEach( resistorAdapter => {
+        const circuitElement = resistorMap.get( resistorAdapter )!;
+        if ( circuitElement instanceof LightBulb && circuitElement.isReal ) {
 
-        const logWithBase = ( value: number, base: number ) => Math.log( value ) / Math.log( base );
+          const logWithBase = ( value: number, base: number ) => Math.log( value ) / Math.log( base );
 
-        const dV = circuitResult.getFinalState().ltaSolution!.getVoltage( resistorAdapter.nodeId0, resistorAdapter.nodeId1 );
-        const V = Math.abs( dV );
+          const dV = circuitResult.getFinalState().ltaSolution!.getVoltage( resistorAdapter.nodeId0, resistorAdapter.nodeId1 );
+          const V = Math.abs( dV );
 
-        const base = 2;
+          const base = 2;
 
-        // I = ln(V)
-        // V=IR
-        // V=ln(V)R
-        // R = V/ln(V)
+          // I = ln(V)
+          // V=IR
+          // V=ln(V)R
+          // R = V/ln(V)
 
-        // Adjust so it looks good in comparison to a standard bulb
-        const coefficient = 3;
+          // Adjust so it looks good in comparison to a standard bulb
+          const coefficient = 3;
 
-        // shift by base so at V=0 the log is 1
-        resistorAdapter.resistance = LightBulb.REAL_BULB_COLD_RESISTANCE + coefficient * V / logWithBase( V + base, base );
-        circuitElement.resistanceProperty.value = resistorAdapter.resistance;
-      }
-    } );
+          // shift by base so at V=0 the log is 1
+          resistorAdapter.resistance = LightBulb.REAL_BULB_COLD_RESISTANCE + coefficient * V / logWithBase( V + base, base );
+          circuitElement.resistanceProperty.value = resistorAdapter.resistance;
+        }
+      } );
+
+      // If the circuit contains real bulbs, we need to solve the circuit again after calculating their resistance
+      // to prevent a hysteresis. This ensures that the resistance of the bulbs is consistent with their voltage.
+      ltaCircuit = new LTACircuit( ltaResistors, ltaBatteries, ltaCapacitors, ltaInductors );
+      circuitResult = ltaCircuit.solveWithSubdivisions( TIMESTEP_SUBDIVISIONS, dt );
+    }
 
     // Apply the solutions from the analysis back to the actual Circuit
     ltaBatteries.forEach( batteryAdapter => {
