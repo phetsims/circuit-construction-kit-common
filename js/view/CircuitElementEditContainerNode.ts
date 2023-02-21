@@ -336,6 +336,7 @@ export default class CircuitElementEditContainerNode extends Node {
       maxWidth: 300,
       fill: CCKCColors.textFillProperty,
       tandem: tandem.createTandem( 'tapInstructionText' ),
+      phetioVisiblePropertyInstrumented: true,
       visiblePropertyOptions: {
 
         // Visibility is controlled by the link below
@@ -347,11 +348,14 @@ export default class CircuitElementEditContainerNode extends Node {
     // something in the toolbox.
     const updateInstructionTextVisible = () => {
 
-      // Only fixed length circuit elements are editable, even though wires can be deleted
-      const fixedLengthElements = circuit.circuitElements.filter( circuitElement =>
-        circuitElement instanceof FixedCircuitElement && circuitElement.interactiveProperty.get()
-      );
-      tapInstructionText.visible = fixedLengthElements.length > 0;
+      if ( !phet.joist.sim.isSettingPhetioStateProperty.value ) {
+
+        // Only fixed length circuit elements are editable, even though wires can be deleted
+        const fixedLengthElements = circuit.circuitElements.filter( circuitElement =>
+          circuitElement instanceof FixedCircuitElement && circuitElement.interactiveProperty.get()
+        );
+        tapInstructionText.visible = fixedLengthElements.length > 0;
+      }
     };
 
     circuit.vertexDroppedEmitter.addListener( updateInstructionTextVisible );
