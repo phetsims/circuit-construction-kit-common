@@ -37,6 +37,7 @@ import TModel from '../../../joist/js/TModel.js';
 type CircuitConstructionKitModelOptions = {
   blackBoxStudy?: boolean;
   revealing?: boolean;
+  showNoncontactAmmeters?: boolean;
 };
 
 export default class CircuitConstructionKitModel implements TModel {
@@ -95,7 +96,8 @@ export default class CircuitConstructionKitModel implements TModel {
       // Determines whether electrons can be shown.  In black box, electrons can only be shown when the user reveals
       // the answer by pressing the reveal answer button.
       revealing: true,
-      blackBoxStudy: false
+      blackBoxStudy: false,
+      showNoncontactAmmeters: true
     }, providedOptions );
 
     // animation for the zoom level or null if not animating
@@ -126,8 +128,8 @@ export default class CircuitConstructionKitModel implements TModel {
     ];
 
     this.ammeters = [
-      new Ammeter( metersTandem.createTandem( 'ammeter1' ), 1 ),
-      new Ammeter( metersTandem.createTandem( 'ammeter2' ), 2 )
+      new Ammeter( providedOptions?.showNoncontactAmmeters ? metersTandem.createTandem( 'ammeter1' ) : Tandem.OPT_OUT, 1 ),
+      new Ammeter( providedOptions?.showNoncontactAmmeters ? metersTandem.createTandem( 'ammeter2' ) : Tandem.OPT_OUT, 2 )
     ];
 
     [ ...this.voltmeters, ...this.ammeters ].forEach( meter => {
