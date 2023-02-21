@@ -130,6 +130,16 @@ export default class CircuitConstructionKitModel implements TModel {
       new Ammeter( metersTandem.createTandem( 'ammeter2' ), 2 )
     ];
 
+    [ ...this.voltmeters, ...this.ammeters ].forEach( meter => {
+      meter.isActiveProperty.link( isActive => {
+
+        // Clear the selection when the user drags out a sensor
+        if ( isActive ) {
+          this.circuit.selectionProperty.value = null;
+        }
+      } );
+    } );
+
     const blackBoxStudyTandem = options.blackBoxStudy ? tandem.createTandem( 'blackBoxStudy' ) : Tandem.OPT_OUT;
     this.isValueDepictionEnabledProperty = new BooleanProperty(
       !CCKCQueryParameters.showDepictValuesToggleButton, {

@@ -291,6 +291,8 @@ export default class Circuit extends PhetioObject {
 
       const filtered = this.vertexGroup.filter( candidateVertex => vertex === candidateVertex );
       assert && assert( filtered.length === 1, 'should only have one copy of each vertex' );
+
+      this.selectionProperty.value = null;
     } );
 
     // Stop watching the vertex positions for updating the voltmeter and ammeter
