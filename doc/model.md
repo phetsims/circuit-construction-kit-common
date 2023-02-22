@@ -9,6 +9,8 @@ This simulation uses Kirchoff's laws to determine voltages and currents with the
 currents and voltages throughout the circuit are determined based on the battery voltages and component resistances. See
 https://www.swarthmore.edu/NatSci/echeeve1/Ref/mna/MNA2.html for details.
 
+For the AC simulations, we use companion models for the nonlinear circuit elements such as Inductors and Capacitors, as described in DynamicCircuit.js
+
 ## Battery Internal Resistance
 
 Batteries are ideal (very low resistance) unless given a custom internal resistance in the 'Lab' screen.
