@@ -47,6 +47,9 @@ export default class CircuitConstructionKitModel implements TModel {
   // whether the carousel shows real bulbs
   public readonly addRealBulbsProperty: BooleanProperty;
 
+  // whether to show noncontact ammeters
+  public readonly isShowNoncontactAmmeters: boolean;
+
   // contains CircuitElements, Vertices, etc.
   public readonly circuit: Circuit;
 
@@ -114,6 +117,8 @@ export default class CircuitConstructionKitModel implements TModel {
       phetioFeatured: true
     } );
 
+    this.isShowNoncontactAmmeters = options.showNoncontactAmmeters;
+
     const circuitTandem = tandem.createTandem( 'circuit' );
     this.circuit = new Circuit( this.viewTypeProperty, this.addRealBulbsProperty, circuitTandem, {
       blackBoxStudy: options.blackBoxStudy,
@@ -128,8 +133,8 @@ export default class CircuitConstructionKitModel implements TModel {
     ];
 
     this.ammeters = [
-      new Ammeter( providedOptions?.showNoncontactAmmeters ? metersTandem.createTandem( 'ammeter1' ) : Tandem.OPT_OUT, 1 ),
-      new Ammeter( providedOptions?.showNoncontactAmmeters ? metersTandem.createTandem( 'ammeter2' ) : Tandem.OPT_OUT, 2 )
+      new Ammeter( this.isShowNoncontactAmmeters ? metersTandem.createTandem( 'ammeter1' ) : Tandem.OPT_OUT, 1 ),
+      new Ammeter( this.isShowNoncontactAmmeters ? metersTandem.createTandem( 'ammeter2' ) : Tandem.OPT_OUT, 2 )
     ];
 
     [ ...this.voltmeters, ...this.ammeters ].forEach( meter => {

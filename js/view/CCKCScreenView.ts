@@ -76,7 +76,6 @@ type SelfOptions = {
   circuitElementToolboxOptions: CircuitElementToolboxOptions;
   showSeriesAmmeters?: boolean;
   showTimeControls?: boolean;
-  showNoncontactAmmeters?: boolean;
   showAdvancedControls?: boolean;
   showCharts?: boolean;
   blackBoxStudy?: boolean;
@@ -121,7 +120,6 @@ export default class CCKCScreenView extends ScreenView {
 
       showSeriesAmmeters: false,
       showTimeControls: false,
-      showNoncontactAmmeters: true,
       showAdvancedControls: true,
       showCharts: false,
       blackBoxStudy: false,
@@ -164,7 +162,7 @@ export default class CCKCScreenView extends ScreenView {
 
     const ammeterNodes = model.ammeters.map( ammeter => {
       const ammeterNode = new AmmeterNode( ammeter, this.circuitNode, {
-        tandem: options.showNoncontactAmmeters ? meterNodesTandem.createTandem( `ammeterNode${ammeter.phetioIndex}` ) : Tandem.OPT_OUT,
+        tandem: model.isShowNoncontactAmmeters ? meterNodesTandem.createTandem( `ammeterNode${ammeter.phetioIndex}` ) : Tandem.OPT_OUT,
         showResultsProperty: model.isValueDepictionEnabledProperty,
         visibleBoundsProperty: this.circuitNode.visibleBoundsInCircuitCoordinateFrameProperty,
         blackBoxStudy: options.blackBoxStudy,
@@ -237,7 +235,7 @@ export default class CCKCScreenView extends ScreenView {
       [ this.currentChartNode1!, this.currentChartNode2! ],
       tandem.createTandem( 'sensorToolbox' ), {
         showSeriesAmmeters: options.showSeriesAmmeters,
-        showNoncontactAmmeters: options.showNoncontactAmmeters,
+        showNoncontactAmmeters: model.isShowNoncontactAmmeters,
         showCharts: options.showCharts,
         visiblePropertyOptions: {
           phetioFeatured: true

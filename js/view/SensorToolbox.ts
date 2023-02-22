@@ -236,9 +236,9 @@ export default class SensorToolbox extends CCKCPanel {
       ]
     } );
 
-    const children = [];
-    options.showNoncontactAmmeters && children.push( ammeterToolIcon );
-    options.showSeriesAmmeters && children.push( seriesAmmeterToolNodeContainer );
+    const ammeterToolNodeChildren = [];
+    options.showNoncontactAmmeters && ammeterToolNodeChildren.push( ammeterToolIcon );
+    options.showSeriesAmmeters && ammeterToolNodeChildren.push( seriesAmmeterToolNodeContainer );
 
     const ammeterToolNode = new VBox( {
       tandem: Tandem.OPT_OUT,
@@ -247,7 +247,7 @@ export default class SensorToolbox extends CCKCPanel {
         new HBox( {
           spacing: 8,
           align: 'bottom',
-          children: children,
+          children: ammeterToolNodeChildren,
           excludeInvisibleChildrenFromBounds: true
         } ),
         ammeterText
