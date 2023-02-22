@@ -224,7 +224,7 @@ export default abstract class CircuitElementNode extends Node {
 
     if ( !this.circuitElement.isDisposed && latestPoint && latestPoint.distance( startPoint ) < CCKCConstants.TAP_THRESHOLD ) {
 
-      circuitNode.circuit.selectionProperty.set( this.circuitElement );
+      circuitNode.circuit.selectionProperty.value = this.circuitElement;
 
       // focus the element for keyboard interaction
       // in the state wrapper, the destination frame tries to apply this delete first, which steals it from the upstream frame
@@ -255,7 +255,7 @@ export default abstract class CircuitElementNode extends Node {
           if ( this.disposeEmitter.hasListener( disposeListener ) ) {
             this.disposeEmitter.removeListener( disposeListener );
           }
-          circuitNode.circuit.selectionProperty.set( null );
+          circuitNode.circuit.selectionProperty.value = null;
         }
       };
 
@@ -270,7 +270,7 @@ export default abstract class CircuitElementNode extends Node {
     else {
 
       // deselect after dragging
-      circuitNode.circuit.selectionProperty.set( null );
+      circuitNode.circuit.selectionProperty.value = null;
     }
   }
 }

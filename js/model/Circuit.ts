@@ -247,7 +247,7 @@ export default class Circuit extends PhetioObject {
 
       // Clear the selected element property so that the Edit panel for the element will disappear
       if ( this.selectionProperty.get() === circuitElement ) {
-        this.selectionProperty.set( null );
+        this.selectionProperty.value = null;
       }
 
       circuitElement.getCircuitProperties().forEach( property => property.unlink( markDirtyListener ) );
