@@ -26,14 +26,11 @@ const voltageUnitsStringProperty = CircuitConstructionKitCommonStrings.voltageUn
 const CCKCUtils = {
 
   /**
-   * Typically show 2 decimal places for current and voltage readouts in the play area, but if it is a smaller value,
-   * below 0.02 and 0.001, then it should show 3 decimal places.
    * @param value - the value to be formatted for display
    * @returns the number of decimal places to use for the display
    */
   getNumberOfDecimalPoints: function( value: number ): number {
-    const abs = Math.abs( value );
-    return ( abs >= 0 && abs < 0.02 ) ? 3 : 2;
+    return 2;
   },
 
   /**
