@@ -1,10 +1,11 @@
-# Circuit Construction Kit: DC - Model Description
+# Circuit Construction Kit: Common - Model Description
 
-This document is a high-level description of the model used in PhET's _Circuit Construction Kit: DC_ simulation.
+This document is a high-level description of the model used in PhET's _Circuit Construction Kit: Common_ code which is
+used in the Circuit Construction Kit simulations.
 
 ## Circuit-Solving Model
 
-This simulation uses Kirchoff's laws to determine voltages and currents with the Modified Nodal Analysis strategy. The 
+This simulation uses Kirchoff's laws to determine voltages and currents with the Modified Nodal Analysis strategy. The
 currents and voltages throughout the circuit are determined based on the battery voltages and component resistances. See
 https://www.swarthmore.edu/NatSci/echeeve1/Ref/mna/MNA2.html for details.
 
@@ -16,7 +17,8 @@ Batteries are ideal (very low resistance) unless given a custom internal resista
 
 ## Wire Resistivity
 
-Wires are constrained to have small but nonzero resistivity to avoid numerical errors or unsolvable circuits. Loops cannot
+Wires are constrained to have small but nonzero resistivity to avoid numerical errors or unsolvable circuits. Loops
+cannot
 be built without wires, hence this constraint guarantees that each loop will have at least some resistance and be
 solvable. Wires are ideal (very low resistivity) unless given a custom resisitivity in the 'Lab' screen.
 
@@ -25,12 +27,12 @@ solvable. Wires are ideal (very low resistivity) unless given a custom resisitiv
 
 ## Household Items
 
-Household items have the following resistances:
+For the purposes of the simulation, we estimate the household item resistances as:
 
-* Dollar bill - 1,000,000,000 Ohms // Note: This may not be accurate - https://core.ac.uk/download/pdf/39983441.pdf
-* Paper clip - 0 Ohms // Note: This may not be accurate - https://byjus.com/physics/resistivity-various-materials/#:~:text=Metals%20are%20good%20conductors%20of,compared%20to%20the%20metallic%20conductors.
-* Coin - 0 Ohms // Note: This may not be accurate - https://byjus.com/physics/resistivity-various-materials/#:~:text=Metals%20are%20good%20conductors%20of,compared%20to%20the%20metallic%20conductors.
-* Eraser - 1,000,000,000 Ohms // Note: This may not be accurate - http://hyperphysics.phy-astr.gsu.edu/hbase/Tables/rstiv.html
+* Coin - 0 Ohms
+* Dollar bill - 1,000,000,000 Ohms
+* Eraser - 1,000,000,000 Ohms
+* Paper clip - 0 Ohms
 * Pencil - 25 Ohms
 
 ## Ammeters and Voltmeters
