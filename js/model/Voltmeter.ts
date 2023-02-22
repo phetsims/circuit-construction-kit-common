@@ -65,6 +65,13 @@ export default class Voltmeter extends Meter {
       phetioReadOnly: true,
       phetioFeatured: true
     } );
+
+    this.isActiveProperty.link( isActive => {
+      if ( !isActive ) {
+        this.blackConnectionProperty.value = null;
+        this.redConnectionProperty.value = null;
+      }
+    } );
   }
 
   /**
