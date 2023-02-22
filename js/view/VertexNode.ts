@@ -199,7 +199,7 @@ export default class VertexNode extends Node {
       start: ( event: SceneryEvent ) => {
         initialPoint = event.pointer.point;
         latestPoint = event.pointer.point.copy();
-        circuitNode.startDragVertex( event.pointer.point, vertex );
+        circuitNode.startDragVertex( event.pointer.point, vertex, vertex );
         dragged = false;
       },
       drag: ( event: SceneryEvent ) => {

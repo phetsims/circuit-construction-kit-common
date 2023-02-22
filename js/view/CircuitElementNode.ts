@@ -267,11 +267,6 @@ export default abstract class CircuitElementNode extends Node {
       // see https://github.com/phetsims/circuit-construction-kit-common/issues/368
       this.disposeEmitter.addListener( disposeListener );
     }
-    else {
-
-      // deselect after dragging
-      circuitNode.circuit.selectionProperty.value = null;
-    }
   }
 }
 

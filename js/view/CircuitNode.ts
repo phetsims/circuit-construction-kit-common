@@ -671,11 +671,15 @@ export default class CircuitNode extends Node {
   /**
    * Called when a Vertex drag begins, records the relative click point
    */
-  public startDragVertex( point: Vector2, vertex: Vertex ): void {
+  public startDragVertex( point: Vector2, vertex: Vertex, draggedObject: CircuitElement | Vertex ): void {
 
     // If it is the edge of a fixed length circuit element, the element rotates and moves toward the mouse
     const vertexNode = this.getVertexNode( vertex );
     vertexNode.startOffset = vertexNode.globalToParentPoint( point ).minus( vertex.unsnappedPositionProperty.get() );
+
+    if ( this.circuit.selectionProperty.value !== draggedObject ) {
+      this.circuit.selectionProperty.value = null;
+    }
   }
 
   /**
@@ -719,6 +723,8 @@ export default class CircuitNode extends Node {
    */
   public dragVertex( point: Vector2, vertex: Vertex, okToRotate: boolean ): void {
     const vertexNode = this.getVertexNode( vertex );
+
+
 
     // Guard against the case in which the battery is flipped while dragging, see https://github.com/phetsims/circuit-construction-kit-common/issues/416
     if ( vertexNode.startOffset ) {

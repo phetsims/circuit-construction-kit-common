@@ -168,7 +168,8 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
             latestPoint = event.pointer.point.copy();
             circuitElement.interactiveProperty.get() && circuitNode.startDragVertex(
               event.pointer.point,
-              circuitElement.endVertexProperty.get()
+              circuitElement.endVertexProperty.get(),
+              circuitElement
             );
             dragged = false;
           }

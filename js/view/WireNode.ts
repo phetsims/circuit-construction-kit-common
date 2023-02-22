@@ -271,8 +271,8 @@ export default class WireNode extends CircuitElementNode {
           if ( wire.interactiveProperty.get() ) {
 
             // Start drag by starting a drag on start and end vertices
-            circuitNode!.startDragVertex( event.pointer.point, wire.startVertexProperty.get() );
-            circuitNode!.startDragVertex( event.pointer.point, wire.endVertexProperty.get() );
+            circuitNode!.startDragVertex( event.pointer.point, wire.startVertexProperty.get(), this.circuitElement );
+            circuitNode!.startDragVertex( event.pointer.point, wire.endVertexProperty.get(), this.circuitElement );
             dragged = false;
             initialPoint = event.pointer.point.copy();
             latestPoint = event.pointer.point.copy();
