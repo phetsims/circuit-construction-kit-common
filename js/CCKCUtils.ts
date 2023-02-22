@@ -26,14 +26,6 @@ const voltageUnitsStringProperty = CircuitConstructionKitCommonStrings.voltageUn
 const CCKCUtils = {
 
   /**
-   * @param value - the value to be formatted for display
-   * @returns the number of decimal places to use for the display
-   */
-  getNumberOfDecimalPoints: function( value: number ): number {
-    return 2;
-  },
-
-  /**
    * Returns a string that adjusts its ampere value.
    * @param current - in Amps
    */
@@ -62,10 +54,7 @@ const CCKCUtils = {
       }
       else {
         const signedCurrent = ammeterReadoutTypeProperty.value === AmmeterReadoutType.MAGNITUDE ? Math.abs( current ) : current;
-        const decimals = this.getNumberOfDecimalPoints( signedCurrent );
-
-        // Show 3 decimal places so that current can still be seen with a glowing high-resistance bulb
-        return StringUtils.fillIn( currentUnitsStringProperty, { current: Utils.toFixed( signedCurrent, decimals ) } );
+        return StringUtils.fillIn( currentUnitsStringProperty, { current: Utils.toFixed( signedCurrent, CCKCConstants.METER_PRECISION ) } );
       }
     }
   },
@@ -75,9 +64,7 @@ const CCKCUtils = {
    * @param value - voltage value in Volts
    */
   createVoltageReadout: function( value: number ): string {
-    const decimals = this.getNumberOfDecimalPoints( value );
-
-    return StringUtils.fillIn( voltageUnitsStringProperty, { voltage: Utils.toFixed( value, decimals ) } );
+    return StringUtils.fillIn( voltageUnitsStringProperty, { voltage: Utils.toFixed( value, CCKCConstants.METER_PRECISION ) } );
   },
 
   /**

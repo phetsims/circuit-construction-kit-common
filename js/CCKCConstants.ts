@@ -33,6 +33,9 @@ const CCKCConstants = {
   TOOLBOX_ICON_HEIGHT: 31,
   TOOLBOX_ICON_WIDTH: 60,
 
+  // The number of decimal points to display on the voltmeter and ammeter readings
+  METER_PRECISION: 2,
+
   // The resistance of a default resistor, also used in icons
   DEFAULT_RESISTANCE: 10,
 

@@ -724,8 +724,6 @@ export default class CircuitNode extends Node {
   public dragVertex( point: Vector2, vertex: Vertex, okToRotate: boolean ): void {
     const vertexNode = this.getVertexNode( vertex );
 
-
-
     // Guard against the case in which the battery is flipped while dragging, see https://github.com/phetsims/circuit-construction-kit-common/issues/416
     if ( vertexNode.startOffset ) {
       const position = vertexNode.globalToParentPoint( point ).subtract( vertexNode.startOffset );
