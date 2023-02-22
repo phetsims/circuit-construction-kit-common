@@ -108,6 +108,7 @@ export default abstract class CircuitElementNode extends Node {
 
       // remove the keyboard listener
       this.removeInputListener( keyListener );
+      keyListener.dispose();
     };
 
     circuitElement.startDragEmitter.addListener( startDragListener );

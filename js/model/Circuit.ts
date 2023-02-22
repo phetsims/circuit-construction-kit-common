@@ -292,22 +292,8 @@ export default class Circuit extends PhetioObject {
       const filtered = this.vertexGroup.filter( candidateVertex => vertex === candidateVertex );
       assert && assert( filtered.length === 1, 'should only have one copy of each vertex' );
 
+      // If the use dragged another circuit element, then previous selection should be cleared.
       this.selectionProperty.value = null;
-    } );
-
-    // Stop watching the vertex positions for updating the voltmeter and ammeter
-    this.vertexGroup.elementDisposedEmitter.addListener( vertex => {
-
-      if ( vertex.isSelected() ) {
-        this.selectionProperty.value = null;
-      }
-
-      // Sanity checks for the listeners
-      // assert && assert( vertex.positionProperty.hasListener( emitCircuitChanged ), 'should have had the listener' );
-      // vertex.positionProperty.unlink( emitCircuitChanged );
-
-      // More sanity checks for the listeners
-      assert && assert( !vertex.positionProperty.hasListener( emitCircuitChanged ), 'Listener should be removed' );
     } );
 
     this.stepActions = [];
@@ -656,14 +642,9 @@ export default class Circuit extends PhetioObject {
     }
     else {
 
-      // Dispose of elements
-      while ( this.circuitElements.length > 0 ) {
-        const circuitElement = this.circuitElements[ 0 ];
-        this.disposeCircuitElement( circuitElement );
-        this.removeVertexIfOrphaned( circuitElement.startVertexProperty.value );
-        this.removeVertexIfOrphaned( circuitElement.endVertexProperty.value );
-      }
-      assert && assert( this.vertexGroup.count === 0, 'vertices should have been removed' );
+      this.circuitElements.clear();
+      this.groups.forEach( group => group.clear() );
+      this.vertexGroup.clear();
     }
   }
 

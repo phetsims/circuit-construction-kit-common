@@ -257,6 +257,7 @@ export default class VertexNode extends Node {
     const circuitNode = this.circuitNode;
     vertex.positionProperty.unlink( this.updateVertexNodePositionListener );
     vertex.selectionProperty.unlink( this.updateVertexNodePositionListener );
+    vertex.selectionProperty.unlink( this.updateSelectedListener );
     vertex.interactiveProperty.unlink( this.updatePickableListener );
     vertex.relayerEmitter.removeListener( this.updateMoveToFront );
     CCKCUtils.setInSceneGraph( false, circuitNode.buttonLayer, vertexCutButton );
