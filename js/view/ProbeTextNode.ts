@@ -1,8 +1,7 @@
 // Copyright 2016-2023, University of Colorado Boulder
 
 /**
- * Shows the title (above) and dynamic readout (below) for the ammeter and voltmeter. Exists for the life of the sim
- * and hence does not require a dispose implementation.
+ * Shows the title (above) and dynamic readout (below) for the ammeter and voltmeter.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -15,6 +14,7 @@ import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
 import CCKCColors from './CCKCColors.js';
+import Bounds2 from '../../../dot/js/Bounds2.js';
 
 // constants
 const TEXT_BOX_WIDTH = 140;
@@ -28,6 +28,7 @@ export type ProbeTextNodeOptions = StrictOmit<SelfOptions & VBoxOptions, 'childr
 export default class ProbeTextNode extends VBox {
   private readonly readoutText: Text;
   private readonly titleText: Text;
+  private readonly disposeProbeTextNode: () => void;
 
   /**
    * @param stringProperty - the text that should be displayed
@@ -63,7 +64,7 @@ export default class ProbeTextNode extends VBox {
     } );
 
     // Text bounds is not updated eagerly, so wait for the bounds to change for layout
-    readoutText.boundsProperty.link( bounds => {
+    const boundsListener = ( bounds: Bounds2 ) => {
       if ( readoutText.text === MathSymbols.NO_VALUE ) {
 
         // --- is centered
@@ -77,10 +78,12 @@ export default class ProbeTextNode extends VBox {
 
       // vertically center
       readoutText.centerY = textBox.centerY;
-    } );
+    };
+    readoutText.boundsProperty.link( boundsListener );
 
     // Update visibility when show results property changes
-    showResultsProperty.linkAttribute( readoutText, 'visible' );
+    const updateVisibility = ( showResults: boolean ) => readoutText.setVisible( showResults );
+    showResultsProperty.link( updateVisibility );
 
     // set the children
     const titleText = new Text( title, {
@@ -101,9 +104,16 @@ export default class ProbeTextNode extends VBox {
 
     this.readoutText = readoutText;
     this.titleText = titleText;
+
+    this.disposeProbeTextNode = () => {
+      readoutText.boundsProperty.unlink( boundsListener );
+      textBox.dispose();
+      showResultsProperty.unlink( updateVisibility );
+    };
   }
 
   public override dispose(): void {
+    this.disposeProbeTextNode();
     this.readoutText.dispose();
     this.titleText.dispose();
     super.dispose();

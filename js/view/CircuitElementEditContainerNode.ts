@@ -46,6 +46,7 @@ import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import Vertex from '../model/Vertex.js';
 import PatternStringProperty from '../../../axon/js/PatternStringProperty.js';
 import CCKCColors from './CCKCColors.js';
+import Emitter from '../../../axon/js/Emitter.js';
 
 const capacitanceStringProperty = CircuitConstructionKitCommonStrings.capacitanceStringProperty;
 const capacitanceUnitsStringProperty = CircuitConstructionKitCommonStrings.capacitanceUnitsStringProperty;
@@ -372,11 +373,14 @@ export default class CircuitElementEditContainerNode extends Node {
 
     // When the selected element changes, update the displayed controls
     let editNode: Node | null = null;
+    const disposeActions: Array<() => void> = [];
     circuit.selectionProperty.link( selectedCircuitElement => {
       if ( editNode ) {
         this.hasChild( editNode ) && this.removeChild( editNode );
         if ( editNode !== tapInstructionText && editNode !== trashButtonContainer ) {
           editNode.dispose();
+          disposeActions.forEach( disposeAction => disposeAction() );
+          disposeActions.length = 0;
         }
       }
 
@@ -406,17 +410,19 @@ export default class CircuitElementEditContainerNode extends Node {
           editNode = trashButtonContainer;
         }
         else if ( selectedCircuitElement instanceof Battery ) {
+          const node = new Node( {
+            children: [ batteryReverseContainerNode ],
+            excludeInvisibleChildrenFromBounds: true
+          } );
           editNode = new EditPanel( [
 
               // Batteries can be reversed, nest in a Node so the layout will reflow correctly
-              new Node( {
-                children: [ batteryReverseContainerNode ],
-                excludeInvisibleChildrenFromBounds: true
-              } ),
+              node,
               selectedCircuitElement.batteryType === 'high-voltage' ? extremeBatteryVoltageNumberControl : voltageNumberControl,
               trashButtonContainer
             ]
           );
+          disposeActions.push( () => node.dispose() );
         }
         else if ( selectedCircuitElement instanceof Fuse ) {
           editNode = new EditPanel( [
@@ -427,7 +433,6 @@ export default class CircuitElementEditContainerNode extends Node {
           );
         }
         else if ( selectedCircuitElement instanceof Switch ) {
-
           editNode = new HBox( {
             children: [
               switchReadoutNode,
