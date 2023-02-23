@@ -46,7 +46,6 @@ import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import Vertex from '../model/Vertex.js';
 import PatternStringProperty from '../../../axon/js/PatternStringProperty.js';
 import CCKCColors from './CCKCColors.js';
-import Emitter from '../../../axon/js/Emitter.js';
 
 const capacitanceStringProperty = CircuitConstructionKitCommonStrings.capacitanceStringProperty;
 const capacitanceUnitsStringProperty = CircuitConstructionKitCommonStrings.capacitanceUnitsStringProperty;
