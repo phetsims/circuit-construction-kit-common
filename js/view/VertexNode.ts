@@ -281,6 +281,8 @@ export default class VertexNode extends Node {
     this.removeInputListener( this.dragListener );
 
     vertex.isDraggableProperty.unlink( this.interruptionListener );
+
+    this.vertexCutButtonContainer.dispose();
     super.dispose();
   }
 
