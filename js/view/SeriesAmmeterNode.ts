@@ -168,6 +168,10 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
     this.isIcon = !!( providedOptions && providedOptions.isIcon );
 
     this.disposeSeriesAmmeterNode = () => {
+
+      seriesAmmeter.currentSenseProperty.unlink( updateText );
+      CircuitConstructionKitCommonStrings.currentUnitsStringProperty.unlink( updateText );
+
       seriesAmmeter.currentProperty.unlink( updateText );
       seriesAmmeter.startVertexProperty.unlink( updateText );
       seriesAmmeter.endVertexProperty.unlink( updateText );
