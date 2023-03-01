@@ -38,7 +38,7 @@ export default class ChargeSpeedThrottlingReadoutNode extends Text {
         const percent = timeScale * 100;
         const isThrottled = percent < 99.5;
         const fixed = timeScale < 0.01 ? '< 1' : Utils.toFixed( percent, 0 );
-        this.setText( StringUtils.fillIn( animationSpeedLimitReachedStringProperty, { percent: fixed } ) );
+        this.setString( StringUtils.fillIn( animationSpeedLimitReachedStringProperty, { percent: fixed } ) );
 
         // Only show the throttling message if the speed is less than 100% and charges are visible
         this.visible = isThrottled && showCurrent && isValueDepictionEnabled;

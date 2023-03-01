@@ -90,7 +90,7 @@ export default class ValueNode extends Panel {
       const voltageText = createText( tandem.createTandem( 'voltageText' ) );
       const voltageListener = ( voltage: number ) => {
 
-        voltageText.text = StringUtils.fillIn( voltageUnitsStringProperty, {
+        voltageText.string = StringUtils.fillIn( voltageUnitsStringProperty, {
           voltage: Utils.toFixed( voltage, circuitElement.numberOfDecimalPlaces )
         } );
         update && update();
@@ -105,7 +105,7 @@ export default class ValueNode extends Panel {
 
       const resistanceNode = createText( tandem.createTandem( 'resistanceText' ) );
       const sourceResistanceListener = ( internalResistance: number, lastInternalResistance: number | null | undefined ) => {
-        resistanceNode.text = StringUtils.fillIn( resistanceOhmsSymbolStringProperty, {
+        resistanceNode.string = StringUtils.fillIn( resistanceOhmsSymbolStringProperty, {
           resistance: Utils.toFixed( internalResistance, 1 )
         } );
 
@@ -134,7 +134,7 @@ export default class ValueNode extends Panel {
 
       // Items like the hand and dog and high resistance resistor shouldn't show ".0"
       const linkResistance = ( resistance: number ) => {
-        ( readoutValueNode as Text ).text = StringUtils.fillIn( resistanceOhmsSymbolStringProperty, {
+        ( readoutValueNode as Text ).string = StringUtils.fillIn( resistanceOhmsSymbolStringProperty, {
           resistance: Utils.toFixed( resistance, circuitElement.numberOfDecimalPlaces )
         } );
         update && update();
@@ -148,7 +148,7 @@ export default class ValueNode extends Panel {
       // Items like the hand and dog and high resistance resistor shouldn't show ".0"
       const linkCapacitance = ( capacitance: number ) => {
 
-        ( readoutValueNode as Text ).text = StringUtils.fillIn( capacitanceFaradsSymbolStringProperty, {
+        ( readoutValueNode as Text ).string = StringUtils.fillIn( capacitanceFaradsSymbolStringProperty, {
           resistance: Utils.toFixed( capacitance, circuitElement.numberOfDecimalPlaces )
         } );
         update && update();
@@ -160,7 +160,7 @@ export default class ValueNode extends Panel {
       readoutValueNode = createText( tandem.createTandem( 'inductorText' ) );
 
       const linkInductance = ( inductance: number ) => {
-        ( readoutValueNode as Text ).text = StringUtils.fillIn( inductanceHenriesSymbolStringProperty, {
+        ( readoutValueNode as Text ).string = StringUtils.fillIn( inductanceHenriesSymbolStringProperty, {
           resistance: Utils.toFixed( inductance, circuitElement.numberOfDecimalPlaces )
         } );
         update && update();
@@ -216,7 +216,7 @@ export default class ValueNode extends Panel {
     if ( CCKCQueryParameters.showCurrents ) {
       const text = new Text( '', { fill: CCKCColors.textFillProperty } );
       Multilink.multilink( [ circuitElement.currentProperty, circuitElement.currentSenseProperty ], ( current, sense ) => {
-        text.text = sense.toString() + ', ' + current.toFixed( 4 );// eslint-disable-line bad-sim-text
+        text.string = sense.toString() + ', ' + current.toFixed( 4 );// eslint-disable-line bad-sim-text
       } );
 
       readoutValueNode = new VBox( { children: [ readoutValueNode, text ] } );
@@ -248,7 +248,7 @@ export default class ValueNode extends Panel {
       readoutValueNode!.visible = showValuesProperty.value && circuitElement.isValueDisplayableProperty.value;
 
       const customLabelText = circuitElement.labelStringProperty.value;
-      customLabelNode.text = customLabelText;
+      customLabelNode.string = customLabelText;
       customLabelNode.visible = customLabelText.length > 0;
 
       // For a light bulb, choose the part of the filament in the top center for the label, see

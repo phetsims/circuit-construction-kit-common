@@ -133,7 +133,7 @@ export default class VertexNode extends Node {
 
         // No need for i18n because this is for debugging only
         const voltageText = `${Utils.toFixed( voltage, 3 )}V`;
-        voltageReadout.setText( `${vertex.index} @ ${voltageText}` );
+        voltageReadout.setString( `${vertex.index} @ ${voltageText}` );
         assert && assert( this.updateReadoutTextPosition );
         if ( this.updateReadoutTextPosition ) {
           this.updateReadoutTextPosition();
@@ -142,7 +142,7 @@ export default class VertexNode extends Node {
     }
 
     vertex.labelStringProperty.link( labelText => {
-      customLabelText.text = labelText;
+      customLabelText.string = labelText;
       this.updateReadoutTextPosition();
     } );
 

@@ -65,7 +65,7 @@ export default class ProbeTextNode extends VBox {
 
     // Text bounds is not updated eagerly, so wait for the bounds to change for layout
     const boundsListener = ( bounds: Bounds2 ) => {
-      if ( readoutText.text === MathSymbols.NO_VALUE ) {
+      if ( readoutText.string === MathSymbols.NO_VALUE ) {
 
         // --- is centered
         readoutText.centerX = textBox.centerX;
