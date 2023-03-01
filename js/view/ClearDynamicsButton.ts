@@ -6,7 +6,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import Matrix3 from '../../../dot/js/Matrix3.js';
+import { m3 } from '../../../dot/js/Matrix3.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import { Shape } from '../../../kite/js/imports.js';
 import BannedNode from '../../../scenery-phet/js/BannedNode.js';
@@ -23,7 +23,7 @@ import { RoundPushButtonOptions } from '../../../sun/js/buttons/RoundPushButton.
 // constants
 const SCALE = 0.032;
 
-const SHAPE_MATRIX = Matrix3.pool.create( SCALE, 0, 0, 0, -SCALE, 0, 0, 0, 1 ); // to create a unity-scale icon
+const SHAPE_MATRIX = m3( SCALE, 0, 0, 0, -SCALE, 0, 0, 0, 1 ); // to create a unity-scale icon
 
 type SelfOptions = EmptySelfOptions;
 type ClearDynamicsButtonOptions = SelfOptions & RoundPushButtonOptions;
