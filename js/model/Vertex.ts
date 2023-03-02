@@ -10,17 +10,17 @@ import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
 import TEmitter from '../../../axon/js/TEmitter.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
-import Property from '../../../axon/js/Property.js';
+import Property, { PropertyOptions } from '../../../axon/js/Property.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
-import optionize from '../../../phet-core/js/optionize.js';
+import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import PhetioObject, { PhetioObjectOptions } from '../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import IOType from '../../../tandem/js/types/IOType.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import LocalizedString from '../../../chipper/js/LocalizedString.js';
 import TProperty from '../../../axon/js/TProperty.js';
 import CircuitElement from './CircuitElement.js';
+import StringProperty from '../../../axon/js/StringProperty.js';
 
 // Index counter for debugging
 let counter = 0;
@@ -81,7 +81,6 @@ export default class Vertex extends PhetioObject {
   public outerWireStub: boolean;
   public isCuttableProperty: BooleanProperty;
   public labelStringProperty: TProperty<string>;
-  private readonly localizedString: LocalizedString;
 
   public static readonly VertexIO = new IOType<Vertex, VertexState>( 'VertexIO', {
     valueType: Vertex,
@@ -154,8 +153,11 @@ export default class Vertex extends PhetioObject {
       phetioFeatured: true
     } );
 
-    this.localizedString = new LocalizedString( '', options.tandem.createTandem( 'labelStringProperty' ) );
-    this.labelStringProperty = this.localizedString.property;
+    this.labelStringProperty = new StringProperty( '', combineOptions<PropertyOptions<string>>( {
+      tandem: options.tandem.createTandem( 'labelStringProperty' ),
+      phetioDocumentation: 'Shows a custom text label next to the Vertex',
+      phetioFeatured: true
+    } ) );
   }
 
   /**
@@ -178,7 +180,7 @@ export default class Vertex extends PhetioObject {
     this.voltageProperty.dispose();
     this.isDraggableProperty.dispose();
     this.isCuttableProperty.dispose();
-    this.localizedString.dispose();
+    this.labelStringProperty.dispose();
 
     super.dispose();
   }
