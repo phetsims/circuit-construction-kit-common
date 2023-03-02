@@ -149,35 +149,43 @@ export default class LinearTransientAnalysis {
 
     // the resistance of real bulbs is a function of their voltage
     if ( hasRealBulbs ) {
-      ltaResistors.forEach( resistorAdapter => {
-        const circuitElement = resistorMap.get( resistorAdapter )!;
-        if ( circuitElement instanceof LightBulb && circuitElement.isReal ) {
 
-          const logWithBase = ( value: number, base: number ) => Math.log( value ) / Math.log( base );
+      // to estimate the resistance of a real bulb, we start by setting its resistance to REAL_BULB_COLD_RESISTANCE
+      // then we solve the circuit to find the voltage across it, and update its resistance according to the log equation below
+      // we repeat this process 10 times to get closer to the bulb's actual voltage and resistance
+      // in testing, we found that 10 iterations brings the real bulb to within an acceptable range of the accurate resistance
+      for ( let i = 0; i < 10; i++ ) {
+        for ( let j = 0; j < ltaResistors.length; j++ ) {
 
-          const dV = circuitResult.getFinalState().ltaSolution!.getVoltage( resistorAdapter.nodeId0, resistorAdapter.nodeId1 );
-          const V = Math.abs( dV );
+          const resistorAdapter = ltaResistors[ j ];
+          const circuitElement = resistorMap.get( resistorAdapter )!;
+          if ( circuitElement instanceof LightBulb && circuitElement.isReal ) {
+            const logWithBase = ( value: number, base: number ) => Math.log( value ) / Math.log( base );
 
-          const base = 2;
+            const dV = circuitResult.getFinalState().ltaSolution!.getVoltage( resistorAdapter.nodeId0, resistorAdapter.nodeId1 );
+            const V = Math.abs( dV );
 
-          // I = ln(V)
-          // V=IR
-          // V=ln(V)R
-          // R = V/ln(V)
+            const base = 2;
 
-          // Adjust so it looks good in comparison to a standard bulb
-          const coefficient = 3;
+            // I = ln(V)
+            // V=IR
+            // V=ln(V)R
+            // R = V/ln(V)
 
-          // shift by base so at V=0 the log is 1
-          resistorAdapter.resistance = LightBulb.REAL_BULB_COLD_RESISTANCE + coefficient * V / logWithBase( V + base, base );
-          circuitElement.resistanceProperty.value = resistorAdapter.resistance;
+            // Adjust so it looks good in comparison to a standard bulb
+            const coefficient = 3;
+
+            // shift by base so at V=0 the log is 1
+            resistorAdapter.resistance = LightBulb.REAL_BULB_COLD_RESISTANCE + coefficient * V / logWithBase( V + base, base );
+            circuitElement.resistanceProperty.value = resistorAdapter.resistance;
+          }
         }
-      } );
 
-      // If the circuit contains real bulbs, we need to solve the circuit again after calculating their resistance
-      // to prevent a hysteresis. This ensures that the resistance of the bulbs is consistent with their voltage.
-      ltaCircuit = new LTACircuit( ltaResistors, ltaBatteries, ltaCapacitors, ltaInductors );
-      circuitResult = ltaCircuit.solveWithSubdivisions( TIMESTEP_SUBDIVISIONS, dt );
+        // If the circuit contains real bulbs, we need to solve the circuit again after calculating their resistance
+        // to prevent a hysteresis. This ensures that the resistance of the bulbs is consistent with their voltage.
+        ltaCircuit = new LTACircuit( ltaResistors, ltaBatteries, ltaCapacitors, ltaInductors );
+        circuitResult = ltaCircuit.solveWithSubdivisions( TIMESTEP_SUBDIVISIONS, dt );
+      }
     }
 
     // Apply the solutions from the analysis back to the actual Circuit
