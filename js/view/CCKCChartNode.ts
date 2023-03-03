@@ -443,7 +443,7 @@ export default class CCKCChartNode extends Node {
       // adds support for zoomed coordinate frame, see
       // https://github.com/phetsims/circuit-construction-kit-common/issues/301
       targetNode: this,
-      tandem: this.tandem.createTandem( 'dragHandler' ),
+      tandem: this.tandem.createTandem( 'dragListener' ),
       start: () => {
         this.moveToFront();
         if ( this.meter.isDraggingProbesWithBodyProperty.value ) {

@@ -209,7 +209,7 @@ export default class AmmeterNode extends Node {
       this.dragHandler = new DragListener( {
         useParentOffset: true,
         positionProperty: ammeter.bodyPositionProperty,
-        tandem: tandemForChildren.createTandem( 'dragHandler' ),
+        tandem: tandemForChildren.createTandem( 'dragListener' ),
         start: () => this.moveToFront(),
         end: function() {
           ammeter.droppedEmitter.emit( bodyNode.globalBounds );

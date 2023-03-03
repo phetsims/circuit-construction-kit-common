@@ -281,7 +281,7 @@ export default class VoltmeterNode extends Node {
       this.dragHandler = new DragListener( {
 
         positionProperty: voltmeter.bodyPositionProperty,
-        tandem: options.tandem.createTandem( 'dragHandler' ),
+        tandem: options.tandem.createTandem( 'dragListener' ),
         useParentOffset: true,
         dragBoundsProperty: erodedBoundsProperty,
         start: event => {
