@@ -248,6 +248,10 @@ export default class VertexNode extends Node {
 
     // When showing the highlight, make sure it shows in the right place (not updated while invisible)
     vertex.selectionProperty.link( this.updateVertexNodePositionListener );
+
+    // If a vertex is created or disposed, check to see if the cut button enabled state should change
+    circuit.vertexGroup.elementCreatedEmitter.addListener( this.updateSelectedListener );
+    circuit.vertexGroup.elementDisposedEmitter.addListener( this.updateSelectedListener );
   }
 
   public override dispose(): void {
@@ -264,6 +268,8 @@ export default class VertexNode extends Node {
     CCKCUtils.setInSceneGraph( false, circuitNode.highlightLayer, this.highlightNode );
     circuit.vertexGroup.elementCreatedEmitter.removeListener( this.updateStrokeListener );
     circuit.vertexGroup.elementDisposedEmitter.removeListener( this.updateStrokeListener );
+    circuit.vertexGroup.elementCreatedEmitter.removeListener( this.updateSelectedListener );
+    circuit.vertexGroup.elementDisposedEmitter.removeListener( this.updateSelectedListener );
 
     // In Black Box, other wires can be detached from a vertex and this should also update the solder
     circuit.circuitElements.removeItemAddedListener( this.updateStrokeListener );
@@ -283,6 +289,7 @@ export default class VertexNode extends Node {
     vertex.isDraggableProperty.unlink( this.interruptionListener );
 
     this.vertexCutButtonContainer.dispose();
+
     super.dispose();
   }
 
