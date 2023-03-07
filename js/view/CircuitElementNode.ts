@@ -7,7 +7,7 @@
  */
 
 import Vector2 from '../../../dot/js/Vector2.js';
-import { KeyboardListener, Node, NodeOptions, PressListenerEvent, SceneryEvent } from '../../../scenery/js/imports.js';
+import { Node, NodeOptions, PressListenerEvent, SceneryEvent } from '../../../scenery/js/imports.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Circuit from '../model/Circuit.js';
@@ -30,7 +30,6 @@ export default abstract class CircuitElementNode extends Node {
   private readonly useHitTestForSensors: boolean;
   private readonly circuit: Circuit | null;
   public readonly circuitElement: CircuitElement;
-  private readonly disposeCircuitElementNode: () => void;
   private dirty: boolean;
   public readonly abstract dragListener: CircuitNodeDragListener | null;
 
@@ -72,29 +71,6 @@ export default abstract class CircuitElementNode extends Node {
       tandem: providedOptions.tandem!.createTandem( 'circuitElement' )
     } );
 
-    // keyboard listener so that delete or backspace deletes the element - must be disposed
-    const keyListener = new KeyboardListener( {
-      keys: [ 'delete', 'backspace' ],
-      callback( event ) {
-
-        assert && assert( event, 'should not be called from any spot without a direct dom event' );
-
-        // prevent default so 'backspace' and 'delete' don't navigate back a page in Firefox, see
-        // https://github.com/phetsims/circuit-construction-kit-common/issues/307
-        event!.domEvent!.preventDefault();
-
-        // Only permit deletion when not being dragged, see https://github.com/phetsims/circuit-construction-kit-common/issues/414
-        if ( !circuitElement.startVertexProperty.value.isDragged && !circuitElement.endVertexProperty.value.isDragged ) {
-
-          // Only permit deletion if the circuit element is marked as disposable
-          if ( circuitElement.isDisposableProperty.value ) {
-            circuit!.disposeCircuitElement( circuitElement );
-          }
-        }
-      }
-    } );
-    this.addInputListener( keyListener );
-
     this.updateOpacityOnInteractiveChange();
 
     /**
@@ -103,13 +79,6 @@ export default abstract class CircuitElementNode extends Node {
      * @param event - scenery event
      */
     const startDragListener = ( event: PressListenerEvent ) => this.dragListener!.down( event );
-
-    this.disposeCircuitElementNode = () => {
-
-      // remove the keyboard listener
-      this.removeInputListener( keyListener );
-      keyListener.dispose();
-    };
 
     circuitElement.startDragEmitter.addListener( startDragListener );
 
@@ -123,14 +92,6 @@ export default abstract class CircuitElementNode extends Node {
    */
   protected markAsDirty(): void {
     this.dirty = true;
-  }
-
-  /**
-   * Dispose resources when no longer used.
-   */
-  public override dispose(): void {
-    this.disposeCircuitElementNode();
-    super.dispose();
   }
 
   /**

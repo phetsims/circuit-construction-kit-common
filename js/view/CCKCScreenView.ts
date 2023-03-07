@@ -17,7 +17,7 @@ import PlayPauseButton from '../../../scenery-phet/js/buttons/PlayPauseButton.js
 import ResetAllButton from '../../../scenery-phet/js/buttons/ResetAllButton.js';
 import StopwatchNode from '../../../scenery-phet/js/StopwatchNode.js';
 import TimeControlNode from '../../../scenery-phet/js/TimeControlNode.js';
-import { AlignBox, AlignGroup, KeyboardUtils, Node, VBox } from '../../../scenery/js/imports.js';
+import { AlignBox, AlignGroup, KeyboardListener, KeyboardUtils, Node, VBox } from '../../../scenery/js/imports.js';
 import { CarouselItem } from '../../../sun/js/Carousel.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -43,6 +43,8 @@ import CCKCZoomButtonGroup from './CCKCZoomButtonGroup.js';
 import FixedCircuitElementNode from './FixedCircuitElementNode.js';
 import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
 import CCKCUtils from '../CCKCUtils.js';
+import Vertex from '../model/Vertex.js';
+import CircuitElement from '../model/CircuitElement.js';
 
 const batteryResistanceStringProperty = CircuitConstructionKitCommonStrings.batteryResistanceStringProperty;
 const sourceResistanceStringProperty = CircuitConstructionKitCommonStrings.sourceResistanceStringProperty;
@@ -489,6 +491,36 @@ export default class CCKCScreenView extends ScreenView {
     }
 
     model.stepEmitter.addListener( dt => this.stepOnce( dt ) );
+
+    this.addInputListener( new KeyboardListener( {
+      keys: [ 'delete', 'backspace' ],
+      global: true,
+      callback: ( event, listener ) => {
+
+        // prevent default so 'backspace' and 'delete' don't navigate back a page in Firefox, see
+        // https://github.com/phetsims/circuit-construction-kit-common/issues/307
+        event?.domEvent?.preventDefault();
+
+        // Double guard to work around errors in fuzzing
+        const selection = this.circuitNode.circuit.selectionProperty.value;
+        if ( this.circuitNode.vertexCutButton.inputEnabled && selection instanceof Vertex ) {
+          this.circuitNode.circuit.cutVertex( this.circuitNode.circuit.getSelectedVertex()! );
+        }
+        else if ( selection instanceof CircuitElement ) {
+
+          const circuitElement = selection;
+
+          // Only permit deletion when not being dragged, see https://github.com/phetsims/circuit-construction-kit-common/issues/414
+          if ( !circuitElement.startVertexProperty.value.isDragged && !circuitElement.endVertexProperty.value.isDragged ) {
+
+            // Only permit deletion if the circuit element is marked as disposable
+            if ( circuitElement.isDisposableProperty.value ) {
+              this.circuitNode.circuit.disposeCircuitElement( circuitElement );
+            }
+          }
+        }
+      }
+    } ) );
   }
 
   /**
