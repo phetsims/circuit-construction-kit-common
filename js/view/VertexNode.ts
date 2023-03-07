@@ -8,7 +8,7 @@
 
 import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
-import { Circle, CircleOptions, Color, Grayscale, KeyboardUtils, Node, SceneryConstants, SceneryEvent, SceneryListenerFunction, Text, VBox } from '../../../scenery/js/imports.js';
+import { Circle, CircleOptions, Color, Grayscale, Node, SceneryConstants, SceneryEvent, Text, VBox } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
@@ -49,7 +49,6 @@ export default class VertexNode extends Node {
   // added by CircuitNode during dragging, used for relative drag position, or null if not being dragged
   public startOffset: Vector2 | null;
   private readonly highlightNode: Circle;
-  private readonly keyListener: { keydown: SceneryListenerFunction<KeyboardEvent> };
   private readonly updateStrokeListener: () => void;
   private readonly updateSelectedListener: () => void;
   protected readonly updateMoveToFront: () => Node;
@@ -155,12 +154,6 @@ export default class VertexNode extends Node {
       lineWidth: CCKCConstants.HIGHLIGHT_LINE_WIDTH,
       pickable: false
     } );
-
-    // keyboard listener so that delete or backspace deletes the element - must be disposed
-    this.keyListener = {
-      keydown: this.keydownListener.bind( this )
-    };
-    this.addInputListener( this.keyListener );
 
     // Shows up as red when disconnected or black when connected.  When unattachable, the dotted line disappears (black
     // box study)
@@ -278,8 +271,6 @@ export default class VertexNode extends Node {
     vertex.attachableProperty.unlink( this.updateStrokeListener );
     circuit.circuitChangedEmitter.removeListener( this.updateStrokeListener );
 
-    this.removeInputListener( this.keyListener );
-
     // Remove the global listener if it was still enabled
     this.clearClickListeners();
 
@@ -291,26 +282,6 @@ export default class VertexNode extends Node {
     this.vertexCutButtonContainer.dispose();
 
     super.dispose();
-  }
-
-  /**
-   * @param event - scenery keyboard event
-   */
-  private keydownListener( event: SceneryEvent ): void {
-    const domEvent = event.domEvent;
-
-    // on delete or backspace, the focused Vertex should be cut
-    if ( KeyboardUtils.isAnyKeyEvent( domEvent, [ KeyboardUtils.KEY_DELETE, KeyboardUtils.KEY_BACKSPACE ] ) ) {
-
-      // prevent default so 'backspace' and 'delete' don't navigate back a page in Firefox, see
-      // https://github.com/phetsims/circuit-construction-kit-common/issues/307
-      domEvent!.preventDefault();
-
-      // Double guard to work around errors in fuzzing
-      if ( this.vertexCutButtonContainer.inputEnabled && this.circuit.getSelectedVertex() ) {
-        this.circuit.cutVertex( this.circuit.getSelectedVertex()! );
-      }
-    }
   }
 
   /**
