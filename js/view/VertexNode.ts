@@ -288,35 +288,38 @@ export default class VertexNode extends Node {
    * Update whether the vertex is shown as selected.
    */
   private updateSelected(): void {
-    const selected = this.vertex.isSelected();
-    const neighborCircuitElements = this.circuit.getNeighborCircuitElements( this.vertex );
+    //if this vertex is set to be disposed, do not update its selected logic
+    if ( !this.isDisposed ) {
+      const selected = this.vertex.isSelected();
+      const neighborCircuitElements = this.circuit.getNeighborCircuitElements( this.vertex );
 
-    if ( selected ) {
+      if ( selected ) {
 
-      // Adjacent components should be in front of the vertex, see #20
-      for ( let i = 0; i < neighborCircuitElements.length; i++ ) {
-        neighborCircuitElements[ i ].vertexSelectedEmitter.emit();
+        // Adjacent components should be in front of the vertex, see #20
+        for ( let i = 0; i < neighborCircuitElements.length; i++ ) {
+          neighborCircuitElements[ i ].vertexSelectedEmitter.emit();
+        }
+        this.moveToFront();
+
+        // in the state wrapper, the destination frame tries to apply this delete first, which steals it from the upstream frame
+        const ignoreFocus = phet.preloads.phetio && phet.preloads.phetio.queryParameters.frameTitle === 'destination';
+        if ( !ignoreFocus ) {
+          this.focus();
+        }
       }
-      this.moveToFront();
+      CCKCUtils.setInSceneGraph( selected, this.circuitNode.highlightLayer, this.highlightNode );
+      const numberConnections = neighborCircuitElements.length;
+      CCKCUtils.setInSceneGraph( selected && this.vertex.isCuttableProperty.value, this.circuitNode.buttonLayer, this.vertexCutButtonContainer );
+      selected && this.updateVertexCutButtonPosition();
 
-      // in the state wrapper, the destination frame tries to apply this delete first, which steals it from the upstream frame
-      const ignoreFocus = phet.preloads.phetio && phet.preloads.phetio.queryParameters.frameTitle === 'destination';
-      if ( !ignoreFocus ) {
-        this.focus();
-      }
+      // Show a disabled button as a cue that the vertex could be cuttable, but it isn't right now.
+      const isConnectedBlackBoxVertex = numberConnections === 1 && !this.vertex.isDraggableProperty.get();
+
+      const enabled = numberConnections > 1 || isConnectedBlackBoxVertex;
+      this.vertexCutButtonContainer.filters = enabled ? [] : [ Grayscale.FULL ];
+      this.vertexCutButtonContainer.opacity = enabled ? 1 : SceneryConstants.DISABLED_OPACITY;
+      this.vertexCutButtonContainer.inputEnabled = enabled;
     }
-    CCKCUtils.setInSceneGraph( selected, this.circuitNode.highlightLayer, this.highlightNode );
-    const numberConnections = neighborCircuitElements.length;
-    CCKCUtils.setInSceneGraph( selected && this.vertex.isCuttableProperty.value, this.circuitNode.buttonLayer, this.vertexCutButtonContainer );
-    selected && this.updateVertexCutButtonPosition();
-
-    // Show a disabled button as a cue that the vertex could be cuttable, but it isn't right now.
-    const isConnectedBlackBoxVertex = numberConnections === 1 && !this.vertex.isDraggableProperty.get();
-
-    const enabled = numberConnections > 1 || isConnectedBlackBoxVertex;
-    this.vertexCutButtonContainer.filters = enabled ? [] : [ Grayscale.FULL ];
-    this.vertexCutButtonContainer.opacity = enabled ? 1 : SceneryConstants.DISABLED_OPACITY;
-    this.vertexCutButtonContainer.inputEnabled = enabled;
   }
 
   private updateStroke(): void {
