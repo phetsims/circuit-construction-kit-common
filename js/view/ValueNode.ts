@@ -90,7 +90,7 @@ export default class ValueNode extends Panel {
       const voltageText = createText( tandem.createTandem( 'voltageText' ) );
 
       const voltageMultilink = Multilink.multilink( [ circuitElement.voltageProperty, voltageUnitsStringProperty ], ( voltage, voltageString ) => {
-        voltageText.string = StringUtils.fillIn( voltageString, {
+        voltageText.text = StringUtils.fillIn( voltageString, {
           voltage: Utils.toFixed( voltage, circuitElement.numberOfDecimalPlaces )
         } );
         update && update();
@@ -105,7 +105,7 @@ export default class ValueNode extends Panel {
       const resistanceNode = createText( tandem.createTandem( 'resistanceText' ) );
 
       const sourceResistanceMultilink = Multilink.multilink( [ sourceResistanceProperty, resistanceOhmsSymbolStringProperty ], ( sourceResistance, sourceResistanceString ) => {
-        resistanceNode.string = StringUtils.fillIn( sourceResistanceString, {
+        resistanceNode.text = StringUtils.fillIn( sourceResistanceString, {
           resistance: Utils.toFixed( sourceResistance, 1 )
         } );
 
@@ -132,7 +132,7 @@ export default class ValueNode extends Panel {
       // Items like the hand and dog and high resistance resistor shouldn't show ".0"
 
       const resistanceMultilink = Multilink.multilink( [ circuitElement.resistanceProperty, resistanceOhmsSymbolStringProperty ], ( resistance, resistanceString ) => {
-        ( readoutValueNode as Text ).string = StringUtils.fillIn( resistanceString, {
+        ( readoutValueNode as Text ).text = StringUtils.fillIn( resistanceString, {
           resistance: Utils.toFixed( resistance, circuitElement.numberOfDecimalPlaces )
         } );
         update && update();
@@ -146,7 +146,7 @@ export default class ValueNode extends Panel {
       // Items like the hand and dog and high resistance resistor shouldn't show ".0"
 
       const capacitanceMultilink = Multilink.multilink( [ circuitElement.capacitanceProperty, capacitanceFaradsSymbolStringProperty ], ( capacitance, capacitanceString ) => {
-        ( readoutValueNode as Text ).string = StringUtils.fillIn( capacitanceString, {
+        ( readoutValueNode as Text ).text = StringUtils.fillIn( capacitanceString, {
           resistance: Utils.toFixed( capacitance, circuitElement.numberOfDecimalPlaces )
         } );
         update && update();
@@ -158,7 +158,7 @@ export default class ValueNode extends Panel {
       readoutValueNode = createText( tandem.createTandem( 'inductorText' ) );
 
       const inductanceMultilink = Multilink.multilink( [ circuitElement.inductanceProperty, inductanceHenriesSymbolStringProperty ], ( inductance, inductanceString ) => {
-        ( readoutValueNode as Text ).string = StringUtils.fillIn( inductanceString, {
+        ( readoutValueNode as Text ).text = StringUtils.fillIn( inductanceString, {
           resistance: Utils.toFixed( inductance, circuitElement.numberOfDecimalPlaces )
         } );
         update && update();
@@ -214,7 +214,7 @@ export default class ValueNode extends Panel {
     if ( CCKCQueryParameters.showCurrents ) {
       const text = new Text( '', { fill: CCKCColors.textFillProperty } );
       Multilink.multilink( [ circuitElement.currentProperty, circuitElement.currentSenseProperty ], ( current, sense ) => {
-        text.string = sense.toString() + ', ' + current.toFixed( 4 );// eslint-disable-line bad-sim-text
+        text.text = sense.toString() + ', ' + current.toFixed( 4 );// eslint-disable-line bad-sim-text
       } );
 
       readoutValueNode = new VBox( { children: [ readoutValueNode, text ] } );
@@ -246,7 +246,7 @@ export default class ValueNode extends Panel {
       readoutValueNode!.visible = showValuesProperty.value && circuitElement.isValueDisplayableProperty.value;
 
       const customLabelText = circuitElement.labelStringProperty.value;
-      customLabelNode.string = customLabelText;
+      customLabelNode.text = customLabelText;
       customLabelNode.visible = customLabelText.length > 0;
 
       // For a light bulb, choose the part of the filament in the top center for the label, see
