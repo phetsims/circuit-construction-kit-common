@@ -206,7 +206,10 @@ export default class SensorToolbox extends CCKCPanel {
       [ circuitNode.model.showLabelsProperty, allAmmetersInPlayAreaProperty, allSeriesAmmetersInPlayAreaProperty, ammeterToolIcon.visibleProperty, seriesAmmeterNodeIcon.visibleProperty, seriesAmmeterToolNode.visibleProperty ],
       ( showLabels, allAmmetersInPlayArea, allSeriesAmmetersInPlayArea, ammeterToolNodeVisible, seriesAmmeterNodeIconVisible, seriesAmmeterToolNodeVisible ) => {
 
-        ammeterText.visible = showLabels && ( seriesAmmeterToolNodeVisible || ammeterToolNodeVisible );
+        ammeterText.visible = showLabels && (
+          ( seriesAmmeterToolNodeVisible && options.showSeriesAmmeters ) ||
+          ( ammeterToolNodeVisible && options.showNoncontactAmmeters )
+        );
       } );
 
     const voltmeterToolNode = new VBox( {
