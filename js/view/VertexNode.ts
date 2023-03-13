@@ -18,7 +18,6 @@ import Circuit from '../model/Circuit.js';
 import Vertex from '../model/Vertex.js';
 import CircuitNode from './CircuitNode.js';
 import CircuitNodeDragListener from './CircuitNodeDragListener.js';
-import DisplayClickToDismissListener from '../../../joist/js/DisplayClickToDismissListener.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
 import CCKCColors from './CCKCColors.js';
 
@@ -53,7 +52,6 @@ export default class VertexNode extends Node {
   private readonly updateSelectedListener: () => void;
   protected readonly updateMoveToFront: () => Node;
   protected readonly updatePickableListener: ( pickable: boolean | null ) => Node;
-  private readonly clickToDismissListeners: DisplayClickToDismissListener[];
   private readonly dragListener: CircuitNodeDragListener;
   private readonly interruptionListener: ( draggable: boolean ) => void;
   private readonly updateVertexNodePositionListener: () => void;
@@ -184,9 +182,6 @@ export default class VertexNode extends Node {
     let latestPoint: Vector2 | null = null;
     let dragged = false;
 
-    // called when the user clicks away from the selected vertex
-    this.clickToDismissListeners = [];
-
     this.dragListener = new CircuitNodeDragListener( circuitNode, [ () => vertex ], {
       tandem: tandem.createTandem( 'dragListener' ),
       start: ( event: SceneryEvent ) => {
@@ -207,23 +202,7 @@ export default class VertexNode extends Node {
 
         // Only show on a tap, not on every drag.
         if ( vertex.interactiveProperty.get() && latestPoint!.distance( initialPoint! ) < CCKCConstants.TAP_THRESHOLD ) {
-
           vertex.selectionProperty.value = vertex;
-
-          const dismissListener = ( event: SceneryEvent ) => {
-            if ( !_.includes( event.trail.nodes, this ) && !_.includes( event.trail.nodes, this.vertexCutButtonContainer ) ) {
-              vertex.selectionProperty.value = null;
-              this.clearClickListeners();
-            }
-          };
-          const clickToDismissListener = new DisplayClickToDismissListener( dismissListener );
-          phet.joist.display.addInputListener( clickToDismissListener );
-          this.clickToDismissListeners.push( clickToDismissListener );
-        }
-        else {
-
-          // Deselect after dragging so a grayed-out cut button doesn't remain when open vertex is connected
-          this.clearClickListeners();
         }
       }
     } );
@@ -270,9 +249,6 @@ export default class VertexNode extends Node {
 
     vertex.attachableProperty.unlink( this.updateStrokeListener );
     circuit.circuitChangedEmitter.removeListener( this.updateStrokeListener );
-
-    // Remove the global listener if it was still enabled
-    this.clearClickListeners();
 
     this.dragListener.dispose();
     this.removeInputListener( this.dragListener );
@@ -383,17 +359,6 @@ export default class VertexNode extends Node {
 
     // Update the cut button position, but only if the cut button is showing (to save on CPU)
     this.vertex.isSelected() && this.updateVertexCutButtonPosition();
-  }
-
-  /**
-   * Remove click listeners
-   */
-  private clearClickListeners(): void {
-    this.clickToDismissListeners.forEach( listener => {
-      phet.joist.display.removeInputListener( listener );
-      listener.dispose();
-    } );
-    this.clickToDismissListeners.length = 0;
   }
 
   /**
