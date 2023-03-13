@@ -255,7 +255,7 @@ export default class SensorToolbox extends CCKCPanel {
         } ),
         ammeterText
       ],
-      excludeInvisibleChildrenFromBounds: false
+      excludeInvisibleChildrenFromBounds: true
     } );
 
     const topBox = alignGroup.createBox( new HBox( {
