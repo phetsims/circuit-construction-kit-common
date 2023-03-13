@@ -19,7 +19,7 @@ import Property from '../../../axon/js/Property.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
-import { Node, Path } from '../../../scenery/js/imports.js';
+import { Node, Path, SceneryEvent } from '../../../scenery/js/imports.js';
 import scissorsShape from '../../../sherpa/js/fontawesome-4/scissorsShape.js';
 import RoundPushButton from '../../../sun/js/buttons/RoundPushButton.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -68,6 +68,8 @@ import Dog from '../model/Dog.js';
 import DogNode from './DogNode.js';
 import ResistorType from '../model/ResistorType.js';
 import AmmeterConnection from '../model/AmmeterConnection.js';
+import CircuitElementEditContainerNode from './CircuitElementEditContainerNode.js';
+import DisplayClickToDismissListener from '../../../joist/js/DisplayClickToDismissListener.js';
 
 // constants
 
@@ -570,6 +572,23 @@ export default class CircuitNode extends Node {
     else {
       this.circuitDebugLayer = null;
     }
+
+    // listener for 'click outside to dismiss'
+    phet.joist.display.addInputListener( new DisplayClickToDismissListener( ( event: SceneryEvent ) => {
+
+      // if the target was in a CircuitElementEditContainerNode, don't dismiss the event because the user was
+      // dragging the slider or pressing the trash button or another control in that panel
+      const trails = event.target.getTrails( ( node: Node ) => {
+
+        // If the user tapped any component in the CircuitElementContainerPanel or on the selected node
+        // allow interaction to proceed normally.  Any other taps will deselect the circuit element
+        return node instanceof CircuitElementEditContainerNode || node instanceof CircuitElementNode || node instanceof VertexNode;
+      } );
+
+      if ( trails.length === 0 ) {
+        this.circuit.selectionProperty.value = null;
+      }
+    } ) );
   }
 
   /**
