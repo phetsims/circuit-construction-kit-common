@@ -7,16 +7,14 @@
  */
 
 import Vector2 from '../../../dot/js/Vector2.js';
-import { Node, NodeOptions, PressListenerEvent, SceneryEvent } from '../../../scenery/js/imports.js';
+import { Node, NodeOptions, PressListenerEvent } from '../../../scenery/js/imports.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Circuit from '../model/Circuit.js';
 import CircuitElement from '../model/CircuitElement.js';
-import CircuitElementEditContainerNode from './CircuitElementEditContainerNode.js';
 import CCKCScreenView from './CCKCScreenView.js';
 import CircuitNode from './CircuitNode.js';
 import Vertex from '../model/Vertex.js';
-import DisplayClickToDismissListener from '../../../joist/js/DisplayClickToDismissListener.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import CircuitNodeDragListener from './CircuitNodeDragListener.js';
 
@@ -194,40 +192,6 @@ export default abstract class CircuitElementNode extends Node {
       if ( !ignoreFocus ) {
         this.focus();
       }
-
-      const disposeListener = () => {
-        phet.joist.display.removeInputListener( clickToDismissListener );
-        clickToDismissListener.dispose();
-      };
-
-      // listener for 'click outside to dismiss'
-      const dismissListener = ( event: SceneryEvent ) => {
-
-        // if the target was in a CircuitElementEditContainerNode, don't dismiss the event because the user was
-        // dragging the slider or pressing the trash button or another control in that panel
-        const trails = event.target.getTrails( ( node: Node ) => {
-
-          // If the user tapped any component in the CircuitElementContainerPanel or on the selected node
-          // allow interaction to proceed normally.  Any other taps will deselect the circuit element
-          return node instanceof CircuitElementEditContainerNode || node === this;
-        } );
-
-        if ( trails.length === 0 ) {
-          disposeListener();
-          if ( this.disposeEmitter.hasListener( disposeListener ) ) {
-            this.disposeEmitter.removeListener( disposeListener );
-          }
-          circuitNode.circuit.selectionProperty.value = null;
-        }
-      };
-
-      const clickToDismissListener = new DisplayClickToDismissListener( dismissListener );
-      phet.joist.display.addInputListener( clickToDismissListener );
-
-      // If the user deletes the element with the delete button, make sure to detach the display input listener
-      // so the next drag will work right away,
-      // see https://github.com/phetsims/circuit-construction-kit-common/issues/368
-      this.disposeEmitter.addListener( disposeListener );
     }
   }
 }
