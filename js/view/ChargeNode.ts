@@ -69,9 +69,10 @@ export default class ChargeNode extends Node {
 
     super( {
       pickable: false,
-      children: [ child ],
-      disposer: charge
+      children: [ child ]
     } );
+
+    charge.disposeEmitter.addListener( () => this.dispose() );
 
     // to look up the CapacitorNode for clipping
     this.circuitNode = circuitNode;
