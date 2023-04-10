@@ -24,8 +24,7 @@ import CurrentSense from '../model/CurrentSense.js';
 import ProbeTextNode from './ProbeTextNode.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import Panel from '../../../sun/js/Panel.js';
-import Property from '../../../axon/js/Property.js';
-import StringIO from '../../../tandem/js/types/StringIO.js';
+import StringProperty from '../../../axon/js/StringProperty.js';
 
 const currentStringProperty = CircuitConstructionKitCommonStrings.currentStringProperty;
 
@@ -57,9 +56,8 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
   public constructor( screenView: CCKCScreenView | null, circuitNode: CircuitNode | null, seriesAmmeter: SeriesAmmeter,
                       tandem: Tandem, isValueDepictionEnabledProperty: TReadOnlyProperty<boolean>, providedOptions?: FixedCircuitElementNodeOptions ) {
 
-    const stringProperty = new Property( MathSymbols.NO_VALUE, {
+    const stringProperty = new StringProperty( MathSymbols.NO_VALUE, {
       tandem: tandem.createTandem( 'probeReadoutText' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME ),
-      phetioValueType: StringIO,
       phetioReadOnly: true
     } );
 
@@ -76,7 +74,7 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
      * Update the text in the numeric readout text box.  Shows '?' if disconnected.
      */
     const updateText = () => {
-      let readout = MathSymbols.NO_VALUE;
+      let readout: string = MathSymbols.NO_VALUE;
 
       // If it is not an icon and connected at both sides, show the current, otherwise show '-'
       if ( screenView ) {
