@@ -66,8 +66,6 @@ export default class CircuitElementToolbox extends HBox {
       pageStroke: Color.BLACK,
       currentPageStroke: Color.TRANSPARENT,
       interactive: true,
-      dotTouchAreaDilation: 4,
-      dotMouseAreaDilation: 4,
       tandem: tandem.createTandem( 'pageControl' )
     } );
 
