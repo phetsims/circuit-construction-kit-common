@@ -112,7 +112,7 @@ export default class CCKCScreenView extends ScreenView {
    */
   protected constructor( model: CircuitConstructionKitModel, circuitElementToolItems: CarouselItem[], tandem: Tandem, providedOptions?: CCKCScreenViewOptions ) {
 
-    const options = optionize<CCKCScreenViewOptions, SelfOptions, ScreenViewOptions>()( {
+    const options = optionize<CCKCScreenViewOptions, SelfOptions, StrictOmit<ScreenViewOptions, 'tandem'>>()( {
 
       // When used as a scene, the reset all button is suppressed here, added in the screen so that it may reset all
       // scenes (including but not limited to this one).
