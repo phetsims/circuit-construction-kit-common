@@ -192,7 +192,16 @@ export default class Circuit extends PhetioObject {
       phetioType: createObservableArray.ObservableArrayIO( ReferenceIO( CircuitElement.CircuitElementIO ) ),
       tandem: tandem.createTandem( 'circuitElements' ),
       phetioDocumentation: 'All Circuit Elements, used for state save/restore',
-      phetioFeatured: true
+      phetioFeatured: true,
+      elementAddedEmitterOptions: {
+        phetioFeatured: true
+      },
+      elementRemovedEmitterOptions: {
+        phetioFeatured: true
+      },
+      lengthPropertyOptions: {
+        phetioFeatured: true
+      }
     } );
 
     this.charges = createObservableArray();
