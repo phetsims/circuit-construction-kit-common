@@ -30,12 +30,12 @@ const CIRCLE_OPTIONS = {
   lineWidth: 1.3,
   lineDash: [ 6, 4 ]
 };
-const RED_CIRCLE_NODE = new Circle( VERTEX_RADIUS, combineOptions<CircleOptions>( CIRCLE_OPTIONS, {
+const RED_CIRCLE_NODE = new Circle( VERTEX_RADIUS, combineOptions<CircleOptions>( {
   stroke: Color.RED
-} ) ).rasterized( { wrap: false } );
-const BLACK_CIRCLE_NODE = new Circle( VERTEX_RADIUS, combineOptions<CircleOptions>( CIRCLE_OPTIONS, {
+}, CIRCLE_OPTIONS ) ).rasterized( { wrap: false } );
+const BLACK_CIRCLE_NODE = new Circle( VERTEX_RADIUS, combineOptions<CircleOptions>( {
   stroke: Color.BLACK
-} ) ).rasterized( { wrap: false } );
+}, CIRCLE_OPTIONS ) ).rasterized( { wrap: false } );
 
 export default class VertexNode extends Node {
   private readonly circuit: Circuit;
