@@ -46,6 +46,7 @@ import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import Vertex from '../model/Vertex.js';
 import PatternStringProperty from '../../../axon/js/PatternStringProperty.js';
 import CCKCColors from './CCKCColors.js';
+import isSettingPhetioStateProperty from '../../../tandem/js/isSettingPhetioStateProperty.js';
 
 const capacitanceStringProperty = CircuitConstructionKitCommonStrings.capacitanceStringProperty;
 const capacitanceUnitsStringProperty = CircuitConstructionKitCommonStrings.capacitanceUnitsStringProperty;
@@ -348,7 +349,7 @@ export default class CircuitElementEditContainerNode extends Node {
     // something in the toolbox.
     const updateInstructionTextVisible = () => {
 
-      if ( !phet.joist.sim.isSettingPhetioStateProperty.value ) {
+      if ( !isSettingPhetioStateProperty.value ) {
 
         // Only fixed length circuit elements are editable, even though wires can be deleted
         const fixedLengthElements = circuit.circuitElements.filter( circuitElement =>

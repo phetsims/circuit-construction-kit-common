@@ -33,6 +33,7 @@ import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import Utils from '../../../dot/js/Utils.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import TModel from '../../../joist/js/TModel.js';
+import isSettingPhetioStateProperty from '../../../tandem/js/isSettingPhetioStateProperty.js';
 
 type CircuitConstructionKitModelOptions = {
   blackBoxStudy?: boolean;
@@ -193,7 +194,7 @@ export default class CircuitConstructionKitModel implements TModel {
     this.animatedZoomScaleProperty = new NumberProperty( this.zoomScaleProperty.get() );
 
     this.zoomScaleProperty.lazyLink( ( newValue: number ) => {
-      if ( phet.joist.sim.isSettingPhetioStateProperty.value ) {
+      if ( isSettingPhetioStateProperty.value ) {
         this.animatedZoomScaleProperty.value = newValue;
       }
       else {

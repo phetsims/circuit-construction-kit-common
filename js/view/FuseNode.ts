@@ -25,6 +25,7 @@ import FuseTripAnimation from './FuseTripAnimation.js';
 import schematicTypeProperty from './schematicTypeProperty.js';
 import SchematicType from './SchematicType.js';
 import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
+import isSettingPhetioStateProperty from '../../../tandem/js/isSettingPhetioStateProperty.js';
 
 // constants
 const SCHEMATIC_STEM_WIDTH = 20;
@@ -180,7 +181,7 @@ export default class FuseNode extends FixedCircuitElementNode {
 
     // Update the look when the fuse is tripped
     const updateTripped = ( isTripped: boolean ) => {
-      if ( isTripped && !phet.joist.sim.isSettingPhetioStateProperty.value ) {
+      if ( isTripped && !isSettingPhetioStateProperty.value ) {
         circuitNode!.addChild( new FuseTripAnimation( { center: this.center } ) );
       }
       glassNode.fill = isTripped ? '#4e4e4e' : DEFAULT_GLASS_FILL;
