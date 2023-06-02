@@ -194,7 +194,7 @@ export default class CircuitElementEditContainerNode extends Node {
     const fuseCurrentRatingControl = new CircuitElementNumberControl( currentRatingStringProperty,
 
       // Adapter to take from {{named}} to {{value}} for usage in common code
-      new PatternStringProperty( currentUnitsStringProperty, { current: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
+      new PatternStringProperty( currentUnitsStringProperty, { current: SunConstants.VALUE_NAMED_PLACEHOLDER }, { tandem: tandem.createTandem( 'currentUnitsPatternStringProperty' ) } ),
       createSingletonAdapterProperty( Fuse.DEFAULT_CURRENT_RATING, Fuse, circuit, ( c: Fuse ) => c.currentRatingProperty ),
       Fuse.RANGE, circuit,
       1, {
@@ -206,7 +206,7 @@ export default class CircuitElementEditContainerNode extends Node {
       } );
 
     const capacitorEditControl = new CircuitElementNumberControl( capacitanceStringProperty,
-      new PatternStringProperty( capacitanceUnitsStringProperty, { capacitance: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
+      new PatternStringProperty( capacitanceUnitsStringProperty, { capacitance: SunConstants.VALUE_NAMED_PLACEHOLDER }, { tandem: tandem.createTandem( 'capacitanceUnitsPatternStringProperty' ) } ),
       createSingletonAdapterProperty( Capacitor.CAPACITANCE_DEFAULT, Capacitor, circuit, ( c: Capacitor ) => c.capacitanceProperty ),
       Capacitor.CAPACITANCE_RANGE, circuit, Capacitor.NUMBER_OF_DECIMAL_PLACES, {
         tandem: circuit.includeACElements ? tandem.createTandem( 'capacitanceNumberControl' ) : Tandem.OPT_OUT,
@@ -218,7 +218,7 @@ export default class CircuitElementEditContainerNode extends Node {
       } );
 
     const inductanceControl = new CircuitElementNumberControl( inductanceStringProperty,
-      new PatternStringProperty( inductanceUnitsStringProperty, { inductance: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
+      new PatternStringProperty( inductanceUnitsStringProperty, { inductance: SunConstants.VALUE_NAMED_PLACEHOLDER }, { tandem: tandem.createTandem( 'inductanceUnitsPatternStringProperty' ) } ),
       createSingletonAdapterProperty( Inductor.INDUCTANCE_DEFAULT, Inductor, circuit, ( c: Inductor ) => c.inductanceProperty ),
       Inductor.INDUCTANCE_RANGE, circuit, Inductor.INDUCTANCE_NUMBER_OF_DECIMAL_PLACES, {
         tandem: circuit.includeACElements ? tandem.createTandem( 'inductanceNumberControl' ) : Tandem.OPT_OUT,
@@ -232,8 +232,12 @@ export default class CircuitElementEditContainerNode extends Node {
 
     type GConstructor<T> = new ( ...args: IntentionalAny[] ) => T;
 
+    const resistanceOhmsValueStringProperty = new PatternStringProperty( resistanceOhmsValuePatternStringProperty, { resistance: SunConstants.VALUE_NAMED_PLACEHOLDER }, {
+      tandem: tandem.createTandem( 'resistanceOhmsValueStringProperty' )
+    } );
+
     const createResistanceNumberControl = ( tandemName: string, CircuitElementType: GConstructor<LightBulb | Resistor> ) => new CircuitElementNumberControl( resistanceStringProperty,
-      new PatternStringProperty( resistanceOhmsValuePatternStringProperty, { resistance: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
+      resistanceOhmsValueStringProperty,
       createSingletonAdapterProperty( ResistorType.RESISTOR.defaultResistance, CircuitElementType, circuit, ( c: LightBulb | Resistor ) => c.resistanceProperty,
         ( c: LightBulb | Resistor ) =>
           ( c instanceof LightBulb && !c.isExtreme ) ||
@@ -248,7 +252,7 @@ export default class CircuitElementEditContainerNode extends Node {
         numberDisplayOptions: { decimalPlaces: Resistor.RESISTANCE_DECIMAL_PLACES }
       } );
     const createExtremeResistanceNumberControl = ( tandemName: string, CircuitElementType: GConstructor<LightBulb | Resistor> ) => new CircuitElementNumberControl( resistanceStringProperty,
-      new PatternStringProperty( resistanceOhmsValuePatternStringProperty, { resistance: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
+      resistanceOhmsValueStringProperty,
       createSingletonAdapterProperty( ResistorType.EXTREME_RESISTOR.defaultResistance, CircuitElementType, circuit, ( c: LightBulb | Resistor ) => c.resistanceProperty,
         ( c: LightBulb | Resistor ) =>
           ( c instanceof LightBulb && c.isExtreme ) ||
@@ -268,8 +272,11 @@ export default class CircuitElementEditContainerNode extends Node {
     const extremeResistorResistanceNumberControl = createExtremeResistanceNumberControl( 'extremeResistorResistanceNumberControl', Resistor );
     const extremeLightBulbResistanceNumberControl = createExtremeResistanceNumberControl( 'extremeLightBulbResistanceNumberControl', LightBulb );
 
+    const voltageVoltsValueStringProperty = new PatternStringProperty( voltageVoltsValuePatternStringProperty, { voltage: SunConstants.VALUE_NAMED_PLACEHOLDER }, {
+      tandem: tandem.createTandem( 'voltageVoltsValueStringProperty' )
+    } );
     const voltageNumberControl = new CircuitElementNumberControl( voltageStringProperty,
-      new PatternStringProperty( voltageVoltsValuePatternStringProperty, { voltage: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
+      voltageVoltsValueStringProperty,
       createSingletonAdapterProperty( Battery.VOLTAGE_DEFAULT, Battery, circuit, ( c: Battery ) => c.voltageProperty, ( c: Battery ) => c.batteryType === 'normal' ),
       Battery.VOLTAGE_RANGE,
       circuit,
@@ -282,7 +289,7 @@ export default class CircuitElementEditContainerNode extends Node {
         numberDisplayOptions: { decimalPlaces: Battery.VOLTAGE_DECIMAL_PLACES }
       } );
     const extremeBatteryVoltageNumberControl = new CircuitElementNumberControl( voltageStringProperty,
-      new PatternStringProperty( voltageVoltsValuePatternStringProperty, { voltage: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
+      voltageVoltsValueStringProperty,
       createSingletonAdapterProperty( Battery.HIGH_VOLTAGE_DEFAULT, Battery, circuit, ( c: Battery ) => c.voltageProperty, ( c: Battery ) => c.batteryType === 'high-voltage' ),
       Battery.HIGH_VOLTAGE_RANGE,
       circuit,
@@ -301,9 +308,7 @@ export default class CircuitElementEditContainerNode extends Node {
 
     const acVoltageControl = new CircuitElementNumberControl(
       voltageStringProperty,
-      new PatternStringProperty( voltageVoltsValuePatternStringProperty, {
-        voltage: SunConstants.VALUE_NAMED_PLACEHOLDER
-      } ),
+      voltageVoltsValueStringProperty,
       createSingletonAdapterProperty( 9, ACVoltage, circuit, circuitElement => circuitElement.maximumVoltageProperty ),
       ACVoltage.MAX_VOLTAGE_RANGE,
       circuit,
@@ -317,8 +322,8 @@ export default class CircuitElementEditContainerNode extends Node {
 
     const acFrequencyControl = new CircuitElementNumberControl(
       frequencyStringProperty,
-      new PatternStringProperty( frequencyHzValuePatternStringProperty, {
-        frequency: SunConstants.VALUE_NAMED_PLACEHOLDER
+      new PatternStringProperty( frequencyHzValuePatternStringProperty, { frequency: SunConstants.VALUE_NAMED_PLACEHOLDER }, {
+        tandem: tandem.createTandem( 'frequencyHzValueStringProperty' )
       } ),
       createSingletonAdapterProperty( ACVoltage.DEFAULT_FREQUENCY, ACVoltage, circuit, circuitElement => circuitElement.frequencyProperty ),
       ACVoltage.FREQUENCY_RANGE,
