@@ -123,7 +123,7 @@ export default class DisplayOptionsPanel extends CCKCPanel {
       tandem: valuesCheckboxTandem
     } );
 
-    let stopwatchCheckbox = null;
+    let stopwatchCheckbox: CCKCCheckbox | null = null;
     if ( showStopwatchCheckbox ) {
       const stopwatchCheckboxTandem = tandem.createTandem( 'stopwatchCheckbox' );
       stopwatchCheckbox = new CCKCCheckbox( stopwatch.isVisibleProperty, createLabel( stopwatchStringProperty, stopwatchCheckboxTandem ), {

@@ -93,7 +93,7 @@ const ResistorColors = {
 
     // find the lowest tolerance that fits the value
     const sortedColorsWithTolerance = _.sortBy( colorsWithTolerance, 'tolerance' );
-    let color = null;
+    let color: Entry | null = null;
     for ( let i = 0; i < sortedColorsWithTolerance.length; i++ ) {
       color = sortedColorsWithTolerance[ i ];
       if ( color.tolerance! > percentError ) {
