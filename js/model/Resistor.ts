@@ -27,9 +27,10 @@ type SelfOptions = {
 };
 export type ResistorOptions = SelfOptions & FixedCircuitElementOptions;
 
-type ResistorState = {
+type ResistorSelfState = {
   resistorType: ResistorType;
-} & CircuitElementState;
+};
+type ResistorState = ResistorSelfState & CircuitElementState;
 
 export default class Resistor extends FixedCircuitElement {
 
@@ -128,10 +129,10 @@ export default class Resistor extends FixedCircuitElement {
     },
     toStateObject: ( resistor: Resistor ): ResistorState => {
       const stateObject = CircuitElement.CircuitElementIO.toStateObject( resistor );
-      return {
-        ...stateObject,
+
+      return _.merge<ResistorSelfState, CircuitElementState>( {
         resistorType: EnumerationIO( ResistorType ).toStateObject( resistor.resistorType )
-      };
+      }, stateObject );
     },
 
     stateObjectToCreateElementArguments( stateObject: ResistorState ) {
