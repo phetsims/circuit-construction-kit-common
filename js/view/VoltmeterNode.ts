@@ -364,7 +364,7 @@ export default class VoltmeterNode extends Node {
     }
 
     this.addLinkedElement( voltmeter, {
-      tandem: this.tandem.createTandem( 'voltmeter' )
+      tandemName: 'voltmeter'
     } );
   }
 

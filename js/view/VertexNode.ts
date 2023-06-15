@@ -91,7 +91,7 @@ export default class VertexNode extends Node {
     this.circuitNode = circuitNode;
 
     this.addLinkedElement( vertex, {
-      tandem: tandem.createTandem( 'vertex' )
+      tandemName: 'vertex'
     } );
 
     // Use a query parameter to turn on node voltage readouts for debugging only.

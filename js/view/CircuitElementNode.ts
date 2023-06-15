@@ -66,7 +66,7 @@ export default abstract class CircuitElementNode extends Node {
 
     // Make it easy to get back to circuitElements
     this.addLinkedElement( circuitElement, {
-      tandem: providedOptions.tandem!.createTandem( 'circuitElement' )
+      tandemName: 'circuitElement'
     } );
 
     this.updateOpacityOnInteractiveChange();

@@ -257,7 +257,7 @@ export default class AmmeterNode extends Node {
     }
 
     this.addLinkedElement( ammeter, {
-      tandem: tandemForChildren.createTandem( 'ammeter' )
+      tandemName: 'ammeter'
     } );
   }
 
