@@ -13,7 +13,7 @@ import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
 import ProbeNode from '../../../scenery-phet/js/ProbeNode.js';
 import WireNode from '../../../scenery-phet/js/WireNode.js';
-import { Color, DragListener, Image, Node, NodeOptions, Rectangle, Text, PressListenerEvent } from '../../../scenery/js/imports.js';
+import { Color, DragListener, Image, Node, NodeOptions, PressListenerEvent, Rectangle, Text } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ammeterBody_png from '../../images/ammeterBody_png.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -27,7 +27,7 @@ import Bounds2 from '../../../dot/js/Bounds2.js';
 import Property from '../../../axon/js/Property.js';
 import ammeterReadoutTypeProperty from './ammeterReadoutTypeProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import StringIO from '../../../tandem/js/types/StringIO.js';
+import DerivedStringProperty from '../../../axon/js/DerivedStringProperty.js';
 
 const currentStringProperty = CircuitConstructionKitCommonStrings.currentStringProperty;
 
@@ -104,20 +104,18 @@ export default class AmmeterNode extends Node {
       }
     );
 
-    const currentReadoutProperty = new DerivedProperty( [
+    const currentReadoutProperty = new DerivedStringProperty( [
         ammeter.currentProperty,
         ammeterReadoutTypeProperty,
         CircuitConstructionKitCommonStrings.currentUnitsStringProperty
       ],
       current => CCKCUtils.createCurrentReadout( current, options.blackBoxStudy ), {
-        tandem: tandemForChildren.createTandem( 'probeReadoutText' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME ),
-        phetioValueType: StringIO
+        tandem: tandemForChildren.createTandem( 'probeReadoutStringProperty' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME )
       } );
 
-    const probeTextProperty = new DerivedProperty( [ currentStringProperty ], currentString =>
+    const probeTextProperty = new DerivedStringProperty( [ currentStringProperty ], currentString =>
         options.showPhetioIndex ? currentString + ' ' + ammeter.phetioIndex : currentString, {
-        tandem: tandemForChildren.createTandem( 'probeTitleText' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME ),
-        phetioValueType: StringIO
+        tandem: tandemForChildren.createTandem( 'probeTitleStringProperty' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME )
       }
     );
 

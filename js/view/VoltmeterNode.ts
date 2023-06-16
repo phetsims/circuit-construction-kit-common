@@ -30,8 +30,8 @@ import Bounds2 from '../../../dot/js/Bounds2.js';
 import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
 import ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import StringIO from '../../../tandem/js/types/StringIO.js';
 import Multilink from '../../../axon/js/Multilink.js';
+import DerivedStringProperty from '../../../axon/js/DerivedStringProperty.js';
 
 const voltageStringProperty = CircuitConstructionKitCommonStrings.voltageStringProperty;
 
@@ -130,20 +130,18 @@ export default class VoltmeterNode extends Node {
     } );
 
     // Displays the voltage reading
-    const voltageReadoutProperty = new DerivedProperty( [
+    const voltageReadoutProperty = new DerivedStringProperty( [
         voltmeter.voltageProperty,
         CircuitConstructionKitCommonStrings.voltageUnitsStringProperty
       ], voltage =>
         voltage === null ? MathSymbols.NO_VALUE : CCKCUtils.createVoltageReadout( voltage ), {
-        tandem: options.tandem.createTandem( 'probeReadoutText' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME ),
-        phetioValueType: StringIO
+        tandem: options.tandem.createTandem( 'probeReadoutStringProperty' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME )
       }
     );
 
-    const probeTextProperty = new DerivedProperty( [ voltageStringProperty ], voltageString =>
+    const probeTextProperty = new DerivedStringProperty( [ voltageStringProperty ], voltageString =>
         options.showPhetioIndex ? voltageString + ' ' + voltmeter.phetioIndex : voltageString, {
-        tandem: options.tandem.createTandem( 'probeTitleText' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME ),
-        phetioValueType: StringIO
+        tandem: options.tandem.createTandem( 'probeTitleStringProperty' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME )
       }
     );
 
