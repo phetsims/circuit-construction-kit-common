@@ -19,15 +19,14 @@ import NumberIO from '../../../tandem/js/types/NumberIO.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
+import PickOptional from '../../../phet-core/js/types/PickOptional.js';
 
 type SelfOptions = {
   initialOrientation?: 'right' | 'left';
   voltage?: number;
   voltagePropertyOptions?: {
     range?: Range;
-    tandem?: Tandem;
-    phetioFeatured?: boolean;
-  };
+  } & PickOptional<FixedCircuitElement, 'phetioFeatured' | 'tandem'>;
 };
 export type VoltageSourceOptions = SelfOptions & FixedCircuitElementOptions;
 
