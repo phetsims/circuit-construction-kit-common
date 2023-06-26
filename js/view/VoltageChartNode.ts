@@ -10,7 +10,6 @@ import createObservableArray from '../../../axon/js/createObservableArray.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Range from '../../../dot/js/Range.js';
 import { Color, Rectangle } from '../../../scenery/js/imports.js';
-import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
