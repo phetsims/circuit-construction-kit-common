@@ -20,6 +20,7 @@ import Property from '../../../axon/js/Property.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import CCKCProbeNode from './CCKCProbeNode.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 
 const voltageWithUnitsStringProperty = CircuitConstructionKitCommonStrings.voltageWithUnitsStringProperty;
 
@@ -35,13 +36,14 @@ export default class VoltageChartNode extends CCKCChartNode {
   public constructor( circuitNode: CircuitNode, timeProperty: Property<number>, visibleBoundsProperty: Property<Bounds2>, providedOptions?: CCKCChartNodeOptions ) {
 
     providedOptions = combineOptions<CCKCChartNodeOptions>( {
-      defaultZoomLevel: new Range( -10, 10 )
+      defaultZoomLevel: new Range( -10, 10 ),
+      tandem: Tandem.OPTIONAL
     }, providedOptions );
 
     super( circuitNode, timeProperty, visibleBoundsProperty, createObservableArray(), voltageWithUnitsStringProperty, providedOptions );
 
-    this.probeNode1 = this.addProbeNode( SERIES_1_COLOR, SERIES_1_COLOR, 5, 10, this.aboveBottomLeft1Property, providedOptions.tandem?.createTandem( 'probeNode1' ) );
-    this.probeNode2 = this.addProbeNode( SERIES_2_COLOR, SERIES_2_COLOR, 36, 54, this.aboveBottomLeft2Property, providedOptions.tandem?.createTandem( 'probeNode2' ) );
+    this.probeNode1 = this.addProbeNode( SERIES_1_COLOR, SERIES_1_COLOR, 5, 10, this.aboveBottomLeft1Property, providedOptions.tandem.createTandem( 'probeNode1' ) );
+    this.probeNode2 = this.addProbeNode( SERIES_2_COLOR, SERIES_2_COLOR, 36, 54, this.aboveBottomLeft2Property, providedOptions.tandem.createTandem( 'probeNode2' ) );
 
     this.lastStepTime = null;
   }
