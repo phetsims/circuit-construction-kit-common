@@ -219,7 +219,7 @@ export default class CircuitElementToolFactory {
   public createRightBatteryToolNode( tandem: Tandem, count = 10 ): CircuitElementToolNode {
     const batteryModel = new Battery(
       new Vertex( Vector2.ZERO, this.circuit.selectionProperty ), new Vertex( new Vector2( CCKCConstants.BATTERY_LENGTH, 0 ), this.circuit.selectionProperty ),
-      new NumberProperty( 0 ), 'normal', Tandem.OPTIONAL
+      new NumberProperty( 0 ), 'normal', Tandem.OPT_OUT
     );
     return this.createCircuitElementToolNode( batteryStringProperty, count,
       ( tandem, viewTypeProperty ) => new BatteryNode( null, null, batteryModel, viewTypeProperty, tandem.createTandem( 'batteryIcon' ), { isIcon: true } ),
@@ -240,7 +240,7 @@ export default class CircuitElementToolFactory {
       new Vertex( Vector2.ZERO, this.circuit.selectionProperty ),
       new Vertex( new Vector2( AC_VOLTAGE_LENGTH, 0 ), this.circuit.selectionProperty ),
       new NumberProperty( 0 ),
-      Tandem.OPTIONAL
+      Tandem.OPT_OUT
     );
     return this.createCircuitElementToolNode( acSourceStringProperty, count,
       ( tandem, viewTypeProperty ) => new ACVoltageNode( null, null, acSource, viewTypeProperty, tandem.createTandem( 'acSourceIcon' ), {
@@ -265,7 +265,7 @@ export default class CircuitElementToolFactory {
       this.circuit,
       CCKCConstants.DEFAULT_RESISTANCE,
       this.viewTypeProperty,
-      Tandem.OPTIONAL, {
+      Tandem.OPT_OUT, {
         isExtreme: false,
         isReal: real
       } );
@@ -301,7 +301,7 @@ export default class CircuitElementToolFactory {
       new Vertex( Vector2.ZERO, this.circuit.selectionProperty ),
       new Vertex( new Vector2( resistorType.length, 0 ), this.circuit.selectionProperty ),
       resistorType,
-      Tandem.OPTIONAL
+      Tandem.OPT_OUT
     );
 
     return this.createCircuitElementToolNode( labelStringProperty, options.count,
@@ -323,7 +323,7 @@ export default class CircuitElementToolFactory {
     const fuseModel = new Fuse(
       new Vertex( Vector2.ZERO, this.circuit.selectionProperty ),
       new Vertex( new Vector2( CCKCConstants.RESISTOR_LENGTH, 0 ), this.circuit.selectionProperty ),
-      Tandem.OPTIONAL
+      Tandem.OPT_OUT
     );
     return this.createCircuitElementToolNode( fuseStringProperty, 10,
       ( tandem, viewTypeProperty ) => new FuseNode( null, null, fuseModel, viewTypeProperty, tandem.createTandem( 'fuseIcon' ), {
@@ -345,7 +345,7 @@ export default class CircuitElementToolFactory {
     const capacitor = new Capacitor(
       new Vertex( Vector2.ZERO, this.circuit.selectionProperty ),
       new Vertex( new Vector2( CCKCConstants.CAPACITOR_LENGTH, 0 ), this.circuit.selectionProperty ),
-      Tandem.OPTIONAL
+      Tandem.OPT_OUT
     );
     return this.createCircuitElementToolNode( capacitorStringProperty, count,
       ( tandem, viewTypeProperty ) => new CapacitorCircuitElementNode( null, null, capacitor, viewTypeProperty, tandem.createTandem( 'capacitorIcon' ), {
@@ -361,7 +361,7 @@ export default class CircuitElementToolFactory {
     const inductorModel = new Inductor(
       new Vertex( Vector2.ZERO, this.circuit.selectionProperty ),
       new Vertex( new Vector2( CCKCConstants.INDUCTOR_LENGTH, 0 ), this.circuit.selectionProperty ),
-      Tandem.OPTIONAL
+      Tandem.OPT_OUT
     );
     const count = CCKCQueryParameters.moreInductors ? 10 : 1;
     return this.createCircuitElementToolNode( inductorStringProperty, count,
@@ -383,7 +383,7 @@ export default class CircuitElementToolFactory {
         new Switch(
           new Vertex( Vector2.ZERO, this.circuit.selectionProperty ),
           new Vertex( new Vector2( SWITCH_LENGTH, 0 ), this.circuit.selectionProperty ),
-          Tandem.OPTIONAL,
+          Tandem.OPT_OUT,
           null
         ), viewTypeProperty, tandem.createTandem( 'switchIcon' ), {
           isIcon: true
@@ -489,7 +489,7 @@ export default class CircuitElementToolFactory {
           new Vertex( new Vector2( CCKCConstants.BATTERY_LENGTH, 0 ), this.circuit.selectionProperty ),
           new NumberProperty( 0 ),
           'high-voltage',
-          Tandem.OPTIONAL, {
+          Tandem.OPT_OUT, {
             voltage: 1000,
             numberOfDecimalPlaces: Battery.HIGH_VOLTAGE_DECIMAL_PLACES
           }
@@ -516,7 +516,7 @@ export default class CircuitElementToolFactory {
           this.circuit,
           1000,
           this.viewTypeProperty,
-          Tandem.OPTIONAL, {
+          Tandem.OPT_OUT, {
             isExtreme: true
           } ),
         new BooleanProperty( true ),

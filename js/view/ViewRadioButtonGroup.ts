@@ -62,7 +62,7 @@ export default class ViewRadioButtonGroup extends RectangularRadioButtonGroup<Ci
     // Create a battery which can be used in the views
     const startVertex = new Vertex( new Vector2( BATTERY_LENGTH / 2, 0 ), new Property<CircuitElement | Vertex | null>( null ) );
     const endVertex = new Vertex( new Vector2( -BATTERY_LENGTH / 2, 0 ), new Property<CircuitElement | Vertex | null>( null ) );
-    const battery = new Battery( endVertex, startVertex, new NumberProperty( 0 ), 'normal', Tandem.OPTIONAL, {
+    const battery = new Battery( endVertex, startVertex, new NumberProperty( 0 ), 'normal', Tandem.OPT_OUT, {
       initialOrientation: 'left',
       numberOfDecimalPlaces: Battery.VOLTAGE_DECIMAL_PLACES
     } );

@@ -316,7 +316,7 @@ export default class CircuitNode extends Node {
               circuitElement,
               this.model.showValuesProperty,
               this.model.viewTypeProperty,
-              Tandem.OPTIONAL
+              Tandem.OPT_OUT
             );
 
             this.valueLayer.addChild( valueNode );

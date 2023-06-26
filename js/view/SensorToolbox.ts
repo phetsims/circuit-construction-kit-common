@@ -105,7 +105,7 @@ export default class SensorToolbox extends CCKCPanel {
       } );
 
     // Draggable isIcon for the voltmeter
-    const voltmeter = new Voltmeter( Tandem.OPTIONAL, 0 );
+    const voltmeter = new Voltmeter( Tandem.OPT_OUT, 0 );
     const voltmeterToolIcon = new VoltmeterNode( voltmeter, null, null, {
       tandem: Tandem.OPT_OUT,
       isIcon: true
@@ -118,7 +118,7 @@ export default class SensorToolbox extends CCKCPanel {
     voltmeterToolIcon.addInputListener( createListenerMulti( voltmeterNodes ) );
 
     // Icon for the ammeter
-    const ammeter = new Ammeter( Tandem.OPTIONAL, 0 );
+    const ammeter = new Ammeter( Tandem.OPT_OUT, 0 );
     const ammeterToolIcon = new AmmeterNode( ammeter, null, {
       isIcon: true,
       tandem: options.showNoncontactAmmeters ? tandem.createTandem( 'noncontactAmmeterToolNode' ) : Tandem.OPT_OUT,
@@ -143,7 +143,7 @@ export default class SensorToolbox extends CCKCPanel {
     const seriesAmmeterIcon = new SeriesAmmeter(
       new Vertex( Vector2.ZERO, circuit.selectionProperty ),
       new Vertex( new Vector2( CCKCConstants.SERIES_AMMETER_LENGTH, 0 ), circuit.selectionProperty ),
-      Tandem.OPTIONAL
+      Tandem.OPT_OUT
     );
     const seriesAmmeterNodeIcon = new SeriesAmmeterNode( null, null, seriesAmmeterIcon,
       Tandem.OPT_OUT, options.showResultsProperty, {
