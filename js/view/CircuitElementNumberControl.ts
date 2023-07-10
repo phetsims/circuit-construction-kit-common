@@ -73,6 +73,7 @@ export default class CircuitElementNumberControl extends HBox {
         trackSize: new Dimension2( 120, 4 )
       },
       tandem: Tandem.OPT_OUT,
+      isDisposable: false,
       getAdditionalVisibilityProperties: ( c: CircuitElement ) => {return [];}
     }, providedOptions );
     const numberControl = new NumberControl( title, valueProperty, range, options );
@@ -98,10 +99,6 @@ export default class CircuitElementNumberControl extends HBox {
         multilink = Multilink.multilinkAny( [ newCircuitElement.isEditableProperty, ...otherGates ], listener );
       }
     } );
-  }
-
-  public override dispose(): void {
-    assert && assert( false, 'Should not be disposed' );
   }
 }
 

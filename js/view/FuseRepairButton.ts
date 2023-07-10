@@ -51,7 +51,8 @@ export default class FuseRepairButton extends CCKCRoundPushButton {
           fuse.resetFuse();
           circuit.componentEditedEmitter.emit();
         }
-      }
+      },
+      isDisposable: false
     }, providedOptions );
 
     super( options );
@@ -64,10 +65,6 @@ export default class FuseRepairButton extends CCKCRoundPushButton {
       oldCircuitElement instanceof Fuse && oldCircuitElement.isTrippedProperty.unlink( isTrippedListener );
       newCircuitElement instanceof Fuse && newCircuitElement.isTrippedProperty.link( isTrippedListener );
     } );
-  }
-
-  public override dispose(): void {
-    assert && assert( false, 'should not be disposed' );
   }
 }
 

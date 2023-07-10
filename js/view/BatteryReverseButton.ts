@@ -73,13 +73,10 @@ export default class BatteryReverseButton extends CCKCRoundPushButton {
         else {
           assert && assert( false, 'selected circuit element should have been a battery' );
         }
-      }
+      },
+      isDisposable: false
     }, providedOptions );
     super( options );
-  }
-
-  public override dispose(): void {
-    assert && assert( false, 'should not be disposed' );
   }
 }
 

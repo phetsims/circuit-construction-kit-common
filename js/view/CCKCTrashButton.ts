@@ -43,12 +43,9 @@ export default class CCKCTrashButton extends CCKCRoundPushButton {
           }
         }
       },
+      isDisposable: false,
       tandem: tandem
     }, providedOptions ) );
-  }
-
-  public override dispose(): void {
-    assert && assert( false, 'should not be disposed' );
   }
 }
 

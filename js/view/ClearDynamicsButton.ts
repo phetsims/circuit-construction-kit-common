@@ -56,7 +56,8 @@ export default class ClearDynamicsButton extends CCKCRoundPushButton {
         if ( dynamicCircuitElement instanceof DynamicCircuitElement ) {
           dynamicCircuitElement.clear();
         }
-      }
+      },
+      isDisposable: false
     }, providedOptions );
 
     super( options );
@@ -71,10 +72,6 @@ export default class ClearDynamicsButton extends CCKCRoundPushButton {
       oldCircuitElement instanceof DynamicCircuitElement && oldCircuitElement.isClearableProperty.unlink( isClearableListener );
       newCircuitElement instanceof DynamicCircuitElement && newCircuitElement.isClearableProperty.link( isClearableListener );
     } );
-  }
-
-  public override dispose(): void {
-    assert && assert( false, 'should not be disposed' );
   }
 }
 
