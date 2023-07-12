@@ -76,7 +76,7 @@ export default abstract class CircuitElementNode extends Node {
      * dragging.
      * @param event - scenery event
      */
-    const startDragListener = ( event: PressListenerEvent ) => this.dragListener!.down( event );
+    const startDragListener = ( event: PressListenerEvent ) => this.dragListener!.press( event, this );
 
     circuitElement.startDragEmitter.addListener( startDragListener );
 

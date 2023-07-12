@@ -34,7 +34,7 @@ export default class CircuitNodeDragListener extends DragListener {
    *                              forwarded presses.
    * @param [callback] - to be run at the end of the function, but only on success
    */
-  public override press( event: PressListenerEvent, targetNode: Node | undefined, callback: () => void ): boolean {
+  public override press( event: PressListenerEvent, targetNode?: Node, callback?: () => void ): boolean {
 
     const vertices = this.vertexGetters.map( vertexGetter => vertexGetter() );
 
