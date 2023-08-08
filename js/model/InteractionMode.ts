@@ -10,7 +10,8 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 export default class InteractionMode extends EnumerationValue {
   public static readonly EXPLORE = new InteractionMode();
   public static readonly TEST = new InteractionMode();
-  private static readonly enumeration = new Enumeration( InteractionMode );
+
+  public static readonly enumeration = new Enumeration( InteractionMode );
 }
 
 circuitConstructionKitCommon.register( 'InteractionMode', InteractionMode );

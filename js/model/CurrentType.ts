@@ -12,7 +12,8 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 export default class CurrentType extends EnumerationValue {
   public static readonly ELECTRONS = new CurrentType();
   public static readonly CONVENTIONAL = new CurrentType();
-  private static readonly enumeration = new Enumeration( CurrentType );
+
+  public static readonly enumeration = new Enumeration( CurrentType );
 }
 
 circuitConstructionKitCommon.register( 'CurrentType', CurrentType );

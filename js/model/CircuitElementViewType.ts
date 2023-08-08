@@ -14,7 +14,7 @@ export default class CircuitElementViewType extends EnumerationValue {
   public static readonly LIFELIKE = new CircuitElementViewType();
   public static readonly SCHEMATIC = new CircuitElementViewType();
 
-  private static readonly enumeration = new Enumeration( CircuitElementViewType, {
+  public static readonly enumeration = new Enumeration( CircuitElementViewType, {
     phetioDocumentation: 'Enumeration that determines how the circuit elements are rendered: lifelike or schematic'
   } );
 }

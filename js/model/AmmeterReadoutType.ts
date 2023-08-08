@@ -12,6 +12,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 export default class AmmeterReadoutType extends EnumerationValue {
   public static readonly MAGNITUDE = new AmmeterReadoutType();
   public static readonly SIGNED = new AmmeterReadoutType();
+
   public static readonly enumeration = new Enumeration( AmmeterReadoutType );
 }
 

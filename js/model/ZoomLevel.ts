@@ -10,7 +10,8 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 export default class ZoomLevel extends EnumerationValue {
   public static readonly NORMAL = new ZoomLevel();
   public static readonly ZOOMED_OUT = new ZoomLevel();
-  private static readonly enumeration = new Enumeration( ZoomLevel );
+
+  public static readonly enumeration = new Enumeration( ZoomLevel );
 }
 
 circuitConstructionKitCommon.register( 'ZoomLevel', ZoomLevel );

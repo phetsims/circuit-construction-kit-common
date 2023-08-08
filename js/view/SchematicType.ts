@@ -13,7 +13,8 @@ export default class SchematicType extends EnumerationValue {
   public static readonly IEC = new SchematicType();
   public static readonly IEEE = new SchematicType();
   public static readonly BRITISH = new SchematicType();
-  private static readonly enumeration = new Enumeration( SchematicType );
+
+  public static readonly enumeration = new Enumeration( SchematicType );
 }
 
 circuitConstructionKitCommon.register( 'SchematicType', SchematicType );
