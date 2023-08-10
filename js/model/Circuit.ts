@@ -55,6 +55,7 @@ import VoidIO from '../../../tandem/js/types/VoidIO.js';
 import PhetioObject from '../../../tandem/js/PhetioObject.js';
 import ObjectLiteralIO from '../../../tandem/js/types/ObjectLiteralIO.js';
 import { PhetioState } from '../../../tandem/js/TandemConstants.js';
+import GetSetButtonsIO from '../../../tandem/js/types/GetSetButtonsIO.js';
 
 // constants
 const SNAP_RADIUS = 30; // For two vertices to join together, they must be this close, in view coordinates
@@ -1621,6 +1622,7 @@ export default class Circuit extends PhetioObject {
 }
 
 const CircuitStateIO = new IOType( 'CircuitStateIO', {
+  supertype: GetSetButtonsIO,
   valueType: Circuit,
   methods: {
     getValue: {
