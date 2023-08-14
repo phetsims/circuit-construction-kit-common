@@ -3,7 +3,7 @@
 This document contains miscellaneous notes related to the implementation of circuit-construction-kit-common. It
 supplements the internal (source code) documentation, and (hopefully) provides insight into "big picture" implementation
 issues.  The audience for this document is software developers who are familiar with JavaScript and PhET simulation
-development (as described in [PhET Development Overview](https://github.com/phetsims/phet-info/blob/master/doc/phet-development-overview.md)).
+development (as described in [PhET Development Overview](https://github.com/phetsims/phet-info/blob/main/doc/phet-development-overview.md)).
 
 This repo contains code that is used in the following sims:
 
@@ -13,7 +13,7 @@ This repo contains code that is used in the following sims:
 * circuit-construction-kit-ac-virtual-lab
 * circuit-construction-kit-black-box-study
 
-First, read [model.md](https://github.com/phetsims/circuit-construction-kit-common/blob/master/doc/model.md), which
+First, read [model.md](https://github.com/phetsims/circuit-construction-kit-common/blob/main/doc/model.md), which
 provides a high-level description of the simulation model.
 
 ## Terminology
@@ -40,7 +40,7 @@ as resistors.
 This section describes how this simulation uses patterns that are common to most PhET simulations.
 
 **Model-view transform**: Many PhET simulations have a model-view transform that maps between model and view coordinate
-frames (see [ModelViewTransform2](https://github.com/phetsims/phetcommon/blob/master/js/view/ModelViewTransform2.js)).
+frames (see [ModelViewTransform2](https://github.com/phetsims/phetcommon/blob/main/js/view/ModelViewTransform2.js)).
 While the CircuitElements are treated as physical objects, the dimensions of the objects have no bearing on the physics
 of the circuitry (aside from the resistivity of wires), hence the model and view coordinates are taken as the same, with
 the origin at the center of the screen. (If you don't understand that, don't worry about it.).  The layout reflows to
@@ -48,14 +48,14 @@ move control panels to the edges to maximize the available play area.
 
 **Query parameters**: Query parameters are used to enable sim-specific features, mainly for debugging and
 testing. All such query parameters are documented in
-[CCKCQueryParameters](https://github.com/phetsims/circuit-construction-kit-common/blob/master/js/CCKCQueryParameters.js).
+[CCKCQueryParameters](https://github.com/phetsims/circuit-construction-kit-common/blob/main/js/CCKCQueryParameters.js).
 
 **Memory management**: This simulation dynamically creates and disposes many objects (no CircuitElements are preallocated).
 This helps in modularity of the code and will provide a straightforward interface for PhET-iO.  However, dispose()
 must be properly implemented in all CircuitElements and CircuitElementNodes, and called when items are removed.
 
 ## Model
-See [model.md](https://github.com/phetsims/circuit-construction-kit-common/blob/master/doc/model.md)
+See [model.md](https://github.com/phetsims/circuit-construction-kit-common/blob/main/doc/model.md)
 
 In Circuit.solve, each CircuitElement is converted to a corresponding model element which can be used in the solver which
 is implemented in ModifedNodalAnalysisCircuit and ModifiedNodalAnalysisSolution.  ModifiedNodalAnalysis implements
@@ -90,7 +90,7 @@ It seems best to isolate the code relevant to each within its file rather than s
 type checks in those view classes.  On the downside, when a new element type is added, these files will need to be
 updated.
 
-This document was adapted from the [Implementation Notes for Function Builder](https://github.com/phetsims/function-builder/blob/master/doc/implementation-notes.md)
+This document was adapted from the [Implementation Notes for Function Builder](https://github.com/phetsims/function-builder/blob/main/doc/implementation-notes.md)
 
 ## Unit Tests
 This simulation provides 60+ unit tests to ensure accuracy of the model for a variety of circuit topologies, please

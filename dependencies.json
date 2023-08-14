@@ -2,62 +2,62 @@
   "comment": "# circuit-construction-kit-basics 1.0.0-dev.8 Mon Apr 25 2016 21:52:11 GMT-0600 (MDT)",
   "assert": {
     "sha": "7d27130a4d27da15aa7f8a21bbfb9245288c1b44",
-    "branch": "master"
+    "branch": "main"
   },
   "axon": {
     "sha": "5e33541f53066f495d1b42efe7344a3c4cb3e3d2",
-    "branch": "master"
+    "branch": "main"
   },
   "brand": {
     "sha": "bb1cfcc63c3d007d800ede089994d8705db6d47b",
-    "branch": "master"
+    "branch": "main"
   },
   "chipper": {
     "sha": "55c02ee94221a6b2cfa022295d60d68cdd37fef3",
-    "branch": "master"
+    "branch": "main"
   },
   "circuit-construction-kit-basics": {
     "sha": "00cf910fbcac22d9889e83b58f1bbd0263c60e33",
-    "branch": "master"
+    "branch": "main"
   },
   "dot": {
     "sha": "cc5d85c189cc06dc07a2d0b48110627a265f053b",
-    "branch": "master"
+    "branch": "main"
   },
   "joist": {
     "sha": "97fac8d0fb6a596f5fa1373bd5b774cb128f53a6",
-    "branch": "master"
+    "branch": "main"
   },
   "kite": {
     "sha": "24ad131a77aee78e266436ef6b618c8353953f28",
-    "branch": "master"
+    "branch": "main"
   },
   "phet-core": {
     "sha": "c48bf32035dc5a4ed092ad611012fcbdeb5c6351",
-    "branch": "master"
+    "branch": "main"
   },
   "phetcommon": {
     "sha": "eab7fb7f41ae9bd31935d2ee95f84e7546a9253f",
-    "branch": "master"
+    "branch": "main"
   },
   "scenery": {
     "sha": "917a2a39bf709b46df14442a9570e8b6fed0f147",
-    "branch": "master"
+    "branch": "main"
   },
   "scenery-phet": {
     "sha": "8e99d399ca1e352132e2f16da65ab1ae0edbe01d",
-    "branch": "master"
+    "branch": "main"
   },
   "sherpa": {
     "sha": "b74418c01f7b018cfc2ad130becdc0ad428b71c2",
-    "branch": "master"
+    "branch": "main"
   },
   "sun": {
     "sha": "3f17b4742775556436879dce53d08799fab8de44",
-    "branch": "master"
+    "branch": "main"
   },
   "tandem": {
     "sha": "0ad35fb75928d18ecc1a429587bed4c605878e89",
-    "branch": "master"
+    "branch": "main"
   }
 }
