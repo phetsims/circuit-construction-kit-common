@@ -498,7 +498,7 @@ export default class CCKCScreenView extends ScreenView {
       inputListeners: [ new KeyboardListener( {
         keys: [ 'delete', 'backspace' ],
         global: true,
-        callback: ( event, listener ) => {
+        callback: event => {
 
           // prevent default so 'backspace' and 'delete' don't navigate back a page in Firefox, see
           // https://github.com/phetsims/circuit-construction-kit-common/issues/307
