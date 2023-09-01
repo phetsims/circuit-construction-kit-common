@@ -21,7 +21,7 @@ export default class CCKCSimulationPreferencesContentNode extends VBox {
   public constructor( tandem: Tandem ) {
 
     const textOptions = PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS;
-    const schematicStandardRadioButtonGroup = new VerticalAquaRadioButtonGroup<SchematicType>( schematicTypeProperty, [ {
+    const schematicTypeRadioButtonGroup = new VerticalAquaRadioButtonGroup<SchematicType>( schematicTypeProperty, [ {
       createNode: () => new Text( CircuitConstructionKitCommonStrings.ieeeStringProperty, textOptions ),
       value: SchematicType.IEEE,
       tandemName: 'ieeeRadioButton'
@@ -61,7 +61,7 @@ export default class CCKCSimulationPreferencesContentNode extends VBox {
       tandem: tandem,
       children: [
         new Text( CircuitConstructionKitCommonStrings.schematicStandardStringProperty, PreferencesDialog.PANEL_SECTION_LABEL_OPTIONS ),
-        schematicStandardRadioButtonGroup,
+        schematicTypeRadioButtonGroup,
         new HSeparator(),
         new Text( CircuitConstructionKitCommonStrings.ammeterReadoutStringProperty, PreferencesDialog.PANEL_SECTION_LABEL_OPTIONS ),
         ammeterReadoutRadioButtonGroup

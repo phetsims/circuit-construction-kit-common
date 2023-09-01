@@ -275,7 +275,7 @@ export default class CircuitElementEditContainerNode extends Node {
     const voltageVoltsValueStringProperty = new PatternStringProperty( voltageVoltsValuePatternStringProperty, { voltage: SunConstants.VALUE_NAMED_PLACEHOLDER }, {
       tandem: tandem.createTandem( 'voltageVoltsValueStringProperty' )
     } );
-    const voltageNumberControl = new CircuitElementNumberControl( voltageStringProperty,
+    const batteryVoltageNumberControl = new CircuitElementNumberControl( voltageStringProperty,
       voltageVoltsValueStringProperty,
       createSingletonAdapterProperty( Battery.VOLTAGE_DEFAULT, Battery, circuit, ( c: Battery ) => c.voltageProperty, ( c: Battery ) => c.batteryType === 'normal' ),
       Battery.VOLTAGE_RANGE,
@@ -423,7 +423,7 @@ export default class CircuitElementEditContainerNode extends Node {
 
               // Batteries can be reversed, nest in a Node so the layout will reflow correctly
               node,
-              selectedCircuitElement.batteryType === 'high-voltage' ? extremeBatteryVoltageNumberControl : voltageNumberControl,
+              selectedCircuitElement.batteryType === 'high-voltage' ? extremeBatteryVoltageNumberControl : batteryVoltageNumberControl,
               trashButtonContainer
             ]
           );

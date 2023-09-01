@@ -341,8 +341,8 @@ export default class VoltmeterNode extends Node {
           const blackConnection = findConnection( blackProbeNode, voltmeter.blackProbePositionProperty.get(), +1 );
           const redConnection = findConnection( redProbeNode, voltmeter.redProbePositionProperty.get(), -1 );
           const voltage = this.circuitNode!.circuit.getVoltageBetweenConnections( redConnection, blackConnection, false );
-          voltmeter.blackConnectionProperty.set( blackConnection );
-          voltmeter.redConnectionProperty.set( redConnection );
+          voltmeter.blackProbeConnectionProperty.set( blackConnection );
+          voltmeter.redProbeConnectionProperty.set( redConnection );
           voltmeter.voltageProperty.value = voltage;
         }
       };

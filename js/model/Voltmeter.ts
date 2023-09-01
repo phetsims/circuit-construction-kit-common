@@ -28,8 +28,8 @@ export default class Voltmeter extends Meter {
   // the position of the black probe in model=view coordinates
   public readonly blackProbePositionProperty: Vector2Property;
 
-  public readonly blackConnectionProperty: Property<VoltageConnection | null>;
-  public readonly redConnectionProperty: Property<VoltageConnection | null>;
+  public readonly blackProbeConnectionProperty: Property<VoltageConnection | null>;
+  public readonly redProbeConnectionProperty: Property<VoltageConnection | null>;
 
   public constructor( tandem: Tandem, phetioIndex: number ) {
     super( tandem, phetioIndex );
@@ -52,14 +52,14 @@ export default class Voltmeter extends Meter {
       phetioFeatured: true
     } );
 
-    this.blackConnectionProperty = new Property<VoltageConnection | null>( null, {
+    this.blackProbeConnectionProperty = new Property<VoltageConnection | null>( null, {
       tandem: tandem.createTandem( 'blackProbeConnectionProperty' ),
       phetioValueType: NullableIO( VoltageConnection.VoltageConnectionIO ),
       phetioReadOnly: true,
       phetioFeatured: true
     } );
 
-    this.redConnectionProperty = new Property<VoltageConnection | null>( null, {
+    this.redProbeConnectionProperty = new Property<VoltageConnection | null>( null, {
       tandem: tandem.createTandem( 'redProbeConnectionProperty' ),
       phetioValueType: NullableIO( VoltageConnection.VoltageConnectionIO ),
       phetioReadOnly: true,
@@ -68,8 +68,8 @@ export default class Voltmeter extends Meter {
 
     this.isActiveProperty.link( isActive => {
       if ( !isActive ) {
-        this.blackConnectionProperty.value = null;
-        this.redConnectionProperty.value = null;
+        this.blackProbeConnectionProperty.value = null;
+        this.redProbeConnectionProperty.value = null;
       }
     } );
   }

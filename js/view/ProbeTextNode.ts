@@ -46,7 +46,7 @@ export default class ProbeTextNode extends VBox {
       pickable: false
     }, providedOptions );
 
-    const readoutText = new Text( stringProperty, {
+    const probeReadoutText = new Text( stringProperty, {
       fontSize: options.seriesAmmeter ? 46 : 40,
       maxWidth: TEXT_BOX_WIDTH - 20,
       fill: CCKCColors.textFillProperty,
@@ -65,24 +65,24 @@ export default class ProbeTextNode extends VBox {
 
     // Text bounds is not updated eagerly, so wait for the bounds to change for layout
     const boundsListener = ( bounds: Bounds2 ) => {
-      if ( readoutText.string === MathSymbols.NO_VALUE ) {
+      if ( probeReadoutText.string === MathSymbols.NO_VALUE ) {
 
         // --- is centered
-        readoutText.centerX = textBox.centerX;
+        probeReadoutText.centerX = textBox.centerX;
       }
       else {
 
         // numbers are right-aligned
-        readoutText.right = textBox.right - 10;
+        probeReadoutText.right = textBox.right - 10;
       }
 
       // vertically center
-      readoutText.centerY = textBox.centerY;
+      probeReadoutText.centerY = textBox.centerY;
     };
-    readoutText.boundsProperty.link( boundsListener );
+    probeReadoutText.boundsProperty.link( boundsListener );
 
     // Update visibility when show results property changes
-    const updateVisibility = ( showResults: boolean ) => readoutText.setVisible( showResults );
+    const updateVisibility = ( showResults: boolean ) => probeReadoutText.setVisible( showResults );
     showResultsProperty.link( updateVisibility );
 
     // set the children
@@ -93,7 +93,7 @@ export default class ProbeTextNode extends VBox {
       tandem: options.seriesAmmeter ? tandem.createTandem( 'probeTitleText' ) : Tandem.OPT_OUT
     } );
     options.children = [ titleText, new Node( {
-      children: [ textBox, readoutText ]
+      children: [ textBox, probeReadoutText ]
     } ) ];
 
     if ( options.seriesAmmeter ) {
@@ -102,11 +102,11 @@ export default class ProbeTextNode extends VBox {
 
     super( options );
 
-    this.readoutText = readoutText;
+    this.readoutText = probeReadoutText;
     this.titleText = titleText;
 
     this.disposeProbeTextNode = () => {
-      readoutText.boundsProperty.unlink( boundsListener );
+      probeReadoutText.boundsProperty.unlink( boundsListener );
       textBox.dispose();
       showResultsProperty.unlink( updateVisibility );
     };
