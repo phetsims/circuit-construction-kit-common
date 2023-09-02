@@ -276,6 +276,7 @@ export default class VoltmeterNode extends Node {
         return visibleBounds.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
       } );
 
+      // eslint-disable-next-line tandem-name-should-match
       this.dragHandler = new DragListener( {
 
         positionProperty: voltmeter.bodyPositionProperty,
