@@ -276,6 +276,7 @@ export default class VoltmeterNode extends Node {
         return visibleBounds.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
       } );
 
+      // TODO: Disable line below should be removed, see https://github.com/phetsims/phet-io/issues/1959
       // eslint-disable-next-line tandem-name-should-match
       this.dragHandler = new DragListener( {
 
