@@ -11,7 +11,7 @@ import { ProfileColorProperty } from '../../../scenery/js/imports.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 
-const tandem = Tandem.GLOBAL_VIEW.createTandem( 'colorProfile' );
+const tandem = Tandem.COLORS;
 
 const CCKCColors = {
 
