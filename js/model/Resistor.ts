@@ -121,7 +121,7 @@ export default class Resistor extends FixedCircuitElement {
     return [ this.resistanceProperty ];
   }
 
-  public static readonly ResistorIO = new IOType<Resistor, ResistorState>( 'ResistorIO', {
+  public static readonly ResistorIO = new IOType<Resistor, ResistorState, ResistorSelfState>( 'ResistorIO', {
     valueType: Resistor,
     supertype: CircuitElement.CircuitElementIO,
     stateSchema: {
