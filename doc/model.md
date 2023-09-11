@@ -21,8 +21,7 @@ Batteries are ideal (very low resistance) unless given a custom internal resista
 ## Wire Resistivity
 
 Wires are constrained to have small but nonzero resistivity to avoid numerical errors or unsolvable circuits. Loops
-cannot
-be built without wires, hence this constraint guarantees that each loop will have at least some resistance and be
+cannot be built without wires, hence this constraint guarantees that each loop will have at least some resistance and be
 solvable. Wires are ideal (very low resistivity) unless given a custom resisitivity in the 'Lab' screen.
 
 * The minimum wire resistivity is 1E-10 Ohm*meters
