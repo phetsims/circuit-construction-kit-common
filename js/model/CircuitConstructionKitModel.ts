@@ -230,7 +230,7 @@ export default class CircuitConstructionKitModel implements TModel {
     // box study sim
     const modeChanging = false;
 
-    // TODO (black-box-study): started/endedCallbacksForChangedEmitters don't exist anymore. Rewrite if commented back in.
+    // TODO (black-box-study): started/endedCallbacksForChangedEmitters don't exist anymore. Rewrite if commented back in. https://github.com/phetsims/tasks/issues/1129
     // this.modeProperty.startedCallbacksForChangedEmitter.addListener( function() {
     //   modeChanging = true;
     // } );
@@ -239,7 +239,7 @@ export default class CircuitConstructionKitModel implements TModel {
     // } );
     if ( CCKCQueryParameters.showDepictValuesToggleButton ) {
 
-      // TODO (black-box-study) fix this
+      // TODO (black-box-study) fix this https://github.com/phetsims/tasks/issues/1129
       const pause = () => {
         if ( !modeChanging ) {
           this.isValueDepictionEnabledProperty.value = false;

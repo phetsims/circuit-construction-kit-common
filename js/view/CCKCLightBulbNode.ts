@@ -296,7 +296,7 @@ export default class CCKCLightBulbNode extends FixedCircuitElementNode {
    */
   public override updateOpacityOnInteractiveChange(): void {
 
-    // TODO (black-box-study): Make the light bulb images look faded out.
+    // TODO (black-box-study): Make the light bulb images look faded out. https://github.com/phetsims/tasks/issues/1129
   }
 }
 

@@ -135,7 +135,7 @@ export default class CCKCScreenView extends ScreenView {
 
     this.model = model;
 
-    // TODO (black-box-study): change background color to gray when isValueDepictionEnabledProperty goes false
+    // TODO (black-box-study): change background color to gray when isValueDepictionEnabledProperty goes false https://github.com/phetsims/tasks/issues/1129
 
     // contains parts of the circuit that should be shown behind the controls
     this.circuitNodeBackLayer = new Node();

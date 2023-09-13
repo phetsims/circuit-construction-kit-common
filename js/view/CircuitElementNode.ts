@@ -97,8 +97,8 @@ export default abstract class CircuitElementNode extends Node {
    */
   public updateOpacityOnInteractiveChange(): void {
 
-    // TODO (black-box-study): Replace this with grayscale if we keep it
-    // TODO (black-box-study): @jonathonolson said: I've wished for a scenery-level grayscale/etc. filter. Let me know when you get close to doing this.
+    // TODO (black-box-study): Replace this with grayscale if we keep it https://github.com/phetsims/tasks/issues/1129
+    // TODO (black-box-study): @jonathonolson said: I've wished for a scenery-level grayscale/etc. filter. Let me know when you get close to doing this. https://github.com/phetsims/tasks/issues/1129
     const interactivityChanged = ( interactive: boolean ) => {
       this.opacity = interactive ? 1 : 0.5;
     };

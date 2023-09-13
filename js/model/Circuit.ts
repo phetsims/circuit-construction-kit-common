@@ -1114,7 +1114,7 @@ export default class Circuit extends PhetioObject {
           wasSenseAssigned = true;
 
           // Run the next iteration of the loop, which will search out from the newly marked node
-          // TODO (AC): Only search from the newly marked node?
+          // TODO (AC): Only search from the newly marked node? https://github.com/phetsims/tasks/issues/1129
         }
       }
 
@@ -1430,7 +1430,7 @@ export default class Circuit extends PhetioObject {
       return true;
     } );
 
-    // TODO (black-box-study): integrate rule (9) with the other rules above
+    // TODO (black-box-study): integrate rule (9) with the other rules above https://github.com/phetsims/tasks/issues/1129
     // (9) When in Black Box "build" mode (i.e. building inside the black box), a vertex user cannot connect to
     // a black box interface vertex if its other vertices would be outside of the black box.  See #136
     if ( mode === InteractionMode.TEST ) {
