@@ -201,7 +201,12 @@ export default class VertexNode extends Node {
         circuitNode.endDrag( vertex, dragged );
 
         // Only show on a tap, not on every drag.
-        if ( vertex.interactiveProperty.get() && latestPoint!.distance( initialPoint! ) < CCKCConstants.TAP_THRESHOLD ) {
+        if (
+          !vertex.isDisposed &&
+          vertex.interactiveProperty.get() &&
+          latestPoint!.distance( initialPoint! ) < CCKCConstants.TAP_THRESHOLD
+        ) {
+
           vertex.selectionProperty.value = vertex;
         }
       }
