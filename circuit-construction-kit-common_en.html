@@ -16,7 +16,7 @@
 
 
 <script type="text/javascript">
-  /*eslint-disable quotes, quote-props*/
+  /*eslint-disable quotes, quote-props, bad-sim-text*/
 
   window.phet = window.phet || {};
   window.phet.chipper = window.phet.chipper || {};
@@ -138,7 +138,6 @@
 
   // Module loading in compilation-free (development) mode will be kicked off once strings are loaded.
   // This is done in load-unbuilt-strings.js
-  // eslint-disable-next-line bad-sim-text
   window.phet.chipper.loadModules = () => loadURL( '../chipper/dist/js/circuit-construction-kit-common/js/circuit-construction-kit-common-main.js', 'module' );
 </script>
 </body>
