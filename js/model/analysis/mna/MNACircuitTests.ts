@@ -13,7 +13,7 @@ import MNABattery from './MNABattery.js';
 import MNACurrent from './MNACurrent.js';
 import MNACircuitElement from './MNACircuitElement.js';
 
-QUnit.module( 'MNACircuitTests' );
+QUnit.module( 'MNACircuit' );
 
 const approxEquals = ( a: number, b: number ) => Math.abs( a - b ) < 1E-6;
 
