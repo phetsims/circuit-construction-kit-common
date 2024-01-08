@@ -4,6 +4,9 @@ import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js'
 import LTACircuit from './LTACircuit.js';
 import LTASolution from './LTASolution.js';
 
+/**
+ * @author Sam Reid (PhET Interactive Simulations)
+ */
 export default class LTAState {
   public readonly ltaCircuit: LTACircuit;
   public readonly ltaSolution: LTASolution | null;

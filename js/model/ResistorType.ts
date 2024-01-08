@@ -6,6 +6,9 @@ import Enumeration from '../../../phet-core/js/Enumeration.js';
 import EnumerationValue from '../../../phet-core/js/EnumerationValue.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
+/**
+ * @author Sam Reid (PhET Interactive Simulations)
+ */
 export default class ResistorType extends EnumerationValue {
 
   public static readonly RESISTOR = new ResistorType( 10, new Range( 0, 120 ), false, CCKCConstants.RESISTOR_LENGTH );

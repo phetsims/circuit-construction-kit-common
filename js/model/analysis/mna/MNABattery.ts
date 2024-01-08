@@ -3,6 +3,9 @@
 import MNACircuitElement from './MNACircuitElement.js';
 import circuitConstructionKitCommon from '../../../circuitConstructionKitCommon.js';
 
+/**
+ * @author Sam Reid (PhET Interactive Simulations)
+ */
 export default class MNABattery extends MNACircuitElement {
   public readonly voltage: number;
 

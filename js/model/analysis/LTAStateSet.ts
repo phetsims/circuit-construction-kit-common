@@ -14,6 +14,8 @@ type Element = {
  * This class represents the solution obtained by a timestep-subdivision-oriented MNA solve with companion models.
  * The distinction between instantaneous and average currents/voltages is made because we need to maintain the correct
  * dynamics (using instantaneous solutions) but also to show intermediate states (using the average results), see #2270.
+ *
+ * @author Sam Reid (PhET Interactive Simulations)
  */
 export default class LTAStateSet {
 

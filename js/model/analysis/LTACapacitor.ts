@@ -3,6 +3,9 @@ import DynamicCoreModel from './DynamicCoreModel.js';
 
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 
+/**
+ * @author Sam Reid (PhET Interactive Simulations)
+ */
 export default class LTACapacitor extends DynamicCoreModel {
   public capacitorVoltageNode1: string | null;
   public capacitance: number;

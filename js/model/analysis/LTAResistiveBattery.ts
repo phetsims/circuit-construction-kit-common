@@ -3,6 +3,9 @@
 import CoreModel from './CoreModel.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 
+/**
+ * @author Sam Reid (PhET Interactive Simulations)
+ */
 class LTAResistiveBattery extends CoreModel {
   public readonly voltage: number;
   public resistance: number;

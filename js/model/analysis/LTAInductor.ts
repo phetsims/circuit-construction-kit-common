@@ -2,6 +2,9 @@
 import DynamicCoreModel from './DynamicCoreModel.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 
+/**
+ * @author Sam Reid (PhET Interactive Simulations)
+ */
 export default class LTAInductor extends DynamicCoreModel {
   public readonly inductance: number;
   public inductorVoltageNode1: string | null;
