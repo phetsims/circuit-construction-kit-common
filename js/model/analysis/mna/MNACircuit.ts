@@ -62,7 +62,7 @@ export default class MNACircuit {
   }
 
   /**
-   * Returns a string snackType of the circuit for debugging.
+   * Returns a string representation of the circuit for debugging.
    */
   public toString(): string {
     if ( assert ) { // stripped out for builds
@@ -395,7 +395,7 @@ class Term {
   }
 
   /**
-   * Returns a string snackType for debugging.
+   * Returns a string representation for debugging.
    */
   public toTermString(): string {
     const prefix = this.coefficient === 1 ? '' :
@@ -495,7 +495,7 @@ class Equation {
   }
 
   /**
-   * Returns a string snackType for debugging.
+   * Returns a string representation for debugging.
    */
   private toString(): string {
     const termList = [];

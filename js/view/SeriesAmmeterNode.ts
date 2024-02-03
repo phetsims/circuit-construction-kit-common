@@ -103,7 +103,7 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
     // NOTE: This is called every frame
     circuitNode && circuitNode.circuit.circuitChangedEmitter.addListener( updateText );
 
-    // This node only has a lifelike snackType because it is a sensor
+    // This node only has a lifelike representation because it is a sensor
     const lifelikeNode = new Node( {
       children: [
 
