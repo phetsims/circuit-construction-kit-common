@@ -1,7 +1,7 @@
 // Copyright 2020-2023, University of Colorado Boulder
 
 /**
- * Shows contents for controls that change simulation representation or behavior.
+ * Shows contents for controls that change simulation snackType or behavior.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */

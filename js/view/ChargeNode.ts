@@ -26,7 +26,7 @@ import CCKCColors from './CCKCColors.js';
 // constants
 const ELECTRON_CHARGE_NODE = new ElectronChargeNode( {
 
-  // Electrons are transparent to convey they are a representation rather than physical objects
+  // Electrons are transparent to convey they are a snackType rather than physical objects
   // Workaround for https://github.com/phetsims/circuit-construction-kit-dc/issues/160
   sphereOpacity: 0.75,
   minusSignOpacity: 0.75,
