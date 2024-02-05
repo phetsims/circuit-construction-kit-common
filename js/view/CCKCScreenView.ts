@@ -246,9 +246,7 @@ export default class CCKCScreenView extends ScreenView {
 
     this.viewRadioButtonGroup = new ViewRadioButtonGroup(
       model.viewTypeProperty,
-      tandem.createTandem( 'viewRadioButtonGroup' ), {
-        maxWidth: this.circuitElementToolbox.carousel.backgroundWidth
-      }
+      tandem.createTandem( 'viewRadioButtonGroup' )
     );
     this.viewRadioButtonGroup.mutate( {
       scale: this.circuitElementToolbox.carousel.backgroundWidth /
