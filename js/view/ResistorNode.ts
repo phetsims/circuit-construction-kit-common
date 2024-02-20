@@ -32,6 +32,7 @@ import schematicTypeProperty from './schematicTypeProperty.js';
 import SchematicType from './SchematicType.js';
 import ResistorType from '../model/ResistorType.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
+import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 
 // constants
 
@@ -209,16 +210,14 @@ export default class ResistorNode extends FixedCircuitElementNode {
     scale = lifelikeResistorImageNode.width / iecSchematicShape.bounds.width;
     iecSchematicShape = iecSchematicShape.transformed( Matrix3.scale( scale, scale ) );
 
-    const schematicNode = new Path( ieeeSchematicShape, {
+    const schematicShapeProperty = new DerivedProperty( [ schematicTypeProperty ], ( schematicType: SchematicType ) => {
+      return schematicType === SchematicType.IEEE ? ieeeSchematicShape : iecSchematicShape;
+    } );
+
+    const schematicNode = new Path( schematicShapeProperty, {
       stroke: Color.BLACK,
       lineWidth: CCKCConstants.SCHEMATIC_LINE_WIDTH
     } );
-
-    const updateSchematicType = ( schematicType: SchematicType ) => {
-      schematicNode.shape = schematicType === SchematicType.IEEE ? ieeeSchematicShape :
-                            iecSchematicShape;
-    };
-    schematicTypeProperty.link( updateSchematicType );
 
     schematicNode.mouseArea = schematicNode.localBounds;
     schematicNode.touchArea = schematicNode.localBounds;
@@ -248,7 +247,7 @@ export default class ResistorNode extends FixedCircuitElementNode {
     this.disposeResistorNode = () => {
       updateColorBands && resistor.resistanceProperty.unlink( updateColorBands );
       lifelikeResistorImageNode.dispose();
-      schematicTypeProperty.unlink( updateSchematicType );
+      schematicShapeProperty.dispose();
       colorBandsNode && colorBandsNode.dispose();
     };
   }
