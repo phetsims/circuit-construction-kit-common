@@ -441,15 +441,6 @@ export default abstract class CircuitElement extends PhetioObject {
    */
   public abstract getCircuitProperties(): Property<IntentionalAny>[];
 
-  /**
-   * Get the midpoint between the vertices.  Used for dropping circuit elements into the toolbox.
-   */
-  public getMidpoint(): Vector2 {
-    const start = this.startVertexProperty.value.positionProperty.get();
-    const end = this.endVertexProperty.value.positionProperty.get();
-    return start.average( end );
-  }
-
   private toVertexString(): string {
     return `${this.startVertexProperty.value.index} -> ${this.endVertexProperty.value.index}`;
   }
