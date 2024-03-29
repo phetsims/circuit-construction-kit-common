@@ -155,7 +155,8 @@ export default class CCKCScreenView extends ScreenView {
       } );
       voltmeter.droppedEmitter.addListener( bodyNodeGlobalBounds => {
         const bodyNodeBoundsEroded = CCKCUtils.getDropItemHitBoxForBounds( bodyNodeGlobalBounds );
-        if ( bodyNodeBoundsEroded.intersectsBounds( this.sensorToolbox.globalBounds ) ) {
+        const isToolboxVisible = !!this.sensorToolbox.getTrails().find( trail => trail.isVisible() );
+        if ( isToolboxVisible && bodyNodeBoundsEroded.intersectsBounds( this.sensorToolbox.globalBounds ) ) {
           voltmeter.isActiveProperty.value = false;
         }
       } );
@@ -172,7 +173,8 @@ export default class CCKCScreenView extends ScreenView {
       } );
       ammeter.droppedEmitter.addListener( bodyNodeGlobalBounds => {
         const bodyNodeBoundsEroded = CCKCUtils.getDropItemHitBoxForBounds( bodyNodeGlobalBounds );
-        if ( bodyNodeBoundsEroded.intersectsBounds( this.sensorToolbox.globalBounds ) ) {
+        const isToolboxVisible = !!this.sensorToolbox.getTrails().find( trail => trail.isVisible() );
+        if ( isToolboxVisible && bodyNodeBoundsEroded.intersectsBounds( this.sensorToolbox.globalBounds ) ) {
           ammeter.isActiveProperty.value = false;
         }
       } );
@@ -589,7 +591,9 @@ export default class CCKCScreenView extends ScreenView {
     // Detect whether eroded component image bounds intersects the toolbox bounds
     const overToolbox = carouselBounds.intersectsBounds( elementNodeBoundsEroded );
 
-    return isSingle && overToolbox && circuitElement.isDisposableProperty.value;
+    const isToolboxVisible = !!toolbox.getTrails().find( trail => trail.isVisible() );
+
+    return isSingle && overToolbox && isToolboxVisible && circuitElement.isDisposableProperty.value;
   }
 }
 
