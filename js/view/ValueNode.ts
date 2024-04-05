@@ -243,7 +243,7 @@ export default class ValueNode extends Panel {
 
     update = () => {
 
-      readoutValueNode!.visible = showValuesProperty.value && circuitElement.isValueDisplayableProperty.value;
+      readoutValueNode.visible = showValuesProperty.value && circuitElement.isValueDisplayableProperty.value;
 
       const customLabelText = circuitElement.labelStringProperty.value;
       customLabelNode.string = customLabelText;
@@ -274,10 +274,10 @@ export default class ValueNode extends Panel {
 
     this.disposeValueNode = () => {
       contentNode.dispose();
-      circuitElement.vertexMovedEmitter.removeListener( update! );
-      showValuesProperty.unlink( update! );
-      viewTypeProperty.unlink( update! );
-      circuitElement.labelStringProperty.unlink( update! );
+      circuitElement.vertexMovedEmitter.removeListener( update );
+      showValuesProperty.unlink( update );
+      viewTypeProperty.unlink( update );
+      circuitElement.labelStringProperty.unlink( update );
     };
   }
 

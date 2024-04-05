@@ -130,7 +130,7 @@ const iterateInductor = ( circuit: LTACircuit, resistor: MNAResistor, V: number,
   for ( let i = 0; i < ITERATIONS; i++ ) {
     const t = i * dt;
     const solution = circuit.solveItWithSubdivisions( dt );
-    const actualCurrent = solution!.getCurrent( resistor )!;
+    const actualCurrent = solution!.getCurrent( resistor );
     const expectedCurrent = -V / R * ( 1 - Math.exp( -( t + dt ) * R / L ) );//positive, by definition of MNA.Battery
 
     // console.log( expectedCurrent, actualCurrent );
