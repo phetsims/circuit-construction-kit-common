@@ -492,39 +492,34 @@ export default class CCKCScreenView extends ScreenView {
 
     model.stepEmitter.addListener( dt => this.stepOnce( dt ) );
 
-    // Add a global key listener on a nested Node since having a listener on the root would make pickable:null things
-    // into pickable: true and hence block input, see https://github.com/phetsims/circuit-construction-kit-common/issues/985
-    this.addChild( new Node( {
-      inputListeners: [ new KeyboardListener( {
-        keys: [ 'delete', 'backspace' ],
-        global: true,
-        callback: event => {
+    KeyboardListener.createGlobal( this, {
+      keys: [ 'delete', 'backspace' ],
+      fire: event => {
 
-          // prevent default so 'backspace' and 'delete' don't navigate back a page in Firefox, see
-          // https://github.com/phetsims/circuit-construction-kit-common/issues/307
-          event?.domEvent?.preventDefault();
+        // prevent default so 'backspace' and 'delete' don't navigate back a page in Firefox, see
+        // https://github.com/phetsims/circuit-construction-kit-common/issues/307
+        event?.preventDefault();
 
-          // Double guard to work around errors in fuzzing
-          const selection = this.circuitNode.circuit.selectionProperty.value;
-          if ( this.circuitNode.vertexCutButton.inputEnabled && selection instanceof Vertex ) {
-            this.circuitNode.circuit.cutVertex( this.circuitNode.circuit.getSelectedVertex()! );
-          }
-          else if ( selection instanceof CircuitElement ) {
+        // Double guard to work around errors in fuzzing
+        const selection = this.circuitNode.circuit.selectionProperty.value;
+        if ( this.circuitNode.vertexCutButton.inputEnabled && selection instanceof Vertex ) {
+          this.circuitNode.circuit.cutVertex( this.circuitNode.circuit.getSelectedVertex()! );
+        }
+        else if ( selection instanceof CircuitElement ) {
 
-            const circuitElement = selection;
+          const circuitElement = selection;
 
-            // Only permit deletion when not being dragged, see https://github.com/phetsims/circuit-construction-kit-common/issues/414
-            if ( !circuitElement.startVertexProperty.value.isDragged && !circuitElement.endVertexProperty.value.isDragged ) {
+          // Only permit deletion when not being dragged, see https://github.com/phetsims/circuit-construction-kit-common/issues/414
+          if ( !circuitElement.startVertexProperty.value.isDragged && !circuitElement.endVertexProperty.value.isDragged ) {
 
-              // Only permit deletion if the circuit element is marked as disposable
-              if ( circuitElement.isDisposableProperty.value ) {
-                this.circuitNode.circuit.disposeCircuitElement( circuitElement );
-              }
+            // Only permit deletion if the circuit element is marked as disposable
+            if ( circuitElement.isDisposableProperty.value ) {
+              this.circuitNode.circuit.disposeCircuitElement( circuitElement );
             }
           }
         }
-      } ) ]
-    } ) );
+      }
+    } );
   }
 
   /**
