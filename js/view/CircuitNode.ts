@@ -607,6 +607,10 @@ export default class CircuitNode extends Node {
       if ( trails.length === 0 ) {
         this.circuit.selectionProperty.value = null;
       }
+    }, {
+
+      // Only dismiss if this CircuitNode is displayed.
+      displayedNode: this
     } ) );
   }
 
