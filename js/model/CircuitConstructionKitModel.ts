@@ -34,6 +34,7 @@ import Utils from '../../../dot/js/Utils.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import TModel from '../../../joist/js/TModel.js';
 import isSettingPhetioStateProperty from '../../../tandem/js/isSettingPhetioStateProperty.js';
+import measurementNoiseProperty from './measurementNoiseProperty.js';
 
 type CircuitConstructionKitModelOptions = {
   blackBoxStudy?: boolean;
@@ -316,6 +317,16 @@ export default class CircuitConstructionKitModel implements TModel {
     this.isValueDepictionEnabledProperty.value && this.circuit.step( dt );
     this.stopwatch.step( dt );
     this.stepEmitter.emit( dt );
+
+    if ( measurementNoiseProperty.value ) {
+
+      // Step the noise of all voltmeters and ammeters
+      this.voltmeters.forEach( voltmeter => voltmeter.stepNoise( dt ) );
+      this.ammeters.forEach( ammeter => ammeter.stepNoise( dt ) );
+
+      // If there are any series ammeters, step their noise
+      this.circuit.seriesAmmeterGroup?.forEach( seriesAmmeter => seriesAmmeter.stepNoise( dt ) );
+    }
   }
 
   /**

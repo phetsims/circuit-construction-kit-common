@@ -21,10 +21,13 @@ import Bounds2 from '../../../dot/js/Bounds2.js';
 import CCKCProbeNode from './CCKCProbeNode.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
 import Tandem from '../../../tandem/js/Tandem.js';
+import measurementNoiseProperty from '../model/measurementNoiseProperty.js';
+import dotRandom from '../../../dot/js/dotRandom.js';
 
 const voltageWithUnitsStringProperty = CircuitConstructionKitCommonStrings.voltageWithUnitsStringProperty;
 
 // constants
+const INSTRUMENT_UNCERTAINTY = 0.08;
 const SERIES_1_COLOR = '#ec3223';
 const SERIES_2_COLOR = CCKCConstants.CHART_SERIES_COLOR;
 
@@ -55,6 +58,10 @@ export default class VoltageChartNode extends CCKCChartNode {
     const redConnection = this.circuitNode.getVoltageConnection( redPoint );
     const blackConnection = this.circuitNode.getVoltageConnection( blackPoint );
     const voltage = this.circuitNode.circuit.getVoltageBetweenConnections( redConnection, blackConnection, false );
+
+    if ( measurementNoiseProperty.value ) {
+      return voltage === null ? null : new Vector2( time, voltage + INSTRUMENT_UNCERTAINTY * dotRandom.nextGaussian() );
+    }
 
     return voltage === null ? null : new Vector2( time, voltage );
   }

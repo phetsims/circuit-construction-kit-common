@@ -15,6 +15,10 @@ import SchematicType from './SchematicType.js';
 import AmmeterReadoutType from '../model/AmmeterReadoutType.js';
 import ammeterReadoutTypeProperty from './ammeterReadoutTypeProperty.js';
 import PreferencesDialog from '../../../joist/js/preferences/PreferencesDialog.js';
+import ToggleSwitch from '../../../sun/js/ToggleSwitch.js';
+import PreferencesControl from '../../../joist/js/preferences/PreferencesControl.js';
+import PreferencesDialogConstants from '../../../joist/js/preferences/PreferencesDialogConstants.js';
+import measurementNoiseProperty from '../model/measurementNoiseProperty.js';
 
 export default class CCKCSimulationPreferencesContentNode extends VBox {
 
@@ -55,6 +59,15 @@ export default class CCKCSimulationPreferencesContentNode extends VBox {
       }
     } );
 
+    const measurementNoiseControl = new PreferencesControl( {
+      tandem: tandem.createTandem( 'measurementNoiseControl' ),
+      labelNode: new Text( CircuitConstructionKitCommonStrings.measurementNoiseStringProperty, PreferencesDialogConstants.CONTROL_LABEL_OPTIONS ),
+      controlNode: new ToggleSwitch( measurementNoiseProperty, false, true, PreferencesDialogConstants.TOGGLE_SWITCH_OPTIONS ),
+      visiblePropertyOptions: {
+        phetioFeatured: true
+      }
+    } );
+
     super( {
       align: 'left',
       spacing: PreferencesDialog.CONTENT_SPACING,
@@ -64,7 +77,9 @@ export default class CCKCSimulationPreferencesContentNode extends VBox {
         schematicTypeRadioButtonGroup,
         new HSeparator(),
         new Text( CircuitConstructionKitCommonStrings.ammeterReadoutStringProperty, PreferencesDialog.PANEL_SECTION_LABEL_OPTIONS ),
-        ammeterReadoutRadioButtonGroup
+        ammeterReadoutRadioButtonGroup,
+        new HSeparator(),
+        measurementNoiseControl
       ]
     } );
   }

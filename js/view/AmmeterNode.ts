@@ -105,7 +105,7 @@ export default class AmmeterNode extends Node {
     );
 
     const currentReadoutProperty = new DerivedStringProperty( [
-        ammeter.currentProperty,
+        ammeter.currentReadoutProperty,
         ammeterReadoutTypeProperty,
         CircuitConstructionKitCommonStrings.currentUnitsStringProperty
       ],
