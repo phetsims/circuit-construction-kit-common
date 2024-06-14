@@ -214,5 +214,8 @@
   },
   "dataOutOfRange": {
     "value": "Data out of range"
+  },
+  "measurementNoise": {
+    "value": "Measurement Noise"
   }
 }

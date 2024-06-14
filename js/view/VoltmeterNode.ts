@@ -137,7 +137,7 @@ export default class VoltmeterNode extends Node {
 
     // Displays the voltage reading
     const voltageReadoutProperty = new DerivedStringProperty( [
-        voltmeter.voltageProperty,
+        voltmeter.voltageReadoutProperty,
         CircuitConstructionKitCommonStrings.voltageUnitsStringProperty
       ], voltage =>
         voltage === null ? MathSymbols.NO_VALUE : CCKCUtils.createVoltageReadout( voltage ), {

@@ -16,11 +16,20 @@ import NumberIO from '../../../tandem/js/types/NumberIO.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Meter from './Meter.js';
 import VoltageConnection from './VoltageConnection.js';
+import Multilink from '../../../axon/js/Multilink.js';
+import dotRandom from '../../../dot/js/dotRandom.js';
+import measurementNoiseProperty from './measurementNoiseProperty.js';
+
+const INSTRUMENT_UNCERTAINTY = 0.02; // Volts
+const NOISE_PERIOD = 0.5; // seconds
 
 export default class Voltmeter extends Meter {
 
   // the voltage the probe is reading (in volts) or null if unconnected
   public readonly voltageProperty: Property<number | null>;
+
+  // the voltage the probe is displaying (in volts) or null if unconnected
+  public readonly voltageReadoutProperty: Property<number | null>;
 
   // the position of the tip of the red probe in model=view coordinates
   public readonly redProbePositionProperty: Vector2Property;
@@ -31,6 +40,8 @@ export default class Voltmeter extends Meter {
   public readonly blackProbeConnectionProperty: Property<VoltageConnection | null>;
   public readonly redProbeConnectionProperty: Property<VoltageConnection | null>;
 
+  private noiseTimer = 0;
+
   public constructor( tandem: Tandem, phetioIndex: number ) {
     super( tandem, phetioIndex );
 
@@ -40,6 +51,12 @@ export default class Voltmeter extends Meter {
       phetioValueType: NullableIO( NumberIO ),
       phetioReadOnly: true,
       phetioFeatured: true
+    } );
+
+    this.voltageReadoutProperty = new Property<number | null>( null, {
+      tandem: tandem.createTandem( 'voltageReadoutProperty' ),
+      units: 'V',
+      phetioValueType: NullableIO( NumberIO )
     } );
 
     this.redProbePositionProperty = new Vector2Property( Vector2.ZERO, {
@@ -72,6 +89,46 @@ export default class Voltmeter extends Meter {
         this.redProbeConnectionProperty.value = null;
       }
     } );
+
+    // If there is no measurement noise or the voltage becomes null, update the voltage readout
+    Multilink.multilink( [ this.voltageProperty, this.voltageReadoutProperty, measurementNoiseProperty ],
+      ( voltage, voltageReadout, measurementNoise ) => {
+        if ( ( voltage === null ) !== ( voltageReadout === null ) || !measurementNoise ) {
+          if ( measurementNoise ) {
+            this.noiseTimer = 0; // Reset the noise timer when the voltage is updated
+            this.voltageReadoutProperty.value = this.voltageReadoutForVoltage( voltage );
+          }
+          else {
+            this.voltageReadoutProperty.value = voltage;
+          }
+        }
+      } );
+  }
+
+  private voltageReadoutForVoltage( voltage: number | null ): number | null {
+    if ( voltage === null ) {
+      return null;
+    }
+
+    return voltage + INSTRUMENT_UNCERTAINTY * dotRandom.nextGaussian();
+  }
+
+  public stepNoise( dt: number ): void {
+    if ( this.isActiveProperty.value ) {
+
+      // Advance the noise timer, and if it is time to make noise, do so
+      this.noiseTimer += dt;
+
+      if ( this.noiseTimer > NOISE_PERIOD ) {
+        this.noiseTimer = 0;
+
+        if ( this.voltageProperty.value !== null ) {
+
+          // Use dotRandom.nextGaussian to add noise to the voltage reading
+          this.voltageReadoutProperty.value = this.voltageReadoutForVoltage( this.voltageProperty.value );
+        }
+      }
+    }
   }
 
   /**

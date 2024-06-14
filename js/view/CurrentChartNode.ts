@@ -13,12 +13,16 @@ import Vector2 from '../../../dot/js/Vector2.js';
 import optionize, { type EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CCKCChartNode, { CCKCChartNodeOptions } from './CCKCChartNode.js';
+import CircuitNode from './CircuitNode.js';
+import CCKCProbeNode from './CCKCProbeNode.js';
+import dotRandom from '../../../dot/js/dotRandom.js';
+import measurementNoiseProperty from '../model/measurementNoiseProperty.js';
 import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
-import CCKCChartNode, { type CCKCChartNodeOptions } from './CCKCChartNode.js';
-import type CCKCProbeNode from './CCKCProbeNode.js';
-import type CircuitNode from './CircuitNode.js';
 
 const currentWithUnitsStringProperty = CircuitConstructionKitCommonStrings.currentWithUnitsStringProperty;
+
+const INSTRUMENT_UNCERTAINTY = 0.02;
 
 export default class CurrentChartNode extends CCKCChartNode {
   private readonly probeNode1: CCKCProbeNode;
@@ -56,7 +60,7 @@ export default class CurrentChartNode extends CCKCChartNode {
   public step( time: number, dt: number ): void {
     if ( this.meter.isActiveProperty.value ) {
       const ammeterConnection = this.circuitNode.getCurrent( this.probeNode1 );
-      const current = ammeterConnection === null ? null : ammeterConnection.current;
+      const current = ammeterConnection === null ? null : this.currentReadoutForCurrent( ammeterConnection.current );
       this.series.push( current === null ? null : new Vector2( time, current || 0 ) );
       while ( ( this.series[ 0 ] === null ) ||
               ( this.series.length > 0 && this.series[ 0 ].x < this.timeProperty.value - CCKCConstants.NUMBER_OF_TIME_DIVISIONS ) ) {
@@ -77,13 +81,17 @@ export default class CurrentChartNode extends CCKCChartNode {
     this.series.pop();
 
     const ammeterConnection = this.circuitNode.getCurrent( this.probeNode1 );
-    const current = ammeterConnection === null ? null : ammeterConnection.current;
+    const current = ammeterConnection === null ? null : this.currentReadoutForCurrent( ammeterConnection.current );
     assert && assert( typeof this.lastStepTime === 'number' );
     if ( typeof this.lastStepTime === 'number' ) {
       this.series.push( current === null ? null : new Vector2( this.lastStepTime, current || 0 ) );
     }
 
     this.updatePen();
+  }
+
+  private currentReadoutForCurrent( current: number ): number {
+    return measurementNoiseProperty.value ? current + INSTRUMENT_UNCERTAINTY * dotRandom.nextGaussian() : current;
   }
 }
 

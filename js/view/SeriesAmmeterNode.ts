@@ -89,14 +89,15 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
         if ( startConnection && endConnection ) {
 
           const sign = seriesAmmeter.currentSenseProperty.value === CurrentSense.BACKWARD ? -1 : +1;
-          readout = CCKCUtils.createCurrentReadout( seriesAmmeter.currentProperty.get() * sign, false );
+          const currentValue = seriesAmmeter.currentReadoutProperty.value === null ? null : sign * seriesAmmeter.currentReadoutProperty.value;
+          readout = CCKCUtils.createCurrentReadout( currentValue, false );
         }
       }
 
       stringProperty.value = readout;
     };
 
-    seriesAmmeter.currentProperty.link( updateText );
+    seriesAmmeter.currentReadoutProperty.link( updateText );
     seriesAmmeter.startVertexProperty.lazyLink( updateText );
     seriesAmmeter.endVertexProperty.lazyLink( updateText );
     seriesAmmeter.currentSenseProperty.lazyLink( updateText );
@@ -173,7 +174,7 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
       seriesAmmeter.currentSenseProperty.unlink( updateText );
       CircuitConstructionKitCommonStrings.currentUnitsStringProperty.unlink( updateText );
 
-      seriesAmmeter.currentProperty.unlink( updateText );
+      seriesAmmeter.currentReadoutProperty.unlink( updateText );
       seriesAmmeter.startVertexProperty.unlink( updateText );
       seriesAmmeter.endVertexProperty.unlink( updateText );
       ammeterReadoutTypeProperty.unlink( updateText );

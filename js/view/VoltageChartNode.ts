@@ -18,14 +18,17 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CCKCChartNode, { CCKCChartNodeOptions } from './CCKCChartNode.js';
+import CircuitNode from './CircuitNode.js';
+import CCKCProbeNode from './CCKCProbeNode.js';
+import measurementNoiseProperty from '../model/measurementNoiseProperty.js';
+import dotRandom from '../../../dot/js/dotRandom.js';
 import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
-import CCKCChartNode, { type CCKCChartNodeOptions } from './CCKCChartNode.js';
-import type CCKCProbeNode from './CCKCProbeNode.js';
-import type CircuitNode from './CircuitNode.js';
 
 const voltageWithUnitsStringProperty = CircuitConstructionKitCommonStrings.voltageWithUnitsStringProperty;
 
 // constants
+const INSTRUMENT_UNCERTAINTY = 0.08;
 const SERIES_1_COLOR = '#ec3223';
 const SERIES_2_COLOR = CCKCConstants.CHART_SERIES_COLOR;
 
@@ -56,6 +59,10 @@ export default class VoltageChartNode extends CCKCChartNode {
     const redConnection = this.circuitNode.getVoltageConnection( redPoint );
     const blackConnection = this.circuitNode.getVoltageConnection( blackPoint );
     const voltage = this.circuitNode.circuit.getVoltageBetweenConnections( redConnection, blackConnection, false );
+
+    if ( measurementNoiseProperty.value ) {
+      return voltage === null ? null : new Vector2( time, voltage + INSTRUMENT_UNCERTAINTY * dotRandom.nextGaussian() );
+    }
 
     return voltage === null ? null : new Vector2( time, voltage );
   }
