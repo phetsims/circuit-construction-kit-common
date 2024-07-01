@@ -19,7 +19,7 @@ export default class CircuitNodeDragListener extends DragListener {
    * @param vertexGetters
    * @param [providedOptions]
    */
-  public constructor( circuitNode: CircuitNode, vertexGetters: ( () => Vertex )[], providedOptions?: DragListenerOptions<DragListener> ) {
+  public constructor( circuitNode: CircuitNode, vertexGetters: ( () => Vertex )[], providedOptions?: DragListenerOptions ) {
     super( providedOptions );
 
     this.circuitNode = circuitNode;
