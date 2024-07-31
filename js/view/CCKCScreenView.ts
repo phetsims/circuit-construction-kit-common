@@ -17,7 +17,7 @@ import PlayPauseButton from '../../../scenery-phet/js/buttons/PlayPauseButton.js
 import ResetAllButton from '../../../scenery-phet/js/buttons/ResetAllButton.js';
 import StopwatchNode from '../../../scenery-phet/js/StopwatchNode.js';
 import TimeControlNode from '../../../scenery-phet/js/TimeControlNode.js';
-import { AlignBox, AlignGroup, KeyboardListener, KeyboardUtils, Node, VBox } from '../../../scenery/js/imports.js';
+import { AlignBox, AlignGroup, KeyboardListener, KeyboardUtils, Node, VBox, HotkeyData } from '../../../scenery/js/imports.js';
 import { CarouselItem } from '../../../sun/js/Carousel.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -45,6 +45,7 @@ import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
 import CCKCUtils from '../CCKCUtils.js';
 import Vertex from '../model/Vertex.js';
 import CircuitElement from '../model/CircuitElement.js';
+import Property from '../../../axon/js/Property.js';
 
 const batteryResistanceStringProperty = CircuitConstructionKitCommonStrings.batteryResistanceStringProperty;
 const sourceResistanceStringProperty = CircuitConstructionKitCommonStrings.sourceResistanceStringProperty;
@@ -493,7 +494,7 @@ export default class CCKCScreenView extends ScreenView {
     model.stepEmitter.addListener( dt => this.stepOnce( dt ) );
 
     KeyboardListener.createGlobal( this, {
-      keys: [ 'delete', 'backspace' ],
+      keyStringProperties: CCKCScreenView.DELETE_HOTKEY_DATA.keyStringProperties,
       fire: event => {
 
         // prevent default so 'backspace' and 'delete' don't navigate back a page in Firefox, see
@@ -588,6 +589,13 @@ export default class CCKCScreenView extends ScreenView {
 
     return isSingle && overToolbox && isToolboxVisible && circuitElement.isDisposableProperty.value;
   }
+
+  public static readonly DELETE_HOTKEY_DATA = new HotkeyData( {
+    keyStringProperties: [ new Property( 'delete' ), new Property( 'backspace' ) ],
+    repoName: circuitConstructionKitCommon.name,
+    binderName: 'Delete circuit element',
+    global: true
+  } );
 }
 
 circuitConstructionKitCommon.register( 'CCKCScreenView', CCKCScreenView );
