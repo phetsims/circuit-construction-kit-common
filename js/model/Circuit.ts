@@ -973,7 +973,7 @@ export default class Circuit extends PhetioObject {
       this.dirty = false;
 
       // check the incoming and outgoing current to each inductor.  If it is all 0, then clear the inductor.
-      const inductors = this.circuitElements.filter( element => element instanceof Inductor ) as Inductor[];
+      const inductors = this.circuitElements.filter( element => element instanceof Inductor );
       inductors.forEach( ( inductor: Inductor ) => {
 
         const hasCurrent = ( vertex: Vertex ) => {
