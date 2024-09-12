@@ -17,7 +17,7 @@ import PlayPauseButton from '../../../scenery-phet/js/buttons/PlayPauseButton.js
 import ResetAllButton from '../../../scenery-phet/js/buttons/ResetAllButton.js';
 import StopwatchNode from '../../../scenery-phet/js/StopwatchNode.js';
 import TimeControlNode from '../../../scenery-phet/js/TimeControlNode.js';
-import { AlignBox, AlignGroup, KeyboardListener, KeyboardUtils, Node, VBox, HotkeyData } from '../../../scenery/js/imports.js';
+import { AlignBox, AlignGroup, HotkeyData, KeyboardListener, KeyboardUtils, Node, VBox } from '../../../scenery/js/imports.js';
 import { CarouselItem } from '../../../sun/js/Carousel.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -46,6 +46,7 @@ import CCKCUtils from '../CCKCUtils.js';
 import Vertex from '../model/Vertex.js';
 import CircuitElement from '../model/CircuitElement.js';
 import Property from '../../../axon/js/Property.js';
+import phetioStateSetEmitter from '../../../tandem/js/phetioStateSetEmitter.js';
 
 const batteryResistanceStringProperty = CircuitConstructionKitCommonStrings.batteryResistanceStringProperty;
 const sourceResistanceStringProperty = CircuitConstructionKitCommonStrings.sourceResistanceStringProperty;
@@ -455,7 +456,7 @@ export default class CCKCScreenView extends ScreenView {
     } );
 
     // Re-render after setting state
-    Tandem.PHET_IO_ENABLED && phet.phetio.phetioEngine.phetioStateEngine.stateSetEmitter.addListener( () => {
+    phetioStateSetEmitter.addListener( () => {
       this.step( 1 / 60 );
     } );
 
