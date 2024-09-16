@@ -22,7 +22,7 @@ import measurementNoiseProperty from './measurementNoiseProperty.js';
 
 const INSTRUMENT_NOISE = 0.02; // Instrument noise (Volts)
 const RANDOM_NOISE_PERCENT = 0.01; // Random noise (percent of the measured voltage)
-const NOISE_PERIOD = 0.75; // Update rate of the instrument (seconds)
+const DISPLAYED_VALUE_UPDATE_PERIOD = 0.75; // Update rate of the instrument (seconds)
 
 export default class Voltmeter extends Meter {
 
@@ -41,7 +41,7 @@ export default class Voltmeter extends Meter {
   public readonly blackProbeConnectionProperty: Property<VoltageConnection | null>;
   public readonly redProbeConnectionProperty: Property<VoltageConnection | null>;
 
-  private noiseTimer = 0;
+  private displayedValueUpdateTimer = 0;
 
   public constructor( tandem: Tandem, phetioIndex: number ) {
     super( tandem, phetioIndex );
@@ -96,7 +96,7 @@ export default class Voltmeter extends Meter {
       ( voltage, voltageReadout, measurementNoise ) => {
         if ( ( voltage === null ) !== ( voltageReadout === null ) || !measurementNoise ) {
           if ( measurementNoise ) {
-            this.noiseTimer = 0; // Reset the noise timer when the voltage is updated
+            this.displayedValueUpdateTimer = 0; // Reset the noise timer when the voltage is updated
             this.voltageReadoutProperty.value = this.voltageReadoutForVoltage( voltage );
           }
           else {
@@ -122,10 +122,10 @@ export default class Voltmeter extends Meter {
     if ( this.isActiveProperty.value ) {
 
       // Advance the noise timer, and if it is time to make noise, do so
-      this.noiseTimer += dt;
+      this.displayedValueUpdateTimer += dt;
 
-      if ( this.noiseTimer > NOISE_PERIOD ) {
-        this.noiseTimer = 0;
+      if ( this.displayedValueUpdateTimer > DISPLAYED_VALUE_UPDATE_PERIOD ) {
+        this.displayedValueUpdateTimer = 0;
 
         if ( this.voltageProperty.value !== null ) {
 
