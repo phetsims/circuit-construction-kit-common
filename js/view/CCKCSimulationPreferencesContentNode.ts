@@ -20,6 +20,7 @@ import PreferencesControl from '../../../joist/js/preferences/PreferencesControl
 import SchematicType from './SchematicType.js';
 import schematicTypeProperty from './schematicTypeProperty.js';
 import measuringDeviceNoiseProperty from '../model/measuringDeviceNoiseProperty.js';
+import circuitElementNoiseProperty from '../model/circuitElementNoiseProperty.js';
 
 export default class CCKCSimulationPreferencesContentNode extends VBox {
 
@@ -69,6 +70,15 @@ export default class CCKCSimulationPreferencesContentNode extends VBox {
       }
     } );
 
+    const circuitElementNoiseControl = new PreferencesControl( {
+      tandem: tandem.createTandem( 'circuitElementNoiseControl' ),
+      labelNode: new Text( CircuitConstructionKitCommonStrings.circuitElementNoiseStringProperty, PreferencesDialogConstants.CONTROL_LABEL_OPTIONS ),
+      controlNode: new ToggleSwitch( circuitElementNoiseProperty, false, true, PreferencesDialogConstants.TOGGLE_SWITCH_OPTIONS ),
+      visiblePropertyOptions: {
+        phetioFeatured: true
+      }
+    } );
+
     super( {
       align: 'left',
       spacing: PreferencesDialogConstants.CONTENT_SPACING,
@@ -80,7 +90,8 @@ export default class CCKCSimulationPreferencesContentNode extends VBox {
         new Text( CircuitConstructionKitCommonStrings.ammeterReadoutStringProperty, PreferencesDialogConstants.PANEL_SECTION_LABEL_OPTIONS ),
         ammeterReadoutRadioButtonGroup,
         new HSeparator(),
-        measuringDeviceNoiseControl
+        measuringDeviceNoiseControl,
+        circuitElementNoiseControl
       ]
     } );
   }
