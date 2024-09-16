@@ -35,7 +35,7 @@ export default class SeriesAmmeter extends FixedCircuitElement {
   // the current the probe is displaying (in amperes) or null if unconnected
   public readonly currentReadoutProperty: Property<number | null>;
 
-  private noiseTimer = 0;
+  private displayedValueUpdateTimer = 0;
 
   public constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: SeriesAmmeterOptions ) {
 
@@ -66,7 +66,7 @@ export default class SeriesAmmeter extends FixedCircuitElement {
       ( current, currentReadout, measurementNoise ) => {
         if ( ( current === null ) !== ( currentReadout === null ) || !measurementNoise ) {
           if ( measurementNoise ) {
-            this.noiseTimer = 0; // Reset the noise timer when the current is updated
+            this.displayedValueUpdateTimer = 0; // Reset the display update timer when the current is updated
             this.currentReadoutProperty.value = this.currentReadoutForCurrent( current );
           }
           else {
@@ -86,10 +86,10 @@ export default class SeriesAmmeter extends FixedCircuitElement {
 
   public stepNoise( dt: number ): void {
     // Advance the noise timer, and if it is time to make noise, do so
-    this.noiseTimer += dt;
+    this.displayedValueUpdateTimer += dt;
 
-    if ( this.noiseTimer > NOISE_PERIOD ) {
-      this.noiseTimer = 0;
+    if ( this.displayedValueUpdateTimer > NOISE_PERIOD ) {
+      this.displayedValueUpdateTimer = 0;
 
       if ( this.currentProperty.value !== null ) {
 
