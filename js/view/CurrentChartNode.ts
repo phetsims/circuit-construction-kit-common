@@ -22,7 +22,7 @@ import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommon
 
 const currentWithUnitsStringProperty = CircuitConstructionKitCommonStrings.currentWithUnitsStringProperty;
 
-const INSTRUMENT_UNCERTAINTY = 0.02;
+const MEASUREMENT_NOISE = 0.02;
 
 export default class CurrentChartNode extends CCKCChartNode {
   private readonly probeNode1: CCKCProbeNode;
@@ -91,7 +91,7 @@ export default class CurrentChartNode extends CCKCChartNode {
   }
 
   private currentReadoutForCurrent( current: number ): number {
-    return measuringDeviceNoiseProperty.value ? current + INSTRUMENT_UNCERTAINTY * dotRandom.nextGaussian() : current;
+    return measuringDeviceNoiseProperty.value ? current + MEASUREMENT_NOISE * dotRandom.nextGaussian() : current;
   }
 }
 

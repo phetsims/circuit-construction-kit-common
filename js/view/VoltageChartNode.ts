@@ -28,7 +28,7 @@ import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommon
 const voltageWithUnitsStringProperty = CircuitConstructionKitCommonStrings.voltageWithUnitsStringProperty;
 
 // constants
-const INSTRUMENT_UNCERTAINTY = 0.08;
+const MEASUREMENT_NOISE = 0.08;
 const SERIES_1_COLOR = '#ec3223';
 const SERIES_2_COLOR = CCKCConstants.CHART_SERIES_COLOR;
 
@@ -61,7 +61,7 @@ export default class VoltageChartNode extends CCKCChartNode {
     const voltage = this.circuitNode.circuit.getVoltageBetweenConnections( redConnection, blackConnection, false );
 
     if ( measuringDeviceNoiseProperty.value ) {
-      return voltage === null ? null : new Vector2( time, voltage + INSTRUMENT_UNCERTAINTY * dotRandom.nextGaussian() );
+      return voltage === null ? null : new Vector2( time, voltage + MEASUREMENT_NOISE * dotRandom.nextGaussian() );
     }
 
     return voltage === null ? null : new Vector2( time, voltage );
