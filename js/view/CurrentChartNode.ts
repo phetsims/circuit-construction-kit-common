@@ -18,7 +18,7 @@ import Bounds2 from '../../../dot/js/Bounds2.js';
 import CCKCProbeNode from './CCKCProbeNode.js';
 import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
-import measurementNoiseProperty from '../model/measurementNoiseProperty.js';
+import measuringDeviceNoiseProperty from '../model/measuringDeviceNoiseProperty.js';
 
 const currentWithUnitsStringProperty = CircuitConstructionKitCommonStrings.currentWithUnitsStringProperty;
 
@@ -91,7 +91,7 @@ export default class CurrentChartNode extends CCKCChartNode {
   }
 
   private currentReadoutForCurrent( current: number ): number {
-    return measurementNoiseProperty.value ? current + INSTRUMENT_UNCERTAINTY * dotRandom.nextGaussian() : current;
+    return measuringDeviceNoiseProperty.value ? current + INSTRUMENT_UNCERTAINTY * dotRandom.nextGaussian() : current;
   }
 }
 

@@ -1,6 +1,5 @@
 // Copyright 2021-2024, University of Colorado Boulder
 
-import Property from '../../../axon/js/Property.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -12,9 +11,9 @@ import BooleanProperty from '../../../axon/js/BooleanProperty.js';
  * @author Matthew Blackman (PhET Interactive Simulations)
  */
 
-const measurementNoiseProperty = new BooleanProperty( CCKCQueryParameters.measurementNoise, {
-  tandem: Tandem.PREFERENCES.createTandem( 'measurementNoiseProperty' )
+const measuringDeviceNoiseProperty = new BooleanProperty( CCKCQueryParameters.measuringDeviceNoise, {
+  tandem: Tandem.PREFERENCES.createTandem( 'measuringDeviceNoiseProperty' )
 } );
 
-circuitConstructionKitCommon.register( 'measurementNoiseProperty', measurementNoiseProperty );
-export default measurementNoiseProperty;
+circuitConstructionKitCommon.register( 'measuringDeviceNoiseProperty', measuringDeviceNoiseProperty );
+export default measuringDeviceNoiseProperty;

@@ -17,7 +17,7 @@ import FixedCircuitElement, { FixedCircuitElementOptions } from './FixedCircuitE
 import Vertex from './Vertex.js';
 import NullableIO from '../../../tandem/js/types/NullableIO.js';
 import NumberIO from '../../../tandem/js/types/NumberIO.js';
-import measurementNoiseProperty from './measurementNoiseProperty.js';
+import measuringDeviceNoiseProperty from './measuringDeviceNoiseProperty.js';
 import Multilink from '../../../axon/js/Multilink.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
 
@@ -62,10 +62,10 @@ export default class SeriesAmmeter extends FixedCircuitElement {
     } );
 
     // If there is no measurement noise or the current becomes null, update the current readout
-    Multilink.multilink( [ this.currentProperty, this.currentReadoutProperty, measurementNoiseProperty ],
-      ( current, currentReadout, measurementNoise ) => {
-        if ( ( current === null ) !== ( currentReadout === null ) || !measurementNoise ) {
-          if ( measurementNoise ) {
+    Multilink.multilink( [ this.currentProperty, this.currentReadoutProperty, measuringDeviceNoiseProperty ],
+      ( current, currentReadout, measuringDeviceNoise ) => {
+        if ( ( current === null ) !== ( currentReadout === null ) || !measuringDeviceNoise ) {
+          if ( measuringDeviceNoise ) {
             this.displayedValueUpdateTimer = 0; // Reset the display update timer when the current is updated
             this.currentReadoutProperty.value = this.currentReadoutForCurrent( current );
           }

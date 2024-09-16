@@ -1,4 +1,4 @@
-// Copyright 2021-2023, University of Colorado Boulder
+// Copyright 2021-2024, University of Colorado Boulder
 
 /**
  * Auto-generated from modulify, DO NOT manually modify.
@@ -83,7 +83,8 @@ type StringsType = {
   'magnitudeStringProperty': LocalizedStringProperty;
   'signedStringProperty': LocalizedStringProperty;
   'dataOutOfRangeStringProperty': LocalizedStringProperty;
-  'measurementNoiseStringProperty': LocalizedStringProperty;
+  'measuringDeviceNoiseStringProperty': LocalizedStringProperty;
+  'circuitElementNoiseStringProperty': LocalizedStringProperty;
 };
 
 const CircuitConstructionKitCommonStrings = getStringModule( 'CIRCUIT_CONSTRUCTION_KIT_COMMON' ) as StringsType;
