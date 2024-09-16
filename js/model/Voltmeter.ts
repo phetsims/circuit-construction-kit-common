@@ -20,8 +20,9 @@ import Multilink from '../../../axon/js/Multilink.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
 import measurementNoiseProperty from './measurementNoiseProperty.js';
 
-const INSTRUMENT_UNCERTAINTY = 0.02; // Volts
-const NOISE_PERIOD = 0.5; // seconds
+const INSTRUMENT_NOISE = 0.02; // Instrument noise (Volts)
+const RANDOM_NOISE_PERCENT = 0.01; // Random noise (percent of the measured voltage)
+const NOISE_PERIOD = 0.75; // Update rate of the instrument (seconds)
 
 export default class Voltmeter extends Meter {
 
@@ -110,7 +111,11 @@ export default class Voltmeter extends Meter {
       return null;
     }
 
-    return voltage + INSTRUMENT_UNCERTAINTY * dotRandom.nextGaussian();
+    // Include the random noise, which is a percentage of the measured value
+    const voltageWithRandomNoise = RANDOM_NOISE_PERCENT * voltage * dotRandom.nextGaussian() + voltage;
+
+    // Add the instrument noise to the random noise
+    return voltageWithRandomNoise + INSTRUMENT_NOISE * dotRandom.nextGaussian();
   }
 
   public stepNoise( dt: number ): void {
