@@ -57,7 +57,7 @@ const CCKCQueryParameters = QueryStringMachine.getAll( {
     validValues: [ 'magnitude', 'signed' ]
   },
 
-  measurementNoise: {
+  measuringDeviceNoise: {
     public: true,
     type: 'flag'
   },

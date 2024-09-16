@@ -18,9 +18,9 @@ import Meter from './Meter.js';
 import VoltageConnection from './VoltageConnection.js';
 import Multilink from '../../../axon/js/Multilink.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
-import measurementNoiseProperty from './measurementNoiseProperty.js';
+import measuringDeviceNoiseProperty from './measuringDeviceNoiseProperty.js';
 
-const MEASUREMENT_NOISE = 0.02; // Standard deviation of the measurement uncertainty (Volts)
+const MEASUREMENT_NOISE = 0.05; // Standard deviation of the measurement uncertainty (Volts)
 const DISPLAYED_VALUE_UPDATE_PERIOD = 0.75; // Update rate of the instrument (seconds)
 
 export default class Voltmeter extends Meter {
@@ -91,10 +91,10 @@ export default class Voltmeter extends Meter {
     } );
 
     // If there is no measurement noise or the voltage becomes null, update the voltage readout
-    Multilink.multilink( [ this.voltageProperty, this.voltageReadoutProperty, measurementNoiseProperty ],
-      ( voltage, voltageReadout, measurementNoise ) => {
-        if ( ( voltage === null ) !== ( voltageReadout === null ) || !measurementNoise ) {
-          if ( measurementNoise ) {
+    Multilink.multilink( [ this.voltageProperty, this.voltageReadoutProperty, measuringDeviceNoiseProperty ],
+      ( voltage, voltageReadout, measuringDeviceNoise ) => {
+        if ( ( voltage === null ) !== ( voltageReadout === null ) || !measuringDeviceNoise ) {
+          if ( measuringDeviceNoise ) {
             this.displayedValueUpdateTimer = 0; // Reset the display update timer when the voltage is updated
             this.voltageReadoutProperty.value = this.voltageReadoutForVoltage( voltage );
           }

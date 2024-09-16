@@ -17,7 +17,7 @@ import CCKCChartNode, { CCKCChartNodeOptions } from './CCKCChartNode.js';
 import CircuitNode from './CircuitNode.js';
 import CCKCProbeNode from './CCKCProbeNode.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
-import measurementNoiseProperty from '../model/measurementNoiseProperty.js';
+import measuringDeviceNoiseProperty from '../model/measuringDeviceNoiseProperty.js';
 import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 
 const currentWithUnitsStringProperty = CircuitConstructionKitCommonStrings.currentWithUnitsStringProperty;
@@ -91,7 +91,7 @@ export default class CurrentChartNode extends CCKCChartNode {
   }
 
   private currentReadoutForCurrent( current: number ): number {
-    return measurementNoiseProperty.value ? current + INSTRUMENT_UNCERTAINTY * dotRandom.nextGaussian() : current;
+    return measuringDeviceNoiseProperty.value ? current + INSTRUMENT_UNCERTAINTY * dotRandom.nextGaussian() : current;
   }
 }
 

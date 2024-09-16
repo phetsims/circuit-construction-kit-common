@@ -86,7 +86,8 @@ type StringsType = {
   'magnitudeStringProperty': LocalizedStringProperty;
   'signedStringProperty': LocalizedStringProperty;
   'dataOutOfRangeStringProperty': LocalizedStringProperty;
-  'measurementNoiseStringProperty': LocalizedStringProperty;
+  'measuringDeviceNoiseStringProperty': LocalizedStringProperty;
+  'circuitElementNoiseStringProperty': LocalizedStringProperty;
 };
 
 const CircuitConstructionKitCommonStrings = getStringModule( 'CIRCUIT_CONSTRUCTION_KIT_COMMON' ) as StringsType;

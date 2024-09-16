@@ -215,7 +215,10 @@
   "dataOutOfRange": {
     "value": "Data out of range"
   },
-  "measurementNoise": {
-    "value": "Measurement Noise"
+  "measuringDeviceNoise": {
+    "value": "Measuring device noise"
+  },
+  "circuitElementNoise": {
+    "value": "Circuit element noise"
   }
 }

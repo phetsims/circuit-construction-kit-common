@@ -21,7 +21,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CCKCChartNode, { CCKCChartNodeOptions } from './CCKCChartNode.js';
 import CircuitNode from './CircuitNode.js';
 import CCKCProbeNode from './CCKCProbeNode.js';
-import measurementNoiseProperty from '../model/measurementNoiseProperty.js';
+import measuringDeviceNoiseProperty from '../model/measuringDeviceNoiseProperty.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
 import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 
@@ -60,7 +60,7 @@ export default class VoltageChartNode extends CCKCChartNode {
     const blackConnection = this.circuitNode.getVoltageConnection( blackPoint );
     const voltage = this.circuitNode.circuit.getVoltageBetweenConnections( redConnection, blackConnection, false );
 
-    if ( measurementNoiseProperty.value ) {
+    if ( measuringDeviceNoiseProperty.value ) {
       return voltage === null ? null : new Vector2( time, voltage + INSTRUMENT_UNCERTAINTY * dotRandom.nextGaussian() );
     }
 

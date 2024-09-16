@@ -20,7 +20,7 @@ import CircuitElement from './CircuitElement.js';
 import Meter from './Meter.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
 import Multilink from '../../../axon/js/Multilink.js';
-import measurementNoiseProperty from './measurementNoiseProperty.js';
+import measuringDeviceNoiseProperty from './measuringDeviceNoiseProperty.js';
 
 const INSTRUMENT_UNCERTAINTY = 0.02; // Amperes
 const NOISE_PERIOD = 0.5; // seconds
@@ -76,10 +76,10 @@ export default class Ammeter extends Meter {
     } );
 
     // If there is no measurement noise or the current becomes null, update the current readout
-    Multilink.multilink( [ this.currentProperty, this.currentReadoutProperty, measurementNoiseProperty ],
-      ( current, currentReadout, measurementNoise ) => {
-        if ( ( current === null ) !== ( currentReadout === null ) || !measurementNoise ) {
-          if ( measurementNoise ) {
+    Multilink.multilink( [ this.currentProperty, this.currentReadoutProperty, measuringDeviceNoiseProperty ],
+      ( current, currentReadout, measuringDeviceNoise ) => {
+        if ( ( current === null ) !== ( currentReadout === null ) || !measuringDeviceNoise ) {
+          if ( measuringDeviceNoise ) {
             this.displayedValueUpdateTimer = 0; // Reset the display update timer when the current is updated
             this.currentReadoutProperty.value = this.currentReadoutForCurrent( current );
           }
