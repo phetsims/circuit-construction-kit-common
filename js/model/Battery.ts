@@ -56,7 +56,7 @@ export default class Battery extends VoltageSource {
   }
 
   public override step( time: number, dt: number, circuit: Circuit ): void {
-    // nothing to do
+    super.step( time, dt, circuit );
   }
 
   public override dispose(): void {

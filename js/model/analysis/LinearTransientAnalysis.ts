@@ -263,7 +263,7 @@ export default class LinearTransientAnalysis {
           solvedVertices.push( endVertex );
         }
         else if ( circuitElement instanceof VoltageSource ) {
-          endVertex.voltageProperty.value = startVertex.voltageProperty.value + sign * circuitElement.voltageProperty.value;
+          endVertex.voltageProperty.value = startVertex.voltageProperty.value + sign * circuitElement.voltageWithNoiseProperty.value;
           solvedVertices.push( endVertex );
         }
         else if ( circuitElement instanceof Capacitor || circuitElement instanceof Inductor ) {

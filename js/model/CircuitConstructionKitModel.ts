@@ -35,6 +35,7 @@ import LightBulb from './LightBulb.js';
 import Voltmeter from './Voltmeter.js';
 import ZoomAnimation from './ZoomAnimation.js';
 import measuringDeviceNoiseProperty from './measuringDeviceNoiseProperty.js';
+import circuitElementNoiseProperty from './circuitElementNoiseProperty.js';
 
 type CircuitConstructionKitModelOptions = {
   blackBoxStudy?: boolean;
@@ -318,10 +319,10 @@ export default class CircuitConstructionKitModel implements TModel {
     this.stopwatch.step( dt );
     this.stepEmitter.emit( dt );
 
-    if ( measuringDeviceNoiseProperty.value ) {
+    if ( measuringDeviceNoiseProperty.value || circuitElementNoiseProperty.value ) {
 
       // Step the noise of all voltmeters and ammeters
-      this.voltmeters.forEach( voltmeter => voltmeter.stepNoise( dt ) );
+      this.voltmeters.forEach( voltmeter => voltmeter.stepDisplayUpdateTimer( dt ) );
       this.ammeters.forEach( ammeter => ammeter.stepNoise( dt ) );
 
       // If there are any series ammeters, step their noise

@@ -24,8 +24,8 @@ import dotRandom from '../../../dot/js/dotRandom.js';
 type SelfOptions = EmptySelfOptions;
 type SeriesAmmeterOptions = SelfOptions & FixedCircuitElementOptions;
 
-const INSTRUMENT_UNCERTAINTY = 0.005; // Amperes
-const NOISE_PERIOD = 0.2; // seconds
+const MEASURING_DEVICE_NOISE = 0.005; // Amperes
+const DISPLAYED_VALUE_UPDATE_PERIOD = 0.2; // seconds
 
 export default class SeriesAmmeter extends FixedCircuitElement {
 
@@ -81,14 +81,14 @@ export default class SeriesAmmeter extends FixedCircuitElement {
       return null;
     }
 
-    return current + INSTRUMENT_UNCERTAINTY * dotRandom.nextGaussian();
+    return current + MEASURING_DEVICE_NOISE * dotRandom.nextGaussian();
   }
 
   public stepNoise( dt: number ): void {
     // Advance the noise timer, and if it is time to make noise, do so
     this.displayedValueUpdateTimer += dt;
 
-    if ( this.displayedValueUpdateTimer > NOISE_PERIOD ) {
+    if ( this.displayedValueUpdateTimer > DISPLAYED_VALUE_UPDATE_PERIOD ) {
       this.displayedValueUpdateTimer = 0;
 
       if ( this.currentProperty.value !== null ) {

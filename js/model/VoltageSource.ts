@@ -19,6 +19,15 @@ import NumberIO from '../../../tandem/js/types/NumberIO.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import FixedCircuitElement, { type FixedCircuitElementOptions } from './FixedCircuitElement.js';
 import PowerDissipatedProperty from './PowerDissipatedProperty.js';
+import DerivedProperty from '../../../axon/js/DerivedProperty.js';
+import NumberIO from '../../../tandem/js/types/NumberIO.js';
+import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import optionize from '../../../phet-core/js/optionize.js';
+import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
+import PickOptional from '../../../phet-core/js/types/PickOptional.js';
+import Circuit from './Circuit.js';
+import circuitElementNoiseProperty from './circuitElementNoiseProperty.js';
+import dotRandom from '../../../dot/js/dotRandom.js';
 import type Vertex from './Vertex.js';
 
 type SelfOptions = {
@@ -34,6 +43,9 @@ export default abstract class VoltageSource extends FixedCircuitElement {
 
   // the voltage of the battery in volts
   public readonly voltageProperty: NumberProperty;
+
+  // the voltage of the battery including circuit element noise
+  public readonly voltageWithNoiseProperty: NumberProperty;
 
   // the internal resistance of the battery
   public readonly internalResistanceProperty: Property<number>;
@@ -68,6 +80,7 @@ export default abstract class VoltageSource extends FixedCircuitElement {
     super( startVertex, endVertex, length, tandem, options );
 
     this.voltageProperty = new NumberProperty( options.voltage, options.voltagePropertyOptions );
+    this.voltageWithNoiseProperty = new NumberProperty( options.voltage );
 
     this.internalResistanceProperty = internalResistanceProperty;
 
@@ -98,7 +111,21 @@ export default abstract class VoltageSource extends FixedCircuitElement {
    * Get the properties so that the circuit can be solved when changed.
    */
   public getCircuitProperties(): Property<IntentionalAny>[] {
-    return [ this.voltageProperty ];
+    if ( circuitElementNoiseProperty.value ) {
+      return [ this.voltageWithNoiseProperty ];
+    }
+    else {
+      return [ this.voltageProperty ];
+    }
+  }
+
+  public override step( time: number, dt: number, circuit: Circuit ): void {
+
+    if ( circuitElementNoiseProperty.value ) {
+      this.voltageWithNoiseProperty.value = this.voltageProperty.value * ( 1 + 0.05 * dotRandom.nextGaussian() );
+    }
+
+    console.log( 'step voltage source - voltage = ', this.voltageWithNoiseProperty.value );
   }
 }
 
