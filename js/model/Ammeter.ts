@@ -22,8 +22,8 @@ import dotRandom from '../../../dot/js/dotRandom.js';
 import Multilink from '../../../axon/js/Multilink.js';
 import measuringDeviceNoiseProperty from './measuringDeviceNoiseProperty.js';
 
-const INSTRUMENT_UNCERTAINTY = 0.02; // Amperes
-const NOISE_PERIOD = 0.5; // seconds
+const MEASURING_DEVICE_NOISE = 0.02; // Amperes
+const DISPLAYED_VALUE_UPDATE_PERIOD = 0.75; // seconds
 
 export default class Ammeter extends Meter {
 
@@ -100,7 +100,7 @@ export default class Ammeter extends Meter {
       return null;
     }
 
-    return current + INSTRUMENT_UNCERTAINTY * dotRandom.nextGaussian();
+    return current + MEASURING_DEVICE_NOISE * dotRandom.nextGaussian();
   }
 
   public stepNoise( dt: number ): void {
@@ -109,7 +109,7 @@ export default class Ammeter extends Meter {
       // Advance the noise timer, and if it is time to make noise, do so
       this.displayedValueUpdateTimer += dt;
 
-      if ( this.displayedValueUpdateTimer > NOISE_PERIOD ) {
+      if ( this.displayedValueUpdateTimer > DISPLAYED_VALUE_UPDATE_PERIOD ) {
         this.displayedValueUpdateTimer = 0;
 
         if ( this.currentProperty.value !== null ) {
