@@ -120,7 +120,11 @@ export default abstract class VoltageSource extends FixedCircuitElement {
   }
 
   public override step( time: number, dt: number, circuit: Circuit ): void {
-    const voltageSourceNoise = circuitElementNoiseProperty.value ? this.voltageWithNoiseProperty.value * 0.05 * dotRandom.nextGaussian() : 0;
+    super.step( time, dt, circuit );
+
+    const VOLTAGE_NOISE_AMOUNT = 0.05;
+
+    const voltageSourceNoise = circuitElementNoiseProperty.value ? this.voltageProperty.value * VOLTAGE_NOISE_AMOUNT * dotRandom.nextGaussian() : 0;
     this.voltageWithNoiseProperty.value = this.voltageProperty.value + voltageSourceNoise;
   }
 }
