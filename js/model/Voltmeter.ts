@@ -20,7 +20,7 @@ import dotRandom from '../../../dot/js/dotRandom.js';
 import measuringDeviceNoiseProperty from './measuringDeviceNoiseProperty.js';
 
 const MEASURING_DEVICE_NOISE = 0.05; // Standard deviation of the measurement uncertainty (Volts)
-const DISPLAYED_VALUE_UPDATE_PERIOD = 0.75; // Update rate of the instrument (seconds)
+const DISPLAYED_VALUE_UPDATE_PERIOD = 0.5; // Update rate of the instrument (seconds)
 
 export default class Voltmeter extends Meter {
 
@@ -89,26 +89,18 @@ export default class Voltmeter extends Meter {
       }
     } );
 
+    // If the measured voltage goes from null to non-null or vice-versa, eagerly update the displayed value
+    // and restart the display update timer
     this.voltageProperty.link( ( voltage, previousVoltage ) => {
-      if ( ( voltage === null ) !== ( previousVoltage === null ) || !measuringDeviceNoiseProperty.value ) {
-        if ( measuringDeviceNoiseProperty.value ) {
-          this.displayedValueUpdateTimer = 0; // Reset the display update timer when the voltage is updated
-          this.voltageReadoutProperty.value = this.voltageReadoutForVoltage( voltage );
-        }
-        else {
-          this.voltageReadoutProperty.value = voltage;
-        }
+      if ( ( voltage === null ) !== ( previousVoltage === null ) ) {
+        this.displayedValueUpdateTimer = 0; // Reset the display update timer when the voltage is updated
+        this.voltageReadoutProperty.value = this.voltageReadoutForVoltage( voltage );
       }
     } );
 
-    measuringDeviceNoiseProperty.link( measuringDeviceNoise => {
-      if ( measuringDeviceNoise ) {
-        this.displayedValueUpdateTimer = 0; // Reset the display update timer when the voltage is updated
-        this.voltageReadoutProperty.value = this.voltageReadoutForVoltage( this.voltageProperty.value );
-      }
-      else {
-        this.voltageReadoutProperty.value = this.voltageProperty.value;
-      }
+    // If measuringDeviceNoise is turned on or off, eagerly update the displayed value
+    measuringDeviceNoiseProperty.link( () => {
+      this.voltageReadoutProperty.value = this.voltageReadoutForVoltage( this.voltageProperty.value );
     } );
   }
 
@@ -137,7 +129,7 @@ export default class Voltmeter extends Meter {
 
         if ( this.voltageProperty.value !== null ) {
 
-          // Use dotRandom.nextGaussian to add noise to the voltage reading
+          // Incorporate any measurement noise in the voltmeter readout
           this.voltageReadoutProperty.value = this.voltageReadoutForVoltage( this.voltageProperty.value );
         }
       }

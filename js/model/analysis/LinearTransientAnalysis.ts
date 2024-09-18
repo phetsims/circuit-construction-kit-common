@@ -69,7 +69,7 @@ export default class LinearTransientAnalysis {
             id++,
             circuitElement.startVertexProperty.value.index + '',
             circuitElement.endVertexProperty.value.index + '',
-            circuitElement.voltageProperty.value,
+            circuitElement.voltageWithNoiseProperty.value,
             circuitElement.internalResistanceProperty.value
           );
           voltageSourceMap.set( ltaVoltageSource, circuitElement );

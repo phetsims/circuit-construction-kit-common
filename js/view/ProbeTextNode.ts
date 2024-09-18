@@ -51,7 +51,7 @@ export default class ProbeTextNode extends VBox {
     }, providedOptions );
 
     const probeReadoutText = new Text( stringProperty, {
-      fontSize: options.seriesAmmeter ? 46 : 40,
+      fontSize: options.seriesAmmeter ? 35 : 40,
       maxWidth: TEXT_BOX_WIDTH - 20,
       fill: CCKCColors.textFillProperty,
       tandem: tandem.createTandem( 'probeReadoutText' ),

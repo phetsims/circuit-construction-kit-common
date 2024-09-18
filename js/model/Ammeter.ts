@@ -19,7 +19,6 @@ import type AmmeterConnection from './AmmeterConnection.js';
 import CircuitElement from './CircuitElement.js';
 import Meter from './Meter.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
-import Multilink from '../../../axon/js/Multilink.js';
 import measuringDeviceNoiseProperty from './measuringDeviceNoiseProperty.js';
 
 const MEASURING_DEVICE_NOISE = 0.02; // Amperes
@@ -75,19 +74,19 @@ export default class Ammeter extends Meter {
       }
     } );
 
-    // If there is no measurement noise or the current becomes null, update the current readout
-    Multilink.multilink( [ this.currentProperty, this.currentReadoutProperty, measuringDeviceNoiseProperty ],
-      ( current, currentReadout, measuringDeviceNoise ) => {
-        if ( ( current === null ) !== ( currentReadout === null ) || !measuringDeviceNoise ) {
-          if ( measuringDeviceNoise ) {
-            this.displayedValueUpdateTimer = 0; // Reset the display update timer when the current is updated
-            this.currentReadoutProperty.value = this.currentReadoutForCurrent( current );
-          }
-          else {
-            this.currentReadoutProperty.value = current;
-          }
-        }
-      } );
+    // If the measured current goes from null to non-null or vice-versa, eagerly update the displayed value
+    // and restart the display update timer
+    this.currentProperty.link( ( current, previousCurrent ) => {
+      if ( ( current === null ) !== ( previousCurrent === null ) ) {
+        this.displayedValueUpdateTimer = 0; // Reset the display update timer when the current is updated
+        this.currentReadoutProperty.value = this.currentReadoutForCurrent( current );
+      }
+    } );
+
+    // If measuringDeviceNoise is turned on or off, eagerly update the displayed value
+    measuringDeviceNoiseProperty.link( () => {
+      this.currentReadoutProperty.value = this.currentReadoutForCurrent( this.currentProperty.value );
+    } );
   }
 
   public setConnectionAndCurrent( ammeterConnection: AmmeterConnection | null ): void {
@@ -99,11 +98,17 @@ export default class Ammeter extends Meter {
     if ( current === null ) {
       return null;
     }
+    else if ( measuringDeviceNoiseProperty.value ) {
 
-    return current + MEASURING_DEVICE_NOISE * dotRandom.nextGaussian();
+      // Add the measurement noise to the instrument reading
+      return current + MEASURING_DEVICE_NOISE * dotRandom.nextGaussian();
+    }
+    else {
+      return current;
+    }
   }
 
-  public stepNoise( dt: number ): void {
+  public stepDisplayUpdateTimer( dt: number ): void {
     if ( this.isActiveProperty.value ) {
 
       // Advance the noise timer, and if it is time to make noise, do so
@@ -114,7 +119,7 @@ export default class Ammeter extends Meter {
 
         if ( this.currentProperty.value !== null ) {
 
-          // Use dotRandom.nextGaussian to add noise to the current reading
+          // Incorporate any measurement noise in the ammeter readout
           this.currentReadoutProperty.value = this.currentReadoutForCurrent( this.currentProperty.value );
         }
       }
