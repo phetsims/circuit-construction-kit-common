@@ -319,15 +319,13 @@ export default class CircuitConstructionKitModel implements TModel {
     this.stopwatch.step( dt );
     this.stepEmitter.emit( dt );
 
-    if ( measuringDeviceNoiseProperty.value || circuitElementNoiseProperty.value ) {
+    // Step the display update timers for all voltmeters and ammeters
+    this.voltmeters.forEach( voltmeter => voltmeter.stepDisplayUpdateTimer( dt ) );
+    this.ammeters.forEach( ammeter => ammeter.stepDisplayUpdateTimer( dt ) );
 
-      // Step the noise of all voltmeters and ammeters
-      this.voltmeters.forEach( voltmeter => voltmeter.stepDisplayUpdateTimer( dt ) );
-      this.ammeters.forEach( ammeter => ammeter.stepNoise( dt ) );
+    // If there are any series ammeters, step their display update timers
+    this.circuit.seriesAmmeterGroup?.forEach( seriesAmmeter => seriesAmmeter.stepDisplayUpdateTimer( dt ) );
 
-      // If there are any series ammeters, step their noise
-      this.circuit.seriesAmmeterGroup?.forEach( seriesAmmeter => seriesAmmeter.stepNoise( dt ) );
-    }
   }
 
   /**
