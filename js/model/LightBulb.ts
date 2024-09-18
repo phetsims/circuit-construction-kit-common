@@ -20,6 +20,10 @@ import type Circuit from './Circuit.js';
 import CircuitElementViewType from './CircuitElementViewType.js';
 import FixedCircuitElement, { type FixedCircuitElementOptions } from './FixedCircuitElement.js';
 import PowerDissipatedProperty from './PowerDissipatedProperty.js';
+import optionize from '../../../phet-core/js/optionize.js';
+import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
+import circuitElementNoiseProperty from './circuitElementNoiseProperty.js';
+import dotRandom from '../../../dot/js/dotRandom.js';
 import Vertex from './Vertex.js';
 
 // constants
@@ -70,6 +74,8 @@ export default class LightBulb extends FixedCircuitElement {
 
   // the resistance of the light bulb which can be edited with the UI
   public readonly resistanceProperty: NumberProperty;
+  public readonly resistanceWithNoiseProperty: NumberProperty;
+
   private readonly viewTypeProperty: Property<CircuitElementViewType>;
 
   public static createAtPosition( startVertex: Vertex,
@@ -133,6 +139,8 @@ export default class LightBulb extends FixedCircuitElement {
              new Range( 0, 120 )
     } );
 
+    this.resistanceWithNoiseProperty = new NumberProperty( resistance );
+
     this.powerDissipatedProperty = new PowerDissipatedProperty( this.currentProperty, this.resistanceProperty, tandem.createTandem( 'powerDissipatedProperty' ) );
 
     this.viewTypeProperty = viewTypeProperty;
@@ -159,14 +167,17 @@ export default class LightBulb extends FixedCircuitElement {
     return pathLength;
   }
 
-  /**
-   * Returns true because all light bulbs can have their resistance changed.
-   */
-  private isResistanceEditable(): boolean {
-    return true;
+  public override step( time: number, dt: number, circuit: Circuit ): void {
+    super.step( time, dt, circuit );
+    const resistanceNoise = circuitElementNoiseProperty.value ? this.resistanceProperty.value * 0.05 * dotRandom.nextGaussian() : 0;
+    const proposedResistance = this.resistanceProperty.value + resistanceNoise;
+
+    assert && assert( proposedResistance >= 0, 'resistance should be non-negative' );
+
+    this.resistanceWithNoiseProperty.value = proposedResistance;
   }
 
-  // Dispose of this and PhET-iO instrumented children, so they will be unregistered.
+// Dispose of this and PhET-iO instrumented children, so they will be unregistered.
   public override dispose(): void {
     this.resistanceProperty.dispose();
     this.powerDissipatedProperty.dispose();
