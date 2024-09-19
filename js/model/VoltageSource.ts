@@ -96,6 +96,7 @@ export default abstract class VoltageSource extends FixedCircuitElement {
    */
   public override dispose(): void {
     this.voltageProperty.dispose();
+    this.voltageWithNoiseProperty.dispose();
     this.powerDissipatedProperty.dispose();
     this.powerGeneratedProperty.dispose();
     super.dispose();

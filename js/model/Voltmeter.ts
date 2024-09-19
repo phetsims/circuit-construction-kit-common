@@ -20,7 +20,7 @@ import dotRandom from '../../../dot/js/dotRandom.js';
 import measuringDeviceNoiseProperty from './measuringDeviceNoiseProperty.js';
 
 const MEASURING_DEVICE_NOISE = 0.05; // Standard deviation of the measurement uncertainty (Volts)
-const DISPLAYED_VALUE_UPDATE_PERIOD = 0.5; // Update rate of the instrument (seconds)
+const DISPLAYED_VALUE_UPDATE_PERIOD = 1; // Update rate of the instrument (seconds)
 
 export default class Voltmeter extends Meter {
 

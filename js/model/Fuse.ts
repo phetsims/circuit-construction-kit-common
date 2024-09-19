@@ -38,6 +38,10 @@ export default class Fuse extends FixedCircuitElement {
   // the resistance in ohms.  Computed in step() as a function of isTrippedProperty and currentRatingProperty.  Computed
   // in step instead of as a DerivedProperty to avoid a re-entrant loop, see https://github.com/phetsims/circuit-construction-kit-common/issues/480#issuecomment-483430822
   public readonly resistanceProperty: NumberProperty;
+
+  // the resistance including any noise from circuitElementNoiseProperty
+  public readonly resistanceWithNoiseProperty: NumberProperty;
+
   private timeCurrentRatingExceeded: number;
   public isRepairableProperty: BooleanProperty;
 
@@ -63,6 +67,7 @@ export default class Fuse extends FixedCircuitElement {
     } );
 
     this.resistanceProperty = new NumberProperty( CCKCConstants.MINIMUM_RESISTANCE );
+    this.resistanceWithNoiseProperty = new NumberProperty( CCKCConstants.MINIMUM_RESISTANCE );
 
     // time in seconds the current rating has been exceeded
     this.timeCurrentRatingExceeded = 0;

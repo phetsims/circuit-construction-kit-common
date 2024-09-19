@@ -35,6 +35,9 @@ export default class Switch extends FixedCircuitElement {
   // the resistance in ohms
   public readonly resistanceProperty: Property<number>;
 
+  // the resistance including any noise from circuitElementNoiseProperty
+  public readonly resistanceWithNoiseProperty: NumberProperty;
+
   // whether the switch is closed (and current can flow through it)
   public readonly isClosedProperty: Property<boolean>;
 
@@ -51,11 +54,12 @@ export default class Switch extends FixedCircuitElement {
       // Use the bounding box of the open lifelike switch to show bounds for all combinations of open/closed x lifelike/schematic
       // See https://github.com/phetsims/circuit-construction-kit-dc/issues/132
       isSizeChangedOnViewChange: false
-    } );
+    }, {} );
 
     super( startVertex, endVertex, SWITCH_LENGTH, tandem, options );
 
     this.resistanceProperty = new NumberProperty( 0 );
+    this.resistanceWithNoiseProperty = new NumberProperty( 0 );
 
     this.isClosedProperty = new BooleanProperty( options.closed, {
       tandem: tandem.createTandem( 'isClosedProperty' ),
