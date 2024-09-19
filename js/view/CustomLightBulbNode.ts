@@ -104,6 +104,10 @@ export default class CustomLightBulbNode extends Node {
         scale: options.scale,
         x: backNode.centerX,
 
+        minRays: 12,
+        maxRays: 12,
+        maxRayLength: 80,
+
         // The scale here seems essential to line up the rays on the bulb, not sure why, see https://github.com/phetsims/circuit-construction-kit-common/issues/397
         y: ( middleNode.top + bulbRadius ) * options.scale
       } );
