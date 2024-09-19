@@ -34,8 +34,6 @@ import Utils from '../../../dot/js/Utils.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import TModel from '../../../joist/js/TModel.js';
 import isSettingPhetioStateProperty from '../../../tandem/js/isSettingPhetioStateProperty.js';
-import measuringDeviceNoiseProperty from './measuringDeviceNoiseProperty.js';
-import circuitElementNoiseProperty from './circuitElementNoiseProperty.js';
 
 type CircuitConstructionKitModelOptions = {
   blackBoxStudy?: boolean;
