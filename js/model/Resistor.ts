@@ -18,6 +18,12 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitElement, { type CircuitElementState } from './CircuitElement.js';
 import FixedCircuitElement, { type FixedCircuitElementOptions } from './FixedCircuitElement.js';
 import PowerDissipatedProperty from './PowerDissipatedProperty.js';
+import optionize from '../../../phet-core/js/optionize.js';
+import Property from '../../../axon/js/Property.js';
+import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
+import Circuit from './Circuit.js';
+import circuitElementNoiseProperty from './circuitElementNoiseProperty.js';
+import dotRandom from '../../../dot/js/dotRandom.js';
 import ResistorType from './ResistorType.js';
 import type Vertex from './Vertex.js';
 
@@ -36,6 +42,9 @@ export default class Resistor extends FixedCircuitElement {
 
   // the resistance in ohms
   public readonly resistanceProperty: NumberProperty;
+
+  // the resistance including any noise from circuitElementNoiseProperty
+  public readonly resistanceWithNoiseProperty: NumberProperty;
 
   public readonly resistorType: ResistorType;
 
@@ -86,6 +95,8 @@ export default class Resistor extends FixedCircuitElement {
       phetioFeatured: true
     } );
 
+    this.resistanceWithNoiseProperty = new NumberProperty( resistorType.defaultResistance );
+
     this.powerDissipatedProperty = new PowerDissipatedProperty( this.currentProperty, this.resistanceProperty, tandem.createTandem( 'powerDissipatedProperty' ) );
 
     this.isColorCodeVisibleProperty = new BooleanProperty( true, {
@@ -96,11 +107,22 @@ export default class Resistor extends FixedCircuitElement {
     } );
   }
 
+  public override step( time: number, dt: number, circuit: Circuit ): void {
+    super.step( time, dt, circuit );
+    const resistanceNoise = circuitElementNoiseProperty.value ? this.resistanceProperty.value * 0.05 * dotRandom.nextGaussian() : 0;
+    const proposedResistance = this.resistanceProperty.value + resistanceNoise;
+
+    assert && assert( proposedResistance >= 0, 'resistance should be non-negative' );
+
+    this.resistanceWithNoiseProperty.value = proposedResistance;
+  }
+
   /**
    * Dispose of this and PhET-iO instrumented children, so they will be unregistered.
    */
   public override dispose(): void {
     this.resistanceProperty.dispose();
+    this.resistanceWithNoiseProperty.dispose();
     this.powerDissipatedProperty.dispose();
     this.isColorCodeVisibleProperty.dispose();
     super.dispose();

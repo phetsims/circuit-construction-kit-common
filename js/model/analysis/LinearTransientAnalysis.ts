@@ -91,7 +91,7 @@ export default class LinearTransientAnalysis {
           // simulate a small amount of resistance.
           const resistance = ( circuitElement instanceof LightBulb && circuitElement.isReal ) ? LightBulb.REAL_BULB_COLD_RESISTANCE :
                              ( circuitElement instanceof LightBulb ) ? ( circuitElement.resistanceWithNoiseProperty.value || CCKCConstants.MINIMUM_RESISTANCE ) :
-                             ( circuitElement.resistanceProperty.value || CCKCConstants.MINIMUM_RESISTANCE );
+                             ( circuitElement.resistanceWithNoiseProperty.value || CCKCConstants.MINIMUM_RESISTANCE );
 
           if ( circuitElement instanceof LightBulb && circuitElement.isReal ) {
             hasRealBulbs = true;

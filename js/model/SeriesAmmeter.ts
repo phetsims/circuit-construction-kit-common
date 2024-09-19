@@ -24,12 +24,15 @@ type SelfOptions = EmptySelfOptions;
 type SeriesAmmeterOptions = SelfOptions & FixedCircuitElementOptions;
 
 const MEASURING_DEVICE_NOISE = 0.005; // Amperes
-const DISPLAYED_VALUE_UPDATE_PERIOD = 0.2; // seconds
+const DISPLAYED_VALUE_UPDATE_PERIOD = 0.5; // seconds
 
 export default class SeriesAmmeter extends FixedCircuitElement {
 
   // the resistance in ohms.  A constant, but modeled as a property for uniformity with other resistive elements.
   public readonly resistanceProperty: NumberProperty;
+
+  // the resistance including any noise from circuitElementNoiseProperty
+  public readonly resistanceWithNoiseProperty: NumberProperty;
 
   // the current the probe is displaying (in amperes) or null if unconnected
   public readonly currentReadoutProperty: Property<number | null>;
@@ -52,7 +55,9 @@ export default class SeriesAmmeter extends FixedCircuitElement {
       }
     }, providedOptions );
     super( startVertex, endVertex, CCKCConstants.SERIES_AMMETER_LENGTH, tandem, options );
+
     this.resistanceProperty = new NumberProperty( 0 );
+    this.resistanceWithNoiseProperty = new NumberProperty( 0 );
 
     this.currentReadoutProperty = new Property<number | null>( null, {
       tandem: tandem.createTandem( 'currentReadoutProperty' ),

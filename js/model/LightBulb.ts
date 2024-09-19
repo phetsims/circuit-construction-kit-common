@@ -180,6 +180,7 @@ export default class LightBulb extends FixedCircuitElement {
 // Dispose of this and PhET-iO instrumented children, so they will be unregistered.
   public override dispose(): void {
     this.resistanceProperty.dispose();
+    this.resistanceWithNoiseProperty.dispose();
     this.powerDissipatedProperty.dispose();
     super.dispose();
   }
