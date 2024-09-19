@@ -18,7 +18,6 @@ import Vertex from './Vertex.js';
 import NullableIO from '../../../tandem/js/types/NullableIO.js';
 import NumberIO from '../../../tandem/js/types/NumberIO.js';
 import measuringDeviceNoiseProperty from './measuringDeviceNoiseProperty.js';
-import Multilink from '../../../axon/js/Multilink.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
 
 type SelfOptions = EmptySelfOptions;

@@ -122,6 +122,7 @@ export default abstract class VoltageSource extends FixedCircuitElement {
   public override step( time: number, dt: number, circuit: Circuit ): void {
     super.step( time, dt, circuit );
 
+    // The percent of the mean underlying value which is used for the standard deviation of the fluctuations
     const VOLTAGE_NOISE_AMOUNT = 0.05;
 
     const voltageSourceNoise = circuitElementNoiseProperty.value ? this.voltageProperty.value * VOLTAGE_NOISE_AMOUNT * dotRandom.nextGaussian() : 0;
