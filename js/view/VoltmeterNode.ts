@@ -140,7 +140,7 @@ export default class VoltmeterNode extends Node {
         voltmeter.voltageReadoutProperty,
         CircuitConstructionKitCommonStrings.voltageUnitsStringProperty
       ], voltage =>
-        voltage === null ? MathSymbols.NO_VALUE : CCKCUtils.createVoltageReadout( voltage ), {
+        voltage === null ? MathSymbols.NO_VALUE : CCKCUtils.createVoltageReadout( voltage, voltmeter.phetioIndex ), {
         tandem: options.tandem.createTandem( 'probeReadoutStringProperty' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME )
       }
     );

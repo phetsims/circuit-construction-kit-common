@@ -136,7 +136,7 @@ export default class CCKCScreenView extends ScreenView {
       showStopwatchCheckbox: false,
       showPhaseShiftControl: false,
       hasACandDCVoltageSources: false, // determines the string shown in the AdvancedAccordionBox
-      showMeterPhetioIndex: false
+      showMeterPhetioIndex: true
     }, providedOptions );
 
     super( { tandem: tandem } );
