@@ -63,8 +63,9 @@ const CCKCUtils = {
    * Returns a string that adjusts its voltage value.
    * @param value - voltage value in Volts
    */
-  createVoltageReadout: function( value: number ): string {
-    return StringUtils.fillIn( voltageUnitsStringProperty, { voltage: Utils.toFixed( value, CCKCConstants.METER_PRECISION ) } );
+  createVoltageReadout: function( value: number, phetioIndex: number ): string {
+    const precision = phetioIndex === 1 ? CCKCConstants.METER_PRECISION : 3;
+    return StringUtils.fillIn( voltageUnitsStringProperty, { voltage: Utils.toFixed( value, precision ) } );
   },
 
   /**
