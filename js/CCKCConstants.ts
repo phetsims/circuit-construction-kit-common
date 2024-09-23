@@ -87,7 +87,7 @@ const CCKCConstants = {
 
   // Distance between adjacent charges within a circuit element
   CHARGE_SEPARATION: 28,
-  
+
   // Length of a battery
   BATTERY_LENGTH: 102,
 

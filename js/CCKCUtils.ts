@@ -6,17 +6,17 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import Utils from '../../dot/js/Utils.js';
-import { Node } from '../../scenery/js/imports.js';
-import StringUtils from '../../phetcommon/js/util/StringUtils.js';
-import CCKCQueryParameters from './CCKCQueryParameters.js';
-import CircuitConstructionKitCommonStrings from './CircuitConstructionKitCommonStrings.js';
-import circuitConstructionKitCommon from './circuitConstructionKitCommon.js';
-import ammeterReadoutTypeProperty from './view/ammeterReadoutTypeProperty.js';
-import MathSymbols from '../../scenery-phet/js/MathSymbols.js';
-import AmmeterReadoutType from './model/AmmeterReadoutType.js';
-import CCKCConstants from './CCKCConstants.js';
 import Bounds2 from '../../dot/js/Bounds2.js';
+import Utils from '../../dot/js/Utils.js';
+import StringUtils from '../../phetcommon/js/util/StringUtils.js';
+import MathSymbols from '../../scenery-phet/js/MathSymbols.js';
+import { Node } from '../../scenery/js/imports.js';
+import CCKCConstants from './CCKCConstants.js';
+import CCKCQueryParameters from './CCKCQueryParameters.js';
+import circuitConstructionKitCommon from './circuitConstructionKitCommon.js';
+import CircuitConstructionKitCommonStrings from './CircuitConstructionKitCommonStrings.js';
+import AmmeterReadoutType from './model/AmmeterReadoutType.js';
+import ammeterReadoutTypeProperty from './view/ammeterReadoutTypeProperty.js';
 
 const currentUnitsStringProperty = CircuitConstructionKitCommonStrings.currentUnitsStringProperty;
 const voltageUnitsStringProperty = CircuitConstructionKitCommonStrings.voltageUnitsStringProperty;
