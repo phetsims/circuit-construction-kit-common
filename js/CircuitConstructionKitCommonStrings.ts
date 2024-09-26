@@ -4,6 +4,7 @@
  * Auto-generated from modulify, DO NOT manually modify.
  */
 /* eslint-disable */
+/* @formatter:off */
 import getStringModule from '../../chipper/js/getStringModule.js';
 import type LocalizedStringProperty from '../../chipper/js/LocalizedStringProperty.js';
 import circuitConstructionKitCommon from './circuitConstructionKitCommon.js';
@@ -85,6 +86,7 @@ type StringsType = {
   'dataOutOfRangeStringProperty': LocalizedStringProperty;
   'measuringDeviceNoiseStringProperty': LocalizedStringProperty;
   'circuitElementNoiseStringProperty': LocalizedStringProperty;
+  'highPrecisionMetersStringProperty': LocalizedStringProperty;
 };
 
 const CircuitConstructionKitCommonStrings = getStringModule( 'CIRCUIT_CONSTRUCTION_KIT_COMMON' ) as StringsType;

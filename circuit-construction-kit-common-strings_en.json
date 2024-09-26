@@ -220,5 +220,8 @@
   },
   "circuitElementNoise": {
     "value": "Circuit element noise"
+  },
+  "highPrecisionMeters": {
+    "value": "High precision meters"
   }
 }
