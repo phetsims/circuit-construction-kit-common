@@ -21,6 +21,7 @@ import SchematicType from './SchematicType.js';
 import schematicTypeProperty from './schematicTypeProperty.js';
 import measuringDeviceNoiseProperty from '../model/measuringDeviceNoiseProperty.js';
 import circuitElementNoiseProperty from '../model/circuitElementNoiseProperty.js';
+import highPrecisionMetersProperty from '../model/highPrecisionMetersProperty.js';
 
 export default class CCKCSimulationPreferencesContentNode extends VBox {
 
@@ -79,6 +80,15 @@ export default class CCKCSimulationPreferencesContentNode extends VBox {
       }
     } );
 
+    const highPrecisionMetersControl = new PreferencesControl( {
+      tandem: tandem.createTandem( 'highPrecisionMetersControl' ),
+      labelNode: new Text( CircuitConstructionKitCommonStrings.highPrecisionMetersStringProperty, PreferencesDialogConstants.CONTROL_LABEL_OPTIONS ),
+      controlNode: new ToggleSwitch( highPrecisionMetersProperty, false, true, PreferencesDialogConstants.TOGGLE_SWITCH_OPTIONS ),
+      visiblePropertyOptions: {
+        phetioFeatured: true
+      }
+    } );
+
     super( {
       align: 'left',
       spacing: PreferencesDialogConstants.CONTENT_SPACING,
@@ -91,7 +101,8 @@ export default class CCKCSimulationPreferencesContentNode extends VBox {
         ammeterReadoutRadioButtonGroup,
         new HSeparator(),
         measuringDeviceNoiseControl,
-        circuitElementNoiseControl
+        circuitElementNoiseControl,
+        highPrecisionMetersControl
       ]
     } );
   }
