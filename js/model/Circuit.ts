@@ -1086,7 +1086,8 @@ export default class Circuit extends PhetioObject {
     const circuitElementsWithCurrent = this.circuitElements.filter( c => c.currentProperty.value !== 0 );
 
     // After assigning a sense, revisit the circuit to propagate senses.  Break out of the loop when no more work can be done
-    while ( true ) { // eslint-disable-line no-constant-condition
+    // TODO: What happened to no-constant-condition? See https://github.com/phetsims/chipper/issues/1451
+    while ( true ) {
 
       const requiresSenseBeforeVisit = circuitElementsWithCurrent.filter( c => c.currentSenseProperty.value === CurrentSense.UNSPECIFIED );
       if ( requiresSenseBeforeVisit.length === 0 ) {

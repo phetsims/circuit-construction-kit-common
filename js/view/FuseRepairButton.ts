@@ -45,7 +45,7 @@ export default class FuseRepairButton extends CCKCRoundPushButton {
       listener: () => {
         const fuse = circuit.selectionProperty.value;
 
-        // eslint-disable-next-line no-simple-type-checking-assertions
+        // eslint-disable-next-line phet/no-simple-type-checking-assertions
         assert && assert( fuse instanceof Fuse );
         if ( fuse instanceof Fuse ) {
           fuse.resetFuse();

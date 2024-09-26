@@ -115,14 +115,14 @@ QUnit.test( 'test RC Circuit should have voltage exponentially decay with T RC f
 QUnit.test( 'test RC Circuit with series capacitors', assert => {
   testVRCCircuitSeriesCapacitors( 3, 7, 10, 10, assert );
   for ( let i = 0; i < 10; i++ ) {
-    testVRCCircuitSeriesCapacitors( 3, 7, Math.random() * 10, Math.random() * 10, assert ); // eslint-disable-line bad-sim-text, bad-sim-text
+    testVRCCircuitSeriesCapacitors( 3, 7, Math.random() * 10, Math.random() * 10, assert ); // eslint-disable-line phet/bad-sim-text, phet/bad-sim-text
   }
 } );
 
 QUnit.test( 'test RC Circuit with parallel capacitors', assert => {
   testVRCCircuitParallelCapacitors( 3, 7, 10, 10, assert );
   for ( let i = 0; i < 10; i++ ) {
-    testVRCCircuitParallelCapacitors( 3, 7, Math.random() * 10, Math.random() * 10, assert ); // eslint-disable-line bad-sim-text, bad-sim-text
+    testVRCCircuitParallelCapacitors( 3, 7, Math.random() * 10, Math.random() * 10, assert ); // eslint-disable-line phet/bad-sim-text, phet/bad-sim-text
   }
 } );
 
@@ -182,13 +182,13 @@ QUnit.test( 'test_RL_Circuit_should_have_correct_behavior', assert => {
 QUnit.test( 'Series inductors', assert => {
   testVRLCircuitSeries( 5, 10, 1, 1, assert );
   for ( let i = 0; i < 10; i++ ) {
-    testVRLCircuitSeries( 10, 10, 5 * Math.random() + 0.1, 5 * Math.random() + 0.1, assert );// eslint-disable-line bad-sim-text
+    testVRLCircuitSeries( 10, 10, 5 * Math.random() + 0.1, 5 * Math.random() + 0.1, assert );// eslint-disable-line phet/bad-sim-text
   }
 } );
 
 QUnit.test( 'Parallel inductors', assert => {
   testVRLCircuitParallel( 5, 10, 1, 1, assert );
   for ( let i = 0; i < 10; i++ ) {
-    testVRLCircuitParallel( 10, 10, 5 * Math.random() + 1, 5 * Math.random() + 1, assert );// eslint-disable-line bad-sim-text
+    testVRLCircuitParallel( 10, 10, 5 * Math.random() + 1, 5 * Math.random() + 1, assert );// eslint-disable-line phet/bad-sim-text
   }
 } );
