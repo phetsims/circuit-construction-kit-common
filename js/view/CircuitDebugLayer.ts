@@ -1,4 +1,4 @@
-// Copyright 2021-2023, University of Colorado Boulder
+// Copyright 2021-2024, University of Colorado Boulder
 
 /**
  * For debugging current values and directions.
@@ -70,7 +70,7 @@ export default class CircuitDebugLayer extends Node {
       } );
       this.addChild( senseNode );
 
-      const textNode = new Text( circuitElement.currentProperty.value.toFixed( 4 ) ); // eslint-disable-line bad-sim-text
+      const textNode = new Text( circuitElement.currentProperty.value.toFixed( 4 ) ); // eslint-disable-line phet/bad-sim-text
       const panel = new Panel( textNode, {
         center: arrowNode.center,
         fill: circuitElement.currentSenseProperty.value === CurrentSense.FORWARD ? 'green' :

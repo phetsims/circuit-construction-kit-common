@@ -1,4 +1,4 @@
-// Copyright 2020-2023, University of Colorado Boulder
+// Copyright 2020-2024, University of Colorado Boulder
 
 /**
  * Guards against dragging immobile CircuitElementNodes and VertexNodes.
@@ -19,7 +19,7 @@ export default class CircuitNodeDragListener extends DragListener {
    * @param vertexGetters
    * @param [providedOptions]
    */
-  public constructor( circuitNode: CircuitNode, vertexGetters: ( () => Vertex )[], providedOptions?: DragListenerOptions<DragListener> ) {
+  public constructor( circuitNode: CircuitNode, vertexGetters: ( () => Vertex )[], providedOptions?: DragListenerOptions ) {
     super( providedOptions );
 
     this.circuitNode = circuitNode;

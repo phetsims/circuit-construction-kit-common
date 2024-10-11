@@ -1,4 +1,4 @@
-// Copyright 2015-2023, University of Colorado Boulder
+// Copyright 2015-2024, University of Colorado Boulder
 
 /**
  * Constants used in all of the Circuit Construction Kit sims/screens/scenes.
@@ -87,7 +87,7 @@ const CCKCConstants = {
 
   // Distance between adjacent charges within a circuit element
   CHARGE_SEPARATION: 28,
-  
+
   // Length of a battery
   BATTERY_LENGTH: 102,
 

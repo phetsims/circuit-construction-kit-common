@@ -1,4 +1,4 @@
-// Copyright 2015-2023, University of Colorado Boulder
+// Copyright 2015-2024, University of Colorado Boulder
 
 /**
  * The Node that represents a Circuit, including all Wires and FixedCircuitElements, Charge, Solder and Sensors.
@@ -607,6 +607,10 @@ export default class CircuitNode extends Node {
       if ( trails.length === 0 ) {
         this.circuit.selectionProperty.value = null;
       }
+    }, {
+
+      // Only dismiss if this CircuitNode is displayed.
+      displayedNode: this
     } ) );
   }
 
@@ -1036,7 +1040,7 @@ export default class CircuitNode extends Node {
       const switchNode = this.hitCircuitElementNode( probePosition, ( circuitElement: CircuitElement ) => circuitElement instanceof Switch, globalPoint );
       if ( switchNode ) {
 
-        // eslint-disable-next-line no-simple-type-checking-assertions
+        // eslint-disable-next-line phet/no-simple-type-checking-assertions
         assert && assert( switchNode instanceof SwitchNode );
         if ( switchNode instanceof SwitchNode ) {
 
@@ -1053,7 +1057,7 @@ export default class CircuitNode extends Node {
       const capacitorNode = this.hitCircuitElementNode( probePosition, ( circuitElement: CircuitElement ) => circuitElement instanceof Capacitor, globalPoint );
       if ( capacitorNode ) {
 
-        // eslint-disable-next-line no-simple-type-checking-assertions
+        // eslint-disable-next-line phet/no-simple-type-checking-assertions
         assert && assert( capacitorNode instanceof CapacitorCircuitElementNode );
         if ( capacitorNode instanceof CapacitorCircuitElementNode ) {
 

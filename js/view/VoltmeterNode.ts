@@ -1,4 +1,4 @@
-// Copyright 2016-2023, University of Colorado Boulder
+// Copyright 2016-2024, University of Colorado Boulder
 
 /**
  * Displays the Voltmeter, which has 2 probes and detects potential differences. Exists for the life of the sim and
@@ -277,7 +277,7 @@ export default class VoltmeterNode extends Node {
       } );
 
       // TODO: Disable line below should be removed, see https://github.com/phetsims/phet-io/issues/1959
-      // eslint-disable-next-line tandem-name-should-match
+      // eslint-disable-next-line phet/tandem-name-should-match
       this.dragHandler = new DragListener( {
 
         positionProperty: voltmeter.bodyPositionProperty,

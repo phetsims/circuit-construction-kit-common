@@ -1,4 +1,4 @@
-// Copyright 2015-2023, University of Colorado Boulder
+// Copyright 2015-2024, University of Colorado Boulder
 
 /**
  * Model for a switch which can be opened and closed.
@@ -11,24 +11,18 @@ import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import Utils from '../../../dot/js/Utils.js';
-import optionize from '../../../phet-core/js/optionize.js';
 import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Circuit from './Circuit.js';
-import FixedCircuitElement, { FixedCircuitElementOptions } from './FixedCircuitElement.js';
+import FixedCircuitElement from './FixedCircuitElement.js';
 import Vertex from './Vertex.js';
 
 // constants
 const SWITCH_LENGTH = CCKCConstants.SWITCH_LENGTH;
 const SWITCH_START = CCKCConstants.SWITCH_START;
 const SWITCH_END = CCKCConstants.SWITCH_END;
-
-type SelfOptions = {
-  closed?: boolean;
-};
-type SwitchOptions = SelfOptions & FixedCircuitElementOptions;
 
 export default class Switch extends FixedCircuitElement {
 
@@ -43,8 +37,7 @@ export default class Switch extends FixedCircuitElement {
 
   public constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, circuit: Circuit | null ) {
 
-    const options = optionize<SwitchOptions, SelfOptions, FixedCircuitElementOptions>()( {
-      closed: false,
+    super( startVertex, endVertex, SWITCH_LENGTH, tandem, {
 
       // Do not instrument isEditableProperty for switches as there is nothing to edit
       isEditablePropertyOptions: {
@@ -56,12 +49,10 @@ export default class Switch extends FixedCircuitElement {
       isSizeChangedOnViewChange: false
     }, {} );
 
-    super( startVertex, endVertex, SWITCH_LENGTH, tandem, options );
-
     this.resistanceProperty = new NumberProperty( 0 );
     this.resistanceWithNoiseProperty = new NumberProperty( 0 );
 
-    this.isClosedProperty = new BooleanProperty( options.closed, {
+    this.isClosedProperty = new BooleanProperty( false, {
       tandem: tandem.createTandem( 'isClosedProperty' ),
       phetioFeatured: true
     } );
