@@ -14,7 +14,7 @@
       "path": "../griddle/tsconfig.json"
     },
     {
-      "path": "../chipper/tsconfig/buildjson"
+      "path": "../chipper/tsconfig/buildjson/tsconfig.json"
     }
   ]
 }
