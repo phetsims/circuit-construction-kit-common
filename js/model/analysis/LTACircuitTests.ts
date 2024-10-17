@@ -39,10 +39,7 @@ const iterateCapacitor = ( circuit: LTACircuit, resistor: MNAResistor, v: number
       worstError = error;
       // console.log( 'new worst error: ' + worstError );
     }
-
-    // window.string = window.string + `${v}  ${r}  ${c}  ${t}  ${desiredVoltageAtTPlusDT}  ${voltage}  ${error}
-// `;
-
+    
     const fractionalError = error / expectedVoltage;
     // console.log( fractionalError, error );
     if ( error > 1E-8 ) {
