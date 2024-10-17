@@ -133,7 +133,6 @@ const iterateInductor = ( circuit: LTACircuit, resistor: MNAResistor, V: number,
     const actualCurrent = solution!.getCurrent( resistor );
     const expectedCurrent = -V / R * ( 1 - Math.exp( -( t + dt ) * R / L ) );//positive, by definition of MNA.Battery
 
-    // console.log( expectedCurrent, actualCurrent );
     const error = Math.abs( actualCurrent - expectedCurrent );
     const fractionalError = error / expectedCurrent;
 
