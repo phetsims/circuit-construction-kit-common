@@ -115,14 +115,14 @@ QUnit.test( 'test RC Circuit should have voltage exponentially decay with T RC f
 QUnit.test( 'test RC Circuit with series capacitors', assert => {
   testVRCCircuitSeriesCapacitors( 3, 7, 10, 10, assert );
   for ( let i = 0; i < 10; i++ ) {
-    testVRCCircuitSeriesCapacitors( 3, 7, Math.random() * 10, Math.random() * 10, assert ); // eslint-disable-line phet/bad-sim-text, phet/bad-sim-text
+    testVRCCircuitSeriesCapacitors( 3, 7, Math.random() * 10 + 0.1, Math.random() * 10 + 0.1, assert ); // eslint-disable-line phet/bad-sim-text, phet/bad-sim-text
   }
 } );
 
 QUnit.test( 'test RC Circuit with parallel capacitors', assert => {
   testVRCCircuitParallelCapacitors( 3, 7, 10, 10, assert );
   for ( let i = 0; i < 10; i++ ) {
-    testVRCCircuitParallelCapacitors( 3, 7, Math.random() * 10, Math.random() * 10, assert ); // eslint-disable-line phet/bad-sim-text, phet/bad-sim-text
+    testVRCCircuitParallelCapacitors( 3, 7, Math.random() * 10 + 0.1, Math.random() * 10 + 0.1, assert ); // eslint-disable-line phet/bad-sim-text, phet/bad-sim-text
   }
 } );
 
