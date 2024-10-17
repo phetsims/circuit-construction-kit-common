@@ -141,7 +141,6 @@ const iterateInductor = ( circuit: LTACircuit, resistor: MNAResistor, V: number,
       assert.ok( fractionalError <= 0.02 );
     }
     // assert.ok( error < errorThreshold );
-    // assert.ok( true );
     circuit = circuit.updateWithSubdivisions( dt );
   }
 };
