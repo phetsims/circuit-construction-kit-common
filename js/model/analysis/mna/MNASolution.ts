@@ -6,6 +6,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+/* global Assert */
 import circuitConstructionKitCommon from '../../../circuitConstructionKitCommon.js';
 import MNACircuitElement from './MNACircuitElement.js';
 import MNAResistor from './MNAResistor.js';
