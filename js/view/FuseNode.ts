@@ -11,7 +11,9 @@ import Matrix3 from '../../../dot/js/Matrix3.js';
 import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import { Shape } from '../../../kite/js/imports.js';
+import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import { Color, Image, Node, Path, Rectangle } from '../../../scenery/js/imports.js';
+import isSettingPhetioStateProperty from '../../../tandem/js/isSettingPhetioStateProperty.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import fuse_png from '../../images/fuse_png.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -22,10 +24,8 @@ import CCKCScreenView from './CCKCScreenView.js';
 import CircuitNode from './CircuitNode.js';
 import FixedCircuitElementNode, { FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
 import FuseTripAnimation from './FuseTripAnimation.js';
-import schematicTypeProperty from './schematicTypeProperty.js';
 import SchematicType from './SchematicType.js';
-import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
-import isSettingPhetioStateProperty from '../../../tandem/js/isSettingPhetioStateProperty.js';
+import schematicTypeProperty from './schematicTypeProperty.js';
 
 // constants
 const SCHEMATIC_STEM_WIDTH = 20;

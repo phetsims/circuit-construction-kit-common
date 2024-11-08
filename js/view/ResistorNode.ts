@@ -6,9 +6,11 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import { Shape } from '../../../kite/js/imports.js';
+import { combineOptions } from '../../../phet-core/js/optionize.js';
 import { Color, Image, Node, Path, Rectangle } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import coin_png from '../../images/coin_png.js';
@@ -18,21 +20,19 @@ import eraser_png from '../../images/eraser_png.js';
 import hand_png from '../../images/hand_png.js';
 import paperClip_png from '../../images/paperClip_png.js';
 import pencil_png from '../../images/pencil_png.js';
-import resistorHigh_png from '../../images/resistorHigh_png.js';
 import resistor_png from '../../images/resistor_png.js';
+import resistorHigh_png from '../../images/resistorHigh_png.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import Resistor from '../model/Resistor.js';
+import ResistorType from '../model/ResistorType.js';
 import CCKCScreenView from './CCKCScreenView.js';
 import CircuitNode from './CircuitNode.js';
 import FixedCircuitElementNode, { FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
 import ResistorColors from './ResistorColors.js';
-import schematicTypeProperty from './schematicTypeProperty.js';
 import SchematicType from './SchematicType.js';
-import ResistorType from '../model/ResistorType.js';
-import { combineOptions } from '../../../phet-core/js/optionize.js';
-import DerivedProperty from '../../../axon/js/DerivedProperty.js';
+import schematicTypeProperty from './schematicTypeProperty.js';
 
 // constants
 

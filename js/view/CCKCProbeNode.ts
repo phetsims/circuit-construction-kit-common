@@ -8,12 +8,12 @@
 
 import Property from '../../../axon/js/Property.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
-import { DragListener, Node } from '../../../scenery/js/imports.js';
-import ProbeNode, { ProbeNodeOptions } from '../../../scenery-phet/js/ProbeNode.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import Vector2Property from '../../../dot/js/Vector2Property.js';
 import Vector2 from '../../../dot/js/Vector2.js';
+import Vector2Property from '../../../dot/js/Vector2Property.js';
 import optionize from '../../../phet-core/js/optionize.js';
+import ProbeNode, { ProbeNodeOptions } from '../../../scenery-phet/js/ProbeNode.js';
+import { DragListener, Node } from '../../../scenery/js/imports.js';
+import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 type SelfOptions = {
   drag?: () => void;

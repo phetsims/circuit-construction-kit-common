@@ -13,12 +13,12 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import dogBark_mp3 from '../../sounds/dogBark_mp3.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
+import Dog from '../model/Dog.js';
 import BarkNode from './BarkNode.js';
 import CCKCScreenView from './CCKCScreenView.js';
 import CircuitNode from './CircuitNode.js';
-import ResistorNode from './ResistorNode.js';
-import Dog from '../model/Dog.js';
 import { FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
+import ResistorNode from './ResistorNode.js';
 
 export default class DogNode extends ResistorNode {
   private readonly barkNode: BarkNode;

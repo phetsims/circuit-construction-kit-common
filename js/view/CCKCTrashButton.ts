@@ -6,16 +6,16 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import { combineOptions } from '../../../phet-core/js/optionize.js';
 import { Path } from '../../../scenery/js/imports.js';
 import trashAltRegularShape from '../../../sherpa/js/fontawesome-5/trashAltRegularShape.js';
+import { RoundPushButtonOptions } from '../../../sun/js/buttons/RoundPushButton.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CCKCRoundPushButton from './CCKCRoundPushButton.js';
 import Circuit from '../model/Circuit.js';
-import Tandem from '../../../tandem/js/Tandem.js';
-import { RoundPushButtonOptions } from '../../../sun/js/buttons/RoundPushButton.js';
 import CircuitElement from '../model/CircuitElement.js';
-import { combineOptions } from '../../../phet-core/js/optionize.js';
+import CCKCRoundPushButton from './CCKCRoundPushButton.js';
 
 export default class CCKCTrashButton extends CCKCRoundPushButton {
 

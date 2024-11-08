@@ -7,31 +7,31 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import Multilink from '../../../axon/js/Multilink.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import { Shape } from '../../../kite/js/imports.js';
+import { combineOptions } from '../../../phet-core/js/optionize.js';
 import { Color, Image, Node, Path } from '../../../scenery/js/imports.js';
-import lightBulbMiddleHigh_png from '../../mipmaps/lightBulbMiddleHigh_png.js';
-import lightBulbMiddleReal_png from '../../mipmaps/lightBulbMiddleReal_png.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import lightBulbFrontReal_png from '../../images/lightBulbFrontReal_png.js';
 import lightBulbMiddle_png from '../../mipmaps/lightBulbMiddle_png.js';
+import lightBulbMiddleHigh_png from '../../mipmaps/lightBulbMiddleHigh_png.js';
+import lightBulbMiddleReal_png from '../../mipmaps/lightBulbMiddleReal_png.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CircuitElementViewType from '../model/CircuitElementViewType.js';
+import LightBulb from '../model/LightBulb.js';
+import CCKCScreenView from './CCKCScreenView.js';
+import CircuitNode from './CircuitNode.js';
 import CustomLightBulbNode from './CustomLightBulbNode.js';
 import FixedCircuitElementNode, { FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
 import LightBulbSocketNode from './LightBulbSocketNode.js';
-import schematicTypeProperty from './schematicTypeProperty.js';
-import CCKCScreenView from './CCKCScreenView.js';
-import CircuitNode from './CircuitNode.js';
-import LightBulb from '../model/LightBulb.js';
-import CircuitElementViewType from '../model/CircuitElementViewType.js';
-import Tandem from '../../../tandem/js/Tandem.js';
 import SchematicType from './SchematicType.js';
-import Multilink from '../../../axon/js/Multilink.js';
-import { combineOptions } from '../../../phet-core/js/optionize.js';
+import schematicTypeProperty from './schematicTypeProperty.js';
 
 // constants
 const SCRATCH_MATRIX = new Matrix3();

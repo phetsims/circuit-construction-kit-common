@@ -7,20 +7,20 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import { AlignGroup, Node, Text, VBox } from '../../../scenery/js/imports.js';
+import { CheckboxOptions } from '../../../sun/js/Checkbox.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
-import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
+import Circuit from '../model/Circuit.js';
 import CCKCAccordionBox, { CCKCAccordionBoxOptions } from './CCKCAccordionBox.js';
 import CCKCCheckbox from './CCKCCheckbox.js';
+import CCKCColors from './CCKCColors.js';
 import SourceResistanceControl from './SourceResistanceControl.js';
 import WireResistivityControl from './WireResistivityControl.js';
-import Circuit from '../model/Circuit.js';
-import Tandem from '../../../tandem/js/Tandem.js';
-import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
-import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
-import { CheckboxOptions } from '../../../sun/js/Checkbox.js';
-import CCKCColors from './CCKCColors.js';
 
 type SelfOptions = {
   showRealBulbsCheckbox?: boolean;

@@ -8,16 +8,16 @@
 
 import Vector2 from '../../../dot/js/Vector2.js';
 import { Shape } from '../../../kite/js/imports.js';
+import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import { Circle, Node, Path } from '../../../scenery/js/imports.js';
+import { RoundPushButtonOptions } from '../../../sun/js/buttons/RoundPushButton.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Circuit from '../model/Circuit.js';
-import Fuse from '../model/Fuse.js';
-import CCKCRoundPushButton from './CCKCRoundPushButton.js';
 import CircuitElement from '../model/CircuitElement.js';
+import Fuse from '../model/Fuse.js';
 import Vertex from '../model/Vertex.js';
-import { RoundPushButtonOptions } from '../../../sun/js/buttons/RoundPushButton.js';
-import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
-import Tandem from '../../../tandem/js/Tandem.js';
+import CCKCRoundPushButton from './CCKCRoundPushButton.js';
 
 type SelfOptions = EmptySelfOptions;
 type RepairFuseButtonOptions = SelfOptions & RoundPushButtonOptions;

@@ -5,11 +5,11 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import Checkbox, { CheckboxOptions } from '../../../sun/js/Checkbox.js';
-import { Node } from '../../../scenery/js/imports.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Property from '../../../axon/js/Property.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
+import { Node } from '../../../scenery/js/imports.js';
+import Checkbox, { CheckboxOptions } from '../../../sun/js/Checkbox.js';
+import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 // constants
 const BOX_WIDTH = 16;

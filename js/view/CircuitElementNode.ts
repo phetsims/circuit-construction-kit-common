@@ -7,15 +7,15 @@
  */
 
 import Vector2 from '../../../dot/js/Vector2.js';
+import optionize from '../../../phet-core/js/optionize.js';
 import { Node, NodeOptions, PressListenerEvent } from '../../../scenery/js/imports.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Circuit from '../model/Circuit.js';
 import CircuitElement from '../model/CircuitElement.js';
+import Vertex from '../model/Vertex.js';
 import CCKCScreenView from './CCKCScreenView.js';
 import CircuitNode from './CircuitNode.js';
-import Vertex from '../model/Vertex.js';
-import optionize from '../../../phet-core/js/optionize.js';
 import CircuitNodeDragListener from './CircuitNodeDragListener.js';
 
 type SelfOptions = {

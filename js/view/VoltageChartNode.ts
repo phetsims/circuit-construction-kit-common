@@ -7,20 +7,20 @@
  */
 
 import createObservableArray from '../../../axon/js/createObservableArray.js';
-import Vector2 from '../../../dot/js/Vector2.js';
-import Range from '../../../dot/js/Range.js';
-import { Color, Rectangle } from '../../../scenery/js/imports.js';
-import CCKCConstants from '../CCKCConstants.js';
-import CCKCQueryParameters from '../CCKCQueryParameters.js';
-import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CCKCChartNode, { CCKCChartNodeOptions } from './CCKCChartNode.js';
-import CircuitNode from './CircuitNode.js';
 import Property from '../../../axon/js/Property.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
-import CCKCProbeNode from './CCKCProbeNode.js';
+import Range from '../../../dot/js/Range.js';
+import Vector2 from '../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
+import { Color, Rectangle } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
+import CCKCConstants from '../CCKCConstants.js';
+import CCKCQueryParameters from '../CCKCQueryParameters.js';
+import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
+import CCKCChartNode, { CCKCChartNodeOptions } from './CCKCChartNode.js';
+import CCKCProbeNode from './CCKCProbeNode.js';
+import CircuitNode from './CircuitNode.js';
 
 const voltageWithUnitsStringProperty = CircuitConstructionKitCommonStrings.voltageWithUnitsStringProperty;
 

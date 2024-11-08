@@ -6,15 +6,15 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import { Color, Node, Rectangle, Text, VBox, VBoxOptions } from '../../../scenery/js/imports.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import Tandem from '../../../tandem/js/Tandem.js';
-import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import Bounds2 from '../../../dot/js/Bounds2.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
+import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
+import { Color, Node, Rectangle, Text, VBox, VBoxOptions } from '../../../scenery/js/imports.js';
+import Tandem from '../../../tandem/js/Tandem.js';
+import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CCKCColors from './CCKCColors.js';
-import Bounds2 from '../../../dot/js/Bounds2.js';
 
 // constants
 const TEXT_BOX_WIDTH = 140;

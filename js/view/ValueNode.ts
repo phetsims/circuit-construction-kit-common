@@ -6,30 +6,30 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import Multilink from '../../../axon/js/Multilink.js';
 import Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
+import { combineOptions } from '../../../phet-core/js/optionize.js';
 import StringUtils from '../../../phetcommon/js/util/StringUtils.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import { Color, Node, RichText, RichTextOptions, Text, TextOptions, VBox } from '../../../scenery/js/imports.js';
 import Panel from '../../../sun/js/Panel.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
-import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import Capacitor from '../model/Capacitor.js';
+import CircuitElement from '../model/CircuitElement.js';
+import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import Fuse from '../model/Fuse.js';
 import Inductor from '../model/Inductor.js';
 import LightBulb from '../model/LightBulb.js';
 import Resistor from '../model/Resistor.js';
 import Switch from '../model/Switch.js';
 import VoltageSource from '../model/VoltageSource.js';
-import Tandem from '../../../tandem/js/Tandem.js';
-import CircuitElement from '../model/CircuitElement.js';
-import CircuitElementViewType from '../model/CircuitElementViewType.js';
-import Multilink from '../../../axon/js/Multilink.js';
-import { combineOptions } from '../../../phet-core/js/optionize.js';
 import CCKCColors from './CCKCColors.js';
 
 const capacitanceFaradsSymbolStringProperty = CircuitConstructionKitCommonStrings.capacitanceFaradsSymbolStringProperty;

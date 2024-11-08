@@ -8,17 +8,17 @@
  * @author Denzell Barnett (PhET Interactive Simulations)
  */
 
+import PatternStringProperty from '../../../axon/js/PatternStringProperty.js';
+import Property from '../../../axon/js/Property.js';
+import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import Utils from '../../../dot/js/Utils.js';
+import { combineOptions } from '../../../phet-core/js/optionize.js';
 import { AlignGroup, Text, TextOptions, VBox } from '../../../scenery/js/imports.js';
 import HSlider from '../../../sun/js/HSlider.js';
-import CCKCConstants from '../CCKCConstants.js';
-import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import Property from '../../../axon/js/Property.js';
 import Tandem from '../../../tandem/js/Tandem.js';
-import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
-import { combineOptions } from '../../../phet-core/js/optionize.js';
-import PatternStringProperty from '../../../axon/js/PatternStringProperty.js';
+import CCKCConstants from '../CCKCConstants.js';
+import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import CCKCColors from './CCKCColors.js';
 
 const resistanceOhmsSymbolStringProperty = CircuitConstructionKitCommonStrings.resistanceOhmsSymbolStringProperty;

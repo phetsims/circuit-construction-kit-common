@@ -9,16 +9,16 @@
 import { m3 } from '../../../dot/js/Matrix3.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import { Shape } from '../../../kite/js/imports.js';
+import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import BannedNode from '../../../scenery-phet/js/BannedNode.js';
 import { Color, Node, Path } from '../../../scenery/js/imports.js';
+import { RoundPushButtonOptions } from '../../../sun/js/buttons/RoundPushButton.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import DynamicCircuitElement from '../model/DynamicCircuitElement.js';
-import CCKCRoundPushButton from './CCKCRoundPushButton.js';
 import Circuit from '../model/Circuit.js';
 import CircuitElement from '../model/CircuitElement.js';
+import DynamicCircuitElement from '../model/DynamicCircuitElement.js';
 import Vertex from '../model/Vertex.js';
-import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
-import { RoundPushButtonOptions } from '../../../sun/js/buttons/RoundPushButton.js';
+import CCKCRoundPushButton from './CCKCRoundPushButton.js';
 
 // constants
 const SCALE = 0.032;

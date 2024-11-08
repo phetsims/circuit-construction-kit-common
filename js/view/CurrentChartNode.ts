@@ -7,16 +7,16 @@
  */
 
 import createObservableArray from '../../../axon/js/createObservableArray.js';
-import Vector2 from '../../../dot/js/Vector2.js';
-import CCKCConstants from '../CCKCConstants.js';
-import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CCKCChartNode, { CCKCChartNodeOptions } from './CCKCChartNode.js';
-import CircuitNode from './CircuitNode.js';
 import Property from '../../../axon/js/Property.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
-import CCKCProbeNode from './CCKCProbeNode.js';
+import Vector2 from '../../../dot/js/Vector2.js';
 import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
+import CCKCConstants from '../CCKCConstants.js';
+import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
+import CCKCChartNode, { CCKCChartNodeOptions } from './CCKCChartNode.js';
+import CCKCProbeNode from './CCKCProbeNode.js';
+import CircuitNode from './CircuitNode.js';
 
 const currentWithUnitsStringProperty = CircuitConstructionKitCommonStrings.currentWithUnitsStringProperty;
 

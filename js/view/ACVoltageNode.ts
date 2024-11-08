@@ -9,6 +9,7 @@
 import Property from '../../../axon/js/Property.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import { Shape } from '../../../kite/js/imports.js';
+import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import MinusNode from '../../../scenery-phet/js/MinusNode.js';
 import PlusNode from '../../../scenery-phet/js/PlusNode.js';
 import { Circle, Node, Path } from '../../../scenery/js/imports.js';
@@ -16,11 +17,10 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import ACVoltage from '../model/ACVoltage.js';
-import FixedCircuitElementNode, { FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
+import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import CCKCScreenView from './CCKCScreenView.js';
 import CircuitNode from './CircuitNode.js';
-import CircuitElementViewType from '../model/CircuitElementViewType.js';
-import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
+import FixedCircuitElementNode, { FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
 
 // constants
 const sineCurveShape = new Shape();

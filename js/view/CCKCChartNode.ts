@@ -6,22 +6,29 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import { ObservableArray } from '../../../axon/js/createObservableArray.js';
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
+import Property from '../../../axon/js/Property.js';
+import TEmitter from '../../../axon/js/TEmitter.js';
+import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import CanvasGridLineSet from '../../../bamboo/js/CanvasGridLineSet.js';
 import CanvasLinePlot from '../../../bamboo/js/CanvasLinePlot.js';
 import ChartCanvasNode from '../../../bamboo/js/ChartCanvasNode.js';
 import ChartRectangle from '../../../bamboo/js/ChartRectangle.js';
 import ChartTransform from '../../../bamboo/js/ChartTransform.js';
-import CanvasGridLineSet from '../../../bamboo/js/CanvasGridLineSet.js';
-import TickLabelSet from '../../../bamboo/js/TickLabelSet.js';
 import ScatterPlot from '../../../bamboo/js/ScatterPlot.js';
 import SpanNode from '../../../bamboo/js/SpanNode.js';
+import TickLabelSet from '../../../bamboo/js/TickLabelSet.js';
+import Bounds2 from '../../../dot/js/Bounds2.js';
 import Range from '../../../dot/js/Range.js';
 import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
+import optionize from '../../../phet-core/js/optionize.js';
 import Orientation from '../../../phet-core/js/Orientation.js';
+import PickRequired from '../../../phet-core/js/types/PickRequired.js';
 import MagnifyingGlassZoomButtonGroup from '../../../scenery-phet/js/MagnifyingGlassZoomButtonGroup.js';
 import ShadedRectangle from '../../../scenery-phet/js/ShadedRectangle.js';
 import WireNode from '../../../scenery-phet/js/WireNode.js';
@@ -33,15 +40,8 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import Meter from '../model/Meter.js';
 import CCKCProbeNode from './CCKCProbeNode.js';
-import CircuitNode from './CircuitNode.js';
-import Property from '../../../axon/js/Property.js';
-import Bounds2 from '../../../dot/js/Bounds2.js';
 import CCKCScreenView from './CCKCScreenView.js';
-import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
-import { ObservableArray } from '../../../axon/js/createObservableArray.js';
-import optionize from '../../../phet-core/js/optionize.js';
-import PickRequired from '../../../phet-core/js/types/PickRequired.js';
-import TEmitter from '../../../axon/js/TEmitter.js';
+import CircuitNode from './CircuitNode.js';
 
 const oneSecondStringProperty = CircuitConstructionKitCommonStrings.oneSecondStringProperty;
 const timeStringProperty = CircuitConstructionKitCommonStrings.timeStringProperty;

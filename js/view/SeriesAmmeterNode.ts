@@ -6,25 +6,25 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
+import StringProperty from '../../../axon/js/StringProperty.js';
+import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
 import { Node, Rectangle, RectangleOptions, Text } from '../../../scenery/js/imports.js';
+import Panel from '../../../sun/js/Panel.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCUtils from '../CCKCUtils.js';
-import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import FixedCircuitElementNode, { FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
+import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
+import CircuitElementViewType from '../model/CircuitElementViewType.js';
+import CurrentSense from '../model/CurrentSense.js';
+import SeriesAmmeter from '../model/SeriesAmmeter.js';
+import ammeterReadoutTypeProperty from './ammeterReadoutTypeProperty.js';
 import CCKCScreenView from './CCKCScreenView.js';
 import CircuitNode from './CircuitNode.js';
-import SeriesAmmeter from '../model/SeriesAmmeter.js';
-import Tandem from '../../../tandem/js/Tandem.js';
-import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
-import ammeterReadoutTypeProperty from './ammeterReadoutTypeProperty.js';
-import CircuitElementViewType from '../model/CircuitElementViewType.js';
-import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
-import CurrentSense from '../model/CurrentSense.js';
+import FixedCircuitElementNode, { FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
 import ProbeTextNode from './ProbeTextNode.js';
-import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
-import Panel from '../../../sun/js/Panel.js';
-import StringProperty from '../../../axon/js/StringProperty.js';
 
 const currentStringProperty = CircuitConstructionKitCommonStrings.currentStringProperty;
 

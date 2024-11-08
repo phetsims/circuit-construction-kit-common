@@ -10,8 +10,8 @@ import ArrowNode from '../../../scenery-phet/js/ArrowNode.js';
 import { Node, Text } from '../../../scenery/js/imports.js';
 import Panel from '../../../sun/js/Panel.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitNode from './CircuitNode.js';
 import CurrentSense from '../model/CurrentSense.js';
+import CircuitNode from './CircuitNode.js';
 
 export default class CircuitDebugLayer extends Node {
   private readonly circuitNode: CircuitNode;

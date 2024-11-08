@@ -9,8 +9,12 @@
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
+import DerivedStringProperty from '../../../axon/js/DerivedStringProperty.js';
+import Property from '../../../axon/js/Property.js';
+import Bounds2 from '../../../dot/js/Bounds2.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
+import optionize from '../../../phet-core/js/optionize.js';
 import ProbeNode from '../../../scenery-phet/js/ProbeNode.js';
 import WireNode from '../../../scenery-phet/js/WireNode.js';
 import { Color, DragListener, Image, Node, NodeOptions, PressListenerEvent, Rectangle, Text } from '../../../scenery/js/imports.js';
@@ -18,16 +22,12 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import ammeterBody_png from '../../images/ammeterBody_png.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCUtils from '../CCKCUtils.js';
-import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import ProbeTextNode from './ProbeTextNode.js';
+import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import Ammeter from '../model/Ammeter.js';
-import CircuitNode from './CircuitNode.js';
-import Bounds2 from '../../../dot/js/Bounds2.js';
-import Property from '../../../axon/js/Property.js';
 import ammeterReadoutTypeProperty from './ammeterReadoutTypeProperty.js';
-import optionize from '../../../phet-core/js/optionize.js';
-import DerivedStringProperty from '../../../axon/js/DerivedStringProperty.js';
+import CircuitNode from './CircuitNode.js';
+import ProbeTextNode from './ProbeTextNode.js';
 
 const currentStringProperty = CircuitConstructionKitCommonStrings.currentStringProperty;
 

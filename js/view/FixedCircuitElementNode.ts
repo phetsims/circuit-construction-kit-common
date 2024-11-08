@@ -6,28 +6,28 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import Multilink, { UnknownMultilink } from '../../../axon/js/Multilink.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Property from '../../../axon/js/Property.js';
+import Bounds2 from '../../../dot/js/Bounds2.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import Vector2 from '../../../dot/js/Vector2.js';
+import optionize from '../../../phet-core/js/optionize.js';
 import { Image, Node, SceneryEvent } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import fire_png from '../../images/fire_png.js';
 import CCKCUtils from '../CCKCUtils.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CircuitElement from '../model/CircuitElement.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import FixedCircuitElement from '../model/FixedCircuitElement.js';
 import Resistor from '../model/Resistor.js';
+import Vertex from '../model/Vertex.js';
 import CCKCScreenView from './CCKCScreenView.js';
 import CircuitElementNode, { CircuitElementNodeOptions } from './CircuitElementNode.js';
 import CircuitNode from './CircuitNode.js';
 import CircuitNodeDragListener from './CircuitNodeDragListener.js';
 import FixedCircuitElementHighlightNode from './FixedCircuitElementHighlightNode.js';
-import CircuitElement from '../model/CircuitElement.js';
-import Multilink, { UnknownMultilink } from '../../../axon/js/Multilink.js';
-import Bounds2 from '../../../dot/js/Bounds2.js';
-import optionize from '../../../phet-core/js/optionize.js';
-import Vertex from '../model/Vertex.js';
 
 // constants
 const matrix = new Matrix3();

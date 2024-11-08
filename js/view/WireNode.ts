@@ -17,11 +17,11 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import Vertex from '../model/Vertex.js';
 import Wire from '../model/Wire.js';
+import CCKCColors from './CCKCColors.js';
 import CCKCScreenView from './CCKCScreenView.js';
 import CircuitElementNode from './CircuitElementNode.js';
 import CircuitNode from './CircuitNode.js';
 import CircuitNodeDragListener from './CircuitNodeDragListener.js';
-import CCKCColors from './CCKCColors.js';
 
 // constants
 const LIFELIKE_LINE_WIDTH = 16; // line width in screen coordinates

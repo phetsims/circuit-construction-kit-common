@@ -6,14 +6,14 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import { Node, Text } from '../../../scenery/js/imports.js';
-import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import Circuit from '../model/Circuit.js';
-import Switch from '../model/Switch.js';
-import Tandem from '../../../tandem/js/Tandem.js';
-import CircuitElement from '../model/CircuitElement.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import { Node, Text } from '../../../scenery/js/imports.js';
+import Tandem from '../../../tandem/js/Tandem.js';
+import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
+import Circuit from '../model/Circuit.js';
+import CircuitElement from '../model/CircuitElement.js';
+import Switch from '../model/Switch.js';
 import Vertex from '../model/Vertex.js';
 import CCKCColors from './CCKCColors.js';
 

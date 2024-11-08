@@ -9,29 +9,29 @@
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
+import DerivedStringProperty from '../../../axon/js/DerivedStringProperty.js';
+import Multilink from '../../../axon/js/Multilink.js';
+import ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
+import Bounds2 from '../../../dot/js/Bounds2.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
+import optionize from '../../../phet-core/js/optionize.js';
+import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
 import WireNode from '../../../scenery-phet/js/WireNode.js';
 import { Color, DragListener, Image, Node, NodeOptions, PressListenerEvent, Rectangle, Text } from '../../../scenery/js/imports.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import probeBlack_png from '../../mipmaps/probeBlack_png.js';
 import probeRed_png from '../../mipmaps/probeRed_png.js';
 import voltmeterBody_png from '../../mipmaps/voltmeterBody_png.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import CCKCUtils from '../CCKCUtils.js';
-import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import ProbeTextNode from './ProbeTextNode.js';
-import Voltmeter from '../model/Voltmeter.js';
+import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import CircuitConstructionKitModel from '../model/CircuitConstructionKitModel.js';
+import Voltmeter from '../model/Voltmeter.js';
 import CircuitNode from './CircuitNode.js';
-import Tandem from '../../../tandem/js/Tandem.js';
-import Bounds2 from '../../../dot/js/Bounds2.js';
-import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
-import ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
-import optionize from '../../../phet-core/js/optionize.js';
-import Multilink from '../../../axon/js/Multilink.js';
-import DerivedStringProperty from '../../../axon/js/DerivedStringProperty.js';
+import ProbeTextNode from './ProbeTextNode.js';
 
 const voltageStringProperty = CircuitConstructionKitCommonStrings.voltageStringProperty;
 
