@@ -21,7 +21,7 @@ import SchematicType from './SchematicType.js';
 import schematicTypeProperty from './schematicTypeProperty.js';
 import measuringDeviceNoiseProperty from '../model/measuringDeviceNoiseProperty.js';
 import circuitElementNoiseProperty from '../model/circuitElementNoiseProperty.js';
-import highPrecisionMetersProperty from '../model/highPrecisionMetersProperty.js';
+import alternateSensorsProperty from '../model/alternateSensorsProperty.js';
 
 export default class CCKCSimulationPreferencesContentNode extends VBox {
 
@@ -80,10 +80,10 @@ export default class CCKCSimulationPreferencesContentNode extends VBox {
       }
     } );
 
-    const highPrecisionMetersControl = new PreferencesControl( {
-      tandem: tandem.createTandem( 'highPrecisionMetersControl' ),
-      labelNode: new Text( CircuitConstructionKitCommonStrings.highPrecisionMetersStringProperty, PreferencesDialogConstants.CONTROL_LABEL_OPTIONS ),
-      controlNode: new ToggleSwitch( highPrecisionMetersProperty, false, true, PreferencesDialogConstants.TOGGLE_SWITCH_OPTIONS ),
+    const alternateSensorsControl = new PreferencesControl( {
+      tandem: tandem.createTandem( 'alternateSensorsControl' ),
+      labelNode: new Text( CircuitConstructionKitCommonStrings.alternateSensorsStringProperty, PreferencesDialogConstants.CONTROL_LABEL_OPTIONS ),
+      controlNode: new ToggleSwitch( alternateSensorsProperty, false, true, PreferencesDialogConstants.TOGGLE_SWITCH_OPTIONS ),
       visiblePropertyOptions: {
         phetioFeatured: true
       }
@@ -102,7 +102,7 @@ export default class CCKCSimulationPreferencesContentNode extends VBox {
         new HSeparator(),
         measuringDeviceNoiseControl,
         circuitElementNoiseControl,
-        highPrecisionMetersControl
+        alternateSensorsControl
       ]
     } );
   }

@@ -53,6 +53,15 @@ import SensorToolbox from './SensorToolbox.js';
 import ViewRadioButtonGroup from './ViewRadioButtonGroup.js';
 import VoltageChartNode from './VoltageChartNode.js';
 import VoltmeterNode from './VoltmeterNode.js';
+import CCKCZoomButtonGroup from './CCKCZoomButtonGroup.js';
+import FixedCircuitElementNode from './FixedCircuitElementNode.js';
+import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
+import CCKCUtils from '../CCKCUtils.js';
+import Vertex from '../model/Vertex.js';
+import CircuitElement from '../model/CircuitElement.js';
+import Property from '../../../axon/js/Property.js';
+import phetioStateSetEmitter from '../../../tandem/js/phetioStateSetEmitter.js';
+import alternateSensorsProperty from '../model/alternateSensorsProperty.js';
 
 const batteryResistanceStringProperty = CircuitConstructionKitCommonStrings.batteryResistanceStringProperty;
 const sourceResistanceStringProperty = CircuitConstructionKitCommonStrings.sourceResistanceStringProperty;
@@ -107,6 +116,7 @@ export default class CCKCScreenView extends ScreenView {
   private readonly currentChartNode2: CurrentChartNode | null;
   protected readonly circuitElementToolbox: CircuitElementToolbox;
   public readonly sensorToolbox: SensorToolbox;
+  public readonly alternateSensorToolbox: SensorToolbox;
   private readonly viewRadioButtonGroup: ViewRadioButtonGroup;
   private readonly displayOptionsPanel: DisplayOptionsPanel;
   private readonly advancedAccordionBox: AdvancedAccordionBox | null;
@@ -130,7 +140,7 @@ export default class CCKCScreenView extends ScreenView {
 
       showSeriesAmmeters: false,
       showTimeControls: false,
-      showAdvancedControls: true,
+      showAdvancedControls: model.isShowAdvancedControls,
       showCharts: false,
       blackBoxStudy: false,
       showStopwatchCheckbox: false,
@@ -189,23 +199,44 @@ export default class CCKCScreenView extends ScreenView {
       return ammeterNode;
     } );
 
+    // High-precision voltmeters
+    const alternateVoltmeterNodes = model.alternateVoltmeters.map( voltmeter => {
+      const alternateVoltmeterNode = new VoltmeterNode( voltmeter, model, this.circuitNode, {
+        isAlternate: true,
+        tandem: meterNodesTandem.createTandem( `alternateVoltmeterNode${voltmeter.phetioIndex}` ),
+        showResultsProperty: model.isValueDepictionEnabledProperty,
+        visibleBoundsProperty: this.circuitNode.visibleBoundsInCircuitCoordinateFrameProperty,
+        showPhetioIndex: options.showMeterPhetioIndex
+      } );
+      voltmeter.droppedEmitter.addListener( bodyNodeGlobalBounds => {
+        const bodyNodeBoundsEroded = CCKCUtils.getDropItemHitBoxForBounds( bodyNodeGlobalBounds );
+        const isToolboxVisible = !!this.alternateSensorToolbox.getTrails().find( trail => trail.isVisible() );
+        if ( isToolboxVisible && bodyNodeBoundsEroded.intersectsBounds( this.alternateSensorToolbox.globalBounds ) ) {
+          voltmeter.isActiveProperty.value = false;
+        }
+      } );
+      return alternateVoltmeterNode;
+    } );
+
     this.chartNodes = [];
 
     // Optionally initialize the chart nodes
     if ( options.showCharts ) {
 
-      const createVoltageChartNode = ( tandemName: string ) => {
+      const createVoltageChartNode = ( tandemName: string, chartNumber: number | null ) => {
         const voltageChartNode = new VoltageChartNode( this.circuitNode, model.circuit.timeProperty,
           this.circuitNode.visibleBoundsInCircuitCoordinateFrameProperty, {
+            chartNumber: chartNumber,
             tandem: meterNodesTandem.createTandem( tandemName )
           }
         );
         voltageChartNode.initializeBodyDragListener( this );
         return voltageChartNode;
       };
-      const createCurrentChartNode = ( tandemName: string ) => {
+      const createCurrentChartNode = ( tandemName: string, chartNumber: number | null ) => {
         const currentChartNode = new CurrentChartNode( this.circuitNode, model.circuit.timeProperty,
           this.circuitNode.visibleBoundsInCircuitCoordinateFrameProperty, {
+            chartNumber: chartNumber,
             tandem: meterNodesTandem.createTandem( tandemName )
           }
         );
@@ -213,11 +244,11 @@ export default class CCKCScreenView extends ScreenView {
         return currentChartNode;
       };
 
-      this.voltageChartNode1 = createVoltageChartNode( 'voltageChartNode1' );
-      this.voltageChartNode2 = createVoltageChartNode( 'voltageChartNode2' );
+      this.voltageChartNode1 = createVoltageChartNode( 'voltageChartNode1', 1 );
+      this.voltageChartNode2 = createVoltageChartNode( 'voltageChartNode2', 2 );
 
-      this.currentChartNode1 = createCurrentChartNode( 'currentChartNode1' );
-      this.currentChartNode2 = createCurrentChartNode( 'currentChartNode2' );
+      this.currentChartNode1 = createCurrentChartNode( 'currentChartNode1', 1 );
+      this.currentChartNode2 = createCurrentChartNode( 'currentChartNode2', 2 );
 
       this.chartNodes.push( this.voltageChartNode1, this.voltageChartNode2, this.currentChartNode1, this.currentChartNode2 );
     }
@@ -252,6 +283,21 @@ export default class CCKCScreenView extends ScreenView {
         visiblePropertyOptions: {
           phetioFeatured: true
         }
+      } );
+
+    this.alternateSensorToolbox = new SensorToolbox(
+      CONTROL_PANEL_ALIGN_GROUP,
+      this.circuitNode,
+      alternateVoltmeterNodes,
+      ammeterNodes,
+      [ this.voltageChartNode1!, this.voltageChartNode2! ],
+      [ this.currentChartNode1!, this.currentChartNode2! ],
+      tandem.createTandem( 'alternateSensorToolbox' ), {
+        showSeriesAmmeters: true,
+        showNoncontactAmmeters: false,
+        showCharts: false,
+        alternate: true,
+        visibleProperty: alternateSensorsProperty
       } );
 
     this.viewRadioButtonGroup = new ViewRadioButtonGroup(
@@ -311,8 +357,8 @@ export default class CCKCScreenView extends ScreenView {
     const controlPanelVBox = new VBox( {
       spacing: VERTICAL_MARGIN,
       children: options.showAdvancedControls ?
-        [ this.displayOptionsPanel, this.sensorToolbox, this.advancedAccordionBox! ] :
-        [ this.displayOptionsPanel, this.sensorToolbox ]
+        [ this.displayOptionsPanel, this.sensorToolbox, this.alternateSensorToolbox, this.advancedAccordionBox! ] :
+        [ this.displayOptionsPanel, this.sensorToolbox, this.alternateSensorToolbox ]
     } );
 
     const box = new AlignBox( controlPanelVBox, {
@@ -352,6 +398,8 @@ export default class CCKCScreenView extends ScreenView {
     voltmeterNodes.forEach( voltmeterNode => this.circuitNode.sensorLayer.addChild( voltmeterNode ) );
     ammeterNodes.forEach( ammeterNode => this.circuitNode.sensorLayer.addChild( ammeterNode ) );
     this.chartNodes.forEach( chartNode => this.circuitNode.sensorLayer.addChild( chartNode ) );
+
+    alternateVoltmeterNodes.forEach( voltmeterNode => this.circuitNode.sensorLayer.addChild( voltmeterNode ) );
 
     // Create the zoom button group
     const zoomButtonGroup = new CCKCZoomButtonGroup( model.zoomLevelProperty, {
@@ -590,7 +638,7 @@ export default class CCKCScreenView extends ScreenView {
     const elementNodeBoundsEroded = CCKCUtils.getDropItemHitBoxForBounds( elementNodeBounds );
 
     // SeriesAmmeters should be dropped in the sensor toolbox
-    const toolbox = circuitElement instanceof SeriesAmmeter ? this.sensorToolbox : this.circuitElementToolbox.carousel;
+    const toolbox = circuitElement instanceof SeriesAmmeter ? circuitElement.isAlternate ? this.alternateSensorToolbox : this.sensorToolbox : this.circuitElementToolbox.carousel;
 
     const globalCarouselBounds = toolbox.localToGlobalBounds( toolbox.localBounds );
     const carouselBounds = this.globalToLocalBounds( globalCarouselBounds );

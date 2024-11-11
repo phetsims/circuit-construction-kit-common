@@ -109,7 +109,7 @@ export default class Resistor extends FixedCircuitElement {
 
   public override step( time: number, dt: number, circuit: Circuit ): void {
     super.step( time, dt, circuit );
-    const resistanceNoise = circuitElementNoiseProperty.value ? this.resistanceProperty.value * 0.05 * dotRandom.nextGaussian() : 0;
+    const resistanceNoise = circuitElementNoiseProperty.value ? Math.sqrt( this.resistanceProperty.value ) * 0.08 * dotRandom.nextGaussian() : 0;
     const proposedResistance = this.resistanceProperty.value + resistanceNoise;
 
     assert && assert( proposedResistance >= 0, 'resistance should be non-negative' );

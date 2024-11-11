@@ -15,6 +15,8 @@ import NullableIO from '../../../tandem/js/types/NullableIO.js';
 import NumberIO from '../../../tandem/js/types/NumberIO.js';
 import ReferenceIO from '../../../tandem/js/types/ReferenceIO.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import Meter, { sensorDisplayUpdatePeriodProperty } from './Meter.js';
+import AmmeterConnection from './AmmeterConnection.js';
 import type AmmeterConnection from './AmmeterConnection.js';
 import CircuitElement from './CircuitElement.js';
 import Meter from './Meter.js';
@@ -22,7 +24,6 @@ import dotRandom from '../../../dot/js/dotRandom.js';
 import measuringDeviceNoiseProperty from './measuringDeviceNoiseProperty.js';
 
 const MEASURING_DEVICE_NOISE = 0.02; // Amperes
-const DISPLAYED_VALUE_UPDATE_PERIOD = 0.75; // seconds
 
 export default class Ammeter extends Meter {
 
@@ -114,7 +115,7 @@ export default class Ammeter extends Meter {
       // Advance the noise timer, and if it is time to make noise, do so
       this.displayedValueUpdateTimer += dt;
 
-      if ( this.displayedValueUpdateTimer > DISPLAYED_VALUE_UPDATE_PERIOD ) {
+      if ( this.displayedValueUpdateTimer > sensorDisplayUpdatePeriodProperty.value ) {
         this.displayedValueUpdateTimer = 0;
 
         if ( this.currentProperty.value !== null ) {

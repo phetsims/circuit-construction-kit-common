@@ -14,6 +14,8 @@ import Bounds2 from '../../../dot/js/Bounds2.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
 import PhetioObject from '../../../tandem/js/PhetioObject.js';
+import NumberProperty from '../../../axon/js/NumberProperty.ts';
+import Range from '../../../dot/js/Range.ts';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
@@ -71,5 +73,8 @@ export default class Meter extends PhetioObject {
     this.isDraggingProbesWithBodyProperty.reset();
   }
 }
+
+// TODO: Add documentation
+export const sensorDisplayUpdatePeriodProperty = new NumberProperty( 0.75, { range: new Range( 0.01, 2 ), tandem: Tandem.GLOBAL_MODEL.createTandem( 'sensorDisplayUpdatePeriodProperty' ) } );
 
 circuitConstructionKitCommon.register( 'Meter', Meter );

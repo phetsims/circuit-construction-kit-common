@@ -148,6 +148,7 @@ export default class Circuit extends PhetioObject {
   public readonly householdObjectGroup: PhetioGroup<Resistor, [ Vertex, Vertex, ResistorType ]>;
   public readonly fuseGroup: PhetioGroup<Fuse, [ Vertex, Vertex ]>;
   public readonly seriesAmmeterGroup: PhetioGroup<SeriesAmmeter, [ Vertex, Vertex ]> | null;
+  public readonly alternateSeriesAmmeterGroup: PhetioGroup<SeriesAmmeter, [ Vertex, Vertex ]> | null;
   public readonly extremeLightBulbGroup: PhetioGroup<LightBulb, [ Vertex, Vertex ]> | null;
   public readonly capacitorGroup: PhetioGroup<Capacitor, [ Vertex, Vertex ]> | null;
   public readonly inductorGroup: PhetioGroup<Inductor, [ Vertex, Vertex ]> | null;
@@ -358,6 +359,31 @@ export default class Circuit extends PhetioObject {
       return [ archetypeStartVertex!, archetypeEndVertex! ];
     };
 
+    /**
+     * Helper function to find the lowest missing ammeter number.
+     * @param seriesAmmeterGroup - The group containing the ammeters.
+     * @param startingIndex - The lowest index to look for (supports alternate series ammeter group)
+     * @returns The lowest missing ammeter number.
+     */
+    function getLowestMissingSeriesAmmeterNumber( seriesAmmeterGroup: PhetioGroup<SeriesAmmeter, [ Vertex, Vertex ]>, startingIndex: number ): number {
+      const assignedNumbers: number[] = [];
+
+      // Gather all the currently assigned ammeter numbers
+      seriesAmmeterGroup.forEach( ammeter => {
+        if ( ammeter.ammeterNumberProperty.value !== null ) {
+          assignedNumbers.push( ammeter.ammeterNumberProperty.value );
+        }
+      } );
+
+      // Find the lowest missing ammeter number starting from startingIndex
+      let ammeterNumber = startingIndex;
+      while ( assignedNumbers.includes( ammeterNumber ) ) {
+        ammeterNumber++;
+      }
+
+      return ammeterNumber;
+    }
+
     this.wireGroup = new PhetioGroup( ( tandem, startVertex, endVertex ) => {
       return new Wire( startVertex, endVertex, this.wireResistivityProperty, tandem );
     }, createVertices, {
@@ -435,11 +461,24 @@ export default class Circuit extends PhetioObject {
       } );
 
     this.seriesAmmeterGroup = this.includeLabElements ? new PhetioGroup(
-      ( tandem, startVertex, endVertex ) => new SeriesAmmeter( startVertex, endVertex, tandem ),
+      ( tandem, startVertex, endVertex ) => new SeriesAmmeter( startVertex, endVertex, tandem, {
+        ammeterNumber: this.seriesAmmeterGroup ? getLowestMissingSeriesAmmeterNumber( this.seriesAmmeterGroup, 1 ) : null
+      } ),
       createVertices, {
         groupElementStartingIndex: GROUP_STARTING_INDEX,
         phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
         tandem: tandem.createTandem( 'seriesAmmeterGroup' )
+      } ) : null;
+
+    this.alternateSeriesAmmeterGroup = this.includeLabElements ? new PhetioGroup(
+      ( tandem, startVertex, endVertex ) => new SeriesAmmeter( startVertex, endVertex, tandem, {
+        alternate: true,
+        ammeterNumber: this.alternateSeriesAmmeterGroup ? getLowestMissingSeriesAmmeterNumber( this.alternateSeriesAmmeterGroup, 7 ) : null
+      } ),
+      createVertices, {
+        groupElementStartingIndex: GROUP_STARTING_INDEX,
+        phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
+        tandem: tandem.createTandem( 'alternateSeriesAmmeterGroup' )
       } ) : null;
 
     this.extremeLightBulbGroup = includeExtremeElements ? new PhetioGroup(
@@ -513,6 +552,7 @@ export default class Circuit extends PhetioObject {
       ...( this.extremeLightBulbGroup ? [ this.extremeLightBulbGroup ] : [] ),
       ...( this.realLightBulbGroup ? [ this.realLightBulbGroup ] : [] ),
       ...( this.seriesAmmeterGroup ? [ this.seriesAmmeterGroup ] : [] ),
+      ...( this.alternateSeriesAmmeterGroup ? [ this.alternateSeriesAmmeterGroup ] : [] ),
       ...( this.acVoltageGroup ? [ this.acVoltageGroup ] : [] ),
       ...( this.capacitorGroup ? [ this.capacitorGroup ] : [] ),
       ...( this.inductorGroup ? [ this.inductorGroup ] : [] )

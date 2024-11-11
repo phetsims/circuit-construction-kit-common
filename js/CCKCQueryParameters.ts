@@ -67,7 +67,7 @@ const CCKCQueryParameters = QueryStringMachine.getAll( {
     type: 'flag'
   },
 
-  highPrecisionMeters: {
+  alternateSensors: {
     public: true,
     type: 'flag'
   },

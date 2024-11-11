@@ -371,13 +371,23 @@ export default class CircuitNode extends Node {
           supportsDynamicState: false
         } ) );
 
-    this.circuit.seriesAmmeterGroup && initializeCircuitElementType( ( e: CircuitElement ) => e instanceof SeriesAmmeter, this.fixedCircuitElementLayer,
+    this.circuit.seriesAmmeterGroup && initializeCircuitElementType( ( e: CircuitElement ) => e instanceof SeriesAmmeter && !e.isAlternate, this.fixedCircuitElementLayer,
       new PhetioGroup<CircuitElementNode, [ CircuitElement ]>( ( tandem: Tandem, circuitElement: CircuitElement ) => new SeriesAmmeterNode( screenView, this, circuitElement as SeriesAmmeter, tandem,
           this.model.isValueDepictionEnabledProperty ),
         () => [ this.circuit.seriesAmmeterGroup!.archetype ], {
           groupElementStartingIndex: GROUP_STARTING_INDEX,
           phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
           tandem: tandem.createTandem( 'seriesAmmeterNodeGroup' ),
+          supportsDynamicState: false
+        } ) );
+
+    this.circuit.seriesAmmeterGroup && initializeCircuitElementType( ( e: CircuitElement ) => e instanceof SeriesAmmeter && e.isAlternate, this.fixedCircuitElementLayer,
+      new PhetioGroup<CircuitElementNode, [ CircuitElement ]>( ( tandem: Tandem, circuitElement: CircuitElement ) => new SeriesAmmeterNode( screenView, this, circuitElement as SeriesAmmeter, tandem,
+          this.model.isValueDepictionEnabledProperty, { isAlternate: true } ),
+        () => [ this.circuit.seriesAmmeterGroup!.archetype ], {
+          groupElementStartingIndex: GROUP_STARTING_INDEX,
+          phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
+          tandem: tandem.createTandem( 'alternateSeriesAmmeterNodeGroup' ),
           supportsDynamicState: false
         } ) );
 

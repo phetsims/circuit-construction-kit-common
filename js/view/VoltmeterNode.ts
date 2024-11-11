@@ -29,6 +29,7 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import probeBlack_png from '../../mipmaps/probeBlack_png.js';
 import probeRed_png from '../../mipmaps/probeRed_png.js';
 import voltmeterBody_png from '../../mipmaps/voltmeterBody_png.js';
+import alternateVoltmeterBody_png from '../../images/alternateVoltmeterBody_png.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import CCKCUtils from '../CCKCUtils.js';
@@ -62,6 +63,7 @@ type SelfOptions = {
   visibleBoundsProperty?: ReadOnlyProperty<Bounds2> | null;
   showResultsProperty?: ReadOnlyProperty<boolean>;
   showPhetioIndex?: boolean;
+  isAlternate?: boolean;
 };
 type VoltmeterNodeOptions = SelfOptions & NodeOptions;
 
@@ -103,7 +105,10 @@ export default class VoltmeterNode extends Node {
       showPhetioIndex: false,
 
       // Instrumentation is handled in Meter.isActiveProperty
-      phetioVisiblePropertyInstrumented: false
+      phetioVisiblePropertyInstrumented: false,
+
+      // Whether this is a high-precision voltmeter
+      isAlternate: false
 
     }, providedOptions );
 
@@ -140,7 +145,7 @@ export default class VoltmeterNode extends Node {
         voltmeter.voltageReadoutProperty,
         CircuitConstructionKitCommonStrings.voltageUnitsStringProperty
       ], voltage =>
-        voltage === null ? MathSymbols.NO_VALUE : CCKCUtils.createVoltageReadout( voltage, voltmeter.phetioIndex ), {
+        voltage === null ? MathSymbols.NO_VALUE : CCKCUtils.createVoltageReadout( voltage, options.isAlternate ), {
         tandem: options.tandem.createTandem( 'probeReadoutStringProperty' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME )
       }
     );
@@ -161,7 +166,7 @@ export default class VoltmeterNode extends Node {
         centerY: voltmeterBody_png[ 0 ].height / 2
       } );
 
-    const bodyNode = new Image( voltmeterBody_png, {
+    const bodyNode = new Image( options.isAlternate ? alternateVoltmeterBody_png : voltmeterBody_png, {
       scale: SCALE,
       cursor: 'pointer',
       children: [ probeTextNode ]

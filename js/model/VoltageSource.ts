@@ -124,9 +124,9 @@ export default abstract class VoltageSource extends FixedCircuitElement {
     super.step( time, dt, circuit );
 
     // The percent of the mean underlying value which is used for the standard deviation of the fluctuations
-    const VOLTAGE_NOISE_AMOUNT = 0.05;
+    const VOLTAGE_NOISE_AMOUNT = 0.08;
 
-    const voltageSourceNoise = circuitElementNoiseProperty.value ? this.voltageProperty.value * VOLTAGE_NOISE_AMOUNT * dotRandom.nextGaussian() : 0;
+    const voltageSourceNoise = circuitElementNoiseProperty.value ? Math.sqrt( Math.abs( this.voltageProperty.value ) ) * VOLTAGE_NOISE_AMOUNT * dotRandom.nextGaussian() : 0;
     this.voltageWithNoiseProperty.value = this.voltageProperty.value + voltageSourceNoise;
   }
 }

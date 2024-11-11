@@ -7,6 +7,9 @@
  */
 
 import NumberProperty from '../../../axon/js/NumberProperty.js';
+import Property from '../../../axon/js/Property.js';
+import optionize from '../../../phet-core/js/optionize.js';
+import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import type Property from '../../../axon/js/Property.js';
 import optionize, { type EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
@@ -19,12 +22,15 @@ import NullableIO from '../../../tandem/js/types/NullableIO.js';
 import NumberIO from '../../../tandem/js/types/NumberIO.js';
 import measuringDeviceNoiseProperty from './measuringDeviceNoiseProperty.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
+import { sensorDisplayUpdatePeriodProperty } from './Meter.js';
 
-type SelfOptions = EmptySelfOptions;
+type SelfOptions = {
+  alternate?: boolean;
+  ammeterNumber?: number | null; // Which number is used for labeling the ammeter (e.g. 'Ammeter 1') - Null means no number is used
+};
 type SeriesAmmeterOptions = SelfOptions & FixedCircuitElementOptions;
 
 const MEASURING_DEVICE_NOISE = 0.005; // Amperes
-const DISPLAYED_VALUE_UPDATE_PERIOD = 0.5; // seconds
 
 export default class SeriesAmmeter extends FixedCircuitElement {
 
@@ -37,11 +43,21 @@ export default class SeriesAmmeter extends FixedCircuitElement {
   // the current the probe is displaying (in amperes) or null if unconnected
   public readonly currentReadoutProperty: Property<number | null>;
 
+  public readonly isAlternate;
+
+  public readonly ammeterNumberProperty: Property<number | null>;
+
   private displayedValueUpdateTimer = 0;
 
   public constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: SeriesAmmeterOptions ) {
 
     const options = optionize<SeriesAmmeterOptions, SelfOptions, FixedCircuitElementOptions>()( {
+
+      // By default, series ammeters are not high-precision
+      alternate: false,
+
+      // By default, series ammeters do not include the numerical label in the title
+      ammeterNumber: null,
 
       // SeriesAmmeters do not have these features, so opt out of PhET-iO instrumentation here
       isEditablePropertyOptions: {
@@ -59,13 +75,21 @@ export default class SeriesAmmeter extends FixedCircuitElement {
     this.resistanceProperty = new NumberProperty( 0 );
     this.resistanceWithNoiseProperty = new NumberProperty( 0 );
 
+    this.isAlternate = options.alternate;
+
+    this.ammeterNumberProperty = new Property<number | null>( options.ammeterNumber, {
+      tandem: tandem.createTandem( 'ammeterNumberProperty' ),
+      units: 'A',
+      phetioValueType: NullableIO( NumberIO )
+    } );
+
     this.currentReadoutProperty = new Property<number | null>( null, {
       tandem: tandem.createTandem( 'currentReadoutProperty' ),
       units: 'A',
       phetioValueType: NullableIO( NumberIO )
     } );
 
-    // If the measured current goes from null to non-null or vice-versa, eagerly update the displayed value
+    // If the measured current goes from null to non-null or vice versa, eagerly update the displayed value
     // and restart the display update timer
     this.currentProperty.link( ( current, previousCurrent ) => {
       if ( ( current === null ) !== ( previousCurrent === null ) ) {
@@ -99,7 +123,7 @@ export default class SeriesAmmeter extends FixedCircuitElement {
     // Advance the noise timer, and if it is time to make noise, do so
     this.displayedValueUpdateTimer += dt;
 
-    if ( this.displayedValueUpdateTimer > DISPLAYED_VALUE_UPDATE_PERIOD ) {
+    if ( this.displayedValueUpdateTimer > sensorDisplayUpdatePeriodProperty.value ) {
       this.displayedValueUpdateTimer = 0;
 
       if ( this.currentProperty.value !== null ) {

@@ -23,28 +23,54 @@ import CircuitNode from './CircuitNode.js';
 import CCKCProbeNode from './CCKCProbeNode.js';
 import measuringDeviceNoiseProperty from '../model/measuringDeviceNoiseProperty.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
+import DerivedStringProperty from '../../../axon/js/DerivedStringProperty.js';
+import NumberIO from '../../../tandem/js/types/NumberIO.js';
+import NullableIO from '../../../tandem/js/types/NullableIO.js';
 import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 
 const voltageWithUnitsStringProperty = CircuitConstructionKitCommonStrings.voltageWithUnitsStringProperty;
+const voltageStringProperty = CircuitConstructionKitCommonStrings.voltageStringProperty;
+const voltageUnitsInParenthesesStringProperty = CircuitConstructionKitCommonStrings.voltageUnitsInParenthesesStringProperty;
 
 // constants
 const MEASUREMENT_NOISE = 0.08;
 const SERIES_1_COLOR = '#ec3223';
 const SERIES_2_COLOR = CCKCConstants.CHART_SERIES_COLOR;
 
+type SelfOptions = {
+  chartNumber?: number | null; // Which number is used for labeling the chart (e.g. 'Voltage 1 (V)') - Null means no number is used
+};
+type VoltageChartNodeOptions = SelfOptions & CCKCChartNodeOptions;
+
 export default class VoltageChartNode extends CCKCChartNode {
+
+  public readonly chartNumber: number | null;
+
+  private readonly latestVoltageProperty: Property<number | null>;
+
   private readonly probeNode1: CCKCProbeNode;
   private readonly probeNode2: CCKCProbeNode;
   private lastStepTime: number | null;
 
-  public constructor( circuitNode: CircuitNode, timeProperty: Property<number>, visibleBoundsProperty: Property<Bounds2>, providedOptions?: CCKCChartNodeOptions ) {
+  public constructor( circuitNode: CircuitNode, timeProperty: Property<number>, visibleBoundsProperty: Property<Bounds2>, providedOptions?: VoltageChartNodeOptions ) {
 
     providedOptions = combineOptions<CCKCChartNodeOptions>( {
       defaultZoomLevel: new Range( -10, 10 ),
       tandem: Tandem.OPTIONAL
     }, providedOptions );
 
-    super( circuitNode, timeProperty, visibleBoundsProperty, createObservableArray(), voltageWithUnitsStringProperty, providedOptions );
+    const yAxisLabelTextProperty = new DerivedStringProperty( [ voltageWithUnitsStringProperty, voltageStringProperty, voltageUnitsInParenthesesStringProperty ], ( voltageWithUnitsString, voltageString, voltageUnitsInParenthesesString ) =>
+      providedOptions.chartNumber ? voltageString + ' ' + providedOptions.chartNumber + ' ' + voltageUnitsInParenthesesString : voltageWithUnitsString
+    );
+
+    super( circuitNode, timeProperty, visibleBoundsProperty, createObservableArray(), yAxisLabelTextProperty, providedOptions );
+
+    this.chartNumber = providedOptions.chartNumber ? providedOptions.chartNumber : null;
+
+    this.latestVoltageProperty = new Property<number | null>( null, {
+      tandem: providedOptions.tandem.createTandem( 'latestVoltageProperty' ),
+      phetioValueType: NullableIO( NumberIO )
+    } );
 
     this.probeNode1 = this.addProbeNode( SERIES_1_COLOR, SERIES_1_COLOR, 5, 10, this.aboveBottomLeft1Property, providedOptions.tandem.createTandem( 'probeNode1' ) );
     this.probeNode2 = this.addProbeNode( SERIES_2_COLOR, SERIES_2_COLOR, 36, 54, this.aboveBottomLeft2Property, providedOptions.tandem.createTandem( 'probeNode2' ) );
@@ -60,11 +86,11 @@ export default class VoltageChartNode extends CCKCChartNode {
     const blackConnection = this.circuitNode.getVoltageConnection( blackPoint );
     const voltage = this.circuitNode.circuit.getVoltageBetweenConnections( redConnection, blackConnection, false );
 
-    if ( measuringDeviceNoiseProperty.value ) {
-      return voltage === null ? null : new Vector2( time, voltage + MEASUREMENT_NOISE * dotRandom.nextGaussian() );
-    }
+    const newVoltage = voltage === null ? null : measuringDeviceNoiseProperty.value ? voltage + MEASUREMENT_NOISE * dotRandom.nextGaussian() : voltage;
 
-    return voltage === null ? null : new Vector2( time, voltage );
+    this.latestVoltageProperty.value = newVoltage;
+
+    return newVoltage === null ? null : new Vector2( time, newVoltage );
   }
 
   /**

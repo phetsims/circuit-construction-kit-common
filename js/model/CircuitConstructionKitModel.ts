@@ -29,6 +29,11 @@ import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Ammeter from './Ammeter.js';
 import Circuit from './Circuit.js';
+import SeriesAmmeter from './SeriesAmmeter.js';
+import Voltmeter from './Voltmeter.js';
+import ZoomAnimation from './ZoomAnimation.js';
+import Tandem from '../../../tandem/js/Tandem.js';
+import Bounds2 from '../../../dot/js/Bounds2.js';
 import CircuitElementViewType from './CircuitElementViewType.js';
 import InteractionMode from './InteractionMode.js';
 import optionize from '../../../phet-core/js/optionize.js';
@@ -39,6 +44,7 @@ import Utils from '../../../dot/js/Utils.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import TModel from '../../../joist/js/TModel.js';
 import isSettingPhetioStateProperty from '../../../tandem/js/isSettingPhetioStateProperty.js';
+import alternateSensorsProperty from './alternateSensorsProperty.js';
 import LightBulb from './LightBulb.js';
 import Voltmeter from './Voltmeter.js';
 import ZoomAnimation from './ZoomAnimation.js';
@@ -49,6 +55,7 @@ type CircuitConstructionKitModelOptions = {
   blackBoxStudy?: boolean;
   revealing?: boolean;
   showNoncontactAmmeters?: boolean;
+  showAdvancedControls?: boolean;
 };
 
 export default class CircuitConstructionKitModel implements TModel {
@@ -61,11 +68,17 @@ export default class CircuitConstructionKitModel implements TModel {
   // whether to show noncontact ammeters
   public readonly isShowNoncontactAmmeters: boolean;
 
+  // whether to show the 'Advanced' accordion box
+  public readonly isShowAdvancedControls: boolean;
+
   // contains CircuitElements, Vertices, etc.
   public readonly circuit: Circuit;
 
   // created statically and indexed starting at 1 for human-readability for PhET-iO
   public readonly voltmeters: Voltmeter[];
+
+  // Visible when alternateSensors is turned on
+  public readonly alternateVoltmeters: Voltmeter[];
 
   // created statically and indexed starting at 1 for human-readability for PhET-iO
   public readonly ammeters: Ammeter[];
@@ -112,7 +125,8 @@ export default class CircuitConstructionKitModel implements TModel {
       // the answer by pressing the reveal answer button.
       revealing: true,
       blackBoxStudy: false,
-      showNoncontactAmmeters: true
+      showNoncontactAmmeters: true,
+      showAdvancedControls: true
     }, providedOptions );
 
     // animation for the zoom level or null if not animating
@@ -131,6 +145,7 @@ export default class CircuitConstructionKitModel implements TModel {
     } );
 
     this.isShowNoncontactAmmeters = options.showNoncontactAmmeters;
+    this.isShowAdvancedControls = options.showAdvancedControls;
 
     const circuitTandem = tandem.createTandem( 'circuit' );
     this.circuit = new Circuit( this.viewTypeProperty, this.addRealBulbsProperty, circuitTandem, {
@@ -150,7 +165,35 @@ export default class CircuitConstructionKitModel implements TModel {
       new Ammeter( this.isShowNoncontactAmmeters ? metersTandem.createTandem( 'ammeter2' ) : Tandem.OPT_OUT, 2 )
     ];
 
-    [ ...this.voltmeters, ...this.ammeters ].forEach( meter => {
+    // High precision voltmeters
+    this.alternateVoltmeters = [
+      new Voltmeter( metersTandem.createTandem( 'voltmeter3' ), 3 ),
+      new Voltmeter( metersTandem.createTandem( 'voltmeter4' ), 4 )
+    ];
+
+    // If alternateSensors is turned off, reset the high-precision voltmeters
+    alternateSensorsProperty.lazyLink( ( isAlternateSensors: boolean ) => {
+      if ( !isAlternateSensors ) {
+        this.alternateVoltmeters.forEach( voltmeter => voltmeter.reset() );
+      }
+    } );
+
+    // If alternateSensors is turned off, remove any active high-precision ammeters
+    alternateSensorsProperty.lazyLink( ( isAlternateSensors: boolean ) => {
+      if ( !isAlternateSensors ) {
+
+        // Make a shallow copy of circuit elements so that index-shifting on removal does not cause any to be skipped
+        const circuitElementsBeforeRemoval = [ ...this.circuit.circuitElements ];
+
+        circuitElementsBeforeRemoval.forEach( circuitElement => {
+          if ( circuitElement instanceof SeriesAmmeter && circuitElement.isAlternate ) {
+            this.circuit.disposeCircuitElement( circuitElement );
+          }
+        } );
+      }
+    } );
+
+    [ ...this.voltmeters, ...this.ammeters, ...this.alternateVoltmeters ].forEach( meter => {
       meter.isActiveProperty.link( isActive => {
 
         // Clear the selection when the user drags out a sensor
@@ -331,9 +374,14 @@ export default class CircuitConstructionKitModel implements TModel {
     this.voltmeters.forEach( voltmeter => voltmeter.stepDisplayUpdateTimer( dt ) );
     this.ammeters.forEach( ammeter => ammeter.stepDisplayUpdateTimer( dt ) );
 
+    // Step the display update timers for high-precision voltmeters
+    this.alternateVoltmeters.forEach( voltmeter => voltmeter.stepDisplayUpdateTimer( dt ) );
+
     // If there are any series ammeters, step their display update timers
     this.circuit.seriesAmmeterGroup?.forEach( seriesAmmeter => seriesAmmeter.stepDisplayUpdateTimer( dt ) );
 
+    // If there are any high-precision series ammeters, step their display update timers
+    this.circuit.alternateSeriesAmmeterGroup?.forEach( seriesAmmeter => seriesAmmeter.stepDisplayUpdateTimer( dt ) );
   }
 
   /**
@@ -373,6 +421,7 @@ export default class CircuitConstructionKitModel implements TModel {
     this.circuit.reset();
     this.voltmeters.forEach( voltmeter => voltmeter.reset() );
     this.ammeters.forEach( ammeter => ammeter.reset() );
+    this.alternateVoltmeters.forEach( voltmeter => voltmeter.reset() );
     this.viewTypeProperty.reset();
     this.zoomLevelProperty.reset();
     this.animatedZoomScaleProperty.reset();
