@@ -74,7 +74,6 @@ export default class Meter extends PhetioObject {
   }
 }
 
-// TODO: Add documentation
 export const sensorDisplayUpdatePeriodProperty = new NumberProperty( 0.75, { range: new Range( 0.01, 2 ), tandem: Tandem.GLOBAL_MODEL.createTandem( 'sensorDisplayUpdatePeriodProperty' ) } );
 
 circuitConstructionKitCommon.register( 'Meter', Meter );
