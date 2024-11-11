@@ -16,8 +16,8 @@ import Vector2Property from '../../../dot/js/Vector2Property.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import PhetioObject from '../../../tandem/js/PhetioObject.js';
-import NumberProperty from '../../../axon/js/NumberProperty.ts';
-import Range from '../../../dot/js/Range.ts';
+import NumberProperty from '../../../axon/js/NumberProperty.js';
+import Range from '../../../dot/js/Range.js';
 
 export default class Meter extends PhetioObject {
   public phetioIndex: number;
