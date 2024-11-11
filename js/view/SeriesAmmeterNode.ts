@@ -25,6 +25,8 @@ import ProbeTextNode from './ProbeTextNode.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import Panel from '../../../sun/js/Panel.js';
 import StringProperty from '../../../axon/js/StringProperty.js';
+import optionize from '../../../phet-core/js/optionize.js';
+import DerivedStringProperty from '../../../axon/js/DerivedStringProperty.js';
 
 const currentStringProperty = CircuitConstructionKitCommonStrings.currentStringProperty;
 
@@ -32,6 +34,7 @@ const currentStringProperty = CircuitConstructionKitCommonStrings.currentStringP
 const PANEL_HEIGHT = 40;
 const PANEL_WIDTH = CCKCConstants.SERIES_AMMETER_LENGTH;
 const ORANGE = '#f39033';
+const PURPLE = '#a98fcf';
 
 const CORNER_RADIUS = 4;
 
@@ -42,27 +45,44 @@ const CORNER_RADIUS = 4;
  */
 const createPanel = ( providedOptions?: RectangleOptions ) => new Rectangle( 0, 0, PANEL_WIDTH, PANEL_HEIGHT, providedOptions ).rasterized( { wrap: false } );
 
-const orangeBackgroundPanel = createPanel( { cornerRadius: CORNER_RADIUS, fill: ORANGE } );
 const blackBorder = createPanel( {
   cornerRadius: CORNER_RADIUS,
   stroke: '#231f20',
   lineWidth: 2.4
 } );
 
+type SelfOptions = {
+  isAlternate?: boolean;
+};
+type SeriesAmmeterNodeOptions = SelfOptions & FixedCircuitElementNodeOptions;
+
 export default class SeriesAmmeterNode extends FixedCircuitElementNode {
   private readonly frontPanelContainer: Node;
   private readonly disposeSeriesAmmeterNode: () => void;
 
   public constructor( screenView: CCKCScreenView | null, circuitNode: CircuitNode | null, seriesAmmeter: SeriesAmmeter,
-                      tandem: Tandem, isValueDepictionEnabledProperty: TReadOnlyProperty<boolean>, providedOptions?: FixedCircuitElementNodeOptions ) {
+                      tandem: Tandem, isValueDepictionEnabledProperty: TReadOnlyProperty<boolean>, providedOptions?: SeriesAmmeterNodeOptions ) {
+
+    const options = optionize<SeriesAmmeterNodeOptions, SelfOptions, FixedCircuitElementNodeOptions>()( {
+
+      // Whether this is a high-precision series ammeter
+      isAlternate: false
+
+    }, providedOptions );
 
     const stringProperty = new StringProperty( MathSymbols.NO_VALUE, {
       tandem: tandem.createTandem( 'probeReadoutText' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME ),
       phetioReadOnly: true
     } );
 
+    const probeTextProperty = new DerivedStringProperty( [ currentStringProperty, seriesAmmeter.ammeterNumberProperty ], ( currentString, ammeterNumber ) =>
+        ammeterNumber ? currentString + ' ' + ammeterNumber : currentString, {
+        tandem: tandem.createTandem( 'probeTitleStringProperty' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME )
+      }
+    );
+
     const probeTextNode = new ProbeTextNode(
-      stringProperty, isValueDepictionEnabledProperty, currentStringProperty,
+      stringProperty, isValueDepictionEnabledProperty, probeTextProperty,
 
       // No need for an extra level of nesting in the tandem tree, since that is just an implementation detail
       // and not a feature
@@ -87,7 +107,10 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
 
           const sign = seriesAmmeter.currentSenseProperty.value === CurrentSense.BACKWARD ? -1 : +1;
           const currentValue = seriesAmmeter.currentReadoutProperty.value === null ? null : sign * seriesAmmeter.currentReadoutProperty.value;
-          readout = CCKCUtils.createCurrentReadout( currentValue, false );
+          readout = CCKCUtils.createCurrentReadout( currentValue, false, seriesAmmeter.isAlternate );
+        }
+        else {
+          seriesAmmeter.currentReadoutProperty.value = null;
         }
       }
 
@@ -109,7 +132,7 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
       children: [
 
         // orange background panel
-        orangeBackgroundPanel,
+        createPanel( { cornerRadius: CORNER_RADIUS, fill: options.isAlternate ? PURPLE : ORANGE } ),
 
         // gray track
         new Rectangle( 0, 0, PANEL_WIDTH, 20, {
@@ -137,20 +160,20 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
       lifelikeNode,
       new Node( { children: [ lifelikeNode ] } ), // reuse lifelike view for the schematic view
       tandem,
-      providedOptions
+      options
     );
 
     // the panel to be shown in front for z-ordering.  Wrap centered in a child node to make the layout
     // in updateRender trivial.
     this.frontPanelContainer = new Panel( probeTextNode, {
-      fill: ORANGE,
+      fill: options.isAlternate ? PURPLE : ORANGE,
       stroke: null,
       xMargin: 10,
       yMargin: 1,
       pickable: false
     } );
 
-    if ( providedOptions && providedOptions.isIcon ) {
+    if ( options && options.isIcon ) {
       lifelikeNode.addChild( this.frontPanelContainer.mutate( {
         centerX: lifelikeNode.width / 2,
         centerY: lifelikeNode.height / 2 - 2
@@ -164,7 +187,7 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
     }
 
     // whether to show as an isIcon
-    this.isIcon = !!( providedOptions && providedOptions.isIcon );
+    this.isIcon = !!( options && options.isIcon );
 
     this.disposeSeriesAmmeterNode = () => {
 

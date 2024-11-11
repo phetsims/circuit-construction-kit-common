@@ -53,6 +53,7 @@ type SelfOptions = {
   showSeriesAmmeters?: boolean;
   showNoncontactAmmeters?: boolean;
   showCharts?: boolean;
+  alternate?: boolean;
 };
 type SensorToolboxOptions = SelfOptions & CCKCPanelOptions;
 export default class SensorToolbox extends CCKCPanel {
@@ -76,7 +77,8 @@ export default class SensorToolbox extends CCKCPanel {
       showResultsProperty: circuitNode.model.isValueDepictionEnabledProperty,
       showSeriesAmmeters: true, // whether the series ammeters should be shown in the toolbox
       showNoncontactAmmeters: true, // whether the noncontact ammeters should be shown in the toolbox
-      showCharts: false
+      showCharts: false,
+      alternate: false
     }, providedOptions );
 
     /**
@@ -108,7 +110,8 @@ export default class SensorToolbox extends CCKCPanel {
     const voltmeter = new Voltmeter( Tandem.OPT_OUT, 0 );
     const voltmeterToolIcon = new VoltmeterNode( voltmeter, null, null, {
       tandem: Tandem.OPT_OUT,
-      isIcon: true
+      isIcon: true,
+      isAlternate: options.alternate
     } );
     const allVoltmetersInPlayAreaProperty = DerivedProperty.and( voltmeterNodes.map( voltmeterNode => voltmeterNode.voltmeter.isActiveProperty ) );
     allVoltmetersInPlayAreaProperty.link( visible => voltmeterToolIcon.setVisible( !visible ) );
@@ -147,14 +150,18 @@ export default class SensorToolbox extends CCKCPanel {
     );
     const seriesAmmeterNodeIcon = new SeriesAmmeterNode( null, null, seriesAmmeterIcon,
       Tandem.OPT_OUT, options.showResultsProperty, {
-        isIcon: true
+        isIcon: true,
+        isAlternate: options.alternate
       } );
 
     const createSeriesAmmeter = ( position: Vector2 ) => {
       const halfLength = CCKCConstants.SERIES_AMMETER_LENGTH / 2;
       const startVertex = circuit.vertexGroup.createNextElement( position.plusXY( -halfLength, 0 ) );
       const endVertex = circuit.vertexGroup.createNextElement( position.plusXY( halfLength, 0 ) );
-      return circuit.seriesAmmeterGroup!.createNextElement( startVertex, endVertex );
+
+      const seriesAmmeter = options.alternate ? circuit.alternateSeriesAmmeterGroup!.createNextElement( startVertex, endVertex ) : circuit.seriesAmmeterGroup!.createNextElement( startVertex, endVertex );
+
+      return seriesAmmeter;
     };
     seriesAmmeterNodeIcon.mutate( { scale: TOOLBOX_ICON_HEIGHT / seriesAmmeterNodeIcon.width } );
     const MAX_SERIES_AMMETERS = 6;
@@ -168,7 +175,7 @@ export default class SensorToolbox extends CCKCPanel {
       point => circuitNode.globalToLocalPoint( point ),
       seriesAmmeterNodeIcon,
       MAX_SERIES_AMMETERS,
-      () => circuit.circuitElements.count( circuitElement => circuitElement instanceof SeriesAmmeter ),
+      () => circuit.circuitElements.count( circuitElement => circuitElement instanceof SeriesAmmeter && circuitElement.isAlternate === options.alternate ),
       createSeriesAmmeter, {
         touchAreaExpansionLeft: 3,
         touchAreaExpansionTop: 15,
@@ -201,6 +208,8 @@ export default class SensorToolbox extends CCKCPanel {
         phetioReadOnly: true
       }
     } );
+
+    // TODO: Is allSeriesAmmetersInPlayArea needed? - see https://github.com/phetsims/circuit-construction-kit-common/issues/1002
 
     Multilink.multilink(
       [ circuitNode.model.showLabelsProperty, allAmmetersInPlayAreaProperty, allSeriesAmmetersInPlayAreaProperty, ammeterToolIcon.visibleProperty, seriesAmmeterNodeIcon.visibleProperty, seriesAmmeterToolNode.visibleProperty ],
@@ -339,6 +348,7 @@ export default class SensorToolbox extends CCKCPanel {
       children: rows
     } ), tandem, {
       yMargin: 8,
+      visibleProperty: options.visibleProperty,
       visiblePropertyOptions: {
         phetioFeatured: true
       }

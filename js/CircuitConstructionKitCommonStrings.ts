@@ -56,8 +56,10 @@ type StringsType = {
   'showCurrentStringProperty': LocalizedStringProperty;
   'resistanceStringProperty': LocalizedStringProperty;
   'voltageStringProperty': LocalizedStringProperty;
+  'voltageUnitsInParenthesesStringProperty': LocalizedStringProperty;
   'voltageWithUnitsStringProperty': LocalizedStringProperty;
   'voltageChartStringProperty': LocalizedStringProperty;
+  'currentUnitsInParenthesesStringProperty': LocalizedStringProperty;
   'currentWithUnitsStringProperty': LocalizedStringProperty;
   'currentChartStringProperty': LocalizedStringProperty;
   'frequencyStringProperty': LocalizedStringProperty;
@@ -86,7 +88,7 @@ type StringsType = {
   'dataOutOfRangeStringProperty': LocalizedStringProperty;
   'measuringDeviceNoiseStringProperty': LocalizedStringProperty;
   'circuitElementNoiseStringProperty': LocalizedStringProperty;
-  'highPrecisionMetersStringProperty': LocalizedStringProperty;
+  'alternateSensorsStringProperty': LocalizedStringProperty;
 };
 
 const CircuitConstructionKitCommonStrings = getStringModule( 'CIRCUIT_CONSTRUCTION_KIT_COMMON' ) as StringsType;

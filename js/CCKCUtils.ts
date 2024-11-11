@@ -29,7 +29,7 @@ const CCKCUtils = {
    * Returns a string that adjusts its ampere value.
    * @param current - in Amps
    */
-  createCurrentReadout: function( current: number | null, blackBoxStudy: boolean ): string {
+  createCurrentReadout: function( current: number | null, blackBoxStudy: boolean, isAlternate:boolean ): string {
     if ( CCKCQueryParameters.fullPrecisionAmmeter ) {
       return current + '';
     }
@@ -54,7 +54,7 @@ const CCKCUtils = {
       }
       else {
         const signedCurrent = ammeterReadoutTypeProperty.value === AmmeterReadoutType.MAGNITUDE ? Math.abs( current ) : current;
-        return StringUtils.fillIn( currentUnitsStringProperty, { current: Utils.toFixed( signedCurrent, CCKCConstants.METER_PRECISION ) } );
+        return StringUtils.fillIn( currentUnitsStringProperty, { current: Utils.toFixed( signedCurrent, isAlternate ? CCKCConstants.HIGH_PRECISION_METER_PRECISION : CCKCConstants.METER_PRECISION ) } );
       }
     }
   },
@@ -63,8 +63,8 @@ const CCKCUtils = {
    * Returns a string that adjusts its voltage value.
    * @param value - voltage value in Volts
    */
-  createVoltageReadout: function( value: number, phetioIndex: number ): string {
-    const precision = phetioIndex === 1 ? CCKCConstants.METER_PRECISION : 3;
+  createVoltageReadout: function( value: number, isAlternate: boolean ): string {
+    const precision = isAlternate ? CCKCConstants.HIGH_PRECISION_METER_PRECISION : CCKCConstants.METER_PRECISION;
     return StringUtils.fillIn( voltageUnitsStringProperty, { voltage: Utils.toFixed( value, precision ) } );
   },
 

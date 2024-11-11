@@ -131,11 +131,20 @@
   "voltage": {
     "value": "Voltage"
   },
+  "current":  {
+    "value": "Current"
+  },
+  "voltageUnitsInParentheses": {
+    "value": "(V)"
+  },
   "voltageWithUnits": {
     "value": "Voltage (V)"
   },
   "voltageChart": {
     "value": "Voltage Chart"
+  },
+  "currentUnitsInParentheses": {
+    "value": "(A)"
   },
   "currentWithUnits": {
     "value": "Current (A)"
@@ -221,7 +230,7 @@
   "circuitElementNoise": {
     "value": "Circuit element noise"
   },
-  "highPrecisionMeters": {
-    "value": "High precision meters"
+  "alternateSensors": {
+    "value": "Alternate sensors"
   }
 }
