@@ -7,11 +7,9 @@
  */
 
 import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
-import StringProperty from '../../../axon/js/StringProperty.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
 import { Node, Rectangle, RectangleOptions, Text } from '../../../scenery/js/imports.js';
-import Panel from '../../../sun/js/Panel.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCUtils from '../CCKCUtils.js';
@@ -25,7 +23,6 @@ import CCKCScreenView from './CCKCScreenView.js';
 import CircuitNode from './CircuitNode.js';
 import FixedCircuitElementNode, { FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
 import ProbeTextNode from './ProbeTextNode.js';
-import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import Panel from '../../../sun/js/Panel.js';
 import StringProperty from '../../../axon/js/StringProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
