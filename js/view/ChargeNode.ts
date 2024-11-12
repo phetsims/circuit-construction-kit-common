@@ -8,6 +8,7 @@
  */
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
+import Multilink from '../../../axon/js/Multilink.js';
 import Utils from '../../../dot/js/Utils.js';
 import { Shape } from '../../../kite/js/imports.js';
 import ElectronChargeNode from '../../../scenery-phet/js/ElectronChargeNode.js';
@@ -16,12 +17,11 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Capacitor from '../model/Capacitor.js';
 import Charge from '../model/Charge.js';
+import CircuitElementViewType from '../model/CircuitElementViewType.js';
+import CapacitorCircuitElementNode from './CapacitorCircuitElementNode.js';
+import CCKCColors from './CCKCColors.js';
 import CircuitNode from './CircuitNode.js';
 import ConventionalCurrentArrowNode from './ConventionalCurrentArrowNode.js';
-import CapacitorCircuitElementNode from './CapacitorCircuitElementNode.js';
-import CircuitElementViewType from '../model/CircuitElementViewType.js';
-import Multilink from '../../../axon/js/Multilink.js';
-import CCKCColors from './CCKCColors.js';
 
 // constants
 const ELECTRON_CHARGE_NODE = new ElectronChargeNode( {

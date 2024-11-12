@@ -1,4 +1,4 @@
-// Copyright 2020-2022, University of Colorado Boulder
+// Copyright 2020-2024, University of Colorado Boulder
 
 /**
  * Demonstrates different circuit element shapes and nodes.
@@ -9,8 +9,8 @@
 import ScreenView, { ScreenViewOptions } from '../../../../joist/js/ScreenView.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import { Path } from '../../../../scenery/js/imports.js';
-import BarkNode from '../BarkNode.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
+import BarkNode from '../BarkNode.js';
 
 // Constants for the resistor
 const SCHEMATIC_SCALE = 0.54;

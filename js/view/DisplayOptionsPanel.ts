@@ -1,4 +1,4 @@
-// Copyright 2016-2023, University of Colorado Boulder
+// Copyright 2016-2024, University of Colorado Boulder
 
 /**
  * This control panel shows checkboxes for "Show Electrons", etc.  Exists for the life of the sim and hence does not
@@ -7,21 +7,21 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import Property from '../../../axon/js/Property.js';
+import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import ElectronChargeNode from '../../../scenery-phet/js/ElectronChargeNode.js';
-import { AlignBox, AlignGroup, HBox, Text, VBox, Node } from '../../../scenery/js/imports.js';
+import Stopwatch from '../../../scenery-phet/js/Stopwatch.js';
+import { AlignBox, AlignGroup, HBox, Node, Text, VBox } from '../../../scenery/js/imports.js';
+import VerticalAquaRadioButtonGroup from '../../../sun/js/VerticalAquaRadioButtonGroup.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
-import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
+import CurrentType from '../model/CurrentType.js';
 import CCKCCheckbox from './CCKCCheckbox.js';
+import CCKCColors from './CCKCColors.js';
 import CCKCPanel from './CCKCPanel.js';
 import ConventionalCurrentArrowNode from './ConventionalCurrentArrowNode.js';
-import Property from '../../../axon/js/Property.js';
-import Stopwatch from '../../../scenery-phet/js/Stopwatch.js';
-import Tandem from '../../../tandem/js/Tandem.js';
-import CurrentType from '../model/CurrentType.js';
-import VerticalAquaRadioButtonGroup from '../../../sun/js/VerticalAquaRadioButtonGroup.js';
-import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
-import CCKCColors from './CCKCColors.js';
 
 const conventionalStringProperty = CircuitConstructionKitCommonStrings.conventionalStringProperty;
 const electronsStringProperty = CircuitConstructionKitCommonStrings.electronsStringProperty;

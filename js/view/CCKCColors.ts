@@ -8,8 +8,8 @@
  */
 
 import { ProfileColorProperty } from '../../../scenery/js/imports.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Tandem from '../../../tandem/js/Tandem.js';
+import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 const tandem = Tandem.COLORS;
 

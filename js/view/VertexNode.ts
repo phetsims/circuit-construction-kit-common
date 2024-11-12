@@ -1,4 +1,4 @@
-// Copyright 2016-2023, University of Colorado Boulder
+// Copyright 2016-2024, University of Colorado Boulder
 
 /**
  * The interactive scenery node for a vertex in the circuit graph.
@@ -8,6 +8,7 @@
 
 import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
+import { combineOptions } from '../../../phet-core/js/optionize.js';
 import { Circle, CircleOptions, Color, Grayscale, Node, SceneryConstants, SceneryEvent, Text, VBox } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -16,10 +17,9 @@ import CCKCUtils from '../CCKCUtils.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Circuit from '../model/Circuit.js';
 import Vertex from '../model/Vertex.js';
+import CCKCColors from './CCKCColors.js';
 import CircuitNode from './CircuitNode.js';
 import CircuitNodeDragListener from './CircuitNodeDragListener.js';
-import { combineOptions } from '../../../phet-core/js/optionize.js';
-import CCKCColors from './CCKCColors.js';
 
 // constants
 const DISTANCE_TO_CUT_BUTTON = 70; // How far in view coordinates the cut button appears from the vertex node

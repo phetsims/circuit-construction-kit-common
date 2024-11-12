@@ -15,36 +15,51 @@
  * @author Denzell Barnett (PhET Interactive Simulations)
  */
 
+import Multilink from '../../../axon/js/Multilink.js';
 import Property from '../../../axon/js/Property.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
+import DisplayClickToDismissListener from '../../../joist/js/DisplayClickToDismissListener.js';
 import { Node, Path, SceneryEvent } from '../../../scenery/js/imports.js';
 import scissorsShape from '../../../sherpa/js/fontawesome-4/scissorsShape.js';
 import RoundPushButton from '../../../sun/js/buttons/RoundPushButton.js';
+import PhetioGroup from '../../../tandem/js/PhetioGroup.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
-import CircuitDebugLayer from './CircuitDebugLayer.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import ACVoltage from '../model/ACVoltage.js';
+import AmmeterConnection from '../model/AmmeterConnection.js';
 import Battery from '../model/Battery.js';
 import Capacitor from '../model/Capacitor.js';
+import Circuit from '../model/Circuit.js';
+import CircuitConstructionKitModel from '../model/CircuitConstructionKitModel.js';
+import CircuitElement from '../model/CircuitElement.js';
+import CircuitElementViewType from '../model/CircuitElementViewType.js';
+import CurrentSense from '../model/CurrentSense.js';
+import Dog from '../model/Dog.js';
 import FixedCircuitElement from '../model/FixedCircuitElement.js';
 import Fuse from '../model/Fuse.js';
 import Inductor from '../model/Inductor.js';
 import LightBulb from '../model/LightBulb.js';
 import Resistor from '../model/Resistor.js';
+import ResistorType from '../model/ResistorType.js';
 import SeriesAmmeter from '../model/SeriesAmmeter.js';
 import Switch from '../model/Switch.js';
+import Vertex from '../model/Vertex.js';
 import VoltageConnection from '../model/VoltageConnection.js';
 import Wire from '../model/Wire.js';
 import ACVoltageNode from './ACVoltageNode.js';
 import BatteryNode from './BatteryNode.js';
 import CapacitorCircuitElementNode from './CapacitorCircuitElementNode.js';
 import CCKCLightBulbNode from './CCKCLightBulbNode.js';
+import CCKCScreenView from './CCKCScreenView.js';
 import ChargeNode from './ChargeNode.js';
+import CircuitDebugLayer from './CircuitDebugLayer.js';
+import CircuitElementEditContainerNode from './CircuitElementEditContainerNode.js';
 import CircuitElementNode from './CircuitElementNode.js';
 import CustomLightBulbNode from './CustomLightBulbNode.js';
+import DogNode from './DogNode.js';
 import FixedCircuitElementNode from './FixedCircuitElementNode.js';
 import FuseNode from './FuseNode.js';
 import InductorNode from './InductorNode.js';
@@ -55,21 +70,6 @@ import SwitchNode from './SwitchNode.js';
 import ValueNode from './ValueNode.js';
 import VertexNode from './VertexNode.js';
 import WireNode from './WireNode.js';
-import Circuit from '../model/Circuit.js';
-import CCKCScreenView from './CCKCScreenView.js';
-import CircuitElementViewType from '../model/CircuitElementViewType.js';
-import CircuitElement from '../model/CircuitElement.js';
-import Vertex from '../model/Vertex.js';
-import CircuitConstructionKitModel from '../model/CircuitConstructionKitModel.js';
-import PhetioGroup from '../../../tandem/js/PhetioGroup.js';
-import CurrentSense from '../model/CurrentSense.js';
-import Multilink from '../../../axon/js/Multilink.js';
-import Dog from '../model/Dog.js';
-import DogNode from './DogNode.js';
-import ResistorType from '../model/ResistorType.js';
-import AmmeterConnection from '../model/AmmeterConnection.js';
-import CircuitElementEditContainerNode from './CircuitElementEditContainerNode.js';
-import DisplayClickToDismissListener from '../../../joist/js/DisplayClickToDismissListener.js';
 
 // constants
 // Since this sim has already been published with PhET-iO + migration support, it isn't worth changing initial indexing

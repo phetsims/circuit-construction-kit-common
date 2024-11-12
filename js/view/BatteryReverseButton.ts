@@ -1,4 +1,4 @@
-// Copyright 2017-2023, University of Colorado Boulder
+// Copyright 2017-2024, University of Colorado Boulder
 
 /**
  * Button that reverses a battery.
@@ -6,14 +6,14 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import { Color, Path, VBox } from '../../../scenery/js/imports.js';
 import syncAltSolidString from '../../../sherpa/js/fontawesome-5/syncAltSolidString.js';
+import { RoundPushButtonOptions } from '../../../sun/js/buttons/RoundPushButton.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Battery from '../model/Battery.js';
-import CCKCRoundPushButton from './CCKCRoundPushButton.js';
 import Circuit from '../model/Circuit.js';
-import { RoundPushButtonOptions } from '../../../sun/js/buttons/RoundPushButton.js';
-import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
+import CCKCRoundPushButton from './CCKCRoundPushButton.js';
 
 // constants
 const ARROW_ICON_SCALE = 0.035;

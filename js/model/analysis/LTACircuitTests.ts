@@ -33,15 +33,10 @@ const iterateCapacitor = ( circuit: LTACircuit, resistor: MNAResistor, v: number
     const expectedVoltage = v * Math.exp( -( t + dt ) / r / c );
     const error = Math.abs( actualVoltage - expectedVoltage );
 
-    // console.log( expectedVoltage, actualVoltage );
-    // console.log( error );
     if ( error > worstError ) {
       worstError = error;
       // console.log( 'new worst error: ' + worstError );
     }
-
-    // window.string = window.string + `${v}  ${r}  ${c}  ${t}  ${desiredVoltageAtTPlusDT}  ${voltage}  ${error}
-// `;
 
     const fractionalError = error / expectedVoltage;
     // console.log( fractionalError, error );
@@ -115,14 +110,14 @@ QUnit.test( 'test RC Circuit should have voltage exponentially decay with T RC f
 QUnit.test( 'test RC Circuit with series capacitors', assert => {
   testVRCCircuitSeriesCapacitors( 3, 7, 10, 10, assert );
   for ( let i = 0; i < 10; i++ ) {
-    testVRCCircuitSeriesCapacitors( 3, 7, Math.random() * 10, Math.random() * 10, assert ); // eslint-disable-line phet/bad-sim-text, phet/bad-sim-text
+    testVRCCircuitSeriesCapacitors( 3, 7, Math.random() * 10 + 0.1, Math.random() * 10 + 0.1, assert ); // eslint-disable-line phet/bad-sim-text, phet/bad-sim-text
   }
 } );
 
 QUnit.test( 'test RC Circuit with parallel capacitors', assert => {
   testVRCCircuitParallelCapacitors( 3, 7, 10, 10, assert );
   for ( let i = 0; i < 10; i++ ) {
-    testVRCCircuitParallelCapacitors( 3, 7, Math.random() * 10, Math.random() * 10, assert ); // eslint-disable-line phet/bad-sim-text, phet/bad-sim-text
+    testVRCCircuitParallelCapacitors( 3, 7, Math.random() * 10 + 0.1, Math.random() * 10 + 0.1, assert ); // eslint-disable-line phet/bad-sim-text, phet/bad-sim-text
   }
 } );
 
@@ -133,7 +128,6 @@ const iterateInductor = ( circuit: LTACircuit, resistor: MNAResistor, V: number,
     const actualCurrent = solution!.getCurrent( resistor );
     const expectedCurrent = -V / R * ( 1 - Math.exp( -( t + dt ) * R / L ) );//positive, by definition of MNA.Battery
 
-    // console.log( expectedCurrent, actualCurrent );
     const error = Math.abs( actualCurrent - expectedCurrent );
     const fractionalError = error / expectedCurrent;
 
@@ -141,7 +135,6 @@ const iterateInductor = ( circuit: LTACircuit, resistor: MNAResistor, V: number,
       assert.ok( fractionalError <= 0.02 );
     }
     // assert.ok( error < errorThreshold );
-    // assert.ok( true );
     circuit = circuit.updateWithSubdivisions( dt );
   }
 };

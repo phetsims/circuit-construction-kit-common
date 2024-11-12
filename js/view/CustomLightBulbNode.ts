@@ -1,4 +1,4 @@
-// Copyright 2016-2023, University of Colorado Boulder
+// Copyright 2016-2024, University of Colorado Boulder
 
 /**
  * Light bulb, made to 'glow' by modulating opacity of the 'on' image. Forked from SCENERY_PHET/LightBulbNode
@@ -14,11 +14,11 @@ import optionize from '../../../phet-core/js/optionize.js';
 import LightRaysNode from '../../../scenery-phet/js/LightRaysNode.js';
 import { Image, Node, NodeOptions } from '../../../scenery/js/imports.js';
 import lightBulbBack_png from '../../images/lightBulbBack_png.js';
+import lightBulbFront_png from '../../images/lightBulbFront_png.js';
 import lightBulbFrontHigh_png from '../../images/lightBulbFrontHigh_png.js';
 import lightBulbFrontReal_png from '../../images/lightBulbFrontReal_png.js';
-import lightBulbFront_png from '../../images/lightBulbFront_png.js';
-import lightBulbMiddleReal_png from '../../mipmaps/lightBulbMiddleReal_png.js';
 import lightBulbMiddle_png from '../../mipmaps/lightBulbMiddle_png.js';
+import lightBulbMiddleReal_png from '../../mipmaps/lightBulbMiddleReal_png.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 

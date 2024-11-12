@@ -1,4 +1,4 @@
-// Copyright 2016-2023, University of Colorado Boulder
+// Copyright 2016-2024, University of Colorado Boulder
 
 /**
  * Parent class for the panels in CCK so they have similar look and feel.
@@ -6,12 +6,12 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import { combineOptions } from '../../../phet-core/js/optionize.js';
+import { Node } from '../../../scenery/js/imports.js';
 import Panel, { PanelOptions } from '../../../sun/js/Panel.js';
 import Tandem from '../../../tandem/js/Tandem.js';
-import { Node } from '../../../scenery/js/imports.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import { combineOptions } from '../../../phet-core/js/optionize.js';
 import CCKCColors from './CCKCColors.js';
 
 export type CCKCPanelOptions = PanelOptions;

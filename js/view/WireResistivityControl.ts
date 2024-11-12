@@ -1,4 +1,4 @@
-// Copyright 2017-2023, University of Colorado Boulder
+// Copyright 2017-2024, University of Colorado Boulder
 
 /**
  * Controls for showing and changing the wire resistivity.  Exists for the life of the sim and hence does not require a
@@ -7,14 +7,14 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import Property from '../../../axon/js/Property.js';
+import { combineOptions } from '../../../phet-core/js/optionize.js';
 import { AlignGroup, Text, TextOptions, VBox } from '../../../scenery/js/imports.js';
 import HSlider from '../../../sun/js/HSlider.js';
-import CCKCConstants from '../CCKCConstants.js';
-import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import Property from '../../../axon/js/Property.js';
 import Tandem from '../../../tandem/js/Tandem.js';
-import { combineOptions } from '../../../phet-core/js/optionize.js';
+import CCKCConstants from '../CCKCConstants.js';
+import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import CCKCColors from './CCKCColors.js';
 
 const lotsStringProperty = CircuitConstructionKitCommonStrings.lotsStringProperty;
