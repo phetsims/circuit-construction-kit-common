@@ -115,7 +115,7 @@ export default class AmmeterNode extends Node {
         ammeterReadoutTypeProperty,
         CircuitConstructionKitCommonStrings.currentUnitsStringProperty
       ],
-      current => CCKCUtils.createCurrentReadout( current, options.blackBoxStudy ), {
+      current => CCKCUtils.createCurrentReadout( current, options.blackBoxStudy, false ), {
         tandem: tandemForChildren.createTandem( 'probeReadoutStringProperty' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME )
       } );
 

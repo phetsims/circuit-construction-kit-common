@@ -47,7 +47,7 @@ export default class Switch extends FixedCircuitElement {
       // Use the bounding box of the open lifelike switch to show bounds for all combinations of open/closed x lifelike/schematic
       // See https://github.com/phetsims/circuit-construction-kit-dc/issues/132
       isSizeChangedOnViewChange: false
-    }, {} );
+    } );
 
     this.resistanceProperty = new NumberProperty( 0 );
     this.resistanceWithNoiseProperty = new NumberProperty( 0 );

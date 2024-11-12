@@ -7,6 +7,7 @@
  */
 
 import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
+import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import StringProperty from '../../../axon/js/StringProperty.js';
 import type TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
@@ -28,7 +29,6 @@ import type CCKCScreenView from './CCKCScreenView.js';
 import type CircuitNode from './CircuitNode.js';
 import FixedCircuitElementNode, { type FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
 import ProbeTextNode from './ProbeTextNode.js';
-import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import Panel from '../../../sun/js/Panel.js';
 import StringProperty from '../../../axon/js/StringProperty.js';
 import optionize from '../../../phet-core/js/optionize.js';
