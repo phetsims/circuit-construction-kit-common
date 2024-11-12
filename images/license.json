@@ -1,4 +1,12 @@
 {
+  "alternateVoltmeterBody.png": {
+    "text": [
+      "Copyright 2024 University of Colorado Boulder"
+    ],
+    "projectURL": "https://phet.colorado.edu",
+    "license": "contact phethelp@colorado.edu",
+    "notes": "Created by Matt Blackman"
+  },
   "ammeterBody.png": {
     "text": [
       "Copyright 2016 University of Colorado Boulder"
