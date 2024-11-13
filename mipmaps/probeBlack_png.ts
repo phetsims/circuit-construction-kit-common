@@ -1,4 +1,6 @@
 /* eslint-disable */
+/* @formatter:off */
+
 import MipmapElement from '../../phet-core/js/MipmapElement.js';
 
 // The levels in the mipmap. Specify explicit types rather than inferring to assist the type checker, for this boilerplate case.
