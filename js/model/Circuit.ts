@@ -54,7 +54,7 @@ import StringIO from '../../../tandem/js/types/StringIO.js';
 import VoidIO from '../../../tandem/js/types/VoidIO.js';
 import PhetioObject from '../../../tandem/js/PhetioObject.js';
 import ObjectLiteralIO from '../../../tandem/js/types/ObjectLiteralIO.js';
-import { PhetioState } from '../../../tandem/js/TandemConstants.js';
+import { PhetioState } from '../../../tandem/js/phet-io-types.js';
 import GetSetButtonsIO from '../../../tandem/js/types/GetSetButtonsIO.js';
 
 // constants
