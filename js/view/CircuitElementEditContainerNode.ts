@@ -7,12 +7,17 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
+import PatternStringProperty from '../../../axon/js/PatternStringProperty.js';
 import Property from '../../../axon/js/Property.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import Utils from '../../../dot/js/Utils.js';
+import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
+import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import { HBox, Node, NodeOptions, Text } from '../../../scenery/js/imports.js';
 import Panel from '../../../sun/js/Panel.js';
 import SunConstants from '../../../sun/js/SunConstants.js';
+import isSettingPhetioStateProperty from '../../../tandem/js/isSettingPhetioStateProperty.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
@@ -22,31 +27,26 @@ import ACVoltage from '../model/ACVoltage.js';
 import Battery from '../model/Battery.js';
 import Capacitor from '../model/Capacitor.js';
 import Circuit from '../model/Circuit.js';
+import CircuitElement from '../model/CircuitElement.js';
 import FixedCircuitElement from '../model/FixedCircuitElement.js';
 import Fuse from '../model/Fuse.js';
 import Inductor from '../model/Inductor.js';
+import InteractionMode from '../model/InteractionMode.js';
 import LightBulb from '../model/LightBulb.js';
 import Resistor from '../model/Resistor.js';
 import ResistorType from '../model/ResistorType.js';
 import SeriesAmmeter from '../model/SeriesAmmeter.js';
 import Switch from '../model/Switch.js';
+import Vertex from '../model/Vertex.js';
 import Wire from '../model/Wire.js';
+import BatteryReverseButton from './BatteryReverseButton.js';
+import CCKCColors from './CCKCColors.js';
+import CCKCTrashButton from './CCKCTrashButton.js';
 import CircuitElementNumberControl from './CircuitElementNumberControl.js';
 import ClearDynamicsButton from './ClearDynamicsButton.js';
-import PhaseShiftControl from './PhaseShiftControl.js';
 import FuseRepairButton from './FuseRepairButton.js';
-import BatteryReverseButton from './BatteryReverseButton.js';
+import PhaseShiftControl from './PhaseShiftControl.js';
 import SwitchReadoutNode from './SwitchReadoutNode.js';
-import CCKCTrashButton from './CCKCTrashButton.js';
-import CircuitElement from '../model/CircuitElement.js';
-import InteractionMode from '../model/InteractionMode.js';
-import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
-import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
-import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
-import Vertex from '../model/Vertex.js';
-import PatternStringProperty from '../../../axon/js/PatternStringProperty.js';
-import CCKCColors from './CCKCColors.js';
-import isSettingPhetioStateProperty from '../../../tandem/js/isSettingPhetioStateProperty.js';
 
 const capacitanceStringProperty = CircuitConstructionKitCommonStrings.capacitanceStringProperty;
 const capacitanceUnitsStringProperty = CircuitConstructionKitCommonStrings.capacitanceUnitsStringProperty;

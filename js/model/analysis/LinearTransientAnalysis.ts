@@ -7,28 +7,28 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import CCKCConstants from '../../CCKCConstants.js';
+import CCKCUtils from '../../CCKCUtils.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import Capacitor from '../Capacitor.js';
-import LTACircuit from './LTACircuit.js';
+import Circuit from '../Circuit.js';
+import CircuitElement from '../CircuitElement.js';
 import Fuse from '../Fuse.js';
 import Inductor from '../Inductor.js';
 import LightBulb from '../LightBulb.js';
 import Resistor from '../Resistor.js';
 import SeriesAmmeter from '../SeriesAmmeter.js';
 import Switch from '../Switch.js';
-import TimestepSubdivisions from './TimestepSubdivisions.js';
+import Vertex from '../Vertex.js';
 import VoltageSource from '../VoltageSource.js';
 import Wire from '../Wire.js';
-import Circuit from '../Circuit.js';
-import LTAState from './LTAState.js';
-import Vertex from '../Vertex.js';
-import CircuitElement from '../CircuitElement.js';
-import CCKCConstants from '../../CCKCConstants.js';
-import LTAResistiveBattery from './LTAResistiveBattery.js';
-import LTAInductor from './LTAInductor.js';
-import CCKCUtils from '../../CCKCUtils.js';
 import LTACapacitor from './LTACapacitor.js';
+import LTACircuit from './LTACircuit.js';
+import LTAInductor from './LTAInductor.js';
+import LTAResistiveBattery from './LTAResistiveBattery.js';
+import LTAState from './LTAState.js';
 import MNAResistor from './mna/MNAResistor.js';
+import TimestepSubdivisions from './TimestepSubdivisions.js';
 
 // constants
 const TIMESTEP_SUBDIVISIONS = new TimestepSubdivisions<LTAState>();

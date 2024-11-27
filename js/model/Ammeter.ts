@@ -13,11 +13,11 @@ import Vector2Property from '../../../dot/js/Vector2Property.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import NullableIO from '../../../tandem/js/types/NullableIO.js';
 import NumberIO from '../../../tandem/js/types/NumberIO.js';
+import ReferenceIO from '../../../tandem/js/types/ReferenceIO.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import Meter from './Meter.js';
 import AmmeterConnection from './AmmeterConnection.js';
 import CircuitElement from './CircuitElement.js';
-import ReferenceIO from '../../../tandem/js/types/ReferenceIO.js';
+import Meter from './Meter.js';
 
 export default class Ammeter extends Meter {
 

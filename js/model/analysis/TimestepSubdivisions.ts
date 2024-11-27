@@ -9,9 +9,9 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import CCKCConstants from '../../CCKCConstants.js';
 import CCKCQueryParameters from '../../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
-import CCKCConstants from '../../CCKCConstants.js';
 
 // smallest possible time
 const MIN_DT = CCKCQueryParameters.minDT;

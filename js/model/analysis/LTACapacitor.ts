@@ -1,7 +1,6 @@
 // Copyright 2021-2024, University of Colorado Boulder
-import DynamicCoreModel from './DynamicCoreModel.js';
-
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
+import DynamicCoreModel from './DynamicCoreModel.js';
 
 /**
  * @author Sam Reid (PhET Interactive Simulations)

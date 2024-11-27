@@ -6,13 +6,13 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import Disposable from '../../../axon/js/Disposable.js';
 import Emitter from '../../../axon/js/Emitter.js';
-import TEmitter from '../../../axon/js/TEmitter.js';
 import Property from '../../../axon/js/Property.js';
+import TEmitter from '../../../axon/js/TEmitter.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitElement from './CircuitElement.js';
-import Disposable from '../../../axon/js/Disposable.js';
 
 export default class Charge extends Disposable {
 

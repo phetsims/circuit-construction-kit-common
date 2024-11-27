@@ -1,8 +1,8 @@
 // Copyright 2021-2024, University of Colorado Boulder
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
-import MNACircuitElement from './mna/MNACircuitElement.js';
-import LTAState from './LTAState.js';
 import CoreModel from './CoreModel.js';
+import LTAState from './LTAState.js';
+import MNACircuitElement from './mna/MNACircuitElement.js';
 import MNAResistor from './mna/MNAResistor.js';
 
 type Element = {

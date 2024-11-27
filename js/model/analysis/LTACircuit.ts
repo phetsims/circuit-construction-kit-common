@@ -9,20 +9,20 @@
  */
 
 import CCKCQueryParameters from '../../CCKCQueryParameters.js';
-import LTAStateSet from './LTAStateSet.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
-import MNACircuit from './mna/MNACircuit.js';
-import TimestepSubdivisions from './TimestepSubdivisions.js';
+import CoreModel from './CoreModel.js';
+import LTACapacitor from './LTACapacitor.js';
+import LTAInductor from './LTAInductor.js';
+import LTAResistiveBattery from './LTAResistiveBattery.js';
 import LTASolution from './LTASolution.js';
 import LTAState from './LTAState.js';
-import LTAInductor from './LTAInductor.js';
-import LTACapacitor from './LTACapacitor.js';
-import MNASolution from './mna/MNASolution.js';
-import LTAResistiveBattery from './LTAResistiveBattery.js';
+import LTAStateSet from './LTAStateSet.js';
 import MNABattery from './mna/MNABattery.js';
-import MNAResistor from './mna/MNAResistor.js';
+import MNACircuit from './mna/MNACircuit.js';
 import MNACurrent from './mna/MNACurrent.js';
-import CoreModel from './CoreModel.js';
+import MNAResistor from './mna/MNAResistor.js';
+import MNASolution from './mna/MNASolution.js';
+import TimestepSubdivisions from './TimestepSubdivisions.js';
 
 type DistanceParams = { getCharacteristicArray: () => number[] };
 

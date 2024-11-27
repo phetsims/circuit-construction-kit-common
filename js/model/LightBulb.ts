@@ -12,15 +12,15 @@ import Matrix3 from '../../../dot/js/Matrix3.js';
 import Range from '../../../dot/js/Range.js';
 import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
+import optionize from '../../../phet-core/js/optionize.js';
+import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Circuit from './Circuit.js';
 import CircuitElementViewType from './CircuitElementViewType.js';
 import FixedCircuitElement, { FixedCircuitElementOptions } from './FixedCircuitElement.js';
-import Vertex from './Vertex.js';
 import PowerDissipatedProperty from './PowerDissipatedProperty.js';
-import optionize from '../../../phet-core/js/optionize.js';
-import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
+import Vertex from './Vertex.js';
 
 // constants
 

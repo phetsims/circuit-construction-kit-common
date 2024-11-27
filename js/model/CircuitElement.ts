@@ -9,10 +9,16 @@
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
+import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Property, { PropertyOptions } from '../../../axon/js/Property.js';
+import StringProperty from '../../../axon/js/StringProperty.js';
+import TEmitter from '../../../axon/js/TEmitter.js';
+import TReadOnlyProperty, { PropertyLinkListener } from '../../../axon/js/TReadOnlyProperty.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import Vector2 from '../../../dot/js/Vector2.js';
+import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
+import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import { PressListenerEvent, SceneryEvent } from '../../../scenery/js/imports.js';
 import PhetioObject, { PhetioObjectOptions } from '../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -22,12 +28,6 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Circuit from './Circuit.js';
 import CurrentSense from './CurrentSense.js';
 import Vertex from './Vertex.js';
-import TReadOnlyProperty, { PropertyLinkListener } from '../../../axon/js/TReadOnlyProperty.js';
-import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
-import StringProperty from '../../../axon/js/StringProperty.js';
-import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
-import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
-import TEmitter from '../../../axon/js/TEmitter.js';
 
 // variables
 let index = 0;

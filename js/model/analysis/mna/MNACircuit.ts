@@ -11,17 +11,17 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import QRDecomposition from '../../../../../dot/js/QRDecomposition.js';
 import Matrix from '../../../../../dot/js/Matrix.js';
+import QRDecomposition from '../../../../../dot/js/QRDecomposition.js';
 import Utils from '../../../../../dot/js/Utils.js';
 import arrayRemove from '../../../../../phet-core/js/arrayRemove.js';
-import circuitConstructionKitCommon from '../../../circuitConstructionKitCommon.js';
-import MNASolution from './MNASolution.js';
-import MNACircuitElement from './MNACircuitElement.js';
-import MNABattery from './MNABattery.js';
-import MNAResistor from './MNAResistor.js';
-import MNACurrent from './MNACurrent.js';
 import IntentionalAny from '../../../../../phet-core/js/types/IntentionalAny.js';
+import circuitConstructionKitCommon from '../../../circuitConstructionKitCommon.js';
+import MNABattery from './MNABattery.js';
+import MNACircuitElement from './MNACircuitElement.js';
+import MNACurrent from './MNACurrent.js';
+import MNAResistor from './MNAResistor.js';
+import MNASolution from './MNASolution.js';
 
 export default class MNACircuit {
   private readonly batteries: MNABattery[];

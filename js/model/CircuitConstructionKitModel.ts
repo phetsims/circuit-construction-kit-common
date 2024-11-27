@@ -8,32 +8,32 @@
  */
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
-import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
+import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
-import Property from '../../../axon/js/Property.js';
+import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
+import Property from '../../../axon/js/Property.js';
+import TEmitter from '../../../axon/js/TEmitter.js';
+import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import Bounds2 from '../../../dot/js/Bounds2.js';
 import Range from '../../../dot/js/Range.js';
+import Utils from '../../../dot/js/Utils.js';
+import TModel from '../../../joist/js/TModel.js';
+import optionize from '../../../phet-core/js/optionize.js';
 import Stopwatch from '../../../scenery-phet/js/Stopwatch.js';
+import isSettingPhetioStateProperty from '../../../tandem/js/isSettingPhetioStateProperty.js';
+import Tandem from '../../../tandem/js/Tandem.js';
+import NumberIO from '../../../tandem/js/types/NumberIO.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Ammeter from './Ammeter.js';
 import Circuit from './Circuit.js';
+import CircuitElementViewType from './CircuitElementViewType.js';
+import InteractionMode from './InteractionMode.js';
+import LightBulb from './LightBulb.js';
 import Voltmeter from './Voltmeter.js';
 import ZoomAnimation from './ZoomAnimation.js';
-import Tandem from '../../../tandem/js/Tandem.js';
-import Bounds2 from '../../../dot/js/Bounds2.js';
-import CircuitElementViewType from './CircuitElementViewType.js';
-import LightBulb from './LightBulb.js';
-import InteractionMode from './InteractionMode.js';
-import optionize from '../../../phet-core/js/optionize.js';
-import TEmitter from '../../../axon/js/TEmitter.js';
-import NumberIO from '../../../tandem/js/types/NumberIO.js';
-import DerivedProperty from '../../../axon/js/DerivedProperty.js';
-import Utils from '../../../dot/js/Utils.js';
-import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
-import TModel from '../../../joist/js/TModel.js';
-import isSettingPhetioStateProperty from '../../../tandem/js/isSettingPhetioStateProperty.js';
 
 type CircuitConstructionKitModelOptions = {
   blackBoxStudy?: boolean;

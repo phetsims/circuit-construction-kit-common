@@ -1,7 +1,7 @@
 // Copyright 2021-2023, University of Colorado Boulder
 
-import EnumerationValue from '../../../phet-core/js/EnumerationValue.js';
 import Enumeration from '../../../phet-core/js/Enumeration.js';
+import EnumerationValue from '../../../phet-core/js/EnumerationValue.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 /**

@@ -7,16 +7,16 @@
  */
 
 import NumberProperty from '../../../axon/js/NumberProperty.js';
+import Property from '../../../axon/js/Property.js';
 import Range from '../../../dot/js/Range.js';
+import optionize from '../../../phet-core/js/optionize.js';
+import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
+import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import DynamicCircuitElement, { DynamicCircuitElementOptions } from './DynamicCircuitElement.js';
 import Vertex from './Vertex.js';
-import CCKCQueryParameters from '../CCKCQueryParameters.js';
-import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
-import Property from '../../../axon/js/Property.js';
-import optionize from '../../../phet-core/js/optionize.js';
 
 type SelfOptions = {
   capacitance?: number;

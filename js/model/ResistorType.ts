@@ -1,9 +1,9 @@
 // Copyright 2021-2024, University of Colorado Boulder
 
-import CCKCConstants from '../CCKCConstants.js';
 import Range from '../../../dot/js/Range.js';
 import Enumeration from '../../../phet-core/js/Enumeration.js';
 import EnumerationValue from '../../../phet-core/js/EnumerationValue.js';
+import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 /**

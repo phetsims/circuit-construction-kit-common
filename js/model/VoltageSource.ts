@@ -6,20 +6,20 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import NumberProperty from '../../../axon/js/NumberProperty.js';
-import Range from '../../../dot/js/Range.js';
-import Property from '../../../axon/js/Property.js';
-import Tandem from '../../../tandem/js/Tandem.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import FixedCircuitElement, { FixedCircuitElementOptions } from './FixedCircuitElement.js';
-import Vertex from './Vertex.js';
-import PowerDissipatedProperty from './PowerDissipatedProperty.js';
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
-import NumberIO from '../../../tandem/js/types/NumberIO.js';
+import NumberProperty from '../../../axon/js/NumberProperty.js';
+import Property from '../../../axon/js/Property.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import Range from '../../../dot/js/Range.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import PickOptional from '../../../phet-core/js/types/PickOptional.js';
+import Tandem from '../../../tandem/js/Tandem.js';
+import NumberIO from '../../../tandem/js/types/NumberIO.js';
+import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import FixedCircuitElement, { FixedCircuitElementOptions } from './FixedCircuitElement.js';
+import PowerDissipatedProperty from './PowerDissipatedProperty.js';
+import Vertex from './Vertex.js';
 
 type SelfOptions = {
   initialOrientation?: 'right' | 'left';

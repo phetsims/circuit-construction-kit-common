@@ -1,7 +1,7 @@
 // Copyright 2021-2024, University of Colorado Boulder
 
-import MNACircuitElement from './MNACircuitElement.js';
 import circuitConstructionKitCommon from '../../../circuitConstructionKitCommon.js';
+import MNACircuitElement from './MNACircuitElement.js';
 
 /**
  * @author Sam Reid (PhET Interactive Simulations)

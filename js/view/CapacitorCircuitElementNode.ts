@@ -7,11 +7,15 @@
  */
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
+import Multilink from '../../../axon/js/Multilink.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Property from '../../../axon/js/Property.js';
+import Bounds2 from '../../../dot/js/Bounds2.js';
 import Bounds3 from '../../../dot/js/Bounds3.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
+import Vector2 from '../../../dot/js/Vector2.js';
 import { Shape } from '../../../kite/js/imports.js';
+import { combineOptions } from '../../../phet-core/js/optionize.js';
 import Orientation from '../../../phet-core/js/Orientation.js';
 import CapacitorConstants from '../../../scenery-phet/js/capacitor/CapacitorConstants.js';
 import CapacitorNode from '../../../scenery-phet/js/capacitor/CapacitorNode.js';
@@ -26,10 +30,6 @@ import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import CCKCScreenView from './CCKCScreenView.js';
 import CircuitNode from './CircuitNode.js';
 import FixedCircuitElementNode, { FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
-import Vector2 from '../../../dot/js/Vector2.js';
-import Bounds2 from '../../../dot/js/Bounds2.js';
-import Multilink from '../../../axon/js/Multilink.js';
-import { combineOptions } from '../../../phet-core/js/optionize.js';
 
 // constants
 // dimensions for schematic

@@ -6,23 +6,23 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import Range from '../../../dot/js/Range.js';
+import Multilink, { UnknownMultilink } from '../../../axon/js/Multilink.js';
 import Property from '../../../axon/js/Property.js';
 import ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
+import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
+import Range from '../../../dot/js/Range.js';
+import optionize from '../../../phet-core/js/optionize.js';
 import NumberControl, { LayoutFunction } from '../../../scenery-phet/js/NumberControl.js';
+import { NumberDisplayOptions } from '../../../scenery-phet/js/NumberDisplay.js';
 import { HBox, HBoxOptions, TextOptions } from '../../../scenery/js/imports.js';
+import { SliderOptions } from '../../../sun/js/Slider.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import ACVoltage from '../model/ACVoltage.js';
 import Circuit from '../model/Circuit.js';
 import CircuitElement from '../model/CircuitElement.js';
-import ACVoltage from '../model/ACVoltage.js';
-import Multilink, { UnknownMultilink } from '../../../axon/js/Multilink.js';
-import optionize from '../../../phet-core/js/optionize.js';
-import { NumberDisplayOptions } from '../../../scenery-phet/js/NumberDisplay.js';
-import { SliderOptions } from '../../../sun/js/Slider.js';
-import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import Vertex from '../model/Vertex.js';
 import CCKCColors from './CCKCColors.js';
 

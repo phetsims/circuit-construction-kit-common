@@ -1,7 +1,7 @@
 // Copyright 2021-2024, University of Colorado Boulder
 
-import CoreModel from './CoreModel.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
+import CoreModel from './CoreModel.js';
 
 /**
  * @author Sam Reid (PhET Interactive Simulations)

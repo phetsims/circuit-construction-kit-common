@@ -1,7 +1,7 @@
 // Copyright 2021-2022, University of Colorado Boulder
 
-import CoreModel from './CoreModel.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
+import CoreModel from './CoreModel.js';
 
 /**
  * For capacitors and inductors, includes the voltage and current from prior calculation,

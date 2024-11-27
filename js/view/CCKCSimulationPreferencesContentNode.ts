@@ -1,5 +1,6 @@
 // Copyright 2020-2024, University of Colorado Boulder
 
+import PreferencesDialog from '../../../joist/js/preferences/PreferencesDialog.js';
 /**
  * Shows contents for controls that change simulation representation or behavior.
  *
@@ -10,11 +11,10 @@ import VerticalAquaRadioButtonGroup from '../../../sun/js/VerticalAquaRadioButto
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
-import schematicTypeProperty from './schematicTypeProperty.js';
-import SchematicType from './SchematicType.js';
 import AmmeterReadoutType from '../model/AmmeterReadoutType.js';
 import ammeterReadoutTypeProperty from './ammeterReadoutTypeProperty.js';
-import PreferencesDialog from '../../../joist/js/preferences/PreferencesDialog.js';
+import SchematicType from './SchematicType.js';
+import schematicTypeProperty from './schematicTypeProperty.js';
 
 export default class CCKCSimulationPreferencesContentNode extends VBox {
 

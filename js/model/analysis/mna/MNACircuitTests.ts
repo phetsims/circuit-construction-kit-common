@@ -6,12 +6,12 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import MNACircuit from './MNACircuit.js';
-import MNASolution from './MNASolution.js';
-import MNAResistor from './MNAResistor.js';
 import MNABattery from './MNABattery.js';
-import MNACurrent from './MNACurrent.js';
+import MNACircuit from './MNACircuit.js';
 import MNACircuitElement from './MNACircuitElement.js';
+import MNACurrent from './MNACurrent.js';
+import MNAResistor from './MNAResistor.js';
+import MNASolution from './MNASolution.js';
 
 QUnit.module( 'MNACircuit' );
 

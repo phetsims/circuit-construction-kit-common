@@ -6,9 +6,9 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import LTACapacitor from './LTACapacitor.js';
 // modules
 import LTACircuit from './LTACircuit.js';
-import LTACapacitor from './LTACapacitor.js';
 import LTAInductor from './LTAInductor.js';
 import LTAResistiveBattery from './LTAResistiveBattery.js';
 import MNAResistor from './mna/MNAResistor.js';
