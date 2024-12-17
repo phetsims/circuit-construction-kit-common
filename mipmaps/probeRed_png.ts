@@ -1,7 +1,7 @@
 /* eslint-disable */
 /* @formatter:off */
 
-import MipmapElement from '../../phet-core/js/MipmapElement.js';
+import MipmapElement from '../../chipper/js/browser/MipmapElement.js';
 
 // The levels in the mipmap. Specify explicit types rather than inferring to assist the type checker, for this boilerplate case.
 const mipmaps = [
