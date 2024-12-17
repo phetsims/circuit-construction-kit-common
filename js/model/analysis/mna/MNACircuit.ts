@@ -12,7 +12,7 @@
  */
 
 import Matrix from '../../../../../dot/js/Matrix.js';
-import QRDecomposition from '../../../../../dot/js/QRDecomposition.js';
+import { QRDecomposition } from '../../../../../dot/js/Matrix.js';
 import Utils from '../../../../../dot/js/Utils.js';
 import arrayRemove from '../../../../../phet-core/js/arrayRemove.js';
 import IntentionalAny from '../../../../../phet-core/js/types/IntentionalAny.js';
