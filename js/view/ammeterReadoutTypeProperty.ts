@@ -12,7 +12,8 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import AmmeterReadoutType from '../model/AmmeterReadoutType.js';
 
 const ammeterReadoutTypeProperty = new EnumerationProperty( CCKCQueryParameters.ammeterReadout === 'magnitude' ? AmmeterReadoutType.MAGNITUDE : AmmeterReadoutType.SIGNED, {
-  tandem: Tandem.PREFERENCES.createTandem( 'ammeterReadoutTypeProperty' )
+  tandem: Tandem.PREFERENCES.createTandem( 'ammeterReadoutTypeProperty' ),
+  phetioFeatured: true
 } );
 
 circuitConstructionKitCommon.register( 'ammeterReadoutTypeProperty', ammeterReadoutTypeProperty );

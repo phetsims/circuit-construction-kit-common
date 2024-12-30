@@ -14,7 +14,8 @@ import SchematicType from './SchematicType.js';
 const schematicTypeProperty = new EnumerationProperty( CCKCQueryParameters.schematicStandard === 'ieee' ? SchematicType.IEEE :
                                                        CCKCQueryParameters.schematicStandard === 'iec' ? SchematicType.IEC :
                                                        SchematicType.BRITISH, {
-  tandem: Tandem.PREFERENCES.createTandem( 'schematicTypeProperty' )
+  tandem: Tandem.PREFERENCES.createTandem( 'schematicTypeProperty' ),
+  phetioFeatured: true
 } );
 
 circuitConstructionKitCommon.register( 'schematicTypeProperty', schematicTypeProperty );
