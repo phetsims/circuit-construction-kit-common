@@ -194,13 +194,15 @@ export default class SwitchNode extends FixedCircuitElementNode {
         downPoint = circuitNode!.globalToLocalPoint( event.pointer.point );
       },
       fire: event => {
+        if ( event ) {
 
-        // Measure how far the switch was dragged in CircuitNode coordinates (if any)
-        const distance = circuitNode!.globalToLocalPoint( event.pointer.point ).distance( downPoint! );
+          // Measure how far the switch was dragged in CircuitNode coordinates (if any)
+          const distance = circuitNode!.globalToLocalPoint( event.pointer.point ).distance( downPoint! );
 
-        // Toggle the state of the switch, but only if the event is classified as a tap and not a drag
-        if ( distance < CCKCConstants.TAP_THRESHOLD ) {
-          circuitSwitch.isClosedProperty.value = !circuitSwitch.isClosedProperty.value;
+          // Toggle the state of the switch, but only if the event is classified as a tap and not a drag
+          if ( distance < CCKCConstants.TAP_THRESHOLD ) {
+            circuitSwitch.isClosedProperty.value = !circuitSwitch.isClosedProperty.value;
+          }
         }
       }
     } );
