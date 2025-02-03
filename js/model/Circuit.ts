@@ -1564,7 +1564,7 @@ export default class Circuit extends PhetioObject {
       const firstChargePosition = offset;
       const lengthForCharges = lastChargePosition - firstChargePosition;
 
-      // Utils.roundSymmetric leads to charges too far apart when N=2
+      // roundSymmetric leads to charges too far apart when N=2
       const numberOfCharges = Math.ceil( lengthForCharges / CCKCConstants.CHARGE_SEPARATION );
 
       // compute distance between adjacent charges
