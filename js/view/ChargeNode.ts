@@ -12,7 +12,7 @@ import Multilink from '../../../axon/js/Multilink.js';
 import Utils from '../../../dot/js/Utils.js';
 import { Shape } from '../../../kite/js/imports.js';
 import ElectronChargeNode from '../../../scenery-phet/js/ElectronChargeNode.js';
-import { Node } from '../../../scenery/js/imports.js';
+import { Node, rasterized } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Capacitor from '../model/Capacitor.js';
@@ -24,7 +24,7 @@ import CircuitNode from './CircuitNode.js';
 import ConventionalCurrentArrowNode from './ConventionalCurrentArrowNode.js';
 
 // constants
-const ELECTRON_CHARGE_NODE = new ElectronChargeNode( {
+const ELECTRON_CHARGE_NODE = rasterized( new ElectronChargeNode( {
 
   // Electrons are transparent to convey they are a representation rather than physical objects
   // Workaround for https://github.com/phetsims/circuit-construction-kit-dc/issues/160
@@ -33,15 +33,15 @@ const ELECTRON_CHARGE_NODE = new ElectronChargeNode( {
 
   // selected so an electron will exactly fit the width of a wire
   scale: 0.78
-} ).rasterized( { wrap: false } );
+} ), { wrap: false } );
 
-const INITIAL_ARROW_NODE = new ConventionalCurrentArrowNode( Tandem.OPT_OUT ).rasterized( { wrap: false } );
+const INITIAL_ARROW_NODE = rasterized( new ConventionalCurrentArrowNode( Tandem.OPT_OUT ), { wrap: false } );
 
 const arrowNode = new Node( { children: [ INITIAL_ARROW_NODE ] } );
 
 Multilink.multilink( [ CCKCColors.conventionalCurrentArrowFillProperty, CCKCColors.conventionalCurrentArrowStrokeProperty ],
   ( arrowFill, arrowStroke ) => {
-    arrowNode.children = [ new ConventionalCurrentArrowNode( Tandem.OPT_OUT ).rasterized( { wrap: false } ) ];
+    arrowNode.children = [ rasterized( new ConventionalCurrentArrowNode( Tandem.OPT_OUT ), { wrap: false } ) ];
   } );
 
 // Below this amperage, no conventional current will be rendered.

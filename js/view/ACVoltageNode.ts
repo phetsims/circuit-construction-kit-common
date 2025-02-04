@@ -12,7 +12,7 @@ import { Shape } from '../../../kite/js/imports.js';
 import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import MinusNode from '../../../scenery-phet/js/MinusNode.js';
 import PlusNode from '../../../scenery-phet/js/PlusNode.js';
-import { Circle, Node, Path } from '../../../scenery/js/imports.js';
+import { Circle, Node, Path, rasterized } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -75,8 +75,8 @@ const createNode = ( schematic: boolean ) => new Node( {
         } ) ]
   ]
 } );
-const schematicNode = createNode( true ).rasterized( { wrap: false, resolution: 2 } );
-const lifelikeNode = createNode( false ).rasterized( { wrap: false, resolution: 2 } );
+const schematicNode = rasterized( createNode( true ), { wrap: false, resolution: 2 } );
+const lifelikeNode = rasterized( createNode( false ), { wrap: false, resolution: 2 } );
 
 // Expand the pointer areas with a defensive copy, see https://github.com/phetsims/circuit-construction-kit-common/issues/310
 schematicNode.mouseArea = Shape.circle(

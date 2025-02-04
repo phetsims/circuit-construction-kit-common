@@ -10,7 +10,7 @@ import Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import { Shape } from '../../../kite/js/imports.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
-import { Color, Image, Path } from '../../../scenery/js/imports.js';
+import { Color, Image, Path, rasterized } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import battery_png from '../../images/battery_png.js';
 import batteryHigh_png from '../../images/batteryHigh_png.js';
@@ -48,10 +48,10 @@ const schematicScale = desiredWidth / schematicWidth;
 
 // Scale to fit the correct width
 schematicShape = schematicShape.transformed( Matrix3.scale( schematicScale, schematicScale ) );
-const schematicNode = new Path( schematicShape, {
+const schematicNode = rasterized( new Path( schematicShape, {
   stroke: Color.BLACK,
   lineWidth: CCKCConstants.SCHEMATIC_LINE_WIDTH
-} ).rasterized( { wrap: false } );
+} ), { wrap: false } );
 
 schematicNode.centerY = 0;
 

@@ -10,7 +10,7 @@ import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import StringProperty from '../../../axon/js/StringProperty.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
-import { Node, Rectangle, RectangleOptions, Text } from '../../../scenery/js/imports.js';
+import { Node, rasterized, Rectangle, RectangleOptions, Text } from '../../../scenery/js/imports.js';
 import Panel from '../../../sun/js/Panel.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -40,7 +40,7 @@ const CORNER_RADIUS = 4;
  * Rasterize so it can be rendered in WebGL, see https://github.com/phetsims/circuit-construction-kit-dc/issues/67
  * @param [providedOptions]
  */
-const createPanel = ( providedOptions?: RectangleOptions ) => new Rectangle( 0, 0, PANEL_WIDTH, PANEL_HEIGHT, providedOptions ).rasterized( { wrap: false } );
+const createPanel = ( providedOptions?: RectangleOptions ) => rasterized( new Rectangle( 0, 0, PANEL_WIDTH, PANEL_HEIGHT, providedOptions ), { wrap: false } );
 
 const orangeBackgroundPanel = createPanel( { cornerRadius: CORNER_RADIUS, fill: ORANGE } );
 const blackBorder = createPanel( {

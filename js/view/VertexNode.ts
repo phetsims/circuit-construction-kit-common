@@ -9,7 +9,7 @@
 import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
-import { Circle, CircleOptions, Color, Grayscale, Node, SceneryConstants, SceneryEvent, Text, VBox } from '../../../scenery/js/imports.js';
+import { Circle, CircleOptions, Color, Grayscale, Node, rasterized, SceneryConstants, SceneryEvent, Text, VBox } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
@@ -30,12 +30,12 @@ const CIRCLE_OPTIONS = {
   lineWidth: 1.3,
   lineDash: [ 6, 4 ]
 };
-const RED_CIRCLE_NODE = new Circle( VERTEX_RADIUS, combineOptions<CircleOptions>( {
+const RED_CIRCLE_NODE = rasterized( new Circle( VERTEX_RADIUS, combineOptions<CircleOptions>( {
   stroke: Color.RED
-}, CIRCLE_OPTIONS ) ).rasterized( { wrap: false } );
-const BLACK_CIRCLE_NODE = new Circle( VERTEX_RADIUS, combineOptions<CircleOptions>( {
+}, CIRCLE_OPTIONS ) ), { wrap: false } );
+const BLACK_CIRCLE_NODE = rasterized( new Circle( VERTEX_RADIUS, combineOptions<CircleOptions>( {
   stroke: Color.BLACK
-}, CIRCLE_OPTIONS ) ).rasterized( { wrap: false } );
+}, CIRCLE_OPTIONS ) ), { wrap: false } );
 
 export default class VertexNode extends Node {
   private readonly circuit: Circuit;
