@@ -404,10 +404,16 @@ export default class CCKCScreenView extends ScreenView {
           bottom: visibleBounds.bottom - VERTICAL_MARGIN
         } );
 
-        timeControlNode && timeControlNode.mutate( {
-          left: controlPanelVBox.left,
-          bottom: visibleBounds.bottom - VERTICAL_MARGIN
-        } );
+        // isFinite() checks from https://github.com/phetsims/circuit-construction-kit-ac/issues/31
+        if ( timeControlNode ) {
+          timeControlNode.bottom = visibleBounds.bottom - VERTICAL_MARGIN;
+          if ( controlPanelVBox.bounds.isFinite() ) {
+            timeControlNode.left = controlPanelVBox.left;
+          }
+          else if ( resetAllButton && resetAllButton.bounds.isFinite() ) {
+            timeControlNode.right = resetAllButton.left;
+          }
+        }
 
         if ( Number.isFinite( toolboxContainer.right ) ) {
           zoomButtonGroup.right = toolboxContainer.right;
