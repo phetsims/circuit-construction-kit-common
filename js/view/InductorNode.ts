@@ -9,9 +9,13 @@
 import Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import Utils from '../../../dot/js/Utils.js';
-import { LineStyles, Shape } from '../../../kite/js/imports.js';
+import Shape from '../../../kite/js/Shape.js';
+import LineStyles from '../../../kite/js/util/LineStyles.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
-import { Color, Node, Path, TPaint } from '../../../scenery/js/imports.js';
+import Node from '../../../scenery/js/nodes/Node.js';
+import Path from '../../../scenery/js/nodes/Path.js';
+import Color from '../../../scenery/js/util/Color.js';
+import TPaint from '../../../scenery/js/util/TPaint.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';

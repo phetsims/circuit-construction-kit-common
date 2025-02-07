@@ -8,8 +8,16 @@
 
 import Property from '../../../axon/js/Property.js';
 import Vector2 from '../../../dot/js/Vector2.js';
-import { Shape } from '../../../kite/js/imports.js';
-import { Circle, Color, FireListener, Gradient, LinearGradient, Node, Path, rasterized, Rectangle } from '../../../scenery/js/imports.js';
+import Shape from '../../../kite/js/Shape.js';
+import FireListener from '../../../scenery/js/listeners/FireListener.js';
+import Circle from '../../../scenery/js/nodes/Circle.js';
+import Node from '../../../scenery/js/nodes/Node.js';
+import Path from '../../../scenery/js/nodes/Path.js';
+import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
+import Color from '../../../scenery/js/util/Color.js';
+import Gradient from '../../../scenery/js/util/Gradient.js';
+import LinearGradient from '../../../scenery/js/util/LinearGradient.js';
+import { rasterized } from '../../../scenery/js/util/rasterized.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';

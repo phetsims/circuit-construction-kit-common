@@ -8,7 +8,8 @@
 
 import Vector2 from '../../../dot/js/Vector2.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import { Node, NodeOptions, PressListenerEvent } from '../../../scenery/js/imports.js';
+import { PressListenerEvent } from '../../../scenery/js/listeners/PressListener.js';
+import Node, { NodeOptions } from '../../../scenery/js/nodes/Node.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Circuit from '../model/Circuit.js';

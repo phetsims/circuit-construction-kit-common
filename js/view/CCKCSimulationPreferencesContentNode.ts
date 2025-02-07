@@ -6,7 +6,9 @@ import PreferencesDialog from '../../../joist/js/preferences/PreferencesDialog.j
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-import { HSeparator, Text, VBox } from '../../../scenery/js/imports.js';
+import HSeparator from '../../../scenery/js/layout/nodes/HSeparator.js';
+import VBox from '../../../scenery/js/layout/nodes/VBox.js';
+import Text from '../../../scenery/js/nodes/Text.js';
 import VerticalAquaRadioButtonGroup from '../../../sun/js/VerticalAquaRadioButtonGroup.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';

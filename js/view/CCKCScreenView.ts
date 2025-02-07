@@ -19,7 +19,13 @@ import PlayPauseButton from '../../../scenery-phet/js/buttons/PlayPauseButton.js
 import ResetAllButton from '../../../scenery-phet/js/buttons/ResetAllButton.js';
 import StopwatchNode from '../../../scenery-phet/js/StopwatchNode.js';
 import TimeControlNode from '../../../scenery-phet/js/TimeControlNode.js';
-import { AlignBox, AlignGroup, HotkeyData, KeyboardListener, KeyboardUtils, Node, VBox } from '../../../scenery/js/imports.js';
+import KeyboardUtils from '../../../scenery/js/accessibility/KeyboardUtils.js';
+import HotkeyData from '../../../scenery/js/input/HotkeyData.js';
+import AlignGroup from '../../../scenery/js/layout/constraints/AlignGroup.js';
+import AlignBox from '../../../scenery/js/layout/nodes/AlignBox.js';
+import VBox from '../../../scenery/js/layout/nodes/VBox.js';
+import KeyboardListener from '../../../scenery/js/listeners/KeyboardListener.js';
+import Node from '../../../scenery/js/nodes/Node.js';
 import { CarouselItem } from '../../../sun/js/Carousel.js';
 import phetioStateSetEmitter from '../../../tandem/js/phetioStateSetEmitter.js';
 import Tandem from '../../../tandem/js/Tandem.js';

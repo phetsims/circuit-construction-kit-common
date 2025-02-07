@@ -7,8 +7,8 @@
  */
 
 import ScreenView, { ScreenViewOptions } from '../../../../joist/js/ScreenView.js';
-import { Shape } from '../../../../kite/js/imports.js';
-import { Path } from '../../../../scenery/js/imports.js';
+import Shape from '../../../../kite/js/Shape.js';
+import Path from '../../../../scenery/js/nodes/Path.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import BarkNode from '../BarkNode.js';
 

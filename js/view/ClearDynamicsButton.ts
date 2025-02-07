@@ -8,10 +8,12 @@
 
 import { m3 } from '../../../dot/js/Matrix3.js';
 import Vector2 from '../../../dot/js/Vector2.js';
-import { Shape } from '../../../kite/js/imports.js';
+import Shape from '../../../kite/js/Shape.js';
 import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import BannedNode from '../../../scenery-phet/js/BannedNode.js';
-import { Color, Node, Path } from '../../../scenery/js/imports.js';
+import Node from '../../../scenery/js/nodes/Node.js';
+import Path from '../../../scenery/js/nodes/Path.js';
+import Color from '../../../scenery/js/util/Color.js';
 import { RoundPushButtonOptions } from '../../../sun/js/buttons/RoundPushButton.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Circuit from '../model/Circuit.js';

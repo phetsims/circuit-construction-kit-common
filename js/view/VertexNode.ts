@@ -9,7 +9,15 @@
 import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
-import { Circle, CircleOptions, Color, Grayscale, Node, rasterized, SceneryConstants, SceneryEvent, Text, VBox } from '../../../scenery/js/imports.js';
+import Grayscale from '../../../scenery/js/filters/Grayscale.js';
+import SceneryEvent from '../../../scenery/js/input/SceneryEvent.js';
+import VBox from '../../../scenery/js/layout/nodes/VBox.js';
+import Circle, { CircleOptions } from '../../../scenery/js/nodes/Circle.js';
+import Node from '../../../scenery/js/nodes/Node.js';
+import Text from '../../../scenery/js/nodes/Text.js';
+import SceneryConstants from '../../../scenery/js/SceneryConstants.js';
+import Color from '../../../scenery/js/util/Color.js';
+import { rasterized } from '../../../scenery/js/util/rasterized.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';

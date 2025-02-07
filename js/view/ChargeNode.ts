@@ -10,9 +10,10 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Multilink from '../../../axon/js/Multilink.js';
 import Utils from '../../../dot/js/Utils.js';
-import { Shape } from '../../../kite/js/imports.js';
+import Shape from '../../../kite/js/Shape.js';
 import ElectronChargeNode from '../../../scenery-phet/js/ElectronChargeNode.js';
-import { Node, rasterized } from '../../../scenery/js/imports.js';
+import Node from '../../../scenery/js/nodes/Node.js';
+import { rasterized } from '../../../scenery/js/util/rasterized.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Capacitor from '../model/Capacitor.js';

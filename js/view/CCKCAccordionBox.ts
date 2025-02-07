@@ -10,7 +10,10 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
-import { HBox, HStrut, Node, Text } from '../../../scenery/js/imports.js';
+import HBox from '../../../scenery/js/layout/nodes/HBox.js';
+import HStrut from '../../../scenery/js/nodes/HStrut.js';
+import Node from '../../../scenery/js/nodes/Node.js';
+import Text from '../../../scenery/js/nodes/Text.js';
 import AccordionBox, { AccordionBoxOptions } from '../../../sun/js/AccordionBox.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';

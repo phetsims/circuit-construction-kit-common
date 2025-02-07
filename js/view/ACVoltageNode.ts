@@ -8,11 +8,14 @@
 
 import Property from '../../../axon/js/Property.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
-import { Shape } from '../../../kite/js/imports.js';
+import Shape from '../../../kite/js/Shape.js';
 import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import MinusNode from '../../../scenery-phet/js/MinusNode.js';
 import PlusNode from '../../../scenery-phet/js/PlusNode.js';
-import { Circle, Node, Path, rasterized } from '../../../scenery/js/imports.js';
+import Circle from '../../../scenery/js/nodes/Circle.js';
+import Node from '../../../scenery/js/nodes/Node.js';
+import Path from '../../../scenery/js/nodes/Path.js';
+import { rasterized } from '../../../scenery/js/util/rasterized.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';

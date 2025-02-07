@@ -9,9 +9,13 @@
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
-import { Shape } from '../../../kite/js/imports.js';
+import Shape from '../../../kite/js/Shape.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
-import { Color, Image, Node, Path, Rectangle } from '../../../scenery/js/imports.js';
+import Image from '../../../scenery/js/nodes/Image.js';
+import Node from '../../../scenery/js/nodes/Node.js';
+import Path from '../../../scenery/js/nodes/Path.js';
+import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
+import Color from '../../../scenery/js/util/Color.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import coin_png from '../../images/coin_png.js';
 import dog_png from '../../images/dog_png.js';

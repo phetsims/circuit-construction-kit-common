@@ -7,7 +7,7 @@
  */
 
 import { combineOptions } from '../../../phet-core/js/optionize.js';
-import { Path } from '../../../scenery/js/imports.js';
+import Path from '../../../scenery/js/nodes/Path.js';
 import trashAltRegularShape from '../../../sherpa/js/fontawesome-5/trashAltRegularShape.js';
 import { RoundPushButtonOptions } from '../../../sun/js/buttons/RoundPushButton.js';
 import Tandem from '../../../tandem/js/Tandem.js';

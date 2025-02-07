@@ -9,7 +9,9 @@
 
 import Property from '../../../axon/js/Property.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
-import { AlignGroup, Text, TextOptions, VBox } from '../../../scenery/js/imports.js';
+import AlignGroup from '../../../scenery/js/layout/constraints/AlignGroup.js';
+import VBox from '../../../scenery/js/layout/nodes/VBox.js';
+import Text, { TextOptions } from '../../../scenery/js/nodes/Text.js';
 import HSlider from '../../../sun/js/HSlider.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';

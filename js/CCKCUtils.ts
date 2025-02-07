@@ -10,7 +10,7 @@ import Bounds2 from '../../dot/js/Bounds2.js';
 import Utils from '../../dot/js/Utils.js';
 import StringUtils from '../../phetcommon/js/util/StringUtils.js';
 import MathSymbols from '../../scenery-phet/js/MathSymbols.js';
-import { Node } from '../../scenery/js/imports.js';
+import Node from '../../scenery/js/nodes/Node.js';
 import CCKCConstants from './CCKCConstants.js';
 import CCKCQueryParameters from './CCKCQueryParameters.js';
 import circuitConstructionKitCommon from './circuitConstructionKitCommon.js';

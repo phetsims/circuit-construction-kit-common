@@ -7,7 +7,7 @@
 
 import Property from '../../../axon/js/Property.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
-import { Node } from '../../../scenery/js/imports.js';
+import Node from '../../../scenery/js/nodes/Node.js';
 import Checkbox, { CheckboxOptions } from '../../../sun/js/Checkbox.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 

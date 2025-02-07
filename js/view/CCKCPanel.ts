@@ -7,7 +7,7 @@
  */
 
 import { combineOptions } from '../../../phet-core/js/optionize.js';
-import { Node } from '../../../scenery/js/imports.js';
+import Node from '../../../scenery/js/nodes/Node.js';
 import Panel, { PanelOptions } from '../../../sun/js/Panel.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';

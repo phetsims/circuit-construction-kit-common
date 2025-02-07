@@ -12,7 +12,8 @@ import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import ProbeNode, { ProbeNodeOptions } from '../../../scenery-phet/js/ProbeNode.js';
-import { DragListener, Node } from '../../../scenery/js/imports.js';
+import DragListener from '../../../scenery/js/listeners/DragListener.js';
+import Node from '../../../scenery/js/nodes/Node.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 type SelfOptions = {

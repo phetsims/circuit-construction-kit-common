@@ -8,9 +8,12 @@
 
 import Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
-import { Shape } from '../../../kite/js/imports.js';
+import Shape from '../../../kite/js/Shape.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
-import { Color, Image, Path, rasterized } from '../../../scenery/js/imports.js';
+import Image from '../../../scenery/js/nodes/Image.js';
+import Path from '../../../scenery/js/nodes/Path.js';
+import Color from '../../../scenery/js/util/Color.js';
+import { rasterized } from '../../../scenery/js/util/rasterized.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import battery_png from '../../images/battery_png.js';
 import batteryHigh_png from '../../images/batteryHigh_png.js';

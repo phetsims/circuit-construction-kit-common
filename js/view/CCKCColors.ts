@@ -7,7 +7,7 @@
  * @author Matthew Blackman (PhET Interactive Simulations)
  */
 
-import { ProfileColorProperty } from '../../../scenery/js/imports.js';
+import ProfileColorProperty from '../../../scenery/js/util/ProfileColorProperty.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 

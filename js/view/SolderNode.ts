@@ -7,7 +7,9 @@
  */
 
 import Vector2 from '../../../dot/js/Vector2.js';
-import { Circle, Node, rasterized } from '../../../scenery/js/imports.js';
+import Circle from '../../../scenery/js/nodes/Circle.js';
+import Node from '../../../scenery/js/nodes/Node.js';
+import { rasterized } from '../../../scenery/js/util/rasterized.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Vertex from '../model/Vertex.js';
 import CircuitNode from './CircuitNode.js';

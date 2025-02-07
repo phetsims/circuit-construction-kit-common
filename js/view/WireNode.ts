@@ -9,8 +9,16 @@
 import Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import Vector2 from '../../../dot/js/Vector2.js';
-import { LineStyles, Shape } from '../../../kite/js/imports.js';
-import { Circle, Color, Line, LinearGradient, Node, Path, rasterized, SceneryEvent } from '../../../scenery/js/imports.js';
+import Shape from '../../../kite/js/Shape.js';
+import LineStyles from '../../../kite/js/util/LineStyles.js';
+import SceneryEvent from '../../../scenery/js/input/SceneryEvent.js';
+import Circle from '../../../scenery/js/nodes/Circle.js';
+import Line from '../../../scenery/js/nodes/Line.js';
+import Node from '../../../scenery/js/nodes/Node.js';
+import Path from '../../../scenery/js/nodes/Path.js';
+import Color from '../../../scenery/js/util/Color.js';
+import LinearGradient from '../../../scenery/js/util/LinearGradient.js';
+import { rasterized } from '../../../scenery/js/util/rasterized.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';

@@ -10,7 +10,7 @@ import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
-import { Rectangle } from '../../../scenery/js/imports.js';
+import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';

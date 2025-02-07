@@ -11,7 +11,7 @@ import Multilink from '../../../axon/js/Multilink.js';
 import Property from '../../../axon/js/Property.js';
 import Utils from '../../../dot/js/Utils.js';
 import StringUtils from '../../../phetcommon/js/util/StringUtils.js';
-import { Text } from '../../../scenery/js/imports.js';
+import Text from '../../../scenery/js/nodes/Text.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 

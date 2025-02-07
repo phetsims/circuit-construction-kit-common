@@ -7,7 +7,9 @@
  */
 
 import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
-import { Color, Path, VBox } from '../../../scenery/js/imports.js';
+import VBox from '../../../scenery/js/layout/nodes/VBox.js';
+import Path from '../../../scenery/js/nodes/Path.js';
+import Color from '../../../scenery/js/util/Color.js';
 import syncAltSolidString from '../../../sherpa/js/fontawesome-5/syncAltSolidString.js';
 import { RoundPushButtonOptions } from '../../../sun/js/buttons/RoundPushButton.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';

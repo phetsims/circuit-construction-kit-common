@@ -9,7 +9,10 @@
 
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
-import { AlignGroup, Node, Text, VBox } from '../../../scenery/js/imports.js';
+import AlignGroup from '../../../scenery/js/layout/constraints/AlignGroup.js';
+import VBox from '../../../scenery/js/layout/nodes/VBox.js';
+import Node from '../../../scenery/js/nodes/Node.js';
+import Text from '../../../scenery/js/nodes/Text.js';
 import { CheckboxOptions } from '../../../sun/js/Checkbox.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
