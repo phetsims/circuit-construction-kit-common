@@ -1,4 +1,4 @@
-// Copyright 2015-2023, University of Colorado Boulder
+// Copyright 2015-2025, University of Colorado Boulder
 
 /**
  * Shows the socket (base) of the light bulb only, so that it will appear that the charges go "inside" the base.
