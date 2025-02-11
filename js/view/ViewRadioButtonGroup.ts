@@ -10,13 +10,13 @@
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Property from '../../../axon/js/Property.js';
 import Vector2 from '../../../dot/js/Vector2.js';
-import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
-import RectangularRadioButtonGroup, { RectangularRadioButtonGroupOptions } from '../../../sun/js/buttons/RectangularRadioButtonGroup.js';
+import optionize, { type EmptySelfOptions } from '../../../phet-core/js/optionize.js';
+import RectangularRadioButtonGroup, { type RectangularRadioButtonGroupOptions } from '../../../sun/js/buttons/RectangularRadioButtonGroup.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Battery from '../model/Battery.js';
-import CircuitElement from '../model/CircuitElement.js';
+import type CircuitElement from '../model/CircuitElement.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import Vertex from '../model/Vertex.js';
 import BatteryNode from './BatteryNode.js';

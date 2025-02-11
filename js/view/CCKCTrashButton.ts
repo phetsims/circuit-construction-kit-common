@@ -9,11 +9,11 @@
 import { combineOptions } from '../../../phet-core/js/optionize.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import trashAltRegularShape from '../../../sherpa/js/fontawesome-5/trashAltRegularShape.js';
-import { RoundPushButtonOptions } from '../../../sun/js/buttons/RoundPushButton.js';
-import Tandem from '../../../tandem/js/Tandem.js';
+import { type RoundPushButtonOptions } from '../../../sun/js/buttons/RoundPushButton.js';
+import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import Circuit from '../model/Circuit.js';
+import type Circuit from '../model/Circuit.js';
 import CircuitElement from '../model/CircuitElement.js';
 import CCKCRoundPushButton from './CCKCRoundPushButton.js';
 

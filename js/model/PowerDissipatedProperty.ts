@@ -4,8 +4,8 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 import { DerivedProperty2 } from '../../../axon/js/DerivedProperty.js';
-import Property from '../../../axon/js/Property.js';
-import Tandem from '../../../tandem/js/Tandem.js';
+import type Property from '../../../axon/js/Property.js';
+import type Tandem from '../../../tandem/js/Tandem.js';
 import NumberIO from '../../../tandem/js/types/NumberIO.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 

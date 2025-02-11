@@ -6,13 +6,13 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import Vector2 from '../../../dot/js/Vector2.js';
+import type Vector2 from '../../../dot/js/Vector2.js';
 import Circle from '../../../scenery/js/nodes/Circle.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import { rasterized } from '../../../scenery/js/util/rasterized.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import Vertex from '../model/Vertex.js';
-import CircuitNode from './CircuitNode.js';
+import type Vertex from '../model/Vertex.js';
+import type CircuitNode from './CircuitNode.js';
 
 // constants
 const SOLDER_COLOR = '#ae9f9e';

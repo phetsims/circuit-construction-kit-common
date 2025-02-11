@@ -7,7 +7,7 @@
  */
 
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitElement from './CircuitElement.js';
+import type CircuitElement from './CircuitElement.js';
 
 export default class AmmeterConnection {
   public readonly circuitElement: CircuitElement;

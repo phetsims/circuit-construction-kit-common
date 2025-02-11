@@ -9,22 +9,22 @@
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Multilink from '../../../axon/js/Multilink.js';
-import Property from '../../../axon/js/Property.js';
-import ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
-import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
-import Vector2 from '../../../dot/js/Vector2.js';
+import type Property from '../../../axon/js/Property.js';
+import type ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
+import type TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import type Vector2 from '../../../dot/js/Vector2.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import Grayscale from '../../../scenery/js/filters/Grayscale.js';
-import VBox, { VBoxOptions } from '../../../scenery/js/layout/nodes/VBox.js';
+import VBox, { type VBoxOptions } from '../../../scenery/js/layout/nodes/VBox.js';
 import DragListener from '../../../scenery/js/listeners/DragListener.js';
-import { PressListenerEvent } from '../../../scenery/js/listeners/PressListener.js';
-import Node from '../../../scenery/js/nodes/Node.js';
+import { type PressListenerEvent } from '../../../scenery/js/listeners/PressListener.js';
+import type Node from '../../../scenery/js/nodes/Node.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import Circuit from '../model/Circuit.js';
-import CircuitElement from '../model/CircuitElement.js';
-import CircuitElementViewType from '../model/CircuitElementViewType.js';
+import type Circuit from '../model/Circuit.js';
+import type CircuitElement from '../model/CircuitElement.js';
+import type CircuitElementViewType from '../model/CircuitElementViewType.js';
 import CCKCColors from './CCKCColors.js';
 
 // constants

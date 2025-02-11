@@ -8,18 +8,18 @@
 
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
-import Property from '../../../axon/js/Property.js';
-import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
-import Range from '../../../dot/js/Range.js';
+import type Property from '../../../axon/js/Property.js';
+import type TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import type Range from '../../../dot/js/Range.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
-import PickOptional from '../../../phet-core/js/types/PickOptional.js';
-import Tandem from '../../../tandem/js/Tandem.js';
+import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
+import type PickOptional from '../../../phet-core/js/types/PickOptional.js';
+import type Tandem from '../../../tandem/js/Tandem.js';
 import NumberIO from '../../../tandem/js/types/NumberIO.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import FixedCircuitElement, { FixedCircuitElementOptions } from './FixedCircuitElement.js';
+import FixedCircuitElement, { type FixedCircuitElementOptions } from './FixedCircuitElement.js';
 import PowerDissipatedProperty from './PowerDissipatedProperty.js';
-import Vertex from './Vertex.js';
+import type Vertex from './Vertex.js';
 
 type SelfOptions = {
   initialOrientation?: 'right' | 'left';

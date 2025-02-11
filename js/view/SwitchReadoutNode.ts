@@ -6,16 +6,16 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import type TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Text from '../../../scenery/js/nodes/Text.js';
-import Tandem from '../../../tandem/js/Tandem.js';
+import type Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
-import Circuit from '../model/Circuit.js';
-import CircuitElement from '../model/CircuitElement.js';
+import type Circuit from '../model/Circuit.js';
+import type CircuitElement from '../model/CircuitElement.js';
 import Switch from '../model/Switch.js';
-import Vertex from '../model/Vertex.js';
+import type Vertex from '../model/Vertex.js';
 import CCKCColors from './CCKCColors.js';
 
 const theSwitchIsClosedStringProperty = CircuitConstructionKitCommonStrings.theSwitchIsClosedStringProperty;

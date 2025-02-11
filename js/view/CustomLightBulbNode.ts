@@ -7,13 +7,13 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import Property from '../../../axon/js/Property.js';
+import type Property from '../../../axon/js/Property.js';
 import Utils from '../../../dot/js/Utils.js';
 import Shape from '../../../kite/js/Shape.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import LightRaysNode from '../../../scenery-phet/js/LightRaysNode.js';
 import Image from '../../../scenery/js/nodes/Image.js';
-import Node, { NodeOptions } from '../../../scenery/js/nodes/Node.js';
+import Node, { type NodeOptions } from '../../../scenery/js/nodes/Node.js';
 import lightBulbBack_png from '../../images/lightBulbBack_png.js';
 import lightBulbFront_png from '../../images/lightBulbFront_png.js';
 import lightBulbFrontHigh_png from '../../images/lightBulbFrontHigh_png.js';

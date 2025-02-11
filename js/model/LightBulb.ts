@@ -7,18 +7,18 @@
  */
 
 import NumberProperty from '../../../axon/js/NumberProperty.js';
-import Property from '../../../axon/js/Property.js';
-import Matrix3 from '../../../dot/js/Matrix3.js';
+import type Property from '../../../axon/js/Property.js';
+import type Matrix3 from '../../../dot/js/Matrix3.js';
 import Range from '../../../dot/js/Range.js';
 import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
-import Tandem from '../../../tandem/js/Tandem.js';
+import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
+import type Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import Circuit from './Circuit.js';
+import type Circuit from './Circuit.js';
 import CircuitElementViewType from './CircuitElementViewType.js';
-import FixedCircuitElement, { FixedCircuitElementOptions } from './FixedCircuitElement.js';
+import FixedCircuitElement, { type FixedCircuitElementOptions } from './FixedCircuitElement.js';
 import PowerDissipatedProperty from './PowerDissipatedProperty.js';
 import Vertex from './Vertex.js';
 

@@ -7,15 +7,15 @@
  */
 
 import NumberProperty from '../../../axon/js/NumberProperty.js';
-import Property from '../../../axon/js/Property.js';
+import type Property from '../../../axon/js/Property.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
+import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import Circuit from './Circuit.js';
-import CircuitElement, { CircuitElementOptions } from './CircuitElement.js';
-import Vertex from './Vertex.js';
+import type Circuit from './Circuit.js';
+import CircuitElement, { type CircuitElementOptions } from './CircuitElement.js';
+import type Vertex from './Vertex.js';
 
 // constants
 // Conversion factor between model=view coordinates and meters, in order to use resistivity to compute resistance.

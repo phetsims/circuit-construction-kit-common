@@ -8,11 +8,11 @@
 
 import Disposable from '../../../axon/js/Disposable.js';
 import Emitter from '../../../axon/js/Emitter.js';
-import Property from '../../../axon/js/Property.js';
-import TEmitter from '../../../axon/js/TEmitter.js';
+import type Property from '../../../axon/js/Property.js';
+import type TEmitter from '../../../axon/js/TEmitter.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitElement from './CircuitElement.js';
+import type CircuitElement from './CircuitElement.js';
 
 export default class Charge extends Disposable {
 

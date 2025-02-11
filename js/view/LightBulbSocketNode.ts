@@ -7,18 +7,18 @@
  */
 
 import NumberProperty from '../../../axon/js/NumberProperty.js';
-import Property from '../../../axon/js/Property.js';
+import type Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
-import Tandem from '../../../tandem/js/Tandem.js';
+import type Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitElementViewType from '../model/CircuitElementViewType.js';
-import LightBulb from '../model/LightBulb.js';
-import CCKCScreenView from './CCKCScreenView.js';
-import CircuitNode from './CircuitNode.js';
+import type CircuitElementViewType from '../model/CircuitElementViewType.js';
+import type LightBulb from '../model/LightBulb.js';
+import type CCKCScreenView from './CCKCScreenView.js';
+import type CircuitNode from './CircuitNode.js';
 import CustomLightBulbNode from './CustomLightBulbNode.js';
-import FixedCircuitElementNode, { FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
+import FixedCircuitElementNode, { type FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
 
 // constants
 const SCRATCH_MATRIX = new Matrix3();

@@ -11,16 +11,15 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import Matrix from '../../../../../dot/js/Matrix.js';
-import { QRDecomposition } from '../../../../../dot/js/Matrix.js';
+import Matrix, { QRDecomposition } from '../../../../../dot/js/Matrix.js';
 import Utils from '../../../../../dot/js/Utils.js';
 import arrayRemove from '../../../../../phet-core/js/arrayRemove.js';
-import IntentionalAny from '../../../../../phet-core/js/types/IntentionalAny.js';
+import type IntentionalAny from '../../../../../phet-core/js/types/IntentionalAny.js';
 import circuitConstructionKitCommon from '../../../circuitConstructionKitCommon.js';
-import MNABattery from './MNABattery.js';
-import MNACircuitElement from './MNACircuitElement.js';
-import MNACurrent from './MNACurrent.js';
-import MNAResistor from './MNAResistor.js';
+import type MNABattery from './MNABattery.js';
+import type MNACircuitElement from './MNACircuitElement.js';
+import type MNACurrent from './MNACurrent.js';
+import type MNAResistor from './MNAResistor.js';
 import MNASolution from './MNASolution.js';
 
 export default class MNACircuit {

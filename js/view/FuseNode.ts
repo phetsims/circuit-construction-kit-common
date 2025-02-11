@@ -6,27 +6,27 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import Property from '../../../axon/js/Property.js';
+import type Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Shape from '../../../kite/js/Shape.js';
-import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
+import optionize, { type EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import Image from '../../../scenery/js/nodes/Image.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
 import Color from '../../../scenery/js/util/Color.js';
 import isSettingPhetioStateProperty from '../../../tandem/js/isSettingPhetioStateProperty.js';
-import Tandem from '../../../tandem/js/Tandem.js';
+import type Tandem from '../../../tandem/js/Tandem.js';
 import fuse_png from '../../images/fuse_png.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitElementViewType from '../model/CircuitElementViewType.js';
-import Fuse from '../model/Fuse.js';
-import CCKCScreenView from './CCKCScreenView.js';
-import CircuitNode from './CircuitNode.js';
-import FixedCircuitElementNode, { FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
+import type CircuitElementViewType from '../model/CircuitElementViewType.js';
+import type Fuse from '../model/Fuse.js';
+import type CCKCScreenView from './CCKCScreenView.js';
+import type CircuitNode from './CircuitNode.js';
+import FixedCircuitElementNode, { type FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
 import FuseTripAnimation from './FuseTripAnimation.js';
 import SchematicType from './SchematicType.js';
 import schematicTypeProperty from './schematicTypeProperty.js';

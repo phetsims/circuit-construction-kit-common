@@ -10,7 +10,7 @@ import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CCKCColors from './CCKCColors.js';
-import FixedCircuitElementNode from './FixedCircuitElementNode.js';
+import type FixedCircuitElementNode from './FixedCircuitElementNode.js';
 
 // constants
 const CORNER_RADIUS = 8; // in view coordinates

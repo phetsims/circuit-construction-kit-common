@@ -7,7 +7,7 @@
  */
 
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
-import Property from '../../../axon/js/Property.js';
+import type Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import Shape from '../../../kite/js/Shape.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
@@ -16,7 +16,7 @@ import Node from '../../../scenery/js/nodes/Node.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
 import Color from '../../../scenery/js/util/Color.js';
-import Tandem from '../../../tandem/js/Tandem.js';
+import type Tandem from '../../../tandem/js/Tandem.js';
 import coin_png from '../../images/coin_png.js';
 import dog_png from '../../images/dog_png.js';
 import dollar_png from '../../images/dollar_png.js';
@@ -28,12 +28,12 @@ import resistor_png from '../../images/resistor_png.js';
 import resistorHigh_png from '../../images/resistorHigh_png.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitElementViewType from '../model/CircuitElementViewType.js';
-import Resistor from '../model/Resistor.js';
+import type CircuitElementViewType from '../model/CircuitElementViewType.js';
+import type Resistor from '../model/Resistor.js';
 import ResistorType from '../model/ResistorType.js';
-import CCKCScreenView from './CCKCScreenView.js';
-import CircuitNode from './CircuitNode.js';
-import FixedCircuitElementNode, { FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
+import type CCKCScreenView from './CCKCScreenView.js';
+import type CircuitNode from './CircuitNode.js';
+import FixedCircuitElementNode, { type FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
 import ResistorColors from './ResistorColors.js';
 import SchematicType from './SchematicType.js';
 import schematicTypeProperty from './schematicTypeProperty.js';

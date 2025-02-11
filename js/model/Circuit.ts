@@ -8,17 +8,17 @@
  */
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
-import createObservableArray, { ObservableArray } from '../../../axon/js/createObservableArray.js';
+import createObservableArray, { type ObservableArray } from '../../../axon/js/createObservableArray.js';
 import Emitter from '../../../axon/js/Emitter.js';
 import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Property from '../../../axon/js/Property.js';
-import TEmitter from '../../../axon/js/TEmitter.js';
-import Bounds2 from '../../../dot/js/Bounds2.js';
+import type TEmitter from '../../../axon/js/TEmitter.js';
+import type Bounds2 from '../../../dot/js/Bounds2.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
 import Vector2 from '../../../dot/js/Vector2.js';
-import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
-import { PhetioState } from '../../../tandem/js/phet-io-types.js';
+import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
+import { type PhetioState } from '../../../tandem/js/phet-io-types.js';
 import PhetioGroup from '../../../tandem/js/PhetioGroup.js';
 import PhetioObject from '../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -40,7 +40,7 @@ import Capacitor from './Capacitor.js';
 import Charge from './Charge.js';
 import ChargeAnimator from './ChargeAnimator.js';
 import CircuitElement from './CircuitElement.js';
-import CircuitElementViewType from './CircuitElementViewType.js';
+import type CircuitElementViewType from './CircuitElementViewType.js';
 import CurrentSense from './CurrentSense.js';
 import CurrentType from './CurrentType.js';
 import DynamicCircuitElement from './DynamicCircuitElement.js';
@@ -54,7 +54,7 @@ import ResistorType from './ResistorType.js';
 import SeriesAmmeter from './SeriesAmmeter.js';
 import Switch from './Switch.js';
 import Vertex from './Vertex.js';
-import VoltageConnection from './VoltageConnection.js';
+import type VoltageConnection from './VoltageConnection.js';
 import Wire from './Wire.js';
 
 // constants

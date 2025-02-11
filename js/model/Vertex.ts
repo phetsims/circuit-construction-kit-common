@@ -9,18 +9,19 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
-import Property, { PropertyOptions } from '../../../axon/js/Property.js';
+import { type PropertyOptions } from '../../../axon/js/Property.js';
+import type Property from '../../../axon/js/Property.js';
 import StringProperty from '../../../axon/js/StringProperty.js';
-import TEmitter from '../../../axon/js/TEmitter.js';
-import TProperty from '../../../axon/js/TProperty.js';
+import type TEmitter from '../../../axon/js/TEmitter.js';
+import type TProperty from '../../../axon/js/TProperty.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
-import PhetioObject, { PhetioObjectOptions } from '../../../tandem/js/PhetioObject.js';
+import PhetioObject, { type PhetioObjectOptions } from '../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import IOType from '../../../tandem/js/types/IOType.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitElement from './CircuitElement.js';
+import type CircuitElement from './CircuitElement.js';
 
 // Index counter for debugging
 let counter = 0;

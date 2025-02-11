@@ -8,16 +8,16 @@
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
-import Property from '../../../axon/js/Property.js';
-import Matrix3 from '../../../dot/js/Matrix3.js';
+import type Property from '../../../axon/js/Property.js';
+import type Matrix3 from '../../../dot/js/Matrix3.js';
 import Utils from '../../../dot/js/Utils.js';
-import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
+import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import Circuit from './Circuit.js';
+import type Circuit from './Circuit.js';
 import FixedCircuitElement from './FixedCircuitElement.js';
-import Vertex from './Vertex.js';
+import type Vertex from './Vertex.js';
 
 // constants
 const SWITCH_LENGTH = CCKCConstants.SWITCH_LENGTH;

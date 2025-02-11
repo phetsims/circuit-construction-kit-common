@@ -7,15 +7,15 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import Property from '../../../axon/js/Property.js';
+import type Property from '../../../axon/js/Property.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import HBox, { HBoxOptions } from '../../../scenery/js/layout/nodes/HBox.js';
+import HBox, { type HBoxOptions } from '../../../scenery/js/layout/nodes/HBox.js';
 import Color from '../../../scenery/js/util/Color.js';
-import Carousel, { CarouselItem, CarouselOptions } from '../../../sun/js/Carousel.js';
+import Carousel, { type CarouselItem, type CarouselOptions } from '../../../sun/js/Carousel.js';
 import PageControl from '../../../sun/js/PageControl.js';
-import Tandem from '../../../tandem/js/Tandem.js';
+import type Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitElementViewType from '../model/CircuitElementViewType.js';
+import type CircuitElementViewType from '../model/CircuitElementViewType.js';
 import CCKCColors from './CCKCColors.js';
 
 // constants

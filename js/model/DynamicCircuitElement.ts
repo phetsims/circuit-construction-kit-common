@@ -8,12 +8,12 @@
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
-import TEmitter from '../../../axon/js/TEmitter.js';
-import { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
-import Tandem from '../../../tandem/js/Tandem.js';
+import type TEmitter from '../../../axon/js/TEmitter.js';
+import { type EmptySelfOptions } from '../../../phet-core/js/optionize.js';
+import type Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import FixedCircuitElement, { FixedCircuitElementOptions } from './FixedCircuitElement.js';
-import Vertex from './Vertex.js';
+import FixedCircuitElement, { type FixedCircuitElementOptions } from './FixedCircuitElement.js';
+import type Vertex from './Vertex.js';
 
 type SelfOptions = EmptySelfOptions;
 export type DynamicCircuitElementOptions = SelfOptions & FixedCircuitElementOptions;

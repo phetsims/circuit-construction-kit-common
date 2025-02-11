@@ -9,16 +9,16 @@
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
-import Property from '../../../axon/js/Property.js';
+import type Property from '../../../axon/js/Property.js';
 import Range from '../../../dot/js/Range.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
-import Tandem from '../../../tandem/js/Tandem.js';
+import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
+import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import Circuit from './Circuit.js';
-import FixedCircuitElement, { FixedCircuitElementOptions } from './FixedCircuitElement.js';
-import Vertex from './Vertex.js';
+import type Circuit from './Circuit.js';
+import FixedCircuitElement, { type FixedCircuitElementOptions } from './FixedCircuitElement.js';
+import type Vertex from './Vertex.js';
 
 type SelfOptions = {
   fuseLength?: number;

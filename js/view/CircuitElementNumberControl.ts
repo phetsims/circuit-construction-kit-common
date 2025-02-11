@@ -6,25 +6,25 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import Multilink, { UnknownMultilink } from '../../../axon/js/Multilink.js';
-import Property from '../../../axon/js/Property.js';
-import ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
-import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import Multilink, { type UnknownMultilink } from '../../../axon/js/Multilink.js';
+import type Property from '../../../axon/js/Property.js';
+import type ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
+import type TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
-import Range from '../../../dot/js/Range.js';
+import type Range from '../../../dot/js/Range.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import NumberControl, { LayoutFunction } from '../../../scenery-phet/js/NumberControl.js';
-import { NumberDisplayOptions } from '../../../scenery-phet/js/NumberDisplay.js';
-import HBox, { HBoxOptions } from '../../../scenery/js/layout/nodes/HBox.js';
-import { TextOptions } from '../../../scenery/js/nodes/Text.js';
-import { SliderOptions } from '../../../sun/js/Slider.js';
+import NumberControl, { type LayoutFunction } from '../../../scenery-phet/js/NumberControl.js';
+import { type NumberDisplayOptions } from '../../../scenery-phet/js/NumberDisplay.js';
+import HBox, { type HBoxOptions } from '../../../scenery/js/layout/nodes/HBox.js';
+import { type TextOptions } from '../../../scenery/js/nodes/Text.js';
+import { type SliderOptions } from '../../../sun/js/Slider.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import ACVoltage from '../model/ACVoltage.js';
-import Circuit from '../model/Circuit.js';
+import type Circuit from '../model/Circuit.js';
 import CircuitElement from '../model/CircuitElement.js';
-import Vertex from '../model/Vertex.js';
+import type Vertex from '../model/Vertex.js';
 import CCKCColors from './CCKCColors.js';
 
 type SelfOptions = {

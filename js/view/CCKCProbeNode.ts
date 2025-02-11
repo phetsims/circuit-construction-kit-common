@@ -6,14 +6,14 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import Property from '../../../axon/js/Property.js';
-import Bounds2 from '../../../dot/js/Bounds2.js';
+import type Property from '../../../axon/js/Property.js';
+import type Bounds2 from '../../../dot/js/Bounds2.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import ProbeNode, { ProbeNodeOptions } from '../../../scenery-phet/js/ProbeNode.js';
+import ProbeNode, { type ProbeNodeOptions } from '../../../scenery-phet/js/ProbeNode.js';
 import DragListener from '../../../scenery/js/listeners/DragListener.js';
-import Node from '../../../scenery/js/nodes/Node.js';
+import type Node from '../../../scenery/js/nodes/Node.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 type SelfOptions = {

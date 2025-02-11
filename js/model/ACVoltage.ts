@@ -8,17 +8,17 @@
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
-import Property from '../../../axon/js/Property.js';
+import type Property from '../../../axon/js/Property.js';
 import Range from '../../../dot/js/Range.js';
-import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
-import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
+import optionize, { type EmptySelfOptions } from '../../../phet-core/js/optionize.js';
+import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
-import Tandem from '../../../tandem/js/Tandem.js';
+import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import Circuit from './Circuit.js';
-import Vertex from './Vertex.js';
-import VoltageSource, { VoltageSourceOptions } from './VoltageSource.js';
+import type Circuit from './Circuit.js';
+import type Vertex from './Vertex.js';
+import VoltageSource, { type VoltageSourceOptions } from './VoltageSource.js';
 
 // constants
 

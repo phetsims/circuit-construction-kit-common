@@ -6,18 +6,18 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import Vector2 from '../../../dot/js/Vector2.js';
+import type Vector2 from '../../../dot/js/Vector2.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import { PressListenerEvent } from '../../../scenery/js/listeners/PressListener.js';
-import Node, { NodeOptions } from '../../../scenery/js/nodes/Node.js';
+import { type PressListenerEvent } from '../../../scenery/js/listeners/PressListener.js';
+import Node, { type NodeOptions } from '../../../scenery/js/nodes/Node.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import Circuit from '../model/Circuit.js';
-import CircuitElement from '../model/CircuitElement.js';
-import Vertex from '../model/Vertex.js';
-import CCKCScreenView from './CCKCScreenView.js';
-import CircuitNode from './CircuitNode.js';
-import CircuitNodeDragListener from './CircuitNodeDragListener.js';
+import type Circuit from '../model/Circuit.js';
+import type CircuitElement from '../model/CircuitElement.js';
+import type Vertex from '../model/Vertex.js';
+import type CCKCScreenView from './CCKCScreenView.js';
+import type CircuitNode from './CircuitNode.js';
+import type CircuitNodeDragListener from './CircuitNodeDragListener.js';
 
 type SelfOptions = {
   useHitTestForSensors?: boolean;

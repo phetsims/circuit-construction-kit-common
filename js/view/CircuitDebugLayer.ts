@@ -12,7 +12,7 @@ import Text from '../../../scenery/js/nodes/Text.js';
 import Panel from '../../../sun/js/Panel.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CurrentSense from '../model/CurrentSense.js';
-import CircuitNode from './CircuitNode.js';
+import type CircuitNode from './CircuitNode.js';
 
 export default class CircuitDebugLayer extends Node {
   private readonly circuitNode: CircuitNode;

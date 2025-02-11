@@ -7,13 +7,13 @@
  */
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
-import Property from '../../../axon/js/Property.js';
-import Tandem from '../../../tandem/js/Tandem.js';
+import type Property from '../../../axon/js/Property.js';
+import type Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import Circuit from './Circuit.js';
-import Resistor, { ResistorOptions } from './Resistor.js';
+import type Circuit from './Circuit.js';
+import Resistor, { type ResistorOptions } from './Resistor.js';
 import ResistorType from './ResistorType.js';
-import Vertex from './Vertex.js';
+import type Vertex from './Vertex.js';
 
 export default class Dog extends Resistor {
   public readonly isBarkingProperty: Property<boolean>;

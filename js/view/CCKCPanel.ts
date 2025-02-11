@@ -7,9 +7,9 @@
  */
 
 import { combineOptions } from '../../../phet-core/js/optionize.js';
-import Node from '../../../scenery/js/nodes/Node.js';
-import Panel, { PanelOptions } from '../../../sun/js/Panel.js';
-import Tandem from '../../../tandem/js/Tandem.js';
+import type Node from '../../../scenery/js/nodes/Node.js';
+import Panel, { type PanelOptions } from '../../../sun/js/Panel.js';
+import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CCKCColors from './CCKCColors.js';

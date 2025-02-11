@@ -6,15 +6,15 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
+import optionize, { type EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import VBox from '../../../scenery/js/layout/nodes/VBox.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import Color from '../../../scenery/js/util/Color.js';
 import syncAltSolidString from '../../../sherpa/js/fontawesome-5/syncAltSolidString.js';
-import { RoundPushButtonOptions } from '../../../sun/js/buttons/RoundPushButton.js';
+import { type RoundPushButtonOptions } from '../../../sun/js/buttons/RoundPushButton.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Battery from '../model/Battery.js';
-import Circuit from '../model/Circuit.js';
+import type Circuit from '../model/Circuit.js';
 import CCKCRoundPushButton from './CCKCRoundPushButton.js';
 
 // constants

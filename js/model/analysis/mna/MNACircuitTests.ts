@@ -8,7 +8,7 @@
 
 import MNABattery from './MNABattery.js';
 import MNACircuit from './MNACircuit.js';
-import MNACircuitElement from './MNACircuitElement.js';
+import type MNACircuitElement from './MNACircuitElement.js';
 import MNACurrent from './MNACurrent.js';
 import MNAResistor from './MNAResistor.js';
 import MNASolution from './MNASolution.js';

@@ -9,15 +9,15 @@
  */
 
 import PatternStringProperty from '../../../axon/js/PatternStringProperty.js';
-import Property from '../../../axon/js/Property.js';
-import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import type Property from '../../../axon/js/Property.js';
+import type TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import Utils from '../../../dot/js/Utils.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
-import AlignGroup from '../../../scenery/js/layout/constraints/AlignGroup.js';
+import type AlignGroup from '../../../scenery/js/layout/constraints/AlignGroup.js';
 import VBox from '../../../scenery/js/layout/nodes/VBox.js';
-import Text, { TextOptions } from '../../../scenery/js/nodes/Text.js';
+import Text, { type TextOptions } from '../../../scenery/js/nodes/Text.js';
 import HSlider from '../../../sun/js/HSlider.js';
-import Tandem from '../../../tandem/js/Tandem.js';
+import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';

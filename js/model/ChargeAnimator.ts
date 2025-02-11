@@ -7,7 +7,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import { ObservableArray } from '../../../axon/js/createObservableArray.js';
+import { type ObservableArray } from '../../../axon/js/createObservableArray.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
 import Range from '../../../dot/js/Range.js';
@@ -15,10 +15,10 @@ import RunningAverage from '../../../dot/js/RunningAverage.js';
 import Utils from '../../../dot/js/Utils.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import Charge from './Charge.js';
-import Circuit from './Circuit.js';
-import CircuitElement from './CircuitElement.js';
-import Vertex from './Vertex.js';
+import type Charge from './Charge.js';
+import type Circuit from './Circuit.js';
+import type CircuitElement from './CircuitElement.js';
+import type Vertex from './Vertex.js';
 
 // constants
 

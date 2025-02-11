@@ -8,25 +8,25 @@
 
 import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import StringProperty from '../../../axon/js/StringProperty.js';
-import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import type TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
 import Node from '../../../scenery/js/nodes/Node.js';
-import Rectangle, { RectangleOptions } from '../../../scenery/js/nodes/Rectangle.js';
+import Rectangle, { type RectangleOptions } from '../../../scenery/js/nodes/Rectangle.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import { rasterized } from '../../../scenery/js/util/rasterized.js';
 import Panel from '../../../sun/js/Panel.js';
-import Tandem from '../../../tandem/js/Tandem.js';
+import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCUtils from '../CCKCUtils.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import CurrentSense from '../model/CurrentSense.js';
-import SeriesAmmeter from '../model/SeriesAmmeter.js';
+import type SeriesAmmeter from '../model/SeriesAmmeter.js';
 import ammeterReadoutTypeProperty from './ammeterReadoutTypeProperty.js';
-import CCKCScreenView from './CCKCScreenView.js';
-import CircuitNode from './CircuitNode.js';
-import FixedCircuitElementNode, { FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
+import type CCKCScreenView from './CCKCScreenView.js';
+import type CircuitNode from './CircuitNode.js';
+import FixedCircuitElementNode, { type FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
 import ProbeTextNode from './ProbeTextNode.js';
 
 const currentStringProperty = CircuitConstructionKitCommonStrings.currentStringProperty;

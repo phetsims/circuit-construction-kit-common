@@ -1,8 +1,8 @@
 // Copyright 2021-2024, University of Colorado Boulder
 
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
-import LTACircuit from './LTACircuit.js';
-import LTASolution from './LTASolution.js';
+import type LTACircuit from './LTACircuit.js';
+import type LTASolution from './LTASolution.js';
 
 /**
  * @author Sam Reid (PhET Interactive Simulations)

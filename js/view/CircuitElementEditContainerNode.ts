@@ -7,15 +7,15 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
+import type EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import PatternStringProperty from '../../../axon/js/PatternStringProperty.js';
 import Property from '../../../axon/js/Property.js';
-import Bounds2 from '../../../dot/js/Bounds2.js';
+import type Bounds2 from '../../../dot/js/Bounds2.js';
 import Utils from '../../../dot/js/Utils.js';
-import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
-import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
+import optionize, { type EmptySelfOptions } from '../../../phet-core/js/optionize.js';
+import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import HBox from '../../../scenery/js/layout/nodes/HBox.js';
-import Node, { NodeOptions } from '../../../scenery/js/nodes/Node.js';
+import Node, { type NodeOptions } from '../../../scenery/js/nodes/Node.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import Panel from '../../../sun/js/Panel.js';
 import SunConstants from '../../../sun/js/SunConstants.js';
@@ -28,18 +28,18 @@ import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommon
 import ACVoltage from '../model/ACVoltage.js';
 import Battery from '../model/Battery.js';
 import Capacitor from '../model/Capacitor.js';
-import Circuit from '../model/Circuit.js';
+import type Circuit from '../model/Circuit.js';
 import CircuitElement from '../model/CircuitElement.js';
 import FixedCircuitElement from '../model/FixedCircuitElement.js';
 import Fuse from '../model/Fuse.js';
 import Inductor from '../model/Inductor.js';
-import InteractionMode from '../model/InteractionMode.js';
+import type InteractionMode from '../model/InteractionMode.js';
 import LightBulb from '../model/LightBulb.js';
 import Resistor from '../model/Resistor.js';
 import ResistorType from '../model/ResistorType.js';
 import SeriesAmmeter from '../model/SeriesAmmeter.js';
 import Switch from '../model/Switch.js';
-import Vertex from '../model/Vertex.js';
+import type Vertex from '../model/Vertex.js';
 import Wire from '../model/Wire.js';
 import BatteryReverseButton from './BatteryReverseButton.js';
 import CCKCColors from './CCKCColors.js';

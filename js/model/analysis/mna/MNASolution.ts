@@ -8,8 +8,8 @@
 
 /* global Assert */
 import circuitConstructionKitCommon from '../../../circuitConstructionKitCommon.js';
-import MNACircuitElement from './MNACircuitElement.js';
-import MNAResistor from './MNAResistor.js';
+import type MNACircuitElement from './MNACircuitElement.js';
+import type MNAResistor from './MNAResistor.js';
 
 export default class MNASolution {
 

@@ -7,8 +7,8 @@
  */
 
 import createObservableArray from '../../../axon/js/createObservableArray.js';
-import Property from '../../../axon/js/Property.js';
-import Bounds2 from '../../../dot/js/Bounds2.js';
+import type Property from '../../../axon/js/Property.js';
+import type Bounds2 from '../../../dot/js/Bounds2.js';
 import Range from '../../../dot/js/Range.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
@@ -19,9 +19,9 @@ import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
-import CCKCChartNode, { CCKCChartNodeOptions } from './CCKCChartNode.js';
-import CCKCProbeNode from './CCKCProbeNode.js';
-import CircuitNode from './CircuitNode.js';
+import CCKCChartNode, { type CCKCChartNodeOptions } from './CCKCChartNode.js';
+import type CCKCProbeNode from './CCKCProbeNode.js';
+import type CircuitNode from './CircuitNode.js';
 
 const voltageWithUnitsStringProperty = CircuitConstructionKitCommonStrings.voltageWithUnitsStringProperty;
 

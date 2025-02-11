@@ -7,9 +7,9 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import NumberProperty from '../../../axon/js/NumberProperty.js';
+import type NumberProperty from '../../../axon/js/NumberProperty.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
-import MagnifyingGlassZoomButtonGroup, { MagnifyingGlassZoomButtonGroupOptions } from '../../../scenery-phet/js/MagnifyingGlassZoomButtonGroup.js';
+import MagnifyingGlassZoomButtonGroup, { type MagnifyingGlassZoomButtonGroupOptions } from '../../../scenery-phet/js/MagnifyingGlassZoomButtonGroup.js';
 import PhetColorScheme from '../../../scenery-phet/js/PhetColorScheme.js';
 import RectangularButton from '../../../sun/js/buttons/RectangularButton.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';

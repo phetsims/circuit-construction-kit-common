@@ -7,7 +7,7 @@
  */
 
 import Multilink from '../../../axon/js/Multilink.js';
-import Property from '../../../axon/js/Property.js';
+import type Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
@@ -15,19 +15,19 @@ import { combineOptions } from '../../../phet-core/js/optionize.js';
 import StringUtils from '../../../phetcommon/js/util/StringUtils.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import VBox from '../../../scenery/js/layout/nodes/VBox.js';
-import Node from '../../../scenery/js/nodes/Node.js';
-import RichText, { RichTextOptions } from '../../../scenery/js/nodes/RichText.js';
-import Text, { TextOptions } from '../../../scenery/js/nodes/Text.js';
+import type Node from '../../../scenery/js/nodes/Node.js';
+import RichText, { type RichTextOptions } from '../../../scenery/js/nodes/RichText.js';
+import Text, { type TextOptions } from '../../../scenery/js/nodes/Text.js';
 import Color from '../../../scenery/js/util/Color.js';
 import Panel from '../../../sun/js/Panel.js';
-import Tandem from '../../../tandem/js/Tandem.js';
+import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import Capacitor from '../model/Capacitor.js';
-import CircuitElement from '../model/CircuitElement.js';
-import CircuitElementViewType from '../model/CircuitElementViewType.js';
+import type CircuitElement from '../model/CircuitElement.js';
+import type CircuitElementViewType from '../model/CircuitElementViewType.js';
 import Fuse from '../model/Fuse.js';
 import Inductor from '../model/Inductor.js';
 import LightBulb from '../model/LightBulb.js';

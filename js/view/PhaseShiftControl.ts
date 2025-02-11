@@ -7,22 +7,22 @@
  */
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
-import Multilink, { UnknownMultilink } from '../../../axon/js/Multilink.js';
+import Multilink, { type UnknownMultilink } from '../../../axon/js/Multilink.js';
 import Property from '../../../axon/js/Property.js';
 import Range from '../../../dot/js/Range.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
-import PickRequired from '../../../phet-core/js/types/PickRequired.js';
+import type PickRequired from '../../../phet-core/js/types/PickRequired.js';
 import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
-import VBox, { VBoxOptions } from '../../../scenery/js/layout/nodes/VBox.js';
+import VBox, { type VBoxOptions } from '../../../scenery/js/layout/nodes/VBox.js';
 import Text from '../../../scenery/js/nodes/Text.js';
-import NumberSpinner, { NumberSpinnerOptions } from '../../../sun/js/NumberSpinner.js';
+import NumberSpinner, { type NumberSpinnerOptions } from '../../../sun/js/NumberSpinner.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import ACVoltage from '../model/ACVoltage.js';
-import Circuit from '../model/Circuit.js';
-import CircuitElement from '../model/CircuitElement.js';
-import Vertex from '../model/Vertex.js';
+import type Circuit from '../model/Circuit.js';
+import type CircuitElement from '../model/CircuitElement.js';
+import type Vertex from '../model/Vertex.js';
 import CCKCColors from './CCKCColors.js';
 import CircuitElementNumberControl from './CircuitElementNumberControl.js';
 

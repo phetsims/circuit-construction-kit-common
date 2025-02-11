@@ -5,10 +5,10 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import Property from '../../../axon/js/Property.js';
+import type Property from '../../../axon/js/Property.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
-import Node from '../../../scenery/js/nodes/Node.js';
-import Checkbox, { CheckboxOptions } from '../../../sun/js/Checkbox.js';
+import type Node from '../../../scenery/js/nodes/Node.js';
+import Checkbox, { type CheckboxOptions } from '../../../sun/js/Checkbox.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 // constants

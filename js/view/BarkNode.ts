@@ -8,7 +8,7 @@
 
 import Vector2 from '../../../dot/js/Vector2.js';
 import HBox from '../../../scenery/js/layout/nodes/HBox.js';
-import Node, { NodeOptions } from '../../../scenery/js/nodes/Node.js';
+import Node, { type NodeOptions } from '../../../scenery/js/nodes/Node.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import commentSolidShape from '../../../sherpa/js/fontawesome-5/commentSolidShape.js';
 import exclamationSolidShape from '../../../sherpa/js/fontawesome-5/exclamationSolidShape.js';

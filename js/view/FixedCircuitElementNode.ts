@@ -6,28 +6,28 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import Multilink, { UnknownMultilink } from '../../../axon/js/Multilink.js';
+import Multilink, { type UnknownMultilink } from '../../../axon/js/Multilink.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
-import Property from '../../../axon/js/Property.js';
-import Bounds2 from '../../../dot/js/Bounds2.js';
+import type Property from '../../../axon/js/Property.js';
+import type Bounds2 from '../../../dot/js/Bounds2.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import SceneryEvent from '../../../scenery/js/input/SceneryEvent.js';
+import type SceneryEvent from '../../../scenery/js/input/SceneryEvent.js';
 import Image from '../../../scenery/js/nodes/Image.js';
 import Node from '../../../scenery/js/nodes/Node.js';
-import Tandem from '../../../tandem/js/Tandem.js';
+import type Tandem from '../../../tandem/js/Tandem.js';
 import fire_png from '../../images/fire_png.js';
 import CCKCUtils from '../CCKCUtils.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitElement from '../model/CircuitElement.js';
+import type CircuitElement from '../model/CircuitElement.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
-import FixedCircuitElement from '../model/FixedCircuitElement.js';
+import type FixedCircuitElement from '../model/FixedCircuitElement.js';
 import Resistor from '../model/Resistor.js';
-import Vertex from '../model/Vertex.js';
-import CCKCScreenView from './CCKCScreenView.js';
-import CircuitElementNode, { CircuitElementNodeOptions } from './CircuitElementNode.js';
-import CircuitNode from './CircuitNode.js';
+import type Vertex from '../model/Vertex.js';
+import type CCKCScreenView from './CCKCScreenView.js';
+import CircuitElementNode, { type CircuitElementNodeOptions } from './CircuitElementNode.js';
+import type CircuitNode from './CircuitNode.js';
 import CircuitNodeDragListener from './CircuitNodeDragListener.js';
 import FixedCircuitElementHighlightNode from './FixedCircuitElementHighlightNode.js';
 

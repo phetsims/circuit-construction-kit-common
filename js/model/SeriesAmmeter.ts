@@ -7,14 +7,14 @@
  */
 
 import NumberProperty from '../../../axon/js/NumberProperty.js';
-import Property from '../../../axon/js/Property.js';
-import optionize, { EmptySelfOptions } from '../../../phet-core/js/optionize.js';
-import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
+import type Property from '../../../axon/js/Property.js';
+import optionize, { type EmptySelfOptions } from '../../../phet-core/js/optionize.js';
+import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import FixedCircuitElement, { FixedCircuitElementOptions } from './FixedCircuitElement.js';
-import Vertex from './Vertex.js';
+import FixedCircuitElement, { type FixedCircuitElementOptions } from './FixedCircuitElement.js';
+import type Vertex from './Vertex.js';
 
 type SelfOptions = EmptySelfOptions;
 type SeriesAmmeterOptions = SelfOptions & FixedCircuitElementOptions;

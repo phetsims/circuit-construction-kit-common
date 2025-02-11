@@ -7,10 +7,10 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import Property from '../../../axon/js/Property.js';
-import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import type Property from '../../../axon/js/Property.js';
+import type TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import ElectronChargeNode from '../../../scenery-phet/js/ElectronChargeNode.js';
-import Stopwatch from '../../../scenery-phet/js/Stopwatch.js';
+import type Stopwatch from '../../../scenery-phet/js/Stopwatch.js';
 import AlignGroup from '../../../scenery/js/layout/constraints/AlignGroup.js';
 import AlignBox from '../../../scenery/js/layout/nodes/AlignBox.js';
 import HBox from '../../../scenery/js/layout/nodes/HBox.js';

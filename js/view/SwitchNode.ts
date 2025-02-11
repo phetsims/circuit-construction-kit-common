@@ -6,8 +6,8 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import Property from '../../../axon/js/Property.js';
-import Vector2 from '../../../dot/js/Vector2.js';
+import type Property from '../../../axon/js/Property.js';
+import type Vector2 from '../../../dot/js/Vector2.js';
 import Shape from '../../../kite/js/Shape.js';
 import FireListener from '../../../scenery/js/listeners/FireListener.js';
 import Circle from '../../../scenery/js/nodes/Circle.js';
@@ -15,17 +15,17 @@ import Node from '../../../scenery/js/nodes/Node.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
 import Color from '../../../scenery/js/util/Color.js';
-import Gradient from '../../../scenery/js/util/Gradient.js';
+import type Gradient from '../../../scenery/js/util/Gradient.js';
 import LinearGradient from '../../../scenery/js/util/LinearGradient.js';
 import { rasterized } from '../../../scenery/js/util/rasterized.js';
-import Tandem from '../../../tandem/js/Tandem.js';
+import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
-import Switch from '../model/Switch.js';
-import CCKCScreenView from './CCKCScreenView.js';
-import CircuitNode from './CircuitNode.js';
-import FixedCircuitElementNode, { FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
+import type Switch from '../model/Switch.js';
+import type CCKCScreenView from './CCKCScreenView.js';
+import type CircuitNode from './CircuitNode.js';
+import FixedCircuitElementNode, { type FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
 
 // constants
 // dimensions for schematic battery

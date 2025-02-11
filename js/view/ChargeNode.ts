@@ -17,11 +17,11 @@ import { rasterized } from '../../../scenery/js/util/rasterized.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Capacitor from '../model/Capacitor.js';
-import Charge from '../model/Charge.js';
+import type Charge from '../model/Charge.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import CapacitorCircuitElementNode from './CapacitorCircuitElementNode.js';
 import CCKCColors from './CCKCColors.js';
-import CircuitNode from './CircuitNode.js';
+import type CircuitNode from './CircuitNode.js';
 import ConventionalCurrentArrowNode from './ConventionalCurrentArrowNode.js';
 
 // constants

@@ -7,19 +7,19 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import type TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
-import AlignGroup from '../../../scenery/js/layout/constraints/AlignGroup.js';
+import type AlignGroup from '../../../scenery/js/layout/constraints/AlignGroup.js';
 import VBox from '../../../scenery/js/layout/nodes/VBox.js';
-import Node from '../../../scenery/js/nodes/Node.js';
+import type Node from '../../../scenery/js/nodes/Node.js';
 import Text from '../../../scenery/js/nodes/Text.js';
-import { CheckboxOptions } from '../../../sun/js/Checkbox.js';
-import Tandem from '../../../tandem/js/Tandem.js';
+import { type CheckboxOptions } from '../../../sun/js/Checkbox.js';
+import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
-import Circuit from '../model/Circuit.js';
-import CCKCAccordionBox, { CCKCAccordionBoxOptions } from './CCKCAccordionBox.js';
+import type Circuit from '../model/Circuit.js';
+import CCKCAccordionBox, { type CCKCAccordionBoxOptions } from './CCKCAccordionBox.js';
 import CCKCCheckbox from './CCKCCheckbox.js';
 import CCKCColors from './CCKCColors.js';
 import SourceResistanceControl from './SourceResistanceControl.js';

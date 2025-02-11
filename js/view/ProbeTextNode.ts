@@ -6,12 +6,12 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
-import Bounds2 from '../../../dot/js/Bounds2.js';
+import type TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import type Bounds2 from '../../../dot/js/Bounds2.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
+import type StrictOmit from '../../../phet-core/js/types/StrictOmit.js';
 import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
-import VBox, { VBoxOptions } from '../../../scenery/js/layout/nodes/VBox.js';
+import VBox, { type VBoxOptions } from '../../../scenery/js/layout/nodes/VBox.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
 import Text from '../../../scenery/js/nodes/Text.js';

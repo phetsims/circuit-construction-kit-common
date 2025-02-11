@@ -9,10 +9,10 @@
  */
 
 import optionize from '../../../phet-core/js/optionize.js';
-import Tandem from '../../../tandem/js/Tandem.js';
+import type Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitElement, { CircuitElementOptions } from './CircuitElement.js';
-import Vertex from './Vertex.js';
+import CircuitElement, { type CircuitElementOptions } from './CircuitElement.js';
+import type Vertex from './Vertex.js';
 
 type SelfOptions = {
   numberOfDecimalPlaces?: number;
