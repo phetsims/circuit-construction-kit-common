@@ -13,7 +13,7 @@ import { combineOptions } from '../../../phet-core/js/optionize.js';
 import Image from '../../../scenery/js/nodes/Image.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import Color from '../../../scenery/js/util/Color.js';
-import { rasterized } from '../../../scenery/js/util/rasterized.js';
+import { rasterizeNode } from '../../../scenery/js/util/rasterizeNode.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import battery_png from '../../images/battery_png.js';
 import batteryHigh_png from '../../images/batteryHigh_png.js';
@@ -51,7 +51,7 @@ const schematicScale = desiredWidth / schematicWidth;
 
 // Scale to fit the correct width
 schematicShape = schematicShape.transformed( Matrix3.scale( schematicScale, schematicScale ) );
-const schematicNode = rasterized( new Path( schematicShape, {
+const schematicNode = rasterizeNode( new Path( schematicShape, {
   stroke: Color.BLACK,
   lineWidth: CCKCConstants.SCHEMATIC_LINE_WIDTH
 } ), { wrap: false } );

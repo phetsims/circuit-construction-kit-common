@@ -18,7 +18,7 @@ import Node from '../../../scenery/js/nodes/Node.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import Color from '../../../scenery/js/util/Color.js';
 import LinearGradient from '../../../scenery/js/util/LinearGradient.js';
-import { rasterized } from '../../../scenery/js/util/rasterized.js';
+import { rasterizeNode } from '../../../scenery/js/util/rasterizeNode.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -40,13 +40,13 @@ const MATRIX = new Matrix3(); // The Matrix entries are mutable
 const WIRE_RASTER_LENGTH = 100;
 
 // Node used to render the black line for schematic, rasterized so it can render with WebGL
-const BLACK_LINE_NODE = rasterized( new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
+const BLACK_LINE_NODE = rasterizeNode( new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
   lineWidth: SCHEMATIC_LINE_WIDTH,
   stroke: Color.BLACK
 } ), { wrap: false } );
 
 // Not displayed, used to get accurate hit bounds for the schematic view.
-const SCHEMATIC_BACKGROUND = rasterized( new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
+const SCHEMATIC_BACKGROUND = rasterizeNode( new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
   lineWidth: LIFELIKE_LINE_WIDTH,
   stroke: Color.BLUE,
   opacity: 0.0
@@ -76,23 +76,23 @@ const colorStops = [
 const normalGradient = createGradient( colorStops, _.identity );
 const reverseGradient = createGradient( colorStops.reverse(), ( e: number ) => 1.0 - e );
 
-const lifelikeNodeNormal = rasterized( new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
+const lifelikeNodeNormal = rasterizeNode( new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
   lineWidth: LIFELIKE_LINE_WIDTH,
   stroke: normalGradient
 } ), { wrap: false } );
 
-const lifelikeNodeReversed = rasterized( new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
+const lifelikeNodeReversed = rasterizeNode( new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
   lineWidth: LIFELIKE_LINE_WIDTH,
   stroke: reverseGradient
 } ), { wrap: false } );
 
 // Make sure the heights are the same as the wires so they will line up properly, see
 // https://github.com/phetsims/circuit-construction-kit-common/issues/390
-const lifelikeRoundedCapNormal = rasterized( new Circle( LIFELIKE_LINE_WIDTH / 2, {
+const lifelikeRoundedCapNormal = rasterizeNode( new Circle( LIFELIKE_LINE_WIDTH / 2, {
   fill: normalGradient
 } ), { wrap: false } );
 
-const lifelikeRoundedCapReversed = rasterized( new Circle( LIFELIKE_LINE_WIDTH / 2, {
+const lifelikeRoundedCapReversed = rasterizeNode( new Circle( LIFELIKE_LINE_WIDTH / 2, {
   fill: reverseGradient
 } ), { wrap: false } );
 

@@ -9,7 +9,7 @@
 import type Vector2 from '../../../dot/js/Vector2.js';
 import Circle from '../../../scenery/js/nodes/Circle.js';
 import Node from '../../../scenery/js/nodes/Node.js';
-import { rasterized } from '../../../scenery/js/util/rasterized.js';
+import { rasterizeNode } from '../../../scenery/js/util/rasterizeNode.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import type Vertex from '../model/Vertex.js';
 import type CircuitNode from './CircuitNode.js';
@@ -21,7 +21,7 @@ const SOLDER_COLOR = '#ae9f9e';
 const SOLDER_RADIUS = 11.2;
 
 // {Image} raster created by init() for WebGL usage
-const CIRCLE_NODE = rasterized( new Circle( SOLDER_RADIUS, { fill: SOLDER_COLOR } ), { wrap: false } );
+const CIRCLE_NODE = rasterizeNode( new Circle( SOLDER_RADIUS, { fill: SOLDER_COLOR } ), { wrap: false } );
 
 export default class SolderNode extends Node {
   public readonly vertex: Vertex;

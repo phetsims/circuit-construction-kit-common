@@ -17,7 +17,7 @@ import Node from '../../../scenery/js/nodes/Node.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import SceneryConstants from '../../../scenery/js/SceneryConstants.js';
 import Color from '../../../scenery/js/util/Color.js';
-import { rasterized } from '../../../scenery/js/util/rasterized.js';
+import { rasterizeNode } from '../../../scenery/js/util/rasterizeNode.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
@@ -38,10 +38,10 @@ const CIRCLE_OPTIONS = {
   lineWidth: 1.3,
   lineDash: [ 6, 4 ]
 };
-const RED_CIRCLE_NODE = rasterized( new Circle( VERTEX_RADIUS, combineOptions<CircleOptions>( {
+const RED_CIRCLE_NODE = rasterizeNode( new Circle( VERTEX_RADIUS, combineOptions<CircleOptions>( {
   stroke: Color.RED
 }, CIRCLE_OPTIONS ) ), { wrap: false } );
-const BLACK_CIRCLE_NODE = rasterized( new Circle( VERTEX_RADIUS, combineOptions<CircleOptions>( {
+const BLACK_CIRCLE_NODE = rasterizeNode( new Circle( VERTEX_RADIUS, combineOptions<CircleOptions>( {
   stroke: Color.BLACK
 }, CIRCLE_OPTIONS ) ), { wrap: false } );
 

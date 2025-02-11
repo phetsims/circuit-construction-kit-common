@@ -13,7 +13,7 @@ import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Rectangle, { type RectangleOptions } from '../../../scenery/js/nodes/Rectangle.js';
 import Text from '../../../scenery/js/nodes/Text.js';
-import { rasterized } from '../../../scenery/js/util/rasterized.js';
+import { rasterizeNode } from '../../../scenery/js/util/rasterizeNode.js';
 import Panel from '../../../sun/js/Panel.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -43,7 +43,7 @@ const CORNER_RADIUS = 4;
  * Rasterize so it can be rendered in WebGL, see https://github.com/phetsims/circuit-construction-kit-dc/issues/67
  * @param [providedOptions]
  */
-const createPanel = ( providedOptions?: RectangleOptions ) => rasterized( new Rectangle( 0, 0, PANEL_WIDTH, PANEL_HEIGHT, providedOptions ), { wrap: false } );
+const createPanel = ( providedOptions?: RectangleOptions ) => rasterizeNode( new Rectangle( 0, 0, PANEL_WIDTH, PANEL_HEIGHT, providedOptions ), { wrap: false } );
 
 const orangeBackgroundPanel = createPanel( { cornerRadius: CORNER_RADIUS, fill: ORANGE } );
 const blackBorder = createPanel( {
