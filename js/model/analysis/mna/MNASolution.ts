@@ -1,4 +1,4 @@
-// Copyright 2015-2024, University of Colorado Boulder
+// Copyright 2015-2025, University of Colorado Boulder
 
 /**
  * Sparse solution containing the solved variables from MNACircuit. * No listeners are attached and hence no dispose implementation is necessary.

@@ -1,4 +1,4 @@
-// Copyright 2019-2023, University of Colorado Boulder
+// Copyright 2019-2025, University of Colorado Boulder
 
 /**
  * Model for a fuse. This circuit element trips (i.e., becomes very high resistance) when its current rating is
