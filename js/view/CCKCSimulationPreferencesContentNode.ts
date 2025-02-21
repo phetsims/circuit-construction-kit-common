@@ -1,6 +1,6 @@
 // Copyright 2020-2025, University of Colorado Boulder
 
-import PreferencesDialog from '../../../joist/js/preferences/PreferencesDialog.js';
+import PreferencesDialogConstants from '../../../joist/js/preferences/PreferencesDialogConstants.js';
 /**
  * Shows contents for controls that change simulation representation or behavior.
  *
@@ -22,7 +22,7 @@ export default class CCKCSimulationPreferencesContentNode extends VBox {
 
   public constructor( tandem: Tandem ) {
 
-    const textOptions = PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS;
+    const textOptions = PreferencesDialogConstants.PANEL_SECTION_CONTENT_OPTIONS;
     const schematicTypeRadioButtonGroup = new VerticalAquaRadioButtonGroup<SchematicType>( schematicTypeProperty, [ {
       createNode: () => new Text( CircuitConstructionKitCommonStrings.ieeeStringProperty, textOptions ),
       value: SchematicType.IEEE,
@@ -59,13 +59,13 @@ export default class CCKCSimulationPreferencesContentNode extends VBox {
 
     super( {
       align: 'left',
-      spacing: PreferencesDialog.CONTENT_SPACING,
+      spacing: PreferencesDialogConstants.CONTENT_SPACING,
       tandem: tandem,
       children: [
-        new Text( CircuitConstructionKitCommonStrings.schematicStandardStringProperty, PreferencesDialog.PANEL_SECTION_LABEL_OPTIONS ),
+        new Text( CircuitConstructionKitCommonStrings.schematicStandardStringProperty, PreferencesDialogConstants.PANEL_SECTION_LABEL_OPTIONS ),
         schematicTypeRadioButtonGroup,
         new HSeparator(),
-        new Text( CircuitConstructionKitCommonStrings.ammeterReadoutStringProperty, PreferencesDialog.PANEL_SECTION_LABEL_OPTIONS ),
+        new Text( CircuitConstructionKitCommonStrings.ammeterReadoutStringProperty, PreferencesDialogConstants.PANEL_SECTION_LABEL_OPTIONS ),
         ammeterReadoutRadioButtonGroup
       ]
     } );
