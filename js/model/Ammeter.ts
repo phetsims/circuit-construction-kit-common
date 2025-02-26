@@ -16,10 +16,8 @@ import NumberIO from '../../../tandem/js/types/NumberIO.js';
 import ReferenceIO from '../../../tandem/js/types/ReferenceIO.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Meter, { sensorDisplayUpdatePeriodProperty } from './Meter.js';
-import AmmeterConnection from './AmmeterConnection.js';
 import type AmmeterConnection from './AmmeterConnection.js';
 import CircuitElement from './CircuitElement.js';
-import Meter from './Meter.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
 import measuringDeviceNoiseProperty from './measuringDeviceNoiseProperty.js';
 

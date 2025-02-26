@@ -13,11 +13,11 @@ import type TEmitter from '../../../axon/js/TEmitter.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
+import Range from '../../../dot/js/Range.js';
 import PhetioObject from '../../../tandem/js/PhetioObject.js';
-import NumberProperty from '../../../axon/js/NumberProperty.ts';
-import Range from '../../../dot/js/Range.ts';
-import type Tandem from '../../../tandem/js/Tandem.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import NumberProperty from '../../../axon/js/NumberProperty.js';
 
 export default class Meter extends PhetioObject {
   public phetioIndex: number;

@@ -32,24 +32,10 @@ import Circuit from './Circuit.js';
 import SeriesAmmeter from './SeriesAmmeter.js';
 import Voltmeter from './Voltmeter.js';
 import ZoomAnimation from './ZoomAnimation.js';
-import Tandem from '../../../tandem/js/Tandem.js';
-import Bounds2 from '../../../dot/js/Bounds2.js';
 import CircuitElementViewType from './CircuitElementViewType.js';
 import InteractionMode from './InteractionMode.js';
-import optionize from '../../../phet-core/js/optionize.js';
-import TEmitter from '../../../axon/js/TEmitter.js';
-import NumberIO from '../../../tandem/js/types/NumberIO.js';
-import DerivedProperty from '../../../axon/js/DerivedProperty.js';
-import Utils from '../../../dot/js/Utils.js';
-import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
-import TModel from '../../../joist/js/TModel.js';
-import isSettingPhetioStateProperty from '../../../tandem/js/isSettingPhetioStateProperty.js';
 import alternateSensorsProperty from './alternateSensorsProperty.js';
 import LightBulb from './LightBulb.js';
-import Voltmeter from './Voltmeter.js';
-import ZoomAnimation from './ZoomAnimation.js';
-import measuringDeviceNoiseProperty from './measuringDeviceNoiseProperty.js';
-import circuitElementNoiseProperty from './circuitElementNoiseProperty.js';
 
 type CircuitConstructionKitModelOptions = {
   blackBoxStudy?: boolean;

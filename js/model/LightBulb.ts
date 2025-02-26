@@ -20,8 +20,6 @@ import type Circuit from './Circuit.js';
 import CircuitElementViewType from './CircuitElementViewType.js';
 import FixedCircuitElement, { type FixedCircuitElementOptions } from './FixedCircuitElement.js';
 import PowerDissipatedProperty from './PowerDissipatedProperty.js';
-import optionize from '../../../phet-core/js/optionize.js';
-import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import circuitElementNoiseProperty from './circuitElementNoiseProperty.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
 import Vertex from './Vertex.js';

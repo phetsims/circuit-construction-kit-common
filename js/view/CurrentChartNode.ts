@@ -7,18 +7,14 @@
  */
 
 import createObservableArray from '../../../axon/js/createObservableArray.js';
-import type Property from '../../../axon/js/Property.js';
-import type Bounds2 from '../../../dot/js/Bounds2.js';
 import Property from '../../../axon/js/Property.js';
-import Bounds2 from '../../../dot/js/Bounds2.js';
+import type Bounds2 from '../../../dot/js/Bounds2.js';
 import Vector2 from '../../../dot/js/Vector2.js';
-import optionize, { EmptySelfOptions, combineOptions } from '../../../phet-core/js/optionize.js';
+import { combineOptions } from '../../../phet-core/js/optionize.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CCKCChartNode, { CCKCChartNodeOptions } from './CCKCChartNode.js';
 import CircuitNode from './CircuitNode.js';
-import Property from '../../../axon/js/Property.js';
-import Bounds2 from '../../../dot/js/Bounds2.js';
 import CCKCProbeNode from './CCKCProbeNode.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
 import measuringDeviceNoiseProperty from '../model/measuringDeviceNoiseProperty.js';
