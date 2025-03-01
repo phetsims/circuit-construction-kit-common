@@ -74,7 +74,7 @@ export default class AdvancedAccordionBox extends CCKCAccordionBox {
 
       // Left align the title, with no padding
       titleAlignX: 'left',
-      titleXSpacing: 0
+      titleXSpacing: 10
     } );
 
     this.mutate( options );

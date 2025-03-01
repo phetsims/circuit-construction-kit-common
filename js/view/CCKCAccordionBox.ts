@@ -9,9 +9,7 @@
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import type TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
-import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
-import HBox from '../../../scenery/js/layout/nodes/HBox.js';
-import HStrut from '../../../scenery/js/nodes/HStrut.js';
+import { combineOptions, EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import type Node from '../../../scenery/js/nodes/Node.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import AccordionBox, { type AccordionBoxOptions } from '../../../sun/js/AccordionBox.js';
@@ -23,9 +21,7 @@ import CCKCColors from './CCKCColors.js';
 // constants
 const BUTTON_MARGIN = 8;
 
-type SelfOptions = {
-  strutWidth?: number;
-};
+type SelfOptions = EmptySelfOptions;
 export type CCKCAccordionBoxOptions = SelfOptions & AccordionBoxOptions;
 
 export default class CCKCAccordionBox extends AccordionBox {
@@ -38,9 +34,7 @@ export default class CCKCAccordionBox extends AccordionBox {
    */
   public constructor( content: Node, title: TReadOnlyProperty<string>, tandem: Tandem, providedOptions?: CCKCAccordionBoxOptions ) {
 
-    const options = optionize<CCKCAccordionBoxOptions, SelfOptions, AccordionBoxOptions>()( {
-      strutWidth: 10
-    }, providedOptions );
+    const options = providedOptions;
 
     super( content, combineOptions<AccordionBoxOptions>( {
       fill: CCKCColors.panelFillProperty,
@@ -64,16 +58,11 @@ export default class CCKCAccordionBox extends AccordionBox {
         touchAreaYDilation: BUTTON_MARGIN,
         touchAreaXDilation: BUTTON_MARGIN
       },
-      titleNode: new HBox( {
-        children: [
-          new HStrut( options.strutWidth ),
-          new Text( title, {
-            fontSize: CCKCConstants.FONT_SIZE,
-            maxWidth: 175,
-            fill: CCKCColors.textFillProperty,
-            tandem: tandem.createTandem( 'titleText' )
-          } )
-        ]
+      titleNode: new Text( title, {
+        fontSize: CCKCConstants.FONT_SIZE,
+        maxWidth: 175,
+        fill: CCKCColors.textFillProperty,
+        tandem: tandem.createTandem( 'titleText' )
       } ),
       tandem: tandem
     }, options ) );
