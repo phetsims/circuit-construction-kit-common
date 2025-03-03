@@ -72,15 +72,6 @@ const CONTROL_PANEL_ALIGN_GROUP = new AlignGroup( {
   matchVertical: false
 } );
 
-// Support accessibility for deleting selected circuit elements, but don't support broader tab navigation until it
-// is complete
-document.addEventListener( 'keydown', event => {
-
-  if ( KeyboardUtils.isKeyEvent( event, KeyboardUtils.KEY_TAB ) ) {
-    event.preventDefault();
-  }
-} );
-
 type SelfOptions = {
   showResetAllButton?: boolean;
   circuitElementToolboxOptions: CircuitElementToolboxOptions;
