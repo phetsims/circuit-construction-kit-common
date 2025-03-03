@@ -19,6 +19,9 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import type Circuit from './Circuit.js';
 import FixedCircuitElement, { type FixedCircuitElementOptions } from './FixedCircuitElement.js';
 import type Vertex from './Vertex.js';
+import Multilink from '../../../axon/js/Multilink.js';
+import circuitElementNoiseProperty from './circuitElementNoiseProperty.js';
+import dotRandom from '../../../dot/js/dotRandom.js';
 
 type SelfOptions = {
   fuseLength?: number;
@@ -69,6 +72,10 @@ export default class Fuse extends FixedCircuitElement {
     this.resistanceProperty = new NumberProperty( CCKCConstants.MINIMUM_RESISTANCE );
     this.resistanceWithNoiseProperty = new NumberProperty( CCKCConstants.MINIMUM_RESISTANCE );
 
+    Multilink.multilink( [ this.currentRatingProperty, this.isTrippedProperty, circuitElementNoiseProperty ], ( currentRating, isTripped, circuitElementNoise ) => {
+      this.updateResistanceWithNoise( currentRating, isTripped, circuitElementNoise );
+    } );
+
     // time in seconds the current rating has been exceeded
     this.timeCurrentRatingExceeded = 0;
 
@@ -82,6 +89,8 @@ export default class Fuse extends FixedCircuitElement {
     super.dispose();
     this.currentRatingProperty.dispose();
     this.isRepairableProperty.dispose();
+    this.resistanceProperty.dispose();
+    this.resistanceWithNoiseProperty.dispose();
     this.isTrippedProperty.dispose();
   }
 
@@ -90,7 +99,23 @@ export default class Fuse extends FixedCircuitElement {
    */
   public resetFuse(): void {
     this.isTrippedProperty.reset();
+    this.resistanceProperty.reset();
+    this.resistanceWithNoiseProperty.reset();
     this.timeCurrentRatingExceeded = 0;
+  }
+
+  private updateResistanceWithNoise( currentRating: number, isTripped: boolean, isCircuitElementNoise: boolean ): void {
+
+    const resistance = isTripped ? CCKCConstants.MAX_RESISTANCE : 1 / currentRating * 0.06;
+
+    const resistanceNoise = isCircuitElementNoise ? Math.sqrt( resistance ) * 0.08 * dotRandom.nextGaussian() : 0;
+    const proposedResistance = resistance + resistanceNoise;
+
+    assert && assert( proposedResistance >= 0, 'resistance should be non-negative' );
+
+    // The resistance varies inversely with the current rating, with 20.0 A at 3 mΩ.
+    this.resistanceProperty.value = resistance;
+    this.resistanceWithNoiseProperty.value = proposedResistance;
   }
 
   /**
@@ -119,16 +144,14 @@ export default class Fuse extends FixedCircuitElement {
       circuit.componentEditedEmitter.emit();
     }
 
-    // The resistance varies inversely with the current rating, with 20.0 A at 3 mΩ.
-    this.resistanceProperty.value = this.isTrippedProperty.value ? CCKCConstants.MAX_RESISTANCE :
-                                    1 / this.currentRatingProperty.value * 0.06;
+    this.updateResistanceWithNoise( this.currentRatingProperty.value, this.isTrippedProperty.value, circuitElementNoiseProperty.value );
   }
 
   /**
    * Get the properties that, when changed, require the circuit to be re-solved.
    */
   public getCircuitProperties(): Property<IntentionalAny>[] {
-    return [ this.resistanceProperty, this.isTrippedProperty ];
+    return [ this.resistanceProperty, this.resistanceWithNoiseProperty, this.isTrippedProperty, this.currentRatingProperty ];
   }
 
   public static readonly RANGE = new Range( 0.5, 20 );

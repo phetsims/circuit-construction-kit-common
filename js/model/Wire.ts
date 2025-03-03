@@ -37,9 +37,6 @@ export default class Wire extends CircuitElement {
   // the resistance of the Wire in ohms
   public readonly resistanceProperty: NumberProperty;
 
-  // the resistance including any noise from circuitElementNoiseProperty
-  public readonly resistanceWithNoiseProperty: NumberProperty;
-
   // the resistivity of the Wire in ohm-meters
   private readonly resistivityProperty: NumberProperty;
 
@@ -72,7 +69,6 @@ export default class Wire extends CircuitElement {
     this.wireStub = options.wireStub;
 
     this.resistanceProperty = new NumberProperty( CCKCConstants.MINIMUM_WIRE_RESISTANCE );
-    this.resistanceWithNoiseProperty = new NumberProperty( CCKCConstants.MINIMUM_WIRE_RESISTANCE );
 
     if ( phet.chipper.queryParameters.dev ) {
       this.resistanceProperty.link( console.log );

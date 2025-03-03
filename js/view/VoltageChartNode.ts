@@ -7,7 +7,7 @@
  */
 
 import createObservableArray from '../../../axon/js/createObservableArray.js';
-import type Property from '../../../axon/js/Property.js';
+import Property from '../../../axon/js/Property.js';
 import type Bounds2 from '../../../dot/js/Bounds2.js';
 import Range from '../../../dot/js/Range.js';
 import Vector2 from '../../../dot/js/Vector2.js';

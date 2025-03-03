@@ -23,6 +23,7 @@ import circuitElementNoiseProperty from './circuitElementNoiseProperty.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
 import ResistorType from './ResistorType.js';
 import type Vertex from './Vertex.js';
+import Multilink from '../../../axon/js/Multilink.js';
 
 type SelfOptions = {
   isMetallic: boolean;
@@ -94,6 +95,10 @@ export default class Resistor extends FixedCircuitElement {
 
     this.resistanceWithNoiseProperty = new NumberProperty( resistorType.defaultResistance );
 
+    Multilink.multilink( [ this.resistanceProperty, circuitElementNoiseProperty ], ( resistance, circuitElementNoise ) => {
+      this.updateResistanceWithNoise( resistance, circuitElementNoise );
+    } );
+
     this.powerDissipatedProperty = new PowerDissipatedProperty( this.currentProperty, this.resistanceProperty, tandem.createTandem( 'powerDissipatedProperty' ) );
 
     this.isColorCodeVisibleProperty = new BooleanProperty( true, {
@@ -104,14 +109,18 @@ export default class Resistor extends FixedCircuitElement {
     } );
   }
 
-  public override step( time: number, dt: number, circuit: Circuit ): void {
-    super.step( time, dt, circuit );
-    const resistanceNoise = circuitElementNoiseProperty.value ? Math.sqrt( this.resistanceProperty.value ) * 0.08 * dotRandom.nextGaussian() : 0;
-    const proposedResistance = this.resistanceProperty.value + resistanceNoise;
+  private updateResistanceWithNoise( resistance: number, isCircuitElementNoise: boolean ): void {
+    const resistanceNoise = isCircuitElementNoise ? Math.sqrt( resistance ) * 0.08 * dotRandom.nextGaussian() : 0;
+    const proposedResistance = resistance + resistanceNoise;
 
     assert && assert( proposedResistance >= 0, 'resistance should be non-negative' );
 
     this.resistanceWithNoiseProperty.value = proposedResistance;
+  }
+
+  public override step( time: number, dt: number, circuit: Circuit ): void {
+    super.step( time, dt, circuit );
+    this.updateResistanceWithNoise( this.resistanceProperty.value, circuitElementNoiseProperty.value );
   }
 
   /**
@@ -137,7 +146,7 @@ export default class Resistor extends FixedCircuitElement {
    * Get the properties so that the circuit can be solved when changed.
    */
   public getCircuitProperties(): Property<IntentionalAny>[] {
-    return [ this.resistanceProperty ];
+    return [ this.resistanceProperty, this.resistanceWithNoiseProperty ];
   }
 
   public static readonly ResistorIO = new IOType<Resistor, ResistorState, ResistorSelfState>( 'ResistorIO', {

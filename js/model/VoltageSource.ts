@@ -23,6 +23,7 @@ import Circuit from './Circuit.js';
 import circuitElementNoiseProperty from './circuitElementNoiseProperty.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
 import type Vertex from './Vertex.js';
+import Multilink from '../../../axon/js/Multilink.js';
 
 type SelfOptions = {
   initialOrientation?: 'right' | 'left';
@@ -76,6 +77,10 @@ export default abstract class VoltageSource extends FixedCircuitElement {
     this.voltageProperty = new NumberProperty( options.voltage, options.voltagePropertyOptions );
     this.voltageWithNoiseProperty = new NumberProperty( options.voltage );
 
+    Multilink.multilink( [ this.voltageProperty, circuitElementNoiseProperty ], ( voltage, circuitElementNoise ) => {
+      this.updateVoltageWithNoise( voltage, circuitElementNoise );
+    } );
+
     this.internalResistanceProperty = internalResistanceProperty;
 
     this.powerDissipatedProperty = new PowerDissipatedProperty( this.currentProperty, internalResistanceProperty, tandem.createTandem( 'powerDissipatedProperty' ) );
@@ -106,22 +111,22 @@ export default abstract class VoltageSource extends FixedCircuitElement {
    * Get the properties so that the circuit can be solved when changed.
    */
   public getCircuitProperties(): Property<IntentionalAny>[] {
-    if ( circuitElementNoiseProperty.value ) {
-      return [ this.voltageWithNoiseProperty ];
-    }
-    else {
-      return [ this.voltageProperty ];
-    }
+    return [ this.voltageProperty, this.voltageWithNoiseProperty ];
+  }
+
+  private updateVoltageWithNoise( voltage: number, isCircuitElementNoise: boolean ): void {
+
+    // The percent of the mean underlying value which is used for the standard deviation of the fluctuations
+    const VOLTAGE_NOISE_AMOUNT = 0.08;
+
+    const voltageSourceNoise = isCircuitElementNoise ? Math.sqrt( Math.abs( voltage ) ) * VOLTAGE_NOISE_AMOUNT * dotRandom.nextGaussian() : 0;
+    this.voltageWithNoiseProperty.value = voltage + voltageSourceNoise;
   }
 
   public override step( time: number, dt: number, circuit: Circuit ): void {
     super.step( time, dt, circuit );
 
-    // The percent of the mean underlying value which is used for the standard deviation of the fluctuations
-    const VOLTAGE_NOISE_AMOUNT = 0.08;
-
-    const voltageSourceNoise = circuitElementNoiseProperty.value ? Math.sqrt( Math.abs( this.voltageProperty.value ) ) * VOLTAGE_NOISE_AMOUNT * dotRandom.nextGaussian() : 0;
-    this.voltageWithNoiseProperty.value = this.voltageProperty.value + voltageSourceNoise;
+    this.updateVoltageWithNoise( this.voltageProperty.value, circuitElementNoiseProperty.value );
   }
 }
 

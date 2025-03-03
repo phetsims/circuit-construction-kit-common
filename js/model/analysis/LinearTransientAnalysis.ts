@@ -90,8 +90,8 @@ export default class LinearTransientAnalysis {
           // If a resistor goes to 0 resistance, then we cannot compute the current through as I=V/R.  Therefore,
           // simulate a small amount of resistance.
           const resistance = ( circuitElement instanceof LightBulb && circuitElement.isReal ) ? LightBulb.REAL_BULB_COLD_RESISTANCE :
-                             ( circuitElement instanceof LightBulb ) ? ( circuitElement.resistanceWithNoiseProperty.value || CCKCConstants.MINIMUM_RESISTANCE ) :
-                             ( circuitElement.resistanceWithNoiseProperty.value || CCKCConstants.MINIMUM_RESISTANCE );
+                             ( circuitElement instanceof LightBulb || circuitElement instanceof Resistor || circuitElement instanceof Fuse ) ? ( circuitElement.resistanceWithNoiseProperty.value || CCKCConstants.MINIMUM_RESISTANCE ) :
+                             ( circuitElement.resistanceProperty.value || CCKCConstants.MINIMUM_RESISTANCE );
 
           if ( circuitElement instanceof LightBulb && circuitElement.isReal ) {
             hasRealBulbs = true;
