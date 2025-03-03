@@ -19,7 +19,6 @@ import PlayPauseButton from '../../../scenery-phet/js/buttons/PlayPauseButton.js
 import ResetAllButton from '../../../scenery-phet/js/buttons/ResetAllButton.js';
 import StopwatchNode from '../../../scenery-phet/js/StopwatchNode.js';
 import TimeControlNode from '../../../scenery-phet/js/TimeControlNode.js';
-import KeyboardUtils from '../../../scenery/js/accessibility/KeyboardUtils.js';
 import HotkeyData from '../../../scenery/js/input/HotkeyData.js';
 import AlignGroup from '../../../scenery/js/layout/constraints/AlignGroup.js';
 import AlignBox from '../../../scenery/js/layout/nodes/AlignBox.js';
