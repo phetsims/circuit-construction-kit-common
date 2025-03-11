@@ -112,7 +112,8 @@ export default class DisplayOptionsPanel extends CCKCPanel {
     const currentTypeRadioButtonGroupContainer = new AlignBox(
       currentTypeRadioButtonGroup, {
         tandem: Tandem.OPT_OUT,
-        leftMargin: LEFT_MARGIN
+        leftMargin: LEFT_MARGIN,
+        visibleProperty: currentTypeRadioButtonGroup.visibleProperty
       }
     );
 
