@@ -507,7 +507,10 @@ export default class CCKCScreenView extends ScreenView {
         // Double guard to work around errors in fuzzing
         const selection = this.circuitNode.circuit.selectionProperty.value;
         if ( this.circuitNode.vertexCutButton.inputEnabled && selection instanceof Vertex ) {
-          this.circuitNode.circuit.cutVertex( this.circuitNode.circuit.getSelectedVertex()! );
+
+          if ( selection.isCuttableProperty.value ) {
+            this.circuitNode.circuit.cutVertex( this.circuitNode.circuit.getSelectedVertex()! );
+          }
         }
         else if ( selection instanceof CircuitElement ) {
 
