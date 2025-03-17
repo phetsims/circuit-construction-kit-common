@@ -23,7 +23,6 @@ import { type PressListenerEvent } from '../../../scenery/js/listeners/PressList
 import Image from '../../../scenery/js/nodes/Image.js';
 import Node, { type NodeOptions } from '../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
-import Text from '../../../scenery/js/nodes/Text.js';
 import Color from '../../../scenery/js/util/Color.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import probeBlack_png from '../../mipmaps/probeBlack_png.js';
@@ -140,15 +139,10 @@ export default class VoltmeterNode extends Node {
         voltmeter.voltageProperty,
         CircuitConstructionKitCommonStrings.voltageUnitsStringProperty
       ], voltage =>
-        voltage === null ? MathSymbols.NO_VALUE : CCKCUtils.createVoltageReadout( voltage ), {
-        tandem: options.tandem.createTandem( 'probeReadoutStringProperty' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME )
-      }
-    );
+      voltage === null ? MathSymbols.NO_VALUE : CCKCUtils.createVoltageReadout( voltage ) );
 
     const probeTextProperty = new DerivedStringProperty( [ voltageStringProperty ], voltageString =>
-        options.showPhetioIndex ? voltageString + ' ' + voltmeter.phetioIndex : voltageString, {
-        tandem: options.tandem.createTandem( 'probeTitleStringProperty' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME )
-      }
+        options.showPhetioIndex ? voltageString + ' ' + voltmeter.phetioIndex : voltageString
     );
 
     const probeTextNode = new ProbeTextNode(
