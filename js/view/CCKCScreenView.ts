@@ -147,6 +147,7 @@ export default class CCKCScreenView extends ScreenView {
     const voltmeterNodes = model.voltmeters.map( voltmeter => {
       const voltmeterNode = new VoltmeterNode( voltmeter, model, this.circuitNode, {
         tandem: meterNodesTandem.createTandem( `voltmeterNode${voltmeter.phetioIndex}` ),
+        phetioFeatured: true,
         showResultsProperty: model.isValueDepictionEnabledProperty,
         visibleBoundsProperty: this.circuitNode.visibleBoundsInCircuitCoordinateFrameProperty,
         showPhetioIndex: options.showMeterPhetioIndex
@@ -164,6 +165,7 @@ export default class CCKCScreenView extends ScreenView {
     const ammeterNodes = model.ammeters.map( ammeter => {
       const ammeterNode = new AmmeterNode( ammeter, this.circuitNode, {
         tandem: model.isShowNoncontactAmmeters ? meterNodesTandem.createTandem( `ammeterNode${ammeter.phetioIndex}` ) : Tandem.OPT_OUT,
+        phetioFeatured: true,
         showResultsProperty: model.isValueDepictionEnabledProperty,
         visibleBoundsProperty: this.circuitNode.visibleBoundsInCircuitCoordinateFrameProperty,
         blackBoxStudy: options.blackBoxStudy,
