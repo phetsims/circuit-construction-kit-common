@@ -39,7 +39,7 @@ export default class Fuse extends FixedCircuitElement {
   // in step instead of as a DerivedProperty to avoid a re-entrant loop, see https://github.com/phetsims/circuit-construction-kit-common/issues/480#issuecomment-483430822
   public readonly resistanceProperty: NumberProperty;
   private timeCurrentRatingExceeded: number;
-  public isRepairableProperty: BooleanProperty;
+  public readonly isRepairableProperty: BooleanProperty;
 
   public constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, circuit: Circuit | null, providedOptions?: FuseOptions ) {
     const options = optionize<FuseOptions, SelfOptions, FixedCircuitElementOptions>()( {
