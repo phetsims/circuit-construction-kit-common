@@ -79,7 +79,7 @@ export default class Switch extends FixedCircuitElement {
     const fractionAlongWire = distanceAlongWire / this.chargePathLength;
 
     // If the charge is halfway up the switch lever for an open switch, show it along the raised lever
-    if ( fractionAlongWire > SWITCH_START && fractionAlongWire < SWITCH_END && !this.isClosedProperty.get() ) {
+    if ( fractionAlongWire > SWITCH_START && fractionAlongWire < SWITCH_END && !this.isClosedProperty.value ) {
       const pivot = startPosition.blend( endPosition, SWITCH_START );
 
       const twoThirdsPoint = startPosition.blend( endPosition, SWITCH_END );
