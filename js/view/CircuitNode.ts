@@ -381,12 +381,12 @@ export default class CircuitNode extends Node {
           supportsDynamicState: false
         } ) );
 
-    initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Battery && e.batteryType === 'high-voltage', this.fixedCircuitElementLayer,
+    this.circuit.extremeBatteryGroup && initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Battery && e.batteryType === 'high-voltage', this.fixedCircuitElementLayer,
       new PhetioGroup<CircuitElementNode, [ CircuitElement ]>( ( tandem: Tandem, circuitElement: CircuitElement ) => new BatteryNode( screenView, this, circuitElement as Battery, this.model.viewTypeProperty, tandem ),
         () => [ this.circuit.batteryGroup.archetype ], {
           groupElementStartingIndex: GROUP_STARTING_INDEX,
           phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
-          tandem: tandem.createTandem( 'extremeBatteryNodeGroup' ),
+          tandem:  tandem.createTandem( 'extremeBatteryNodeGroup' ),
           supportsDynamicState: false
         } ) );
 
