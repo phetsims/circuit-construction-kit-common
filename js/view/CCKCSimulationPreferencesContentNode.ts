@@ -22,6 +22,9 @@ export default class CCKCSimulationPreferencesContentNode extends VBox {
 
   public constructor( tandem: Tandem ) {
 
+    const schematicStandardPreferencesControlTandem = tandem.createTandem( 'schematicStandardPreferencesControl' );
+    const ammeterReadoutPreferencesControlTandem = tandem.createTandem( 'ammeterReadoutPreferencesControl' );
+
     const textOptions = PreferencesDialogConstants.PANEL_SECTION_CONTENT_OPTIONS;
     const schematicTypeRadioButtonGroup = new VerticalAquaRadioButtonGroup<SchematicType>( schematicTypeProperty, [ {
       createNode: () => new Text( CircuitConstructionKitCommonStrings.ieeeStringProperty, textOptions ),
@@ -36,7 +39,8 @@ export default class CCKCSimulationPreferencesContentNode extends VBox {
       value: SchematicType.BRITISH,
       tandemName: 'britishRadioButton'
     } ], {
-      tandem: tandem.createTandem( 'schematicTypeRadioButtonGroup' ),
+      tandem: schematicStandardPreferencesControlTandem.createTandem( 'radioButtonGroup' ),
+      phetioVisiblePropertyInstrumented: false,
       radioButtonOptions: {
         radius: 8
       }
@@ -51,7 +55,8 @@ export default class CCKCSimulationPreferencesContentNode extends VBox {
       value: AmmeterReadoutType.SIGNED,
       tandemName: 'signedRadioButton'
     } ], {
-      tandem: tandem.createTandem( 'ammeterReadoutRadioButtonGroup' ),
+      tandem: ammeterReadoutPreferencesControlTandem.createTandem( 'radioButtonGroup' ),
+      phetioVisiblePropertyInstrumented: false,
       radioButtonOptions: {
         radius: 8
       }
@@ -62,11 +67,25 @@ export default class CCKCSimulationPreferencesContentNode extends VBox {
       spacing: PreferencesDialogConstants.CONTENT_SPACING,
       tandem: tandem,
       children: [
-        new Text( CircuitConstructionKitCommonStrings.schematicStandardStringProperty, PreferencesDialogConstants.PANEL_SECTION_LABEL_OPTIONS ),
-        schematicTypeRadioButtonGroup,
+        new VBox( {
+          align: 'left',
+          spacing: PreferencesDialogConstants.CONTENT_SPACING,
+          children: [
+            new Text( CircuitConstructionKitCommonStrings.schematicStandardStringProperty, PreferencesDialogConstants.PANEL_SECTION_LABEL_OPTIONS ),
+            schematicTypeRadioButtonGroup
+          ],
+          tandem: schematicStandardPreferencesControlTandem
+        } ),
         new HSeparator(),
-        new Text( CircuitConstructionKitCommonStrings.ammeterReadoutStringProperty, PreferencesDialogConstants.PANEL_SECTION_LABEL_OPTIONS ),
-        ammeterReadoutRadioButtonGroup
+        new VBox( {
+          align: 'left',
+          spacing: PreferencesDialogConstants.CONTENT_SPACING,
+          children: [
+            new Text( CircuitConstructionKitCommonStrings.ammeterReadoutStringProperty, PreferencesDialogConstants.PANEL_SECTION_LABEL_OPTIONS ),
+            ammeterReadoutRadioButtonGroup
+          ],
+          tandem: ammeterReadoutPreferencesControlTandem
+        } )
       ]
     } );
   }
