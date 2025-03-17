@@ -509,6 +509,7 @@ export default class CircuitNode extends Node {
       // The cut button should appear at the top level of the view in the PhET-iO tree (consistent
       // with other global-use buttons), so we are using the screenView tandem here
       tandem: screenView.tandem.createTandem( 'vertexCutButton' ),
+      phetioVisiblePropertyInstrumented: false,
       enabledPropertyOptions: {
         phetioReadOnly: true,
         phetioFeatured: false
