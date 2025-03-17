@@ -22,7 +22,6 @@ import { type PressListenerEvent } from '../../../scenery/js/listeners/PressList
 import Image from '../../../scenery/js/nodes/Image.js';
 import Node, { type NodeOptions } from '../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
-import Text from '../../../scenery/js/nodes/Text.js';
 import Color from '../../../scenery/js/util/Color.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ammeterBody_png from '../../images/ammeterBody_png.js';
@@ -115,15 +114,10 @@ export default class AmmeterNode extends Node {
         ammeterReadoutTypeProperty,
         CircuitConstructionKitCommonStrings.currentUnitsStringProperty
       ],
-      current => CCKCUtils.createCurrentReadout( current, options.blackBoxStudy ), {
-        tandem: tandemForChildren.createTandem( 'probeReadoutStringProperty' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME )
-      } );
+      current => CCKCUtils.createCurrentReadout( current, options.blackBoxStudy ) );
 
     const probeTextProperty = new DerivedStringProperty( [ currentStringProperty ], currentString =>
-        options.showPhetioIndex ? currentString + ' ' + ammeter.phetioIndex : currentString, {
-        tandem: tandemForChildren.createTandem( 'probeTitleStringProperty' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME )
-      }
-    );
+      options.showPhetioIndex ? currentString + ' ' + ammeter.phetioIndex : currentString );
 
     const probeTextNode = new ProbeTextNode(
       currentReadoutProperty, options.showResultsProperty, probeTextProperty,
