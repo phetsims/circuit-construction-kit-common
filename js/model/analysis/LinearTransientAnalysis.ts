@@ -76,7 +76,7 @@ export default class LinearTransientAnalysis {
           ltaBatteries.push( ltaVoltageSource );
         }
         else if ( circuitElement instanceof Resistor ||
-                  circuitElement instanceof Fuse ||
+                  ( circuitElement instanceof Fuse && !circuitElement.isTrippedProperty.value ) ||
                   circuitElement instanceof Wire ||
                   circuitElement instanceof LightBulb ||
                   circuitElement instanceof SeriesAmmeter ||
@@ -107,6 +107,10 @@ export default class LinearTransientAnalysis {
         else if ( circuitElement instanceof Switch && !circuitElement.isClosedProperty.value ) {
 
           // no element for an open switch
+        }
+        else if ( circuitElement instanceof Fuse && circuitElement.isTrippedProperty.value ) {
+
+          // no element for a tripped fuse
         }
         else if ( circuitElement instanceof Capacitor ) {
 
@@ -253,7 +257,7 @@ export default class LinearTransientAnalysis {
 
         // compute end voltage from start voltage
         if ( circuitElement instanceof Resistor || circuitElement instanceof Wire || circuitElement instanceof LightBulb ||
-             ( circuitElement instanceof Switch && circuitElement.isClosedProperty.value ) || circuitElement instanceof Fuse ||
+             ( circuitElement instanceof Switch && circuitElement.isClosedProperty.value ) || ( circuitElement instanceof Fuse && !circuitElement.isTrippedProperty.value ) ||
              circuitElement instanceof SeriesAmmeter
         ) {
 
@@ -272,6 +276,9 @@ export default class LinearTransientAnalysis {
         }
         else if ( circuitElement instanceof Switch && !circuitElement.isClosedProperty.value ) {
           // for an open switch, the node voltages are independent
+        }
+        else if ( circuitElement instanceof Fuse && circuitElement.isTrippedProperty.value ) {
+          // for an unblown fuse, the node voltages are independent
         }
         else {
           assert && assert( false, 'unknown circuit element type: ' + circuitElement.constructor.name );
