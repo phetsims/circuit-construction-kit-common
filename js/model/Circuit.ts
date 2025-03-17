@@ -427,7 +427,7 @@ export default class Circuit extends PhetioObject {
       } );
 
     this.fuseGroup = new PhetioGroup(
-      ( tandem, startVertex, endVertex ) => new Fuse( startVertex, endVertex, tandem ),
+      ( tandem, startVertex, endVertex ) => new Fuse( startVertex, endVertex, tandem, this ),
       createVertices, {
         groupElementStartingIndex: GROUP_STARTING_INDEX,
         phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
@@ -1252,6 +1252,10 @@ export default class Circuit extends PhetioObject {
     // algorithm below gives the wrong answer because the start vertex and end vertex can be connected
     // by other circuit elements.
     if ( circuitElement instanceof Switch && !circuitElement.isClosedProperty.value ) {
+      return false;
+    }
+
+    if ( circuitElement instanceof Fuse && circuitElement.isTrippedProperty.value ) {
       return false;
     }
 
