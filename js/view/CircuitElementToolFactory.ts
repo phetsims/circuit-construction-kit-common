@@ -327,7 +327,8 @@ export default class CircuitElementToolFactory {
     const fuseModel = new Fuse(
       new Vertex( Vector2.ZERO, this.circuit.selectionProperty ),
       new Vertex( new Vector2( CCKCConstants.RESISTOR_LENGTH, 0 ), this.circuit.selectionProperty ),
-      Tandem.OPT_OUT
+      Tandem.OPT_OUT,
+      null
     );
     return this.createCircuitElementToolNode( fuseStringProperty, 10,
       ( tandem, viewTypeProperty ) => new FuseNode( null, null, fuseModel, viewTypeProperty, tandem.createTandem( 'fuseIcon' ), {

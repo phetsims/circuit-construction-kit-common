@@ -41,7 +41,7 @@ export default class Fuse extends FixedCircuitElement {
   private timeCurrentRatingExceeded: number;
   public isRepairableProperty: BooleanProperty;
 
-  public constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: FuseOptions ) {
+  public constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, circuit: Circuit | null, providedOptions?: FuseOptions ) {
     const options = optionize<FuseOptions, SelfOptions, FixedCircuitElementOptions>()( {
       fuseLength: CCKCConstants.RESISTOR_LENGTH, // Same length as a resistor
       currentRating: Fuse.DEFAULT_CURRENT_RATING, // Amps
@@ -71,6 +71,10 @@ export default class Fuse extends FixedCircuitElement {
       tandem: tandem.createTandem( 'isRepairableProperty' ),
       phetioFeatured: true
     } );
+
+    this.isTrippedProperty.lazyLink( () => {
+      circuit && circuit.componentEditedEmitter.emit();
+    } );
   }
 
   public override dispose(): void {
@@ -95,6 +99,7 @@ export default class Fuse extends FixedCircuitElement {
    */
   public override step( time: number, dt: number, circuit: Circuit ): void {
     super.step( time, dt, circuit );
+
     // When the current exceeds the max, trip the fuse.  This cannot be modeled as a property link because it
     // creates a reentrant property loop which doesn't update the reset fuse button properly
     // Account for roundoff error in the circuit solve step
@@ -111,7 +116,6 @@ export default class Fuse extends FixedCircuitElement {
     // Trip the fuse if it has exceeded the current rating beyond the threshold time
     if ( this.timeCurrentRatingExceeded > 0.0 ) {
       this.isTrippedProperty.value = true;
-      circuit.componentEditedEmitter.emit();
     }
 
     // The resistance varies inversely with the current rating, with 20.0 A at 3 mΩ.

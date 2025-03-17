@@ -76,13 +76,16 @@ export default class LinearTransientAnalysis {
           ltaBatteries.push( ltaVoltageSource );
         }
         else if ( circuitElement instanceof Resistor ||
-                  ( circuitElement instanceof Fuse && !circuitElement.isTrippedProperty.value ) ||
                   circuitElement instanceof Wire ||
                   circuitElement instanceof LightBulb ||
                   circuitElement instanceof SeriesAmmeter ||
 
                   // Since no closed circuit there; see below where current is zeroed out
-                  ( circuitElement instanceof Switch && circuitElement.isClosedProperty.value ) ) {
+                  ( circuitElement instanceof Switch && circuitElement.isClosedProperty.value ) ||
+
+                  // An untripped fuse can be traversed
+                  ( circuitElement instanceof Fuse && !circuitElement.isTrippedProperty.value )
+        ) {
 
           // For real bulbs, we run an initial circuit solution to determine their operating characteristics.
           // These operating characteristics are then used in a second solution to prevent a hysteresis.
@@ -257,7 +260,8 @@ export default class LinearTransientAnalysis {
 
         // compute end voltage from start voltage
         if ( circuitElement instanceof Resistor || circuitElement instanceof Wire || circuitElement instanceof LightBulb ||
-             ( circuitElement instanceof Switch && circuitElement.isClosedProperty.value ) || ( circuitElement instanceof Fuse && !circuitElement.isTrippedProperty.value ) ||
+             ( circuitElement instanceof Switch && circuitElement.isClosedProperty.value ) ||
+             ( circuitElement instanceof Fuse && !circuitElement.isTrippedProperty.value ) ||
              circuitElement instanceof SeriesAmmeter
         ) {
 
@@ -292,7 +296,10 @@ export default class LinearTransientAnalysis {
       circuit.circuitElements.forEach( circuitElement => {
         if ( circuitElement.containsVertex( vertex ) ) {
           const opposite = circuitElement.getOppositeVertex( vertex );
-          if ( !visited.includes( opposite ) && !( circuitElement instanceof Switch && !circuitElement.isClosedProperty.value ) ) {
+          if ( !visited.includes( opposite ) &&
+               !( circuitElement instanceof Switch && !circuitElement.isClosedProperty.value ) &&
+               !( circuitElement instanceof Fuse && circuitElement.isTrippedProperty.value )
+          ) {
             visit( vertex, circuitElement, opposite );
             dfs( opposite, visit );
           }
