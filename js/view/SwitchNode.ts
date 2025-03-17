@@ -243,7 +243,7 @@ export default class SwitchNode extends FixedCircuitElementNode {
   public startSideContainsSensorPoint( point: Vector2 ): boolean {
     const localPoint = this.contentNode.parentToLocalPoint( point );
     const leftSegmentContainsPoint = lifelikeOpenNode.leftSegmentNode.containsPoint( localPoint );
-    const node = this.circuitSwitch.isClosedProperty.get() ? lifelikeClosedNode : lifelikeOpenNode;
+    const node = this.circuitSwitch.isClosedProperty.value ? lifelikeClosedNode : lifelikeOpenNode;
     const rotatingSegmentContainsPoint = node.rotatingSegmentNode.containsPoint( localPoint );
     return leftSegmentContainsPoint || rotatingSegmentContainsPoint;
   }

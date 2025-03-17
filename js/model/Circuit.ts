@@ -886,7 +886,12 @@ export default class Circuit extends PhetioObject {
         // If the circuit element has a closed property (like a Switch), it is only OK to traverse if the element is
         // closed.
         if ( circuitElement instanceof Switch ) {
-          return circuitElement.isClosedProperty.get();
+          return circuitElement.isClosedProperty.value;
+        }
+        else if ( circuitElement instanceof Fuse ) {
+
+          // If the circuit element is a fuse, it is only OK to traverse if the element is not tripped.
+          return !circuitElement.isTrippedProperty.value;
         }
         else {
 
@@ -1278,7 +1283,11 @@ export default class Circuit extends PhetioObject {
                neighbor !== circuitElement &&
 
                // can't cross an open switch
-               !( neighbor instanceof Switch && !neighbor.isClosedProperty.value ) ) {
+               !( neighbor instanceof Switch && !neighbor.isClosedProperty.value ) &&
+
+               // can't cross a tripped fuse
+               !( neighbor instanceof Fuse && neighbor.isTrippedProperty.value )
+          ) {
             const opposite = neighbor.getOppositeVertex( vertex );
             if ( opposite === circuitElement.endVertexProperty.value ) {
 
