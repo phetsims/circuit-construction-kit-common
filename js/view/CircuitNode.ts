@@ -386,7 +386,7 @@ export default class CircuitNode extends Node {
         () => [ this.circuit.batteryGroup.archetype ], {
           groupElementStartingIndex: GROUP_STARTING_INDEX,
           phetioType: PhetioGroup.PhetioGroupIO( Node.NodeIO ),
-          tandem:  tandem.createTandem( 'extremeBatteryNodeGroup' ),
+          tandem: tandem.createTandem( 'extremeBatteryNodeGroup' ),
           supportsDynamicState: false
         } ) );
 
