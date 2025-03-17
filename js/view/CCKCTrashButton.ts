@@ -6,10 +6,8 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import { combineOptions } from '../../../phet-core/js/optionize.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import trashAltRegularShape from '../../../sherpa/js/fontawesome-5/trashAltRegularShape.js';
-import { type RoundPushButtonOptions } from '../../../sun/js/buttons/RoundPushButton.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -24,9 +22,9 @@ export default class CCKCTrashButton extends CCKCRoundPushButton {
    * @param tandem
    * @param [providedOptions]
    */
-  public constructor( circuit: Circuit, tandem: Tandem, providedOptions?: RoundPushButtonOptions ) {
+  public constructor( circuit: Circuit, tandem: Tandem ) {
 
-    super( combineOptions<RoundPushButtonOptions>( {
+    super( {
       touchAreaDilation: 5, // radius dilation for touch area
       content: new Path( trashAltRegularShape, {
         fill: 'black',
@@ -44,8 +42,9 @@ export default class CCKCTrashButton extends CCKCRoundPushButton {
         }
       },
       isDisposable: false,
-      tandem: tandem
-    }, providedOptions ) );
+      tandem: tandem,
+      phetioVisiblePropertyInstrumented: false
+    } );
   }
 }
 
