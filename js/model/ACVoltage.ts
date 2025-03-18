@@ -48,6 +48,8 @@ export default class ACVoltage extends VoltageSource {
   public static readonly FREQUENCY_RANGE = new Range( 0.1, 2.0 );
   public static readonly MAX_VOLTAGE_RANGE = new Range( 0, MAX_VOLTAGE );
 
+  public readonly isTraversibleProperty = new BooleanProperty( true );
+
   public constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, tandem: Tandem, providedOptions?: ACVoltageOptions ) {
     assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );
 

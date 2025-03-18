@@ -882,22 +882,7 @@ export default class Circuit extends PhetioObject {
    */
   private areVerticesElectricallyConnected( vertex1: Vertex, vertex2: Vertex ): boolean {
     const connectedVertices = this.searchVertices( vertex1, ( startVertex, circuitElement ) => {
-
-        // If the circuit element has a closed property (like a Switch), it is only OK to traverse if the element is
-        // closed.
-        if ( circuitElement instanceof Switch ) {
-          return circuitElement.isClosedProperty.value;
-        }
-        else if ( circuitElement instanceof Fuse ) {
-
-          // If the circuit element is a fuse, it is only OK to traverse if the element is not tripped.
-          return !circuitElement.isTrippedProperty.value;
-        }
-        else {
-
-          // Everything else is traversible
-          return true;
-        }
+      return circuitElement.isTraversibleProperty.value;
       }
     );
     return connectedVertices.includes( vertex2 );
@@ -1251,11 +1236,7 @@ export default class Circuit extends PhetioObject {
     // cannot be in a loop since their vertices are not directly connected.  Note the search
     // algorithm below gives the wrong answer because the start vertex and end vertex can be connected
     // by other circuit elements.
-    if ( circuitElement instanceof Switch && !circuitElement.isClosedProperty.value ) {
-      return false;
-    }
-
-    if ( circuitElement instanceof Fuse && circuitElement.isTrippedProperty.value ) {
+    if ( !circuitElement.isTraversibleProperty.value ) {
       return false;
     }
 
@@ -1286,11 +1267,7 @@ export default class Circuit extends PhetioObject {
                // no shortcuts!
                neighbor !== circuitElement &&
 
-               // can't cross an open switch
-               !( neighbor instanceof Switch && !neighbor.isClosedProperty.value ) &&
-
-               // can't cross a tripped fuse
-               !( neighbor instanceof Fuse && neighbor.isTrippedProperty.value )
+               neighbor.isTraversibleProperty.value
           ) {
             const opposite = neighbor.getOppositeVertex( vertex );
             if ( opposite === circuitElement.endVertexProperty.value ) {

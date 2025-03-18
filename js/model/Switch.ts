@@ -9,6 +9,7 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import type Property from '../../../axon/js/Property.js';
+import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import type Matrix3 from '../../../dot/js/Matrix3.js';
 import Utils from '../../../dot/js/Utils.js';
 import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
@@ -32,6 +33,8 @@ export default class Switch extends FixedCircuitElement {
   // whether the switch is closed (and current can flow through it)
   public readonly isClosedProperty: Property<boolean>;
 
+  public readonly isTraversibleProperty: TReadOnlyProperty<boolean>;
+
   public constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, circuit: Circuit | null ) {
 
     super( startVertex, endVertex, SWITCH_LENGTH, tandem, {
@@ -52,6 +55,8 @@ export default class Switch extends FixedCircuitElement {
       tandem: tandem.createTandem( 'isClosedProperty' ),
       phetioFeatured: true
     } );
+
+    this.isTraversibleProperty = this.isClosedProperty;
 
     this.isClosedProperty.link( closed => {
       this.resistanceProperty.value = closed ? 0 : CCKCConstants.MAX_RESISTANCE;

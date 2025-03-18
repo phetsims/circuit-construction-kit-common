@@ -64,7 +64,11 @@ export default class LinearTransientAnalysis {
 
       if ( inLoop ) {
         participants.push( circuitElement );
-        if ( circuitElement instanceof VoltageSource ) {
+        if ( !circuitElement.isTraversibleProperty.value ) {
+
+          // Cannot participate in the MNA
+        }
+        else if ( circuitElement instanceof VoltageSource ) {
           const ltaVoltageSource = new LTAResistiveBattery(
             id++,
             circuitElement.startVertexProperty.value.index + '',
@@ -79,13 +83,8 @@ export default class LinearTransientAnalysis {
                   circuitElement instanceof Wire ||
                   circuitElement instanceof LightBulb ||
                   circuitElement instanceof SeriesAmmeter ||
-
-                  // Since no closed circuit there; see below where current is zeroed out
-                  ( circuitElement instanceof Switch && circuitElement.isClosedProperty.value ) ||
-
-                  // An untripped fuse can be traversed
-                  ( circuitElement instanceof Fuse && !circuitElement.isTrippedProperty.value )
-        ) {
+                  circuitElement instanceof Switch ||
+                  circuitElement instanceof Fuse ) {
 
           // For real bulbs, we run an initial circuit solution to determine their operating characteristics.
           // These operating characteristics are then used in a second solution to prevent a hysteresis.
@@ -106,14 +105,6 @@ export default class LinearTransientAnalysis {
           );
           resistorMap.set( resistorAdapter, circuitElement );
           ltaResistors.push( resistorAdapter );
-        }
-        else if ( circuitElement instanceof Switch && !circuitElement.isClosedProperty.value ) {
-
-          // no element for an open switch
-        }
-        else if ( circuitElement instanceof Fuse && circuitElement.isTrippedProperty.value ) {
-
-          // no element for a tripped fuse
         }
         else if ( circuitElement instanceof Capacitor ) {
 
@@ -259,10 +250,17 @@ export default class LinearTransientAnalysis {
         const sign = startVertex === circuitElement.startVertexProperty.value ? 1 : -1;
 
         // compute end voltage from start voltage
-        if ( circuitElement instanceof Resistor || circuitElement instanceof Wire || circuitElement instanceof LightBulb ||
-             ( circuitElement instanceof Switch && circuitElement.isClosedProperty.value ) ||
-             ( circuitElement instanceof Fuse && !circuitElement.isTrippedProperty.value ) ||
-             circuitElement instanceof SeriesAmmeter
+
+        if ( !circuitElement.isTraversibleProperty.value ) {
+
+          // no-op
+        }
+        else if ( circuitElement instanceof Resistor ||
+                  circuitElement instanceof Wire ||
+                  circuitElement instanceof LightBulb ||
+                  circuitElement instanceof Switch ||
+                  circuitElement instanceof Fuse ||
+                  circuitElement instanceof SeriesAmmeter
         ) {
 
           // In the general case, we would need V=IR to compute the voltage drop, but we know the current across the
@@ -278,12 +276,6 @@ export default class LinearTransientAnalysis {
           endVertex.voltageProperty.value = startVertex.voltageProperty.value - sign * circuitElement.mnaVoltageDrop;
           solvedVertices.push( endVertex );
         }
-        else if ( circuitElement instanceof Switch && !circuitElement.isClosedProperty.value ) {
-          // for an open switch, the node voltages are independent
-        }
-        else if ( circuitElement instanceof Fuse && circuitElement.isTrippedProperty.value ) {
-          // for an unblown fuse, the node voltages are independent
-        }
         else {
           assert && assert( false, 'unknown circuit element type: ' + circuitElement.constructor.name );
         }
@@ -296,10 +288,7 @@ export default class LinearTransientAnalysis {
       circuit.circuitElements.forEach( circuitElement => {
         if ( circuitElement.containsVertex( vertex ) ) {
           const opposite = circuitElement.getOppositeVertex( vertex );
-          if ( !visited.includes( opposite ) &&
-               !( circuitElement instanceof Switch && !circuitElement.isClosedProperty.value ) &&
-               !( circuitElement instanceof Fuse && circuitElement.isTrippedProperty.value )
-          ) {
+          if ( !visited.includes( opposite ) && circuitElement.isTraversibleProperty.value ) {
             visit( vertex, circuitElement, opposite );
             dfs( opposite, visit );
           }

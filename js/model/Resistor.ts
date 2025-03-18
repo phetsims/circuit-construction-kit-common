@@ -45,6 +45,8 @@ export default class Resistor extends FixedCircuitElement {
   public static readonly RESISTANCE_DECIMAL_PLACES = 1;
   public static readonly HIGH_RESISTANCE_DECIMAL_PLACES = 0;
 
+  public readonly isTraversibleProperty = new BooleanProperty( true );
+
   /**
    * @param startVertex
    * @param endVertex

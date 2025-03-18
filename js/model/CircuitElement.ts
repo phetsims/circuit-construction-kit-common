@@ -136,8 +136,11 @@ export default abstract class CircuitElement extends PhetioObject {
   public isValueDisplayableProperty: BooleanProperty;
   public labelStringProperty: StringProperty;
 
-  // TODO: New API to unify Fuse and Switch for openness? See https://github.com/phetsims/circuit-construction-kit-common/issues/1029
-  // public readonly isTraversibleProperty: BooleanProperty;
+  /**
+   * Many algorithms, such as voltage computation, MNA solving, etc. need to know whether the circuit element participates
+   * in the circuit. For instance, an open switch or tripped fuse should not be part of the circuit graph.
+   */
+  public abstract readonly isTraversibleProperty: TReadOnlyProperty<boolean>;
 
   public constructor( startVertex: Vertex, endVertex: Vertex, chargePathLength: number, tandem: Tandem, providedOptions?: CircuitElementOptions ) {
     assert && assert( startVertex !== endVertex, 'startVertex cannot be the same as endVertex' );

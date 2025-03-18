@@ -8,8 +8,10 @@
  */
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
+import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import type Property from '../../../axon/js/Property.js';
+import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import Range from '../../../dot/js/Range.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
@@ -41,6 +43,8 @@ export default class Fuse extends FixedCircuitElement {
   private timeCurrentRatingExceeded: number;
   public readonly isRepairableProperty: BooleanProperty;
 
+  public readonly isTraversibleProperty: TReadOnlyProperty<boolean>;
+
   public constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, circuit: Circuit | null, providedOptions?: FuseOptions ) {
     const options = optionize<FuseOptions, SelfOptions, FixedCircuitElementOptions>()( {
       fuseLength: CCKCConstants.RESISTOR_LENGTH, // Same length as a resistor
@@ -61,6 +65,8 @@ export default class Fuse extends FixedCircuitElement {
       tandem: tandem.createTandem( 'isTrippedProperty' ),
       phetioFeatured: true
     } );
+
+    this.isTraversibleProperty = DerivedProperty.not( this.isTrippedProperty );
 
     this.resistanceProperty = new NumberProperty( CCKCConstants.MINIMUM_RESISTANCE );
 

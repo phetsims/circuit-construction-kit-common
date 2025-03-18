@@ -6,6 +6,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import type Property from '../../../axon/js/Property.js';
 import optionize, { type EmptySelfOptions } from '../../../phet-core/js/optionize.js';
@@ -20,6 +21,8 @@ type SelfOptions = EmptySelfOptions;
 type SeriesAmmeterOptions = SelfOptions & FixedCircuitElementOptions;
 
 export default class SeriesAmmeter extends FixedCircuitElement {
+
+  public readonly isTraversibleProperty = new BooleanProperty( true );
 
   // the resistance in ohms.  A constant, but modeled as a property for uniformity with other resistive elements.
   public readonly resistanceProperty: NumberProperty;
