@@ -6,6 +6,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import type Property from '../../../axon/js/Property.js';
 import type Matrix3 from '../../../dot/js/Matrix3.js';
@@ -71,6 +72,8 @@ export default class LightBulb extends FixedCircuitElement {
   // the resistance of the light bulb which can be edited with the UI
   public readonly resistanceProperty: NumberProperty;
   private readonly viewTypeProperty: Property<CircuitElementViewType>;
+
+  public readonly isTraversibleProperty = new BooleanProperty( true );
 
   public static createAtPosition( startVertex: Vertex,
                                   endVertex: Vertex,

@@ -6,6 +6,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import type Property from '../../../axon/js/Property.js';
 import Range from '../../../dot/js/Range.js';
@@ -30,6 +31,8 @@ export default class Capacitor extends DynamicCircuitElement {
   public static readonly CAPACITANCE_RANGE = new Range( CCKCQueryParameters.capacitanceMin, CCKCQueryParameters.capacitanceMax );
   public static readonly NUMBER_OF_DECIMAL_PLACES = CCKCQueryParameters.capacitorNumberDecimalPlaces;
   public static readonly CAPACITANCE_DEFAULT = CCKCQueryParameters.capacitanceDefault;
+
+  public readonly isTraversibleProperty = new BooleanProperty( true );
 
   public constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: CapacitorOptions ) {
     const options = optionize<CapacitorOptions, SelfOptions, DynamicCircuitElementOptions>()( {
