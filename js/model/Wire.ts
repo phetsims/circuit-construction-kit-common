@@ -6,6 +6,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import type Property from '../../../axon/js/Property.js';
 import optionize from '../../../phet-core/js/optionize.js';
@@ -43,6 +44,8 @@ export default class Wire extends CircuitElement {
   // when the length changes layoutCharges must be called
   public override readonly lengthProperty: NumberProperty;
   private updateListener: () => void;
+
+  public readonly isTraversibleProperty = new BooleanProperty( true );
 
   public constructor( startVertex: Vertex, endVertex: Vertex, resistivityProperty: NumberProperty, tandem: Tandem, providedOptions?: WireOptions ) {
     assert && assert( typeof resistivityProperty !== 'number', 'property should not be a number' );
