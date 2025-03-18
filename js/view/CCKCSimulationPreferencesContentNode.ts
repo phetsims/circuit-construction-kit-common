@@ -74,7 +74,10 @@ export default class CCKCSimulationPreferencesContentNode extends VBox {
             new Text( CircuitConstructionKitCommonStrings.schematicStandardStringProperty, PreferencesDialogConstants.PANEL_SECTION_LABEL_OPTIONS ),
             schematicTypeRadioButtonGroup
           ],
-          tandem: schematicStandardPreferencesControlTandem
+          tandem: schematicStandardPreferencesControlTandem,
+          visiblePropertyOptions: {
+            phetioFeatured: true
+          }
         } ),
         new HSeparator(),
         new VBox( {
@@ -84,7 +87,10 @@ export default class CCKCSimulationPreferencesContentNode extends VBox {
             new Text( CircuitConstructionKitCommonStrings.ammeterReadoutStringProperty, PreferencesDialogConstants.PANEL_SECTION_LABEL_OPTIONS ),
             ammeterReadoutRadioButtonGroup
           ],
-          tandem: ammeterReadoutPreferencesControlTandem
+          tandem: ammeterReadoutPreferencesControlTandem,
+          visiblePropertyOptions: {
+            phetioFeatured: true
+          }
         } )
       ]
     } );
