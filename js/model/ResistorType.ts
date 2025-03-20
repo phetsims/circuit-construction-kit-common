@@ -6,6 +6,13 @@ import EnumerationValue from '../../../phet-core/js/EnumerationValue.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
+// We originally had the resistance of the eraser and dollar as 1E9 ohms, but that led to erratic behavior as the circuit
+// was adjusted, see https://github.com/phetsims/circuit-construction-kit-common/issues/1032
+// Reducing this to 1E6 ohms stabilizes the behavior, but unfortunately shows some current when you have several high
+// voltage batteries in series. Still, we prefer this value since the erratic values are problematic.
+// We are aware that the actual resistance of the eraser is orders of magnitude higher.
+const LARGE_RESISTANCE = 1E6;
+
 /**
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -16,12 +23,12 @@ export default class ResistorType extends EnumerationValue {
   public static readonly COIN = ResistorType.fixed( 0, true, CCKCConstants.COIN_LENGTH );
   public static readonly PAPER_CLIP = ResistorType.fixed( 0, true, CCKCConstants.PAPER_CLIP_LENGTH );
   public static readonly PENCIL = ResistorType.fixed( 25, false, CCKCConstants.PENCIL_LENGTH );
-  public static readonly ERASER = ResistorType.fixed( 1000000000, false, CCKCConstants.ERASER_LENGTH );
+  public static readonly ERASER = ResistorType.fixed( LARGE_RESISTANCE, false, CCKCConstants.ERASER_LENGTH );
   public static readonly HAND = ResistorType.fixed( 100000, false, CCKCConstants.HAND_LENGTH, 15 );
 
   // Adjust the dog so the charges travel along the tail/legs, see https://github.com/phetsims/circuit-construction-kit-common/issues/364
   public static readonly DOG = ResistorType.fixed( 100000, false, CCKCConstants.DOG_LENGTH, -40 );
-  public static readonly DOLLAR_BILL = ResistorType.fixed( 1000000000, false, CCKCConstants.DOLLAR_BILL_LENGTH );
+  public static readonly DOLLAR_BILL = ResistorType.fixed( LARGE_RESISTANCE, false, CCKCConstants.DOLLAR_BILL_LENGTH );
 
   public static readonly enumeration = new Enumeration( ResistorType );
 
