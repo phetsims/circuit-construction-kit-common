@@ -28,7 +28,7 @@ type SelfOptions = {
 export type ResistorOptions = SelfOptions & FixedCircuitElementOptions;
 
 type ResistorSelfState = {
-  resistorType: ResistorType;
+  resistorType: string;
 };
 type ResistorState = ResistorSelfState & CircuitElementState;
 

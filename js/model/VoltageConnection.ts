@@ -6,6 +6,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import IOType from '../../../tandem/js/types/IOType.js';
 import NumberIO from '../../../tandem/js/types/NumberIO.js';
 import ReferenceIO from '../../../tandem/js/types/ReferenceIO.js';
@@ -24,7 +25,7 @@ export default class VoltageConnection {
     this.circuitElement = circuitElement;
   }
 
-  public static VoltageConnectionIO = new IOType( 'VoltageConnectionIO', {
+  public static VoltageConnectionIO = new IOType<IntentionalAny, IntentionalAny>( 'VoltageConnectionIO', {
     valueType: VoltageConnection,
     documentation: 'In order to describe how a Voltmeter probe is connected to a circuit. It indicates the measured Vertex ' +
                    'or Circuit Element, and the voltage at that point. For non-ideal wires, the ' +

@@ -1611,7 +1611,7 @@ export default class Circuit extends PhetioObject {
   }
 }
 
-const CircuitStateIO = new IOType( 'CircuitStateIO', {
+const CircuitStateIO = new IOType<IntentionalAny, IntentionalAny>( 'CircuitStateIO', {
   supertype: GetSetButtonsIO,
   valueType: Circuit,
   methods: {

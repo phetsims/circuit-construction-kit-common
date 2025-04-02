@@ -25,7 +25,7 @@ import { type PressListenerEvent } from '../../../scenery/js/listeners/PressList
 import PhetioObject, { type PhetioObjectOptions } from '../../../tandem/js/PhetioObject.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import IOType from '../../../tandem/js/types/IOType.js';
-import ReferenceIO from '../../../tandem/js/types/ReferenceIO.js';
+import ReferenceIO, { ReferenceIOState } from '../../../tandem/js/types/ReferenceIO.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import type Circuit from './Circuit.js';
 import CurrentSense from './CurrentSense.js';
@@ -52,8 +52,8 @@ type SelfOptions = {
 export type CircuitElementOptions = SelfOptions & PhetioObjectOptions;
 
 export type CircuitElementState = {
-  startVertexID: string;
-  endVertexID: string;
+  startVertexID: ReferenceIOState;
+  endVertexID: ReferenceIOState;
 };
 
 export default abstract class CircuitElement extends PhetioObject {
