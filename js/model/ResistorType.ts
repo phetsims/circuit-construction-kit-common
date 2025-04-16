@@ -1,21 +1,22 @@
 // Copyright 2021-2025, University of Colorado Boulder
 
+// We originally had the resistance of the eraser and dollar as 1E9 ohms, but that led to erratic behavior as the circuit
+// was adjusted, see https://github.com/phetsims/circuit-construction-kit-common/issues/1032
+// Reducing this to 1E6 ohms stabilizes the behavior, but unfortunately shows some current when you have several high
+// voltage batteries in series. Still, we prefer this value since the erratic values are problematic.
+// We are aware that the actual resistance of the eraser is orders of magnitude higher.
+
+/**
+ * @author Sam Reid (PhET Interactive Simulations)
+ */
+
 import Range from '../../../dot/js/Range.js';
 import Enumeration from '../../../phet-core/js/Enumeration.js';
 import EnumerationValue from '../../../phet-core/js/EnumerationValue.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
-// We originally had the resistance of the eraser and dollar as 1E9 ohms, but that led to erratic behavior as the circuit
-// was adjusted, see https://github.com/phetsims/circuit-construction-kit-common/issues/1032
-// Reducing this to 1E6 ohms stabilizes the behavior, but unfortunately shows some current when you have several high
-// voltage batteries in series. Still, we prefer this value since the erratic values are problematic.
-// We are aware that the actual resistance of the eraser is orders of magnitude higher.
 const LARGE_RESISTANCE = 1E6;
-
-/**
- * @author Sam Reid (PhET Interactive Simulations)
- */
 export default class ResistorType extends EnumerationValue {
 
   public static readonly RESISTOR = new ResistorType( 10, new Range( 0, 120 ), false, CCKCConstants.RESISTOR_LENGTH );

@@ -1,12 +1,12 @@
 // Copyright 2021-2025, University of Colorado Boulder
 
-import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
-import type LTACircuit from './LTACircuit.js';
-import type LTASolution from './LTASolution.js';
-
 /**
  * @author Sam Reid (PhET Interactive Simulations)
  */
+
+import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
+import type LTACircuit from './LTACircuit.js';
+import type LTASolution from './LTASolution.js';
 export default class LTAState {
   public readonly ltaCircuit: LTACircuit;
   public readonly ltaSolution: LTASolution | null;

@@ -1,9 +1,4 @@
 // Copyright 2021-2025, University of Colorado Boulder
-import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
-import type CoreModel from './CoreModel.js';
-import type LTACircuit from './LTACircuit.js';
-import type MNAResistor from './mna/MNAResistor.js';
-import type MNASolution from './mna/MNASolution.js';
 
 /**
  * LTASolution is a class that represents the solution of a linear time-invariant (LTI) circuit. It provides methods for
@@ -11,6 +6,12 @@ import type MNASolution from './mna/MNASolution.js';
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
+
+import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
+import type CoreModel from './CoreModel.js';
+import type LTACircuit from './LTACircuit.js';
+import type MNAResistor from './mna/MNAResistor.js';
+import type MNASolution from './mna/MNASolution.js';
 export default class LTASolution {
 
   private readonly circuit: LTACircuit;

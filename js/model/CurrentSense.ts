@@ -1,9 +1,5 @@
 // Copyright 2021-2023, University of Colorado Boulder
 
-import Enumeration from '../../../phet-core/js/Enumeration.js';
-import EnumerationValue from '../../../phet-core/js/EnumerationValue.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-
 /**
  * Enumeration for how to render the current: electrons or conventional (arrows).
  * Because of how this file is used in the model and query parameter file, it must be declared separately
@@ -11,6 +7,10 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
+
+import Enumeration from '../../../phet-core/js/Enumeration.js';
+import EnumerationValue from '../../../phet-core/js/EnumerationValue.js';
+import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 export default class CurrentSense extends EnumerationValue {
   public static readonly FORWARD = new CurrentSense();
   public static readonly BACKWARD = new CurrentSense();

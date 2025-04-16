@@ -1,11 +1,12 @@
 // Copyright 2020-2025, University of Colorado Boulder
 
-import PreferencesDialogConstants from '../../../joist/js/preferences/PreferencesDialogConstants.js';
 /**
  * Shows contents for controls that change simulation representation or behavior.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
+
+import PreferencesDialogConstants from '../../../joist/js/preferences/PreferencesDialogConstants.js';
 import HSeparator from '../../../scenery/js/layout/nodes/HSeparator.js';
 import VBox from '../../../scenery/js/layout/nodes/VBox.js';
 import Text from '../../../scenery/js/nodes/Text.js';

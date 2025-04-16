@@ -1,12 +1,12 @@
 // Copyright 2021-2022, University of Colorado Boulder
 
-import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
-
 /**
  * Something with a companion model.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
+
+import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 export default class CoreModel {
   public readonly node0: string;
   public readonly node1: string;

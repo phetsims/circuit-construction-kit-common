@@ -1,11 +1,11 @@
 // Copyright 2021-2024, University of Colorado Boulder
 
-import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
-import CoreModel from './CoreModel.js';
-
 /**
  * @author Sam Reid (PhET Interactive Simulations)
  */
+
+import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
+import CoreModel from './CoreModel.js';
 class LTAResistiveBattery extends CoreModel {
   public readonly voltage: number;
   public resistance: number;
