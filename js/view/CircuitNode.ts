@@ -39,7 +39,6 @@ import type CircuitConstructionKitModel from '../model/CircuitConstructionKitMod
 import type CircuitElement from '../model/CircuitElement.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import CurrentSense from '../model/CurrentSense.js';
-import Dog from '../model/Dog.js';
 import FixedCircuitElement from '../model/FixedCircuitElement.js';
 import Fuse from '../model/Fuse.js';
 import Inductor from '../model/Inductor.js';
@@ -61,7 +60,6 @@ import CircuitDebugLayer from './CircuitDebugLayer.js';
 import CircuitElementEditContainerNode from './CircuitElementEditContainerNode.js';
 import CircuitElementNode from './CircuitElementNode.js';
 import CustomLightBulbNode from './CustomLightBulbNode.js';
-import DogNode from './DogNode.js';
 import FixedCircuitElementNode from './FixedCircuitElementNode.js';
 import FuseNode from './FuseNode.js';
 import InductorNode from './InductorNode.js';
@@ -457,12 +455,7 @@ export default class CircuitNode extends Node {
 
     initializeCircuitElementType( ( e: CircuitElement ) => e instanceof Resistor && e.resistorType !== ResistorType.RESISTOR && e.resistorType !== ResistorType.EXTREME_RESISTOR, this.fixedCircuitElementLayer,
       new PhetioGroup<CircuitElementNode, [ CircuitElement ]>( ( tandem: Tandem, circuitElement: CircuitElement ) => {
-          if ( circuitElement instanceof Dog ) {
-            return new DogNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem );
-          }
-          else {
-            return new ResistorNode( screenView, this, circuitElement as Resistor, this.model.viewTypeProperty, tandem );
-          }
+          return new ResistorNode( screenView, this, circuitElement as Resistor, this.model.viewTypeProperty, tandem );
         },
         () => [ this.circuit.householdObjectGroup.archetype ], {
           groupElementStartingIndex: GROUP_STARTING_INDEX,
