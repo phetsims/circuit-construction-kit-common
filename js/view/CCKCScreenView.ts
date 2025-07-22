@@ -529,6 +529,17 @@ export default class CCKCScreenView extends ScreenView {
         }
       }
     } );
+
+    this.pdomPlayAreaNode.pdomOrder = [
+      toolboxContainer,
+      this.viewRadioButtonGroup,
+      controlPanelVBox
+    ];
+
+    this.pdomControlAreaNode.pdomOrder = [
+      zoomButtonGroup,
+      resetAllButton
+    ];
   }
 
   /**
