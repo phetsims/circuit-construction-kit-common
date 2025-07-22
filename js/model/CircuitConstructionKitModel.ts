@@ -117,7 +117,7 @@ export default class CircuitConstructionKitModel implements TModel {
     this.addRealBulbsProperty = new BooleanProperty( CCKCQueryParameters.addRealBulbs, {
       tandem: includeLabElements ? tandem.createTandem( 'addRealBulbsProperty' ) : Tandem.OPT_OUT,
       phetioFeatured: true,
-      hasListenerOrderDependencies: true // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/989
+      hasListenerOrderDependencies: true
     } );
 
     this.isShowNoncontactAmmeters = options.showNoncontactAmmeters;
