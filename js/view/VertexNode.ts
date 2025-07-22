@@ -84,7 +84,6 @@ export default class VertexNode extends Node {
       // keyboard navigation
       tagName: 'div', // HTML tag name for representative element in the document, see ParallelDOM.js
       focusable: true,
-      focusHighlight: 'invisible', // highlights are drawn by the simulation, invisible is deprecated don't use in future
       phetioDynamicElement: true,
       phetioVisiblePropertyInstrumented: false
     } );

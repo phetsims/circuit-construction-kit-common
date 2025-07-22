@@ -37,7 +37,7 @@ export default abstract class CircuitElementNode extends Node {
    * @param circuit - the circuit which the element can be removed from or null for icons
    * @param [providedOptions]
    */
-  public constructor( circuitElement: CircuitElement, circuit: Circuit | null, providedOptions?: CircuitElementNodeOptions ) {
+  protected constructor( circuitElement: CircuitElement, circuit: Circuit | null, providedOptions?: CircuitElementNodeOptions ) {
 
     providedOptions = optionize<CircuitElementNodeOptions, SelfOptions, NodeOptions>()( {
       useHitTestForSensors: false // if true, use the scenery mouse region hit test for fine-grained region. Otherwise, use bounds test.
@@ -48,7 +48,6 @@ export default abstract class CircuitElementNode extends Node {
       providedOptions = optionize<CircuitElementNodeOptions, SelfOptions, NodeOptions>()( {
         tagName: 'div', // HTML tag name for representative element in the document, see ParallelDOM.js
         focusable: true,
-        focusHighlight: 'invisible', // highlights are drawn by the simulation, invisible is deprecated don't use in future
         phetioDynamicElement: true,
         phetioState: false,
         phetioVisiblePropertyInstrumented: false,
@@ -84,6 +83,8 @@ export default abstract class CircuitElementNode extends Node {
     // Flag to indicate when updating view is necessary, in order to avoid duplicate work when both vertices move
     this.dirty = true;
     this.disposeEmitter.addListener( () => circuitElement.startDragEmitter.removeListener( startDragListener ) );
+
+    circuitElement.focusEmitter.addListener( () => this.focus() );
   }
 
   /**

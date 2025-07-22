@@ -142,6 +142,8 @@ export default abstract class CircuitElement extends PhetioObject {
    */
   public abstract readonly isTraversibleProperty: TReadOnlyProperty<boolean>;
 
+  public readonly focusEmitter = new Emitter();
+
   public constructor( startVertex: Vertex, endVertex: Vertex, chargePathLength: number, tandem: Tandem, providedOptions?: CircuitElementOptions ) {
     assert && assert( startVertex !== endVertex, 'startVertex cannot be the same as endVertex' );
     assert && assert( chargePathLength > 0, 'charge path length must be positive' );

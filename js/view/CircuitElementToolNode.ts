@@ -12,11 +12,12 @@ import Multilink from '../../../axon/js/Multilink.js';
 import type Property from '../../../axon/js/Property.js';
 import type ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
 import type TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
-import type Vector2 from '../../../dot/js/Vector2.js';
+import Vector2 from '../../../dot/js/Vector2.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import Grayscale from '../../../scenery/js/filters/Grayscale.js';
 import VBox, { type VBoxOptions } from '../../../scenery/js/layout/nodes/VBox.js';
 import DragListener from '../../../scenery/js/listeners/DragListener.js';
+import KeyboardListener from '../../../scenery/js/listeners/KeyboardListener.js';
 import { type PressListenerEvent } from '../../../scenery/js/listeners/PressListener.js';
 import type Node from '../../../scenery/js/nodes/Node.js';
 import Text from '../../../scenery/js/nodes/Text.js';
@@ -26,6 +27,7 @@ import type Circuit from '../model/Circuit.js';
 import type CircuitElement from '../model/CircuitElement.js';
 import type CircuitElementViewType from '../model/CircuitElementViewType.js';
 import CCKCColors from './CCKCColors.js';
+import CCKCHotkeyData from './CCKCHotkeyData.js';
 
 // constants
 const TOOLBOX_ICON_WIDTH = CCKCConstants.TOOLBOX_ICON_WIDTH;
@@ -91,7 +93,9 @@ export default class CircuitElementToolNode extends VBox {
       excludeInvisibleChildrenFromBounds: false,
       additionalProperty: new BooleanProperty( true ),
 
-      ghostOpacity: 0.4
+      ghostOpacity: 0.4,
+      focusable: true,
+      tagName: 'div'
     }, providedOptions );
 
     super( options );
@@ -99,7 +103,7 @@ export default class CircuitElementToolNode extends VBox {
     this.addInputListener( DragListener.createForwardingListener( ( event: PressListenerEvent ) => {
 
       // initial position of the pointer in the coordinate frame of the CircuitNode
-      const v: Vector2 = event.pointer.point;
+      const v = event.pointer.point;
       const viewPosition = globalToCircuitNodePoint( v );
 
       // Adjust for touch.  The object should appear centered on the mouse but vertically above the finger so the finger
@@ -117,6 +121,19 @@ export default class CircuitElementToolNode extends VBox {
     }, {
       allowTouchSnag: true
     } ) );
+
+    const createKeyboardListener = new KeyboardListener( {
+      keyStringProperties: CCKCHotkeyData.circuitToolNode.create.keyStringProperties,
+      fire: () => {
+
+        console.log( 'create a circuit element ' );
+        const circuitElement = createElement( globalToCircuitNodePoint( new Vector2( 400, 400 ) ) );
+        circuit.circuitElements.add( circuitElement );
+
+        circuitElement.focusEmitter.emit();
+      }
+    } );
+    this.addInputListener( createKeyboardListener );
 
     // Make the tool icon visible if we can create more of the item. But be careful to only update visibility when
     // the specific count for this item changes, so we can support PhET-iO hiding the icons via visibility.
