@@ -126,7 +126,6 @@ export default class CircuitElementToolNode extends VBox {
       keyStringProperties: CCKCHotkeyData.circuitToolNode.create.keyStringProperties,
       fire: () => {
 
-        console.log( 'create a circuit element ' );
         const circuitElement = createElement( globalToCircuitNodePoint( new Vector2( 400, 400 ) ) );
         circuit.circuitElements.add( circuitElement );
 
