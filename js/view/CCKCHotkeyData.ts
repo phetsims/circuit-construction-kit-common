@@ -6,7 +6,6 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import Property from '../../../axon/js/Property.js';
 import StringProperty from '../../../axon/js/StringProperty.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import HotkeyData from '../../../scenery/js/input/HotkeyData.js';
@@ -16,7 +15,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 function createHotkeyData( keys: OneKeyStroke[],
                            keyboardHelpDialogLabelStringProperty: TReadOnlyProperty<string> ): HotkeyData {
   return new HotkeyData( {
-    keyStringProperties: keys.map( string => new Property( string ) ),
+    keys: keys,
     repoName: circuitConstructionKitCommon.name,
     keyboardHelpDialogLabelStringProperty: keyboardHelpDialogLabelStringProperty
   } );

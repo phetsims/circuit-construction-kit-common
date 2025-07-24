@@ -9,7 +9,6 @@
 
 import Multilink from '../../../axon/js/Multilink.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
-import Property from '../../../axon/js/Property.js';
 import type Bounds2 from '../../../dot/js/Bounds2.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import ScreenView, { type ScreenViewOptions } from '../../../joist/js/ScreenView.js';
@@ -612,7 +611,7 @@ export default class CCKCScreenView extends ScreenView {
   }
 
   public static readonly DELETE_HOTKEY_DATA = new HotkeyData( {
-    keyStringProperties: [ new Property( 'delete' ), new Property( 'backspace' ) ],
+    keys: [ 'delete', 'backspace' ],
     repoName: circuitConstructionKitCommon.name,
     binderName: 'Delete circuit element',
     global: true
