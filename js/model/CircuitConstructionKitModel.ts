@@ -94,7 +94,7 @@ export default class CircuitConstructionKitModel implements TModel {
   // Indicates when the model has updated, some views need to update accordingly
   public readonly stepEmitter: TEmitter<[ number ]>;
 
-  protected constructor( includeACElements: boolean, includeLabElements: boolean, tandem: Tandem, providedOptions?: CircuitConstructionKitModelOptions ) {
+  public constructor( includeACElements: boolean, includeLabElements: boolean, tandem: Tandem, providedOptions?: CircuitConstructionKitModelOptions ) {
 
     const options = optionize<CircuitConstructionKitModelOptions>()( {
 
