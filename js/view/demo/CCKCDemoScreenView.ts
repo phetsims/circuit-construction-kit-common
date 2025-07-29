@@ -24,7 +24,7 @@ const LEAD_Y = -73;
 
 export default class CCKCDemoScreenView extends ScreenView {
 
-  private constructor( providedOptions: ScreenViewOptions ) {
+  public constructor( providedOptions?: ScreenViewOptions ) {
     super( providedOptions );
 
     // Classical zig-zag shape
