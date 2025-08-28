@@ -7,7 +7,7 @@
  */
 
 import StringProperty from '../../../axon/js/StringProperty.js';
-import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import HotkeyData from '../../../scenery/js/input/HotkeyData.js';
 import { OneKeyStroke } from '../../../scenery/js/input/KeyDescriptor.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';

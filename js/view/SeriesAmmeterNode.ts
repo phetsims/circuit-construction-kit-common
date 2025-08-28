@@ -8,7 +8,7 @@
 
 import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import StringProperty from '../../../axon/js/StringProperty.js';
-import type TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import type { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Rectangle, { type RectangleOptions } from '../../../scenery/js/nodes/Rectangle.js';

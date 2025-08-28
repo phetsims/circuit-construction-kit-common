@@ -8,7 +8,7 @@
  */
 
 import type Property from '../../../axon/js/Property.js';
-import type TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import type { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import ElectronChargeNode from '../../../scenery-phet/js/ElectronChargeNode.js';
 import type Stopwatch from '../../../scenery-phet/js/Stopwatch.js';
 import AlignGroup from '../../../scenery/js/layout/constraints/AlignGroup.js';
