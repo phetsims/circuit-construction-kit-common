@@ -13,7 +13,8 @@ import type Property from '../../../axon/js/Property.js';
 import type ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
 import type { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import Vector2 from '../../../dot/js/Vector2.js';
-import optionize from '../../../phet-core/js/optionize.js';
+import { optionize4 } from '../../../phet-core/js/optionize.js';
+import AccessibleDraggableOptions from '../../../scenery-phet/js/accessibility/grab-drag/AccessibleDraggableOptions.js';
 import Grayscale from '../../../scenery/js/filters/Grayscale.js';
 import VBox, { type VBoxOptions } from '../../../scenery/js/layout/nodes/VBox.js';
 import DragListener from '../../../scenery/js/listeners/DragListener.js';
@@ -77,7 +78,7 @@ export default class CircuitElementToolNode extends VBox {
       delete providedOptions.tandem;
       showLabelsProperty.linkAttribute( labelText, 'visible' );
     }
-    const options = optionize<CircuitElementToolNodeOptions, SelfOptions, VBoxOptions>()( {
+    const options = optionize4<CircuitElementToolNodeOptions, SelfOptions, VBoxOptions>()( {}, AccessibleDraggableOptions, {
       spacing: 2, // Spacing between the icon and the text
       cursor: 'pointer',
 
@@ -93,9 +94,7 @@ export default class CircuitElementToolNode extends VBox {
       excludeInvisibleChildrenFromBounds: false,
       additionalProperty: new BooleanProperty( true ),
 
-      ghostOpacity: 0.4,
-      focusable: true,
-      tagName: 'div'
+      ghostOpacity: 0.4
     }, providedOptions );
 
     super( options );
