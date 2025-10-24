@@ -136,13 +136,13 @@ export default class VoltmeterNode extends Node {
 
     // Displays the voltage reading
     const voltageReadoutProperty = new DerivedStringProperty( [
-        voltmeter.voltageProperty,
-        CircuitConstructionKitCommonStrings.voltageUnitsStringProperty
-      ], voltage =>
+      voltmeter.voltageProperty,
+      CircuitConstructionKitCommonStrings.voltageUnitsStringProperty
+    ], voltage =>
       voltage === null ? MathSymbols.NO_VALUE : CCKCUtils.createVoltageReadout( voltage ) );
 
     const probeTextProperty = new DerivedStringProperty( [ voltageStringProperty ], voltageString =>
-        options.showPhetioIndex ? voltageString + ' ' + voltmeter.phetioIndex : voltageString
+      options.showPhetioIndex ? voltageString + ' ' + voltmeter.phetioIndex : voltageString
     );
 
     const probeTextNode = new ProbeTextNode(

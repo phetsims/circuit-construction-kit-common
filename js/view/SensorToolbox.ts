@@ -133,7 +133,8 @@ export default class SensorToolbox extends CCKCPanel {
       phetioVisiblePropertyInstrumented: true,
       visiblePropertyOptions: {
         phetioFeatured: true
-      }
+      },
+      tagName: options.showNoncontactAmmeters && options.showSeriesAmmeters ? 'button' : undefined
     } );
     const allAmmetersInPlayAreaProperty = DerivedProperty.and( ammeterNodes.map( ammeterNode => ammeterNode.ammeter.isActiveProperty ) );
     allAmmetersInPlayAreaProperty.link( allInPlayArea => {
@@ -230,7 +231,8 @@ export default class SensorToolbox extends CCKCPanel {
       excludeInvisibleChildrenFromBounds: false,
       visiblePropertyOptions: {
         phetioFeatured: true
-      }
+      },
+      tagName: 'button'
     } );
 
     // Alter the visibility of the labels when the labels checkbox is toggled.
@@ -263,7 +265,8 @@ export default class SensorToolbox extends CCKCPanel {
         } ),
         ammeterText
       ],
-      excludeInvisibleChildrenFromBounds: false
+      excludeInvisibleChildrenFromBounds: false,
+      tagName: options.showNoncontactAmmeters && options.showSeriesAmmeters ? undefined : 'button'
     } );
 
     const topBox = alignGroup.createBox( new HBox( {
