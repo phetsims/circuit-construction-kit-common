@@ -19,12 +19,13 @@ import Path from '../../../scenery/js/nodes/Path.js';
 import Color from '../../../scenery/js/util/Color.js';
 import LinearGradient from '../../../scenery/js/util/LinearGradient.js';
 import { rasterizeNode } from '../../../scenery/js/util/rasterizeNode.js';
-import type Tandem from '../../../tandem/js/Tandem.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import type Vertex from '../model/Vertex.js';
 import type Wire from '../model/Wire.js';
+import WireKeyboardListener from './alt-input/WireKeyboardListener.js';
 import CCKCColors from './CCKCColors.js';
 import type CCKCScreenView from './CCKCScreenView.js';
 import CircuitElementNode from './CircuitElementNode.js';
@@ -305,6 +306,9 @@ export default class WireNode extends CircuitElementNode {
         }
       } );
       this.addInputListener( this.dragListener );
+
+      // TODO: add tandem and regenerate phet-io apis, see https://github.com/phetsims/circuit-construction-kit-common/issues/1034
+      this.addInputListener( new WireKeyboardListener( this, circuitNode!, screenView, Tandem.OPT_OUT ) );
 
       circuitNode!.circuit.selectionProperty.link( markAsDirty );
     }
