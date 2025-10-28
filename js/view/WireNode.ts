@@ -25,7 +25,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import type Vertex from '../model/Vertex.js';
 import type Wire from '../model/Wire.js';
-import WireKeyboardListener from './alt-input/WireKeyboardListener.js';
+import WireKeyboardListener from './input/WireKeyboardListener.js';
 import CCKCColors from './CCKCColors.js';
 import type CCKCScreenView from './CCKCScreenView.js';
 import CircuitElementNode from './CircuitElementNode.js';
