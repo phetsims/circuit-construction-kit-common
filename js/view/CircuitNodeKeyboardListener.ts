@@ -33,7 +33,7 @@ export default class CircuitNodeKeyboardListener extends SoundKeyboardDragListen
     super( {
 
       // TODO: Some duplication with DragListener, see https://github.com/phetsims/circuit-construction-kit-common/issues/1034
-      start: event => {
+      start: () => {
 
         const vertices = vertexGetters.map( vertexGetter => vertexGetter() );
 
@@ -49,7 +49,7 @@ export default class CircuitNodeKeyboardListener extends SoundKeyboardDragListen
         }
 
       },
-      drag: ( event, listener ) => {
+      drag: ( _event, listener ) => {
 
         position!.addXY( listener.modelDelta.x, listener.modelDelta.y );
         if ( circuitElement.interactiveProperty.get() ) {
