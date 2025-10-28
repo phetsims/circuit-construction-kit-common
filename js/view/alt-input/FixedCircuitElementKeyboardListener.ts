@@ -16,7 +16,7 @@ import CCKCScreenView from '../CCKCScreenView.js';
 import CircuitNode from '../CircuitNode.js';
 import FixedCircuitElementNode from '../FixedCircuitElementNode.js';
 
-export default class CircuitNodeKeyboardListener extends SoundKeyboardDragListener {
+export default class FixedCircuitElementKeyboardListener extends SoundKeyboardDragListener {
 
   public constructor(
     circuitElementNode: FixedCircuitElementNode,
@@ -70,4 +70,4 @@ export default class CircuitNodeKeyboardListener extends SoundKeyboardDragListen
   }
 }
 
-circuitConstructionKitCommon.register( 'CircuitNodeKeyboardListener', CircuitNodeKeyboardListener );
+circuitConstructionKitCommon.register( 'FixedCircuitElementKeyboardListener', FixedCircuitElementKeyboardListener );

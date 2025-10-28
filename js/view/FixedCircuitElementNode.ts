@@ -29,7 +29,7 @@ import type CCKCScreenView from './CCKCScreenView.js';
 import CircuitElementNode, { type CircuitElementNodeOptions } from './CircuitElementNode.js';
 import type CircuitNode from './CircuitNode.js';
 import CircuitNodeDragListener from './CircuitNodeDragListener.js';
-import CircuitNodeKeyboardListener from './alt-input/CircuitNodeKeyboardListener.js';
+import FixedCircuitElementKeyboardListener from './alt-input/FixedCircuitElementKeyboardListener.js';
 import FixedCircuitElementHighlightNode from './FixedCircuitElementHighlightNode.js';
 
 // constants
@@ -197,7 +197,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
       } );
       this.contentNode.addInputListener( this.dragListener );
 
-      const keyboardListener = new CircuitNodeKeyboardListener(
+      const keyboardListener = new FixedCircuitElementKeyboardListener(
         this,
         circuitNode,
         screenView!,
