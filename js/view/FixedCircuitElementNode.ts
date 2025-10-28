@@ -29,6 +29,7 @@ import type CCKCScreenView from './CCKCScreenView.js';
 import CircuitElementNode, { type CircuitElementNodeOptions } from './CircuitElementNode.js';
 import type CircuitNode from './CircuitNode.js';
 import CircuitNodeDragListener from './CircuitNodeDragListener.js';
+import CircuitNodeKeyboardListener from './CircuitNodeKeyboardListener.js';
 import FixedCircuitElementHighlightNode from './FixedCircuitElementHighlightNode.js';
 
 // constants
@@ -162,7 +163,8 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
 
     if ( !options.isIcon && circuitNode ) {
 
-      this.dragListener = new CircuitNodeDragListener( circuitNode, [ () => circuitElement.endVertexProperty.get() ], {
+      const vertexGetters = [ () => circuitElement.endVertexProperty.get() ];
+      this.dragListener = new CircuitNodeDragListener( circuitNode, vertexGetters, {
         start: ( event: SceneryEvent ) => {
           this.moveToFront();
           if ( event.pointer && event.pointer.point ) {
@@ -194,6 +196,15 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
         tandem: tandem.createTandem( 'dragListener' )
       } );
       this.contentNode.addInputListener( this.dragListener );
+
+      const keyboardListener = new CircuitNodeKeyboardListener(
+        this,
+        circuitNode,
+        screenView!,
+        vertexGetters,
+        options.tandem.createTandem( 'keyboardListener' )
+      );
+      this.addInputListener( keyboardListener );
 
       if ( options.showHighlight ) {
 

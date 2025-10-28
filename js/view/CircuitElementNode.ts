@@ -154,7 +154,7 @@ export default abstract class CircuitElementNode extends Node {
    * @param latestPoint
    * @param dragged
    */
-  protected endDrag( node: Node, vertices: Vertex[], screenView: CCKCScreenView, circuitNode: CircuitNode, initialPoint: Vector2, latestPoint: Vector2, dragged: boolean ): void {
+  public endDrag( node: Node, vertices: Vertex[], screenView: CCKCScreenView, circuitNode: CircuitNode, initialPoint: Vector2, latestPoint: Vector2, dragged: boolean ): void {
     const circuitElement = this.circuitElement;
 
     if ( circuitElement.interactiveProperty.get() ) {
