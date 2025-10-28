@@ -6,15 +6,15 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import Vector2 from '../../../dot/js/Vector2.js';
-import SoundKeyboardDragListener from '../../../scenery-phet/js/SoundKeyboardDragListener.js';
-import Tandem from '../../../tandem/js/Tandem.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitElement from '../model/CircuitElement.js';
-import type Vertex from '../model/Vertex.js';
-import CCKCScreenView from './CCKCScreenView.js';
-import CircuitNode from './CircuitNode.js';
-import FixedCircuitElementNode from './FixedCircuitElementNode.js';
+import Vector2 from '../../../../dot/js/Vector2.js';
+import SoundKeyboardDragListener from '../../../../scenery-phet/js/SoundKeyboardDragListener.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
+import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
+import CircuitElement from '../../model/CircuitElement.js';
+import type Vertex from '../../model/Vertex.js';
+import CCKCScreenView from '../CCKCScreenView.js';
+import CircuitNode from '../CircuitNode.js';
+import FixedCircuitElementNode from '../FixedCircuitElementNode.js';
 
 export default class CircuitNodeKeyboardListener extends SoundKeyboardDragListener {
 
