@@ -38,17 +38,13 @@ export default class CircuitNodeKeyboardListener extends SoundKeyboardDragListen
         const vertices = vertexGetters.map( vertexGetter => vertexGetter() );
 
         const allVerticesDraggable = _.every( vertices, vertex => circuitNode.canDragVertex( vertex ) );
-        if ( allVerticesDraggable ) {
+        if ( allVerticesDraggable && circuitElement.interactiveProperty.value ) {
           vertices.forEach( vertex => circuitNode.setVerticesDragging( vertex ) );
 
           circuitElementNode.moveToFront();
           position = circuitElementNode.globalBounds.center;
           initialPosition = position.copy();
-          circuitElement.interactiveProperty.get() && circuitNode.startDragVertex(
-            position,
-            circuitElement.endVertexProperty.get(),
-            circuitElement
-          );
+          circuitNode.startDragVertex( position, circuitElement.endVertexProperty.get(), circuitElement );
           dragged = false;
         }
 
@@ -56,16 +52,15 @@ export default class CircuitNodeKeyboardListener extends SoundKeyboardDragListen
       drag: ( event, listener ) => {
 
         position!.addXY( listener.modelDelta.x, listener.modelDelta.y );
-        circuitElement.interactiveProperty.get() && circuitNode.dragVertex(
-          position!,
-          circuitElement.endVertexProperty.get(),
-          false
-        );
+        if ( circuitElement.interactiveProperty.get() ) {
+          circuitNode.dragVertex( position!, circuitElement.endVertexProperty.get(), false );
+        }
+
         dragged = true;
       },
       end: () => {
-        circuitElementNode.endDrag( circuitElementNode.contentNode, [ circuitElement.endVertexProperty.get() ], screenView, circuitNode,
-          initialPosition!, position!, dragged );
+        circuitElementNode.endDrag( circuitElementNode.contentNode, [ circuitElement.endVertexProperty.get() ],
+          screenView, circuitNode, initialPosition!, position!, dragged );
       },
 
       dragSpeed: 300,
