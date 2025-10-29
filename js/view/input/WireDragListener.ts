@@ -37,7 +37,7 @@ export default class WireDragListener extends CircuitNodeDragListener {
         () => wire.startVertexProperty.get(),
         () => wire.endVertexProperty.get()
       ], {
-        tandem: tandem.createTandem( 'dragListener' ),
+        tandem: tandem,
         start: ( event: SceneryEvent ) => {
           if ( wire.interactiveProperty.get() ) {
 
