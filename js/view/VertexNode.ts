@@ -28,6 +28,7 @@ import type Vertex from '../model/Vertex.js';
 import CCKCColors from './CCKCColors.js';
 import type CircuitNode from './CircuitNode.js';
 import CircuitNodeDragListener from './CircuitNodeDragListener.js';
+import VertexKeyboardListener from './input/VertexKeyboardListener.js';
 
 // constants
 const DISTANCE_TO_CUT_BUTTON = 70; // How far in view coordinates the cut button appears from the vertex node
@@ -51,7 +52,7 @@ export default class VertexNode extends Node {
   private readonly circuitNode: CircuitNode;
   private readonly vertexLabelNode: VBox;
   private readonly updateReadoutTextPosition: ( () => void );
-  private readonly vertex: Vertex;
+  public readonly vertex: Vertex;
 
   // added by CircuitNode during dragging, used for relative drag position, or null if not being dragged
   public startOffset: Vector2 | null;
@@ -225,6 +226,8 @@ export default class VertexNode extends Node {
 
     // Don't permit dragging by the scissors or highlight
     this.addInputListener( this.dragListener );
+
+    this.addInputListener( new VertexKeyboardListener( this, circuitNode ) );
 
     // Make sure the cut button remains in the visible screen bounds.
     this.updateVertexNodePositionListener = this.updateVertexNodePosition.bind( this );
