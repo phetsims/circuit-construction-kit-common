@@ -30,7 +30,7 @@ import CCKCColors from './CCKCColors.js';
 import type CCKCScreenView from './CCKCScreenView.js';
 import CircuitElementNode from './CircuitElementNode.js';
 import type CircuitNode from './CircuitNode.js';
-import CircuitNodeDragListener from './CircuitNodeDragListener.js';
+import CircuitNodeDragListener from './input/CircuitNodeDragListener.js';
 
 // constants
 const LIFELIKE_LINE_WIDTH = 16; // line width in screen coordinates

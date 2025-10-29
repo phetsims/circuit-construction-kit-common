@@ -28,7 +28,7 @@ import type Vertex from '../model/Vertex.js';
 import type CCKCScreenView from './CCKCScreenView.js';
 import CircuitElementNode, { type CircuitElementNodeOptions } from './CircuitElementNode.js';
 import type CircuitNode from './CircuitNode.js';
-import CircuitNodeDragListener from './CircuitNodeDragListener.js';
+import CircuitNodeDragListener from './input/CircuitNodeDragListener.js';
 import FixedCircuitElementKeyboardListener from './input/FixedCircuitElementKeyboardListener.js';
 import FixedCircuitElementHighlightNode from './FixedCircuitElementHighlightNode.js';
 

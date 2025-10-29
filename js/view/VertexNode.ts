@@ -27,7 +27,7 @@ import type Circuit from '../model/Circuit.js';
 import type Vertex from '../model/Vertex.js';
 import CCKCColors from './CCKCColors.js';
 import type CircuitNode from './CircuitNode.js';
-import CircuitNodeDragListener from './CircuitNodeDragListener.js';
+import CircuitNodeDragListener from './input/CircuitNodeDragListener.js';
 import VertexKeyboardListener from './input/VertexKeyboardListener.js';
 
 // constants

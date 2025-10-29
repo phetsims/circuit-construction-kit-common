@@ -17,7 +17,7 @@ import type CircuitElement from '../model/CircuitElement.js';
 import type Vertex from '../model/Vertex.js';
 import type CCKCScreenView from './CCKCScreenView.js';
 import type CircuitNode from './CircuitNode.js';
-import type CircuitNodeDragListener from './CircuitNodeDragListener.js';
+import type CircuitNodeDragListener from './input/CircuitNodeDragListener.js';
 
 type SelfOptions = {
   useHitTestForSensors?: boolean;
