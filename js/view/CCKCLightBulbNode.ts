@@ -65,7 +65,7 @@ export default class CCKCLightBulbNode extends FixedCircuitElementNode {
 
   /**
    * @param screenView - main screen view, null for icon
-   * @param circuitNode, null for icon
+   * @param circuitNode - null for icon
    * @param lightBulb - the light bulb model
    * @param showResultsProperty - true if the sim can display values
    * @param viewTypeProperty

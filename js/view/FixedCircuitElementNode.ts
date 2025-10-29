@@ -204,6 +204,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
         vertexGetters,
         options.tandem.createTandem( 'keyboardListener' )
       );
+      // Add it to the thing with focus, which is this
       this.addInputListener( keyboardListener );
 
       if ( options.showHighlight ) {

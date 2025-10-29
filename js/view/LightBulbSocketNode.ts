@@ -27,7 +27,7 @@ export default class LightBulbSocketNode extends FixedCircuitElementNode {
 
   /**
    * @param screenView - main screen view, null for icon
-   * @param circuitNode, null for icon
+   * @param circuitNode - null for icon
    * @param lightBulb - the light bulb model
    * @param viewTypeProperty
    * @param tandem
@@ -46,7 +46,10 @@ export default class LightBulbSocketNode extends FixedCircuitElementNode {
     // Interferes with Cut Button selection when the foreground is in front, see
     // https://github.com/phetsims/circuit-construction-kit-black-box-study/issues/18
     providedOptions = combineOptions<FixedCircuitElementNodeOptions>( {
+
+      // Interaction is through the primary CCKCLightBulbNode, not through the socket.
       pickable: false,
+      focusable: false,
 
       // Suppress the highlight for the socket, the highlight is shown by the CCKCLightBulbNode
       showHighlight: false

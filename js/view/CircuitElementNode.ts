@@ -84,7 +84,11 @@ export default abstract class CircuitElementNode extends Node {
     this.dirty = true;
     this.disposeEmitter.addListener( () => circuitElement.startDragEmitter.removeListener( startDragListener ) );
 
-    circuitElement.focusEmitter.addListener( () => this.focus() );
+    // The LightBulbSocketNode is a full-blown FixedCircuitElementNode, but it is not pickable, so it should not be focusable.
+    // Instead, the CCKCLightBulbNode handles focus for that circuitElement
+    if ( this.pickable ) {
+      circuitElement.focusEmitter.addListener( () => this.focus() );
+    }
   }
 
   /**
