@@ -30,7 +30,7 @@ export default class VertexDragListener extends CircuitNodeDragListener {
     let dragged = false;
 
     super( circuitNode, [ () => vertex ], {
-      tandem: tandem.createTandem( 'dragListener' ),
+      tandem: tandem,
       start: ( event: SceneryEvent ) => {
         initialPoint = event.pointer.point;
         latestPoint = event.pointer.point.copy();

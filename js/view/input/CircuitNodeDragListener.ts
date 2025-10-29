@@ -1,7 +1,9 @@
 // Copyright 2020-2025, University of Colorado Boulder
 
 /**
+ * Common behavior for DragListener that may pull other vertices along with it.
  * Guards against dragging immobile CircuitElementNodes and VertexNodes.
+ *
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
@@ -13,14 +15,13 @@ import type Vertex from '../../model/Vertex.js';
 import type CircuitNode from '../CircuitNode.js';
 
 export default abstract class CircuitNodeDragListener extends DragListener {
-  private readonly circuitNode: CircuitNode;
-  private readonly vertexGetters: ( () => Vertex )[];
 
-  protected constructor( circuitNode: CircuitNode, vertexGetters: ( () => Vertex )[], providedOptions?: DragListenerOptions ) {
+  protected constructor(
+    private readonly circuitNode: CircuitNode,
+    private readonly vertexGetters: ( () => Vertex )[],
+    providedOptions?: DragListenerOptions
+  ) {
     super( providedOptions );
-
-    this.circuitNode = circuitNode;
-    this.vertexGetters = vertexGetters;
   }
 
   /**

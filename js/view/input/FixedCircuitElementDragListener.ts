@@ -44,7 +44,6 @@ export default class FixedCircuitElementDragListener extends CircuitNodeDragList
           );
           dragged = false;
         }
-
       },
       drag: ( event: SceneryEvent ) => {
         if ( event.pointer.point ) {
