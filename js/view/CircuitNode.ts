@@ -22,6 +22,7 @@ import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import DisplayClickToDismissListener from '../../../joist/js/DisplayClickToDismissListener.js';
 import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
+import { pdomFocusProperty } from '../../../scenery/js/accessibility/pdomFocusProperty.js';
 import type SceneryEvent from '../../../scenery/js/input/SceneryEvent.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Path from '../../../scenery/js/nodes/Path.js';
@@ -79,7 +80,7 @@ const GROUP_STARTING_INDEX = 0;
 
 // In https://github.com/phetsims/circuit-construction-kit-dc/issues/140 we decided to test every platform with
 // svg rendering to avoid svg/webgl lag issues and have a consistent renderer across platforms.  However, we will
-// leave in all of the WebGL code in case we have performance problems on a platform that require WebGL to be restored?
+// leave in all the WebGL code in case we have performance problems on a platform that require WebGL to be restored?
 const RENDERER = 'svg';
 
 export default class CircuitNode extends Node {
@@ -614,6 +615,16 @@ export default class CircuitNode extends Node {
       // Only dismiss if this CircuitNode is displayed.
       displayedNode: this
     } ) );
+
+    pdomFocusProperty.link( focusedObject => {
+      const focusedNode = focusedObject?.trail.lastNode();
+      if ( focusedNode instanceof VertexNode ) {
+        circuit.selectionProperty.value = focusedNode.vertex;
+      }
+      else if ( focusedNode instanceof CircuitElementNode ) {
+        circuit.selectionProperty.value = focusedNode.circuitElement;
+      }
+    } );
   }
 
   private updatePDOMOrder(): void {

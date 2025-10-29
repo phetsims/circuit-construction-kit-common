@@ -882,7 +882,7 @@ export default class Circuit extends PhetioObject {
    */
   private areVerticesElectricallyConnected( vertex1: Vertex, vertex2: Vertex ): boolean {
     const connectedVertices = this.searchVertices( vertex1, ( startVertex, circuitElement ) => {
-      return circuitElement.isTraversibleProperty.value;
+        return circuitElement.isTraversibleProperty.value;
       }
     );
     return connectedVertices.includes( vertex2 );
