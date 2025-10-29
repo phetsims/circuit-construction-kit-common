@@ -21,6 +21,7 @@ import Bounds2 from '../../../dot/js/Bounds2.js';
 import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import DisplayClickToDismissListener from '../../../joist/js/DisplayClickToDismissListener.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import type SceneryEvent from '../../../scenery/js/input/SceneryEvent.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Path from '../../../scenery/js/nodes/Path.js';
@@ -148,6 +149,7 @@ export default class CircuitNode extends Node {
   /**
    * @param circuit - the model Circuit
    * @param screenView - for dropping CircuitElement instances back in the toolbox
+   * @param tandem
    */
   public constructor( circuit: Circuit, screenView: CCKCScreenView, tandem: Tandem ) {
     super();
@@ -326,6 +328,9 @@ export default class CircuitNode extends Node {
               valueNode.dispose();
             } );
           }
+
+          // Do this after the Node exists in the circuitElementNodeMap (not when the model element is created)
+          this.updatePDOMOrder();
         }
       };
       circuit.circuitElements.addItemAddedListener( addCircuitElement );
@@ -338,6 +343,7 @@ export default class CircuitNode extends Node {
           phetioGroup.disposeElement( circuitElementNode );
 
           delete this.circuitElementNodeMap[ circuitElement.id ];
+          this.updatePDOMOrder();
         }
       } );
     };
@@ -608,6 +614,26 @@ export default class CircuitNode extends Node {
       // Only dismiss if this CircuitNode is displayed.
       displayedNode: this
     } ) );
+  }
+
+  private updatePDOMOrder(): void {
+    const pdomOrder: Node[] = [];
+    this.circuit.circuitElements.forEach( circuitElement => {
+      const circuitElementNode = this.getCircuitElementNode( circuitElement );
+      affirm( circuitElementNode, `No CircuitElementNode found for CircuitElement id=${circuitElement.id}` );
+      pdomOrder.push( circuitElementNode );
+
+      const startVertex = circuitElement.startVertexProperty.value;
+      const startVertexNode = this.getVertexNode( startVertex );
+      pdomOrder.push( startVertexNode );
+
+      const endVertex = circuitElement.endVertexProperty.value;
+      const endVertexNode = this.getVertexNode( endVertex );
+      pdomOrder.push( endVertexNode );
+    } );
+
+    // Light bulb somehow gives duplicates, so filter them out
+    this.pdomOrder = _.uniq( pdomOrder );
   }
 
   /**
