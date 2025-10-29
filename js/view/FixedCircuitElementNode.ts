@@ -102,7 +102,8 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
       tandem: tandem,
       pickable: true,
       isIcon: false,
-      showHighlight: true
+      showHighlight: true,
+      focusHighlight: 'invisible' // shown by the FixedCircuitElementHighlightNode, even when non-focused
     }, providedOptions );
 
     super( circuitElement, circuit, options );

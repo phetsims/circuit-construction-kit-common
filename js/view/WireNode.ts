@@ -210,7 +210,8 @@ export default class WireNode extends CircuitElementNode {
         endCapParent,
         lineNodeParent
       ],
-      tandem: tandem
+      tandem: tandem,
+      focusHighlight: 'invisible' // shown by the FixedCircuitElementHighlightNode, even when non-focused
     } );
 
     this.viewTypeProperty = viewTypeProperty;

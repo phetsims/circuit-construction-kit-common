@@ -52,7 +52,8 @@ export default abstract class CircuitElementNode extends Node {
         phetioState: false,
         phetioVisiblePropertyInstrumented: false,
         phetioInputEnabledPropertyInstrumented: true,
-        useHitTestForSensors: false
+        useHitTestForSensors: false,
+        focusHighlight: null
       }, providedOptions );
     }
 
