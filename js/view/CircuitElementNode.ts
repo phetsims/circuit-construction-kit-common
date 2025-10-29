@@ -86,7 +86,8 @@ export default abstract class CircuitElementNode extends Node {
 
     // The LightBulbSocketNode is a full-blown FixedCircuitElementNode, but it is not pickable, so it should not be focusable.
     // Instead, the CCKCLightBulbNode handles focus for that circuitElement
-    if ( this.pickable ) {
+    // Note that WireNode is pickable: null and still must be focused.
+    if ( this.pickable || this.pickable === null ) {
       circuitElement.focusEmitter.addListener( () => this.focus() );
     }
   }
