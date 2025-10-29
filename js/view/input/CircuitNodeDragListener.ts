@@ -12,16 +12,11 @@ import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js'
 import type Vertex from '../../model/Vertex.js';
 import type CircuitNode from '../CircuitNode.js';
 
-export default class CircuitNodeDragListener extends DragListener {
+export default abstract class CircuitNodeDragListener extends DragListener {
   private readonly circuitNode: CircuitNode;
   private readonly vertexGetters: ( () => Vertex )[];
 
-  /**
-   * @param circuitNode
-   * @param vertexGetters
-   * @param [providedOptions]
-   */
-  public constructor( circuitNode: CircuitNode, vertexGetters: ( () => Vertex )[], providedOptions?: DragListenerOptions ) {
+  protected constructor( circuitNode: CircuitNode, vertexGetters: ( () => Vertex )[], providedOptions?: DragListenerOptions ) {
     super( providedOptions );
 
     this.circuitNode = circuitNode;

@@ -11,7 +11,6 @@ import Matrix3 from '../../../dot/js/Matrix3.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Shape from '../../../kite/js/Shape.js';
 import LineStyles from '../../../kite/js/util/LineStyles.js';
-import type SceneryEvent from '../../../scenery/js/input/SceneryEvent.js';
 import Circle from '../../../scenery/js/nodes/Circle.js';
 import Line from '../../../scenery/js/nodes/Line.js';
 import Node from '../../../scenery/js/nodes/Node.js';
@@ -25,12 +24,13 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import type Vertex from '../model/Vertex.js';
 import type Wire from '../model/Wire.js';
-import WireKeyboardListener from './input/WireKeyboardListener.js';
 import CCKCColors from './CCKCColors.js';
 import type CCKCScreenView from './CCKCScreenView.js';
 import CircuitElementNode from './CircuitElementNode.js';
 import type CircuitNode from './CircuitNode.js';
 import CircuitNodeDragListener from './input/CircuitNodeDragListener.js';
+import WireDragListener from './input/WireDragListener.js';
+import WireKeyboardListener from './input/WireKeyboardListener.js';
 
 // constants
 const LIFELIKE_LINE_WIDTH = 16; // line width in screen coordinates
@@ -259,52 +259,12 @@ export default class WireNode extends CircuitElementNode {
     wire.startVertexProperty.link( doUpdateTransform );
     wire.endVertexProperty.link( doUpdateTransform );
 
-    // Keep track of the start point to see if it was dragged or tapped to be selected
-    let initialPoint: Vector2 | null = null;
-    let latestPoint: Vector2 | null = null;
-
-    // Keep track of whether it was dragged
-    let dragged = false;
-
     if ( screenView ) {
 
       assert && assert( circuitNode !== null );
 
       // Input listener for dragging the body of the wire, to translate it.
-      this.dragListener = new CircuitNodeDragListener( circuitNode!, [
-        () => wire.startVertexProperty.get(),
-        () => wire.endVertexProperty.get()
-      ], {
-        tandem: tandem.createTandem( 'dragListener' ),
-        start: ( event: SceneryEvent ) => {
-          if ( wire.interactiveProperty.get() ) {
-
-            // Start drag by starting a drag on start and end vertices
-            circuitNode!.startDragVertex( event.pointer.point, wire.startVertexProperty.get(), this.circuitElement );
-            circuitNode!.startDragVertex( event.pointer.point, wire.endVertexProperty.get(), this.circuitElement );
-            dragged = false;
-            initialPoint = event.pointer.point.copy();
-            latestPoint = event.pointer.point.copy();
-          }
-        },
-        drag: ( event: SceneryEvent ) => {
-          if ( wire.interactiveProperty.get() ) {
-
-            latestPoint = event.pointer.point.copy();
-
-            // Drag by translating both of the vertices
-            circuitNode!.dragVertex( event.pointer.point, wire.startVertexProperty.get(), false );
-            circuitNode!.dragVertex( event.pointer.point, wire.endVertexProperty.get(), false );
-            dragged = true;
-          }
-        },
-        end: () => {
-          this.endDrag( this, [
-            wire.startVertexProperty.get(),
-            wire.endVertexProperty.get()
-          ], screenView, circuitNode!, initialPoint!, latestPoint!, dragged );
-        }
-      } );
+      this.dragListener = new WireDragListener( this, circuitNode!, screenView, tandem.createTandem( 'dragListener' ) );
       this.addInputListener( this.dragListener );
 
       // TODO: add tandem and regenerate phet-io apis, see https://github.com/phetsims/circuit-construction-kit-common/issues/1034

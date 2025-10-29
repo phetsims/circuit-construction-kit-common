@@ -10,7 +10,6 @@ import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
 import Grayscale from '../../../scenery/js/filters/Grayscale.js';
-import type SceneryEvent from '../../../scenery/js/input/SceneryEvent.js';
 import VBox from '../../../scenery/js/layout/nodes/VBox.js';
 import Circle, { type CircleOptions } from '../../../scenery/js/nodes/Circle.js';
 import Node from '../../../scenery/js/nodes/Node.js';
@@ -28,6 +27,7 @@ import type Vertex from '../model/Vertex.js';
 import CCKCColors from './CCKCColors.js';
 import type CircuitNode from './CircuitNode.js';
 import CircuitNodeDragListener from './input/CircuitNodeDragListener.js';
+import VertexDragListener from './input/VertexDragListener.js';
 import VertexKeyboardListener from './input/VertexKeyboardListener.js';
 
 // constants
@@ -186,39 +186,7 @@ export default class VertexNode extends Node {
     this.updatePickableListener = this.setPickable.bind( this );
     vertex.interactiveProperty.link( this.updatePickableListener );
 
-    let initialPoint: Vector2 | null = null;
-    let latestPoint: Vector2 | null = null;
-    let dragged = false;
-
-    this.dragListener = new CircuitNodeDragListener( circuitNode, [ () => vertex ], {
-      tandem: tandem.createTandem( 'dragListener' ),
-      start: ( event: SceneryEvent ) => {
-        initialPoint = event.pointer.point;
-        latestPoint = event.pointer.point.copy();
-        circuitNode.startDragVertex( event.pointer.point, vertex, vertex );
-        dragged = false;
-      },
-      drag: ( event: SceneryEvent ) => {
-        latestPoint = event.pointer.point.copy();
-        dragged = true;
-        circuitNode.dragVertex( event.pointer.point, vertex, true );
-      },
-      end: () => {
-
-        // The vertex can only connect to something if it was actually moved.
-        circuitNode.endDrag( vertex, dragged );
-
-        // Only show on a tap, not on every drag.
-        if (
-          !vertex.isDisposed &&
-          vertex.interactiveProperty.get() &&
-          latestPoint!.distance( initialPoint! ) < CCKCConstants.TAP_THRESHOLD
-        ) {
-
-          vertex.selectionProperty.value = vertex;
-        }
-      }
-    } );
+    this.dragListener = new VertexDragListener( this, circuitNode, tandem.createTandem( 'dragListener' ) );
 
     // When Vertex becomes undraggable, interrupt the input listener
     this.interruptionListener = this.setDraggable.bind( this );

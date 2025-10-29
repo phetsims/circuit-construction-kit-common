@@ -11,7 +11,6 @@ import SoundKeyboardDragListener from '../../../../scenery-phet/js/SoundKeyboard
 import Tandem from '../../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import CircuitElement from '../../model/CircuitElement.js';
-import type Vertex from '../../model/Vertex.js';
 import CCKCScreenView from '../CCKCScreenView.js';
 import CircuitNode from '../CircuitNode.js';
 import FixedCircuitElementNode from '../FixedCircuitElementNode.js';
@@ -22,9 +21,9 @@ export default class FixedCircuitElementKeyboardListener extends SoundKeyboardDr
     circuitElementNode: FixedCircuitElementNode,
     circuitNode: CircuitNode,
     screenView: CCKCScreenView,
-    vertexGetters: ( () => Vertex )[],
     tandem: Tandem ) {
     const circuitElement: CircuitElement = circuitElementNode.circuitElement;
+    const vertexGetters = [ () => circuitElement.endVertexProperty.get() ];
 
     let initialPosition: Vector2 | null = null;
     let position: Vector2 | null = null;

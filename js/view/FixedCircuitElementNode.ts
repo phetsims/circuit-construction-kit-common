@@ -13,7 +13,6 @@ import type Bounds2 from '../../../dot/js/Bounds2.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import type SceneryEvent from '../../../scenery/js/input/SceneryEvent.js';
 import Image from '../../../scenery/js/nodes/Image.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
@@ -28,9 +27,10 @@ import type Vertex from '../model/Vertex.js';
 import type CCKCScreenView from './CCKCScreenView.js';
 import CircuitElementNode, { type CircuitElementNodeOptions } from './CircuitElementNode.js';
 import type CircuitNode from './CircuitNode.js';
-import CircuitNodeDragListener from './input/CircuitNodeDragListener.js';
-import FixedCircuitElementKeyboardListener from './input/FixedCircuitElementKeyboardListener.js';
 import FixedCircuitElementHighlightNode from './FixedCircuitElementHighlightNode.js';
+import CircuitNodeDragListener from './input/CircuitNodeDragListener.js';
+import FixedCircuitElementDragListener from './input/FixedCircuitElementDragListener.js';
+import FixedCircuitElementKeyboardListener from './input/FixedCircuitElementKeyboardListener.js';
 
 // constants
 const matrix = new Matrix3();
@@ -156,52 +156,15 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
 
     this.fixedCircuitElementNodePickable = options.pickable || null;
 
-    // Use whatever the start node currently is (it can change), and let the circuit manage the dependent vertices
-    let initialPoint: Vector2 | null = null;
-    let latestPoint: Vector2 | null = null;
-    let dragged = false;
-
     if ( !options.isIcon && circuitNode ) {
 
-      const vertexGetters = [ () => circuitElement.endVertexProperty.get() ];
-      this.dragListener = new CircuitNodeDragListener( circuitNode, vertexGetters, {
-        start: ( event: SceneryEvent ) => {
-          this.moveToFront();
-          if ( event.pointer && event.pointer.point ) {
-            initialPoint = event.pointer.point.copy();
-            latestPoint = event.pointer.point.copy();
-            circuitElement.interactiveProperty.get() && circuitNode.startDragVertex(
-              event.pointer.point,
-              circuitElement.endVertexProperty.get(),
-              circuitElement
-            );
-            dragged = false;
-          }
-
-        },
-        drag: ( event: SceneryEvent ) => {
-          if ( event.pointer.point ) {
-            latestPoint = event.pointer.point.copy();
-            circuitElement.interactiveProperty.get() && circuitNode.dragVertex(
-              event.pointer.point,
-              circuitElement.endVertexProperty.get(),
-              false
-            );
-            dragged = true;
-          }
-        },
-        end: () =>
-          this.endDrag( this.contentNode, [ circuitElement.endVertexProperty.get() ], screenView!, circuitNode,
-            initialPoint!, latestPoint!, dragged ),
-        tandem: tandem.createTandem( 'dragListener' )
-      } );
+      this.dragListener = new FixedCircuitElementDragListener( this, circuitNode, screenView!, tandem.createTandem( 'dragListener' ) );
       this.contentNode.addInputListener( this.dragListener );
 
       const keyboardListener = new FixedCircuitElementKeyboardListener(
         this,
         circuitNode,
         screenView!,
-        vertexGetters,
         options.tandem.createTandem( 'keyboardListener' )
       );
       // Add it to the thing with focus, which is this
