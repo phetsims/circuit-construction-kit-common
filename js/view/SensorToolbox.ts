@@ -22,6 +22,7 @@ import HBox from '../../../scenery/js/layout/nodes/HBox.js';
 import HSeparator from '../../../scenery/js/layout/nodes/HSeparator.js';
 import VBox from '../../../scenery/js/layout/nodes/VBox.js';
 import DragListener from '../../../scenery/js/listeners/DragListener.js';
+import KeyboardListener from '../../../scenery/js/listeners/KeyboardListener.js';
 import { type PressListenerEvent } from '../../../scenery/js/listeners/PressListener.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
@@ -87,17 +88,12 @@ export default class SensorToolbox extends CCKCPanel {
       showCharts: false
     }, providedOptions );
 
-    /**
-     * @param meterNodes
-     * @param meterModelName for looking up the corresponding models
-     * @returns a listener
-     */
-    const createListenerMulti = ( meterNodes: ( VoltmeterNode[] | AmmeterNode[] | ( VoltageChartNode | CurrentChartNode )[] ) ): object =>
+    const createListenerMulti = ( meterNodes: Array<VoltageChartNode | CurrentChartNode | VoltmeterNode | AmmeterNode> ): object =>
 
       DragListener.createForwardingListener( ( event: PressListenerEvent ) => {
 
         // Select a non-visible meter node
-        const meterNode = _.find( meterNodes, ( meterNode: Node ) => !meterNode.visible ) as ( VoltmeterNode | AmmeterNode | VoltageChartNode | CurrentChartNode );
+        const meterNode = _.find( meterNodes, meterNode => !meterNode.visible )!;
         if ( meterNode ) {
           const meterModel = meterNode instanceof VoltmeterNode ? meterNode.voltmeter :
                              meterNode instanceof AmmeterNode ? meterNode.ammeter :
@@ -112,11 +108,28 @@ export default class SensorToolbox extends CCKCPanel {
         allowTouchSnag: true
       } );
 
+    const createFromKeyboard = ( meterNodes: Array<VoltageChartNode | CurrentChartNode | VoltmeterNode | AmmeterNode> ): void => {
+
+      // TODO: Duplicated with above, see https://github.com/phetsims/circuit-construction-kit-common/issues/1034
+      // Select a non-visible meter node
+      const meterNode = _.find( meterNodes, meterNode => !meterNode.visible )!;
+      if ( meterNode ) {
+        const meterModel = meterNode instanceof VoltmeterNode ? meterNode.voltmeter :
+                           meterNode instanceof AmmeterNode ? meterNode.ammeter :
+                           meterNode.meter;
+        const viewPosition = new Vector2( 400, 400 );
+        meterModel.isDraggingProbesWithBodyProperty.value = true;
+        meterModel.isActiveProperty.value = true;
+        meterModel.bodyPositionProperty.value = viewPosition;
+        // meterNode.startDrag( event );
+        meterNode.focus();
+      }
+    };
+
     // Draggable isIcon for the voltmeter
     const voltmeter = new Voltmeter( Tandem.OPT_OUT, 0 );
-    const voltmeterToolIcon = new VoltmeterNode( voltmeter, null, null, {
-      tandem: Tandem.OPT_OUT,
-      isIcon: true
+    const voltmeterToolIcon = new VoltmeterNode( voltmeter, null, null, true, {
+      tandem: Tandem.OPT_OUT
     } );
     const allVoltmetersInPlayAreaProperty = DerivedProperty.and( voltmeterNodes.map( voltmeterNode => voltmeterNode.voltmeter.isActiveProperty ) );
     allVoltmetersInPlayAreaProperty.link( visible => voltmeterToolIcon.setVisible( !visible ) );
@@ -234,6 +247,14 @@ export default class SensorToolbox extends CCKCPanel {
       },
       tagName: 'button'
     } );
+    voltmeterToolNode.addInputListener( new KeyboardListener( {
+
+      // TODO: Keyboard Help Dialog, see https://github.com/phetsims/circuit-construction-kit-common/issues/1034
+      keys: [ 'enter', 'space' ],
+      press: () => {
+        createFromKeyboard( voltmeterNodes );
+      }
+    } ) );
 
     // Alter the visibility of the labels when the labels checkbox is toggled.
     Multilink.multilink( [ circuitNode.model.showLabelsProperty, allVoltmetersInPlayAreaProperty, voltmeterToolNode.visibleProperty ],

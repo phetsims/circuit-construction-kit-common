@@ -145,7 +145,7 @@ export default class CCKCScreenView extends ScreenView {
     const meterNodesTandem = tandem.createTandem( 'meterNodes' );
 
     const voltmeterNodes = model.voltmeters.map( voltmeter => {
-      const voltmeterNode = new VoltmeterNode( voltmeter, model, this.circuitNode, {
+      const voltmeterNode = new VoltmeterNode( voltmeter, model, this.circuitNode, false, {
         tandem: meterNodesTandem.createTandem( `voltmeterNode${voltmeter.phetioIndex}` ),
         phetioFeatured: true,
         showResultsProperty: model.isValueDepictionEnabledProperty,

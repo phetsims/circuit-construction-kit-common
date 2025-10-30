@@ -16,7 +16,9 @@ import type Bounds2 from '../../../dot/js/Bounds2.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
 import optionize from '../../../phet-core/js/optionize.js';
+import AccessibleDraggableOptions from '../../../scenery-phet/js/accessibility/grab-drag/AccessibleDraggableOptions.js';
 import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
+import SoundKeyboardDragListener from '../../../scenery-phet/js/SoundKeyboardDragListener.js';
 import WireNode from '../../../scenery-phet/js/WireNode.js';
 import DragListener from '../../../scenery/js/listeners/DragListener.js';
 import { type PressListenerEvent } from '../../../scenery/js/listeners/PressListener.js';
@@ -57,7 +59,6 @@ const CONTROL_POINT_Y1 = 15;
 const CONTROL_POINT_Y2 = 60;
 
 type SelfOptions = {
-  isIcon?: boolean;
   visibleBoundsProperty?: ReadOnlyProperty<Bounds2> | null;
   showResultsProperty?: ReadOnlyProperty<boolean>;
   showPhetioIndex?: boolean;
@@ -74,23 +75,18 @@ export default class VoltmeterNode extends Node {
   private readonly dragHandler: DragListener | null;
   public static readonly PROBE_ANGLE = PROBE_ANGLE;
 
-  /**
-   * @param voltmeter - the model Voltmeter to be shown by this node
-   * @param model
-   * @param circuitNode
-   * @param [providedOptions]
-   */
-  public constructor( voltmeter: Voltmeter, model: CircuitConstructionKitModel | null, circuitNode: CircuitNode | null,
-                      providedOptions?: VoltmeterNodeOptions ) {
+  public constructor(
+    voltmeter: Voltmeter,
+    model: CircuitConstructionKitModel | null,
+    circuitNode: CircuitNode | null,
+    isIcon: boolean,
+    providedOptions?: VoltmeterNodeOptions ) {
 
     const options = optionize<VoltmeterNodeOptions, SelfOptions, NodeOptions>()( {
 
       tandem: Tandem.REQUIRED,
 
       pickable: true,
-
-      // Whether this will be used as an icon or not.
-      isIcon: false,
 
       // Draggable bounds
       visibleBoundsProperty: null,
@@ -102,7 +98,14 @@ export default class VoltmeterNode extends Node {
       showPhetioIndex: false,
 
       // Instrumentation is handled in Meter.isActiveProperty
-      phetioVisiblePropertyInstrumented: false
+      phetioVisiblePropertyInstrumented: false,
+
+      tagName: isIcon ? null : 'div',
+      focusable: !isIcon,
+
+      // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/1034
+      // eslint-disable-next-line phet/no-object-spread-on-non-literals
+      ...( isIcon ? [] : AccessibleDraggableOptions )
 
     }, providedOptions );
 
@@ -120,7 +123,10 @@ export default class VoltmeterNode extends Node {
       } ) ]
     } );
 
+    // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/1034 factor out probe node
     const redProbeNode = new Rectangle( -2, -2, 4, 4, { // the hit area
+      // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/1034
+      // @ts-expect-error
       fill: CCKCQueryParameters.showVoltmeterSamplePoints ? Color.RED : null,
       cursor: 'pointer',
       children: [ new Image( probeRed_png, {
@@ -131,7 +137,10 @@ export default class VoltmeterNode extends Node {
         // CircuitConstructionKitModel.  Will need to change if PROBE_ANGLE changes
         x: -11,
         y: +4
-      } ) ]
+      } ) ],
+      // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/1034
+      // eslint-disable-next-line phet/no-object-spread-on-non-literals
+      ...( isIcon ? [] : AccessibleDraggableOptions )
     } );
 
     // Displays the voltage reading
@@ -193,7 +202,7 @@ export default class VoltmeterNode extends Node {
     );
 
     // When the voltmeter body moves, update the node and wires
-    Multilink.multilink( [ voltmeter.bodyPositionProperty, voltmeter.isActiveProperty ], ( bodyPosition, isActive ) => {
+    Multilink.multilink( [ voltmeter.bodyPositionProperty, voltmeter.isActiveProperty ], bodyPosition => {
 
       // Drag the body by the center
       bodyNode.center = bodyPosition;
@@ -246,22 +255,25 @@ export default class VoltmeterNode extends Node {
     this.blackProbeNode = blackProbeNode;
 
     // For the real version (not the icon), add drag listeners and update visibility
-    if ( !options.isIcon ) {
+    if ( !isIcon ) {
 
       // Show the voltmeter when icon dragged out of the toolbox
       voltmeter.isActiveProperty.linkAttribute( this, 'visible' );
+
+      const dragBoundsProperty = new DerivedProperty( [ options.visibleBoundsProperty! ], ( visibleBounds: Bounds2 ) => {
+        return visibleBounds.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
+      } );
 
       /**
        * Gets a drag handler for one of the probes.
        */
       const createProbeDragListener = ( positionProperty: Vector2Property, tandem: Tandem ) => {
+
         const probeDragListener = new DragListener( {
           positionProperty: positionProperty,
           start: () => this.moveToFront(),
           tandem: tandem.createTandem( 'probeDragListener' ),
-          dragBoundsProperty: new DerivedProperty( [ options.visibleBoundsProperty! ], ( visibleBounds: Bounds2 ) => {
-            return visibleBounds.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
-          } )
+          dragBoundsProperty: dragBoundsProperty
         } );
         return probeDragListener;
       };
@@ -270,6 +282,15 @@ export default class VoltmeterNode extends Node {
       const blackProbeDragListener = createProbeDragListener( voltmeter.blackProbePositionProperty, options.tandem.createTandem( 'blackProbeDragListener' ) );
 
       this.redProbeNode.addInputListener( redProbeDragListener );
+
+      this.redProbeNode.addInputListener( new SoundKeyboardDragListener( {
+        positionProperty: voltmeter.redProbePositionProperty,
+        dragBoundsProperty: dragBoundsProperty,
+        start: () => this.moveToFront(),
+        dragSpeed: 300,
+        shiftDragSpeed: 20
+      } ) );
+
       this.blackProbeNode.addInputListener( blackProbeDragListener );
 
       const erodedBoundsProperty = new DerivedProperty( [ options.visibleBoundsProperty! ], ( visibleBounds: Bounds2 ) => {
@@ -304,6 +325,31 @@ export default class VoltmeterNode extends Node {
         voltmeter.bodyPositionProperty.set( erodedBounds.closestPointTo( voltmeter.bodyPositionProperty.value ) );
       } );
       bodyNode.addInputListener( this.dragHandler );
+
+      this.addInputListener( new SoundKeyboardDragListener( {
+
+        positionProperty: voltmeter.bodyPositionProperty,
+
+        // TODO: Some duplication with DragListener, see https://github.com/phetsims/circuit-construction-kit-common/issues/1034
+        start: () => {
+          this.moveToFront();
+        },
+        end: () => {
+
+          voltmeter.droppedEmitter.emit( bodyNode.globalBounds );
+
+          // After dropping in the play area the probes move independently of the body
+          voltmeter.isDraggingProbesWithBodyProperty.set( false );
+        },
+
+        // TODO: Factor out these speeds, see https://github.com/phetsims/circuit-construction-kit-common/issues/1034
+        dragSpeed: 300,
+        shiftDragSpeed: 20
+
+        // TODO: phet-io see https://github.com/phetsims/circuit-construction-kit-common/issues/1034
+        // tandem: tandem
+
+      } ) );
 
       /**
        * Starting at the tip, iterate down over several samples and return the first hit, if any.
@@ -357,7 +403,7 @@ export default class VoltmeterNode extends Node {
     }
 
     // When rendered as an icon, the touch area should span the bounds (no gaps between probes and body)
-    if ( options.isIcon ) {
+    if ( isIcon ) {
       this.touchArea = this.bounds.copy();
       this.mouseArea = this.bounds.copy();
       this.cursor = 'pointer';
