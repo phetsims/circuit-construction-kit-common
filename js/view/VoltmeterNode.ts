@@ -288,7 +288,8 @@ export default class VoltmeterNode extends Node {
         dragBoundsProperty: dragBoundsProperty,
         start: () => this.moveToFront(),
         dragSpeed: 300,
-        shiftDragSpeed: 20
+        shiftDragSpeed: 20,
+        tandem: Tandem.OPT_OUT
       } ) );
 
       this.blackProbeNode.addInputListener( blackProbeDragListener );
@@ -327,6 +328,7 @@ export default class VoltmeterNode extends Node {
       bodyNode.addInputListener( this.dragHandler );
 
       this.addInputListener( new SoundKeyboardDragListener( {
+        tandem: Tandem.OPT_OUT,
 
         positionProperty: voltmeter.bodyPositionProperty,
 
