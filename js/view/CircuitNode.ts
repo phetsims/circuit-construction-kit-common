@@ -152,7 +152,7 @@ export default class CircuitNode extends Node {
    * @param screenView - for dropping CircuitElement instances back in the toolbox
    * @param tandem
    */
-  public constructor( circuit: Circuit, screenView: CCKCScreenView, tandem: Tandem ) {
+  public constructor( circuit: Circuit, private readonly screenView: CCKCScreenView, tandem: Tandem ) {
     super();
 
     this.viewTypeProperty = screenView.model.viewTypeProperty;
@@ -625,14 +625,27 @@ export default class CircuitNode extends Node {
         circuit.selectionProperty.value = focusedNode.circuitElement;
       }
     } );
+
+    // When the focus changes to a circuit element, make sure the circuitElementEditContainerNode is next in focus order
+    pdomFocusProperty.link( pdomFocus => {
+      if ( pdomFocus?.trail.lastNode() instanceof CircuitElementNode ) {
+        this.updatePDOMOrder();
+      }
+    } );
   }
 
   private updatePDOMOrder(): void {
     const pdomOrder: Node[] = [];
+
+    const currentlyFocusedCircuitElementNode = pdomFocusProperty.value?.trail.lastNode() as CircuitElementNode | null;
+
     this.circuit.circuitElements.forEach( circuitElement => {
       const circuitElementNode = this.getCircuitElementNode( circuitElement );
       affirm( circuitElementNode, `No CircuitElementNode found for CircuitElement id=${circuitElement.id}` );
       pdomOrder.push( circuitElementNode );
+      if ( circuitElementNode === currentlyFocusedCircuitElementNode ) {
+        pdomOrder.push( this.screenView.circuitElementEditContainerNode );
+      }
 
       const startVertex = circuitElement.startVertexProperty.value;
       const startVertexNode = this.getVertexNode( startVertex );

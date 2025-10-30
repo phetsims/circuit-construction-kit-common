@@ -100,6 +100,7 @@ export default class CCKCScreenView extends ScreenView {
   private readonly displayOptionsPanel: DisplayOptionsPanel;
   private readonly advancedAccordionBox: AdvancedAccordionBox | null;
   private stopwatchNodePositionDirty: boolean;
+  public readonly circuitElementEditContainerNode: CircuitElementEditContainerNode;
 
   /**
    * @param model
@@ -339,6 +340,8 @@ export default class CCKCScreenView extends ScreenView {
 
     this.addChild( circuitElementEditContainerNode );
 
+    this.circuitElementEditContainerNode = circuitElementEditContainerNode;
+
     // The voltmeter and ammeter are rendered with the circuit node so they will scale up and down with the circuit
     voltmeterNodes.forEach( voltmeterNode => this.circuitNode.sensorLayer.addChild( voltmeterNode ) );
     ammeterNodes.forEach( ammeterNode => this.circuitNode.sensorLayer.addChild( ammeterNode ) );
@@ -533,7 +536,6 @@ export default class CCKCScreenView extends ScreenView {
       toolboxContainer,
       this.viewRadioButtonGroup,
       this.circuitNode,
-      circuitElementEditContainerNode,
       controlPanelVBox
     ];
 
