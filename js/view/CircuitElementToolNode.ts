@@ -15,6 +15,7 @@ import type { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import { optionize4 } from '../../../phet-core/js/optionize.js';
 import AccessibleDraggableOptions from '../../../scenery-phet/js/accessibility/grab-drag/AccessibleDraggableOptions.js';
+import ParallelDOM from '../../../scenery/js/accessibility/pdom/ParallelDOM.js';
 import Grayscale from '../../../scenery/js/filters/Grayscale.js';
 import VBox, { type VBoxOptions } from '../../../scenery/js/layout/nodes/VBox.js';
 import DragListener from '../../../scenery/js/listeners/DragListener.js';
@@ -94,7 +95,13 @@ export default class CircuitElementToolNode extends VBox {
       excludeInvisibleChildrenFromBounds: false,
       additionalProperty: new BooleanProperty( true ),
 
-      ghostOpacity: 0.4
+      ghostOpacity: 0.4,
+
+      accessibleName: labelStringProperty,
+
+      // TODO: i18n, see https://github.com/phetsims/circuit-construction-kit-common/issues/1039
+      accessibleHelpText: 'Drag this tool to the circuit to create a new ' + labelStringProperty.value + '.',
+      accessibleHelpTextBehavior: ParallelDOM.HELP_TEXT_AFTER_CONTENT
     }, providedOptions );
 
     super( options );
