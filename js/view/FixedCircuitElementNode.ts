@@ -75,6 +75,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
   ];
   private readonly updateHighlightVisibility: ( ( circuitElement: CircuitElement | Vertex | null ) => void ) | null;
   private readonly updateFireMultilink: UnknownMultilink | null;
+  private readonly keyboardListener: FixedCircuitElementKeyboardListener | null;
 
   /**
    * @param screenView - the main screen view, null for isIcon
@@ -162,14 +163,15 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
       this.dragListener = new FixedCircuitElementDragListener( this, circuitNode, screenView!, tandem.createTandem( 'dragListener' ) );
       this.contentNode.addInputListener( this.dragListener );
 
-      const keyboardListener = new FixedCircuitElementKeyboardListener(
+      this.keyboardListener = new FixedCircuitElementKeyboardListener(
         this,
         circuitNode,
         screenView!,
         options.tandem.createTandem( 'keyboardListener' )
       );
-      // Add it to the thing with focus, which is this
-      this.addInputListener( keyboardListener );
+
+      // Add the keyboard listener to the thing with focus, which is this (not the contentNode)
+      this.addInputListener( this.keyboardListener );
 
       if ( options.showHighlight ) {
 
@@ -209,6 +211,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
       this.dragListener = null;
       this.updateFireMultilink = null;
       this.updateHighlightVisibility = null;
+      this.keyboardListener = null;
     }
   }
 
@@ -298,6 +301,9 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
     // Interrupt the drag event if it was in progress
     this.dragListener && this.dragListener.interrupt();
     this.dragListener && this.dragListener.dispose();
+
+    this.keyboardListener && this.removeInputListener( this.keyboardListener );
+    this.keyboardListener && this.keyboardListener.dispose();
     this.circuitElement.vertexMovedEmitter.removeListener( this.markDirtyListener );
     this.updateHighlightVisibility && this.circuitNode!.circuit.selectionProperty.unlink( this.updateHighlightVisibility );
     this.circuitElement.connectedEmitter.removeListener( this.moveToFrontListener );
