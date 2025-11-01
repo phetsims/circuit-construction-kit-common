@@ -56,7 +56,12 @@ export default class ViewRadioButtonGroup extends RectangularRadioButtonGroup<Ci
         },
         phetioVisiblePropertyInstrumented: false
       },
-      tandem: tandem
+      tandem: tandem,
+
+      // TODO: i18n https://github.com/phetsims/circuit-construction-kit-common/issues/1039
+      accessibleHeading: 'View Type',
+      accessibleName: 'View Type Selection',
+      accessibleHelpText: 'Select the view type for circuit elements'
     }, providedOptions );
 
     // Create a battery which can be used in the views
@@ -77,11 +82,23 @@ export default class ViewRadioButtonGroup extends RectangularRadioButtonGroup<Ci
     super( viewTypeProperty, [ {
       value: CircuitElementViewType.LIFELIKE,
       createNode: tandem => createBatteryNode( CircuitElementViewType.LIFELIKE, Tandem.OPT_OUT ),
-      tandemName: 'lifelikeRadioButton'
+      tandemName: 'lifelikeRadioButton',
+
+      // TODO: i18n https://github.com/phetsims/circuit-construction-kit-common/issues/1039
+      options: {
+        accessibleName: 'Lifelike View',
+        accessibleHelpText: 'Select to show circuit elements in lifelike view.'
+      }
     }, {
       value: CircuitElementViewType.SCHEMATIC,
       createNode: tandem => createBatteryNode( CircuitElementViewType.SCHEMATIC, Tandem.OPT_OUT ),
-      tandemName: 'schematicRadioButton'
+      tandemName: 'schematicRadioButton',
+
+      // TODO: i18n https://github.com/phetsims/circuit-construction-kit-common/issues/1039
+      options: {
+        accessibleName: 'Schematic View',
+        accessibleHelpText: 'Select to show circuit elements in schematic view.'
+      }
     } ], options );
   }
 }
