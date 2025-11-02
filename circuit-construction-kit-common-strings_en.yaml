@@ -1,0 +1,106 @@
+circuit-construction-kit-common.title: Circuit Construction Kit
+schematicStandard:                     Schematic Standard
+realBulb:                              Real Bulb
+ieee:                                  IEEE
+iec:                                   IEC
+british:                               British
+animationSpeedLimitReached:            >-
+                                       Animation speed limit reached! Current animation speed reduced to {{percent}}%
+                                       normal.
+acSource:                              AC Voltage
+advanced:                              Advanced
+resistor:                              Resistor
+capacitor:                             Capacitor
+inductor:                              Inductor
+stopwatch:                             Stopwatch
+fuse:                                  Fuse
+time:                                  Time
+oneSecond:                             1 s
+capacitance:                           Capacitance
+inductance:                            Inductance
+currentRating:                         Current Rating
+tiny:                                  tiny
+lots:                                  lots
+phaseShift:                            Phase Shift
+coin:                                  Coin
+dollarBill:                            Dollar Bill
+eraser:                                Eraser
+pencil:                                Pencil
+hand:                                  Hand
+dog:                                   Dog
+paperClip:                             Paper Clip
+wireResistivity:                       Wire Resistivity
+batteryResistance:                     Battery Resistance
+sourceResistance:                      Source Resistance
+battery:                               Battery
+lightBulb:                             Light Bulb
+addRealBulbs:                          Add Real Bulbs
+switch:                                Switch
+wire:                                  Wire
+electrons:                             Electrons
+conventional:                          Conventional
+tapCircuitElementToEdit:               Tap circuit element to edit.
+current:                               Current
+showCurrent:                           Show Current
+resistance:                            Resistance
+voltage:                               Voltage
+voltageWithUnits:                      Voltage (V)
+voltageChart:                          Voltage Chart
+currentWithUnits:                      Current (A)
+currentChart:                          Current Chart
+frequency:                             Frequency
+voltmeter:                             Voltmeter
+ammeter:                               Ammeter
+ammeters:                              Ammeters
+labels:                                Labels
+values:                                Values
+ohms:                                  ohms
+voltageUnits:                          '{{voltage}} V'
+voltageVoltsValuePattern:              '{{voltage}} volts'
+frequencyHzValuePattern:               '{{frequency}} Hz'
+currentUnits:                          '{{current}} A'
+capacitanceUnits:                      '{{capacitance}} F'
+inductanceUnits:                       '{{inductance}} H'
+fuseValue:                             >-
+                                       {{resistance}} mΩ<br><span style="font-size: 16px;">≤ {{currentRating}}
+                                       A</span>
+resistanceOhmsSymbol:                  '{{resistance}} Ω'
+capacitanceFaradsSymbol:               '{{resistance}} F'
+inductanceHenriesSymbol:               '{{resistance}} H'
+resistanceOhmsValuePattern:            '{{resistance}} ohms'
+theSwitchIsClosed:                     The switch is closed.
+theSwitchIsOpen:                       The switch is open.
+ammeterReadout:                        Ammeter Readout
+magnitude:                             Magnitude
+signed:                                Signed
+dataOutOfRange:                        Data out of range
+
+a11y:
+  circuitElement:
+    accessibleName: |-
+                    { $type ->
+                      [resistor]
+                      { $valuesShowing ->
+                        [true] Resistor, { $resistance } ohms
+                        *[false] Resistor
+                      }
+                      [battery]
+                      { $valuesShowing ->
+                        [true] Battery, { $voltage } volts
+                        *[false] Battery
+                      }
+                      [lightBulb]
+                      { $valuesShowing ->
+                        [true] Light Bulb, { $resistance } ohms
+                        *[false] Light Bulb
+                      }
+                      [capacitor] Capacitor
+                      [inductor] Inductor
+                      [acSource] AC Voltage Source
+                      [fuse] Fuse
+                      [switch] Switch
+                      [voltmeter] Voltmeter
+                      [ammeter] Ammeter
+                      [stopwatch] Stopwatch
+                      *[wire] Wire
+                    }

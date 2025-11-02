@@ -88,7 +88,9 @@ export default class VertexNode extends Node {
       phetioDynamicElement: true,
       phetioVisiblePropertyInstrumented: false,
 
-      focusHighlight: 'invisible' // shown by the this.highlightNode, even when non-focused
+      focusHighlight: 'invisible', // shown by the this.highlightNode, even when non-focused
+
+      accessibleName: 'a vertex' // TODO: i18n and more detail, see https://github.com/phetsims/circuit-construction-kit-common/issues/1039
     } );
 
     const circuit = circuitNode.circuit;

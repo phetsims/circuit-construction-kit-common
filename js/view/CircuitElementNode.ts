@@ -6,14 +6,21 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import type Vector2 from '../../../dot/js/Vector2.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import { type PressListenerEvent } from '../../../scenery/js/listeners/PressListener.js';
 import Node, { type NodeOptions } from '../../../scenery/js/nodes/Node.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
+import Battery from '../model/Battery.js';
+import Capacitor from '../model/Capacitor.js';
 import type Circuit from '../model/Circuit.js';
 import type CircuitElement from '../model/CircuitElement.js';
+import Inductor from '../model/Inductor.js';
+import LightBulb from '../model/LightBulb.js';
+import Resistor from '../model/Resistor.js';
 import type Vertex from '../model/Vertex.js';
 import type CCKCScreenView from './CCKCScreenView.js';
 import type CircuitNode from './CircuitNode.js';
@@ -35,19 +42,42 @@ export default abstract class CircuitElementNode extends Node {
   /**
    * @param circuitElement - the CircuitElement to be rendered
    * @param circuit - the circuit which the element can be removed from or null for icons
+   * @param showValuesProperty
    * @param [providedOptions]
    */
-  protected constructor( circuitElement: CircuitElement, circuit: Circuit | null, providedOptions?: CircuitElementNodeOptions ) {
+  protected constructor( circuitElement: CircuitElement, circuit: Circuit | null, showValuesProperty: TReadOnlyProperty<boolean> | undefined, providedOptions?: CircuitElementNodeOptions ) {
 
     providedOptions = optionize<CircuitElementNodeOptions, SelfOptions, NodeOptions>()( {
       useHitTestForSensors: false // if true, use the scenery mouse region hit test for fine-grained region. Otherwise, use bounds test.
     }, providedOptions );
 
     // When not an icon, enable keyboard navigation
-    if ( circuit ) {
+    if ( circuit && showValuesProperty ) {
+
+      const showValuesAsStringProperty = showValuesProperty.derived( value => value ? 'true' : 'false' );
+      const accessibleNameProperty = CircuitConstructionKitCommonFluent.a11y.circuitElement.accessibleName.createProperty( {
+        valuesShowing: showValuesAsStringProperty, // TODO: dispose this derived property, see https://github.com/phetsims/circuit-construction-kit-common/issues/1039
+        // TODO: each circuit element should have 'type', see https://github.com/phetsims/circuit-construction-kit-common/issues/1039
+        type: circuitElement instanceof Battery ? 'battery' :
+              circuitElement instanceof Resistor ? 'resistor' :
+              circuitElement instanceof Capacitor ? 'capacitor' :
+              circuitElement instanceof Inductor ? 'inductor' :
+              circuitElement instanceof LightBulb ? 'lightBulb' :
+              'wire',
+        voltage: circuitElement instanceof Battery ? circuitElement.voltageProperty : 0,
+        resistance: circuitElement instanceof Resistor ? circuitElement.resistanceProperty : 0
+      } );
+      circuitElement.disposeEmitter.addListener( () => {
+        accessibleNameProperty.dispose();
+        showValuesAsStringProperty.dispose();
+      } );
+
       providedOptions = optionize<CircuitElementNodeOptions, SelfOptions, NodeOptions>()( {
         tagName: 'div', // HTML tag name for representative element in the document, see ParallelDOM.js
         focusable: true,
+
+        accessibleName: accessibleNameProperty,
+
         phetioDynamicElement: true,
         phetioState: false,
         phetioVisiblePropertyInstrumented: false,

@@ -85,6 +85,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
    * @param lifelikeNode - the Node that will display the component as a lifelike object.  Origin must be
    *                            - left-center
    * @param schematicNode - the Node that will display the component. Origin must be left-center.
+   * @param showValuesProperty
    * @param tandem
    * @param [providedOptions]
    */
@@ -107,7 +108,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
       focusHighlight: 'invisible' // shown by the FixedCircuitElementHighlightNode, even when non-focused
     }, providedOptions );
 
-    super( circuitElement, circuit, options );
+    super( circuitElement, circuit, circuitNode?.model.showValuesProperty, options );
 
     // shows the lifelike view
     this.lifelikeNode = lifelikeNode;
