@@ -367,6 +367,7 @@ export default class SensorToolbox extends CCKCPanel {
     }
 
     super( new VBox( {
+      accessibleHeading: 'Sensor Toolbox', // TODO: i18n, see https://github.com/phetsims/circuit-construction-kit-common/issues/1039
       spacing: 5,
       children: rows
     } ), tandem, {

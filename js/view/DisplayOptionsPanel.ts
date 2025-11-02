@@ -167,6 +167,7 @@ export default class DisplayOptionsPanel extends CCKCPanel {
     vBox.boundsProperty.link( bounds => content.setChildren( bounds.isValid() ? [ alignBox ] : [] ) );
 
     super( content, tandem, {
+      accessibleHeading: 'Display Options', // TODO: i18n, see https://github.com/phetsims/circuit-construction-kit-common/issues/1039
       yMargin: 10,
       visiblePropertyOptions: {
         phetioFeatured: true

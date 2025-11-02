@@ -74,7 +74,10 @@ export default class AdvancedAccordionBox extends CCKCAccordionBox {
 
       // Left align the title, with no padding
       titleAlignX: 'left',
-      titleXSpacing: 10
+      titleXSpacing: 10,
+
+      // TODO: i18n, See https://github.com/phetsims/circuit-construction-kit-common/issues/1039
+      accessibleName: 'Advanced Settings'
     } );
 
     this.mutate( options );
