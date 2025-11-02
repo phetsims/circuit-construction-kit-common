@@ -329,7 +329,7 @@ export default class CCKCScreenView extends ScreenView {
     const playAreaCenterXProperty = new NumberProperty( 0 );
 
     const circuitElementEditContainerNode = new CircuitElementEditContainerNode(
-      model.circuit,
+      this.circuitNode,
       this.visibleBoundsProperty,
       model.modeProperty,
       playAreaCenterXProperty,

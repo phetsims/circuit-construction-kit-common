@@ -8,6 +8,7 @@
 import { TReadOnlyProperty } from '../../axon/js/TReadOnlyProperty.js';
 import type { FluentVariable } from '../../chipper/js/browser/FluentPattern.js';
 import FluentPattern from '../../chipper/js/browser/FluentPattern.js';
+import FluentConstant from '../../chipper/js/browser/FluentConstant.js';
 import FluentContainer from '../../chipper/js/browser/FluentContainer.js';
 import circuitConstructionKitCommon from './circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonStrings from './CircuitConstructionKitCommonStrings.js';
@@ -85,6 +86,8 @@ addToMapIfDefined( 'ammeterReadout', 'ammeterReadoutStringProperty' );
 addToMapIfDefined( 'magnitude', 'magnitudeStringProperty' );
 addToMapIfDefined( 'signed', 'signedStringProperty' );
 addToMapIfDefined( 'dataOutOfRange', 'dataOutOfRangeStringProperty' );
+addToMapIfDefined( 'a11y_reverseBatteryButton_accessibleName', 'a11y.reverseBatteryButton.accessibleNameStringProperty' );
+addToMapIfDefined( 'a11y_trashButton_accessibleName', 'a11y.trashButton.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_circuitElement_accessibleName', 'a11y.circuitElement.accessibleNameStringProperty' );
 
 // A function that creates contents for a new Fluent file, which will be needed if any string changes.
@@ -174,6 +177,12 @@ const CircuitConstructionKitCommonFluent = {
   signedStringProperty: _.get( CircuitConstructionKitCommonStrings, 'signedStringProperty' ),
   dataOutOfRangeStringProperty: _.get( CircuitConstructionKitCommonStrings, 'dataOutOfRangeStringProperty' ),
   a11y: {
+    reverseBatteryButton: {
+      accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_reverseBatteryButton_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.reverseBatteryButton.accessibleNameStringProperty' ) )
+    },
+    trashButton: {
+      accessibleName: new FluentPattern<{ resistance: FluentVariable, type: 'resistor' | 'battery' | 'lightBulb' | 'capacitor' | 'inductor' | 'acSource' | 'fuse' | 'switch' | 'voltmeter' | 'ammeter' | 'stopwatch' | 'wire' | TReadOnlyProperty<'resistor' | 'battery' | 'lightBulb' | 'capacitor' | 'inductor' | 'acSource' | 'fuse' | 'switch' | 'voltmeter' | 'ammeter' | 'stopwatch' | 'wire'>, valuesShowing: 'true' | 'false' | TReadOnlyProperty<'true' | 'false'>, voltage: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_trashButton_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.trashButton.accessibleNameStringProperty' ), [{"name":"resistance"},{"name":"type","variants":["resistor","battery","lightBulb","capacitor","inductor","acSource","fuse","switch","voltmeter","ammeter","stopwatch","wire"]},{"name":"valuesShowing","variants":["true","false"]},{"name":"voltage"}] )
+    },
     circuitElement: {
       accessibleName: new FluentPattern<{ resistance: FluentVariable, type: 'resistor' | 'battery' | 'lightBulb' | 'capacitor' | 'inductor' | 'acSource' | 'fuse' | 'switch' | 'voltmeter' | 'ammeter' | 'stopwatch' | 'wire' | TReadOnlyProperty<'resistor' | 'battery' | 'lightBulb' | 'capacitor' | 'inductor' | 'acSource' | 'fuse' | 'switch' | 'voltmeter' | 'ammeter' | 'stopwatch' | 'wire'>, valuesShowing: 'true' | 'false' | TReadOnlyProperty<'true' | 'false'>, voltage: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitElement_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitElement.accessibleNameStringProperty' ), [{"name":"resistance"},{"name":"type","variants":["resistor","battery","lightBulb","capacitor","inductor","acSource","fuse","switch","voltmeter","ammeter","stopwatch","wire"]},{"name":"valuesShowing","variants":["true","false"]},{"name":"voltage"}] )
     }

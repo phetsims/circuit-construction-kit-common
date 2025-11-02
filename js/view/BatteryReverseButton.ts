@@ -13,6 +13,7 @@ import Color from '../../../scenery/js/util/Color.js';
 import syncAltSolidString from '../../../sherpa/js/fontawesome-5/syncAltSolidString.js';
 import { type RoundPushButtonOptions } from '../../../sun/js/buttons/RoundPushButton.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import Battery from '../model/Battery.js';
 import type Circuit from '../model/Circuit.js';
 import CCKCRoundPushButton from './CCKCRoundPushButton.js';
@@ -27,7 +28,7 @@ export default class BatteryReverseButton extends CCKCRoundPushButton {
 
   /**
    * @param circuit - the circuit that contains the battery
-   * @param tandem
+   * @param providedOptions
    */
   public constructor( circuit: Circuit, providedOptions?: ReverseBatteryButtonOptions ) {
 
@@ -48,6 +49,7 @@ export default class BatteryReverseButton extends CCKCRoundPushButton {
     const bottomShapeString = `M${syncAltSolidStringParts[ 2 ]}`;
 
     const options = optionize<ReverseBatteryButtonOptions, SelfOptions, RoundPushButtonOptions>()( {
+      accessibleName: CircuitConstructionKitCommonFluent.a11y.reverseBatteryButton.accessibleNameStringProperty,
       touchAreaDilation: 5, // radius dilation for touch area
       content: new VBox( {
         spacing: 3,

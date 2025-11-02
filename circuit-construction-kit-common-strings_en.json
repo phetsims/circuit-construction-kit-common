@@ -216,6 +216,16 @@
     "value": "Data out of range"
   },
   "a11y": {
+    "reverseBatteryButton": {
+      "accessibleName": {
+        "value": "Reverse Battery Direction"
+      }
+    },
+    "trashButton": {
+      "accessibleName": {
+        "value": "Delete { a11y_circuitElement_accessibleName }"
+      }
+    },
     "circuitElement": {
       "accessibleName": {
         "value": "{ $type ->\n  [resistor]\n  { $valuesShowing ->\n    [true] Resistor, { $resistance } ohms\n    *[false] Resistor\n  }\n  [battery]\n  { $valuesShowing ->\n    [true] Battery, { $voltage } volts\n    *[false] Battery\n  }\n  [lightBulb]\n  { $valuesShowing ->\n    [true] Light Bulb, { $resistance } ohms\n    *[false] Light Bulb\n  }\n  [capacitor] Capacitor\n  [inductor] Inductor\n  [acSource] AC Voltage Source\n  [fuse] Fuse\n  [switch] Switch\n  [voltmeter] Voltmeter\n  [ammeter] Ammeter\n  [stopwatch] Stopwatch\n  *[wire] Wire\n}"

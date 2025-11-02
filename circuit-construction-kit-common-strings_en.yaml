@@ -76,6 +76,10 @@ signed:                                Signed
 dataOutOfRange:                        Data out of range
 
 a11y:
+  reverseBatteryButton:
+    accessibleName: Reverse Battery Direction
+  trashButton:
+    accessibleName: Delete { a11y.circuitElement.accessibleName }
   circuitElement:
     accessibleName: |-
                     { $type ->

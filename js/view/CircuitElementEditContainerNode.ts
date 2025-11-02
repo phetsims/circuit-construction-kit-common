@@ -45,6 +45,7 @@ import BatteryReverseButton from './BatteryReverseButton.js';
 import CCKCColors from './CCKCColors.js';
 import CCKCTrashButton from './CCKCTrashButton.js';
 import CircuitElementNumberControl from './CircuitElementNumberControl.js';
+import CircuitNode from './CircuitNode.js';
 import ClearDynamicsButton from './ClearDynamicsButton.js';
 import FuseRepairButton from './FuseRepairButton.js';
 import PhaseShiftControl from './PhaseShiftControl.js';
@@ -114,9 +115,10 @@ type CircuitElementEditContainerNodeOptions = SelfOptions & NodeOptions;
 
 export default class CircuitElementEditContainerNode extends Node {
 
-  public constructor( circuit: Circuit, visibleBoundsProperty: Property<Bounds2>, modeProperty: EnumerationProperty<InteractionMode>, playAreaCenterXProperty: Property<number>, tandem: Tandem,
+  public constructor( circuitNode: CircuitNode, visibleBoundsProperty: Property<Bounds2>, modeProperty: EnumerationProperty<InteractionMode>, playAreaCenterXProperty: Property<number>, tandem: Tandem,
                       providedOptions?: CircuitElementEditContainerNodeOptions ) {
 
+    const circuit = circuitNode.circuit;
     super();
 
     const options = optionize<CircuitElementEditContainerNodeOptions, SelfOptions, NodeOptions>()( {
@@ -124,7 +126,7 @@ export default class CircuitElementEditContainerNode extends Node {
     }, providedOptions );
 
     // Create reusable components that will get assembled into a panel for the selected circuit element
-    const trashButton = new CCKCTrashButton( circuit, tandem.createTandem( 'trashButton' ) );
+    const trashButton = new CCKCTrashButton( circuitNode, tandem.createTandem( 'trashButton' ) );
 
     // Use the "nested node" pattern for gated visibilty
     const trashButtonContainer = new Node( {
