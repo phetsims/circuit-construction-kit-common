@@ -87,8 +87,14 @@ type StringsType = {
   'signedStringProperty': LocalizedStringProperty;
   'dataOutOfRangeStringProperty': LocalizedStringProperty;
   'a11y': {
+    'sensorToolbox': {
+      'accessibleHeadingStringProperty': LocalizedStringProperty;
+    };
     'advancedAccordionBox': {
       'accessibleNameStringProperty': LocalizedStringProperty;
+    };
+    'displayOptionsPanel': {
+      'accessibleHeadingStringProperty': LocalizedStringProperty;
     };
     'circuitElementToolNode': {
       'accessibleHelpTextStringProperty': LocalizedStringProperty;

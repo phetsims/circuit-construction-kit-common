@@ -216,9 +216,19 @@
     "value": "Data out of range"
   },
   "a11y": {
+    "sensorToolbox": {
+      "accessibleHeading": {
+        "value": "Sensor Toolbox"
+      }
+    },
     "advancedAccordionBox": {
       "accessibleName": {
         "value": "Advanced Settings"
+      }
+    },
+    "displayOptionsPanel": {
+      "accessibleHeading": {
+        "value": "Display Options"
       }
     },
     "circuitElementToolNode": {

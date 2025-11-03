@@ -86,7 +86,9 @@ addToMapIfDefined( 'ammeterReadout', 'ammeterReadoutStringProperty' );
 addToMapIfDefined( 'magnitude', 'magnitudeStringProperty' );
 addToMapIfDefined( 'signed', 'signedStringProperty' );
 addToMapIfDefined( 'dataOutOfRange', 'dataOutOfRangeStringProperty' );
+addToMapIfDefined( 'a11y_sensorToolbox_accessibleHeading', 'a11y.sensorToolbox.accessibleHeadingStringProperty' );
 addToMapIfDefined( 'a11y_advancedAccordionBox_accessibleName', 'a11y.advancedAccordionBox.accessibleNameStringProperty' );
+addToMapIfDefined( 'a11y_displayOptionsPanel_accessibleHeading', 'a11y.displayOptionsPanel.accessibleHeadingStringProperty' );
 addToMapIfDefined( 'a11y_circuitElementToolNode_accessibleHelpText', 'a11y.circuitElementToolNode.accessibleHelpTextStringProperty' );
 addToMapIfDefined( 'a11y_reverseBatteryButton_accessibleName', 'a11y.reverseBatteryButton.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_trashButton_accessibleName', 'a11y.trashButton.accessibleNameStringProperty' );
@@ -179,8 +181,14 @@ const CircuitConstructionKitCommonFluent = {
   signedStringProperty: _.get( CircuitConstructionKitCommonStrings, 'signedStringProperty' ),
   dataOutOfRangeStringProperty: _.get( CircuitConstructionKitCommonStrings, 'dataOutOfRangeStringProperty' ),
   a11y: {
+    sensorToolbox: {
+      accessibleHeadingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_sensorToolbox_accessibleHeading', _.get( CircuitConstructionKitCommonStrings, 'a11y.sensorToolbox.accessibleHeadingStringProperty' ) )
+    },
     advancedAccordionBox: {
       accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_advancedAccordionBox_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.advancedAccordionBox.accessibleNameStringProperty' ) )
+    },
+    displayOptionsPanel: {
+      accessibleHeadingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_displayOptionsPanel_accessibleHeading', _.get( CircuitConstructionKitCommonStrings, 'a11y.displayOptionsPanel.accessibleHeadingStringProperty' ) )
     },
     circuitElementToolNode: {
       accessibleHelpText: new FluentPattern<{ resistance: FluentVariable, type: 'resistor' | 'battery' | 'lightBulb' | 'capacitor' | 'inductor' | 'acSource' | 'fuse' | 'switch' | 'voltmeter' | 'ammeter' | 'stopwatch' | 'wire' | TReadOnlyProperty<'resistor' | 'battery' | 'lightBulb' | 'capacitor' | 'inductor' | 'acSource' | 'fuse' | 'switch' | 'voltmeter' | 'ammeter' | 'stopwatch' | 'wire'>, valuesShowing: 'true' | 'false' | TReadOnlyProperty<'true' | 'false'>, voltage: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitElementToolNode_accessibleHelpText', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitElementToolNode.accessibleHelpTextStringProperty' ), [{"name":"resistance"},{"name":"type","variants":["resistor","battery","lightBulb","capacitor","inductor","acSource","fuse","switch","voltmeter","ammeter","stopwatch","wire"]},{"name":"valuesShowing","variants":["true","false"]},{"name":"voltage"}] )

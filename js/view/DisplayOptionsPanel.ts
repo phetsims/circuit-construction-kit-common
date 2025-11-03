@@ -21,6 +21,7 @@ import VerticalAquaRadioButtonGroup from '../../../sun/js/VerticalAquaRadioButto
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import CurrentType from '../model/CurrentType.js';
 import CCKCCheckbox from './CCKCCheckbox.js';
@@ -167,7 +168,7 @@ export default class DisplayOptionsPanel extends CCKCPanel {
     vBox.boundsProperty.link( bounds => content.setChildren( bounds.isValid() ? [ alignBox ] : [] ) );
 
     super( content, tandem, {
-      accessibleHeading: 'Display Options', // TODO: i18n, see https://github.com/phetsims/circuit-construction-kit-common/issues/1039
+      accessibleHeading: CircuitConstructionKitCommonFluent.a11y.displayOptionsPanel.accessibleHeadingStringProperty,
       yMargin: 10,
       visiblePropertyOptions: {
         phetioFeatured: true

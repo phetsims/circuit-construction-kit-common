@@ -30,6 +30,7 @@ import Text from '../../../scenery/js/nodes/Text.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import Ammeter from '../model/Ammeter.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
@@ -368,7 +369,7 @@ export default class SensorToolbox extends CCKCPanel {
     }
 
     super( new VBox( {
-      accessibleHeading: 'Sensor Toolbox', // TODO: i18n, see https://github.com/phetsims/circuit-construction-kit-common/issues/1039
+      accessibleHeading: CircuitConstructionKitCommonFluent.a11y.sensorToolbox.accessibleHeadingStringProperty,
       spacing: 5,
       children: rows
     } ), tandem, {

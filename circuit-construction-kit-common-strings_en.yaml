@@ -76,8 +76,12 @@ signed:                                Signed
 dataOutOfRange:                        Data out of range
 
 a11y:
+  sensorToolbox:
+    accessibleHeading: Sensor Toolbox
   advancedAccordionBox:
     accessibleName: Advanced Settings
+  displayOptionsPanel:
+    accessibleHeading: Display Options
   circuitElementToolNode:
     accessibleHelpText: Drag this tool to the circuit to create a new { a11y.circuitElement.accessibleName }.
   reverseBatteryButton:
