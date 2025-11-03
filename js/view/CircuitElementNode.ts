@@ -52,16 +52,14 @@ export default abstract class CircuitElementNode extends Node {
     if ( circuit && showValuesProperty ) {
 
       const showValuesAsStringProperty = showValuesProperty.derived( value => value ? 'true' : 'false' );
+
       const accessibleNameProperty = CircuitConstructionKitCommonFluent.a11y.circuitElement.accessibleName.createProperty( {
-        valuesShowing: showValuesAsStringProperty, // TODO: dispose this derived property, see https://github.com/phetsims/circuit-construction-kit-common/issues/1039
+        valuesShowing: showValuesAsStringProperty,
         type: circuitElement.type,
         voltage: circuitElement instanceof Battery ? circuitElement.voltageProperty : 0,
         resistance: circuitElement instanceof Resistor ? circuitElement.resistanceProperty : 0
       } );
-      circuitElement.disposeEmitter.addListener( () => {
-        accessibleNameProperty.dispose();
-        showValuesAsStringProperty.dispose();
-      } );
+      circuitElement.addDisposable( showValuesAsStringProperty, accessibleNameProperty );
 
       providedOptions = optionize<CircuitElementNodeOptions, SelfOptions, NodeOptions>()( {
         tagName: 'div', // HTML tag name for representative element in the document, see ParallelDOM.js
