@@ -17,6 +17,7 @@ import { type CheckboxOptions } from '../../../sun/js/Checkbox.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import type Circuit from '../model/Circuit.js';
 import CCKCAccordionBox, { type CCKCAccordionBoxOptions } from './CCKCAccordionBox.js';
@@ -76,8 +77,7 @@ export default class AdvancedAccordionBox extends CCKCAccordionBox {
       titleAlignX: 'left',
       titleXSpacing: 10,
 
-      // TODO: i18n, See https://github.com/phetsims/circuit-construction-kit-common/issues/1039
-      accessibleName: 'Advanced Settings'
+      accessibleName: CircuitConstructionKitCommonFluent.a11y.advancedAccordionBox.accessibleNameStringProperty
     } );
 
     this.mutate( options );

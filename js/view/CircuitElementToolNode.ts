@@ -25,6 +25,7 @@ import type Node from '../../../scenery/js/nodes/Node.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import type Circuit from '../model/Circuit.js';
 import type CircuitElement from '../model/CircuitElement.js';
 import type CircuitElementViewType from '../model/CircuitElementViewType.js';
@@ -99,8 +100,12 @@ export default class CircuitElementToolNode extends VBox {
 
       accessibleName: labelStringProperty,
 
-      // TODO: i18n, see https://github.com/phetsims/circuit-construction-kit-common/issues/1039
-      accessibleHelpText: 'Drag this tool to the circuit to create a new ' + labelStringProperty.value + '.',
+      accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.circuitElementToolNode.accessibleHelpText.createProperty( {
+        type: 'wire', // TODO: the appropriate type: https://github.com/phetsims/circuit-construction-kit-common/issues/1039
+        valuesShowing: 'false',
+        voltage: 0,
+        resistance: 0
+      } ),
       accessibleHelpTextBehavior: ParallelDOM.HELP_TEXT_AFTER_CONTENT
     }, providedOptions );
 

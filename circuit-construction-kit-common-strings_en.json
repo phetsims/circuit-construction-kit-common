@@ -216,6 +216,16 @@
     "value": "Data out of range"
   },
   "a11y": {
+    "advancedAccordionBox": {
+      "accessibleName": {
+        "value": "Advanced Settings"
+      }
+    },
+    "circuitElementToolNode": {
+      "accessibleHelpText": {
+        "value": "Drag this tool to the circuit to create a new { a11y_circuitElement_accessibleName }."
+      }
+    },
     "reverseBatteryButton": {
       "accessibleName": {
         "value": "Reverse Battery Direction"

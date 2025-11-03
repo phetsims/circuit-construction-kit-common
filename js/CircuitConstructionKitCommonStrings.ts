@@ -87,6 +87,12 @@ type StringsType = {
   'signedStringProperty': LocalizedStringProperty;
   'dataOutOfRangeStringProperty': LocalizedStringProperty;
   'a11y': {
+    'advancedAccordionBox': {
+      'accessibleNameStringProperty': LocalizedStringProperty;
+    };
+    'circuitElementToolNode': {
+      'accessibleHelpTextStringProperty': LocalizedStringProperty;
+    };
     'reverseBatteryButton': {
       'accessibleNameStringProperty': LocalizedStringProperty;
     };

@@ -86,6 +86,8 @@ addToMapIfDefined( 'ammeterReadout', 'ammeterReadoutStringProperty' );
 addToMapIfDefined( 'magnitude', 'magnitudeStringProperty' );
 addToMapIfDefined( 'signed', 'signedStringProperty' );
 addToMapIfDefined( 'dataOutOfRange', 'dataOutOfRangeStringProperty' );
+addToMapIfDefined( 'a11y_advancedAccordionBox_accessibleName', 'a11y.advancedAccordionBox.accessibleNameStringProperty' );
+addToMapIfDefined( 'a11y_circuitElementToolNode_accessibleHelpText', 'a11y.circuitElementToolNode.accessibleHelpTextStringProperty' );
 addToMapIfDefined( 'a11y_reverseBatteryButton_accessibleName', 'a11y.reverseBatteryButton.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_trashButton_accessibleName', 'a11y.trashButton.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_circuitElement_accessibleName', 'a11y.circuitElement.accessibleNameStringProperty' );
@@ -177,6 +179,12 @@ const CircuitConstructionKitCommonFluent = {
   signedStringProperty: _.get( CircuitConstructionKitCommonStrings, 'signedStringProperty' ),
   dataOutOfRangeStringProperty: _.get( CircuitConstructionKitCommonStrings, 'dataOutOfRangeStringProperty' ),
   a11y: {
+    advancedAccordionBox: {
+      accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_advancedAccordionBox_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.advancedAccordionBox.accessibleNameStringProperty' ) )
+    },
+    circuitElementToolNode: {
+      accessibleHelpText: new FluentPattern<{ resistance: FluentVariable, type: 'resistor' | 'battery' | 'lightBulb' | 'capacitor' | 'inductor' | 'acSource' | 'fuse' | 'switch' | 'voltmeter' | 'ammeter' | 'stopwatch' | 'wire' | TReadOnlyProperty<'resistor' | 'battery' | 'lightBulb' | 'capacitor' | 'inductor' | 'acSource' | 'fuse' | 'switch' | 'voltmeter' | 'ammeter' | 'stopwatch' | 'wire'>, valuesShowing: 'true' | 'false' | TReadOnlyProperty<'true' | 'false'>, voltage: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitElementToolNode_accessibleHelpText', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitElementToolNode.accessibleHelpTextStringProperty' ), [{"name":"resistance"},{"name":"type","variants":["resistor","battery","lightBulb","capacitor","inductor","acSource","fuse","switch","voltmeter","ammeter","stopwatch","wire"]},{"name":"valuesShowing","variants":["true","false"]},{"name":"voltage"}] )
+    },
     reverseBatteryButton: {
       accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_reverseBatteryButton_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.reverseBatteryButton.accessibleNameStringProperty' ) )
     },
