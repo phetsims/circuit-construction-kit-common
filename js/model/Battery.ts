@@ -47,7 +47,7 @@ export default class Battery extends VoltageSource {
         range: batteryType === 'normal' ? Battery.VOLTAGE_RANGE : Battery.HIGH_VOLTAGE_RANGE
       }
     }, providedOptions );
-    super( startVertex, endVertex, internalResistanceProperty, BATTERY_LENGTH, tandem, options );
+    super( 'battery', startVertex, endVertex, internalResistanceProperty, BATTERY_LENGTH, tandem, options );
 
     this.initialOrientation = options.initialOrientation;
     this.batteryType = batteryType;

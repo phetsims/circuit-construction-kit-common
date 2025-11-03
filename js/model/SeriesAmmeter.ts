@@ -42,7 +42,7 @@ export default class SeriesAmmeter extends FixedCircuitElement {
         tandem: Tandem.OPT_OUT
       }
     }, providedOptions );
-    super( startVertex, endVertex, CCKCConstants.SERIES_AMMETER_LENGTH, tandem, options );
+    super( 'ammeter', startVertex, endVertex, CCKCConstants.SERIES_AMMETER_LENGTH, tandem, options );
     this.resistanceProperty = new NumberProperty( 0 );
   }
 

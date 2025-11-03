@@ -43,7 +43,7 @@ export default class Inductor extends DynamicCircuitElement {
       numberOfDecimalPlaces: Inductor.INDUCTANCE_NUMBER_OF_DECIMAL_PLACES
     }, providedOptions );
 
-    super( startVertex, endVertex, INDUCTOR_LENGTH, tandem, options );
+    super( 'inductor', startVertex, endVertex, INDUCTOR_LENGTH, tandem, options );
 
     this.inductanceProperty = new NumberProperty( options.inductance, {
       range: Inductor.INDUCTANCE_RANGE,

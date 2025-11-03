@@ -74,7 +74,7 @@ export default class Resistor extends FixedCircuitElement {
       };
     }
 
-    super( startVertex, endVertex, resistorType.length, tandem, options );
+    super( 'resistor', startVertex, endVertex, resistorType.length, tandem, options );
 
     this.resistorType = resistorType;
 

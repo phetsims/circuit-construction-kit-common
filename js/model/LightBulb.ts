@@ -124,7 +124,7 @@ export default class LightBulb extends FixedCircuitElement {
     options.numberOfDecimalPlaces = options.isExtreme ? 0 : 1;
 
     // getPathLength not available yet, so use a nonzero charge path length then override.
-    super( startVertex, endVertex, 1, tandem, options );
+    super( 'lightBulb', startVertex, endVertex, 1, tandem, options );
 
     this.isReal = options.isReal;
     this.isExtreme = options.isExtreme;

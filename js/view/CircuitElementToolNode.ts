@@ -28,6 +28,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import type Circuit from '../model/Circuit.js';
 import type CircuitElement from '../model/CircuitElement.js';
+import type CircuitElementType from '../model/CircuitElementType.js';
 import type CircuitElementViewType from '../model/CircuitElementViewType.js';
 import CCKCColors from './CCKCColors.js';
 import CCKCHotkeyData from './CCKCHotkeyData.js';
@@ -49,6 +50,7 @@ export type CircuitElementToolNodeOptions = SelfOptions & VBoxOptions;
 export default class CircuitElementToolNode extends VBox {
 
   /**
+   * @param circuitElementType - the type of circuit element this tool creates
    * @param labelStringProperty
    * @param showLabelsProperty
    * @param viewTypeProperty
@@ -63,7 +65,7 @@ export default class CircuitElementToolNode extends VBox {
    *                                 - in the center of the socket
    * @param [providedOptions]
    */
-  public constructor( labelStringProperty: TReadOnlyProperty<string>, showLabelsProperty: Property<boolean>, viewTypeProperty: Property<CircuitElementViewType>,
+  public constructor( circuitElementType: CircuitElementType, labelStringProperty: TReadOnlyProperty<string>, showLabelsProperty: Property<boolean>, viewTypeProperty: Property<CircuitElementViewType>,
                       circuit: Circuit, globalToCircuitNodePoint: ( v: Vector2 ) => Vector2, iconNode: Node, maxNumber: number,
                       count: () => number, createElement: ( v: Vector2 ) => CircuitElement, providedOptions: CircuitElementToolNodeOptions ) {
 
@@ -101,7 +103,7 @@ export default class CircuitElementToolNode extends VBox {
       accessibleName: labelStringProperty,
 
       accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.circuitElementToolNode.accessibleHelpText.createProperty( {
-        type: 'wire', // TODO: the appropriate type: https://github.com/phetsims/circuit-construction-kit-common/issues/1039
+        type: circuitElementType,
         valuesShowing: 'false',
         voltage: 0,
         resistance: 0

@@ -33,6 +33,7 @@ import Battery from '../model/Battery.js';
 import Capacitor from '../model/Capacitor.js';
 import type Circuit from '../model/Circuit.js';
 import type CircuitElement from '../model/CircuitElement.js';
+import type CircuitElementType from '../model/CircuitElementType.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import Fuse from '../model/Fuse.js';
 import Inductor from '../model/Inductor.js';
@@ -134,6 +135,7 @@ export default class CircuitElementToolFactory {
    * @param [providedOptions]
    */
   public createCircuitElementToolNode(
+    circuitElementType: CircuitElementType,
     labelStringProperty: TReadOnlyProperty<string>,
     count: number,
     createIcon: ( t: Tandem, p: Property<CircuitElementViewType> ) => Node,
@@ -169,6 +171,7 @@ export default class CircuitElementToolFactory {
     ] );
 
     return new CircuitElementToolNode(
+      circuitElementType,
       labelStringProperty,
       this.showLabelsProperty,
       this.viewTypeProperty,
@@ -199,7 +202,7 @@ export default class CircuitElementToolFactory {
   }
 
   public createWireToolNode( tandem: Tandem ): Node {
-    return this.createCircuitElementToolNode( wireStringProperty, CCKCConstants.NUMBER_OF_WIRES,
+    return this.createCircuitElementToolNode( 'wire', wireStringProperty, CCKCConstants.NUMBER_OF_WIRES,
       ( tandem: Tandem, viewTypeProperty: Property<CircuitElementViewType> ) => {
         return viewTypeProperty.value === CircuitElementViewType.LIFELIKE ? ( new Image( wireIcon_png, {
           tandem: tandem
@@ -225,7 +228,7 @@ export default class CircuitElementToolFactory {
       new Vertex( Vector2.ZERO, this.circuit.selectionProperty ), new Vertex( new Vector2( CCKCConstants.BATTERY_LENGTH, 0 ), this.circuit.selectionProperty ),
       new NumberProperty( 0 ), 'normal', Tandem.OPT_OUT
     );
-    return this.createCircuitElementToolNode( batteryStringProperty, count,
+    return this.createCircuitElementToolNode( 'battery', batteryStringProperty, count,
       ( tandem, viewTypeProperty ) => new BatteryNode( null, null, batteryModel, viewTypeProperty, tandem.createTandem( 'batteryIcon' ), { isIcon: true } ),
       circuitElement => circuitElement instanceof Battery &&
                         circuitElement.initialOrientation === 'right' &&
@@ -246,7 +249,7 @@ export default class CircuitElementToolFactory {
       new NumberProperty( 0 ),
       Tandem.OPT_OUT
     );
-    return this.createCircuitElementToolNode( acSourceStringProperty, count,
+    return this.createCircuitElementToolNode( 'acSource', acSourceStringProperty, count,
       ( tandem, viewTypeProperty ) => new ACVoltageNode( null, null, acSource, viewTypeProperty, tandem.createTandem( 'acSourceIcon' ), {
         isIcon: true,
         scale: 0.68
@@ -273,7 +276,7 @@ export default class CircuitElementToolFactory {
         isExtreme: false,
         isReal: real
       } );
-    return this.createCircuitElementToolNode( string, 10,
+    return this.createCircuitElementToolNode( 'lightBulb', string, 10,
       ( tandem, viewTypeProperty ) => new CCKCLightBulbNode( null, null,
         lightBulbModel,
         new BooleanProperty( true ), viewTypeProperty, Tandem.OPT_OUT, { isIcon: true, scale: 0.85 } ),
@@ -308,7 +311,7 @@ export default class CircuitElementToolFactory {
       Tandem.OPT_OUT
     );
 
-    return this.createCircuitElementToolNode( labelStringProperty, options.count,
+    return this.createCircuitElementToolNode( 'resistor', labelStringProperty, options.count,
       ( tandem, viewTypeProperty ) => new ResistorNode( null, null, resistorModel, viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
         isIcon: true
       } ),
@@ -330,7 +333,7 @@ export default class CircuitElementToolFactory {
       Tandem.OPT_OUT,
       null
     );
-    return this.createCircuitElementToolNode( fuseStringProperty, 10,
+    return this.createCircuitElementToolNode( 'fuse', fuseStringProperty, 10,
       ( tandem, viewTypeProperty ) => new FuseNode( null, null, fuseModel, viewTypeProperty, tandem.createTandem( 'fuseIcon' ), {
         isIcon: true
       } ),
@@ -352,7 +355,7 @@ export default class CircuitElementToolFactory {
       new Vertex( new Vector2( CCKCConstants.CAPACITOR_LENGTH, 0 ), this.circuit.selectionProperty ),
       Tandem.OPT_OUT
     );
-    return this.createCircuitElementToolNode( capacitorStringProperty, count,
+    return this.createCircuitElementToolNode( 'capacitor', capacitorStringProperty, count,
       ( tandem, viewTypeProperty ) => new CapacitorCircuitElementNode( null, null, capacitor, viewTypeProperty, tandem.createTandem( 'capacitorIcon' ), {
         isIcon: true
       } ),
@@ -369,7 +372,7 @@ export default class CircuitElementToolFactory {
       Tandem.OPT_OUT
     );
     const count = CCKCQueryParameters.moreInductors ? 10 : 1;
-    return this.createCircuitElementToolNode( inductorStringProperty, count,
+    return this.createCircuitElementToolNode( 'inductor', inductorStringProperty, count,
       ( tandem, viewTypeProperty ) => new InductorNode( null, null, inductorModel, viewTypeProperty, tandem.createTandem( 'inductorIcon' ), {
         isIcon: true,
         scale: 0.75
@@ -383,7 +386,7 @@ export default class CircuitElementToolFactory {
   }
 
   public createSwitchToolNode( tandem: Tandem ): CircuitElementToolNode {
-    return this.createCircuitElementToolNode( switchStringProperty, 5,
+    return this.createCircuitElementToolNode( 'switch', switchStringProperty, 5,
       ( tandem, viewTypeProperty ) => new SwitchNode( null, null,
         new Switch(
           new Vertex( Vector2.ZERO, this.circuit.selectionProperty ),
@@ -487,7 +490,7 @@ export default class CircuitElementToolFactory {
   }
 
   public createExtremeBatteryToolNode( tandem: Tandem ): CircuitElementToolNode {
-    return this.createCircuitElementToolNode( batteryStringProperty, 4,
+    return this.createCircuitElementToolNode( 'battery', batteryStringProperty, 4,
       ( tandem, viewTypeProperty ) => new BatteryNode( null, null,
         new Battery(
           new Vertex( Vector2.ZERO, this.circuit.selectionProperty ),
@@ -511,7 +514,7 @@ export default class CircuitElementToolFactory {
 
   public createExtremeBulbToolNode( tandem: Tandem ): CircuitElementToolNode {
     const vertexPair = LightBulb.createVertexPair( Vector2.ZERO, this.circuit, true );
-    return this.createCircuitElementToolNode( lightBulbStringProperty, 4,
+    return this.createCircuitElementToolNode( 'lightBulb', lightBulbStringProperty, 4,
       ( tandem, viewTypeProperty ) => new CCKCLightBulbNode(
         null,
         null,

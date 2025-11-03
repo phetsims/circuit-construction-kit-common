@@ -37,7 +37,7 @@ export default class Switch extends FixedCircuitElement {
 
   public constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, circuit: Circuit | null ) {
 
-    super( startVertex, endVertex, SWITCH_LENGTH, tandem, {
+    super( 'switch', startVertex, endVertex, SWITCH_LENGTH, tandem, {
 
       // Do not instrument isEditableProperty for switches as there is nothing to edit
       isEditablePropertyOptions: {

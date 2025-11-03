@@ -15,11 +15,8 @@ import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import Battery from '../model/Battery.js';
-import Capacitor from '../model/Capacitor.js';
 import type Circuit from '../model/Circuit.js';
 import type CircuitElement from '../model/CircuitElement.js';
-import Inductor from '../model/Inductor.js';
-import LightBulb from '../model/LightBulb.js';
 import Resistor from '../model/Resistor.js';
 import type Vertex from '../model/Vertex.js';
 import type CCKCScreenView from './CCKCScreenView.js';
@@ -57,13 +54,7 @@ export default abstract class CircuitElementNode extends Node {
       const showValuesAsStringProperty = showValuesProperty.derived( value => value ? 'true' : 'false' );
       const accessibleNameProperty = CircuitConstructionKitCommonFluent.a11y.circuitElement.accessibleName.createProperty( {
         valuesShowing: showValuesAsStringProperty, // TODO: dispose this derived property, see https://github.com/phetsims/circuit-construction-kit-common/issues/1039
-        // TODO: each circuit element should have 'type', see https://github.com/phetsims/circuit-construction-kit-common/issues/1039
-        type: circuitElement instanceof Battery ? 'battery' :
-              circuitElement instanceof Resistor ? 'resistor' :
-              circuitElement instanceof Capacitor ? 'capacitor' :
-              circuitElement instanceof Inductor ? 'inductor' :
-              circuitElement instanceof LightBulb ? 'lightBulb' :
-              'wire',
+        type: circuitElement.type,
         voltage: circuitElement instanceof Battery ? circuitElement.voltageProperty : 0,
         resistance: circuitElement instanceof Resistor ? circuitElement.resistanceProperty : 0
       } );

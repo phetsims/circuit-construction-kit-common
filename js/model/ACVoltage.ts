@@ -62,7 +62,7 @@ export default class ACVoltage extends VoltageSource {
         range: ACVoltage.VOLTAGE_RANGE
       }
     }, providedOptions );
-    super( startVertex, endVertex, internalResistanceProperty, CCKCConstants.BATTERY_LENGTH, tandem, options );
+    super( 'acSource', startVertex, endVertex, internalResistanceProperty, CCKCConstants.BATTERY_LENGTH, tandem, options );
 
     this.maximumVoltageProperty = new NumberProperty( options.voltage, {
       tandem: tandem.createTandem( 'maximumVoltageProperty' ),

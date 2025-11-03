@@ -43,7 +43,7 @@ export default class Capacitor extends DynamicCircuitElement {
       numberOfDecimalPlaces: Capacitor.NUMBER_OF_DECIMAL_PLACES
     }, providedOptions );
 
-    super( startVertex, endVertex, CCKCConstants.CAPACITOR_LENGTH, tandem, options );
+    super( 'capacitor', startVertex, endVertex, CCKCConstants.CAPACITOR_LENGTH, tandem, options );
 
     this.capacitanceProperty = new NumberProperty( options.capacitance, {
       range: Capacitor.CAPACITANCE_RANGE,

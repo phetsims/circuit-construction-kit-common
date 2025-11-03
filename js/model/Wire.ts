@@ -67,7 +67,7 @@ export default class Wire extends CircuitElement {
       }
     }, providedOptions );
     const chargePathLength = startVertex.positionProperty.get().distance( endVertex.positionProperty.get() );
-    super( startVertex, endVertex, chargePathLength, tandem, options );
+    super( 'wire', startVertex, endVertex, chargePathLength, tandem, options );
 
     this.wireStub = options.wireStub;
 

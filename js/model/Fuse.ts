@@ -53,7 +53,7 @@ export default class Fuse extends FixedCircuitElement {
       numberOfDecimalPlaces: 1
     }, providedOptions );
 
-    super( startVertex, endVertex, options.fuseLength, tandem, options );
+    super( 'fuse', startVertex, endVertex, options.fuseLength, tandem, options );
 
     this.currentRatingProperty = new NumberProperty( options.currentRating, {
       range: Fuse.RANGE,

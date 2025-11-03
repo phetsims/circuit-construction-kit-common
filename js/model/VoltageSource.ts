@@ -17,6 +17,7 @@ import type PickOptional from '../../../phet-core/js/types/PickOptional.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import NumberIO from '../../../tandem/js/types/NumberIO.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import type CircuitElementType from './CircuitElementType.js';
 import FixedCircuitElement, { type FixedCircuitElementOptions } from './FixedCircuitElement.js';
 import PowerDissipatedProperty from './PowerDissipatedProperty.js';
 import type Vertex from './Vertex.js';
@@ -46,6 +47,7 @@ export default abstract class VoltageSource extends FixedCircuitElement {
   private powerGeneratedProperty: TReadOnlyProperty<number>;
 
   /**
+   * @param type
    * @param startVertex - one of the battery vertices
    * @param endVertex - the other battery vertex
    * @param internalResistanceProperty - the resistance of the battery
@@ -53,7 +55,7 @@ export default abstract class VoltageSource extends FixedCircuitElement {
    * @param tandem
    * @param [providedOptions]
    */
-  public constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, length: number, tandem: Tandem, providedOptions?: VoltageSourceOptions ) {
+  public constructor( type: CircuitElementType, startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, length: number, tandem: Tandem, providedOptions?: VoltageSourceOptions ) {
     assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );
     const options = optionize<VoltageSourceOptions, SelfOptions, FixedCircuitElementOptions>()( {
       initialOrientation: 'right',
@@ -65,7 +67,7 @@ export default abstract class VoltageSource extends FixedCircuitElement {
         phetioFeatured: true
       }
     }, providedOptions );
-    super( startVertex, endVertex, length, tandem, options );
+    super( type, startVertex, endVertex, length, tandem, options );
 
     this.voltageProperty = new NumberProperty( options.voltage, options.voltagePropertyOptions );
 

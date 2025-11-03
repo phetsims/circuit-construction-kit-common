@@ -183,6 +183,7 @@ export default class SensorToolbox extends CCKCPanel {
 
     // This is the real tool node
     const seriesAmmeterToolNode = new CircuitElementToolNode(
+      'ammeter',
       new Property( '' ),
       new BooleanProperty( false ),
       new EnumerationProperty( CircuitElementViewType.SCHEMATIC ),

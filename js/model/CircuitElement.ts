@@ -28,6 +28,7 @@ import IOType from '../../../tandem/js/types/IOType.js';
 import ReferenceIO, { ReferenceIOState } from '../../../tandem/js/types/ReferenceIO.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import type Circuit from './Circuit.js';
+import type CircuitElementType from './CircuitElementType.js';
 import CurrentSense from './CurrentSense.js';
 import Vertex from './Vertex.js';
 
@@ -60,6 +61,9 @@ export default abstract class CircuitElement extends PhetioObject {
 
   // unique identifier for looking up corresponding views
   public readonly id: number;
+
+  // the type of circuit element for i18n and accessibility
+  public readonly type: CircuitElementType;
 
   // track the time of creation so it can't be dropped in the toolbox for 0.5 seconds see https://github.com/phetsims/circuit-construction-kit-common/issues/244
   private readonly creationTime: number;
@@ -144,7 +148,7 @@ export default abstract class CircuitElement extends PhetioObject {
 
   public readonly focusEmitter = new Emitter();
 
-  public constructor( startVertex: Vertex, endVertex: Vertex, chargePathLength: number, tandem: Tandem, providedOptions?: CircuitElementOptions ) {
+  public constructor( type: CircuitElementType, startVertex: Vertex, endVertex: Vertex, chargePathLength: number, tandem: Tandem, providedOptions?: CircuitElementOptions ) {
     assert && assert( startVertex !== endVertex, 'startVertex cannot be the same as endVertex' );
     assert && assert( chargePathLength > 0, 'charge path length must be positive' );
 
@@ -167,6 +171,7 @@ export default abstract class CircuitElement extends PhetioObject {
     super( options );
 
     this.id = index++;
+    this.type = type;
     this.creationTime = phet.joist.elapsedTime;
     this.isFlammable = options.isFlammable;
     this.isMetallic = options.isMetallic;
