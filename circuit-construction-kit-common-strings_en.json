@@ -231,6 +231,33 @@
         "value": "Display Options"
       }
     },
+    "viewRadioButtonGroup": {
+      "accessibleHeading": {
+        "value": "View Type"
+      },
+      "accessibleName": {
+        "value": "View Type Selection"
+      },
+      "accessibleHelpText": {
+        "value": "Select the view type for circuit elements"
+      },
+      "lifelikeRadioButton": {
+        "accessibleName": {
+          "value": "Lifelike View"
+        },
+        "accessibleHelpText": {
+          "value": "Show the circuit elements like they would look in real life."
+        }
+      },
+      "schematicRadioButton": {
+        "accessibleName": {
+          "value": "Schematic View"
+        },
+        "accessibleHelpText": {
+          "value": "Show the circuit elements like they would look in a schematic circuit diagram."
+        }
+      }
+    },
     "circuitElementToolNode": {
       "accessibleHelpText": {
         "value": "Drag this tool to the circuit to create a new { a11y_circuitElement_accessibleName }."

@@ -82,6 +82,16 @@ a11y:
     accessibleName: Advanced Settings
   displayOptionsPanel:
     accessibleHeading: Display Options
+  viewRadioButtonGroup:
+    accessibleHeading: View Type
+    accessibleName: View Type Selection
+    accessibleHelpText: Select the view type for circuit elements
+    lifelikeRadioButton:
+      accessibleName: Lifelike View
+      accessibleHelpText: Show the circuit elements like they would look in real life.
+    schematicRadioButton:
+      accessibleName: Schematic View
+      accessibleHelpText: Show the circuit elements like they would look in a schematic circuit diagram.
   circuitElementToolNode:
     accessibleHelpText: Drag this tool to the circuit to create a new { a11y.circuitElement.accessibleName }.
   reverseBatteryButton:

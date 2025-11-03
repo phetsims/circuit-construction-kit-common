@@ -15,6 +15,7 @@ import RectangularRadioButtonGroup, { type RectangularRadioButtonGroupOptions } 
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import Battery from '../model/Battery.js';
 import type CircuitElement from '../model/CircuitElement.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
@@ -58,10 +59,9 @@ export default class ViewRadioButtonGroup extends RectangularRadioButtonGroup<Ci
       },
       tandem: tandem,
 
-      // TODO: i18n https://github.com/phetsims/circuit-construction-kit-common/issues/1039
-      accessibleHeading: 'View Type',
-      accessibleName: 'View Type Selection',
-      accessibleHelpText: 'Select the view type for circuit elements'
+      accessibleHeading: CircuitConstructionKitCommonFluent.a11y.viewRadioButtonGroup.accessibleHeadingStringProperty,
+      accessibleName: CircuitConstructionKitCommonFluent.a11y.viewRadioButtonGroup.accessibleNameStringProperty,
+      accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.viewRadioButtonGroup.accessibleHelpTextStringProperty
     }, providedOptions );
 
     // Create a battery which can be used in the views
@@ -84,20 +84,18 @@ export default class ViewRadioButtonGroup extends RectangularRadioButtonGroup<Ci
       createNode: tandem => createBatteryNode( CircuitElementViewType.LIFELIKE, Tandem.OPT_OUT ),
       tandemName: 'lifelikeRadioButton',
 
-      // TODO: i18n https://github.com/phetsims/circuit-construction-kit-common/issues/1039
       options: {
-        accessibleName: 'Lifelike View',
-        accessibleHelpText: 'Select to show circuit elements in lifelike view.'
+        accessibleName: CircuitConstructionKitCommonFluent.a11y.viewRadioButtonGroup.lifelikeRadioButton.accessibleNameStringProperty,
+        accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.viewRadioButtonGroup.lifelikeRadioButton.accessibleHelpTextStringProperty
       }
     }, {
       value: CircuitElementViewType.SCHEMATIC,
       createNode: tandem => createBatteryNode( CircuitElementViewType.SCHEMATIC, Tandem.OPT_OUT ),
       tandemName: 'schematicRadioButton',
 
-      // TODO: i18n https://github.com/phetsims/circuit-construction-kit-common/issues/1039
       options: {
-        accessibleName: 'Schematic View',
-        accessibleHelpText: 'Select to show circuit elements in schematic view.'
+        accessibleName: CircuitConstructionKitCommonFluent.a11y.viewRadioButtonGroup.schematicRadioButton.accessibleNameStringProperty,
+        accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.viewRadioButtonGroup.schematicRadioButton.accessibleHelpTextStringProperty
       }
     } ], options );
   }

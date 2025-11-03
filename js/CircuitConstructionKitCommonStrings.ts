@@ -96,6 +96,19 @@ type StringsType = {
     'displayOptionsPanel': {
       'accessibleHeadingStringProperty': LocalizedStringProperty;
     };
+    'viewRadioButtonGroup': {
+      'accessibleHeadingStringProperty': LocalizedStringProperty;
+      'accessibleNameStringProperty': LocalizedStringProperty;
+      'accessibleHelpTextStringProperty': LocalizedStringProperty;
+      'lifelikeRadioButton': {
+        'accessibleNameStringProperty': LocalizedStringProperty;
+        'accessibleHelpTextStringProperty': LocalizedStringProperty;
+      };
+      'schematicRadioButton': {
+        'accessibleNameStringProperty': LocalizedStringProperty;
+        'accessibleHelpTextStringProperty': LocalizedStringProperty;
+      }
+    };
     'circuitElementToolNode': {
       'accessibleHelpTextStringProperty': LocalizedStringProperty;
     };
