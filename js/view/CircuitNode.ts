@@ -38,6 +38,7 @@ import Capacitor from '../model/Capacitor.js';
 import type Circuit from '../model/Circuit.js';
 import type CircuitConstructionKitModel from '../model/CircuitConstructionKitModel.js';
 import type CircuitElement from '../model/CircuitElement.js';
+import type CircuitElementType from '../model/CircuitElementType.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import CurrentSense from '../model/CurrentSense.js';
 import FixedCircuitElement from '../model/FixedCircuitElement.js';
@@ -81,6 +82,28 @@ const GROUP_STARTING_INDEX = 0;
 // svg rendering to avoid svg/webgl lag issues and have a consistent renderer across platforms.  However, we will
 // leave in all the WebGL code in case we have performance problems on a platform that require WebGL to be restored?
 const RENDERER = 'svg';
+
+const GROUPED_CIRCUIT_ELEMENT_TYPE_ORDER: CircuitElementType[] = [ 'battery', 'resistor', 'lightBulb', 'wire' ];
+const CIRCUIT_ELEMENT_TYPE_LABELS: Partial<Record<CircuitElementType, string>> = {
+  battery: 'Battery',
+  resistor: 'Resistor',
+  lightBulb: 'Light bulb',
+  wire: 'Wire'
+};
+
+const getCircuitElementTypeLabel = ( type: CircuitElementType ): string => {
+  const mappedLabel = CIRCUIT_ELEMENT_TYPE_LABELS[ type ];
+  if ( mappedLabel ) {
+    return mappedLabel;
+  }
+  const withSpaces = type.replace( /([A-Z])/g, ' $1' );
+  return withSpaces.charAt( 0 ).toUpperCase() + withSpaces.slice( 1 );
+};
+
+const formatCircuitElementAccessibleName = ( type: CircuitElementType, position: number, total: number ): string => {
+  const baseLabel = getCircuitElementTypeLabel( type );
+  return total > 1 ? `${baseLabel} ${position} of ${total}` : baseLabel;
+};
 
 export default class CircuitNode extends Node {
   private readonly viewTypeProperty: Property<CircuitElementViewType>;
@@ -651,8 +674,19 @@ export default class CircuitNode extends Node {
     const multiples = groups.filter( group => group.circuitElements.length > 1 );
 
     const circuitElementsPDOMOrder: Node[] = [];
+    const circuitElementsTypeCounts = new Map<CircuitElementType, number>();
+    circuitElements.forEach( circuitElement => {
+      const count = circuitElementsTypeCounts.get( circuitElement.type ) || 0;
+      circuitElementsTypeCounts.set( circuitElement.type, count + 1 );
+    } );
+    const circuitElementsTypeIndices = new Map<CircuitElementType, number>();
     circuitElements.forEach( circuitElement => {
       const circuitElementNode = this.getCircuitElementNode( circuitElement );
+      const type = circuitElement.type;
+      const indexForType = ( circuitElementsTypeIndices.get( type ) || 0 ) + 1;
+      circuitElementsTypeIndices.set( type, indexForType );
+      const totalForType = circuitElementsTypeCounts.get( type ) || 0;
+      circuitElementNode.accessibleName = formatCircuitElementAccessibleName( type, indexForType, totalForType );
       const vertexNode = this.getVertexNode( circuitElement.startVertexProperty.value );
       const vertexNode1 = this.getVertexNode( circuitElement.endVertexProperty.value );
 
@@ -666,32 +700,62 @@ export default class CircuitNode extends Node {
     this.groupsContainer.children.forEach( child => child.dispose() );
     this.groupsContainer.children = [];
 
-    multiples.forEach( ( group, index ) => {
+    multiples.forEach( ( group, groupIndex ) => {
+      const typeCounts = new Map<CircuitElementType, number>();
+      group.circuitElements.forEach( circuitElement => {
+        const count = typeCounts.get( circuitElement.type ) || 0;
+        typeCounts.set( circuitElement.type, count + 1 );
+      } );
+
+      const typeIndices = new Map<CircuitElementType, number>();
+      const sortedCircuitElements: CircuitElement[] = [];
+      GROUPED_CIRCUIT_ELEMENT_TYPE_ORDER.forEach( type => {
+        group.circuitElements.forEach( circuitElement => {
+          if ( circuitElement.type === type ) {
+            sortedCircuitElements.push( circuitElement );
+          }
+        } );
+      } );
+      group.circuitElements.forEach( circuitElement => {
+        if ( !GROUPED_CIRCUIT_ELEMENT_TYPE_ORDER.includes( circuitElement.type ) ) {
+          sortedCircuitElements.push( circuitElement );
+        }
+      } );
+
+      const circuitElementNodes = sortedCircuitElements.map( circuitElement => {
+        const node = this.getCircuitElementNode( circuitElement );
+        const type = circuitElement.type;
+        const indexForType = ( typeIndices.get( type ) || 0 ) + 1;
+        typeIndices.set( type, indexForType );
+        const totalForType = typeCounts.get( type ) || 0;
+        node.accessibleName = formatCircuitElementAccessibleName( type, indexForType, totalForType );
+        return node;
+      } );
 
       const groupPDOMOrder: Node[] = [
-        ...group.circuitElements.map( circuitElement => this.getCircuitElementNode( circuitElement ) ),
+        ...circuitElementNodes,
         ...group.vertices.map( vertex => this.getVertexNode( vertex ) )
       ];
 
-      group.vertices.forEach( ( vertex, index ) => {
+      group.vertices.forEach( ( vertex, vertexIndex ) => {
 
         const neighbors = this.circuit.getNeighborCircuitElements( vertex );
 
         if ( neighbors.length === 1 ) {
-          this.getVertexNode( vertex ).accessibleName = 'Junction ' + ( index + 1 ) + ' of ' + group.vertices.length + ', disconnected';
+          this.getVertexNode( vertex ).accessibleName = 'Junction ' + ( vertexIndex + 1 ) + ' of ' + group.vertices.length + ', disconnected';
         }
         else if ( neighbors.length === 2 ) {
 
-          this.getVertexNode( vertex ).accessibleName = 'Junction ' + ( index + 1 ) + ' of ' + group.vertices.length + ', connects ' + this.getCircuitElementNode( neighbors[ 0 ] ).accessibleName + ' to ' + this.getCircuitElementNode( neighbors[ 1 ] ).accessibleName;
+          this.getVertexNode( vertex ).accessibleName = 'Junction ' + ( vertexIndex + 1 ) + ' of ' + group.vertices.length + ', connects ' + this.getCircuitElementNode( neighbors[ 0 ] ).accessibleName + ' to ' + this.getCircuitElementNode( neighbors[ 1 ] ).accessibleName;
         }
         else {
-          this.getVertexNode( vertex ).accessibleName = 'Junction ' + ( index + 1 ) + ' of ' + group.vertices.length + ', connects ' + neighbors.map( neighbor => this.getCircuitElementNode( neighbor ).accessibleName ).join( ', ' );
+          this.getVertexNode( vertex ).accessibleName = 'Junction ' + ( vertexIndex + 1 ) + ' of ' + group.vertices.length + ', connects ' + neighbors.map( neighbor => this.getCircuitElementNode( neighbor ).accessibleName ).join( ', ' );
         }
       } );
 
       const groupNode = new Node( {
         tagName: 'div',
-        accessibleHeading: `Group ${index + 1} of ${multiples.length}`,
+        accessibleHeading: `Group ${groupIndex + 1} of ${multiples.length}`,
         pdomOrder: _.uniq( groupPDOMOrder )
       } );
       this.groupsContainer.addChild( groupNode );
