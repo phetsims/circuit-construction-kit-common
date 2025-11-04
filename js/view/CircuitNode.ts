@@ -145,6 +145,8 @@ export default class CircuitNode extends Node {
   private readonly vertexNodes: Record<number, VertexNode>;
   public readonly vertexCutButton: RoundPushButton;
   private readonly circuitDebugLayer: CircuitDebugLayer | null;
+  private readonly circuitElementsSection: Node;
+  private readonly groupsContainer: Node;
 
   /**
    * @param circuit - the model Circuit
@@ -625,31 +627,65 @@ export default class CircuitNode extends Node {
       }
     } );
 
-    // When the focus changes to a circuit element, make sure the circuitElementEditContainerNode is next in focus order
-    pdomFocusProperty.link( pdomFocus => {
-      if ( pdomFocus?.trail.lastNode() instanceof CircuitElementNode ) {
-        this.updatePDOMOrder();
-      }
+    this.circuitElementsSection = new Node( {
+      tagName: 'div',
+      accessibleHeading: 'Circuit Elements'
     } );
+
+    this.groupsContainer = new Node( {} );
+
+    this.addChild( this.circuitElementsSection );
+    this.addChild( this.groupsContainer );
+
+    // When two elements combine, it deletes a vertex. In this case, update the description
+    circuit.vertexGroup.elementDisposedEmitter.addListener( () => this.updatePDOMOrder() );
   }
 
   private updatePDOMOrder(): void {
     const pdomOrder: Node[] = [];
 
-    // const currentlyFocusedCircuitElementNode = pdomFocusProperty.value?.trail.lastNode() as CircuitElementNode | null;
+    const groups = this.circuit.getGroups();
 
-    this.circuit.circuitElements.forEach( circuitElement => {
-      pdomOrder.push( this.getCircuitElementNode( circuitElement ) );
+    const circuitElements = groups.filter( group => group.circuitElements.length === 1 ).map( group => group.circuitElements[ 0 ] );
+    const multiples = groups.filter( group => group.circuitElements.length > 1 );
+
+    const circuitElementsPDOMOrder: Node[] = [];
+    circuitElements.forEach( circuitElement => {
+      const circuitElementNode = this.getCircuitElementNode( circuitElement );
+      const vertexNode = this.getVertexNode( circuitElement.startVertexProperty.value );
+      const vertexNode1 = this.getVertexNode( circuitElement.endVertexProperty.value );
+
+      circuitElementsPDOMOrder.push( circuitElementNode, vertexNode, vertexNode1 );
     } );
+    this.circuitElementsSection.pdomOrder = circuitElementsPDOMOrder;
+    this.circuitElementsSection.visible = circuitElementsPDOMOrder.length > 0;
 
-    this.circuit.vertexGroup.forEach( vertex => {
-      pdomOrder.push( this.getVertexNode( vertex ) );
+    pdomOrder.push( this.circuitElementsSection );
+
+    this.groupsContainer.children.forEach( child => child.dispose() );
+    this.groupsContainer.children = [];
+
+    multiples.forEach( ( group, index ) => {
+
+      const groupPDOMOrder: Node[] = [
+        ...group.circuitElements.map( circuitElement => this.getCircuitElementNode( circuitElement ) ),
+        ...group.vertices.map( vertex => this.getVertexNode( vertex ) )
+      ];
+
+      const groupNode = new Node( {
+        tagName: 'div',
+        accessibleHeading: `Group ${index + 1} of ${multiples.length}`,
+        pdomOrder: _.uniq( groupPDOMOrder )
+      } );
+      this.groupsContainer.addChild( groupNode );
+      pdomOrder.push( groupNode );
+
     } );
 
     pdomOrder.push( this.screenView.circuitElementEditContainerNode );
 
     // Light bulb somehow gives duplicates, so filter them out
-    this.pdomOrder = _.uniq( pdomOrder );
+    this.pdomOrder = pdomOrder;
   }
 
   /**

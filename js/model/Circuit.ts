@@ -17,6 +17,7 @@ import type TEmitter from '../../../axon/js/TEmitter.js';
 import type Bounds2 from '../../../dot/js/Bounds2.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
 import Vector2 from '../../../dot/js/Vector2.js';
+import arrayRemove from '../../../phet-core/js/arrayRemove.js';
 import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import { type PhetioState } from '../../../tandem/js/phet-io-types.js';
 import PhetioGroup from '../../../tandem/js/PhetioGroup.js';
@@ -41,6 +42,7 @@ import Charge from './Charge.js';
 import ChargeAnimator from './ChargeAnimator.js';
 import CircuitElement from './CircuitElement.js';
 import type CircuitElementViewType from './CircuitElementViewType.js';
+import CircuitGroup from './CircuitGroup.js';
 import CurrentSense from './CurrentSense.js';
 import CurrentType from './CurrentType.js';
 import DynamicCircuitElement from './DynamicCircuitElement.js';
@@ -1060,6 +1062,43 @@ export default class Circuit extends PhetioObject {
    */
   public findAllConnectedVertices( vertex: Vertex ): Vertex[] {
     return this.searchVertices( vertex, trueFunction );
+  }
+
+  // Note this finds all connected CircuitElements, even if no current can flow (like an open switch).
+  public getGroups(): CircuitGroup[] {
+
+    const toVisit = this.circuitElements.slice();
+
+    const groups: CircuitGroup[] = [];
+    while ( toVisit.length > 0 ) {
+
+      // remove the 1st element to iterate in a stable way
+      const startElement = toVisit.shift()!;
+
+      const allConnectedVertices = this.findAllConnectedVertices( startElement.startVertexProperty.value );
+
+      const set = new Set<CircuitElement>();
+      for ( let i = 0; i < allConnectedVertices.length; i++ ) {
+        const neighborCircuitElements = this.getNeighborCircuitElements( allConnectedVertices[ i ] );
+        for ( let k = 0; k < neighborCircuitElements.length; k++ ) {
+          set.add( neighborCircuitElements[ k ] );
+        }
+      }
+
+      const circuitElements = Array.from( set );
+      groups.push( {
+        circuitElements: circuitElements,
+        vertices: _.uniq( allConnectedVertices )
+      } );
+
+      // remove all discovered elements from toVisit
+      circuitElements.forEach( element => {
+        if ( toVisit.includes( element ) ) {
+          arrayRemove( toVisit, element );
+        }
+      } );
+    }
+    return groups;
   }
 
   // Identify current senses for CurrentSense.UNSPECIFIED CircuitElements with a nonzero current
