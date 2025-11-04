@@ -34,7 +34,7 @@ export default class Capacitor extends DynamicCircuitElement {
 
   public readonly isTraversibleProperty = new BooleanProperty( true );
 
-  public constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: CapacitorOptions ) {
+  public constructor( descriptionIndex: number, startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: CapacitorOptions ) {
     const options = optionize<CapacitorOptions, SelfOptions, DynamicCircuitElementOptions>()( {
       capacitance: Capacitor.CAPACITANCE_DEFAULT,
 
@@ -43,7 +43,7 @@ export default class Capacitor extends DynamicCircuitElement {
       numberOfDecimalPlaces: Capacitor.NUMBER_OF_DECIMAL_PLACES
     }, providedOptions );
 
-    super( 'capacitor', startVertex, endVertex, CCKCConstants.CAPACITOR_LENGTH, tandem, options );
+    super( 'capacitor', descriptionIndex, startVertex, endVertex, CCKCConstants.CAPACITOR_LENGTH, tandem, options );
 
     this.capacitanceProperty = new NumberProperty( options.capacitance, {
       range: Capacitor.CAPACITANCE_RANGE,

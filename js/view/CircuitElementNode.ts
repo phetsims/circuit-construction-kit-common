@@ -57,7 +57,8 @@ export default abstract class CircuitElementNode extends Node {
         valuesShowing: showValuesAsStringProperty,
         type: circuitElement.type,
         voltage: circuitElement instanceof Battery ? circuitElement.voltageProperty : 0,
-        resistance: circuitElement instanceof Resistor ? circuitElement.resistanceProperty : 0
+        resistance: circuitElement instanceof Resistor ? circuitElement.resistanceProperty : 0,
+        index: circuitElement.descriptionIndex
       } );
       circuitElement.addDisposable( showValuesAsStringProperty, accessibleNameProperty );
 

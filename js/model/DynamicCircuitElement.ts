@@ -35,8 +35,8 @@ export default abstract class DynamicCircuitElement extends FixedCircuitElement 
   public readonly clearEmitter: TEmitter;
   public isClearableProperty: BooleanProperty;
 
-  protected constructor( type: CircuitElementType, startVertex: Vertex, endVertex: Vertex, length: number, tandem: Tandem, providedOptions?: DynamicCircuitElementOptions ) {
-    super( type, startVertex, endVertex, length, tandem, providedOptions );
+  protected constructor( type: CircuitElementType, descriptionIndex: number, startVertex: Vertex, endVertex: Vertex, length: number, tandem: Tandem, providedOptions?: DynamicCircuitElementOptions ) {
+    super( type, descriptionIndex, startVertex, endVertex, length, tandem, providedOptions );
     this.mnaVoltageDrop = 0;
     this.mnaCurrent = 0;
     this.clearEmitter = new Emitter();
@@ -58,7 +58,7 @@ export default abstract class DynamicCircuitElement extends FixedCircuitElement 
     this.clearEmitter.emit();
   }
 
-  public override dispose():void {
+  public override dispose(): void {
     this.clearEmitter.dispose();
     this.isClearableProperty.dispose();
     super.dispose();

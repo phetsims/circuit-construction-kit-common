@@ -48,6 +48,7 @@ export default abstract class VoltageSource extends FixedCircuitElement {
 
   /**
    * @param type
+   * @param descriptionIndex
    * @param startVertex - one of the battery vertices
    * @param endVertex - the other battery vertex
    * @param internalResistanceProperty - the resistance of the battery
@@ -55,7 +56,7 @@ export default abstract class VoltageSource extends FixedCircuitElement {
    * @param tandem
    * @param [providedOptions]
    */
-  public constructor( type: CircuitElementType, startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, length: number, tandem: Tandem, providedOptions?: VoltageSourceOptions ) {
+  public constructor( type: CircuitElementType, descriptionIndex: number, startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, length: number, tandem: Tandem, providedOptions?: VoltageSourceOptions ) {
     assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );
     const options = optionize<VoltageSourceOptions, SelfOptions, FixedCircuitElementOptions>()( {
       initialOrientation: 'right',
@@ -67,7 +68,7 @@ export default abstract class VoltageSource extends FixedCircuitElement {
         phetioFeatured: true
       }
     }, providedOptions );
-    super( type, startVertex, endVertex, length, tandem, options );
+    super( type, descriptionIndex, startVertex, endVertex, length, tandem, options );
 
     this.voltageProperty = new NumberProperty( options.voltage, options.voltagePropertyOptions );
 

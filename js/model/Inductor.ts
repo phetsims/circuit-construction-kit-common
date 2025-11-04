@@ -37,13 +37,13 @@ export default class Inductor extends DynamicCircuitElement {
 
   public readonly isTraversibleProperty = new BooleanProperty( true );
 
-  public constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: InductorOptions ) {
+  public constructor( descriptionIndex: number, startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: InductorOptions ) {
     const options = optionize<InductorOptions, SelfOptions, DynamicCircuitElementOptions>()( {
       inductance: Inductor.INDUCTANCE_DEFAULT,
       numberOfDecimalPlaces: Inductor.INDUCTANCE_NUMBER_OF_DECIMAL_PLACES
     }, providedOptions );
 
-    super( 'inductor', startVertex, endVertex, INDUCTOR_LENGTH, tandem, options );
+    super( 'inductor', descriptionIndex, startVertex, endVertex, INDUCTOR_LENGTH, tandem, options );
 
     this.inductanceProperty = new NumberProperty( options.inductance, {
       range: Inductor.INDUCTANCE_RANGE,

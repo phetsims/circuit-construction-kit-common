@@ -75,22 +75,24 @@ export default class LightBulb extends FixedCircuitElement {
 
   public readonly isTraversibleProperty = new BooleanProperty( true );
 
-  public static createAtPosition( startVertex: Vertex,
-                                  endVertex: Vertex,
-                                  circuit: Circuit,
-                                  resistance: number,
-                                  viewTypeProperty: Property<CircuitElementViewType>,
-                                  tandem: Tandem,
-                                  providedOptions?: LightBulbOptions ): LightBulb {
-    return new LightBulb( startVertex, endVertex, resistance, viewTypeProperty, tandem, providedOptions );
+  public static createAtPosition(
+    descriptionIndex: number,
+    startVertex: Vertex,
+    endVertex: Vertex,
+    circuit: Circuit,
+    resistance: number,
+    viewTypeProperty: Property<CircuitElementViewType>,
+    tandem: Tandem,
+    providedOptions?: LightBulbOptions ): LightBulb {
+    return new LightBulb( descriptionIndex, startVertex, endVertex, resistance, viewTypeProperty, tandem, providedOptions );
   }
 
   public static createVertexPair( position: Vector2, circuit: Circuit, icon = false ): { startVertex: Vertex; endVertex: Vertex } {
     const points = LightBulb.createSamplePoints( position );
 
     // start vertex is at the bottom
-    const startVertex = icon ? new Vertex( points[ 0 ], circuit.selectionProperty ) : circuit.vertexGroup.createNextElement( points[ 0 ] );
-    const endVertex = icon ? new Vertex( points[ 1 ], circuit.selectionProperty ) : circuit.vertexGroup.createNextElement( points[ 1 ] );
+    const startVertex = icon ? new Vertex( 1, points[ 0 ], circuit.selectionProperty ) : circuit.vertexGroup.createNextElement( points[ 0 ] );
+    const endVertex = icon ? new Vertex( 1, points[ 1 ], circuit.selectionProperty ) : circuit.vertexGroup.createNextElement( points[ 1 ] );
     return { startVertex: startVertex, endVertex: endVertex };
   }
 
@@ -110,6 +112,7 @@ export default class LightBulb extends FixedCircuitElement {
   private readonly powerDissipatedProperty: PowerDissipatedProperty;
 
   public constructor(
+    descriptionIndex: number,
     startVertex: Vertex, // side
     endVertex: Vertex, // bottom
     resistance: number,
@@ -124,7 +127,7 @@ export default class LightBulb extends FixedCircuitElement {
     options.numberOfDecimalPlaces = options.isExtreme ? 0 : 1;
 
     // getPathLength not available yet, so use a nonzero charge path length then override.
-    super( 'lightBulb', startVertex, endVertex, 1, tandem, options );
+    super( 'lightBulb', descriptionIndex, startVertex, endVertex, 1, tandem, options );
 
     this.isReal = options.isReal;
     this.isExtreme = options.isExtreme;

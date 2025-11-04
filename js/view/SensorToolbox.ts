@@ -164,8 +164,9 @@ export default class SensorToolbox extends CCKCPanel {
 
     // Icon for the series ammeter
     const seriesAmmeterIcon = new SeriesAmmeter(
-      new Vertex( Vector2.ZERO, circuit.selectionProperty ),
-      new Vertex( new Vector2( CCKCConstants.SERIES_AMMETER_LENGTH, 0 ), circuit.selectionProperty ),
+      1,
+      new Vertex( 1, Vector2.ZERO, circuit.selectionProperty ),
+      new Vertex( 1, new Vector2( CCKCConstants.SERIES_AMMETER_LENGTH, 0 ), circuit.selectionProperty ),
       Tandem.OPT_OUT
     );
     const seriesAmmeterNodeIcon = new SeriesAmmeterNode( null, null, seriesAmmeterIcon,

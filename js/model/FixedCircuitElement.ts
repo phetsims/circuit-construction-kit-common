@@ -31,19 +31,20 @@ export default abstract class FixedCircuitElement extends CircuitElement {
   // keep track of whether it is a fixed length element for assertion testing in CircuitElement
   private readonly isFixedCircuitElement: boolean;
 
-  public constructor( type: CircuitElementType,
-                      startVertex: Vertex,
-                      endVertex: Vertex,
-                      chargePathLength: number, // the distance the charges travel (in view coordinates), see CircuitElement.js
-                      tandem: Tandem,
-                      providedOptions?: FixedCircuitElementOptions ) {
+  protected constructor( type: CircuitElementType,
+                         descriptionIndex: number,
+                         startVertex: Vertex,
+                         endVertex: Vertex,
+                         chargePathLength: number, // the distance the charges travel (in view coordinates), see CircuitElement.js
+                         tandem: Tandem,
+                         providedOptions?: FixedCircuitElementOptions ) {
 
     const options = optionize<FixedCircuitElementOptions, SelfOptions, CircuitElementOptions>()( {
       numberOfDecimalPlaces: 1
     }, providedOptions );
 
     // Super constructor
-    super( type, startVertex, endVertex, chargePathLength, tandem, options );
+    super( type, descriptionIndex, startVertex, endVertex, chargePathLength, tandem, options );
 
     this.numberOfDecimalPlaces = options.numberOfDecimalPlaces;
     this.distanceBetweenVertices = startVertex.positionProperty.get().distance( endVertex.positionProperty.get() );
