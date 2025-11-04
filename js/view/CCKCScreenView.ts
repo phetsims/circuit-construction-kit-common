@@ -535,12 +535,12 @@ export default class CCKCScreenView extends ScreenView {
 
     this.pdomPlayAreaNode.pdomOrder = [
       toolboxContainer,
-      this.viewRadioButtonGroup,
       this.circuitNode,
       controlPanelVBox
     ];
 
     this.pdomControlAreaNode.pdomOrder = [
+      this.viewRadioButtonGroup,
       zoomButtonGroup,
       resetAllButton
     ];
