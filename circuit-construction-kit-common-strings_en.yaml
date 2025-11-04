@@ -83,14 +83,14 @@ a11y:
   displayOptionsPanel:
     accessibleHeading: Display Options
   viewRadioButtonGroup:
-    accessibleHeading:  View Type
-    accessibleName:     View Type Selection
+    accessibleHeading: View Type
+    accessibleName: View Type Selection
     accessibleHelpText: Select the view type for circuit elements
     lifelikeRadioButton:
-      accessibleName:     Lifelike View
+      accessibleName: Lifelike View
       accessibleHelpText: Show the circuit elements like they would look in real life.
     schematicRadioButton:
-      accessibleName:     Schematic View
+      accessibleName: Schematic View
       accessibleHelpText: Show the circuit elements like they would look in a schematic circuit diagram.
   circuitElementToolNode:
     accessibleHelpText: Drag this tool to the circuit to create a new { a11y.circuitElement.accessibleName }.
@@ -99,24 +99,22 @@ a11y:
   trashButton:
     accessibleName: Delete { a11y.circuitElement.accessibleName }
   circuitElement:
-
-    # TODO: What is stopwatch doing here?
     accessibleName: |-
                     { $type ->
                       [resistor]
                       { $valuesShowing ->
-                        [true] Resistor { $index } , { $resistance } ohms
-                        *[false] Resistor { $index }
+                        [true] Resistor, { $resistance } ohms
+                        *[false] Resistor
                       }
                       [battery]
                       { $valuesShowing ->
-                        [true] Battery { $index }, { $voltage } volts
-                        *[false] Battery { $index }
+                        [true] Battery, { $voltage } volts
+                        *[false] Battery
                       }
                       [lightBulb]
                       { $valuesShowing ->
-                        [true] Light Bulb { $index } , { $resistance } ohms
-                        *[false] Light Bulb { $index }
+                        [true] Light Bulb, { $resistance } ohms
+                        *[false] Light Bulb
                       }
                       [capacitor] Capacitor
                       [inductor] Inductor
@@ -126,5 +124,5 @@ a11y:
                       [voltmeter] Voltmeter
                       [ammeter] Ammeter
                       [stopwatch] Stopwatch
-                      *[wire] Wire { $index }
+                      *[wire] Wire
                     }

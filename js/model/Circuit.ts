@@ -40,7 +40,6 @@ import Capacitor from './Capacitor.js';
 import Charge from './Charge.js';
 import ChargeAnimator from './ChargeAnimator.js';
 import CircuitElement from './CircuitElement.js';
-import CircuitElementType from './CircuitElementType.js';
 import type CircuitElementViewType from './CircuitElementViewType.js';
 import CurrentSense from './CurrentSense.js';
 import CurrentType from './CurrentType.js';
@@ -287,7 +286,7 @@ export default class Circuit extends PhetioObject {
     };
 
     this.vertexGroup = new PhetioGroup( ( tandem, position ) => {
-      return new Vertex( 1, position, this.selectionProperty, {
+      return new Vertex( position, this.selectionProperty, {
         tandem: tandem,
         phetioType: Vertex.VertexIO
       } );
@@ -359,19 +358,8 @@ export default class Circuit extends PhetioObject {
       return [ archetypeStartVertex!, archetypeEndVertex! ];
     };
 
-    // Find the lowest unused descriptionIndex for wires
-    const getDescriptionIndex = ( type: CircuitElementType ) => {
-      let index = 1;
-
-      const usedIndices = this.circuitElements.filter( element => element.type === type ).map( element => element.descriptionIndex );
-      while ( usedIndices.includes( index ) ) {
-        index++;
-      }
-      return index;
-    };
-
     this.wireGroup = new PhetioGroup( ( tandem, startVertex, endVertex ) => {
-      return new Wire( getDescriptionIndex( 'wire' ), startVertex, endVertex, this.wireResistivityProperty, tandem );
+      return new Wire( startVertex, endVertex, this.wireResistivityProperty, tandem );
     }, createVertices, {
       groupElementStartingIndex: GROUP_STARTING_INDEX,
       phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
@@ -379,7 +367,8 @@ export default class Circuit extends PhetioObject {
     } );
 
     this.batteryGroup = new PhetioGroup( ( tandem, startVertex, endVertex ) => {
-      return new Battery( getDescriptionIndex( 'battery' ), startVertex, endVertex, this.sourceResistanceProperty, 'normal', tandem );
+      return new Battery( startVertex, endVertex, this.sourceResistanceProperty, 'normal',
+        tandem );
     }, createVertices, {
       groupElementStartingIndex: GROUP_STARTING_INDEX,
       phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
@@ -388,7 +377,7 @@ export default class Circuit extends PhetioObject {
 
     const includeExtremeElements = this.includeLabElements && !this.includeACElements;
     this.extremeBatteryGroup = includeExtremeElements ? new PhetioGroup( ( tandem, startVertex, endVertex ) => {
-      return new Battery( 1, startVertex, endVertex, this.sourceResistanceProperty, 'high-voltage',
+      return new Battery( startVertex, endVertex, this.sourceResistanceProperty, 'high-voltage',
         tandem, {
           voltage: 1000,
           numberOfDecimalPlaces: Battery.HIGH_VOLTAGE_DECIMAL_PLACES
@@ -401,7 +390,7 @@ export default class Circuit extends PhetioObject {
     } ) : null;
 
     this.acVoltageGroup = this.includeACElements ? new PhetioGroup( ( tandem, startVertex, endVertex ) => {
-      return new ACVoltage( 1, startVertex, endVertex, this.sourceResistanceProperty, tandem );
+      return new ACVoltage( startVertex, endVertex, this.sourceResistanceProperty, tandem );
     }, createVertices, {
       groupElementStartingIndex: GROUP_STARTING_INDEX,
       phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
@@ -410,7 +399,7 @@ export default class Circuit extends PhetioObject {
 
     this.resistorGroup = new PhetioGroup(
       ( tandem, startVertex, endVertex ) =>
-        new Resistor( getDescriptionIndex( 'resistor' ), startVertex, endVertex, ResistorType.RESISTOR, tandem ),
+        new Resistor( startVertex, endVertex, ResistorType.RESISTOR, tandem ),
       createVertices, {
         groupElementStartingIndex: GROUP_STARTING_INDEX,
         phetioType: PhetioGroup.PhetioGroupIO( Resistor.ResistorIO ),
@@ -419,7 +408,7 @@ export default class Circuit extends PhetioObject {
 
     this.extremeResistorGroup = includeExtremeElements ? new PhetioGroup(
       ( tandem, startVertex, endVertex ) =>
-        new Resistor( 1, startVertex, endVertex, ResistorType.EXTREME_RESISTOR, tandem ),
+        new Resistor( startVertex, endVertex, ResistorType.EXTREME_RESISTOR, tandem ),
       createVertices, {
         groupElementStartingIndex: GROUP_STARTING_INDEX,
         phetioType: PhetioGroup.PhetioGroupIO( Resistor.ResistorIO ),
@@ -428,7 +417,7 @@ export default class Circuit extends PhetioObject {
 
     this.householdObjectGroup = new PhetioGroup(
       ( tandem, startVertex, endVertex, resistorType ) =>
-        new Resistor( 1, startVertex, endVertex, resistorType, tandem ),
+        new Resistor( startVertex, endVertex, resistorType, tandem ),
       () => {
         return [ ...createVertices(), ResistorType.COIN ];
       }, {
@@ -438,7 +427,7 @@ export default class Circuit extends PhetioObject {
       } );
 
     this.fuseGroup = new PhetioGroup(
-      ( tandem, startVertex, endVertex ) => new Fuse( 1, startVertex, endVertex, tandem, this ),
+      ( tandem, startVertex, endVertex ) => new Fuse( startVertex, endVertex, tandem, this ),
       createVertices, {
         groupElementStartingIndex: GROUP_STARTING_INDEX,
         phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
@@ -446,7 +435,7 @@ export default class Circuit extends PhetioObject {
       } );
 
     this.seriesAmmeterGroup = this.includeLabElements ? new PhetioGroup(
-      ( tandem, startVertex, endVertex ) => new SeriesAmmeter( 1, startVertex, endVertex, tandem ),
+      ( tandem, startVertex, endVertex ) => new SeriesAmmeter( startVertex, endVertex, tandem ),
       createVertices, {
         groupElementStartingIndex: GROUP_STARTING_INDEX,
         phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
@@ -455,7 +444,7 @@ export default class Circuit extends PhetioObject {
 
     this.extremeLightBulbGroup = includeExtremeElements ? new PhetioGroup(
       ( tandem, startVertex, endVertex ) => {
-        return LightBulb.createAtPosition( 1, startVertex, endVertex, this, CCKCConstants.HIGH_RESISTANCE,
+        return LightBulb.createAtPosition( startVertex, endVertex, this, CCKCConstants.HIGH_RESISTANCE,
           this.viewTypeProperty, tandem, {
             isExtreme: true
           } );
@@ -466,7 +455,7 @@ export default class Circuit extends PhetioObject {
       } ) : null;
 
     this.capacitorGroup = this.includeACElements ? new PhetioGroup(
-      ( tandem, startVertex, endVertex ) => new Capacitor( 1, startVertex, endVertex, tandem ),
+      ( tandem, startVertex, endVertex ) => new Capacitor( startVertex, endVertex, tandem ),
       createVertices, {
         groupElementStartingIndex: GROUP_STARTING_INDEX,
         phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
@@ -474,7 +463,7 @@ export default class Circuit extends PhetioObject {
       } ) : null;
 
     this.inductorGroup = this.includeACElements ? new PhetioGroup(
-      ( tandem, startVertex, endVertex ) => new Inductor( 1, startVertex, endVertex, tandem ),
+      ( tandem, startVertex, endVertex ) => new Inductor( startVertex, endVertex, tandem ),
       createVertices, {
         groupElementStartingIndex: GROUP_STARTING_INDEX,
         phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
@@ -482,7 +471,7 @@ export default class Circuit extends PhetioObject {
       } ) : null;
 
     this.switchGroup = new PhetioGroup(
-      ( tandem, startVertex, endVertex ) => new Switch( 1, startVertex, endVertex, tandem, this ),
+      ( tandem, startVertex, endVertex ) => new Switch( startVertex, endVertex, tandem, this ),
       createVertices, {
         groupElementStartingIndex: GROUP_STARTING_INDEX,
         phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
@@ -490,7 +479,7 @@ export default class Circuit extends PhetioObject {
       } );
 
     this.lightBulbGroup = new PhetioGroup( ( tandem, startVertex, endVertex ) => {
-      return new LightBulb( 1, startVertex, endVertex, CCKCConstants.DEFAULT_RESISTANCE, this.viewTypeProperty, tandem );
+      return new LightBulb( startVertex, endVertex, CCKCConstants.DEFAULT_RESISTANCE, this.viewTypeProperty, tandem );
     }, createVertices, {
       groupElementStartingIndex: GROUP_STARTING_INDEX,
       phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
@@ -499,7 +488,7 @@ export default class Circuit extends PhetioObject {
 
     this.realLightBulbGroup = ( this.includeLabElements && !this.includeACElements ) ? new PhetioGroup(
       ( tandem, startVertex, endVertex ) => {
-        return new LightBulb( 1, startVertex, endVertex, CCKCConstants.DEFAULT_RESISTANCE, this.viewTypeProperty, tandem, {
+        return new LightBulb( startVertex, endVertex, CCKCConstants.DEFAULT_RESISTANCE, this.viewTypeProperty, tandem, {
           isReal: true,
           isEditablePropertyOptions: {
             tandem: Tandem.OPT_OUT

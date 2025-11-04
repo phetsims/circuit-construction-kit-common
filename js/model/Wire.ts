@@ -47,7 +47,7 @@ export default class Wire extends CircuitElement {
 
   public readonly isTraversibleProperty = new BooleanProperty( true );
 
-  public constructor( descriptionIndex: number, startVertex: Vertex, endVertex: Vertex, resistivityProperty: NumberProperty, tandem: Tandem, providedOptions?: WireOptions ) {
+  public constructor( startVertex: Vertex, endVertex: Vertex, resistivityProperty: NumberProperty, tandem: Tandem, providedOptions?: WireOptions ) {
     assert && assert( typeof resistivityProperty !== 'number', 'property should not be a number' );
     assert && assert( !startVertex.isDisposed, 'vertex should not be disposed' );
     assert && assert( !endVertex.isDisposed, 'vertex should not be disposed' );
@@ -67,7 +67,7 @@ export default class Wire extends CircuitElement {
       }
     }, providedOptions );
     const chargePathLength = startVertex.positionProperty.get().distance( endVertex.positionProperty.get() );
-    super( 'wire', descriptionIndex, startVertex, endVertex, chargePathLength, tandem, options );
+    super( 'wire', startVertex, endVertex, chargePathLength, tandem, options );
 
     this.wireStub = options.wireStub;
 

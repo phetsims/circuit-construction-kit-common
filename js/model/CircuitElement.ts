@@ -62,11 +62,6 @@ export default abstract class CircuitElement extends PhetioObject {
   // unique identifier for looking up corresponding views
   public readonly id: number;
 
-  // index for description purposes (1, 2, 3, ...) used in i18n strings. Index is 'per-type' so you can have
-  // battery 1, battery 2, resistor 1, resistor 2, etc. Indices are re-used so that if you dispose an element, then
-  // re-create it, you get the same index back. Indices are per-screen.
-  public readonly descriptionIndex: number;
-
   // the type of circuit element for i18n and accessibility
   public readonly type: CircuitElementType;
 
@@ -153,7 +148,7 @@ export default abstract class CircuitElement extends PhetioObject {
 
   public readonly focusEmitter = new Emitter();
 
-  public constructor( type: CircuitElementType, descriptionIndex: number, startVertex: Vertex, endVertex: Vertex, chargePathLength: number, tandem: Tandem, providedOptions?: CircuitElementOptions ) {
+  public constructor( type: CircuitElementType, startVertex: Vertex, endVertex: Vertex, chargePathLength: number, tandem: Tandem, providedOptions?: CircuitElementOptions ) {
     assert && assert( startVertex !== endVertex, 'startVertex cannot be the same as endVertex' );
     assert && assert( chargePathLength > 0, 'charge path length must be positive' );
 
@@ -177,7 +172,6 @@ export default abstract class CircuitElement extends PhetioObject {
 
     this.id = index++;
     this.type = type;
-    this.descriptionIndex = descriptionIndex;
     this.creationTime = phet.joist.elapsedTime;
     this.isFlammable = options.isFlammable;
     this.isMetallic = options.isMetallic;

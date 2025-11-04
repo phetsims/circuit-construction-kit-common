@@ -48,14 +48,13 @@ export default class Resistor extends FixedCircuitElement {
   public readonly isTraversibleProperty = new BooleanProperty( true );
 
   /**
-   * @param descriptionIndex
    * @param startVertex
    * @param endVertex
    * @param resistorType
    * @param tandem
    * @param [providedOptions]
    */
-  public constructor( descriptionIndex: number, startVertex: Vertex, endVertex: Vertex, resistorType: ResistorType, tandem: Tandem, providedOptions?: ResistorOptions ) {
+  public constructor( startVertex: Vertex, endVertex: Vertex, resistorType: ResistorType, tandem: Tandem, providedOptions?: ResistorOptions ) {
     const options = optionize<ResistorOptions, SelfOptions, FixedCircuitElementOptions>()( {
       isFlammable: true, // All resistors are flammable except for the dog, which automatically disconnects at high current.
       phetioType: Resistor.ResistorIO,
@@ -75,7 +74,7 @@ export default class Resistor extends FixedCircuitElement {
       };
     }
 
-    super( 'resistor', descriptionIndex, startVertex, endVertex, resistorType.length, tandem, options );
+    super( 'resistor', startVertex, endVertex, resistorType.length, tandem, options );
 
     this.resistorType = resistorType;
 

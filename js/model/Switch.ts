@@ -35,9 +35,9 @@ export default class Switch extends FixedCircuitElement {
 
   public readonly isTraversibleProperty: TReadOnlyProperty<boolean>;
 
-  public constructor( descriptionIndex: number, startVertex: Vertex, endVertex: Vertex, tandem: Tandem, circuit: Circuit | null ) {
+  public constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, circuit: Circuit | null ) {
 
-    super( 'switch', descriptionIndex, startVertex, endVertex, SWITCH_LENGTH, tandem, {
+    super( 'switch', startVertex, endVertex, SWITCH_LENGTH, tandem, {
 
       // Do not instrument isEditableProperty for switches as there is nothing to edit
       isEditablePropertyOptions: {

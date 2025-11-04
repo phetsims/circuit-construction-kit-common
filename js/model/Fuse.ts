@@ -45,7 +45,7 @@ export default class Fuse extends FixedCircuitElement {
 
   public readonly isTraversibleProperty: TReadOnlyProperty<boolean>;
 
-  public constructor( descriptionIndex: number, startVertex: Vertex, endVertex: Vertex, tandem: Tandem, circuit: Circuit | null, providedOptions?: FuseOptions ) {
+  public constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, circuit: Circuit | null, providedOptions?: FuseOptions ) {
     const options = optionize<FuseOptions, SelfOptions, FixedCircuitElementOptions>()( {
       fuseLength: CCKCConstants.RESISTOR_LENGTH, // Same length as a resistor
       currentRating: Fuse.DEFAULT_CURRENT_RATING, // Amps
@@ -53,7 +53,7 @@ export default class Fuse extends FixedCircuitElement {
       numberOfDecimalPlaces: 1
     }, providedOptions );
 
-    super( 'fuse', descriptionIndex, startVertex, endVertex, options.fuseLength, tandem, options );
+    super( 'fuse', startVertex, endVertex, options.fuseLength, tandem, options );
 
     this.currentRatingProperty = new NumberProperty( options.currentRating, {
       range: Fuse.RANGE,

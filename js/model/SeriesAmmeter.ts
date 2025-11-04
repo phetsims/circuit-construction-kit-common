@@ -27,7 +27,7 @@ export default class SeriesAmmeter extends FixedCircuitElement {
   // the resistance in ohms.  A constant, but modeled as a property for uniformity with other resistive elements.
   public readonly resistanceProperty: NumberProperty;
 
-  public constructor( descriptionIndex: number, startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: SeriesAmmeterOptions ) {
+  public constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: SeriesAmmeterOptions ) {
 
     const options = optionize<SeriesAmmeterOptions, SelfOptions, FixedCircuitElementOptions>()( {
 
@@ -42,7 +42,7 @@ export default class SeriesAmmeter extends FixedCircuitElement {
         tandem: Tandem.OPT_OUT
       }
     }, providedOptions );
-    super( 'ammeter', descriptionIndex, startVertex, endVertex, CCKCConstants.SERIES_AMMETER_LENGTH, tandem, options );
+    super( 'ammeter', startVertex, endVertex, CCKCConstants.SERIES_AMMETER_LENGTH, tandem, options );
     this.resistanceProperty = new NumberProperty( 0 );
   }
 

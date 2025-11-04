@@ -9,8 +9,8 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
-import type Property from '../../../axon/js/Property.js';
 import { type PropertyOptions } from '../../../axon/js/Property.js';
+import type Property from '../../../axon/js/Property.js';
 import StringProperty from '../../../axon/js/StringProperty.js';
 import type TEmitter from '../../../axon/js/TEmitter.js';
 import type TProperty from '../../../axon/js/TProperty.js';
@@ -39,12 +39,6 @@ export default class Vertex extends PhetioObject {
 
   // Index counter for hashing in CircuitNode.  Also useful for debugging and can be shown with ?vertexDisplay=index
   public readonly index: number;
-
-  // index for description purposes (1, 2, 3, ...) used in i18n strings. Index is 'per-type' so you can have
-  // battery 1, battery 2, resistor 1, resistor 2, etc. Indices are re-used so that if you dispose an element, then
-  // re-create it, you get the same index back. Indices are per-screen.
-  public readonly descriptionIndex: number;
-
   private readonly vertexTandem: Tandem;
 
   // position of the vertex
@@ -99,7 +93,7 @@ export default class Vertex extends PhetioObject {
   } );
   public readonly selectionProperty: TProperty<Vertex | CircuitElement | null>;
 
-  public constructor( descriptionIndex: number, position: Vector2, selectionProperty: TProperty<CircuitElement | Vertex | null>, providedOptions?: VertexOptions ) {
+  public constructor( position: Vector2, selectionProperty: TProperty<CircuitElement | Vertex | null>, providedOptions?: VertexOptions ) {
 
     const options = optionize<VertexOptions, SelfOptions, PhetioObjectOptions>()( {
       draggable: true, // whether the vertex can be dragged, false for Black Box elements
@@ -117,7 +111,6 @@ export default class Vertex extends PhetioObject {
     super( options );
 
     this.index = counter++;
-    this.descriptionIndex = descriptionIndex;
 
     this.selectionProperty = selectionProperty;
 

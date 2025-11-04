@@ -35,7 +35,7 @@ export default class Battery extends VoltageSource {
 
   public readonly isTraversibleProperty = new BooleanProperty( true );
 
-  public constructor( descriptionIndex: number, startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, batteryType: BatteryType,
+  public constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, batteryType: BatteryType,
                       tandem: Tandem, providedOptions?: BatteryOptions ) {
     assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );
     const options = optionize<BatteryOptions, EmptySelfOptions, VoltageSourceOptions>()( {
@@ -47,7 +47,7 @@ export default class Battery extends VoltageSource {
         range: batteryType === 'normal' ? Battery.VOLTAGE_RANGE : Battery.HIGH_VOLTAGE_RANGE
       }
     }, providedOptions );
-    super( 'battery', descriptionIndex, startVertex, endVertex, internalResistanceProperty, BATTERY_LENGTH, tandem, options );
+    super( 'battery', startVertex, endVertex, internalResistanceProperty, BATTERY_LENGTH, tandem, options );
 
     this.initialOrientation = options.initialOrientation;
     this.batteryType = batteryType;

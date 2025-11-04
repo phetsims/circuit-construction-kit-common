@@ -50,7 +50,7 @@ export default class ACVoltage extends VoltageSource {
 
   public readonly isTraversibleProperty = new BooleanProperty( true );
 
-  public constructor( descriptionIndex: number, startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, tandem: Tandem, providedOptions?: ACVoltageOptions ) {
+  public constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, tandem: Tandem, providedOptions?: ACVoltageOptions ) {
     assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );
 
     const options = optionize<ACVoltageOptions, SelfOptions, VoltageSourceOptions>()( {
@@ -62,7 +62,7 @@ export default class ACVoltage extends VoltageSource {
         range: ACVoltage.VOLTAGE_RANGE
       }
     }, providedOptions );
-    super( 'acSource', descriptionIndex, startVertex, endVertex, internalResistanceProperty, CCKCConstants.BATTERY_LENGTH, tandem, options );
+    super( 'acSource', startVertex, endVertex, internalResistanceProperty, CCKCConstants.BATTERY_LENGTH, tandem, options );
 
     this.maximumVoltageProperty = new NumberProperty( options.voltage, {
       tandem: tandem.createTandem( 'maximumVoltageProperty' ),
