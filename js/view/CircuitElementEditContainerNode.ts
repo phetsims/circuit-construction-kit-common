@@ -14,6 +14,7 @@ import type Bounds2 from '../../../dot/js/Bounds2.js';
 import Utils from '../../../dot/js/Utils.js';
 import optionize, { type EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
+import AccessibleInteractiveOptions from '../../../scenery-phet/js/accessibility/AccessibleInteractiveOptions.js';
 import HBox from '../../../scenery/js/layout/nodes/HBox.js';
 import Node, { type NodeOptions } from '../../../scenery/js/nodes/Node.js';
 import Text from '../../../scenery/js/nodes/Text.js';
@@ -119,7 +120,7 @@ export default class CircuitElementEditContainerNode extends Node {
                       providedOptions?: CircuitElementEditContainerNodeOptions ) {
 
     const circuit = circuitNode.circuit;
-    super();
+    super( AccessibleInteractiveOptions );
 
     const options = optionize<CircuitElementEditContainerNodeOptions, SelfOptions, NodeOptions>()( {
       showPhaseShiftControl: false

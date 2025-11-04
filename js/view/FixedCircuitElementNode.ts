@@ -164,6 +164,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
       this.dragListener = new FixedCircuitElementDragListener( this, circuitNode, screenView!, tandem.createTandem( 'dragListener' ) );
       this.contentNode.addInputListener( this.dragListener );
 
+      // TODO: Dispose, see https://github.com/phetsims/circuit-construction-kit-common/issues/1034
       this.keyboardListener = new FixedCircuitElementKeyboardListener(
         this,
         circuitNode,

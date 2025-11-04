@@ -18,6 +18,7 @@ import PlayPauseButton from '../../../scenery-phet/js/buttons/PlayPauseButton.js
 import ResetAllButton from '../../../scenery-phet/js/buttons/ResetAllButton.js';
 import StopwatchNode from '../../../scenery-phet/js/StopwatchNode.js';
 import TimeControlNode from '../../../scenery-phet/js/TimeControlNode.js';
+import { pdomFocusProperty } from '../../../scenery/js/accessibility/pdomFocusProperty.js';
 import HotkeyData from '../../../scenery/js/input/HotkeyData.js';
 import AlignGroup from '../../../scenery/js/layout/constraints/AlignGroup.js';
 import AlignBox from '../../../scenery/js/layout/nodes/AlignBox.js';
@@ -41,7 +42,7 @@ import AmmeterNode from './AmmeterNode.js';
 import CCKCZoomButtonGroup from './CCKCZoomButtonGroup.js';
 import ChargeSpeedThrottlingReadoutNode from './ChargeSpeedThrottlingReadoutNode.js';
 import CircuitElementEditContainerNode from './CircuitElementEditContainerNode.js';
-import type CircuitElementNode from './CircuitElementNode.js';
+import CircuitElementNode from './CircuitElementNode.js';
 import CircuitElementToolbox, { type CircuitElementToolboxOptions } from './CircuitElementToolbox.js';
 import CircuitNode from './CircuitNode.js';
 import CurrentChartNode from './CurrentChartNode.js';
@@ -533,6 +534,26 @@ export default class CCKCScreenView extends ScreenView {
       }
     } );
 
+    KeyboardListener.createGlobal( this, {
+      keyStringProperties: CCKCScreenView.EDIT_HOTKEY_DATA.keyStringProperties,
+      fire: event => {
+
+        event?.preventDefault();
+
+        // Double guard to work around errors in fuzzing
+        const selection = this.circuitNode.circuit.selectionProperty.value;
+        if ( selection instanceof CircuitElement ) {
+
+          if ( pdomFocusProperty.value?.trail.lastNode() instanceof CircuitElementNode ) {
+            this.circuitElementEditContainerNode.focus();
+          }
+          else {
+            this.circuitNode.getCircuitElementNode( selection ).focus();
+          }
+        }
+      }
+    } );
+
     this.pdomPlayAreaNode.pdomOrder = [
       toolboxContainer,
       this.circuitNode,
@@ -617,6 +638,13 @@ export default class CCKCScreenView extends ScreenView {
     keys: [ 'delete', 'backspace' ],
     repoName: circuitConstructionKitCommon.name,
     binderName: 'Delete circuit element',
+    global: true
+  } );
+
+  public static readonly EDIT_HOTKEY_DATA = new HotkeyData( {
+    keys: [ 'e', 'm' ],
+    repoName: circuitConstructionKitCommon.name,
+    binderName: 'Edit circuit element',
     global: true
   } );
 }

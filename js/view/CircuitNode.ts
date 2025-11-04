@@ -21,7 +21,6 @@ import Bounds2 from '../../../dot/js/Bounds2.js';
 import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import DisplayClickToDismissListener from '../../../joist/js/DisplayClickToDismissListener.js';
-import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import { pdomFocusProperty } from '../../../scenery/js/accessibility/pdomFocusProperty.js';
 import type SceneryEvent from '../../../scenery/js/input/SceneryEvent.js';
 import Node from '../../../scenery/js/nodes/Node.js';
@@ -637,24 +636,17 @@ export default class CircuitNode extends Node {
   private updatePDOMOrder(): void {
     const pdomOrder: Node[] = [];
 
-    const currentlyFocusedCircuitElementNode = pdomFocusProperty.value?.trail.lastNode() as CircuitElementNode | null;
+    // const currentlyFocusedCircuitElementNode = pdomFocusProperty.value?.trail.lastNode() as CircuitElementNode | null;
 
     this.circuit.circuitElements.forEach( circuitElement => {
-      const circuitElementNode = this.getCircuitElementNode( circuitElement );
-      affirm( circuitElementNode, `No CircuitElementNode found for CircuitElement id=${circuitElement.id}` );
-      pdomOrder.push( circuitElementNode );
-      if ( circuitElementNode === currentlyFocusedCircuitElementNode ) {
-        pdomOrder.push( this.screenView.circuitElementEditContainerNode );
-      }
-
-      const startVertex = circuitElement.startVertexProperty.value;
-      const startVertexNode = this.getVertexNode( startVertex );
-      pdomOrder.push( startVertexNode );
-
-      const endVertex = circuitElement.endVertexProperty.value;
-      const endVertexNode = this.getVertexNode( endVertex );
-      pdomOrder.push( endVertexNode );
+      pdomOrder.push( this.getCircuitElementNode( circuitElement ) );
     } );
+
+    this.circuit.vertexGroup.forEach( vertex => {
+      pdomOrder.push( this.getVertexNode( vertex ) );
+    } );
+
+    pdomOrder.push( this.screenView.circuitElementEditContainerNode );
 
     // Light bulb somehow gives duplicates, so filter them out
     this.pdomOrder = _.uniq( pdomOrder );
