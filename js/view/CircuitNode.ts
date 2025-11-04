@@ -629,7 +629,8 @@ export default class CircuitNode extends Node {
 
     this.circuitElementsSection = new Node( {
       tagName: 'div',
-      accessibleHeading: 'Circuit Elements'
+      accessibleHeading: 'Circuit Elements',
+      visible: false // shown when it has elements in it
     } );
 
     this.groupsContainer = new Node( {} );
