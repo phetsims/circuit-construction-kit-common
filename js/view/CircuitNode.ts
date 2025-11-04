@@ -673,6 +673,22 @@ export default class CircuitNode extends Node {
         ...group.vertices.map( vertex => this.getVertexNode( vertex ) )
       ];
 
+      group.vertices.forEach( ( vertex, index ) => {
+
+        const neighbors = this.circuit.getNeighborCircuitElements( vertex );
+
+        if ( neighbors.length === 1 ) {
+          this.getVertexNode( vertex ).accessibleName = 'Junction ' + ( index + 1 ) + ' of ' + group.vertices.length + ', disconnected';
+        }
+        else if ( neighbors.length === 2 ) {
+
+          this.getVertexNode( vertex ).accessibleName = 'Junction ' + ( index + 1 ) + ' of ' + group.vertices.length + ', connects ' + this.getCircuitElementNode( neighbors[ 0 ] ).accessibleName + ' to ' + this.getCircuitElementNode( neighbors[ 1 ] ).accessibleName;
+        }
+        else {
+          this.getVertexNode( vertex ).accessibleName = 'Junction ' + ( index + 1 ) + ' of ' + group.vertices.length + ', connects ' + neighbors.map( neighbor => this.getCircuitElementNode( neighbor ).accessibleName ).join( ', ' );
+        }
+      } );
+
       const groupNode = new Node( {
         tagName: 'div',
         accessibleHeading: `Group ${index + 1} of ${multiples.length}`,
