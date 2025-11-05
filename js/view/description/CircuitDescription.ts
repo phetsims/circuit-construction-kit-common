@@ -8,135 +8,234 @@
 
 import Node from '../../../../scenery/js/nodes/Node.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
+import Circuit from '../../model/Circuit.js';
 import CircuitElement from '../../model/CircuitElement.js';
 import CircuitElementType from '../../model/CircuitElementType.js';
+import Vertex from '../../model/Vertex.js';
 import CircuitNode from '../CircuitNode.js';
 
+// Constants for preferred ordering of circuit elements in groups
 const GROUPED_CIRCUIT_ELEMENT_TYPE_ORDER: CircuitElementType[] = [ 'battery', 'resistor', 'lightBulb', 'wire' ];
-const CIRCUIT_ELEMENT_TYPE_LABELS: Partial<Record<CircuitElementType, string>> = {
+
+// Human-readable labels for circuit element types
+const CIRCUIT_ELEMENT_TYPE_LABELS: Record<CircuitElementType, string> = {
+  wire: 'Wire',
   battery: 'Battery',
   resistor: 'Resistor',
+  capacitor: 'Capacitor',
+  inductor: 'Inductor',
   lightBulb: 'Light bulb',
-  wire: 'Wire'
+  acSource: 'AC Source',
+  fuse: 'Fuse',
+  switch: 'Switch',
+  voltmeter: 'Voltmeter',
+  ammeter: 'Ammeter',
+  stopwatch: 'Stopwatch'
 };
 
+// String constants for vertex descriptions
+const JUNCTION_LABEL = 'Junction';
+const DISCONNECTED_LABEL = 'disconnected';
+const CONNECTS_LABEL = 'connects';
+const GROUP_LABEL = 'Group';
+
+/**
+ * Gets the human-readable label for a circuit element type.
+ */
 const getCircuitElementTypeLabel = ( type: CircuitElementType ): string => {
-  const mappedLabel = CIRCUIT_ELEMENT_TYPE_LABELS[ type ];
-  if ( mappedLabel ) {
-    return mappedLabel;
-  }
-  const withSpaces = type.replace( /([A-Z])/g, ' $1' );
-  return withSpaces.charAt( 0 ).toUpperCase() + withSpaces.slice( 1 );
+  return CIRCUIT_ELEMENT_TYPE_LABELS[ type ];
 };
 
+/**
+ * Formats an accessible name for a circuit element, including position if there are multiple of the same type.
+ */
 const formatCircuitElementAccessibleName = ( type: CircuitElementType, position: number, total: number ): string => {
   const baseLabel = getCircuitElementTypeLabel( type );
   return total > 1 ? `${baseLabel} ${position} of ${total}` : baseLabel;
 };
 
 export default class CircuitDescription {
-  public static updateCircuitNode( circuitNode: CircuitNode ): void {
-    const circuit = circuitNode.circuit;
-    const pdomOrder: Node[] = [];
 
-    const groups = circuit.getGroups();
-
-    const circuitElements = groups.filter( group => group.circuitElements.length === 1 ).map( group => group.circuitElements[ 0 ] );
-    const multiples = groups.filter( group => group.circuitElements.length > 1 );
-
-    const circuitElementsPDOMOrder: Node[] = [];
-    const circuitElementsTypeCounts = new Map<CircuitElementType, number>();
-    circuitElements.forEach( circuitElement => {
-      const count = circuitElementsTypeCounts.get( circuitElement.type ) || 0;
-      circuitElementsTypeCounts.set( circuitElement.type, count + 1 );
+  /**
+   * Sorts circuit elements by the preferred type order, with unlisted types at the end.
+   */
+  private static sortCircuitElementsByType( circuitElements: CircuitElement[] ): CircuitElement[] {
+    return circuitElements.slice().sort( ( a, b ) => {
+      const aIndex = GROUPED_CIRCUIT_ELEMENT_TYPE_ORDER.indexOf( a.type );
+      const bIndex = GROUPED_CIRCUIT_ELEMENT_TYPE_ORDER.indexOf( b.type );
+      const aOrder = aIndex === -1 ? Infinity : aIndex;
+      const bOrder = bIndex === -1 ? Infinity : bIndex;
+      return aOrder - bOrder;
     } );
-    const circuitElementsTypeIndices = new Map<CircuitElementType, number>();
+  }
+
+  /**
+   * Assigns accessible names to circuit elements based on their type and position among elements of the same type.
+   * Returns an array of Maps: [typeCounts, typeIndices] for tracking counts and current indices.
+   */
+  private static assignAccessibleNamesToElements(
+    circuitElements: CircuitElement[],
+    circuitNode: CircuitNode
+  ): void {
+    // First pass: count how many of each type
+    const typeCounts = new Map<CircuitElementType, number>();
+    circuitElements.forEach( circuitElement => {
+      const count = typeCounts.get( circuitElement.type ) || 0;
+      typeCounts.set( circuitElement.type, count + 1 );
+    } );
+
+    // Second pass: assign names with position info
+    const typeIndices = new Map<CircuitElementType, number>();
     circuitElements.forEach( circuitElement => {
       const circuitElementNode = circuitNode.getCircuitElementNode( circuitElement );
       const type = circuitElement.type;
-      const indexForType = ( circuitElementsTypeIndices.get( type ) || 0 ) + 1;
-      circuitElementsTypeIndices.set( type, indexForType );
-      const totalForType = circuitElementsTypeCounts.get( type ) || 0;
+      const indexForType = ( typeIndices.get( type ) || 0 ) + 1;
+      typeIndices.set( type, indexForType );
+      const totalForType = typeCounts.get( type ) || 0;
       circuitElementNode.accessibleName = formatCircuitElementAccessibleName( type, indexForType, totalForType );
-      const vertexNode = circuitNode.getVertexNode( circuitElement.startVertexProperty.value );
-      const vertexNode1 = circuitNode.getVertexNode( circuitElement.endVertexProperty.value );
-
-      circuitElementsPDOMOrder.push( circuitElementNode, vertexNode, vertexNode1 );
     } );
-    circuitNode.circuitElementsSection.pdomOrder = circuitElementsPDOMOrder;
-    circuitNode.circuitElementsSection.visible = circuitElementsPDOMOrder.length > 0;
+  }
 
-    pdomOrder.push( circuitNode.circuitElementsSection );
+  /**
+   * Creates an accessible description for a vertex based on its connections.
+   */
+  private static createVertexDescription(
+    vertex: Vertex,
+    vertexIndex: number,
+    totalVertices: number,
+    neighbors: CircuitElement[],
+    circuitNode: CircuitNode
+  ): string {
+    const baseLabel = `${JUNCTION_LABEL} ${vertexIndex + 1} of ${totalVertices}`;
 
-    circuitNode.groupsContainer.children.forEach( child => child.dispose() );
-    circuitNode.groupsContainer.children = [];
+    if ( neighbors.length === 1 ) {
+      return `${baseLabel}, ${DISCONNECTED_LABEL}`;
+    }
+    else if ( neighbors.length === 2 ) {
+      const name0 = circuitNode.getCircuitElementNode( neighbors[ 0 ] ).accessibleName;
+      const name1 = circuitNode.getCircuitElementNode( neighbors[ 1 ] ).accessibleName;
+      return `${baseLabel}, ${CONNECTS_LABEL} ${name0} to ${name1}`;
+    }
+    else {
+      const neighborNames = neighbors.map( neighbor =>
+        circuitNode.getCircuitElementNode( neighbor ).accessibleName
+      ).join( ', ' );
+      return `${baseLabel}, ${CONNECTS_LABEL} ${neighborNames}`;
+    }
+  }
 
-    multiples.forEach( ( group, groupIndex ) => {
-      const typeCounts = new Map<CircuitElementType, number>();
-      group.circuitElements.forEach( circuitElement => {
-        const count = typeCounts.get( circuitElement.type ) || 0;
-        typeCounts.set( circuitElement.type, count + 1 );
+  /**
+   * Updates PDOM order and accessible names for single (ungrouped) circuit elements.
+   */
+  private static updateSingleCircuitElements(
+    singleElementCircuits: CircuitElement[],
+    circuitNode: CircuitNode
+  ): Node[] {
+    const pdomOrder: Node[] = [];
+
+    this.assignAccessibleNamesToElements( singleElementCircuits, circuitNode );
+
+    singleElementCircuits.forEach( circuitElement => {
+      const circuitElementNode = circuitNode.getCircuitElementNode( circuitElement );
+      const startVertexNode = circuitNode.getVertexNode( circuitElement.startVertexProperty.value );
+      const endVertexNode = circuitNode.getVertexNode( circuitElement.endVertexProperty.value );
+      pdomOrder.push( circuitElementNode, startVertexNode, endVertexNode );
+    } );
+
+    return pdomOrder;
+  }
+
+  /**
+   * Updates PDOM order and accessible names for grouped circuit elements.
+   * Returns an array of group Nodes to be added to the main PDOM order.
+   */
+  private static updateGroupedCircuitElements(
+    multiElementGroups: Array<{ circuitElements: CircuitElement[]; vertices: Vertex[] }>,
+    circuitNode: CircuitNode,
+    circuit: Circuit
+  ): Node[] {
+    const groupNodes: Node[] = [];
+
+    multiElementGroups.forEach( ( group, groupIndex ) => {
+      // Sort circuit elements by preferred type order
+      const sortedCircuitElements = this.sortCircuitElementsByType( group.circuitElements );
+
+      // Assign accessible names
+      this.assignAccessibleNamesToElements( sortedCircuitElements, circuitNode );
+
+      // Collect circuit element nodes
+      const circuitElementNodes = sortedCircuitElements.map( circuitElement =>
+        circuitNode.getCircuitElementNode( circuitElement )
+      );
+
+      // Assign accessible names to vertices
+      group.vertices.forEach( ( vertex, vertexIndex ) => {
+        const neighbors = circuit.getNeighborCircuitElements( vertex );
+        const description = this.createVertexDescription(
+          vertex,
+          vertexIndex,
+          group.vertices.length,
+          neighbors,
+          circuitNode
+        );
+        circuitNode.getVertexNode( vertex ).accessibleName = description;
       } );
 
-      const typeIndices = new Map<CircuitElementType, number>();
-      const sortedCircuitElements: CircuitElement[] = [];
-      GROUPED_CIRCUIT_ELEMENT_TYPE_ORDER.forEach( type => {
-        group.circuitElements.forEach( circuitElement => {
-          if ( circuitElement.type === type ) {
-            sortedCircuitElements.push( circuitElement );
-          }
-        } );
-      } );
-      group.circuitElements.forEach( circuitElement => {
-        if ( !GROUPED_CIRCUIT_ELEMENT_TYPE_ORDER.includes( circuitElement.type ) ) {
-          sortedCircuitElements.push( circuitElement );
-        }
-      } );
-
-      const circuitElementNodes = sortedCircuitElements.map( circuitElement => {
-        const node = circuitNode.getCircuitElementNode( circuitElement );
-        const type = circuitElement.type;
-        const indexForType = ( typeIndices.get( type ) || 0 ) + 1;
-        typeIndices.set( type, indexForType );
-        const totalForType = typeCounts.get( type ) || 0;
-        node.accessibleName = formatCircuitElementAccessibleName( type, indexForType, totalForType );
-        return node;
-      } );
-
+      // Build PDOM order for this group
       const groupPDOMOrder: Node[] = [
         ...circuitElementNodes,
         ...group.vertices.map( vertex => circuitNode.getVertexNode( vertex ) )
       ];
 
-      group.vertices.forEach( ( vertex, vertexIndex ) => {
+      // Remove duplicates from PDOM order using native Set
+      const uniquePDOMOrder = Array.from( new Set( groupPDOMOrder ) );
 
-        const neighbors = circuit.getNeighborCircuitElements( vertex );
-
-        if ( neighbors.length === 1 ) {
-          circuitNode.getVertexNode( vertex ).accessibleName = 'Junction ' + ( vertexIndex + 1 ) + ' of ' + group.vertices.length + ', disconnected';
-        }
-        else if ( neighbors.length === 2 ) {
-
-          circuitNode.getVertexNode( vertex ).accessibleName = 'Junction ' + ( vertexIndex + 1 ) + ' of ' + group.vertices.length + ', connects ' + circuitNode.getCircuitElementNode( neighbors[ 0 ] ).accessibleName + ' to ' + circuitNode.getCircuitElementNode( neighbors[ 1 ] ).accessibleName;
-        }
-        else {
-          circuitNode.getVertexNode( vertex ).accessibleName = 'Junction ' + ( vertexIndex + 1 ) + ' of ' + group.vertices.length + ', connects ' + neighbors.map( neighbor => circuitNode.getCircuitElementNode( neighbor ).accessibleName ).join( ', ' );
-        }
-      } );
-
+      // Create group node
       const groupNode = new Node( {
         tagName: 'div',
-        accessibleHeading: `Group ${groupIndex + 1} of ${multiples.length}`,
-        pdomOrder: _.uniq( groupPDOMOrder )
+        accessibleHeading: `${GROUP_LABEL} ${groupIndex + 1} of ${multiElementGroups.length}`,
+        pdomOrder: uniquePDOMOrder
       } );
-      circuitNode.groupsContainer.addChild( groupNode );
-      pdomOrder.push( groupNode );
 
+      circuitNode.groupsContainer.addChild( groupNode );
+      groupNodes.push( groupNode );
     } );
 
+    return groupNodes;
+  }
+
+  /**
+   * Updates the circuit node's PDOM structure with accessible descriptions for all circuit elements and vertices.
+   */
+  public static updateCircuitNode( circuitNode: CircuitNode ): void {
+    const circuit = circuitNode.circuit;
+    const pdomOrder: Node[] = [];
+
+    // Get grouped and ungrouped circuit elements
+    const groups = circuit.getGroups();
+    const singleElementCircuits = groups
+      .filter( group => group.circuitElements.length === 1 )
+      .map( group => group.circuitElements[ 0 ] );
+    const multiElementGroups = groups.filter( group => group.circuitElements.length > 1 );
+
+    // Update single circuit elements section
+    const singleElementsPDOMOrder = this.updateSingleCircuitElements( singleElementCircuits, circuitNode );
+    circuitNode.circuitElementsSection.pdomOrder = singleElementsPDOMOrder;
+    circuitNode.circuitElementsSection.visible = singleElementsPDOMOrder.length > 0;
+    pdomOrder.push( circuitNode.circuitElementsSection );
+
+    // Clear and rebuild grouped elements
+    circuitNode.groupsContainer.children.forEach( child => child.dispose() );
+    circuitNode.groupsContainer.children = [];
+
+    // Update grouped circuit elements
+    const groupNodes = this.updateGroupedCircuitElements( multiElementGroups, circuitNode, circuit );
+    pdomOrder.push( ...groupNodes );
+
+    // Add edit container to PDOM order
     pdomOrder.push( circuitNode.screenView.circuitElementEditContainerNode );
 
-    // Light bulb somehow gives duplicates, so filter them out
+    // Set the final PDOM order
     circuitNode.pdomOrder = pdomOrder;
   }
 }
