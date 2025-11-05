@@ -55,6 +55,15 @@ const formatCircuitElementAccessibleName = ( type: CircuitElementType, position:
   return total > 1 ? `${baseLabel} ${position} of ${total}` : baseLabel;
 };
 
+/**
+ * Formats a brief name for a circuit element for use in junction descriptions and other contexts.
+ * Uses just the type and position number without "of total" suffix.
+ */
+const formatCircuitElementBriefName = ( type: CircuitElementType, position: number, total: number ): string => {
+  const baseLabel = getCircuitElementTypeLabel( type );
+  return total > 1 ? `${baseLabel} ${position}` : baseLabel;
+};
+
 export default class CircuitDescription {
 
   /**
@@ -72,12 +81,12 @@ export default class CircuitDescription {
 
   /**
    * Assigns accessible names to circuit elements based on their type and position among elements of the same type.
-   * Returns an array of Maps: [typeCounts, typeIndices] for tracking counts and current indices.
+   * Returns a Map from CircuitElement to its brief name for use in descriptions.
    */
   private static assignAccessibleNamesToElements(
     circuitElements: CircuitElement[],
     circuitNode: CircuitNode
-  ): void {
+  ): Map<CircuitElement, string> {
     // First pass: count how many of each type
     const typeCounts = new Map<CircuitElementType, number>();
     circuitElements.forEach( circuitElement => {
@@ -87,25 +96,35 @@ export default class CircuitDescription {
 
     // Second pass: assign names with position info
     const typeIndices = new Map<CircuitElementType, number>();
+    const briefNames = new Map<CircuitElement, string>();
+
     circuitElements.forEach( circuitElement => {
       const circuitElementNode = circuitNode.getCircuitElementNode( circuitElement );
       const type = circuitElement.type;
       const indexForType = ( typeIndices.get( type ) || 0 ) + 1;
       typeIndices.set( type, indexForType );
       const totalForType = typeCounts.get( type ) || 0;
+
+      // Set the full accessible name on the node
       circuitElementNode.accessibleName = formatCircuitElementAccessibleName( type, indexForType, totalForType );
+
+      // Store the brief name for use in descriptions
+      briefNames.set( circuitElement, formatCircuitElementBriefName( type, indexForType, totalForType ) );
     } );
+
+    return briefNames;
   }
 
   /**
    * Creates an accessible description for a vertex based on its connections.
+   * Uses brief names for circuit elements to keep descriptions concise.
    */
   private static createVertexDescription(
     vertex: Vertex,
     vertexIndex: number,
     totalVertices: number,
     neighbors: CircuitElement[],
-    circuitNode: CircuitNode
+    briefNames: Map<CircuitElement, string>
   ): string {
     const baseLabel = `${JUNCTION_LABEL} ${vertexIndex + 1} of ${totalVertices}`;
 
@@ -113,13 +132,13 @@ export default class CircuitDescription {
       return `${baseLabel}, ${DISCONNECTED_LABEL}`;
     }
     else if ( neighbors.length === 2 ) {
-      const name0 = circuitNode.getCircuitElementNode( neighbors[ 0 ] ).accessibleName;
-      const name1 = circuitNode.getCircuitElementNode( neighbors[ 1 ] ).accessibleName;
+      const name0 = briefNames.get( neighbors[ 0 ] ) || '';
+      const name1 = briefNames.get( neighbors[ 1 ] ) || '';
       return `${baseLabel}, ${CONNECTS_LABEL} ${name0} to ${name1}`;
     }
     else {
       const neighborNames = neighbors.map( neighbor =>
-        circuitNode.getCircuitElementNode( neighbor ).accessibleName
+        briefNames.get( neighbor ) || ''
       ).join( ', ' );
       return `${baseLabel}, ${CONNECTS_LABEL} ${neighborNames}`;
     }
@@ -127,14 +146,15 @@ export default class CircuitDescription {
 
   /**
    * Updates PDOM order and accessible names for single (ungrouped) circuit elements.
+   * Returns the PDOM order and a Map of brief names for these elements.
    */
   private static updateSingleCircuitElements(
     singleElementCircuits: CircuitElement[],
     circuitNode: CircuitNode
-  ): Node[] {
+  ): { pdomOrder: Node[]; briefNames: Map<CircuitElement, string> } {
     const pdomOrder: Node[] = [];
 
-    this.assignAccessibleNamesToElements( singleElementCircuits, circuitNode );
+    const briefNames = this.assignAccessibleNamesToElements( singleElementCircuits, circuitNode );
 
     singleElementCircuits.forEach( circuitElement => {
       const circuitElementNode = circuitNode.getCircuitElementNode( circuitElement );
@@ -143,17 +163,19 @@ export default class CircuitDescription {
       pdomOrder.push( circuitElementNode, startVertexNode, endVertexNode );
     } );
 
-    return pdomOrder;
+    return { pdomOrder: pdomOrder, briefNames: briefNames };
   }
 
   /**
    * Updates PDOM order and accessible names for grouped circuit elements.
    * Returns an array of group Nodes to be added to the main PDOM order.
+   * Also takes a Map of brief names from single elements to use when creating vertex descriptions.
    */
   private static updateGroupedCircuitElements(
     multiElementGroups: Array<{ circuitElements: CircuitElement[]; vertices: Vertex[] }>,
     circuitNode: CircuitNode,
-    circuit: Circuit
+    circuit: Circuit,
+    allBriefNames: Map<CircuitElement, string>
   ): Node[] {
     const groupNodes: Node[] = [];
 
@@ -161,15 +183,20 @@ export default class CircuitDescription {
       // Sort circuit elements by preferred type order
       const sortedCircuitElements = this.sortCircuitElementsByType( group.circuitElements );
 
-      // Assign accessible names
-      this.assignAccessibleNamesToElements( sortedCircuitElements, circuitNode );
+      // Assign accessible names and get brief names for this group
+      const groupBriefNames = this.assignAccessibleNamesToElements( sortedCircuitElements, circuitNode );
+
+      // Merge group brief names into the overall brief names map
+      groupBriefNames.forEach( ( briefName, circuitElement ) => {
+        allBriefNames.set( circuitElement, briefName );
+      } );
 
       // Collect circuit element nodes
       const circuitElementNodes = sortedCircuitElements.map( circuitElement =>
         circuitNode.getCircuitElementNode( circuitElement )
       );
 
-      // Assign accessible names to vertices
+      // Assign accessible names to vertices using brief names
       group.vertices.forEach( ( vertex, vertexIndex ) => {
         const neighbors = circuit.getNeighborCircuitElements( vertex );
         const description = this.createVertexDescription(
@@ -177,7 +204,7 @@ export default class CircuitDescription {
           vertexIndex,
           group.vertices.length,
           neighbors,
-          circuitNode
+          allBriefNames
         );
         circuitNode.getVertexNode( vertex ).accessibleName = description;
       } );
@@ -230,17 +257,17 @@ export default class CircuitDescription {
 
       circuitNode.constructionAreaContainer.accessibleParagraph = null;
 
-      // Update single circuit elements section
-      const singleElementsPDOMOrder = this.updateSingleCircuitElements( singleElementCircuits, circuitNode );
-      circuitNode.circuitElementsSection.pdomOrder = singleElementsPDOMOrder;
-      circuitNode.circuitElementsSection.visible = singleElementsPDOMOrder.length > 0;
+      // Update single circuit elements section and collect brief names
+      const singleElementsResult = this.updateSingleCircuitElements( singleElementCircuits, circuitNode );
+      circuitNode.circuitElementsSection.pdomOrder = singleElementsResult.pdomOrder;
+      circuitNode.circuitElementsSection.visible = singleElementsResult.pdomOrder.length > 0;
 
       // Clear and rebuild grouped elements
       circuitNode.groupsContainer.children.forEach( child => child.dispose() );
       circuitNode.groupsContainer.children = [];
 
-      // Update grouped circuit elements
-      const groupNodes = this.updateGroupedCircuitElements( multiElementGroups, circuitNode, circuit );
+      // Update grouped circuit elements, passing the brief names map for use in junction descriptions
+      const groupNodes = this.updateGroupedCircuitElements( multiElementGroups, circuitNode, circuit, singleElementsResult.briefNames );
 
       // Build construction area PDOM order
       const constructionAreaPDOMOrder: Node[] = [];
