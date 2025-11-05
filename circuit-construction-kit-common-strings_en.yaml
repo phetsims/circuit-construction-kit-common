@@ -102,27 +102,87 @@ a11y:
     accessibleName: |-
                     { $type ->
                       [resistor]
-                      { $valuesShowing ->
-                        [true] Resistor, { $resistance } ohms
-                        *[false] Resistor
+                      { $hasPosition ->
+                        [true]
+                        { $valuesShowing ->
+                          [true] Resistor { $position } of { $total }, { $resistance } ohms
+                          *[false] Resistor { $position } of { $total }
+                        }
+                        *[false]
+                        { $valuesShowing ->
+                          [true] Resistor, { $resistance } ohms
+                          *[false] Resistor
+                        }
                       }
                       [battery]
-                      { $valuesShowing ->
-                        [true] Battery, { $voltage } volts
-                        *[false] Battery
+                      { $hasPosition ->
+                        [true]
+                        { $valuesShowing ->
+                          [true] Battery { $position } of { $total }, { $voltage } volts
+                          *[false] Battery { $position } of { $total }
+                        }
+                        *[false]
+                        { $valuesShowing ->
+                          [true] Battery, { $voltage } volts
+                          *[false] Battery
+                        }
                       }
                       [lightBulb]
-                      { $valuesShowing ->
-                        [true] Light Bulb, { $resistance } ohms
-                        *[false] Light Bulb
+                      { $hasPosition ->
+                        [true]
+                        { $valuesShowing ->
+                          [true] Light Bulb { $position } of { $total }, { $resistance } ohms
+                          *[false] Light Bulb { $position } of { $total }
+                        }
+                        *[false]
+                        { $valuesShowing ->
+                          [true] Light Bulb, { $resistance } ohms
+                          *[false] Light Bulb
+                        }
                       }
-                      [capacitor] Capacitor
-                      [inductor] Inductor
-                      [acSource] AC Voltage Source
-                      [fuse] Fuse
-                      [switch] Switch
-                      [voltmeter] Voltmeter
-                      [ammeter] Ammeter
-                      [stopwatch] Stopwatch
-                      *[wire] Wire
+                      [capacitor]
+                      { $hasPosition ->
+                        [true] Capacitor { $position } of { $total }
+                        *[false] Capacitor
+                      }
+                      [inductor]
+                      { $hasPosition ->
+                        [true] Inductor { $position } of { $total }
+                        *[false] Inductor
+                      }
+                      [acSource]
+                      { $hasPosition ->
+                        [true] AC Voltage Source { $position } of { $total }
+                        *[false] AC Voltage Source
+                      }
+                      [fuse]
+                      { $hasPosition ->
+                        [true] Fuse { $position } of { $total }
+                        *[false] Fuse
+                      }
+                      [switch]
+                      { $hasPosition ->
+                        [true] Switch { $position } of { $total }
+                        *[false] Switch
+                      }
+                      [voltmeter]
+                      { $hasPosition ->
+                        [true] Voltmeter { $position } of { $total }
+                        *[false] Voltmeter
+                      }
+                      [ammeter]
+                      { $hasPosition ->
+                        [true] Ammeter { $position } of { $total }
+                        *[false] Ammeter
+                      }
+                      [stopwatch]
+                      { $hasPosition ->
+                        [true] Stopwatch { $position } of { $total }
+                        *[false] Stopwatch
+                      }
+                      *[wire]
+                      { $hasPosition ->
+                        [true] Wire { $position } of { $total }
+                        *[false] Wire
+                      }
                     }

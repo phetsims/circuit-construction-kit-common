@@ -6,13 +6,23 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import type { TReadOnlyProperty } from '../../../../axon/js/TReadOnlyProperty.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
+import CircuitConstructionKitCommonFluent from '../../CircuitConstructionKitCommonFluent.js';
+import Battery from '../../model/Battery.js';
 import Circuit from '../../model/Circuit.js';
 import CircuitElement from '../../model/CircuitElement.js';
 import CircuitElementType from '../../model/CircuitElementType.js';
+import Resistor from '../../model/Resistor.js';
 import Vertex from '../../model/Vertex.js';
 import CircuitNode from '../CircuitNode.js';
+
+// Track properties for each circuit element so we can dispose them when updating
+const positionedPropertiesMap = new WeakMap<CircuitElement, {
+  positionedNameProperty: TReadOnlyProperty<string>;
+  showValuesAsStringProperty: TReadOnlyProperty<string>;
+}>();
 
 // Constants for preferred ordering of circuit elements in groups
 const GROUPED_CIRCUIT_ELEMENT_TYPE_ORDER: CircuitElementType[] = [ 'battery', 'resistor', 'lightBulb', 'wire' ];
@@ -45,14 +55,6 @@ const EMPTY_CONSTRUCTION_AREA_MESSAGE = 'Create circuit elements to get started'
  */
 const getCircuitElementTypeLabel = ( type: CircuitElementType ): string => {
   return CIRCUIT_ELEMENT_TYPE_LABELS[ type ];
-};
-
-/**
- * Formats an accessible name for a circuit element, including position if there are multiple of the same type.
- */
-const formatCircuitElementAccessibleName = ( type: CircuitElementType, position: number, total: number ): string => {
-  const baseLabel = getCircuitElementTypeLabel( type );
-  return total > 1 ? `${baseLabel} ${position} of ${total}` : baseLabel;
 };
 
 /**
@@ -105,11 +107,59 @@ export default class CircuitDescription {
       typeIndices.set( type, indexForType );
       const totalForType = typeCounts.get( type ) || 0;
 
-      // Set the full accessible name on the node
-      circuitElementNode.accessibleName = formatCircuitElementAccessibleName( type, indexForType, totalForType );
+      // Dispose any existing positioned properties for this element
+      const oldProperties = positionedPropertiesMap.get( circuitElement );
+      if ( oldProperties ) {
+        oldProperties.positionedNameProperty.dispose();
+        oldProperties.showValuesAsStringProperty.dispose();
+        positionedPropertiesMap.delete( circuitElement );
+      }
 
-      // Store the brief name for use in descriptions
-      briefNames.set( circuitElement, formatCircuitElementBriefName( type, indexForType, totalForType ) );
+      if ( totalForType > 1 && circuitElementNode.baseAccessibleNameProperty ) {
+        // Create a new Fluent property with position information
+        const showValuesProperty = circuitNode.model.showValuesProperty;
+        const showValuesAsStringProperty = showValuesProperty.derived( value => value ? 'true' : 'false' );
+
+        const positionedNameProperty = CircuitConstructionKitCommonFluent.a11y.circuitElement.accessibleName.createProperty( {
+          valuesShowing: showValuesAsStringProperty,
+          type: circuitElement.type,
+          voltage: circuitElement instanceof Battery ? circuitElement.voltageProperty : 0,
+          resistance: circuitElement instanceof Resistor ? circuitElement.resistanceProperty : 0,
+          hasPosition: 'true',
+          position: indexForType,
+          total: totalForType
+        } );
+
+        // Store for disposal on next update
+        positionedPropertiesMap.set( circuitElement, {
+          positionedNameProperty: positionedNameProperty,
+          showValuesAsStringProperty: showValuesAsStringProperty
+        } );
+
+        // Dispose the properties when the circuit element is disposed
+        circuitElement.disposeEmitterCircuitElement.addListener( () => {
+          const props = positionedPropertiesMap.get( circuitElement );
+          if ( props ) {
+            props.positionedNameProperty.dispose();
+            props.showValuesAsStringProperty.dispose();
+            positionedPropertiesMap.delete( circuitElement );
+          }
+        } );
+
+        // Set the new property as the accessible name
+        circuitElementNode.accessibleName = positionedNameProperty;
+
+        // Store brief name for junction descriptions (type + number, no values)
+        briefNames.set( circuitElement, formatCircuitElementBriefName( type, indexForType, totalForType ) );
+      }
+      else {
+        // No position needed, reset to the base property that includes values
+        if ( circuitElementNode.baseAccessibleNameProperty ) {
+          circuitElementNode.accessibleName = circuitElementNode.baseAccessibleNameProperty;
+        }
+        // Store brief name (just the type label, no values)
+        briefNames.set( circuitElement, formatCircuitElementBriefName( type, indexForType, totalForType ) );
+      }
     } );
 
     return briefNames;
@@ -145,12 +195,40 @@ export default class CircuitDescription {
   }
 
   /**
+   * Creates a simple junction description for ungrouped circuit elements.
+   * These junctions are numbered sequentially (1, 2) without "of X" since they're standalone.
+   */
+  private static createSimpleVertexDescription(
+    vertexNumber: number,
+    neighbors: CircuitElement[],
+    briefNames: Map<CircuitElement, string>
+  ): string {
+    const baseLabel = `${JUNCTION_LABEL} ${vertexNumber}`;
+
+    if ( neighbors.length === 1 ) {
+      return `${baseLabel}, ${DISCONNECTED_LABEL}`;
+    }
+    else if ( neighbors.length === 2 ) {
+      const name0 = briefNames.get( neighbors[ 0 ] ) || '';
+      const name1 = briefNames.get( neighbors[ 1 ] ) || '';
+      return `${baseLabel}, ${CONNECTS_LABEL} ${name0} to ${name1}`;
+    }
+    else {
+      const neighborNames = neighbors.map( neighbor =>
+        briefNames.get( neighbor ) || ''
+      ).join( ', ' );
+      return `${baseLabel}, ${CONNECTS_LABEL} ${neighborNames}`;
+    }
+  }
+
+  /**
    * Updates PDOM order and accessible names for single (ungrouped) circuit elements.
    * Returns the PDOM order and a Map of brief names for these elements.
    */
   private static updateSingleCircuitElements(
     singleElementCircuits: CircuitElement[],
-    circuitNode: CircuitNode
+    circuitNode: CircuitNode,
+    circuit: Circuit
   ): { pdomOrder: Node[]; briefNames: Map<CircuitElement, string> } {
     const pdomOrder: Node[] = [];
 
@@ -158,8 +236,18 @@ export default class CircuitDescription {
 
     singleElementCircuits.forEach( circuitElement => {
       const circuitElementNode = circuitNode.getCircuitElementNode( circuitElement );
-      const startVertexNode = circuitNode.getVertexNode( circuitElement.startVertexProperty.value );
-      const endVertexNode = circuitNode.getVertexNode( circuitElement.endVertexProperty.value );
+      const startVertex = circuitElement.startVertexProperty.value;
+      const endVertex = circuitElement.endVertexProperty.value;
+      const startVertexNode = circuitNode.getVertexNode( startVertex );
+      const endVertexNode = circuitNode.getVertexNode( endVertex );
+
+      // Set junction descriptions for the start and end vertices
+      const startNeighbors = circuit.getNeighborCircuitElements( startVertex );
+      const endNeighbors = circuit.getNeighborCircuitElements( endVertex );
+
+      startVertexNode.accessibleName = this.createSimpleVertexDescription( 1, startNeighbors, briefNames );
+      endVertexNode.accessibleName = this.createSimpleVertexDescription( 2, endNeighbors, briefNames );
+
       pdomOrder.push( circuitElementNode, startVertexNode, endVertexNode );
     } );
 
@@ -258,7 +346,7 @@ export default class CircuitDescription {
       circuitNode.constructionAreaContainer.accessibleParagraph = null;
 
       // Update single circuit elements section and collect brief names
-      const singleElementsResult = this.updateSingleCircuitElements( singleElementCircuits, circuitNode );
+      const singleElementsResult = this.updateSingleCircuitElements( singleElementCircuits, circuitNode, circuit );
       circuitNode.circuitElementsSection.pdomOrder = singleElementsResult.pdomOrder;
       circuitNode.circuitElementsSection.visible = singleElementsResult.pdomOrder.length > 0;
 

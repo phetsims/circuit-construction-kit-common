@@ -90,7 +90,7 @@ export default class VertexNode extends Node {
 
       focusHighlight: 'invisible', // shown by the this.highlightNode, even when non-focused
 
-      accessibleName: 'a vertex' // TODO: i18n and more detail, see https://github.com/phetsims/circuit-construction-kit-common/issues/1039
+      accessibleName: null // Set by CircuitDescription.ts
     } );
 
     const circuit = circuitNode.circuit;

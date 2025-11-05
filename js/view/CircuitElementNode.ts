@@ -35,6 +35,7 @@ export default abstract class CircuitElementNode extends Node {
   public readonly circuitElement: CircuitElement;
   private dirty: boolean;
   public readonly abstract dragListener: CircuitNodeDragListener | null;
+  public readonly baseAccessibleNameProperty: TReadOnlyProperty<string> | null;
 
   /**
    * @param circuitElement - the CircuitElement to be rendered
@@ -49,15 +50,19 @@ export default abstract class CircuitElementNode extends Node {
     }, providedOptions );
 
     // When not an icon, enable keyboard navigation
+    let accessibleNameProperty: TReadOnlyProperty<string> | null = null;
     if ( circuit && showValuesProperty ) {
 
       const showValuesAsStringProperty = showValuesProperty.derived( value => value ? 'true' : 'false' );
 
-      const accessibleNameProperty = CircuitConstructionKitCommonFluent.a11y.circuitElement.accessibleName.createProperty( {
+      accessibleNameProperty = CircuitConstructionKitCommonFluent.a11y.circuitElement.accessibleName.createProperty( {
         valuesShowing: showValuesAsStringProperty,
         type: circuitElement.type,
         voltage: circuitElement instanceof Battery ? circuitElement.voltageProperty : 0,
-        resistance: circuitElement instanceof Resistor ? circuitElement.resistanceProperty : 0
+        resistance: circuitElement instanceof Resistor ? circuitElement.resistanceProperty : 0,
+        hasPosition: 'false',
+        position: 0,
+        total: 0
       } );
       circuitElement.addDisposable( showValuesAsStringProperty, accessibleNameProperty );
 
@@ -77,6 +82,9 @@ export default abstract class CircuitElementNode extends Node {
     }
 
     super( providedOptions );
+
+    // Store for access by CircuitDescription
+    this.baseAccessibleNameProperty = accessibleNameProperty;
 
     this.useHitTestForSensors = !!providedOptions.useHitTestForSensors;
 

@@ -33,7 +33,10 @@ export default class CCKCTrashButton extends CCKCRoundPushButton {
         type: typeProperty,
         resistance: circuit.selectionProperty.derived( selection => selection instanceof Resistor ? selection.resistanceProperty.value : 0 ),
         valuesShowing: circuitNode.model.showValuesProperty.derived( value => value ? 'true' : 'false' ),
-        voltage: circuit.selectionProperty.derived( selection => selection instanceof Battery ? selection.voltageProperty.value : 0 )
+        voltage: circuit.selectionProperty.derived( selection => selection instanceof Battery ? selection.voltageProperty.value : 0 ),
+        hasPosition: 'false',
+        position: 0,
+        total: 0
       } ),
       touchAreaDilation: 5, // radius dilation for touch area
       content: new Path( trashAltRegularShape, {

@@ -106,7 +106,10 @@ export default class CircuitElementToolNode extends VBox {
         type: circuitElementType,
         valuesShowing: 'false',
         voltage: 0,
-        resistance: 0
+        resistance: 0,
+        hasPosition: 'false',
+        position: 0,
+        total: 0
       } ),
       accessibleHelpTextBehavior: ParallelDOM.HELP_TEXT_AFTER_CONTENT
     }, providedOptions );

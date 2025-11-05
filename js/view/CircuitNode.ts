@@ -651,7 +651,8 @@ export default class CircuitNode extends Node {
     // When two elements combine, it deletes a vertex. In this case, update the description
     circuit.vertexGroup.elementDisposedEmitter.addListener( () => this.updatePDOMOrder() );
 
-    this.updatePDOMOrder();
+    // Update PDOM when show values property changes (link is called eagerly, so no need for separate initial call)
+    this.model.showValuesProperty.link( () => this.updatePDOMOrder() );
   }
 
   private updatePDOMOrder(): void {
