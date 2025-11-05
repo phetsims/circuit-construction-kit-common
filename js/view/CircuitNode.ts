@@ -516,7 +516,8 @@ export default class CircuitNode extends Node {
       enabledPropertyOptions: {
         phetioReadOnly: true,
         phetioFeatured: false
-      }
+      },
+      focusable: false // Delete with delete/backspace on the element rather than focusing this button itself
     } );
     this.vertexCutButton.addListener( () => {
       const selectedVertex = circuit.getSelectedVertex();
