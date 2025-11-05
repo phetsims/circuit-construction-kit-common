@@ -148,6 +148,7 @@ export default class CircuitNode extends Node {
   private readonly circuitDebugLayer: CircuitDebugLayer | null;
   public readonly circuitElementsSection: Node;
   public readonly groupsContainer: Node;
+  public readonly constructionAreaContainer: Node;
 
   /**
    * @param circuit - the model Circuit
@@ -636,11 +637,21 @@ export default class CircuitNode extends Node {
 
     this.groupsContainer = new Node( {} );
 
-    this.addChild( this.circuitElementsSection );
-    this.addChild( this.groupsContainer );
+    // Construction Area container wraps both circuit elements section and groups
+    this.constructionAreaContainer = new Node( {
+      tagName: 'div',
+      accessibleHeading: 'Construction Area'
+    } );
+
+    this.constructionAreaContainer.addChild( this.circuitElementsSection );
+    this.constructionAreaContainer.addChild( this.groupsContainer );
+
+    this.addChild( this.constructionAreaContainer );
 
     // When two elements combine, it deletes a vertex. In this case, update the description
     circuit.vertexGroup.elementDisposedEmitter.addListener( () => this.updatePDOMOrder() );
+
+    this.updatePDOMOrder();
   }
 
   private updatePDOMOrder(): void {

@@ -38,6 +38,7 @@ const JUNCTION_LABEL = 'Junction';
 const DISCONNECTED_LABEL = 'disconnected';
 const CONNECTS_LABEL = 'connects';
 const GROUP_LABEL = 'Group';
+const EMPTY_CONSTRUCTION_AREA_MESSAGE = 'Create circuit elements to get started';
 
 /**
  * Gets the human-readable label for a circuit element type.
@@ -218,22 +219,42 @@ export default class CircuitDescription {
       .map( group => group.circuitElements[ 0 ] );
     const multiElementGroups = groups.filter( group => group.circuitElements.length > 1 );
 
-    // Update single circuit elements section
-    const singleElementsPDOMOrder = this.updateSingleCircuitElements( singleElementCircuits, circuitNode );
-    circuitNode.circuitElementsSection.pdomOrder = singleElementsPDOMOrder;
-    circuitNode.circuitElementsSection.visible = singleElementsPDOMOrder.length > 0;
-    pdomOrder.push( circuitNode.circuitElementsSection );
+    // Check if construction area is empty
+    const hasElements = singleElementCircuits.length > 0 || multiElementGroups.length > 0;
 
-    // Clear and rebuild grouped elements
-    circuitNode.groupsContainer.children.forEach( child => child.dispose() );
-    circuitNode.groupsContainer.children = [];
+    if ( !hasElements ) {
+      circuitNode.constructionAreaContainer.accessibleParagraph = EMPTY_CONSTRUCTION_AREA_MESSAGE;
+      circuitNode.circuitElementsSection.visible = false;
+    }
+    else {
 
-    // Update grouped circuit elements
-    const groupNodes = this.updateGroupedCircuitElements( multiElementGroups, circuitNode, circuit );
-    pdomOrder.push( ...groupNodes );
+      circuitNode.constructionAreaContainer.accessibleParagraph = null;
 
-    // Add edit container to PDOM order
-    pdomOrder.push( circuitNode.screenView.circuitElementEditContainerNode );
+      // Update single circuit elements section
+      const singleElementsPDOMOrder = this.updateSingleCircuitElements( singleElementCircuits, circuitNode );
+      circuitNode.circuitElementsSection.pdomOrder = singleElementsPDOMOrder;
+      circuitNode.circuitElementsSection.visible = singleElementsPDOMOrder.length > 0;
+
+      // Clear and rebuild grouped elements
+      circuitNode.groupsContainer.children.forEach( child => child.dispose() );
+      circuitNode.groupsContainer.children = [];
+
+      // Update grouped circuit elements
+      const groupNodes = this.updateGroupedCircuitElements( multiElementGroups, circuitNode, circuit );
+
+      // Build construction area PDOM order
+      const constructionAreaPDOMOrder: Node[] = [];
+      if ( circuitNode.circuitElementsSection.visible ) {
+        constructionAreaPDOMOrder.push( circuitNode.circuitElementsSection );
+      }
+      constructionAreaPDOMOrder.push( ...groupNodes );
+
+      circuitNode.constructionAreaContainer.pdomOrder = constructionAreaPDOMOrder;
+    }
+
+    // Build main PDOM order
+    pdomOrder.push( circuitNode.constructionAreaContainer );
+    circuitNode.screenView.circuitElementEditContainerNode && pdomOrder.push( circuitNode.screenView.circuitElementEditContainerNode );
 
     // Set the final PDOM order
     circuitNode.pdomOrder = pdomOrder;
