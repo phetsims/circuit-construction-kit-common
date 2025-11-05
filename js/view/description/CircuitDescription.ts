@@ -345,14 +345,14 @@ export default class CircuitDescription {
 
       circuitNode.constructionAreaContainer.accessibleParagraph = null;
 
+      // Clear and rebuild grouped elements - BEFORE setting other pdom order so that nothing will appear 2x places at once
+      circuitNode.groupsContainer.children.forEach( child => child.dispose() );
+      circuitNode.groupsContainer.children = [];
+
       // Update single circuit elements section and collect brief names
       const singleElementsResult = this.updateSingleCircuitElements( singleElementCircuits, circuitNode, circuit );
       circuitNode.circuitElementsSection.pdomOrder = singleElementsResult.pdomOrder;
       circuitNode.circuitElementsSection.visible = singleElementsResult.pdomOrder.length > 0;
-
-      // Clear and rebuild grouped elements
-      circuitNode.groupsContainer.children.forEach( child => child.dispose() );
-      circuitNode.groupsContainer.children = [];
 
       // Update grouped circuit elements, passing the brief names map for use in junction descriptions
       const groupNodes = this.updateGroupedCircuitElements( multiElementGroups, circuitNode, circuit, singleElementsResult.briefNames );
