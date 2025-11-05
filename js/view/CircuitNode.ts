@@ -27,6 +27,7 @@ import Node from '../../../scenery/js/nodes/Node.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import scissorsShape from '../../../sherpa/js/fontawesome-4/scissorsShape.js';
 import RoundPushButton from '../../../sun/js/buttons/RoundPushButton.js';
+import isSettingPhetioStateProperty from '../../../tandem/js/isSettingPhetioStateProperty.js';
 import PhetioGroup from '../../../tandem/js/PhetioGroup.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
@@ -654,10 +655,20 @@ export default class CircuitNode extends Node {
 
     // Update PDOM when show values property changes (link is called eagerly, so no need for separate initial call)
     this.model.showValuesProperty.link( () => this.updatePDOMOrder() );
+
+    // Set the state once after fully reconstructed, not at a partial intermediate state
+    isSettingPhetioStateProperty.lazyLink( isSettingPhetioState => {
+      if ( !isSettingPhetioState ) {
+        this.updatePDOMOrder();
+      }
+    } );
   }
 
   private updatePDOMOrder(): void {
-    CircuitDescription.updateCircuitNode( this );
+    // Set the state once after fully reconstructed, not at a partial intermediate state
+    if ( !isSettingPhetioStateProperty.value ) {
+      CircuitDescription.updateCircuitNode( this );
+    }
   }
 
   /**
@@ -725,7 +736,12 @@ export default class CircuitNode extends Node {
 
     // paint dirty fixed length circuit element nodes.  This batches changes instead of applying multiple changes
     // per frame
-    this.circuit.circuitElements.forEach( circuitElement => this.getCircuitElementNode( circuitElement ).step() );
+    this.circuit.circuitElements.forEach( circuitElement => {
+      const circuitElementNode = this.getCircuitElementNode( circuitElement );
+
+      circuitElementNode.step();
+
+    } );
 
     this.circuitDebugLayer && this.circuitDebugLayer.step();
   }
