@@ -87,6 +87,12 @@ type StringsType = {
   'signedStringProperty': LocalizedStringProperty;
   'dataOutOfRangeStringProperty': LocalizedStringProperty;
   'a11y': {
+    'screenSummary': {
+      'playAreaStringProperty': LocalizedStringProperty;
+      'controlAreaStringProperty': LocalizedStringProperty;
+      'currentDetailsStringProperty': LocalizedStringProperty;
+      'interactionHintStringProperty': LocalizedStringProperty;
+    };
     'sensorToolbox': {
       'accessibleHeadingStringProperty': LocalizedStringProperty;
     };

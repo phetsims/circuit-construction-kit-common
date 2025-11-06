@@ -76,6 +76,19 @@ signed:                                Signed
 dataOutOfRange:                        Data out of range
 
 a11y:
+  screenSummary:
+    playArea:        >-
+                     There is a toolbox of circuit elements on the left, and a construction area in the center, where
+                     you can connect circuit elements to form a circuit. On the right, there is another toolbox with sensors you can 
+                     use to measure properties like voltage and current.
+    controlArea:     |-
+                     Show the current as the flow of electrons or conventional current. Show labels or values on circuit elements 
+                        { $advancedControls -> 
+                          [present] . Additionally, change wire resistivity, battery internal resistance, or add real light bulbs to the circuit element toolbox. 
+                          *[absent] .
+                        }
+    currentDetails:  Currently, no circuit elements are in the construction area.
+    interactionHint: Add circuit elements to the construction area, and connect them to begin.
   sensorToolbox:
     accessibleHeading: Sensor Toolbox
   advancedAccordionBox:
@@ -83,14 +96,14 @@ a11y:
   displayOptionsPanel:
     accessibleHeading: Display Options
   viewRadioButtonGroup:
-    accessibleHeading: View Type
-    accessibleName: View Type Selection
+    accessibleHeading:  View Type
+    accessibleName:     View Type Selection
     accessibleHelpText: Select the view type for circuit elements
     lifelikeRadioButton:
-      accessibleName: Lifelike View
+      accessibleName:     Lifelike View
       accessibleHelpText: Show the circuit elements like they would look in real life.
     schematicRadioButton:
-      accessibleName: Schematic View
+      accessibleName:     Schematic View
       accessibleHelpText: Show the circuit elements like they would look in a schematic circuit diagram.
   circuitElementToolNode:
     accessibleHelpText: Drag this tool to the circuit to create a new { a11y.circuitElement.accessibleName }.

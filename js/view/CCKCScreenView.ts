@@ -46,6 +46,7 @@ import CircuitElementNode from './CircuitElementNode.js';
 import CircuitElementToolbox, { type CircuitElementToolboxOptions } from './CircuitElementToolbox.js';
 import CircuitNode from './CircuitNode.js';
 import CurrentChartNode from './CurrentChartNode.js';
+import CCKCScreenSummaryContent from './description/CCKCScreenSummaryContent.js';
 import DisplayOptionsPanel from './DisplayOptionsPanel.js';
 import FixedCircuitElementNode from './FixedCircuitElementNode.js';
 import SensorToolbox from './SensorToolbox.js';
@@ -102,6 +103,7 @@ export default class CCKCScreenView extends ScreenView {
   private readonly advancedAccordionBox: AdvancedAccordionBox | null;
   private stopwatchNodePositionDirty: boolean;
   public readonly circuitElementEditContainerNode: CircuitElementEditContainerNode;
+  public readonly showAdvancedControls: boolean;
 
   /**
    * @param model
@@ -130,7 +132,9 @@ export default class CCKCScreenView extends ScreenView {
       showMeterPhetioIndex: false
     }, providedOptions );
 
-    super( { tandem: tandem } );
+    super( {
+      tandem: tandem
+    } );
 
     this.model = model;
 
@@ -565,6 +569,9 @@ export default class CCKCScreenView extends ScreenView {
       zoomButtonGroup,
       resetAllButton
     ];
+
+    this.showAdvancedControls = options.showAdvancedControls;
+    this.screenSummaryContent = new CCKCScreenSummaryContent( model, this );
   }
 
   /**

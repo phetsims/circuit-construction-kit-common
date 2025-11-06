@@ -216,6 +216,20 @@
     "value": "Data out of range"
   },
   "a11y": {
+    "screenSummary": {
+      "playArea": {
+        "value": "There is a toolbox of circuit elements on the left, and a construction area in the center, where you can connect circuit elements to form a circuit. On the right, there is another toolbox with sensors you can  use to measure properties like voltage and current."
+      },
+      "controlArea": {
+        "value": "Show the current as the flow of electrons or conventional current. Show labels or values on circuit elements \n   { $advancedControls -> \n     [present] . Additionally, change wire resistivity, battery internal resistance, or add real light bulbs to the circuit element toolbox. \n     *[absent] .\n   }"
+      },
+      "currentDetails": {
+        "value": "Currently, no circuit elements are in the construction area."
+      },
+      "interactionHint": {
+        "value": "Add circuit elements to the construction area, and connect them to begin."
+      }
+    },
     "sensorToolbox": {
       "accessibleHeading": {
         "value": "Sensor Toolbox"
