@@ -77,16 +77,18 @@ dataOutOfRange:                        Data out of range
 
 a11y:
   screenSummary:
-    playArea:        >-
+    playArea:        |-
                      There is a toolbox of circuit elements on the left, and a construction area in the center, where
-                     you can connect circuit elements to form a circuit. On the right, there is another toolbox with sensors you can 
-                     use to measure properties like voltage and current.
-    controlArea:     |-
-                     Show the current as the flow of electrons or conventional current. Show labels or values on circuit elements 
-                        { $advancedControls -> 
-                          [present] . Additionally, change wire resistivity, battery internal resistance, or add real light bulbs to the circuit element toolbox. 
-                          *[absent] .
-                        }
+                       you can connect circuit elements to form a circuit. On the right, there is another toolbox with 
+                       sensors you can 
+                       use to measure properties like voltage and current.
+    controlArea:
+      select_advancedControls:
+        present: |-
+                 Show the current as the flow of electrons or conventional current. Show labels or values on circuit 
+                   elements. Additionally, change wire resistivity, battery internal resistance, or add real light bulbs 
+                   to the circuit element toolbox.
+        absent:  Show the current as the flow of electrons or conventional current. Show labels or values on circuit elements.
     currentDetails:  Currently, no circuit elements are in the construction area.
     interactionHint: Add circuit elements to the construction area, and connect them to begin.
   sensorToolbox:
@@ -112,90 +114,75 @@ a11y:
   trashButton:
     accessibleName: Delete { a11y.circuitElement.accessibleName }
   circuitElement:
-    accessibleName: |-
-                    { $type ->
-                      [resistor]
-                      { $hasPosition ->
-                        [true]
-                        { $valuesShowing ->
-                          [true] Resistor { $position } of { $total }, { $resistance } ohms
-                          *[false] Resistor { $position } of { $total }
-                        }
-                        *[false]
-                        { $valuesShowing ->
-                          [true] Resistor, { $resistance } ohms
-                          *[false] Resistor
-                        }
-                      }
-                      [battery]
-                      { $hasPosition ->
-                        [true]
-                        { $valuesShowing ->
-                          [true] Battery { $position } of { $total }, { $voltage } volts
-                          *[false] Battery { $position } of { $total }
-                        }
-                        *[false]
-                        { $valuesShowing ->
-                          [true] Battery, { $voltage } volts
-                          *[false] Battery
-                        }
-                      }
-                      [lightBulb]
-                      { $hasPosition ->
-                        [true]
-                        { $valuesShowing ->
-                          [true] Light Bulb { $position } of { $total }, { $resistance } ohms
-                          *[false] Light Bulb { $position } of { $total }
-                        }
-                        *[false]
-                        { $valuesShowing ->
-                          [true] Light Bulb, { $resistance } ohms
-                          *[false] Light Bulb
-                        }
-                      }
-                      [capacitor]
-                      { $hasPosition ->
-                        [true] Capacitor { $position } of { $total }
-                        *[false] Capacitor
-                      }
-                      [inductor]
-                      { $hasPosition ->
-                        [true] Inductor { $position } of { $total }
-                        *[false] Inductor
-                      }
-                      [acSource]
-                      { $hasPosition ->
-                        [true] AC Voltage Source { $position } of { $total }
-                        *[false] AC Voltage Source
-                      }
-                      [fuse]
-                      { $hasPosition ->
-                        [true] Fuse { $position } of { $total }
-                        *[false] Fuse
-                      }
-                      [switch]
-                      { $hasPosition ->
-                        [true] Switch { $position } of { $total }
-                        *[false] Switch
-                      }
-                      [voltmeter]
-                      { $hasPosition ->
-                        [true] Voltmeter { $position } of { $total }
-                        *[false] Voltmeter
-                      }
-                      [ammeter]
-                      { $hasPosition ->
-                        [true] Ammeter { $position } of { $total }
-                        *[false] Ammeter
-                      }
-                      [stopwatch]
-                      { $hasPosition ->
-                        [true] Stopwatch { $position } of { $total }
-                        *[false] Stopwatch
-                      }
-                      *[wire]
-                      { $hasPosition ->
-                        [true] Wire { $position } of { $total }
-                        *[false] Wire
-                      }
-                    }
+    accessibleName:
+      select_type:
+        resistor:
+          select_hasPosition:
+            true:
+              select_valuesShowing:
+                true:  'Resistor { $position } of { $total }, { $resistance } ohms'
+                false: 'Resistor { $position } of { $total }'
+            false:
+              select_valuesShowing:
+                true:  'Resistor, { $resistance } ohms'
+                false: 'Resistor'
+        battery:
+          select_hasPosition:
+            true:
+              select_valuesShowing:
+                true:  'Battery { $position } of { $total }, { $voltage } volts'
+                false: 'Battery { $position } of { $total }'
+            false:
+              select_valuesShowing:
+                true:  'Battery, { $voltage } volts'
+                false: 'Battery'
+        lightBulb:
+          select_hasPosition:
+            true:
+              select_valuesShowing:
+                true:  'Light Bulb { $position } of { $total }, { $resistance } ohms'
+                false: 'Light Bulb { $position } of { $total }'
+            false:
+              select_valuesShowing:
+                true:  'Light Bulb, { $resistance } ohms'
+                false: 'Light Bulb'
+        capacitor:
+          select_hasPosition:
+            true:  'Capacitor { $position } of { $total }'
+            false: 'Capacitor'
+        inductor:
+          select_hasPosition:
+            true:  'Inductor { $position } of { $total }'
+            false: 'Inductor'
+        acSource:
+          select_hasPosition:
+            true:  'AC Voltage Source { $position } of { $total }'
+            false: 'AC Voltage Source'
+        fuse:
+          select_hasPosition:
+            true:  'Fuse { $position } of { $total }'
+            false: 'Fuse'
+        switch:
+          select_hasPosition:
+            true:  'Switch { $position } of { $total }'
+            false: 'Switch'
+        voltmeter:
+          select_hasPosition:
+            true:  'Voltmeter { $position } of { $total }'
+            false: 'Voltmeter'
+        ammeter:
+          select_hasPosition:
+            true:  'Ammeter { $position } of { $total }'
+            false: 'Ammeter'
+        stopwatch:
+          select_hasPosition:
+            true:  'Stopwatch { $position } of { $total }'
+            false: 'Stopwatch'
+        wire:
+          select_hasPosition:
+            true:  'Wire { $position } of { $total }'
+            false: 'Wire'
+        false:
+          select_hasPosition:
+            true:  'Wire { $position } of { $total }'
+            false: 'Wire'
