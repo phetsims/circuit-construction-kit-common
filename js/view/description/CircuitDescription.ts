@@ -367,7 +367,10 @@ export default class CircuitDescription {
 
     // Build main PDOM order
     pdomOrder.push( circuitNode.constructionAreaContainer );
-    circuitNode.screenView.circuitElementEditContainerNode && pdomOrder.push( circuitNode.screenView.circuitElementEditContainerNode );
+    if ( circuitNode.circuit.selectionProperty.value instanceof CircuitElement &&
+         circuitNode.screenView.circuitElementEditContainerNode ) {
+      pdomOrder.push( circuitNode.screenView.circuitElementEditContainerNode );
+    }
 
     // Set the final PDOM order
     circuitNode.pdomOrder = pdomOrder;
