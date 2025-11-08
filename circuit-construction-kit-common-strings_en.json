@@ -243,11 +243,43 @@
     "advancedAccordionBox": {
       "accessibleName": {
         "value": "Advanced Settings"
+      },
+      "addRealBulbsCheckbox": {
+        "accessibleContextResponseChecked": {
+          "value": "Real light bulbs added to circuit element toolbox."
+        },
+        "accessibleContextResponseUnchecked": {
+          "value": "Real light bulbs removed from circuit element toolbox."
+        }
       }
     },
     "displayOptionsPanel": {
       "accessibleHeading": {
         "value": "Display Options"
+      },
+      "showCurrentCheckbox": {
+        "accessibleContextResponseChecked": {
+          "value": "{ $currentType ->\n  [electrons] Electron flow shown in circuit.\n  *[conventional] Conventional current arrows shown in circuit.\n}"
+        },
+        "accessibleContextResponseUnchecked": {
+          "value": "{ $currentType ->\n  [electrons] Electron flow hidden in circuit.\n  *[conventional] Conventional current arrows hidden in circuit.\n}"
+        }
+      },
+      "labelsCheckbox": {
+        "accessibleContextResponseChecked": {
+          "value": "Toolbox labels shown under circuit elements."
+        },
+        "accessibleContextResponseUnchecked": {
+          "value": "Toolbox labels hidden under circuit elements."
+        }
+      },
+      "valuesCheckbox": {
+        "accessibleContextResponseChecked": {
+          "value": "Circuit element values shown on each component."
+        },
+        "accessibleContextResponseUnchecked": {
+          "value": "Circuit element values hidden on circuit elements."
+        }
       }
     },
     "viewRadioButtonGroup": {

@@ -101,9 +101,25 @@ type StringsType = {
     };
     'advancedAccordionBox': {
       'accessibleNameStringProperty': LocalizedStringProperty;
+      'addRealBulbsCheckbox': {
+        'accessibleContextResponseCheckedStringProperty': LocalizedStringProperty;
+        'accessibleContextResponseUncheckedStringProperty': LocalizedStringProperty;
+      }
     };
     'displayOptionsPanel': {
       'accessibleHeadingStringProperty': LocalizedStringProperty;
+      'showCurrentCheckbox': {
+        'accessibleContextResponseCheckedStringProperty': LocalizedStringProperty;
+        'accessibleContextResponseUncheckedStringProperty': LocalizedStringProperty;
+      };
+      'labelsCheckbox': {
+        'accessibleContextResponseCheckedStringProperty': LocalizedStringProperty;
+        'accessibleContextResponseUncheckedStringProperty': LocalizedStringProperty;
+      };
+      'valuesCheckbox': {
+        'accessibleContextResponseCheckedStringProperty': LocalizedStringProperty;
+        'accessibleContextResponseUncheckedStringProperty': LocalizedStringProperty;
+      }
     };
     'viewRadioButtonGroup': {
       'accessibleHeadingStringProperty': LocalizedStringProperty;

@@ -63,7 +63,9 @@ export default class AdvancedAccordionBox extends CCKCAccordionBox {
         new CCKCCheckbox( circuit.addRealBulbsProperty, new Text( CircuitConstructionKitCommonStrings.addRealBulbsStringProperty, combineOptions<CheckboxOptions>( {
           tandem: addRealBulbsCheckboxTandem.createTandem( 'labelText' )
         }, TEXT_OPTIONS ) ), {
-          tandem: addRealBulbsCheckboxTandem
+          tandem: addRealBulbsCheckboxTandem,
+          accessibleContextResponseChecked: CircuitConstructionKitCommonFluent.a11y.advancedAccordionBox.addRealBulbsCheckbox.accessibleContextResponseCheckedStringProperty,
+          accessibleContextResponseUnchecked: CircuitConstructionKitCommonFluent.a11y.advancedAccordionBox.addRealBulbsCheckbox.accessibleContextResponseUncheckedStringProperty
         } )
       );
     }

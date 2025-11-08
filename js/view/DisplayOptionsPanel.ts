@@ -123,11 +123,15 @@ export default class DisplayOptionsPanel extends CCKCPanel {
 
     const labelsCheckboxTandem = tandem.createTandem( 'labelsCheckbox' );
     const showLabelsCheckbox = new CCKCCheckbox( showLabelsProperty, createLabel( labelsStringProperty, labelsCheckboxTandem ), {
-      tandem: labelsCheckboxTandem
+      tandem: labelsCheckboxTandem,
+      accessibleContextResponseChecked: CircuitConstructionKitCommonFluent.a11y.displayOptionsPanel.labelsCheckbox.accessibleContextResponseCheckedStringProperty,
+      accessibleContextResponseUnchecked: CircuitConstructionKitCommonFluent.a11y.displayOptionsPanel.labelsCheckbox.accessibleContextResponseUncheckedStringProperty
     } );
     const valuesCheckboxTandem = tandem.createTandem( 'valuesCheckbox' );
     const showValuesCheckbox = new CCKCCheckbox( showValuesProperty, createLabel( valuesStringProperty, valuesCheckboxTandem ), {
-      tandem: valuesCheckboxTandem
+      tandem: valuesCheckboxTandem,
+      accessibleContextResponseChecked: CircuitConstructionKitCommonFluent.a11y.displayOptionsPanel.valuesCheckbox.accessibleContextResponseCheckedStringProperty,
+      accessibleContextResponseUnchecked: CircuitConstructionKitCommonFluent.a11y.displayOptionsPanel.valuesCheckbox.accessibleContextResponseUncheckedStringProperty
     } );
 
     let stopwatchCheckbox: CCKCCheckbox | null = null;
@@ -147,7 +151,13 @@ export default class DisplayOptionsPanel extends CCKCPanel {
         spacing: 8,
         children: [
           new CCKCCheckbox( showCurrentProperty, createLabel( showCurrentStringProperty, showCurrentCheckboxTandem ), {
-            tandem: showCurrentCheckboxTandem
+            tandem: showCurrentCheckboxTandem,
+            accessibleContextResponseChecked: CircuitConstructionKitCommonFluent.a11y.displayOptionsPanel.showCurrentCheckbox.accessibleContextResponseChecked.createProperty( {
+              currentType: currentTypeProperty.derived( currentType => currentType.value )
+            } ),
+            accessibleContextResponseUnchecked: CircuitConstructionKitCommonFluent.a11y.displayOptionsPanel.showCurrentCheckbox.accessibleContextResponseUnchecked.createProperty( {
+              currentType: currentTypeProperty.derived( currentType => currentType.value )
+            } )
           } ),
           currentTypeRadioButtonGroupContainer
         ]
