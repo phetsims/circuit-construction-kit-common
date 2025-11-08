@@ -96,6 +96,9 @@ type StringsType = {
     'sensorToolbox': {
       'accessibleHeadingStringProperty': LocalizedStringProperty;
     };
+    'circuitElementToolbox': {
+      'accessibleHeadingStringProperty': LocalizedStringProperty;
+    };
     'advancedAccordionBox': {
       'accessibleNameStringProperty': LocalizedStringProperty;
     };

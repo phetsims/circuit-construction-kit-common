@@ -93,6 +93,8 @@ a11y:
     interactionHint: Add circuit elements to the construction area, and connect them to begin.
   sensorToolbox:
     accessibleHeading: Sensor Toolbox
+  circuitElementToolbox:
+    accessibleHeading: Circuit Element Toolbox
   advancedAccordionBox:
     accessibleName: Advanced Settings
   displayOptionsPanel:

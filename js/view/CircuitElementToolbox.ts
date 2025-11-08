@@ -15,6 +15,7 @@ import Carousel, { type CarouselItem, type CarouselOptions } from '../../../sun/
 import PageControl from '../../../sun/js/PageControl.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import type CircuitElementViewType from '../model/CircuitElementViewType.js';
 import CCKCColors from './CCKCColors.js';
 
@@ -73,6 +74,8 @@ export default class CircuitElementToolbox extends HBox {
     super( {
       spacing: 5,
       children: [ pageControl, carousel ],
+      tagName: 'div',
+      accessibleHeading: CircuitConstructionKitCommonFluent.a11y.circuitElementToolbox.accessibleHeadingStringProperty,
       tandem: tandem,
       visiblePropertyOptions: {
         phetioFeatured: true

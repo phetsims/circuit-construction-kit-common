@@ -235,6 +235,11 @@
         "value": "Sensor Toolbox"
       }
     },
+    "circuitElementToolbox": {
+      "accessibleHeading": {
+        "value": "Circuit Element Toolbox"
+      }
+    },
     "advancedAccordionBox": {
       "accessibleName": {
         "value": "Advanced Settings"
