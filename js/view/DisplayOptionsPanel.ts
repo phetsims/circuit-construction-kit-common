@@ -98,11 +98,17 @@ export default class DisplayOptionsPanel extends CCKCPanel {
     const currentTypeRadioButtonGroup = new VerticalAquaRadioButtonGroup<CurrentType>( currentTypeProperty, [ {
       value: CurrentType.ELECTRONS,
       createNode: () => electronsBox,
-      tandemName: ELECTRONS_RADIO_BUTTON_TANDEM
+      tandemName: ELECTRONS_RADIO_BUTTON_TANDEM,
+      options: {
+        accessibleContextResponse: CircuitConstructionKitCommonFluent.a11y.displayOptionsPanel.currentTypeRadioButtonGroup.electronsRadioButton.accessibleContextResponseStringProperty
+      }
     }, {
       value: CurrentType.CONVENTIONAL,
       createNode: () => conventionalBox,
-      tandemName: CONVENTIONAL_RADIO_BUTTON_TANDEM
+      tandemName: CONVENTIONAL_RADIO_BUTTON_TANDEM,
+      options: {
+        accessibleContextResponse: CircuitConstructionKitCommonFluent.a11y.displayOptionsPanel.currentTypeRadioButtonGroup.conventionalRadioButton.accessibleContextResponseStringProperty
+      }
     }
     ], {
       tandem: currentTypeRadioButtonGroupTandem,

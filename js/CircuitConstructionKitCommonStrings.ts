@@ -112,6 +112,14 @@ type StringsType = {
         'accessibleContextResponseCheckedStringProperty': LocalizedStringProperty;
         'accessibleContextResponseUncheckedStringProperty': LocalizedStringProperty;
       };
+      'currentTypeRadioButtonGroup': {
+        'electronsRadioButton': {
+          'accessibleContextResponseStringProperty': LocalizedStringProperty;
+        };
+        'conventionalRadioButton': {
+          'accessibleContextResponseStringProperty': LocalizedStringProperty;
+        }
+      };
       'labelsCheckbox': {
         'accessibleContextResponseCheckedStringProperty': LocalizedStringProperty;
         'accessibleContextResponseUncheckedStringProperty': LocalizedStringProperty;
@@ -128,10 +136,12 @@ type StringsType = {
       'lifelikeRadioButton': {
         'accessibleNameStringProperty': LocalizedStringProperty;
         'accessibleHelpTextStringProperty': LocalizedStringProperty;
+        'accessibleContextResponseStringProperty': LocalizedStringProperty;
       };
       'schematicRadioButton': {
         'accessibleNameStringProperty': LocalizedStringProperty;
         'accessibleHelpTextStringProperty': LocalizedStringProperty;
+        'accessibleContextResponseStringProperty': LocalizedStringProperty;
       }
     };
     'circuitElementToolNode': {

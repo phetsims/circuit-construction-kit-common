@@ -111,6 +111,11 @@ a11y:
         select_currentType:
           electrons:    Electron flow hidden in circuit.
           conventional: Conventional current arrows hidden in circuit.
+    currentTypeRadioButtonGroup:
+      electronsRadioButton:
+        accessibleContextResponse: Current animation shows electrons moving through the circuit.
+      conventionalRadioButton:
+        accessibleContextResponse: Current animation shows conventional current arrows.
     labelsCheckbox:
       accessibleContextResponseChecked:   Toolbox labels shown under circuit elements.
       accessibleContextResponseUnchecked: Toolbox labels hidden under circuit elements.
@@ -124,9 +129,11 @@ a11y:
     lifelikeRadioButton:
       accessibleName:     Lifelike View
       accessibleHelpText: Show the circuit elements like they would look in real life.
+      accessibleContextResponse: Circuit elements displayed with lifelike appearance.
     schematicRadioButton:
       accessibleName:     Schematic View
       accessibleHelpText: Show the circuit elements like they would look in a schematic circuit diagram.
+      accessibleContextResponse: Circuit elements displayed with schematic symbols.
   circuitElementToolNode:
     accessibleHelpText: Drag this tool to the circuit to create a new { a11y.circuitElement.accessibleName }.
   reverseBatteryButton:
