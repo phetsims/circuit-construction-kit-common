@@ -26,13 +26,9 @@ export default class CCKCTrashButton extends CCKCRoundPushButton {
 
     const circuit = circuitNode.circuit;
 
-    const typeProperty = circuit.selectionProperty.derived( selection =>
-      selection instanceof CircuitElement ? selection.type : 'wire'
-    );
-
     super( {
       accessibleName: CircuitConstructionKitCommonFluent.a11y.trashButton.accessibleName.createProperty( {
-        type: typeProperty,
+        type: circuit.selectionProperty.derived( selection => selection instanceof CircuitElement ? selection.type : 'wire' ),
         resistance: circuit.selectionProperty.derived( selection => selection instanceof Resistor ? selection.resistanceProperty.value : 0 ),
         voltage: circuit.selectionProperty.derived( selection => selection instanceof Battery ? selection.voltageProperty.value : 0 ),
         capacitance: circuit.selectionProperty.derived( selection => selection instanceof Capacitor ? selection.capacitanceProperty.value : 0 ),
