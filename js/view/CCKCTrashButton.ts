@@ -40,7 +40,7 @@ export default class CCKCTrashButton extends CCKCRoundPushButton {
         hasPosition: 'false',
         position: 0,
         total: 0,
-        displayMode: 'name'
+        displayMode: circuitNode.model.showValuesProperty.derived( showValues => showValues ? 'value' : 'name' )
       } ),
       touchAreaDilation: 5, // radius dilation for touch area
       content: new Path( trashAltRegularShape, {
