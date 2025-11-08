@@ -117,55 +117,53 @@ a11y:
     accessibleName:
       select_type:
         resistor:
-          select_hasPosition:
-            true:
-              select_valuesShowing:
-                true:  'Resistor { $position } of { $total }, { $resistance } ohms'
-                false: 'Resistor { $position } of { $total }'
-            false:
-              select_valuesShowing:
-                true:  'Resistor, { $resistance } ohms'
-                false: 'Resistor'
+          select_displayMode:
+            name:          Resistor
+            value:         Resistor, { $resistance } ohms
+            count:         Resistor { $position } of { $total }
+            countAndValue: Resistor { $position } of { $total }, { $resistance } ohms
         battery:
-          select_hasPosition:
-            true:
-              select_valuesShowing:
-                true:  'Battery { $position } of { $total }, { $voltage } volts'
-                false: 'Battery { $position } of { $total }'
-            false:
-              select_valuesShowing:
-                true:  'Battery, { $voltage } volts'
-                false: 'Battery'
+          select_displayMode:
+            name:          Battery
+            value:         Battery, { $voltage } volts
+            count:         Battery { $position } of { $total }
+            countAndValue: Battery { $position } of { $total }, { $voltage } volts
         lightBulb:
-          select_hasPosition:
-            true:
-              select_valuesShowing:
-                true:  'Light Bulb { $position } of { $total }, { $resistance } ohms'
-                false: 'Light Bulb { $position } of { $total }'
-            false:
-              select_valuesShowing:
-                true:  'Light Bulb, { $resistance } ohms'
-                false: 'Light Bulb'
+          select_displayMode:
+            name:          Light Bulb
+            value:         Light Bulb, { $resistance } ohms
+            count:         Light Bulb { $position } of { $total }
+            countAndValue: Light Bulb { $position } of { $total }, { $resistance } ohms
         capacitor:
-          select_hasPosition:
-            true:  'Capacitor { $position } of { $total }'
-            false: 'Capacitor'
+          select_displayMode:
+            name:          Capacitor
+            value:         Capacitor, { $capacitance } farads
+            count:         Capacitor { $position } of { $total }
+            countAndValue: Capacitor { $position } of { $total }, { $capacitance } farads
         inductor:
-          select_hasPosition:
-            true:  'Inductor { $position } of { $total }'
-            false: 'Inductor'
+          select_displayMode:
+            name:          Inductor
+            value:         Inductor, { $inductance } henries
+            count:         Inductor { $position } of { $total }
+            countAndValue: Inductor { $position } of { $total }, { $inductance } henries
         acSource:
-          select_hasPosition:
-            true:  'AC Voltage Source { $position } of { $total }'
-            false: 'AC Voltage Source'
+          select_displayMode:
+            name:          AC Voltage Source
+            value:         AC Voltage Source, { $voltage } volts
+            count:         AC Voltage Source { $position } of { $total }
+            countAndValue: AC Voltage Source { $position } of { $total }, { $voltage } volts
         fuse:
-          select_hasPosition:
-            true:  'Fuse { $position } of { $total }'
-            false: 'Fuse'
+          select_displayMode:
+            name:          Fuse
+            value:         Fuse, { $resistance } milliohms ≤ currentRating amps
+            count:         Fuse { $position } of { $total }
+            countAndValue: Fuse { $position } of { $total }, { $resistance } milliohms ≤ currentRating amps
         switch:
-          select_hasPosition:
-            true:  'Switch { $position } of { $total }'
-            false: 'Switch'
+          select_displayMode:
+            name:          Switch
+            value:         Switch
+            count:         Switch { $position } of { $total }
+            countAndValue: Switch { $position } of { $total }
         voltmeter:
           select_hasPosition:
             true:  'Voltmeter { $position } of { $total }'

@@ -104,9 +104,11 @@ export default class CircuitElementToolNode extends VBox {
 
       accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.circuitElementToolNode.accessibleHelpText.createProperty( {
         type: circuitElementType,
-        valuesShowing: 'false',
         voltage: 0,
         resistance: 0,
+        displayMode: 'name',
+        capacitance: 0,
+        inductance: 0,
         hasPosition: 'false',
         position: 0,
         total: 0

@@ -13,7 +13,9 @@ import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import Battery from '../model/Battery.js';
+import Capacitor from '../model/Capacitor.js';
 import CircuitElement from '../model/CircuitElement.js';
+import Inductor from '../model/Inductor.js';
 import Resistor from '../model/Resistor.js';
 import CCKCRoundPushButton from './CCKCRoundPushButton.js';
 import CircuitNode from './CircuitNode.js';
@@ -32,11 +34,13 @@ export default class CCKCTrashButton extends CCKCRoundPushButton {
       accessibleName: CircuitConstructionKitCommonFluent.a11y.trashButton.accessibleName.createProperty( {
         type: typeProperty,
         resistance: circuit.selectionProperty.derived( selection => selection instanceof Resistor ? selection.resistanceProperty.value : 0 ),
-        valuesShowing: circuitNode.model.showValuesProperty.derived( value => value ? 'true' : 'false' ),
         voltage: circuit.selectionProperty.derived( selection => selection instanceof Battery ? selection.voltageProperty.value : 0 ),
+        capacitance: circuit.selectionProperty.derived( selection => selection instanceof Capacitor ? selection.capacitanceProperty.value : 0 ),
+        inductance: circuit.selectionProperty.derived( selection => selection instanceof Inductor ? selection.inductanceProperty.value : 0 ),
         hasPosition: 'false',
         position: 0,
-        total: 0
+        total: 0,
+        displayMode: 'name'
       } ),
       touchAreaDilation: 5, // radius dilation for touch area
       content: new Path( trashAltRegularShape, {

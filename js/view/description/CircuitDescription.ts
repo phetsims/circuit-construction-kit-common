@@ -11,9 +11,11 @@ import Node from '../../../../scenery/js/nodes/Node.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../../CircuitConstructionKitCommonFluent.js';
 import Battery from '../../model/Battery.js';
+import Capacitor from '../../model/Capacitor.js';
 import Circuit from '../../model/Circuit.js';
 import CircuitElement from '../../model/CircuitElement.js';
 import CircuitElementType from '../../model/CircuitElementType.js';
+import Inductor from '../../model/Inductor.js';
 import Resistor from '../../model/Resistor.js';
 import Vertex from '../../model/Vertex.js';
 import CircuitNode from '../CircuitNode.js';
@@ -115,51 +117,47 @@ export default class CircuitDescription {
         positionedPropertiesMap.delete( circuitElement );
       }
 
-      if ( totalForType > 1 && circuitElementNode.baseAccessibleNameProperty ) {
-        // Create a new Fluent property with position information
-        const showValuesProperty = circuitNode.model.showValuesProperty;
-        const showValuesAsStringProperty = showValuesProperty.derived( value => value ? 'true' : 'false' );
+      // Create a new Fluent property with position information
+      const showValuesProperty = circuitNode.model.showValuesProperty;
+      const showValuesAsStringProperty = showValuesProperty.derived( value => value ? 'true' : 'false' );
 
-        const positionedNameProperty = CircuitConstructionKitCommonFluent.a11y.circuitElement.accessibleName.createProperty( {
-          valuesShowing: showValuesAsStringProperty,
-          type: circuitElement.type,
-          voltage: circuitElement instanceof Battery ? circuitElement.voltageProperty : 0,
-          resistance: circuitElement instanceof Resistor ? circuitElement.resistanceProperty : 0,
-          hasPosition: 'true',
-          position: indexForType,
-          total: totalForType
-        } );
+      const numbered = totalForType > 1;
+      const accessibleNameProperty = CircuitConstructionKitCommonFluent.a11y.circuitElement.accessibleName.createProperty( {
+        displayMode: showValuesProperty.value && numbered ? 'countAndValue' :
+                     showValuesProperty.value && !numbered ? 'value' :
+                     !showValuesProperty.value && numbered ? 'count' :
+                     'name',
+        type: circuitElement.type,
+        voltage: circuitElement instanceof Battery ? circuitElement.voltageProperty : 0,
+        resistance: circuitElement instanceof Resistor ? circuitElement.resistanceProperty : 0,
+        capacitance: circuitElement instanceof Capacitor ? circuitElement.capacitanceProperty : 0,
+        inductance: circuitElement instanceof Inductor ? circuitElement.inductanceProperty : 0,
+        hasPosition: 'true',
+        position: indexForType,
+        total: totalForType
+      } );
 
-        // Store for disposal on next update
-        positionedPropertiesMap.set( circuitElement, {
-          positionedNameProperty: positionedNameProperty,
-          showValuesAsStringProperty: showValuesAsStringProperty
-        } );
+      // Store for disposal on next update
+      positionedPropertiesMap.set( circuitElement, {
+        positionedNameProperty: accessibleNameProperty,
+        showValuesAsStringProperty: showValuesAsStringProperty
+      } );
 
-        // Dispose the properties when the circuit element is disposed
-        circuitElement.disposeEmitterCircuitElement.addListener( () => {
-          const props = positionedPropertiesMap.get( circuitElement );
-          if ( props ) {
-            props.positionedNameProperty.dispose();
-            props.showValuesAsStringProperty.dispose();
-            positionedPropertiesMap.delete( circuitElement );
-          }
-        } );
-
-        // Set the new property as the accessible name
-        circuitElementNode.accessibleName = positionedNameProperty;
-
-        // Store brief name for junction descriptions (type + number, no values)
-        briefNames.set( circuitElement, formatCircuitElementBriefName( type, indexForType, totalForType ) );
-      }
-      else {
-        // No position needed, reset to the base property that includes values
-        if ( circuitElementNode.baseAccessibleNameProperty ) {
-          circuitElementNode.accessibleName = circuitElementNode.baseAccessibleNameProperty;
+      // Dispose the properties when the circuit element is disposed
+      circuitElement.disposeEmitterCircuitElement.addListener( () => {
+        const props = positionedPropertiesMap.get( circuitElement );
+        if ( props ) {
+          props.positionedNameProperty.dispose();
+          props.showValuesAsStringProperty.dispose();
+          positionedPropertiesMap.delete( circuitElement );
         }
-        // Store brief name (just the type label, no values)
-        briefNames.set( circuitElement, formatCircuitElementBriefName( type, indexForType, totalForType ) );
-      }
+      } );
+
+      // Set the new property as the accessible name
+      circuitElementNode.accessibleName = accessibleNameProperty;
+
+      // Store brief name for junction descriptions (type + number, no values)
+      briefNames.set( circuitElement, formatCircuitElementBriefName( type, indexForType, totalForType ) );
     } );
 
     return briefNames;

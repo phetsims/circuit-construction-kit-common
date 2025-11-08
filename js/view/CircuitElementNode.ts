@@ -13,11 +13,8 @@ import { type PressListenerEvent } from '../../../scenery/js/listeners/PressList
 import Node, { type NodeOptions } from '../../../scenery/js/nodes/Node.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
-import Battery from '../model/Battery.js';
 import type Circuit from '../model/Circuit.js';
 import type CircuitElement from '../model/CircuitElement.js';
-import Resistor from '../model/Resistor.js';
 import type Vertex from '../model/Vertex.js';
 import type CCKCScreenView from './CCKCScreenView.js';
 import type CircuitNode from './CircuitNode.js';
@@ -35,7 +32,7 @@ export default abstract class CircuitElementNode extends Node {
   public readonly circuitElement: CircuitElement;
   private dirty: boolean;
   public readonly abstract dragListener: CircuitNodeDragListener | null;
-  public readonly baseAccessibleNameProperty: TReadOnlyProperty<string> | null;
+  // public readonly baseAccessibleNameProperty: TReadOnlyProperty<string> | null;
 
   /**
    * @param circuitElement - the CircuitElement to be rendered
@@ -50,27 +47,29 @@ export default abstract class CircuitElementNode extends Node {
     }, providedOptions );
 
     // When not an icon, enable keyboard navigation
-    let accessibleNameProperty: TReadOnlyProperty<string> | null = null;
+    // let accessibleNameProperty: TReadOnlyProperty<string> | null = null;
     if ( circuit && showValuesProperty ) {
 
-      const showValuesAsStringProperty = showValuesProperty.derived( value => value ? 'true' : 'false' );
-
-      accessibleNameProperty = CircuitConstructionKitCommonFluent.a11y.circuitElement.accessibleName.createProperty( {
-        valuesShowing: showValuesAsStringProperty,
-        type: circuitElement.type,
-        voltage: circuitElement instanceof Battery ? circuitElement.voltageProperty : 0,
-        resistance: circuitElement instanceof Resistor ? circuitElement.resistanceProperty : 0,
-        hasPosition: 'false',
-        position: 0,
-        total: 0
-      } );
-      circuitElement.addDisposable( showValuesAsStringProperty, accessibleNameProperty );
+      // const showValuesAsStringProperty = showValuesProperty.derived( value => value ? 'true' : 'false' );
+      //
+      // accessibleNameProperty = CircuitConstructionKitCommonFluent.a11y.circuitElement.accessibleName.createProperty( {
+      //   displayMode:
+      //   type: circuitElement.type,
+      //   voltage: circuitElement instanceof Battery ? circuitElement.voltageProperty : 0,
+      //   resistance: circuitElement instanceof Resistor ? circuitElement.resistanceProperty : 0,
+      //   capacitance: circuitElement instanceof Capacitor ? circuitElement.capacitanceProperty : 0,
+      //   inductance: circuitElement instanceof Inductor? circuitElement.inductanceProperty : 0,
+      //   hasPosition: 'false',
+      //   position: 0,
+      //   total: 0
+      // } );
+      // circuitElement.addDisposable( showValuesAsStringProperty, accessibleNameProperty );
 
       providedOptions = optionize<CircuitElementNodeOptions, SelfOptions, NodeOptions>()( {
         tagName: 'div', // HTML tag name for representative element in the document, see ParallelDOM.js
         focusable: true,
 
-        accessibleName: accessibleNameProperty,
+        // accessibleName: accessibleNameProperty,
 
         phetioDynamicElement: true,
         phetioState: false,
@@ -84,7 +83,7 @@ export default abstract class CircuitElementNode extends Node {
     super( providedOptions );
 
     // Store for access by CircuitDescription
-    this.baseAccessibleNameProperty = accessibleNameProperty;
+    // this.baseAccessibleNameProperty = accessibleNameProperty;
 
     this.useHitTestForSensors = !!providedOptions.useHitTestForSensors;
 
