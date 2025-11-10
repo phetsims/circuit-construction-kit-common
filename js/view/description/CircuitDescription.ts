@@ -17,6 +17,7 @@ import CircuitElement from '../../model/CircuitElement.js';
 import CircuitElementType from '../../model/CircuitElementType.js';
 import Inductor from '../../model/Inductor.js';
 import Resistor from '../../model/Resistor.js';
+import Switch from '../../model/Switch.js';
 import Vertex from '../../model/Vertex.js';
 import CircuitNode from '../CircuitNode.js';
 
@@ -132,6 +133,7 @@ export default class CircuitDescription {
         resistance: circuitElement instanceof Resistor ? circuitElement.resistanceProperty : 0,
         capacitance: circuitElement instanceof Capacitor ? circuitElement.capacitanceProperty : 0,
         inductance: circuitElement instanceof Inductor ? circuitElement.inductanceProperty : 0,
+        switchState: circuitElement instanceof Switch ? circuitElement.isClosedProperty.derived( value => value ? 'closed' : 'open' ) : 'open',
         hasPosition: 'true',
         position: indexForType,
         total: totalForType

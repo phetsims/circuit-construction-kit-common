@@ -109,6 +109,7 @@ export default class CircuitElementToolNode extends VBox {
         displayMode: 'name',
         capacitance: 0,
         inductance: 0,
+        switchState: 'open',
         hasPosition: 'false',
         position: 0,
         total: 0

@@ -36,6 +36,7 @@ import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommon
 import type CircuitConstructionKitModel from '../model/CircuitConstructionKitModel.js';
 import CircuitElement from '../model/CircuitElement.js';
 import SeriesAmmeter from '../model/SeriesAmmeter.js';
+import Switch from '../model/Switch.js';
 import Vertex from '../model/Vertex.js';
 import AdvancedAccordionBox from './AdvancedAccordionBox.js';
 import AmmeterNode from './AmmeterNode.js';
@@ -558,6 +559,20 @@ export default class CCKCScreenView extends ScreenView {
       }
     } );
 
+    KeyboardListener.createGlobal( this, {
+      keyStringProperties: CCKCScreenView.TOGGLE_SWITCH_HOTKEY_DATA.keyStringProperties,
+      fire: event => {
+
+        event?.preventDefault();
+
+        // Double guard to work around errors in fuzzing
+        const selection = this.circuitNode.circuit.selectionProperty.value;
+        if ( selection instanceof Switch ) {
+          selection.isClosedProperty.value = !selection.isClosedProperty.value;
+        }
+      }
+    } );
+
     this.pdomPlayAreaNode.pdomOrder = [
       toolboxContainer,
       this.circuitNode,
@@ -652,6 +667,13 @@ export default class CCKCScreenView extends ScreenView {
     keys: [ 'e', 'm' ],
     repoName: circuitConstructionKitCommon.name,
     binderName: 'Edit circuit element',
+    global: true
+  } );
+
+  public static readonly TOGGLE_SWITCH_HOTKEY_DATA = new HotkeyData( {
+    keys: [ 'space', 'enter' ],
+    repoName: circuitConstructionKitCommon.name,
+    binderName: 'Toggle switch open/closed',
     global: true
   } );
 }

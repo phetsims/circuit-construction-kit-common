@@ -70,6 +70,8 @@ inductanceHenriesSymbol:               '{{resistance}} H'
 resistanceOhmsValuePattern:            '{{resistance}} ohms'
 theSwitchIsClosed:                     The switch is closed.
 theSwitchIsOpen:                       The switch is open.
+pressSpaceOrEnterToOpenSwitch:         Press Space or Enter to open the switch.
+pressSpaceOrEnterToCloseSwitch:        Press Space or Enter to close the switch.
 ammeterReadout:                        Ammeter Readout
 magnitude:                             Magnitude
 signed:                                Signed
@@ -127,12 +129,12 @@ a11y:
     accessibleName:     View Type Selection
     accessibleHelpText: Select the view type for circuit elements
     lifelikeRadioButton:
-      accessibleName:     Lifelike View
-      accessibleHelpText: Show the circuit elements like they would look in real life.
+      accessibleName:            Lifelike View
+      accessibleHelpText:        Show the circuit elements like they would look in real life.
       accessibleContextResponse: Circuit elements displayed with lifelike appearance.
     schematicRadioButton:
-      accessibleName:     Schematic View
-      accessibleHelpText: Show the circuit elements like they would look in a schematic circuit diagram.
+      accessibleName:            Schematic View
+      accessibleHelpText:        Show the circuit elements like they would look in a schematic circuit diagram.
       accessibleContextResponse: Circuit elements displayed with schematic symbols.
   circuitElementToolNode:
     accessibleHelpText: Drag this tool to the circuit to create a new { a11y.circuitElement.accessibleName }.
@@ -187,10 +189,22 @@ a11y:
             countAndValue: Fuse { $position } of { $total }, { $resistance } milliohms ≤ currentRating amps
         switch:
           select_displayMode:
-            name:          Switch
-            value:         Switch
-            count:         Switch { $position } of { $total }
-            countAndValue: Switch { $position } of { $total }
+            name:
+              select_switchState:
+                closed:  'Switch, closed'
+                open: 'Switch, open'
+            value:
+              select_switchState:
+                closed:  'Switch, closed'
+                open: 'Switch, open'
+            count:
+              select_switchState:
+                closed:  'Switch { $position } of { $total }, closed'
+                open: 'Switch { $position } of { $total }, open'
+            countAndValue:
+              select_switchState:
+                closed:  'Switch { $position } of { $total }, closed'
+                open: 'Switch { $position } of { $total }, open'
         voltmeter:
           select_hasPosition:
             true:  'Voltmeter { $position } of { $total }'

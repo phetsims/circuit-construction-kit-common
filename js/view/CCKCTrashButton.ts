@@ -33,6 +33,7 @@ export default class CCKCTrashButton extends CCKCRoundPushButton {
         voltage: circuit.selectionProperty.derived( selection => selection instanceof Battery ? selection.voltageProperty.value : 0 ),
         capacitance: circuit.selectionProperty.derived( selection => selection instanceof Capacitor ? selection.capacitanceProperty.value : 0 ),
         inductance: circuit.selectionProperty.derived( selection => selection instanceof Inductor ? selection.inductanceProperty.value : 0 ),
+        switchState: 'open',
         hasPosition: 'false',
         position: 0,
         total: 0,
