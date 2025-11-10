@@ -122,6 +122,8 @@ export default class CircuitElementEditContainerNode extends Node {
     const circuit = circuitNode.circuit;
     super( AccessibleInteractiveOptions );
 
+    this.focusable = false;
+
     const options = optionize<CircuitElementEditContainerNodeOptions, SelfOptions, NodeOptions>()( {
       showPhaseShiftControl: false
     }, providedOptions );
