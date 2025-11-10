@@ -23,7 +23,6 @@ import CircuitNode from '../CircuitNode.js';
 
 // Track properties for each circuit element so we can dispose them when updating
 const positionedPropertiesMap = new WeakMap<CircuitElement, {
-  positionedNameProperty: TReadOnlyProperty<string>;
   showValuesAsStringProperty: TReadOnlyProperty<string>;
 }>();
 
@@ -113,7 +112,6 @@ export default class CircuitDescription {
       // Dispose any existing positioned properties for this element
       const oldProperties = positionedPropertiesMap.get( circuitElement );
       if ( oldProperties ) {
-        oldProperties.positionedNameProperty.dispose();
         oldProperties.showValuesAsStringProperty.dispose();
         positionedPropertiesMap.delete( circuitElement );
       }
@@ -123,7 +121,7 @@ export default class CircuitDescription {
       const showValuesAsStringProperty = showValuesProperty.derived( value => value ? 'true' : 'false' );
 
       const numbered = totalForType > 1;
-      const accessibleNameProperty = CircuitConstructionKitCommonFluent.a11y.circuitElement.accessibleName.createProperty( {
+      const accessibleName = CircuitConstructionKitCommonFluent.a11y.circuitElement.accessibleName.format( {
         displayMode: showValuesProperty.value && numbered ? 'countAndValue' :
                      showValuesProperty.value && !numbered ? 'value' :
                      !showValuesProperty.value && numbered ? 'count' :
@@ -141,7 +139,6 @@ export default class CircuitDescription {
 
       // Store for disposal on next update
       positionedPropertiesMap.set( circuitElement, {
-        positionedNameProperty: accessibleNameProperty,
         showValuesAsStringProperty: showValuesAsStringProperty
       } );
 
@@ -149,14 +146,13 @@ export default class CircuitDescription {
       circuitElement.disposeEmitterCircuitElement.addListener( () => {
         const props = positionedPropertiesMap.get( circuitElement );
         if ( props ) {
-          props.positionedNameProperty.dispose();
           props.showValuesAsStringProperty.dispose();
           positionedPropertiesMap.delete( circuitElement );
         }
       } );
 
       // Set the new property as the accessible name
-      circuitElementNode.accessibleName = accessibleNameProperty;
+      circuitElementNode.accessibleName = accessibleName;
 
       // Store brief name for junction descriptions (type + number, no values)
       briefNames.set( circuitElement, formatCircuitElementBriefName( type, indexForType, totalForType ) );
