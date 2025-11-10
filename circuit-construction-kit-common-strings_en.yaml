@@ -70,8 +70,6 @@ inductanceHenriesSymbol:               '{{resistance}} H'
 resistanceOhmsValuePattern:            '{{resistance}} ohms'
 theSwitchIsClosed:                     The switch is closed.
 theSwitchIsOpen:                       The switch is open.
-pressSpaceOrEnterToOpenSwitch:         Press Space or Enter to open the switch.
-pressSpaceOrEnterToCloseSwitch:        Press Space or Enter to close the switch.
 ammeterReadout:                        Ammeter Readout
 magnitude:                             Magnitude
 signed:                                Signed
@@ -191,20 +189,20 @@ a11y:
           select_displayMode:
             name:
               select_switchState:
-                closed:  'Switch, closed'
-                open: 'Switch, open'
+                closed: 'Switch, closed'
+                open:   'Switch, open'
             value:
               select_switchState:
-                closed:  'Switch, closed'
-                open: 'Switch, open'
+                closed: 'Switch, closed'
+                open:   'Switch, open'
             count:
               select_switchState:
-                closed:  'Switch { $position } of { $total }, closed'
-                open: 'Switch { $position } of { $total }, open'
+                closed: 'Switch { $position } of { $total }, closed'
+                open:   'Switch { $position } of { $total }, open'
             countAndValue:
               select_switchState:
-                closed:  'Switch { $position } of { $total }, closed'
-                open: 'Switch { $position } of { $total }, open'
+                closed: 'Switch { $position } of { $total }, closed'
+                open:   'Switch { $position } of { $total }, open'
         voltmeter:
           select_hasPosition:
             true:  'Voltmeter { $position } of { $total }'
@@ -225,3 +223,9 @@ a11y:
           select_hasPosition:
             true:  'Wire { $position } of { $total }'
             false: 'Wire'
+    accessibleHelpText:
+      select_type:
+        switch:
+          select_switchState:
+            closed: 'This switch is closed. Press Space or Enter to open the switch.'
+            open:   'This switch is open. Press Space or Enter to close the switch.'

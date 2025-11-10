@@ -82,8 +82,6 @@ type StringsType = {
   'resistanceOhmsValuePatternStringProperty': LocalizedStringProperty;
   'theSwitchIsClosedStringProperty': LocalizedStringProperty;
   'theSwitchIsOpenStringProperty': LocalizedStringProperty;
-  'pressSpaceOrEnterToOpenSwitchStringProperty': LocalizedStringProperty;
-  'pressSpaceOrEnterToCloseSwitchStringProperty': LocalizedStringProperty;
   'ammeterReadoutStringProperty': LocalizedStringProperty;
   'magnitudeStringProperty': LocalizedStringProperty;
   'signedStringProperty': LocalizedStringProperty;
@@ -157,6 +155,7 @@ type StringsType = {
     };
     'circuitElement': {
       'accessibleNameStringProperty': LocalizedStringProperty;
+      'accessibleHelpTextStringProperty': LocalizedStringProperty;
     }
   }
 };

@@ -21,15 +21,12 @@ import { rasterizeNode } from '../../../scenery/js/util/rasterizeNode.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import type Switch from '../model/Switch.js';
 import type CCKCScreenView from './CCKCScreenView.js';
 import type CircuitNode from './CircuitNode.js';
 import FixedCircuitElementNode, { type FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
-
-const pressSpaceOrEnterToOpenSwitchStringProperty = CircuitConstructionKitCommonStrings.pressSpaceOrEnterToOpenSwitchStringProperty;
-const pressSpaceOrEnterToCloseSwitchStringProperty = CircuitConstructionKitCommonStrings.pressSpaceOrEnterToCloseSwitchStringProperty;
 
 // constants
 // dimensions for schematic battery
@@ -195,10 +192,12 @@ export default class SwitchNode extends FixedCircuitElementNode {
     );
 
     // Set accessible help text based on switch state
-    const helpTextListener = ( closed: boolean ) => {
-      this.accessibleHelpText = closed ? pressSpaceOrEnterToOpenSwitchStringProperty : pressSpaceOrEnterToCloseSwitchStringProperty;
-    };
-    circuitSwitch.isClosedProperty.link( helpTextListener );
+    const switchAccessibleHelpTextProperty = CircuitConstructionKitCommonFluent.a11y.circuitElement.accessibleHelpText.createProperty( {
+      type: 'switch',
+      switchState: circuitSwitch.isClosedProperty.derived( isClosed => isClosed ? 'closed' : 'open' )
+    } );
+    this.accessibleHelpText = switchAccessibleHelpTextProperty;
+    this.addDisposable( switchAccessibleHelpTextProperty );
 
     this.circuitSwitch = circuitSwitch;
 
@@ -235,7 +234,6 @@ export default class SwitchNode extends FixedCircuitElementNode {
 
     this.disposeSwitchNode = () => {
       circuitSwitch.isClosedProperty.unlink( closeListener );
-      circuitSwitch.isClosedProperty.unlink( helpTextListener );
       screenView && this.contentNode.removeInputListener( fireListener );
 
       // Make sure the lifelikeNode and schematicNode are not listed as parents for their children because the children
