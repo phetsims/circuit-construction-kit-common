@@ -209,7 +209,7 @@ export default class VertexNode extends Node {
 
     // alt-input for attaching vertices, see https://github.com/phetsims/circuit-construction-kit-common/issues/1049
     this.addInputListener( new KeyboardListener( {
-      keys: [ 'm' ], // move
+      keys: [ 'space', 'enter' ], // move
       fire: () => {
         // create a new radio button group that lets the user cycle through attachable vertices
 
