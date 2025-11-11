@@ -6,18 +6,23 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import Property from '../../../axon/js/Property.js';
 import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
 import Grayscale from '../../../scenery/js/filters/Grayscale.js';
 import VBox from '../../../scenery/js/layout/nodes/VBox.js';
+import KeyboardListener from '../../../scenery/js/listeners/KeyboardListener.js';
 import Circle, { type CircleOptions } from '../../../scenery/js/nodes/Circle.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import SceneryConstants from '../../../scenery/js/SceneryConstants.js';
 import Color from '../../../scenery/js/util/Color.js';
 import { rasterizeNode } from '../../../scenery/js/util/rasterizeNode.js';
-import type Tandem from '../../../tandem/js/Tandem.js';
+import RectangularRadioButtonGroup from '../../../sun/js/buttons/RectangularRadioButtonGroup.js';
+import TextPushButton from '../../../sun/js/buttons/TextPushButton.js';
+import Panel from '../../../sun/js/Panel.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import CCKCUtils from '../CCKCUtils.js';
@@ -200,6 +205,85 @@ export default class VertexNode extends Node {
     this.addInputListener( this.dragListener );
 
     this.addInputListener( new VertexKeyboardListener( this, circuitNode ) );
+
+    // alt-input for attaching vertices, see https://github.com/phetsims/circuit-construction-kit-common/issues/1049
+    this.addInputListener( new KeyboardListener( {
+      keys: [ 'm' ], // move
+      fire: () => {
+        // create a new radio button group that lets the user cycle through attachable vertices
+
+        const originalPosition = vertex.positionProperty.value.copy();
+        const selectionProperty = new Property<Vertex | null>( null );
+        const items = [ {
+          value: null as Vertex | null,
+          createNode: () => new Text( 'Detach' )
+        } ];
+
+        const attachableVertices = circuit.vertexGroup.filter( v => v.attachableProperty.get() &&
+                                                                    v !== vertex &&
+                                                                    !circuit.getNeighboringVertices( vertex ).includes( v ) &&
+                                                                    !circuit.findAllFixedVertices( vertex ).includes( vertex ) );
+
+        attachableVertices.forEach( v => {
+          items.push( {
+            value: v,
+            createNode: () => new Text( `Move to Vertex ${v.index}` )
+          } );
+        } );
+
+        const radioButtonGroup = new RectangularRadioButtonGroup( selectionProperty, items, {
+          orientation: 'horizontal',
+          tandem: Tandem.OPT_OUT // transient ui
+        } );
+
+        circuitNode.startDragVertex( this.parentToGlobalPoint( vertex.positionProperty.value ), vertex, vertex );
+
+        selectionProperty.lazyLink( selectedVertex => {
+          if ( selectedVertex ) {
+            circuitNode.dragVertex( this.parentToGlobalPoint( selectedVertex.positionProperty.value ), vertex, true );
+          }
+          else {
+            // move back to original position
+            circuitNode.dragVertex( this.parentToGlobalPoint( originalPosition ), vertex, true );
+          }
+        } );
+
+        const doneButton = new TextPushButton( 'done', {
+          tandem: Tandem.OPT_OUT,
+
+          // TODO: Why doesn't this listener get called? See https://github.com/phetsims/circuit-construction-kit-common/issues/1049
+          listener: () => {
+            console.log( 'done button pressed' );
+            circuitNode.endDrag( vertex, true );
+            panel.dispose();
+            this.focus();
+          }
+        } );
+
+        const panel = new Panel( new VBox( {
+          spacing: 20,
+          align: 'left',
+          children: [ radioButtonGroup, doneButton ]
+        } ) );
+        circuitNode.addChild( panel );
+
+        // TODO: This is a hack to solve the TODO above, see https://github.com/phetsims/circuit-construction-kit-common/issues/1049
+        doneButton.addInputListener( new KeyboardListener( {
+          keys: [ 'enter', 'space' ],
+          fire: () => {
+            console.log( 'done button keyboard pressed' );
+            circuitNode.endDrag( vertex, true );
+            panel.dispose();
+            this.focus();
+          }
+        } ) );
+
+        radioButtonGroup.getButtonForValue( null ).focus();
+
+        // TODO: Show the UI? see https://github.com/phetsims/circuit-construction-kit-common/issues/1049
+        panel.y = 10000; // offscreen
+      }
+    } ) );
 
     // Make sure the cut button remains in the visible screen bounds.
     this.updateVertexNodePositionListener = this.updateVertexNodePosition.bind( this );
