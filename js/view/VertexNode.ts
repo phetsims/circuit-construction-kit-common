@@ -75,6 +75,7 @@ export default class VertexNode extends Node {
   public static readonly webglSpriteNodes = [
     BLACK_CIRCLE_NODE, RED_CIRCLE_NODE
   ];
+  public attachmentName = '';
 
   /**
    * @param circuitNode - the entire CircuitNode
@@ -222,16 +223,17 @@ export default class VertexNode extends Node {
         const attachableVertices = circuit.vertexGroup.filter( v => v.attachableProperty.get() &&
                                                                     v !== vertex &&
                                                                     !circuit.getNeighboringVertices( vertex ).includes( v ) &&
-                                                                    !circuit.findAllFixedVertices( vertex ).includes( vertex ) );
+                                                                    !circuit.findAllFixedVertices( vertex ).includes( v ) );
 
         attachableVertices.forEach( v => {
           items.push( {
             value: v,
-            createNode: () => new Text( `Move to Vertex ${v.index}` )
+            createNode: () => new Text( circuitNode.getVertexNode( v ).attachmentName )
           } );
         } );
 
         const radioButtonGroup = new RectangularRadioButtonGroup( selectionProperty, items, {
+          accessibleHeading: 'Move to Vertex',
           orientation: 'horizontal',
           tandem: Tandem.OPT_OUT // transient ui
         } );
@@ -248,7 +250,7 @@ export default class VertexNode extends Node {
           }
         } );
 
-        const doneButton = new TextPushButton( 'done', {
+        const doneButton = new TextPushButton( selectionProperty.derived( selection => selection === null ? 'Done' : 'Connect' ), {
           tandem: Tandem.OPT_OUT,
 
           // TODO: Why doesn't this listener get called? See https://github.com/phetsims/circuit-construction-kit-common/issues/1049

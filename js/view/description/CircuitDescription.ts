@@ -244,6 +244,9 @@ export default class CircuitDescription {
       startVertexNode.accessibleName = this.createSimpleVertexDescription( 1, startNeighbors, briefNames );
       endVertexNode.accessibleName = this.createSimpleVertexDescription( 2, endNeighbors, briefNames );
 
+      startVertexNode.attachmentName = 'start junction of a disconnected ' + circuitElement.type;
+      endVertexNode.attachmentName = 'end junction of a disconnected ' + circuitElement.type;
+
       pdomOrder.push( circuitElementNode, startVertexNode, endVertexNode );
     } );
 
@@ -291,6 +294,7 @@ export default class CircuitDescription {
           allBriefNames
         );
         circuitNode.getVertexNode( vertex ).accessibleName = description;
+        circuitNode.getVertexNode( vertex ).attachmentName = `junction ${vertexIndex + 1} of group ${groupIndex + 1}, which is connected to ${neighbors.length} circuit elements`;
       } );
 
       // Build PDOM order for this group

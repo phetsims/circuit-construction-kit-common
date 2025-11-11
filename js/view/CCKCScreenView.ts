@@ -563,8 +563,6 @@ export default class CCKCScreenView extends ScreenView {
       keyStringProperties: CCKCScreenView.TOGGLE_SWITCH_HOTKEY_DATA.keyStringProperties,
       fire: event => {
 
-        event?.preventDefault();
-
         // Double guard to work around errors in fuzzing
         const selection = this.circuitNode.circuit.selectionProperty.value;
         if ( selection instanceof Switch ) {
