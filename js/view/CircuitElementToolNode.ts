@@ -141,17 +141,38 @@ export default class CircuitElementToolNode extends VBox {
       allowTouchSnag: true
     } ) );
 
-    const createKeyboardListener = new KeyboardListener( {
+    const keyboardListener = new KeyboardListener( {
       keyStringProperties: CCKCHotkeyData.circuitToolNode.create.keyStringProperties,
       fire: () => {
 
-        const circuitElement = createElement( globalToCircuitNodePoint( new Vector2( 400, 400 ) ) );
+        let center = globalToCircuitNodePoint( this.globalBounds.rightCenter ).plusXY( 100, 0 );
+
+        // Keep shifting right until we find a position that doesn't overlap with existing elements
+        let hasCollision = true;
+        let count = 0;
+        while ( hasCollision && count < 100 ) { // safety to prevent infinite loop
+          hasCollision = false;
+          count++;
+
+          for ( const element of circuit.circuitElements ) {
+            const otherCenter = element.startPositionProperty.value.average( element.endPositionProperty.value );
+
+            if ( center.distance( otherCenter ) < 150 ) {
+              center = center.plusXY( 150, 0 );
+              hasCollision = true;
+              break; // Restart collision check from the beginning with new position
+            }
+          }
+        }
+
+        const circuitElement = createElement( center );
+
         circuit.circuitElements.add( circuitElement );
 
         circuitElement.focusEmitter.emit();
       }
     } );
-    this.addInputListener( createKeyboardListener );
+    this.addInputListener( keyboardListener );
 
     // Make the tool icon visible if we can create more of the item. But be careful to only update visibility when
     // the specific count for this item changes, so we can support PhET-iO hiding the icons via visibility.
