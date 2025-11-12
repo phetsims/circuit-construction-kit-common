@@ -12,6 +12,7 @@ import Multilink from '../../../axon/js/Multilink.js';
 import type Property from '../../../axon/js/Property.js';
 import type ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
 import type { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
+import dotRandom from '../../../dot/js/dotRandom.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import { optionize4 } from '../../../phet-core/js/optionize.js';
 import AccessibleDraggableOptions from '../../../scenery-phet/js/accessibility/grab-drag/AccessibleDraggableOptions.js';
@@ -147,9 +148,17 @@ export default class CircuitElementToolNode extends VBox {
 
         let center = globalToCircuitNodePoint( this.globalBounds.rightCenter ).plusXY( 100, 0 );
 
-        // Keep shifting right until we find a position that doesn't overlap with existing elements
+        // Bounds for random positioning if nearby search fails
+        const minX = -512;
+        const maxX = 512;
+        const minY = -326;
+        const maxY = 326;
+
+        // Keep trying to find a position that doesn't overlap with existing elements
         let hasCollision = true;
         let count = 0;
+        const NEARBY_SEARCH_ATTEMPTS = 20; // Try nearby positions first
+
         while ( hasCollision && count < 100 ) { // safety to prevent infinite loop
           hasCollision = false;
           count++;
@@ -158,8 +167,19 @@ export default class CircuitElementToolNode extends VBox {
             const otherCenter = element.startPositionProperty.value.average( element.endPositionProperty.value );
 
             if ( center.distance( otherCenter ) < 150 ) {
-              center = center.plusXY( 150, 0 );
               hasCollision = true;
+
+              // For the first several attempts, try shifting right (nearby search)
+              if ( count <= NEARBY_SEARCH_ATTEMPTS && center.x + 150 <= maxX ) {
+                center = center.plusXY( 150, 0 );
+              }
+              else {
+                // After nearby search fails or goes out of bounds, try random positions within bounds
+                center = new Vector2(
+                  minX + dotRandom.nextDouble() * ( maxX - minX ),
+                  minY + dotRandom.nextDouble() * ( maxY - minY )
+                );
+              }
               break; // Restart collision check from the beginning with new position
             }
           }

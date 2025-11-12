@@ -9,8 +9,8 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
-import { type PropertyOptions } from '../../../axon/js/Property.js';
 import type Property from '../../../axon/js/Property.js';
+import { type PropertyOptions } from '../../../axon/js/Property.js';
 import StringProperty from '../../../axon/js/StringProperty.js';
 import type TEmitter from '../../../axon/js/TEmitter.js';
 import type TProperty from '../../../axon/js/TProperty.js';
