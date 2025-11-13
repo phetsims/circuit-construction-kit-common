@@ -214,22 +214,24 @@ export default class VertexNode extends Node {
         // create a new radio button group that lets the user cycle through attachable vertices
 
         const originalPosition = vertex.positionProperty.value.copy();
-        const selectionProperty = new Property<Vertex | null>( null );
-        const items = [ {
-          value: null as Vertex | null,
-          createNode: () => new Text( 'Detach' )
-        } ];
 
         const attachableVertices = circuit.vertexGroup.filter( v => v.attachableProperty.get() &&
                                                                     v !== vertex &&
                                                                     !circuit.getNeighboringVertices( vertex ).includes( v ) &&
                                                                     !circuit.findAllFixedVertices( vertex ).includes( v ) );
 
-        attachableVertices.forEach( v => {
-          items.push( {
-            value: v,
+        const selectionProperty = new Property<Vertex | null>( null );
+
+        const items = attachableVertices.map( v => {
+          return {
+            value: v as Vertex | null,
             createNode: () => new Text( circuitNode.getVertexNode( v ).attachmentName )
-          } );
+          };
+        } );
+
+        items.push( {
+          value: null as Vertex | null,
+          createNode: () => new Text( 'Detach' )
         } );
 
         const radioButtonGroup = new RectangularRadioButtonGroup( selectionProperty, items, {
@@ -237,6 +239,17 @@ export default class VertexNode extends Node {
           orientation: 'horizontal',
           tandem: Tandem.OPT_OUT // transient ui
         } );
+
+        const doneCallback = () => {
+          circuitNode.endDrag( vertex, true );
+          panel.dispose();
+          this.focus();
+        };
+
+        radioButtonGroup.addInputListener( new KeyboardListener( {
+          keys: [ 'space', 'enter' ],
+          fire: doneCallback
+        } ) );
 
         circuitNode.startDragVertex( this.parentToGlobalPoint( vertex.positionProperty.value ), vertex, vertex );
 
@@ -252,13 +265,7 @@ export default class VertexNode extends Node {
 
         const doneButton = new TextPushButton( selectionProperty.derived( selection => selection === null ? 'Done' : 'Connect' ), {
           tandem: Tandem.OPT_OUT,
-
-          listener: () => {
-            console.log( 'done button pressed' );
-            circuitNode.endDrag( vertex, true );
-            panel.dispose();
-            this.focus();
-          }
+          listener: doneCallback
         } );
 
         const panel = new Panel( new VBox( {
@@ -268,7 +275,8 @@ export default class VertexNode extends Node {
         } ) );
         circuitNode.addChild( panel );
 
-        radioButtonGroup.getButtonForValue( null ).focus();
+        selectionProperty.value = attachableVertices.length > 0 ? attachableVertices[ 0 ] : null;
+        radioButtonGroup.getButtonForValue( attachableVertices[ 0 ] ).focus();
 
         // TODO: Show the UI? see https://github.com/phetsims/circuit-construction-kit-common/issues/1049
         panel.y = 10000; // offscreen
