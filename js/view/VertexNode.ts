@@ -253,7 +253,6 @@ export default class VertexNode extends Node {
         const doneButton = new TextPushButton( selectionProperty.derived( selection => selection === null ? 'Done' : 'Connect' ), {
           tandem: Tandem.OPT_OUT,
 
-          // TODO: Why doesn't this listener get called? See https://github.com/phetsims/circuit-construction-kit-common/issues/1049
           listener: () => {
             console.log( 'done button pressed' );
             circuitNode.endDrag( vertex, true );
@@ -268,17 +267,6 @@ export default class VertexNode extends Node {
           children: [ radioButtonGroup, doneButton ]
         } ) );
         circuitNode.addChild( panel );
-
-        // TODO: This is a hack to solve the TODO above, see https://github.com/phetsims/circuit-construction-kit-common/issues/1049
-        doneButton.addInputListener( new KeyboardListener( {
-          keys: [ 'enter', 'space' ],
-          fire: () => {
-            console.log( 'done button keyboard pressed' );
-            circuitNode.endDrag( vertex, true );
-            panel.dispose();
-            this.focus();
-          }
-        } ) );
 
         radioButtonGroup.getButtonForValue( null ).focus();
 
