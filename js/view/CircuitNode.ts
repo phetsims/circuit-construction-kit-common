@@ -655,7 +655,6 @@ export default class CircuitNode extends Node {
 
     // Update PDOM when show values property changes (link is called eagerly, so no need for separate initial call)
     this.model.showValuesProperty.link( () => this.updatePDOMOrder() );
-    this.model.circuit.selectionProperty.link( () => this.updatePDOMOrder() );
 
     // Set the state once after fully reconstructed, not at a partial intermediate state
     isSettingPhetioStateProperty.lazyLink( isSettingPhetioState => {
