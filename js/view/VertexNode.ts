@@ -6,10 +6,12 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import animationFrameTimer from '../../../axon/js/animationFrameTimer.js';
 import Property from '../../../axon/js/Property.js';
 import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
+import { pdomFocusProperty } from '../../../scenery/js/accessibility/pdomFocusProperty.js';
 import Grayscale from '../../../scenery/js/filters/Grayscale.js';
 import VBox from '../../../scenery/js/layout/nodes/VBox.js';
 import KeyboardListener from '../../../scenery/js/listeners/KeyboardListener.js';
@@ -19,9 +21,8 @@ import Text from '../../../scenery/js/nodes/Text.js';
 import SceneryConstants from '../../../scenery/js/SceneryConstants.js';
 import Color from '../../../scenery/js/util/Color.js';
 import { rasterizeNode } from '../../../scenery/js/util/rasterizeNode.js';
+import RectangularRadioButton from '../../../sun/js/buttons/RectangularRadioButton.js';
 import RectangularRadioButtonGroup from '../../../sun/js/buttons/RectangularRadioButtonGroup.js';
-import TextPushButton from '../../../sun/js/buttons/TextPushButton.js';
-import Panel from '../../../sun/js/Panel.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
@@ -242,7 +243,7 @@ export default class VertexNode extends Node {
 
         const doneCallback = () => {
           circuitNode.endDrag( vertex, true );
-          panel.dispose();
+          radioButtonGroup.dispose();
           this.focus();
         };
 
@@ -263,23 +264,37 @@ export default class VertexNode extends Node {
           }
         } );
 
-        const doneButton = new TextPushButton( selectionProperty.derived( selection => selection === null ? 'Done' : 'Connect' ), {
-          tandem: Tandem.OPT_OUT,
-          listener: doneCallback
+        // if focus moves off the radio button group, detach the wire and dispose the radio button group.
+        pdomFocusProperty.lazyLink( pdomFocus => {
+          console.log( 'pdom focus changed to ', pdomFocus );
+
+          // make sure this runs AFTER the other listener, so it won't call endDrag twice
+          animationFrameTimer.runOnNextTick( () => {
+            if ( !radioButtonGroup.isDisposed ) {
+              const node = pdomFocus?.trail?.lastNode();
+
+              if ( node && !( node instanceof RectangularRadioButton ) ) {
+
+                selectionProperty.value = null;
+
+                // like doneCallback, but without the other focus step.
+                circuitNode.endDrag( vertex, true );
+                !radioButtonGroup.isDisposed && radioButtonGroup.dispose();
+              }
+            }
+          } );
+
+        }, {
+          disposer: radioButtonGroup
         } );
 
-        const panel = new Panel( new VBox( {
-          spacing: 20,
-          align: 'left',
-          children: [ radioButtonGroup, doneButton ]
-        } ) );
-        circuitNode.addChild( panel );
+        circuitNode.addChild( radioButtonGroup );
 
         selectionProperty.value = attachableVertices.length > 0 ? attachableVertices[ 0 ] : null;
         radioButtonGroup.getButtonForValue( attachableVertices[ 0 ] ).focus();
 
         // TODO: Show the UI? see https://github.com/phetsims/circuit-construction-kit-common/issues/1049
-        panel.y = 10000; // offscreen
+        radioButtonGroup.y = 10000; // offscreen
       }
     } ) );
 
