@@ -221,6 +221,10 @@ export default class VertexNode extends Node {
                                                                     !circuit.getNeighboringVertices( vertex ).includes( v ) &&
                                                                     !circuit.findAllFixedVertices( vertex ).includes( v ) );
 
+        if ( attachableVertices.length === 0 ) {
+          return;
+        }
+
         const selectionProperty = new Property<Vertex | null>( null );
 
         const items = attachableVertices.map( v => {
