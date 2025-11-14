@@ -227,7 +227,7 @@
         "value": "Currently, no circuit elements are in the construction area."
       },
       "interactionHint": {
-        "value": "Add circuit elements to the construction area, and connect them to begin."
+        "value": "Add circuit elements to the construction area, and connect them to begin. Note, you must include at least one Wire in order to connect a circuit."
       }
     },
     "sensorToolbox": {
