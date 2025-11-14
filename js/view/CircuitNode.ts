@@ -149,7 +149,7 @@ export default class CircuitNode extends Node {
   private readonly vertexNodes: Record<number, VertexNode>;
   public readonly vertexCutButton: RoundPushButton;
   private readonly circuitDebugLayer: CircuitDebugLayer | null;
-  public readonly circuitElementsSection: Node;
+  public readonly unconnectedCircuitElementsSection: Node;
   public readonly groupsContainer: Node;
   public readonly constructionAreaContainer: Node;
   private readonly circuitContextResponses: CircuitContextResponses;
@@ -634,9 +634,9 @@ export default class CircuitNode extends Node {
       }
     } );
 
-    this.circuitElementsSection = new Node( {
+    this.unconnectedCircuitElementsSection = new Node( {
       tagName: 'div',
-      accessibleHeading: 'Circuit Elements',
+      accessibleHeading: 'Unconnected Circuit Elements',
       visible: false // shown when it has elements in it
     } );
 
@@ -648,7 +648,7 @@ export default class CircuitNode extends Node {
       accessibleHeading: 'Construction Area'
     } );
 
-    this.constructionAreaContainer.addChild( this.circuitElementsSection );
+    this.constructionAreaContainer.addChild( this.unconnectedCircuitElementsSection );
     this.constructionAreaContainer.addChild( this.groupsContainer );
 
     this.addChild( this.constructionAreaContainer );

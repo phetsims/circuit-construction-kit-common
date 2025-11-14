@@ -339,7 +339,7 @@ export default class CircuitDescription {
 
     if ( !hasElements ) {
       circuitNode.constructionAreaContainer.accessibleParagraph = EMPTY_CONSTRUCTION_AREA_MESSAGE;
-      circuitNode.circuitElementsSection.visible = false;
+      circuitNode.unconnectedCircuitElementsSection.visible = false;
     }
     else {
 
@@ -351,16 +351,16 @@ export default class CircuitDescription {
 
       // Update single circuit elements section and collect brief names
       const singleElementsResult = this.updateSingleCircuitElements( singleElementCircuits, circuitNode, circuit );
-      circuitNode.circuitElementsSection.pdomOrder = singleElementsResult.pdomOrder;
-      circuitNode.circuitElementsSection.visible = singleElementsResult.pdomOrder.length > 0;
+      circuitNode.unconnectedCircuitElementsSection.pdomOrder = singleElementsResult.pdomOrder;
+      circuitNode.unconnectedCircuitElementsSection.visible = singleElementsResult.pdomOrder.length > 0;
 
       // Update grouped circuit elements, passing the brief names map for use in junction descriptions
       const groupNodes = this.updateGroupedCircuitElements( multiElementGroups, circuitNode, circuit, singleElementsResult.briefNames );
 
       // Build construction area PDOM order
       const constructionAreaPDOMOrder: Node[] = [];
-      if ( circuitNode.circuitElementsSection.visible ) {
-        constructionAreaPDOMOrder.push( circuitNode.circuitElementsSection );
+      if ( circuitNode.unconnectedCircuitElementsSection.visible ) {
+        constructionAreaPDOMOrder.push( circuitNode.unconnectedCircuitElementsSection );
       }
       constructionAreaPDOMOrder.push( ...groupNodes );
 
