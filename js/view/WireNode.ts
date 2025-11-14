@@ -205,14 +205,13 @@ export default class WireNode extends CircuitElementNode {
     circuitNode && circuitNode.highlightLayer.addChild( highlightNodeParent );
 
     const circuit = circuitNode && circuitNode.circuit;
-    super( wire, circuit, circuitNode?.model.showValuesProperty, {
+    super( wire, circuit, circuitNode?.model.showValuesProperty, circuitNode?.circuit.selectionProperty, {
       children: [
         startCapParent,
         endCapParent,
         lineNodeParent
       ],
-      tandem: tandem,
-      focusHighlight: 'invisible' // shown by the FixedCircuitElementHighlightNode, even when non-focused
+      tandem: tandem
     } );
 
     this.viewTypeProperty = viewTypeProperty;

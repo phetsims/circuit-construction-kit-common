@@ -95,9 +95,6 @@ export default class VertexNode extends Node {
       focusable: true,
       phetioDynamicElement: true,
       phetioVisiblePropertyInstrumented: false,
-
-      focusHighlight: 'invisible', // shown by the this.highlightNode, even when non-focused
-
       accessibleName: null // Set by CircuitDescription.ts
     } );
 
@@ -127,7 +124,8 @@ export default class VertexNode extends Node {
       pickable: false
     } );
     const children = [
-      customLabelText
+      // This throws off the focus rectangle for the vertex
+      // customLabelText
     ];
 
     if ( CCKCQueryParameters.vertexDisplay ) {

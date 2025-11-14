@@ -105,11 +105,10 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
       tandem: tandem,
       pickable: true,
       isIcon: false,
-      showHighlight: true,
-      focusHighlight: 'invisible' // shown by the FixedCircuitElementHighlightNode, even when non-focused
+      showHighlight: true
     }, providedOptions );
 
-    super( circuitElement, circuit, circuitNode?.model.showValuesProperty, options );
+    super( circuitElement, circuit, circuitNode?.model.showValuesProperty, circuitNode?.circuit.selectionProperty, options );
 
     // shows the lifelike view
     this.lifelikeNode = lifelikeNode;

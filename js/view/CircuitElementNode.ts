@@ -6,9 +6,12 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import TProperty from '../../../axon/js/TProperty.js';
 import { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import type Vector2 from '../../../dot/js/Vector2.js';
 import optionize from '../../../phet-core/js/optionize.js';
+import AccessibleDraggableOptions from '../../../scenery-phet/js/accessibility/grab-drag/AccessibleDraggableOptions.js';
+import KeyboardListener from '../../../scenery/js/listeners/KeyboardListener.js';
 import { type PressListenerEvent } from '../../../scenery/js/listeners/PressListener.js';
 import Node, { type NodeOptions } from '../../../scenery/js/nodes/Node.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -32,15 +35,20 @@ export default abstract class CircuitElementNode extends Node {
   public readonly circuitElement: CircuitElement;
   private dirty: boolean;
   public readonly abstract dragListener: CircuitNodeDragListener | null;
-  // public readonly baseAccessibleNameProperty: TReadOnlyProperty<string> | null;
 
   /**
    * @param circuitElement - the CircuitElement to be rendered
    * @param circuit - the circuit which the element can be removed from or null for icons
    * @param showValuesProperty
+   * @param selectionProperty
    * @param [providedOptions]
    */
-  protected constructor( circuitElement: CircuitElement, circuit: Circuit | null, showValuesProperty: TReadOnlyProperty<boolean> | undefined, providedOptions?: CircuitElementNodeOptions ) {
+  protected constructor(
+    circuitElement: CircuitElement,
+    circuit: Circuit | null,
+    showValuesProperty: TReadOnlyProperty<boolean> | undefined,
+    selectionProperty: TProperty<CircuitElement | Vertex | null> | undefined,
+    providedOptions?: CircuitElementNodeOptions ) {
 
     providedOptions = optionize<CircuitElementNodeOptions, SelfOptions, NodeOptions>()( {
       useHitTestForSensors: false // if true, use the scenery mouse region hit test for fine-grained region. Otherwise, use bounds test.
@@ -66,6 +74,9 @@ export default abstract class CircuitElementNode extends Node {
       // circuitElement.addDisposable( showValuesAsStringProperty, accessibleNameProperty );
 
       providedOptions = optionize<CircuitElementNodeOptions, SelfOptions, NodeOptions>()( {
+
+        // eslint-disable-next-line phet/no-object-spread-on-non-literals
+        ...AccessibleDraggableOptions,
         tagName: 'div', // HTML tag name for representative element in the document, see ParallelDOM.js
         focusable: true,
 
@@ -75,15 +86,27 @@ export default abstract class CircuitElementNode extends Node {
         phetioState: false,
         phetioVisiblePropertyInstrumented: false,
         phetioInputEnabledPropertyInstrumented: true,
-        useHitTestForSensors: false,
-        focusHighlight: null
+        useHitTestForSensors: false
       }, providedOptions );
     }
 
     super( providedOptions );
 
-    // Store for access by CircuitDescription
-    // this.baseAccessibleNameProperty = accessibleNameProperty;
+    if ( selectionProperty ) {
+      this.addInputListener( new KeyboardListener( {
+        keys: [ 'enter', 'space' ],
+
+        // TODO convert to click, see https://github.com/phetsims/circuit-construction-kit-common/issues/1055
+        press: () => {
+          if ( selectionProperty.value === this.circuitElement ) {
+            selectionProperty.value = null;
+          }
+          else {
+            selectionProperty.value = this.circuitElement;
+          }
+        }
+      } ) );
+    }
 
     this.useHitTestForSensors = !!providedOptions.useHitTestForSensors;
 
