@@ -18,7 +18,6 @@ import PlayPauseButton from '../../../scenery-phet/js/buttons/PlayPauseButton.js
 import ResetAllButton from '../../../scenery-phet/js/buttons/ResetAllButton.js';
 import StopwatchNode from '../../../scenery-phet/js/StopwatchNode.js';
 import TimeControlNode from '../../../scenery-phet/js/TimeControlNode.js';
-import { pdomFocusProperty } from '../../../scenery/js/accessibility/pdomFocusProperty.js';
 import HotkeyData from '../../../scenery/js/input/HotkeyData.js';
 import AlignGroup from '../../../scenery/js/layout/constraints/AlignGroup.js';
 import AlignBox from '../../../scenery/js/layout/nodes/AlignBox.js';
@@ -539,25 +538,25 @@ export default class CCKCScreenView extends ScreenView {
       }
     } );
 
-    KeyboardListener.createGlobal( this, {
-      keyStringProperties: CCKCScreenView.EDIT_HOTKEY_DATA.keyStringProperties,
-      fire: event => {
-
-        event?.preventDefault();
-
-        // Double guard to work around errors in fuzzing
-        const selection = this.circuitNode.circuit.selectionProperty.value;
-        if ( selection instanceof CircuitElement ) {
-
-          if ( pdomFocusProperty.value?.trail.lastNode() instanceof CircuitElementNode ) {
-            this.circuitElementEditContainerNode.focus();
-          }
-          else {
-            this.circuitNode.getCircuitElementNode( selection ).focus();
-          }
-        }
-      }
-    } );
+    // KeyboardListener.createGlobal( this, {
+    //   keyStringProperties: CCKCScreenView.EDIT_HOTKEY_DATA.keyStringProperties,
+    //   fire: event => {
+    //
+    //     event?.preventDefault();
+    //
+    //     // Double guard to work around errors in fuzzing
+    //     const selection = this.circuitNode.circuit.selectionProperty.value;
+    //     if ( selection instanceof CircuitElement ) {
+    //
+    //       if ( pdomFocusProperty.value?.trail.lastNode() instanceof CircuitElementNode ) {
+    //         this.circuitElementEditContainerNode.focus();
+    //       }
+    //       else {
+    //         this.circuitNode.getCircuitElementNode( selection ).focus();
+    //       }
+    //     }
+    //   }
+    // } );
 
     KeyboardListener.createGlobal( this, {
       keyStringProperties: CCKCScreenView.TOGGLE_SWITCH_HOTKEY_DATA.keyStringProperties,

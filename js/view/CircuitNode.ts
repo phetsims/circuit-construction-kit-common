@@ -655,6 +655,12 @@ export default class CircuitNode extends Node {
       }
     } );
 
+    circuit.selectionProperty.link( () => {
+
+      // Selecting a circuit element puts its edit panel in the PDOM order right after the circuit element
+      this.updatePDOMOrder();
+    } );
+
     this.circuitContextResponses = new CircuitContextResponses( this );
   }
 
@@ -1096,7 +1102,7 @@ export default class CircuitNode extends Node {
       const switchNode = this.hitCircuitElementNode( probePosition, ( circuitElement: CircuitElement ) => circuitElement instanceof Switch, globalPoint );
       if ( switchNode ) {
 
-         
+
         affirm( switchNode instanceof SwitchNode );
         if ( switchNode instanceof SwitchNode ) {
 
@@ -1113,7 +1119,7 @@ export default class CircuitNode extends Node {
       const capacitorNode = this.hitCircuitElementNode( probePosition, ( circuitElement: CircuitElement ) => circuitElement instanceof Capacitor, globalPoint );
       if ( capacitorNode ) {
 
-         
+
         affirm( capacitorNode instanceof CapacitorCircuitElementNode );
         if ( capacitorNode instanceof CapacitorCircuitElementNode ) {
 

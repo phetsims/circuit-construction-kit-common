@@ -247,7 +247,13 @@ export default class CircuitDescription {
       startVertexNode.attachmentName = 'start junction of a disconnected ' + circuitElement.type;
       endVertexNode.attachmentName = 'end junction of a disconnected ' + circuitElement.type;
 
-      pdomOrder.push( circuitElementNode, startVertexNode, endVertexNode );
+      pdomOrder.push( circuitElementNode );
+
+      if ( circuit.selectionProperty.value === circuitElement ) {
+        pdomOrder.push( circuitNode.screenView.circuitElementEditContainerNode );
+      }
+
+      pdomOrder.push( startVertexNode, endVertexNode );
     } );
 
     return { pdomOrder: pdomOrder, briefNames: briefNames };
@@ -302,6 +308,11 @@ export default class CircuitDescription {
         ...circuitElementNodes,
         ...group.vertices.map( vertex => circuitNode.getVertexNode( vertex ) )
       ];
+
+      // CODEX HELP ME
+      //      if ( circuit.selectionProperty.value === circuitElement ) {
+      //         pdomOrder.push( circuitNode.screenView.circuitElementEditContainerNode );
+      //       }
 
       // Remove duplicates from PDOM order using native Set
       const uniquePDOMOrder = Array.from( new Set( groupPDOMOrder ) );
@@ -369,16 +380,6 @@ export default class CircuitDescription {
 
     // Build main PDOM order
     pdomOrder.push( circuitNode.constructionAreaContainer );
-
-    if ( circuitNode.screenView.circuitElementEditContainerNode ) {
-      if ( circuitNode.circuit.selectionProperty.value instanceof CircuitElement ) {
-        circuitNode.screenView.circuitElementEditContainerNode.focusable = true;
-        pdomOrder.push( circuitNode.screenView.circuitElementEditContainerNode );
-      }
-      else {
-        circuitNode.screenView.circuitElementEditContainerNode.focusable = false;
-      }
-    }
 
     // Set the final PDOM order
     circuitNode.pdomOrder = pdomOrder;
