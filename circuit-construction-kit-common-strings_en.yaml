@@ -229,3 +229,20 @@ a11y:
           select_switchState:
             closed: 'This switch is closed. Press Space or Enter to open the switch.'
             open:   'This switch is open. Press Space or Enter to close the switch.'
+  keyboardHelpDialog:
+    addElements:
+      heading: Add Circuit Elements
+      createElement:
+        label: Add focused tool to construction area
+        labelInnerContent: Press Space or Enter to drop the selected component into the circuit.
+    connectElements:
+      heading: Connect Elements
+      grabJunction:
+        label: Grab highlighted junction
+        labelInnerContent: Press Space or Enter to begin connecting from the focused junction.
+      selectTarget:
+        label: Move grabbed junction
+        labelInnerContent: Use arrow keys to move grabbed junction to different attachment choices.
+      attachJunction:
+        label: Attach junctions
+        labelInnerContent: Press Space or Enter again to complete the connection, or to detach.

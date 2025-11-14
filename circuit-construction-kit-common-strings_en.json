@@ -349,6 +349,50 @@
       "accessibleHelpText": {
         "value": "{ $type ->\n  *[switch] { $switchState ->\n              [closed] This switch is closed. Press Space or Enter to open the switch.\n              *[open] This switch is open. Press Space or Enter to close the switch.\n            }\n}"
       }
+    },
+    "keyboardHelpDialog": {
+      "addElements": {
+        "heading": {
+          "value": "Add Circuit Elements"
+        },
+        "createElement": {
+          "label": {
+            "value": "Add focused tool to construction area"
+          },
+          "labelInnerContent": {
+            "value": "Press Space or Enter to drop the selected component into the circuit."
+          }
+        }
+      },
+      "connectElements": {
+        "heading": {
+          "value": "Connect Elements"
+        },
+        "grabJunction": {
+          "label": {
+            "value": "Grab highlighted junction"
+          },
+          "labelInnerContent": {
+            "value": "Press Space or Enter to begin connecting from the focused junction."
+          }
+        },
+        "selectTarget": {
+          "label": {
+            "value": "Move grabbed junction"
+          },
+          "labelInnerContent": {
+            "value": "Use arrow keys to move grabbed junction to different attachment choices."
+          }
+        },
+        "attachJunction": {
+          "label": {
+            "value": "Attach junctions"
+          },
+          "labelInnerContent": {
+            "value": "Press Space or Enter again to complete the connection, or to detach."
+          }
+        }
+      }
     }
   }
 }

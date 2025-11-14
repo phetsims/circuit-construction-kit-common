@@ -118,6 +118,16 @@ addToMapIfDefined( 'a11y_reverseBatteryButton_accessibleName', 'a11y.reverseBatt
 addToMapIfDefined( 'a11y_trashButton_accessibleName', 'a11y.trashButton.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_circuitElement_accessibleName', 'a11y.circuitElement.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_circuitElement_accessibleHelpText', 'a11y.circuitElement.accessibleHelpTextStringProperty' );
+addToMapIfDefined( 'a11y_keyboardHelpDialog_addElements_heading', 'a11y.keyboardHelpDialog.addElements.headingStringProperty' );
+addToMapIfDefined( 'a11y_keyboardHelpDialog_addElements_createElement_label', 'a11y.keyboardHelpDialog.addElements.createElement.labelStringProperty' );
+addToMapIfDefined( 'a11y_keyboardHelpDialog_addElements_createElement_labelInnerContent', 'a11y.keyboardHelpDialog.addElements.createElement.labelInnerContentStringProperty' );
+addToMapIfDefined( 'a11y_keyboardHelpDialog_connectElements_heading', 'a11y.keyboardHelpDialog.connectElements.headingStringProperty' );
+addToMapIfDefined( 'a11y_keyboardHelpDialog_connectElements_grabJunction_label', 'a11y.keyboardHelpDialog.connectElements.grabJunction.labelStringProperty' );
+addToMapIfDefined( 'a11y_keyboardHelpDialog_connectElements_grabJunction_labelInnerContent', 'a11y.keyboardHelpDialog.connectElements.grabJunction.labelInnerContentStringProperty' );
+addToMapIfDefined( 'a11y_keyboardHelpDialog_connectElements_selectTarget_label', 'a11y.keyboardHelpDialog.connectElements.selectTarget.labelStringProperty' );
+addToMapIfDefined( 'a11y_keyboardHelpDialog_connectElements_selectTarget_labelInnerContent', 'a11y.keyboardHelpDialog.connectElements.selectTarget.labelInnerContentStringProperty' );
+addToMapIfDefined( 'a11y_keyboardHelpDialog_connectElements_attachJunction_label', 'a11y.keyboardHelpDialog.connectElements.attachJunction.labelStringProperty' );
+addToMapIfDefined( 'a11y_keyboardHelpDialog_connectElements_attachJunction_labelInnerContent', 'a11y.keyboardHelpDialog.connectElements.attachJunction.labelInnerContentStringProperty' );
 
 // A function that creates contents for a new Fluent file, which will be needed if any string changes.
 const createFluentFile = (): string => {
@@ -275,6 +285,30 @@ const CircuitConstructionKitCommonFluent = {
     circuitElement: {
       accessibleName: new FluentPattern<{ capacitance: FluentVariable, displayMode: 'name' | 'value' | 'count' | 'countAndValue' | TReadOnlyProperty<'name' | 'value' | 'count' | 'countAndValue'>, hasPosition: 'true' | 'false' | TReadOnlyProperty<'true' | 'false'>, inductance: FluentVariable, position: FluentVariable, resistance: FluentVariable, switchState: 'closed' | 'open' | TReadOnlyProperty<'closed' | 'open'>, total: FluentVariable, type: 'resistor' | 'battery' | 'lightBulb' | 'capacitor' | 'inductor' | 'acSource' | 'fuse' | 'switch' | 'voltmeter' | 'ammeter' | 'stopwatch' | 'wire' | 'false' | TReadOnlyProperty<'resistor' | 'battery' | 'lightBulb' | 'capacitor' | 'inductor' | 'acSource' | 'fuse' | 'switch' | 'voltmeter' | 'ammeter' | 'stopwatch' | 'wire' | 'false'>, voltage: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitElement_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitElement.accessibleNameStringProperty' ), [{"name":"capacitance"},{"name":"displayMode","variants":["name","value","count","countAndValue"]},{"name":"hasPosition","variants":["true","false"]},{"name":"inductance"},{"name":"position"},{"name":"resistance"},{"name":"switchState","variants":["closed","open"]},{"name":"total"},{"name":"type","variants":["resistor","battery","lightBulb","capacitor","inductor","acSource","fuse","switch","voltmeter","ammeter","stopwatch","wire","false"]},{"name":"voltage"}] ),
       accessibleHelpText: new FluentPattern<{ switchState: 'closed' | 'open' | TReadOnlyProperty<'closed' | 'open'>, type: 'switch' | TReadOnlyProperty<'switch'> }>( fluentSupport.bundleProperty, 'a11y_circuitElement_accessibleHelpText', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitElement.accessibleHelpTextStringProperty' ), [{"name":"switchState","variants":["closed","open"]},{"name":"type","variants":["switch"]}] )
+    },
+    keyboardHelpDialog: {
+      addElements: {
+        headingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_addElements_heading', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.addElements.headingStringProperty' ) ),
+        createElement: {
+          labelStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_addElements_createElement_label', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.addElements.createElement.labelStringProperty' ) ),
+          labelInnerContentStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_addElements_createElement_labelInnerContent', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.addElements.createElement.labelInnerContentStringProperty' ) )
+        }
+      },
+      connectElements: {
+        headingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_connectElements_heading', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.connectElements.headingStringProperty' ) ),
+        grabJunction: {
+          labelStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_connectElements_grabJunction_label', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.connectElements.grabJunction.labelStringProperty' ) ),
+          labelInnerContentStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_connectElements_grabJunction_labelInnerContent', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.connectElements.grabJunction.labelInnerContentStringProperty' ) )
+        },
+        selectTarget: {
+          labelStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_connectElements_selectTarget_label', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.connectElements.selectTarget.labelStringProperty' ) ),
+          labelInnerContentStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_connectElements_selectTarget_labelInnerContent', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.connectElements.selectTarget.labelInnerContentStringProperty' ) )
+        },
+        attachJunction: {
+          labelStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_connectElements_attachJunction_label', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.connectElements.attachJunction.labelStringProperty' ) ),
+          labelInnerContentStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_connectElements_attachJunction_labelInnerContent', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.connectElements.attachJunction.labelInnerContentStringProperty' ) )
+        }
+      }
     }
   }
 };

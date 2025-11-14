@@ -156,6 +156,30 @@ type StringsType = {
     'circuitElement': {
       'accessibleNameStringProperty': LocalizedStringProperty;
       'accessibleHelpTextStringProperty': LocalizedStringProperty;
+    };
+    'keyboardHelpDialog': {
+      'addElements': {
+        'headingStringProperty': LocalizedStringProperty;
+        'createElement': {
+          'labelStringProperty': LocalizedStringProperty;
+          'labelInnerContentStringProperty': LocalizedStringProperty;
+        }
+      };
+      'connectElements': {
+        'headingStringProperty': LocalizedStringProperty;
+        'grabJunction': {
+          'labelStringProperty': LocalizedStringProperty;
+          'labelInnerContentStringProperty': LocalizedStringProperty;
+        };
+        'selectTarget': {
+          'labelStringProperty': LocalizedStringProperty;
+          'labelInnerContentStringProperty': LocalizedStringProperty;
+        };
+        'attachJunction': {
+          'labelStringProperty': LocalizedStringProperty;
+          'labelInnerContentStringProperty': LocalizedStringProperty;
+        }
+      }
     }
   }
 };
