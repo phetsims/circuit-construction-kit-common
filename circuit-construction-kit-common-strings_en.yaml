@@ -94,7 +94,8 @@ a11y:
   sensorToolbox:
     accessibleHeading: Sensor Toolbox
   circuitElementToolbox:
-    accessibleHeading: Circuit Element Toolbox
+    accessibleHeading:  Circuit Element Toolbox
+    accessibleHelpText: Grab a circuit element to create it in the construction area.
   advancedAccordionBox:
     accessibleName: Advanced Settings
     addRealBulbsCheckbox:
@@ -233,16 +234,16 @@ a11y:
     addElements:
       heading: Add Circuit Elements
       createElement:
-        label: Add focused tool to construction area
+        label:             Add focused tool to construction area
         labelInnerContent: Press Space or Enter to drop the selected component into the circuit.
     connectElements:
       heading: Connect Elements
       grabJunction:
-        label: Grab highlighted junction
+        label:             Grab highlighted junction
         labelInnerContent: Press Space or Enter to begin connecting from the focused junction.
       selectTarget:
-        label: Move grabbed junction
+        label:             Move grabbed junction
         labelInnerContent: Use arrow keys to move grabbed junction to different attachment choices.
       attachJunction:
-        label: Attach junctions
+        label:             Attach junctions
         labelInnerContent: Press Space or Enter again to complete the connection, or to detach.

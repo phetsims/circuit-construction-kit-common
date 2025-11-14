@@ -14,9 +14,7 @@ import type ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
 import type { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
 import Vector2 from '../../../dot/js/Vector2.js';
-import { optionize4 } from '../../../phet-core/js/optionize.js';
-import AccessibleDraggableOptions from '../../../scenery-phet/js/accessibility/grab-drag/AccessibleDraggableOptions.js';
-import ParallelDOM from '../../../scenery/js/accessibility/pdom/ParallelDOM.js';
+import optionize from '../../../phet-core/js/optionize.js';
 import Grayscale from '../../../scenery/js/filters/Grayscale.js';
 import VBox, { type VBoxOptions } from '../../../scenery/js/layout/nodes/VBox.js';
 import DragListener from '../../../scenery/js/listeners/DragListener.js';
@@ -26,7 +24,6 @@ import type Node from '../../../scenery/js/nodes/Node.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import type Circuit from '../model/Circuit.js';
 import type CircuitElement from '../model/CircuitElement.js';
 import type CircuitElementType from '../model/CircuitElementType.js';
@@ -83,7 +80,7 @@ export default class CircuitElementToolNode extends VBox {
       delete providedOptions.tandem;
       showLabelsProperty.linkAttribute( labelText, 'visible' );
     }
-    const options = optionize4<CircuitElementToolNodeOptions, SelfOptions, VBoxOptions>()( {}, AccessibleDraggableOptions, {
+    const options = optionize<CircuitElementToolNodeOptions, SelfOptions, VBoxOptions>()( {
       spacing: 2, // Spacing between the icon and the text
       cursor: 'pointer',
 
@@ -101,21 +98,22 @@ export default class CircuitElementToolNode extends VBox {
 
       ghostOpacity: 0.4,
 
-      accessibleName: labelStringProperty,
+      tagName: 'button',
+      accessibleName: labelStringProperty
 
-      accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.circuitElementToolNode.accessibleHelpText.createProperty( {
-        type: circuitElementType,
-        voltage: 0,
-        resistance: 0,
-        displayMode: 'name',
-        capacitance: 0,
-        inductance: 0,
-        switchState: 'open',
-        hasPosition: 'false',
-        position: 0,
-        total: 0
-      } ),
-      accessibleHelpTextBehavior: ParallelDOM.HELP_TEXT_AFTER_CONTENT
+      // accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.circuitElementToolNode.accessibleHelpText.createProperty( {
+      //   type: circuitElementType,
+      //   voltage: 0,
+      //   resistance: 0,
+      //   displayMode: 'name',
+      //   capacitance: 0,
+      //   inductance: 0,
+      //   switchState: 'open',
+      //   hasPosition: 'false',
+      //   position: 0,
+      //   total: 0
+      // } ),
+      // accessibleHelpTextBehavior: ParallelDOM.HELP_TEXT_AFTER_CONTENT
     }, providedOptions );
 
     super( options );

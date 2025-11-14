@@ -98,6 +98,7 @@ type StringsType = {
     };
     'circuitElementToolbox': {
       'accessibleHeadingStringProperty': LocalizedStringProperty;
+      'accessibleHelpTextStringProperty': LocalizedStringProperty;
     };
     'advancedAccordionBox': {
       'accessibleNameStringProperty': LocalizedStringProperty;

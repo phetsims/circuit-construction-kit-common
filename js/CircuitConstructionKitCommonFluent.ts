@@ -92,6 +92,7 @@ addToMapIfDefined( 'a11y_screenSummary_currentDetails', 'a11y.screenSummary.curr
 addToMapIfDefined( 'a11y_screenSummary_interactionHint', 'a11y.screenSummary.interactionHintStringProperty' );
 addToMapIfDefined( 'a11y_sensorToolbox_accessibleHeading', 'a11y.sensorToolbox.accessibleHeadingStringProperty' );
 addToMapIfDefined( 'a11y_circuitElementToolbox_accessibleHeading', 'a11y.circuitElementToolbox.accessibleHeadingStringProperty' );
+addToMapIfDefined( 'a11y_circuitElementToolbox_accessibleHelpText', 'a11y.circuitElementToolbox.accessibleHelpTextStringProperty' );
 addToMapIfDefined( 'a11y_advancedAccordionBox_accessibleName', 'a11y.advancedAccordionBox.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_advancedAccordionBox_addRealBulbsCheckbox_accessibleContextResponseChecked', 'a11y.advancedAccordionBox.addRealBulbsCheckbox.accessibleContextResponseCheckedStringProperty' );
 addToMapIfDefined( 'a11y_advancedAccordionBox_addRealBulbsCheckbox_accessibleContextResponseUnchecked', 'a11y.advancedAccordionBox.addRealBulbsCheckbox.accessibleContextResponseUncheckedStringProperty' );
@@ -226,7 +227,8 @@ const CircuitConstructionKitCommonFluent = {
       accessibleHeadingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_sensorToolbox_accessibleHeading', _.get( CircuitConstructionKitCommonStrings, 'a11y.sensorToolbox.accessibleHeadingStringProperty' ) )
     },
     circuitElementToolbox: {
-      accessibleHeadingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitElementToolbox_accessibleHeading', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitElementToolbox.accessibleHeadingStringProperty' ) )
+      accessibleHeadingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitElementToolbox_accessibleHeading', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitElementToolbox.accessibleHeadingStringProperty' ) ),
+      accessibleHelpTextStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitElementToolbox_accessibleHelpText', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitElementToolbox.accessibleHelpTextStringProperty' ) )
     },
     advancedAccordionBox: {
       accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_advancedAccordionBox_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.advancedAccordionBox.accessibleNameStringProperty' ) ),

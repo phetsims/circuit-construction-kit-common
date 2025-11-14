@@ -76,6 +76,7 @@ export default class CircuitElementToolbox extends HBox {
       children: [ pageControl, carousel ],
       tagName: 'div',
       accessibleHeading: CircuitConstructionKitCommonFluent.a11y.circuitElementToolbox.accessibleHeadingStringProperty,
+      accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.circuitElementToolbox.accessibleHelpTextStringProperty,
       tandem: tandem,
       visiblePropertyOptions: {
         phetioFeatured: true

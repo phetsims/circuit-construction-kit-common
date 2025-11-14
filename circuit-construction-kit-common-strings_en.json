@@ -238,6 +238,9 @@
     "circuitElementToolbox": {
       "accessibleHeading": {
         "value": "Circuit Element Toolbox"
+      },
+      "accessibleHelpText": {
+        "value": "Grab a circuit element to create it in the construction area."
       }
     },
     "advancedAccordionBox": {
