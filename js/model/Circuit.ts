@@ -26,6 +26,7 @@ import PhetioObject from '../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import GetSetButtonsIO from '../../../tandem/js/types/GetSetButtonsIO.js';
 import IOType from '../../../tandem/js/types/IOType.js';
+import ArrayIO from '../../../tandem/js/types/ArrayIO.js';
 import NullableIO from '../../../tandem/js/types/NullableIO.js';
 import ObjectLiteralIO from '../../../tandem/js/types/ObjectLiteralIO.js';
 import OrIO from '../../../tandem/js/types/OrIO.js';
@@ -162,6 +163,12 @@ export default class Circuit extends PhetioObject {
   public readonly includeLabElements: boolean;
   public readonly vertexConnectedEmitter: TEmitter<[ Vertex, Vertex ]> = new Emitter( {
     parameters: [ { valueType: Vertex }, { valueType: Vertex } ]
+  } );
+  public readonly vertexDisconnectedEmitter: TEmitter<[ CircuitElement[] ]> = new Emitter( {
+    parameters: [ {
+      name: 'circuitElements',
+      phetioType: ArrayIO( ReferenceIO( CircuitElement.CircuitElementIO ) )
+    } ]
   } );
 
   public constructor( viewTypeProperty: Property<CircuitElementViewType>, addRealBulbsProperty: Property<boolean>, tandem: Tandem,
@@ -775,6 +782,10 @@ export default class Circuit extends PhetioObject {
       this.vertexGroup.disposeElement( vertex );
     }
     this.markDirty();
+
+    if ( neighborCircuitElements.length > 1 ) {
+      this.vertexDisconnectedEmitter.emit( neighborCircuitElements.slice() );
+    }
   }
 
   /**

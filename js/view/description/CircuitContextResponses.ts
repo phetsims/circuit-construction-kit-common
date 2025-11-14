@@ -16,6 +16,12 @@ export default class CircuitContextResponses {
         circuitNode.addAccessibleContextResponse( `Connected elements: ${circuitElements.map( e => e.type ).join( ', ' )}` );
       }
     );
+    circuitNode.circuit.vertexDisconnectedEmitter.addListener( circuitElements => {
+        if ( circuitElements.length > 0 ) {
+          circuitNode.addAccessibleContextResponse( `Disconnected circuit elements: ${circuitElements.map( e => e.type ).join( ', ' )}` );
+        }
+      }
+    );
   }
 }
 
