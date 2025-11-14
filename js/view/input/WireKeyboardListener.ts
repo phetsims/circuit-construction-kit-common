@@ -57,7 +57,7 @@ export default class WireKeyboardListener extends SoundKeyboardDragListener {
         circuitElementNode.endDrag( circuitElementNode, [
           wire.startVertexProperty.get(),
           wire.endVertexProperty.get()
-        ], screenView, circuitNode, initialPoint!, latestPoint!, dragged );
+        ], screenView, circuitNode, initialPoint!, latestPoint!, dragged, false );
       },
 
       dragSpeed: 300,

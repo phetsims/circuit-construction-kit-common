@@ -58,7 +58,7 @@ export default class FixedCircuitElementDragListener extends CircuitNodeDragList
       },
       end: () =>
         circuitElementNode.endDrag( circuitElementNode.contentNode, [ circuitElement.endVertexProperty.get() ], screenView, circuitNode,
-          initialPoint!, latestPoint!, dragged ),
+          initialPoint!, latestPoint!, dragged, true ),
       tandem: tandem
     } );
   }

@@ -208,8 +208,9 @@ export default abstract class CircuitElementNode extends Node {
    * @param initialPoint
    * @param latestPoint
    * @param dragged
+   * @param selectWhenNear
    */
-  public endDrag( node: Node, vertices: Vertex[], screenView: CCKCScreenView, circuitNode: CircuitNode, initialPoint: Vector2, latestPoint: Vector2, dragged: boolean ): void {
+  public endDrag( node: Node, vertices: Vertex[], screenView: CCKCScreenView, circuitNode: CircuitNode, initialPoint: Vector2, latestPoint: Vector2, dragged: boolean, selectWhenNear: boolean ): void {
     const circuitElement = this.circuitElement;
 
     if ( circuitElement.interactiveProperty.get() ) {
@@ -229,7 +230,9 @@ export default abstract class CircuitElementNode extends Node {
 
         // Only show the editor when tapped, not on every drag.  Also, event could be undefined if this end() was
         // triggered by dispose()
-        this.selectCircuitElementNodeWhenNear( circuitNode, initialPoint, latestPoint );
+        if ( selectWhenNear ) {
+          this.selectCircuitElementNodeWhenNear( circuitNode, initialPoint, latestPoint );
+        }
       }
     }
   }

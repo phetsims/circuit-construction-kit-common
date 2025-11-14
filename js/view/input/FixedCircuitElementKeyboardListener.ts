@@ -59,7 +59,7 @@ export default class FixedCircuitElementKeyboardListener extends SoundKeyboardDr
       },
       end: () => {
         circuitElementNode.endDrag( circuitElementNode.contentNode, [ circuitElement.endVertexProperty.get() ],
-          screenView, circuitNode, initialPosition!, position!, dragged );
+          screenView, circuitNode, initialPosition!, position!, dragged, false );
       },
 
       dragSpeed: 300,

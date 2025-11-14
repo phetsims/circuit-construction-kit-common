@@ -64,7 +64,7 @@ export default class WireDragListener extends CircuitNodeDragListener {
           wireNode.endDrag( wireNode, [
             wire.startVertexProperty.get(),
             wire.endVertexProperty.get()
-          ], screenView, circuitNode, initialPoint!, latestPoint!, dragged );
+          ], screenView, circuitNode, initialPoint!, latestPoint!, dragged, true );
         }
       }
     );
