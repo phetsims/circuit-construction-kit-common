@@ -159,6 +159,9 @@ export default class Circuit extends PhetioObject {
   private readonly groups: PhetioGroup<IntentionalAny, IntentionalAny>[];
   public readonly includeACElements: boolean;
   public readonly includeLabElements: boolean;
+  public readonly vertexConnectedEmitter: TEmitter<[ Vertex, Vertex ]> = new Emitter( {
+    parameters: [ { valueType: Vertex }, { valueType: Vertex } ]
+  } );
 
   public constructor( viewTypeProperty: Property<CircuitElementViewType>, addRealBulbsProperty: Property<boolean>, tandem: Tandem,
                       providedOptions: CircuitOptions ) {
@@ -913,7 +916,7 @@ export default class Circuit extends PhetioObject {
       this.circuitElements.forEach( circuitElement => {
         if ( circuitElement.containsVertex( oldVertex ) ) {
           circuitElement.replaceVertex( oldVertex, targetVertex );
-          circuitElement.connectedEmitter.emit();
+          circuitElement.connectedEmitter.emit( oldVertex, targetVertex );
         }
       } );
 
@@ -940,6 +943,9 @@ export default class Circuit extends PhetioObject {
 
       // Make sure the solder is displayed in the correct z-order
       targetVertex.relayerEmitter.emit();
+
+      this.vertexConnectedEmitter.emit( targetVertex, oldVertex );
+
     }
   }
 

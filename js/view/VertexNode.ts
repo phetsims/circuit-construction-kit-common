@@ -270,7 +270,6 @@ export default class VertexNode extends Node {
 
         // if focus moves off the radio button group, detach the wire and dispose the radio button group.
         pdomFocusProperty.lazyLink( pdomFocus => {
-          console.log( 'pdom focus changed to ', pdomFocus );
 
           // make sure this runs AFTER the other listener, so it won't call endDrag twice
           animationFrameTimer.runOnNextTick( () => {
