@@ -7,6 +7,7 @@
  */
 
 import type { TReadOnlyProperty } from '../../../../axon/js/TReadOnlyProperty.js';
+import { getPDOMFocusedNode } from '../../../../scenery/js/accessibility/pdomFocusProperty.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../../CircuitConstructionKitCommonFluent.js';
@@ -69,6 +70,7 @@ const formatCircuitElementBriefName = ( type: CircuitElementType, position: numb
 };
 
 export default class CircuitDescription {
+  private static myGroupNodes: Node[] | null = null;
 
   /**
    * Sorts circuit elements by the preferred type order, with unlisted types at the end.
@@ -284,11 +286,6 @@ export default class CircuitDescription {
         allBriefNames.set( circuitElement, briefName );
       } );
 
-      // Collect circuit element nodes
-      const circuitElementNodes = sortedCircuitElements.map( circuitElement =>
-        circuitNode.getCircuitElementNode( circuitElement )
-      );
-
       // Assign accessible names to vertices using brief names
       group.vertices.forEach( ( vertex, vertexIndex ) => {
         const neighbors = circuit.getNeighborCircuitElements( vertex );
@@ -304,15 +301,18 @@ export default class CircuitDescription {
       } );
 
       // Build PDOM order for this group
-      const groupPDOMOrder: Node[] = [
-        ...circuitElementNodes,
-        ...group.vertices.map( vertex => circuitNode.getVertexNode( vertex ) )
-      ];
+      const groupPDOMOrder: Node[] = [];
+      sortedCircuitElements.forEach( circuitElement => {
+        const circuitElementNode = circuitNode.getCircuitElementNode( circuitElement );
+        groupPDOMOrder.push( circuitElementNode );
 
-      // CODEX HELP ME
-      //      if ( circuit.selectionProperty.value === circuitElement ) {
-      //         pdomOrder.push( circuitNode.screenView.circuitElementEditContainerNode );
-      //       }
+        if ( circuit.selectionProperty.value === circuitElement ) {
+          groupPDOMOrder.push( circuitNode.screenView.circuitElementEditContainerNode );
+        }
+      } );
+      group.vertices.forEach( vertex => {
+        groupPDOMOrder.push( circuitNode.getVertexNode( vertex ) );
+      } );
 
       // Remove duplicates from PDOM order using native Set
       const uniquePDOMOrder = Array.from( new Set( groupPDOMOrder ) );
@@ -348,6 +348,8 @@ export default class CircuitDescription {
     // Check if construction area is empty
     const hasElements = singleElementCircuits.length > 0 || multiElementGroups.length > 0;
 
+    const focusedElement = getPDOMFocusedNode();
+
     if ( !hasElements ) {
       circuitNode.constructionAreaContainer.accessibleParagraph = EMPTY_CONSTRUCTION_AREA_MESSAGE;
       circuitNode.unconnectedCircuitElementsSection.visible = false;
@@ -356,9 +358,18 @@ export default class CircuitDescription {
 
       circuitNode.constructionAreaContainer.accessibleParagraph = null;
 
-      // Clear and rebuild grouped elements - BEFORE setting other pdom order so that nothing will appear 2x places at once
-      circuitNode.groupsContainer.children.forEach( child => child.dispose() );
-      circuitNode.groupsContainer.children = [];
+      // Avoid having the old PDOM element appearing twice as we rebuild things.
+      // TODO: Maybe not all of these are necessary? See https://github.com/phetsims/circuit-construction-kit-common/issues/1057
+      // TODO: Try just removing focusedElement from its parent pdom order. Walk up the PDOM instances, not the parents. see https://github.com/phetsims/circuit-construction-kit-common/issues/1057
+
+      circuitNode.pdomOrder = [];
+      circuitNode.unconnectedCircuitElementsSection.pdomOrder = [];
+      circuitNode.constructionAreaContainer.pdomOrder = [];
+      if ( this.myGroupNodes ) {
+        this.myGroupNodes.forEach( group => {
+          group.pdomOrder = [];
+        } );
+      }
 
       // Update single circuit elements section and collect brief names
       const singleElementsResult = this.updateSingleCircuitElements( singleElementCircuits, circuitNode, circuit );
@@ -375,6 +386,8 @@ export default class CircuitDescription {
       }
       constructionAreaPDOMOrder.push( ...groupNodes );
 
+      this.myGroupNodes = groupNodes;
+
       circuitNode.constructionAreaContainer.pdomOrder = constructionAreaPDOMOrder;
     }
 
@@ -383,6 +396,14 @@ export default class CircuitDescription {
 
     // Set the final PDOM order
     circuitNode.pdomOrder = pdomOrder;
+
+
+    // This may make the node re-announce itself.
+    // If this proves to be too disruptive, consider:
+    // Each CircuitElementNode could have its own child containerNode, which may or may not contain its edit panel
+    // Or we can try splicing in the edit panel node at the right location in the pdomOrder array without resetting the whole array.
+    // Or we can try a modal operation for the edit panel (removing other content from the PDOM while it's open).
+    focusedElement && !focusedElement.isFocused() && focusedElement.focus();
   }
 }
 
