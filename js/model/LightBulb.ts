@@ -13,6 +13,7 @@ import type Matrix3 from '../../../dot/js/Matrix3.js';
 import Range from '../../../dot/js/Range.js';
 import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
@@ -120,7 +121,7 @@ export default class LightBulb extends FixedCircuitElement {
       isExtreme: false,
       isReal: false
     }, providedOptions );
-    assert && assert( !options.hasOwnProperty( 'numberOfDecimalPlaces' ), 'supplied by LightBulb' );
+    affirm( !options.hasOwnProperty( 'numberOfDecimalPlaces' ), 'supplied by LightBulb' );
     options.numberOfDecimalPlaces = options.isExtreme ? 0 : 1;
 
     // getPathLength not available yet, so use a nonzero charge path length then override.

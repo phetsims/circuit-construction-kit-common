@@ -10,6 +10,7 @@ import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Multilink, { type UnknownMultilink } from '../../../axon/js/Multilink.js';
 import Property from '../../../axon/js/Property.js';
 import Range from '../../../dot/js/Range.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
 import type PickRequired from '../../../phet-core/js/types/PickRequired.js';
 import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
@@ -33,7 +34,7 @@ export default class PhaseShiftControl extends VBox {
     providedOptions = combineOptions<PhaseShiftControlOptions>( {
       spacing: 7
     }, providedOptions );
-    assert && assert( !providedOptions.children, 'children not supported' );
+    affirm( !providedOptions.children, 'children not supported' );
 
     const valueRangeProperty = new Property( new Range( -180, 180 ) );
     const enabledProperty = new BooleanProperty( true );

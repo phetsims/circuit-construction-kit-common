@@ -7,6 +7,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import affirm from '../../../../perennial-alias/js/browser-and-node/affirm.js';
 import CCKCConstants from '../../CCKCConstants.js';
 import CCKCUtils from '../../CCKCUtils.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
@@ -133,7 +134,7 @@ export default class LinearTransientAnalysis {
           ltaInductors.push( ltaInductor );
         }
         else {
-          assert && assert( false, `Type not found: ${circuitElement.constructor.name}` );
+          affirm( false, `Type not found: ${circuitElement.constructor.name}` );
         }
       }
       else {
@@ -201,8 +202,8 @@ export default class LinearTransientAnalysis {
       capacitor.mnaCurrent = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousCurrentForCoreModel( ltaCapacitor ) );
       capacitor.mnaVoltageDrop = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousVoltageForCoreModel( ltaCapacitor ) );
 
-      assert && assert( Math.abs( capacitor.mnaCurrent ) < 1E100, 'mnaCurrent out of range' );
-      assert && assert( Math.abs( capacitor.mnaVoltageDrop ) < 1E100, 'mnaVoltageDrop out of range' );
+      affirm( Math.abs( capacitor.mnaCurrent ) < 1E100, 'mnaCurrent out of range' );
+      affirm( Math.abs( capacitor.mnaVoltageDrop ) < 1E100, 'mnaVoltageDrop out of range' );
     } );
     ltaInductors.forEach( ltaInductor => {
 
@@ -210,8 +211,8 @@ export default class LinearTransientAnalysis {
       inductor.currentProperty.value = circuitResult.getTimeAverageCurrentForCoreModel( ltaInductor );
       inductor.mnaCurrent = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousCurrentForCoreModel( ltaInductor ) );
       inductor.mnaVoltageDrop = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousVoltageForCoreModel( ltaInductor ) );
-      assert && assert( Math.abs( inductor.mnaCurrent ) < 1E100, 'mnaCurrent out of range' );
-      assert && assert( Math.abs( inductor.mnaVoltageDrop ) < 1E100, 'mnaVoltageDrop out of range' );
+      affirm( Math.abs( inductor.mnaCurrent ) < 1E100, 'mnaCurrent out of range' );
+      affirm( Math.abs( inductor.mnaVoltageDrop ) < 1E100, 'mnaVoltageDrop out of range' );
     } );
 
     // zero out currents on open branches
@@ -277,7 +278,7 @@ export default class LinearTransientAnalysis {
           solvedVertices.push( endVertex );
         }
         else {
-          assert && assert( false, 'unknown circuit element type: ' + circuitElement.constructor.name );
+          affirm( false, 'unknown circuit element type: ' + circuitElement.constructor.name );
         }
       }
     };
@@ -314,7 +315,7 @@ export default class LinearTransientAnalysis {
     // circuit.checkCurrentConservation( 'after' );
 
     unsolvedVertices.forEach( v => {
-      assert && assert( visited.includes( v ), 'unsolved vertex ' + v.tandem.phetioID + ' should be visited.' );
+      affirm( visited.includes( v ), 'unsolved vertex ' + v.tandem.phetioID + ' should be visited.' );
     } );
   }
 }

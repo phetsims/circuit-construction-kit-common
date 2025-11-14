@@ -8,6 +8,7 @@
 
 import type Bounds2 from '../../dot/js/Bounds2.js';
 import Utils from '../../dot/js/Utils.js';
+import affirm from '../../perennial-alias/js/browser-and-node/affirm.js';
 import StringUtils from '../../phetcommon/js/util/StringUtils.js';
 import MathSymbols from '../../scenery-phet/js/MathSymbols.js';
 import type Node from '../../scenery/js/nodes/Node.js';
@@ -87,7 +88,7 @@ const CCKCUtils = {
    * Clamp the magnitude of a signed number to keep it in range.
    */
   clampMagnitude( value: number, magnitude = 1E20 ): number {
-    assert && assert( magnitude >= 0, 'magnitude should be non-negative' );
+    affirm( magnitude >= 0, 'magnitude should be non-negative' );
     if ( Math.abs( value ) > magnitude ) {
       return Math.sign( value ) * magnitude;
     }

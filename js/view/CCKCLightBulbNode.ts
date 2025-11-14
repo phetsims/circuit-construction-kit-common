@@ -14,6 +14,7 @@ import Matrix3 from '../../../dot/js/Matrix3.js';
 import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Shape from '../../../kite/js/Shape.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
 import Image from '../../../scenery/js/nodes/Image.js';
 import Node from '../../../scenery/js/nodes/Node.js';
@@ -314,7 +315,7 @@ export default class CCKCLightBulbNode extends FixedCircuitElementNode {
         schematicTypeProperty.unlink( updateSchematicType );
       }
       else {
-        assert && assert( false, 'socketNode should be defined' );
+        affirm( false, 'socketNode should be defined' );
       }
     };
   }

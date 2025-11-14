@@ -11,6 +11,7 @@ import NumberProperty from '../../../axon/js/NumberProperty.js';
 import type Property from '../../../axon/js/Property.js';
 import type { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import type Range from '../../../dot/js/Range.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import type PickOptional from '../../../phet-core/js/types/PickOptional.js';
@@ -56,7 +57,7 @@ export default abstract class VoltageSource extends FixedCircuitElement {
    * @param [providedOptions]
    */
   public constructor( type: CircuitElementType, startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, length: number, tandem: Tandem, providedOptions?: VoltageSourceOptions ) {
-    assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );
+    affirm( internalResistanceProperty, 'internalResistanceProperty should be defined' );
     const options = optionize<VoltageSourceOptions, SelfOptions, FixedCircuitElementOptions>()( {
       initialOrientation: 'right',
       voltage: 9.0,

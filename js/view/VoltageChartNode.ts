@@ -11,6 +11,7 @@ import type Property from '../../../axon/js/Property.js';
 import type Bounds2 from '../../../dot/js/Bounds2.js';
 import Range from '../../../dot/js/Range.js';
 import Vector2 from '../../../dot/js/Vector2.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
 import Color from '../../../scenery/js/util/Color.js';
@@ -97,7 +98,7 @@ export default class VoltageChartNode extends CCKCChartNode {
     }
 
     this.series.pop();
-    assert && assert( typeof this.lastStepTime === 'number' );
+    affirm( typeof this.lastStepTime === 'number' );
     if ( typeof this.lastStepTime === 'number' ) {
       this.series.push( this.sampleValue( this.lastStepTime ) );
     }

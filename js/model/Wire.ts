@@ -9,6 +9,7 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import type Property from '../../../axon/js/Property.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -48,9 +49,9 @@ export default class Wire extends CircuitElement {
   public readonly isTraversibleProperty = new BooleanProperty( true );
 
   public constructor( startVertex: Vertex, endVertex: Vertex, resistivityProperty: NumberProperty, tandem: Tandem, providedOptions?: WireOptions ) {
-    assert && assert( typeof resistivityProperty !== 'number', 'property should not be a number' );
-    assert && assert( !startVertex.isDisposed, 'vertex should not be disposed' );
-    assert && assert( !endVertex.isDisposed, 'vertex should not be disposed' );
+    affirm( typeof resistivityProperty !== 'number', 'property should not be a number' );
+    affirm( !startVertex.isDisposed, 'vertex should not be disposed' );
+    affirm( !endVertex.isDisposed, 'vertex should not be disposed' );
     const options = optionize<WireOptions, SelfOptions, CircuitElementOptions>()( {
       wireStub: false,
       isMetallic: true,
@@ -113,7 +114,7 @@ export default class Wire extends CircuitElement {
     const resistance = this.resistivityProperty.get() * modelLength / CCKCConstants.WIRE_CROSS_SECTIONAL_AREA;
 
     const clampedResistance = Math.max( CCKCConstants.MINIMUM_WIRE_RESISTANCE, resistance );
-    assert && assert( !isNaN( clampedResistance ), 'wire resistance should not be NaN' );
+    affirm( !isNaN( clampedResistance ), 'wire resistance should not be NaN' );
     this.resistanceProperty.set( clampedResistance );
 
     // Update the charge path length, but don't let it go less than a threshold, see https://github.com/phetsims/circuit-construction-kit-common/issues/405

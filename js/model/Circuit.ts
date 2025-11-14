@@ -17,6 +17,7 @@ import type TEmitter from '../../../axon/js/TEmitter.js';
 import type Bounds2 from '../../../dot/js/Bounds2.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
 import Vector2 from '../../../dot/js/Vector2.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import arrayRemove from '../../../phet-core/js/arrayRemove.js';
 import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import { type PhetioState } from '../../../tandem/js/phet-io-types.js';
@@ -311,7 +312,7 @@ export default class Circuit extends PhetioObject {
       vertex.positionProperty.link( emitCircuitChanged );
 
       const filtered = this.vertexGroup.filter( candidateVertex => vertex === candidateVertex );
-      assert && assert( filtered.length === 1, 'should only have one copy of each vertex' );
+      affirm( filtered.length === 1, 'should only have one copy of each vertex' );
 
       // If the use dragged another circuit element, then previous selection should be cleared.
       this.selectionProperty.value = null;
@@ -612,8 +613,8 @@ export default class Circuit extends PhetioObject {
       this.rotateSingleVertexByAngle( vertex, pivotVertex, -2 * searchAngle );
       const distance2 = this.closestDistanceToOtherVertex( vertex );
 
-      assert && assert( distance1 !== null && distance2 !== null );
-      if ( distance2! <= distance1! ) {
+      affirm( distance1 !== null && distance2 !== null );
+      if ( distance2 <= distance1 ) {
 
         // go back to the best spot
         this.rotateSingleVertexByAngle( vertex, pivotVertex, 2 * searchAngle );
@@ -903,20 +904,20 @@ export default class Circuit extends PhetioObject {
 
   // Connect the vertices, merging oldVertex into vertex1 and deleting oldVertex
   public connect( targetVertex: Vertex, oldVertex: Vertex ): void {
-    assert && assert( targetVertex.attachableProperty.get() && oldVertex.attachableProperty.get(),
+    affirm( targetVertex.attachableProperty.get() && oldVertex.attachableProperty.get(),
       'both vertices should be attachable' );
 
     // Keep the black box vertices
     if ( oldVertex.blackBoxInterfaceProperty.get() ) {
-      assert && assert( !targetVertex.blackBoxInterfaceProperty.get(), 'cannot attach black box interface vertex ' +
-                                                                       'to black box interface vertex' );
+      affirm( !targetVertex.blackBoxInterfaceProperty.get(), 'cannot attach black box interface vertex ' +
+                                                             'to black box interface vertex' );
       this.connect( oldVertex, targetVertex );
     }
     else {
       this.circuitElements.forEach( circuitElement => {
         if ( circuitElement.containsVertex( oldVertex ) ) {
           circuitElement.replaceVertex( oldVertex, targetVertex );
-          circuitElement.connectedEmitter.emit( oldVertex, targetVertex );
+          circuitElement.connectedEmitter.emit();
         }
       } );
 
@@ -938,7 +939,7 @@ export default class Circuit extends PhetioObject {
       }
 
       this.vertexGroup.disposeElement( oldVertex );
-      assert && assert( !oldVertex.positionProperty.hasListeners(), 'Removed vertex should not have any listeners' );
+      affirm( !oldVertex.positionProperty.hasListeners(), 'Removed vertex should not have any listeners' );
       this.markDirty();
 
       // Make sure the solder is displayed in the correct z-order
@@ -1169,7 +1170,7 @@ export default class Circuit extends PhetioObject {
 
   // Assign the sense to an un-sensed circuit element based on matching the sign of a corresponding reference element.
   private static assignSense( targetElement: CircuitElement, referenceElement: CircuitElement ): void {
-    assert && assert( targetElement.currentSenseProperty.value === CurrentSense.UNSPECIFIED, 'target should have an unspecified sense' );
+    affirm( targetElement.currentSenseProperty.value === CurrentSense.UNSPECIFIED, 'target should have an unspecified sense' );
     const targetElementCurrent = targetElement.currentProperty.value;
     const referenceElementCurrent = referenceElement.currentProperty.value;
     const referenceElementSense = referenceElement.currentSenseProperty.value;
@@ -1179,7 +1180,7 @@ export default class Circuit extends PhetioObject {
                         referenceElementCurrent < 0 && referenceElementSense === CurrentSense.BACKWARD ? 'positive' :
                         'error';
 
-    assert && assert( desiredSign !== 'error' );
+    affirm( desiredSign !== 'error' );
     targetElement.currentSenseProperty.value = desiredSign === 'positive' ?
                                                getSenseForPositive( targetElementCurrent ) :
                                                getSenseForNegative( targetElementCurrent );
@@ -1374,7 +1375,7 @@ export default class Circuit extends PhetioObject {
   public getDropTarget( vertex: Vertex, mode: InteractionMode, blackBoxBounds: Bounds2 | null ): Vertex | null {
 
     if ( mode === InteractionMode.TEST ) {
-      assert && assert( blackBoxBounds, 'bounds should be provided for build mode' );
+      affirm( blackBoxBounds, 'bounds should be provided for build mode' );
     }
 
     // Rules for a vertex connecting to another vertex.

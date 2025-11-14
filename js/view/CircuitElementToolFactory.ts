@@ -13,6 +13,7 @@ import NumberProperty from '../../../axon/js/NumberProperty.js';
 import type Property from '../../../axon/js/Property.js';
 import type { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import Vector2 from '../../../dot/js/Vector2.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import type PickRequired from '../../../phet-core/js/types/PickRequired.js';
 import AlignGroup from '../../../scenery/js/layout/constraints/AlignGroup.js';
@@ -143,7 +144,7 @@ export default class CircuitElementToolFactory {
     createElement: ( v: Vector2 ) => CircuitElement,
     providedOptions?: CreateCircuitElementToolNodeProvidedOptions & PickRequired<Node, 'tandem'> ): CircuitElementToolNode {
 
-    assert && assert( Number.isInteger( count ), 'count should be an integer' );
+    affirm( Number.isInteger( count ), 'count should be an integer' );
 
     const options = optionize<CreateCircuitElementToolNodeProvidedOptions, CreateCircuitElementToolNodeSelfOptions, CircuitElementToolNodeOptions>()( {
       additionalProperty: new BooleanProperty( true ),

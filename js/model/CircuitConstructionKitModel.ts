@@ -19,6 +19,7 @@ import type Bounds2 from '../../../dot/js/Bounds2.js';
 import Range from '../../../dot/js/Range.js';
 import Utils from '../../../dot/js/Utils.js';
 import type TModel from '../../../joist/js/TModel.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import Stopwatch from '../../../scenery-phet/js/Stopwatch.js';
 import isSettingPhetioStateProperty from '../../../tandem/js/isSettingPhetioStateProperty.js';
@@ -167,7 +168,7 @@ export default class CircuitConstructionKitModel implements TModel {
       phetioFeatured: true
     } );
 
-    assert && assert( CCKCConstants.ZOOM_SCALES.includes( 1 ), 'Zoom scales must include 1 as an option' );
+    affirm( CCKCConstants.ZOOM_SCALES.includes( 1 ), 'Zoom scales must include 1 as an option' );
 
     // Zoom level for scenes
     this.zoomLevelProperty = new NumberProperty( CCKCConstants.ZOOM_SCALES.indexOf( 1 ), {

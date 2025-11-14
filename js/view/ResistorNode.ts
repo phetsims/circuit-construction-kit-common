@@ -10,6 +10,7 @@ import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import type Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import Shape from '../../../kite/js/Shape.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
 import Image from '../../../scenery/js/nodes/Image.js';
 import Node from '../../../scenery/js/nodes/Node.js';
@@ -136,7 +137,7 @@ export default class ResistorNode extends FixedCircuitElementNode {
 
         if ( colors.length === 1 ) {
           singleColorBand.fill = colors[ 0 ];
-          assert && assert( colors[ 0 ] !== null && colors[ 0 ].equals( Color.BLACK ), 'single band should be black' );
+          affirm( colors[ 0 ] !== null && colors[ 0 ].equals( Color.BLACK ), 'single band should be black' );
           colorBands.forEach( colorBand => { colorBand.fill = null; } );
         }
         else {

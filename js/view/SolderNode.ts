@@ -7,6 +7,7 @@
  */
 
 import type Vector2 from '../../../dot/js/Vector2.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import Circle from '../../../scenery/js/nodes/Circle.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import { rasterizeNode } from '../../../scenery/js/util/rasterizeNode.js';
@@ -37,7 +38,7 @@ export default class SolderNode extends Node {
   public static readonly SOLDER_RADIUS = SOLDER_RADIUS;
 
   public constructor( circuitNode: CircuitNode, vertex: Vertex ) {
-    assert && assert( CIRCLE_NODE, 'solder image should exist before creating SolderNode' );
+    affirm( CIRCLE_NODE, 'solder image should exist before creating SolderNode' );
 
     const circuit = circuitNode.circuit;
 

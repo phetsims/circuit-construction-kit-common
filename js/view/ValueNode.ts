@@ -11,6 +11,7 @@ import type Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
 import StringUtils from '../../../phetcommon/js/util/StringUtils.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
@@ -213,7 +214,7 @@ export default class ValueNode extends Panel {
       throw new Error( `ValueNode cannot be shown for ${circuitElement.constructor.name}` );
     }
 
-    assert && assert( readoutValueNode, 'Content node should be defined' );
+    affirm( readoutValueNode, 'Content node should be defined' );
 
     if ( CCKCQueryParameters.showCurrents ) {
       const text = new Text( '', { fill: CCKCColors.textFillProperty } );

@@ -10,6 +10,7 @@ import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import type Property from '../../../axon/js/Property.js';
 import Range from '../../../dot/js/Range.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import optionize, { type EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
@@ -51,7 +52,7 @@ export default class ACVoltage extends VoltageSource {
   public readonly isTraversibleProperty = new BooleanProperty( true );
 
   public constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, tandem: Tandem, providedOptions?: ACVoltageOptions ) {
-    assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );
+    affirm( internalResistanceProperty, 'internalResistanceProperty should be defined' );
 
     const options = optionize<ACVoltageOptions, SelfOptions, VoltageSourceOptions>()( {
       initialOrientation: 'right',

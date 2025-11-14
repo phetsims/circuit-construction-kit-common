@@ -9,6 +9,7 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import type Property from '../../../axon/js/Property.js';
 import Range from '../../../dot/js/Range.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import optionize, { type EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -37,7 +38,7 @@ export default class Battery extends VoltageSource {
 
   public constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, batteryType: BatteryType,
                       tandem: Tandem, providedOptions?: BatteryOptions ) {
-    assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );
+    affirm( internalResistanceProperty, 'internalResistanceProperty should be defined' );
     const options = optionize<BatteryOptions, EmptySelfOptions, VoltageSourceOptions>()( {
       initialOrientation: 'right',
       voltage: Battery.VOLTAGE_DEFAULT,

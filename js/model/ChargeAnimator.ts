@@ -13,6 +13,7 @@ import dotRandom from '../../../dot/js/dotRandom.js';
 import Range from '../../../dot/js/Range.js';
 import RunningAverage from '../../../dot/js/RunningAverage.js';
 import Utils from '../../../dot/js/Utils.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import type Charge from './Charge.js';
@@ -94,7 +95,7 @@ export default class ChargeAnimator {
     // Find the fastest current in any circuit element
     const maxCircuitElement = _.maxBy( this.circuit.circuitElements, CURRENT_MAGNITUDE )!;
     const maxCurrentMagnitude = CURRENT_MAGNITUDE( maxCircuitElement );
-    assert && assert( maxCurrentMagnitude >= 0, 'max current should be positive' );
+    affirm( maxCurrentMagnitude >= 0, 'max current should be positive' );
 
     const maxSpeed = maxCurrentMagnitude * SPEED_SCALE;
     const maxPositionChange = maxSpeed * MAX_DT; // Use the max dt instead of the true dt to avoid fluctuations
@@ -204,7 +205,7 @@ export default class ChargeAnimator {
    */
   private propagate( charge: Charge, dt: number ): void {
     const chargePosition = charge.distance;
-    assert && assert( _.isNumber( chargePosition ), 'distance along wire should be a number' );
+    affirm( _.isNumber( chargePosition ), 'distance along wire should be a number' );
     const current = -charge.circuitElement.currentProperty.get() * charge.charge;
 
     // Below min current, the charges should remain stationary
@@ -225,8 +226,8 @@ export default class ChargeAnimator {
                           ( newChargePosition - charge.circuitElement.chargePathLength );
         const lessThanBeginningOfOldCircuitElement = newChargePosition < 0;
 
-        assert && assert( !isNaN( overshoot ), 'overshoot should be a number' );
-        assert && assert( overshoot >= 0, 'overshoot should be >=0' );
+        affirm( !isNaN( overshoot ), 'overshoot should be a number' );
+        affirm( overshoot >= 0, 'overshoot should be >=0' );
 
         // enumerate all possible circuit elements the charge could go to
         const vertex = lessThanBeginningOfOldCircuitElement ?
@@ -237,7 +238,7 @@ export default class ChargeAnimator {
 
           // choose the CircuitElement with the furthest away electron
           const chosenCircuitPosition = _.maxBy( circuitPositions, 'distanceToClosestElectron' )!;
-          assert && assert( chosenCircuitPosition.distanceToClosestElectron >= 0, 'distanceToClosestElectron should be >=0' );
+          affirm( chosenCircuitPosition.distanceToClosestElectron >= 0, 'distanceToClosestElectron should be >=0' );
           charge.circuitElement = chosenCircuitPosition.circuitElement;
           charge.distance = chosenCircuitPosition.distance;
         }
@@ -288,7 +289,7 @@ export default class ChargeAnimator {
 
       if ( found ) {
         const charges = circuit.getChargesInCircuitElement( circuitElement );
-        assert && assert(
+        affirm(
           circuitElement.startVertexProperty.get() === vertex ||
           circuitElement.endVertexProperty.get() === vertex
         );
@@ -304,7 +305,7 @@ export default class ChargeAnimator {
             distanceToClosestElectron = circuitElement.chargePathLength - ( _.maxBy( charges, 'distance' )! ).distance;
           }
 
-          assert && assert( distance !== null, 'distance should be a number' );
+          affirm( distance !== null, 'distance should be a number' );
 
           if ( typeof distance === 'number' ) {
             circuitPositions.push( {
@@ -323,7 +324,7 @@ export default class ChargeAnimator {
 
             // find the one with the closest electron
             const nearest = _.minBy( positions, 'distanceToClosestElectron' )!;
-            assert && assert( distance !== null, 'distance should be a number' );
+            affirm( distance !== null, 'distance should be a number' );
             if ( typeof distance === 'number' ) {
               circuitPositions.push( {
                 circuitElement: circuitElement,

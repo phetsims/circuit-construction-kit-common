@@ -10,6 +10,7 @@ import animationFrameTimer from '../../../axon/js/animationFrameTimer.js';
 import Property from '../../../axon/js/Property.js';
 import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
 import { pdomFocusProperty } from '../../../scenery/js/accessibility/pdomFocusProperty.js';
 import Grayscale from '../../../scenery/js/filters/Grayscale.js';
@@ -150,7 +151,7 @@ export default class VertexNode extends Node {
         // No need for i18n because this is for debugging only
         const voltageText = `${Utils.toFixed( voltage, 3 )}V`;
         voltageReadout.setString( `${vertex.index} @ ${voltageText}` );
-        assert && assert( this.updateReadoutTextPosition );
+        affirm( this.updateReadoutTextPosition );
         if ( this.updateReadoutTextPosition ) {
           this.updateReadoutTextPosition();
         }

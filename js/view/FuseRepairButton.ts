@@ -8,6 +8,7 @@
 
 import Vector2 from '../../../dot/js/Vector2.js';
 import Shape from '../../../kite/js/Shape.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import optionize, { type EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import Circle from '../../../scenery/js/nodes/Circle.js';
 import Node from '../../../scenery/js/nodes/Node.js';
@@ -47,12 +48,10 @@ export default class FuseRepairButton extends CCKCRoundPushButton {
       listener: () => {
         const fuse = circuit.selectionProperty.value;
 
-        // eslint-disable-next-line phet/no-simple-type-checking-assertions
-        assert && assert( fuse instanceof Fuse );
-        if ( fuse instanceof Fuse ) {
-          fuse.resetFuse();
-          circuit.componentEditedEmitter.emit();
-        }
+
+        affirm( fuse instanceof Fuse );
+        fuse.resetFuse();
+        circuit.componentEditedEmitter.emit();
       },
       isDisposable: false
     }, providedOptions );

@@ -9,6 +9,7 @@
 import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import StringProperty from '../../../axon/js/StringProperty.js';
 import type { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Rectangle, { type RectangleOptions } from '../../../scenery/js/nodes/Rectangle.js';
@@ -159,7 +160,7 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
       } ) );
     }
     else {
-      assert && assert( !!circuitNode );
+      affirm( !!circuitNode );
       if ( circuitNode && !seriesAmmeter.phetioIsArchetype && seriesAmmeter.tandem.supplied ) {
         circuitNode.seriesAmmeterNodeReadoutPanelLayer.addChild( this.frontPanelContainer );
       }
@@ -178,7 +179,7 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
       seriesAmmeter.endVertexProperty.unlink( updateText );
       ammeterReadoutTypeProperty.unlink( updateText );
       if ( !this.isIcon ) {
-        assert && assert( !!circuitNode );
+        affirm( !!circuitNode );
         if ( circuitNode ) {
           circuitNode.seriesAmmeterNodeReadoutPanelLayer.removeChild( this.frontPanelContainer );
         }

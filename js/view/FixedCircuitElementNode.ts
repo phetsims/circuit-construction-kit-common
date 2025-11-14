@@ -12,6 +12,7 @@ import type Property from '../../../axon/js/Property.js';
 import type Bounds2 from '../../../dot/js/Bounds2.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import Vector2 from '../../../dot/js/Vector2.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import Image from '../../../scenery/js/nodes/Image.js';
 import Node from '../../../scenery/js/nodes/Node.js';
@@ -92,7 +93,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
   public constructor( screenView: CCKCScreenView | null, circuitNode: CircuitNode | null, circuitElement: FixedCircuitElement,
                       viewTypeProperty: Property<CircuitElementViewType>, lifelikeNode: Node, schematicNode: Node, tandem: Tandem,
                       providedOptions?: FixedCircuitElementNodeOptions ) {
-    assert && assert( lifelikeNode !== schematicNode, 'schematicNode should be different than lifelikeNode' );
+    affirm( lifelikeNode !== schematicNode, 'schematicNode should be different than lifelikeNode' );
 
     const circuit = circuitNode && circuitNode.circuit;
 
@@ -200,7 +201,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
           ], this.updateFireVisible.bind( this ) );
         }
         else {
-          assert && assert( false, 'screenView should have been defined' );
+          affirm( false, 'screenView should have been defined' );
           this.updateFireMultilink = null;
         }
       }
@@ -242,7 +243,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
       // shortly with the correct values for both startPosition and endPosition
       // See https://github.com/phetsims/circuit-construction-kit-common/issues/413
       // assert && stepTimer.setTimeout( function() {
-      //   assert && assert( !this.circuitElement.startPositionProperty.get().equals( this.circuitElement.endPositionProperty.get() ), 'vertices cannot be in the same spot' );
+      //   affirm( !this.circuitElement.startPositionProperty.get().equals( this.circuitElement.endPositionProperty.get() ), 'vertices cannot be in the same spot' );
       // }, 0 );
       return;
     }
@@ -294,7 +295,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
       this.markAsDirty();
     }
     else {
-      assert && assert( false, 'should have a highlight node' );
+      affirm( false, 'should have a highlight node' );
     }
   }
 

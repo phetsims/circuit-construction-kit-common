@@ -7,6 +7,7 @@
  */
 
 import Utils from '../../../dot/js/Utils.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import Color from '../../../scenery/js/util/Color.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
@@ -55,7 +56,7 @@ const ResistorColors = {
    * @returns entries from the color table
    */
   getEntries: function( resistance: number ): Entry[] {
-    assert && assert( resistance >= 0, 'resistance should be non-negative' );
+    affirm( resistance >= 0, 'resistance should be non-negative' );
 
     // 0 resistance has a single black band centered on the resistor
     if ( resistance === 0 ) {
@@ -100,7 +101,7 @@ const ResistorColors = {
         break;
       }
     }
-    assert && assert( percentError < color!.tolerance!, 'no tolerance high enough to accommodate error' );
+    affirm( percentError < color!.tolerance!, 'no tolerance high enough to accommodate error' );
     return [
       getEntry( 'significantFigure', firstSignificantDigit ),
       getEntry( 'significantFigure', secondSignificantDigit ),

@@ -9,6 +9,7 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import type Property from '../../../axon/js/Property.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -61,8 +62,8 @@ export default class Resistor extends FixedCircuitElement {
       numberOfDecimalPlaces: resistorType === ResistorType.RESISTOR ? 1 : 0
     }, providedOptions );
 
-    assert && assert( !options.hasOwnProperty( 'resistance' ), 'Resistance should be passed through resistorType' );
-    assert && assert( !options.hasOwnProperty( 'isMetallic' ), 'isMetallic is given by the resistorType' );
+    affirm( !options.hasOwnProperty( 'resistance' ), 'Resistance should be passed through resistorType' );
+    affirm( !options.hasOwnProperty( 'isMetallic' ), 'isMetallic is given by the resistorType' );
 
     options.isMetallic = resistorType.isMetallic;
 
@@ -78,7 +79,7 @@ export default class Resistor extends FixedCircuitElement {
 
     this.resistorType = resistorType;
 
-    assert && assert( typeof this.resistorType.isMetallic === 'boolean' );
+    affirm( typeof this.resistorType.isMetallic === 'boolean' );
 
     this.resistanceProperty = new NumberProperty( resistorType.defaultResistance, {
       tandem: tandem.createTandem( 'resistanceProperty' ),

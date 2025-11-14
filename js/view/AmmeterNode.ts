@@ -14,6 +14,7 @@ import type Property from '../../../axon/js/Property.js';
 import type Bounds2 from '../../../dot/js/Bounds2.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import ProbeNode from '../../../scenery-phet/js/ProbeNode.js';
 import WireNode from '../../../scenery-phet/js/WireNode.js';
@@ -153,7 +154,7 @@ export default class AmmeterNode extends Node {
       ]
     } );
 
-    assert && assert( !options.hasOwnProperty( 'children' ), 'children will be supplied by AmmeterNode' );
+    affirm( !options.hasOwnProperty( 'children' ), 'children will be supplied by AmmeterNode' );
 
     options.children = [ bodyNode, wireNode, probeNode ];
 

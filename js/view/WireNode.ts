@@ -11,6 +11,7 @@ import Matrix3 from '../../../dot/js/Matrix3.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Shape from '../../../kite/js/Shape.js';
 import LineStyles from '../../../kite/js/util/LineStyles.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import Circle from '../../../scenery/js/nodes/Circle.js';
 import Line from '../../../scenery/js/nodes/Line.js';
 import Node from '../../../scenery/js/nodes/Node.js';
@@ -262,16 +263,16 @@ export default class WireNode extends CircuitElementNode {
 
     if ( screenView ) {
 
-      assert && assert( circuitNode !== null );
+      affirm( circuitNode !== null );
 
       // Input listener for dragging the body of the wire, to translate it.
-      this.dragListener = new WireDragListener( this, circuitNode!, screenView, tandem.createTandem( 'dragListener' ) );
+      this.dragListener = new WireDragListener( this, circuitNode, screenView, tandem.createTandem( 'dragListener' ) );
       this.addInputListener( this.dragListener );
 
       // TODO: add tandem and regenerate phet-io apis, see https://github.com/phetsims/circuit-construction-kit-common/issues/1034
-      this.addInputListener( new WireKeyboardListener( this, circuitNode!, screenView, Tandem.OPT_OUT ) );
+      this.addInputListener( new WireKeyboardListener( this, circuitNode, screenView, Tandem.OPT_OUT ) );
 
-      circuitNode!.circuit.selectionProperty.link( markAsDirty );
+      circuitNode.circuit.selectionProperty.link( markAsDirty );
     }
     else {
       this.dragListener = null;
@@ -292,9 +293,9 @@ export default class WireNode extends CircuitElementNode {
     wire.connectedEmitter.addListener( moveToBack );
 
     this.disposeWireNode = () => {
-      assert && assert( this.dragListener );
-      this.dragListener!.interrupt();
-      this.dragListener!.dispose();
+      affirm( this.dragListener );
+      this.dragListener.interrupt();
+      this.dragListener.dispose();
 
       wire.startVertexProperty.unlink( doUpdateTransform );
       wire.endVertexProperty.unlink( doUpdateTransform );

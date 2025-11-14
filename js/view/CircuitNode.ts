@@ -21,6 +21,7 @@ import Bounds2 from '../../../dot/js/Bounds2.js';
 import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import DisplayClickToDismissListener from '../../../joist/js/DisplayClickToDismissListener.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import { pdomFocusProperty } from '../../../scenery/js/accessibility/pdomFocusProperty.js';
 import type SceneryEvent from '../../../scenery/js/input/SceneryEvent.js';
 import Node from '../../../scenery/js/nodes/Node.js';
@@ -524,7 +525,7 @@ export default class CircuitNode extends Node {
     } );
     this.vertexCutButton.addListener( () => {
       const selectedVertex = circuit.getSelectedVertex();
-      assert && assert( selectedVertex, 'Button should only be available if a vertex is selected' );
+      affirm( selectedVertex, 'Button should only be available if a vertex is selected' );
       if ( selectedVertex ) {
         circuit.cutVertex( selectedVertex );
 
@@ -560,13 +561,13 @@ export default class CircuitNode extends Node {
       this.vertexLayer.removeChild( vertexNode );
       delete this.vertexNodes[ vertex.index ];
       vertexNodeGroup.disposeElement( vertexNode );
-      assert && assert( !this.getVertexNode( vertex ), 'vertex node should have been removed' );
+      affirm( !this.getVertexNode( vertex ), 'vertex node should have been removed' );
 
       const solderNode = this.getSolderNode( vertex );
       this.solderLayer.removeChild( solderNode );
       delete this.solderNodes[ vertex.index ];
       solderNode.dispose();
-      assert && assert( !this.getSolderNode( vertex ), 'solder node should have been removed' );
+      affirm( !this.getSolderNode( vertex ), 'solder node should have been removed' );
     } );
     circuit.vertexGroup.forEach( addVertexNode );
 
@@ -803,7 +804,7 @@ export default class CircuitNode extends Node {
       if ( fixedNeighbor instanceof FixedCircuitElement ) {
         const fixedVertex = fixedNeighbor.getOppositeVertex( vertex );
         const desiredAngle = position.minus( fixedVertex.positionProperty.get() ).angle;
-        assert && assert( !isNaN( desiredAngle ), 'angle should be a number' );
+        affirm( !isNaN( desiredAngle ), 'angle should be a number' );
 
         const length = fixedNeighbor.distanceBetweenVertices || fixedNeighbor.lengthProperty!.get();
         const indexOfFixedVertex = vertices.indexOf( fixedVertex );
@@ -813,8 +814,8 @@ export default class CircuitNode extends Node {
         const src = vertex.positionProperty.get();
         const delta = dest.minus( src );
         const relative = Vector2.createPolar( length, desiredAngle + Math.PI );
-        assert && assert( !isNaN( relative.x ), 'x should be a number' );
-        assert && assert( !isNaN( relative.y ), 'y should be a number' );
+        affirm( !isNaN( relative.x ), 'x should be a number' );
+        affirm( !isNaN( relative.y ), 'y should be a number' );
 
         // Do not propose attachments, since connections cannot be made from a rotation.
         const attachable: Vertex[] = [];
@@ -940,8 +941,8 @@ export default class CircuitNode extends Node {
     if ( bestDropTarget ) {
       const srcUnsnappedPosition = bestDropTarget.src.unsnappedPositionProperty.get();
       delta = bestDropTarget.dst.unsnappedPositionProperty.get().minus( srcUnsnappedPosition );
-      assert && assert( !isNaN( delta.x ), 'x should be a number' );
-      assert && assert( !isNaN( delta.y ), 'y should be a number' );
+      affirm( !isNaN( delta.x ), 'x should be a number' );
+      affirm( !isNaN( delta.y ), 'y should be a number' );
     }
 
     // Translate all nodes as a batch before notifying observers so we don't end up with a bad transient state
@@ -1028,7 +1029,7 @@ export default class CircuitNode extends Node {
    */
   private hitCircuitElementNode( position: Vector2, filter: ( c: CircuitElement ) => boolean, globalPoint: Vector2 | null ): CircuitElementNode | null {
 
-    assert && assert( globalPoint !== undefined );
+    affirm( globalPoint !== undefined );
 
     const circuitElementNodes = this.circuit.circuitElements.filter( filter )
       .map( circuitElement => this.getCircuitElementNode( circuitElement ) );
@@ -1106,8 +1107,8 @@ export default class CircuitNode extends Node {
       const switchNode = this.hitCircuitElementNode( probePosition, ( circuitElement: CircuitElement ) => circuitElement instanceof Switch, globalPoint );
       if ( switchNode ) {
 
-        // eslint-disable-next-line phet/no-simple-type-checking-assertions
-        assert && assert( switchNode instanceof SwitchNode );
+         
+        affirm( switchNode instanceof SwitchNode );
         if ( switchNode instanceof SwitchNode ) {
 
           // address closed switch.  Find out whether the probe was near the start or end vertex
@@ -1123,8 +1124,8 @@ export default class CircuitNode extends Node {
       const capacitorNode = this.hitCircuitElementNode( probePosition, ( circuitElement: CircuitElement ) => circuitElement instanceof Capacitor, globalPoint );
       if ( capacitorNode ) {
 
-        // eslint-disable-next-line phet/no-simple-type-checking-assertions
-        assert && assert( capacitorNode instanceof CapacitorCircuitElementNode );
+         
+        affirm( capacitorNode instanceof CapacitorCircuitElementNode );
         if ( capacitorNode instanceof CapacitorCircuitElementNode ) {
 
           // Check front first since it visually looks like it would be touching the probe

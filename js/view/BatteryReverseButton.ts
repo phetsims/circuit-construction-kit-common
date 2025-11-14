@@ -6,6 +6,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import optionize, { type EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import VBox from '../../../scenery/js/layout/nodes/VBox.js';
 import Path from '../../../scenery/js/nodes/Path.js';
@@ -75,7 +76,7 @@ export default class BatteryReverseButton extends CCKCRoundPushButton {
           circuit.componentEditedEmitter.emit();
         }
         else {
-          assert && assert( false, 'selected circuit element should have been a battery' );
+          affirm( false, 'selected circuit element should have been a battery' );
         }
       },
       isDisposable: false
