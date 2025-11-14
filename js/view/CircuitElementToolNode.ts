@@ -186,8 +186,10 @@ export default class CircuitElementToolNode extends VBox {
         }
 
         const circuitElement = createElement( center );
-
         circuit.circuitElements.add( circuitElement );
+
+        // TODO: Use the accessible name to describe it, see https://github.com/phetsims/circuit-construction-kit-common/issues/1039
+        this.addAccessibleContextResponse( 'Created a ' + circuitElementType + '.' );
 
         circuitElement.focusEmitter.emit();
       }
