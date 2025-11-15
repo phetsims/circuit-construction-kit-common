@@ -385,7 +385,9 @@ export default class CircuitDescription {
         constructionAreaPDOMOrder.push( circuitNode.unconnectedCircuitElementsSection );
       }
       constructionAreaPDOMOrder.push( ...groupNodes );
-
+      this.myGroupNodes?.forEach( group => {
+        group.dispose();
+      } );
       this.myGroupNodes = groupNodes;
 
       circuitNode.constructionAreaContainer.pdomOrder = constructionAreaPDOMOrder;
