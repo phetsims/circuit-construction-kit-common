@@ -18,6 +18,7 @@ import PlayPauseButton from '../../../scenery-phet/js/buttons/PlayPauseButton.js
 import ResetAllButton from '../../../scenery-phet/js/buttons/ResetAllButton.js';
 import StopwatchNode from '../../../scenery-phet/js/StopwatchNode.js';
 import TimeControlNode from '../../../scenery-phet/js/TimeControlNode.js';
+import { getPDOMFocusedNode } from '../../../scenery/js/accessibility/pdomFocusProperty.js';
 import HotkeyData from '../../../scenery/js/input/HotkeyData.js';
 import AlignGroup from '../../../scenery/js/layout/constraints/AlignGroup.js';
 import AlignBox from '../../../scenery/js/layout/nodes/AlignBox.js';
@@ -33,10 +34,8 @@ import CCKCUtils from '../CCKCUtils.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import type CircuitConstructionKitModel from '../model/CircuitConstructionKitModel.js';
-import CircuitElement from '../model/CircuitElement.js';
 import SeriesAmmeter from '../model/SeriesAmmeter.js';
 import Switch from '../model/Switch.js';
-import Vertex from '../model/Vertex.js';
 import AdvancedAccordionBox from './AdvancedAccordionBox.js';
 import AmmeterNode from './AmmeterNode.js';
 import CCKCZoomButtonGroup from './CCKCZoomButtonGroup.js';
@@ -50,6 +49,7 @@ import CCKCScreenSummaryContent from './description/CCKCScreenSummaryContent.js'
 import DisplayOptionsPanel from './DisplayOptionsPanel.js';
 import FixedCircuitElementNode from './FixedCircuitElementNode.js';
 import SensorToolbox from './SensorToolbox.js';
+import VertexNode from './VertexNode.js';
 import ViewRadioButtonGroup from './ViewRadioButtonGroup.js';
 import VoltageChartNode from './VoltageChartNode.js';
 import VoltmeterNode from './VoltmeterNode.js';
@@ -514,17 +514,22 @@ export default class CCKCScreenView extends ScreenView {
         // https://github.com/phetsims/circuit-construction-kit-common/issues/307
         event?.preventDefault();
 
-        // Double guard to work around errors in fuzzing
-        const selection = this.circuitNode.circuit.selectionProperty.value;
-        if ( this.circuitNode.vertexCutButton.inputEnabled && selection instanceof Vertex ) {
+        const focusedNode = getPDOMFocusedNode();
 
-          if ( selection.isCuttableProperty.value ) {
-            this.circuitNode.circuit.cutVertex( this.circuitNode.circuit.getSelectedVertex()! );
+        if ( focusedNode instanceof VertexNode ) {
+          if ( focusedNode.vertex.isCuttableProperty.value ) {
+            const newVertices = this.circuitNode.circuit.cutVertex( focusedNode.vertex );
+
+            if ( newVertices.length > 0 ) {
+
+              // Focus the first new vertex that was created by the cut operation
+              const newVertexNode = this.circuitNode.getVertexNode( newVertices[ 0 ] );
+              newVertexNode.focus();
+            }
           }
         }
-        else if ( selection instanceof CircuitElement ) {
-
-          const circuitElement = selection;
+        else if ( focusedNode instanceof CircuitElementNode ) {
+          const circuitElement = focusedNode.circuitElement;
 
           // Only permit deletion when not being dragged, see https://github.com/phetsims/circuit-construction-kit-common/issues/414
           if ( !circuitElement.startVertexProperty.value.isDragged && !circuitElement.endVertexProperty.value.isDragged ) {
@@ -532,6 +537,18 @@ export default class CCKCScreenView extends ScreenView {
             // Only permit deletion if the circuit element is marked as disposable
             if ( circuitElement.isDisposableProperty.value ) {
               this.circuitNode.circuit.disposeCircuitElement( circuitElement );
+
+              // Move focus to another circuit element
+              if ( this.circuitNode.circuit.circuitElements.length > 0 ) {
+                const anotherCircuitElementNode = this.circuitNode.getCircuitElementNode( this.circuitNode.circuit.circuitElements[ 0 ] );
+                anotherCircuitElementNode.focus();
+              }
+              else {
+
+                // If there are no more circuit elements, move focus to the circuit element toolbox
+                // TODO: Move focus to the first item in the carousel, if there is one? See https://github.com/phetsims/circuit-construction-kit-common/issues/1062
+                this.circuitElementToolbox.carousel.focus();
+              }
             }
           }
         }

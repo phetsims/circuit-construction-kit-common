@@ -24,9 +24,9 @@ import { type PhetioState } from '../../../tandem/js/phet-io-types.js';
 import PhetioGroup from '../../../tandem/js/PhetioGroup.js';
 import PhetioObject from '../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../tandem/js/Tandem.js';
+import ArrayIO from '../../../tandem/js/types/ArrayIO.js';
 import GetSetButtonsIO from '../../../tandem/js/types/GetSetButtonsIO.js';
 import IOType from '../../../tandem/js/types/IOType.js';
-import ArrayIO from '../../../tandem/js/types/ArrayIO.js';
 import NullableIO from '../../../tandem/js/types/NullableIO.js';
 import ObjectLiteralIO from '../../../tandem/js/types/ObjectLiteralIO.js';
 import OrIO from '../../../tandem/js/types/OrIO.js';
@@ -695,17 +695,17 @@ export default class Circuit extends PhetioObject {
    * Split the Vertex into separate vertices.
    * @param vertex - the vertex to be cut.
    */
-  public cutVertex( vertex: Vertex ): void {
+  public cutVertex( vertex: Vertex ): Vertex[] {
 
     // Only permit cutting a non-dragged vertex, see https://github.com/phetsims/circuit-construction-kit-common/issues/414
     if ( vertex.isDragged ) {
-      return;
+      return [];
     }
     let neighborCircuitElements = this.getNeighborCircuitElements( vertex );
     if ( neighborCircuitElements.length <= 1 ) {
 
       // No work necessary for an unattached vertex
-      return;
+      return [];
     }
 
     // Only move interactive circuit elements
@@ -767,10 +767,13 @@ export default class Circuit extends PhetioObject {
       } );
     }
 
+    const newVertices: Vertex[] = [];
+
     neighborCircuitElements.forEach( ( circuitElement, i ) => {
 
       // Add the new vertex to the model first so that it can be updated in subsequent calls
       const newVertex = this.vertexGroup.createNextElement( vertex.positionProperty.get() );
+      newVertices.push( newVertex );
 
       circuitElement.replaceVertex( vertex, newVertex );
 
@@ -786,6 +789,8 @@ export default class Circuit extends PhetioObject {
     if ( neighborCircuitElements.length > 1 ) {
       this.vertexDisconnectedEmitter.emit( neighborCircuitElements.slice() );
     }
+
+    return newVertices;
   }
 
   /**
