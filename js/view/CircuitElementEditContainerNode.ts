@@ -20,6 +20,7 @@ import Node, { type NodeOptions } from '../../../scenery/js/nodes/Node.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import Panel from '../../../sun/js/Panel.js';
 import SunConstants from '../../../sun/js/SunConstants.js';
+import ToggleSwitch from '../../../sun/js/ToggleSwitch.js';
 import isSettingPhetioStateProperty from '../../../tandem/js/isSettingPhetioStateProperty.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -63,6 +64,8 @@ const inductanceUnitsStringProperty = CircuitConstructionKitCommonStrings.induct
 const resistanceOhmsValuePatternStringProperty = CircuitConstructionKitCommonStrings.resistanceOhmsValuePatternStringProperty;
 const resistanceStringProperty = CircuitConstructionKitCommonStrings.resistanceStringProperty;
 const tapCircuitElementToEditStringProperty = CircuitConstructionKitCommonStrings.tapCircuitElementToEditStringProperty;
+const theSwitchIsClosedStringProperty = CircuitConstructionKitCommonStrings.theSwitchIsClosedStringProperty;
+const theSwitchIsOpenStringProperty = CircuitConstructionKitCommonStrings.theSwitchIsOpenStringProperty;
 const voltageStringProperty = CircuitConstructionKitCommonStrings.voltageStringProperty;
 const voltageVoltsValuePatternStringProperty = CircuitConstructionKitCommonStrings.voltageVoltsValuePatternStringProperty;
 
@@ -85,15 +88,15 @@ const HIGH_TWEAKER_DELTA = 10;
 
 // a singleton adapter property allows for the same EditContainerNode to be repurposed for different circuit components of the same type
 // this is because we want to have a single control for editing any component of that type
-const createSingletonAdapterProperty = <T extends CircuitElement>(
-  initialValue: number,
+const createSingletonAdapterProperty = <T extends CircuitElement, ValueType>(
+  initialValue: ValueType,
   CircuitElementType: GConstructor<T>,
   circuit: Circuit,
-  getter: ( circuitElement: T ) => Property<number>,
+  getter: ( circuitElement: T ) => Property<ValueType>,
   predicate: ( element: T ) => boolean = () => true ) => {
 
   // Cannot use DynamicProperty.derivedProperty since the selected circuit element isn't always the right subtype of CircuitElement
-  const singletonAdapterProperty = new Property( initialValue, {} );
+  const singletonAdapterProperty = new Property<ValueType>( initialValue, {} );
   singletonAdapterProperty.link( value => {
     if ( circuit.selectionProperty.value && circuit.selectionProperty.value instanceof CircuitElementType ) {
       getter( circuit.selectionProperty.value ).value = value;
@@ -101,7 +104,7 @@ const createSingletonAdapterProperty = <T extends CircuitElement>(
   } );
 
   // When the value in the model changes, say from PhET-iO, we propagate it back to the control
-  const modelListener = ( currentRating: number ) => singletonAdapterProperty.set( currentRating );
+  const modelListener = ( value: ValueType ) => singletonAdapterProperty.set( value );
   circuit.selectionProperty.link( ( newCircuitElement, oldCircuitElement ) => {
     oldCircuitElement instanceof CircuitElementType && predicate( oldCircuitElement ) && getter( oldCircuitElement ).unlink( modelListener );
     newCircuitElement instanceof CircuitElementType && predicate( newCircuitElement ) && getter( newCircuitElement ).link( modelListener );
@@ -188,6 +191,13 @@ export default class CircuitElementEditContainerNode extends Node {
     } );
 
     const switchReadoutNode = new SwitchReadoutNode( circuit, tandem.createTandem( 'switchReadoutNode' ) );
+    const switchIsClosedControlProperty = createSingletonAdapterProperty( false, Switch, circuit, ( c: Switch ) => c.isClosedProperty );
+    const switchToggleSwitch = new ToggleSwitch( switchIsClosedControlProperty, false, true, {
+      tandem: tandem.createTandem( 'switchToggleSwitch' ),
+      accessibleName: switchIsClosedControlProperty.derived( closed => closed ? 'open switch' : 'close switch' ),
+      accessibleContextResponseLeftValue: theSwitchIsOpenStringProperty,
+      accessibleContextResponseRightValue: theSwitchIsClosedStringProperty
+    } );
 
     const listener = ( isDisposable: boolean ) => trashButtonContainer.setVisible( isDisposable );
 
@@ -442,6 +452,7 @@ export default class CircuitElementEditContainerNode extends Node {
           editNode = new HBox( {
             children: [
               switchReadoutNode,
+              switchToggleSwitch,
               trashButtonContainer
             ],
             spacing: 25,
