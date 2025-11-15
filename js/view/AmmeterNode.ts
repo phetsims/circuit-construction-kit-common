@@ -50,8 +50,6 @@ const SCALE_FACTOR = 0.5;
 
 // unsigned measurements for the circles on the voltmeter body image, for where the probe wires connect
 const PROBE_CONNECTION_POINT_DY = 8;
-const KEYBOARD_DRAG_SPEED = 300;
-const KEYBOARD_SHIFT_DRAG_SPEED = 20;
 type SelfOptions = {
   isIcon?: boolean;
   visibleBoundsProperty?: Property<Bounds2> | null;
@@ -246,8 +244,8 @@ export default class AmmeterNode extends Node {
           // After dropping in the play area the probes move independently of the body
           ammeter.isDraggingProbesWithBodyProperty.set( false );
         },
-        dragSpeed: KEYBOARD_DRAG_SPEED,
-        shiftDragSpeed: KEYBOARD_SHIFT_DRAG_SPEED
+        dragSpeed: CCKCConstants.KEYBOARD_DRAG_SPEED,
+        shiftDragSpeed: CCKCConstants.SHIFT_KEYBOARD_DRAG_SPEED
       } ) );
       erodedDragBoundsProperty.link( erodedDragBounds => {
         ammeter.bodyPositionProperty.value = erodedDragBounds.closestPointTo( ammeter.bodyPositionProperty.value );
@@ -258,8 +256,8 @@ export default class AmmeterNode extends Node {
         positionProperty: ammeter.probePositionProperty,
         dragBoundsProperty: erodedDragBoundsProperty,
         start: () => this.moveToFront(),
-        dragSpeed: KEYBOARD_DRAG_SPEED,
-        shiftDragSpeed: KEYBOARD_SHIFT_DRAG_SPEED,
+        dragSpeed: CCKCConstants.KEYBOARD_DRAG_SPEED,
+        shiftDragSpeed: CCKCConstants.SHIFT_KEYBOARD_DRAG_SPEED,
         tandem: Tandem.OPT_OUT
       } ) );
 

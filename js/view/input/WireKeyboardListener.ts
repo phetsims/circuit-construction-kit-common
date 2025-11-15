@@ -9,6 +9,7 @@
 import Vector2 from '../../../../dot/js/Vector2.js';
 import SoundKeyboardDragListener from '../../../../scenery-phet/js/SoundKeyboardDragListener.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
+import CCKCConstants from '../../CCKCConstants.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import CCKCScreenView from '../CCKCScreenView.js';
 import CircuitNode from '../CircuitNode.js';
@@ -45,7 +46,11 @@ export default class WireKeyboardListener extends SoundKeyboardDragListener {
       drag: ( _event, listener ) => {
         if ( wire.interactiveProperty.get() ) {
 
-          latestPoint!.addXY( listener.modelDelta.x, listener.modelDelta.y );
+          // get the global delta, so that the drag speed will be the same no matter the size of the window.
+          // see https://github.com/phetsims/circuit-construction-kit-common/issues/1059
+          const delta = circuitElementNode.localToGlobalDelta( listener.modelDelta );
+
+          latestPoint!.addXY( delta.x, delta.y );
 
           // Drag by translating both of the vertices
           circuitNode.dragVertex( latestPoint!, wire.startVertexProperty.get(), false );
@@ -60,8 +65,8 @@ export default class WireKeyboardListener extends SoundKeyboardDragListener {
         ], screenView, circuitNode, initialPoint!, latestPoint!, dragged, false );
       },
 
-      dragSpeed: 300,
-      shiftDragSpeed: 20,
+      dragSpeed: CCKCConstants.KEYBOARD_DRAG_SPEED,
+      shiftDragSpeed: CCKCConstants.SHIFT_KEYBOARD_DRAG_SPEED,
       tandem: tandem
     } );
   }

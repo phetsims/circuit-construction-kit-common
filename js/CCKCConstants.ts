@@ -166,7 +166,10 @@ const CCKCConstants = {
 
   AC_CAROUSEL_SCALE: 0.85,
 
-  MAX_DT: 0.5 // see https://github.com/phetsims/circuit-construction-kit-common/issues/476 and https://github.com/phetsims/joist/issues/130
+  MAX_DT: 0.5, // see https://github.com/phetsims/circuit-construction-kit-common/issues/476 and https://github.com/phetsims/joist/issues/130
+
+  KEYBOARD_DRAG_SPEED: 400,
+  SHIFT_KEYBOARD_DRAG_SPEED: 50
 };
 
 circuitConstructionKitCommon.register( 'CCKCConstants', CCKCConstants );

@@ -57,8 +57,6 @@ const PROBE_ANGLE = 22 * Math.PI * 2 / 360;
 const CONTROL_POINT_X = 30;
 const CONTROL_POINT_Y1 = 15;
 const CONTROL_POINT_Y2 = 60;
-const KEYBOARD_DRAG_SPEED = 300;
-const KEYBOARD_SHIFT_DRAG_SPEED = 20;
 
 type SelfOptions = {
   visibleBoundsProperty?: ReadOnlyProperty<Bounds2> | null;
@@ -289,8 +287,8 @@ export default class VoltmeterNode extends Node {
           positionProperty: positionProperty,
           dragBoundsProperty: dragBoundsProperty,
           start: () => this.moveToFront(),
-          dragSpeed: KEYBOARD_DRAG_SPEED,
-          shiftDragSpeed: KEYBOARD_SHIFT_DRAG_SPEED,
+          dragSpeed: CCKCConstants.KEYBOARD_DRAG_SPEED,
+          shiftDragSpeed: CCKCConstants.SHIFT_KEYBOARD_DRAG_SPEED,
           tandem: Tandem.OPT_OUT
         } );
       };
@@ -354,8 +352,8 @@ export default class VoltmeterNode extends Node {
           voltmeter.isDraggingProbesWithBodyProperty.set( false );
         },
 
-        dragSpeed: KEYBOARD_DRAG_SPEED,
-        shiftDragSpeed: KEYBOARD_SHIFT_DRAG_SPEED
+        dragSpeed: CCKCConstants.KEYBOARD_DRAG_SPEED,
+        shiftDragSpeed: CCKCConstants.SHIFT_KEYBOARD_DRAG_SPEED
 
         // TODO: phet-io see https://github.com/phetsims/circuit-construction-kit-common/issues/1034
         // tandem: tandem

@@ -38,7 +38,11 @@ export default class VertexKeyboardListener extends SoundKeyboardDragListener {
       },
       drag: ( _event, listener ) => {
 
-        latestPoint!.addXY( listener.modelDelta.x, listener.modelDelta.y );
+        // get the global delta, so that the drag speed will be the same no matter the size of the window.
+        // see https://github.com/phetsims/circuit-construction-kit-common/issues/1059
+        const delta = vertexNode.localToGlobalDelta( listener.modelDelta );
+
+        latestPoint!.addXY( delta.x, delta.y );
         dragged = true;
         circuitNode.dragVertex( latestPoint!, vertex, true );
       },
@@ -58,8 +62,8 @@ export default class VertexKeyboardListener extends SoundKeyboardDragListener {
         }
       },
 
-      dragSpeed: 300,
-      shiftDragSpeed: 20,
+      dragSpeed: CCKCConstants.KEYBOARD_DRAG_SPEED,
+      shiftDragSpeed: CCKCConstants.SHIFT_KEYBOARD_DRAG_SPEED,
       tandem: Tandem.OPT_OUT
     } );
   }
