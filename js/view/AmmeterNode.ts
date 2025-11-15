@@ -16,7 +16,9 @@ import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
 import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import optionize from '../../../phet-core/js/optionize.js';
+import AccessibleDraggableOptions from '../../../scenery-phet/js/accessibility/grab-drag/AccessibleDraggableOptions.js';
 import ProbeNode from '../../../scenery-phet/js/ProbeNode.js';
+import SoundKeyboardDragListener from '../../../scenery-phet/js/SoundKeyboardDragListener.js';
 import WireNode from '../../../scenery-phet/js/WireNode.js';
 import DragListener from '../../../scenery/js/listeners/DragListener.js';
 import { type PressListenerEvent } from '../../../scenery/js/listeners/PressListener.js';
@@ -48,6 +50,8 @@ const SCALE_FACTOR = 0.5;
 
 // unsigned measurements for the circles on the voltmeter body image, for where the probe wires connect
 const PROBE_CONNECTION_POINT_DY = 8;
+const KEYBOARD_DRAG_SPEED = 300;
+const KEYBOARD_SHIFT_DRAG_SPEED = 20;
 type SelfOptions = {
   isIcon?: boolean;
   visibleBoundsProperty?: Property<Bounds2> | null;
@@ -93,6 +97,10 @@ export default class AmmeterNode extends Node {
       tandem: Tandem.REQUIRED
     }, providedOptions );
     const tandem = options.tandem;
+
+    if ( !options.isIcon ) {
+      Object.assign( options, AccessibleDraggableOptions );
+    }
 
     // if the AmmeterNode is an icon, do not instrument the details of the children
     const tandemForChildren = options.isIcon ? Tandem.OPT_OUT : tandem;
@@ -151,7 +159,10 @@ export default class AmmeterNode extends Node {
           centerX: 0,
           fill: '#e79547' // Match the orange of the ammeter image
         } )
-      ]
+      ],
+      // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/1034
+      // eslint-disable-next-line phet/no-object-spread-on-non-literals
+      ...( options.isIcon ? [] : AccessibleDraggableOptions )
     } );
 
     affirm( !options.hasOwnProperty( 'children' ), 'children will be supplied by AmmeterNode' );
@@ -224,11 +235,33 @@ export default class AmmeterNode extends Node {
         dragBoundsProperty: erodedDragBoundsProperty
       } );
       bodyNode.addInputListener( this.dragHandler );
+      this.addInputListener( new SoundKeyboardDragListener( {
+        tandem: Tandem.OPT_OUT,
+        positionProperty: ammeter.bodyPositionProperty,
+        dragBoundsProperty: erodedDragBoundsProperty,
+        start: () => this.moveToFront(),
+        end: () => {
+          ammeter.droppedEmitter.emit( bodyNode.globalBounds );
+
+          // After dropping in the play area the probes move independently of the body
+          ammeter.isDraggingProbesWithBodyProperty.set( false );
+        },
+        dragSpeed: KEYBOARD_DRAG_SPEED,
+        shiftDragSpeed: KEYBOARD_SHIFT_DRAG_SPEED
+      } ) );
       erodedDragBoundsProperty.link( erodedDragBounds => {
         ammeter.bodyPositionProperty.value = erodedDragBounds.closestPointTo( ammeter.bodyPositionProperty.value );
         ammeter.probePositionProperty.value = erodedDragBounds.closestPointTo( ammeter.probePositionProperty.value );
       } );
       this.probeNode.addInputListener( probeDragHandler );
+      this.probeNode.addInputListener( new SoundKeyboardDragListener( {
+        positionProperty: ammeter.probePositionProperty,
+        dragBoundsProperty: erodedDragBoundsProperty,
+        start: () => this.moveToFront(),
+        dragSpeed: KEYBOARD_DRAG_SPEED,
+        shiftDragSpeed: KEYBOARD_SHIFT_DRAG_SPEED,
+        tandem: Tandem.OPT_OUT
+      } ) );
 
       /**
        * Detection for ammeter probe + circuit intersection is done in the view since view bounds are used

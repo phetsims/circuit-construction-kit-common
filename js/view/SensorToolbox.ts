@@ -292,6 +292,16 @@ export default class SensorToolbox extends CCKCPanel {
       tagName: options.showNoncontactAmmeters && options.showSeriesAmmeters ? undefined : 'button'
     } );
 
+    if ( options.showNoncontactAmmeters ) {
+      const ammeterKeyboardListenerTarget = options.showSeriesAmmeters ? ammeterToolIcon : ammeterToolNode;
+      ammeterKeyboardListenerTarget.addInputListener( new KeyboardListener( {
+        keys: [ 'enter', 'space' ],
+        press: () => {
+          createFromKeyboard( ammeterNodes );
+        }
+      } ) );
+    }
+
     const topBox = alignGroup.createBox( new HBox( {
       spacing: ( options.showNoncontactAmmeters && options.showSeriesAmmeters ) ? 20 : 40,
       align: 'bottom',
