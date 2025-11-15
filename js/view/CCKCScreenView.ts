@@ -34,7 +34,9 @@ import CCKCUtils from '../CCKCUtils.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import type CircuitConstructionKitModel from '../model/CircuitConstructionKitModel.js';
+import CircuitElement from '../model/CircuitElement.js';
 import SeriesAmmeter from '../model/SeriesAmmeter.js';
+import Vertex from '../model/Vertex.js';
 import AdvancedAccordionBox from './AdvancedAccordionBox.js';
 import AmmeterNode from './AmmeterNode.js';
 import CCKCZoomButtonGroup from './CCKCZoomButtonGroup.js';
@@ -513,11 +515,23 @@ export default class CCKCScreenView extends ScreenView {
         // https://github.com/phetsims/circuit-construction-kit-common/issues/307
         event?.preventDefault();
 
-        const focusedNode = getPDOMFocusedNode();
+        // By default, delete the focused node
+        let nodeToDelete = getPDOMFocusedNode();
 
-        if ( focusedNode instanceof VertexNode ) {
-          if ( focusedNode.vertex.isCuttableProperty.value ) {
-            const newVertices = this.circuitNode.circuit.cutVertex( focusedNode.vertex );
+        // However, if no node is focused, but a node is selected, then it should be deleted instead (this is the case for mouse/touch)
+        if ( !( nodeToDelete instanceof VertexNode ) && !( nodeToDelete instanceof CircuitElementNode ) ) {
+          const selected = this.circuitNode.circuit.selectionProperty.value;
+          if ( selected instanceof Vertex ) {
+            nodeToDelete = this.circuitNode.getVertexNode( selected );
+          }
+          else if ( selected instanceof CircuitElement ) {
+            nodeToDelete = this.circuitNode.getCircuitElementNode( selected );
+          }
+        }
+
+        if ( nodeToDelete instanceof VertexNode ) {
+          if ( nodeToDelete.vertex.isCuttableProperty.value ) {
+            const newVertices = this.circuitNode.circuit.cutVertex( nodeToDelete.vertex );
 
             if ( newVertices.length > 0 ) {
 
@@ -527,8 +541,8 @@ export default class CCKCScreenView extends ScreenView {
             }
           }
         }
-        else if ( focusedNode instanceof CircuitElementNode ) {
-          const circuitElement = focusedNode.circuitElement;
+        else if ( nodeToDelete instanceof CircuitElementNode ) {
+          const circuitElement = nodeToDelete.circuitElement;
 
           // Only permit deletion when not being dragged, see https://github.com/phetsims/circuit-construction-kit-common/issues/414
           if ( !circuitElement.startVertexProperty.value.isDragged && !circuitElement.endVertexProperty.value.isDragged ) {
