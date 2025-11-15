@@ -57,6 +57,8 @@ const PROBE_ANGLE = 22 * Math.PI * 2 / 360;
 const CONTROL_POINT_X = 30;
 const CONTROL_POINT_Y1 = 15;
 const CONTROL_POINT_Y2 = 60;
+const KEYBOARD_DRAG_SPEED = 300;
+const KEYBOARD_SHIFT_DRAG_SPEED = 20;
 
 type SelfOptions = {
   visibleBoundsProperty?: ReadOnlyProperty<Bounds2> | null;
@@ -110,6 +112,8 @@ export default class VoltmeterNode extends Node {
     }, providedOptions );
 
     const blackProbeNode = new Rectangle( -2, -2, 4, 4, { // the hit area
+      // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/1034
+      // @ts-expect-error
       fill: CCKCQueryParameters.showVoltmeterSamplePoints ? Color.BLACK : null,
       cursor: 'pointer',
       children: [ new Image( probeBlack_png, {
@@ -120,7 +124,9 @@ export default class VoltmeterNode extends Node {
         // CircuitConstructionKitModel.  Will need to change if PROBE_ANGLE changes
         x: -9.5,
         y: -5
-      } ) ]
+      } ) ],
+      // eslint-disable-next-line phet/no-object-spread-on-non-literals
+      ...( isIcon ? [] : AccessibleDraggableOptions )
     } );
 
     // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/1034 factor out probe node
@@ -278,21 +284,25 @@ export default class VoltmeterNode extends Node {
         return probeDragListener;
       };
 
+      const createProbeKeyboardDragListener = ( positionProperty: Vector2Property ) => {
+        return new SoundKeyboardDragListener( {
+          positionProperty: positionProperty,
+          dragBoundsProperty: dragBoundsProperty,
+          start: () => this.moveToFront(),
+          dragSpeed: KEYBOARD_DRAG_SPEED,
+          shiftDragSpeed: KEYBOARD_SHIFT_DRAG_SPEED,
+          tandem: Tandem.OPT_OUT
+        } );
+      };
+
       const redProbeDragListener = createProbeDragListener( voltmeter.redProbePositionProperty, options.tandem.createTandem( 'redProbeDragListener' ) );
       const blackProbeDragListener = createProbeDragListener( voltmeter.blackProbePositionProperty, options.tandem.createTandem( 'blackProbeDragListener' ) );
 
       this.redProbeNode.addInputListener( redProbeDragListener );
-
-      this.redProbeNode.addInputListener( new SoundKeyboardDragListener( {
-        positionProperty: voltmeter.redProbePositionProperty,
-        dragBoundsProperty: dragBoundsProperty,
-        start: () => this.moveToFront(),
-        dragSpeed: 300,
-        shiftDragSpeed: 20,
-        tandem: Tandem.OPT_OUT
-      } ) );
+      this.redProbeNode.addInputListener( createProbeKeyboardDragListener( voltmeter.redProbePositionProperty ) );
 
       this.blackProbeNode.addInputListener( blackProbeDragListener );
+      this.blackProbeNode.addInputListener( createProbeKeyboardDragListener( voltmeter.blackProbePositionProperty ) );
 
       const erodedBoundsProperty = new DerivedProperty( [ options.visibleBoundsProperty! ], ( visibleBounds: Bounds2 ) => {
         return visibleBounds.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
@@ -344,9 +354,8 @@ export default class VoltmeterNode extends Node {
           voltmeter.isDraggingProbesWithBodyProperty.set( false );
         },
 
-        // TODO: Factor out these speeds, see https://github.com/phetsims/circuit-construction-kit-common/issues/1034
-        dragSpeed: 300,
-        shiftDragSpeed: 20
+        dragSpeed: KEYBOARD_DRAG_SPEED,
+        shiftDragSpeed: KEYBOARD_SHIFT_DRAG_SPEED
 
         // TODO: phet-io see https://github.com/phetsims/circuit-construction-kit-common/issues/1034
         // tandem: tandem
