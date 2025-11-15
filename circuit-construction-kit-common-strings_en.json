@@ -230,6 +230,35 @@
         "value": "Add circuit elements to the construction area, and connect them to begin. Note, you must include at least one Wire in order to connect a circuit."
       }
     },
+    "circuitContextResponses": {
+      "vertexDefaultLabel": {
+        "value": "vertex { $index }"
+      },
+      "connectedElements": {
+        "value": "Connected: { $elements }."
+      },
+      "vertexSplit": {
+        "value": "{ $connectionCount ->\n  [one] { $vertexName } split into one new connection.\n  *[other] { $vertexName } split into { $connectionCount } new connections.\n}"
+      },
+      "currentChangedSingle": {
+        "value": "Current changed to { $current } amps."
+      },
+      "currentMultiple": {
+        "value": "Currents flowing at different speeds."
+      },
+      "currentStopped": {
+        "value": "Current stopped flowing."
+      },
+      "elementRemoved": {
+        "value": "{ $elementName } removed."
+      },
+      "lightBulbState": {
+        "value": "{ $state ->\n  [off] { $elementName } is now off.\n  [dim] { $elementName } glows dimly.\n  [steady] { $elementName } glows steadily.\n  *[bright] { $elementName } shines brightly.\n}"
+      },
+      "componentValueChange": {
+        "value": "{ $type ->\n  [battery] { $elementName } voltage changed from { $oldValue } to { $newValue } volts.\n  [resistor] { $elementName } resistance changed from { $oldValue } to { $newValue } ohms.\n  *[lightBulb] { $elementName } resistance changed from { $oldValue } to { $newValue } ohms.\n}"
+      }
+    },
     "sensorToolbox": {
       "accessibleHeading": {
         "value": "Sensor Toolbox"

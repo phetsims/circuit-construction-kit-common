@@ -62,7 +62,6 @@ import CircuitDebugLayer from './CircuitDebugLayer.js';
 import CircuitElementEditContainerNode from './CircuitElementEditContainerNode.js';
 import CircuitElementNode from './CircuitElementNode.js';
 import CustomLightBulbNode from './CustomLightBulbNode.js';
-import CircuitContextResponses from './description/CircuitContextResponses.js';
 import CircuitDescription from './description/CircuitDescription.js';
 import FixedCircuitElementNode from './FixedCircuitElementNode.js';
 import FuseNode from './FuseNode.js';
@@ -151,8 +150,6 @@ export default class CircuitNode extends Node {
   public readonly unconnectedCircuitElementsSection: Node;
   public readonly groupsContainer: Node;
   public readonly constructionAreaContainer: Node;
-  private readonly circuitContextResponses: CircuitContextResponses;
-
   /**
    * @param circuit - the model Circuit
    * @param screenView - for dropping CircuitElement instances back in the toolbox
@@ -661,7 +658,7 @@ export default class CircuitNode extends Node {
       this.updatePDOMOrder();
     } );
 
-    this.circuitContextResponses = new CircuitContextResponses( this );
+    circuit.circuitContextAnnouncementEmitter.addListener( message => this.addAccessibleContextResponse( message ) );
   }
 
   private updatePDOMOrder(): void {

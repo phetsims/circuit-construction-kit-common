@@ -60,6 +60,7 @@ import Switch from './Switch.js';
 import Vertex from './Vertex.js';
 import type VoltageConnection from './VoltageConnection.js';
 import Wire from './Wire.js';
+import CircuitContextStateTracker from './CircuitContextStateTracker.js';
 
 // constants
 const SNAP_RADIUS = 30; // For two vertices to join together, they must be this close, in view coordinates
@@ -170,6 +171,8 @@ export default class Circuit extends PhetioObject {
       phetioType: ArrayIO( ReferenceIO( CircuitElement.CircuitElementIO ) )
     } ]
   } );
+  public readonly circuitContextAnnouncementEmitter: TEmitter<[ string ]>;
+  private readonly contextStateTracker: CircuitContextStateTracker;
 
   public constructor( viewTypeProperty: Property<CircuitElementViewType>, addRealBulbsProperty: Property<boolean>, tandem: Tandem,
                       providedOptions: CircuitOptions ) {
@@ -262,6 +265,7 @@ export default class Circuit extends PhetioObject {
       }
       this.markDirty();
       circuitElement.currentSenseProperty.lazyLink( emitCircuitChanged );
+      this.contextStateTracker.handleElementAdded( circuitElement );
     } );
     this.circuitElements.addItemRemovedListener( circuitElement => {
 
@@ -278,6 +282,7 @@ export default class Circuit extends PhetioObject {
       this.charges.removeAll( this.getChargesInCircuitElement( circuitElement ) );
       circuitElement.currentSenseProperty.unlink( emitCircuitChanged );
       this.markDirty();
+      this.contextStateTracker.handleElementRemoved( circuitElement );
     } );
 
     // When a Charge is removed from the list, dispose it
@@ -286,6 +291,8 @@ export default class Circuit extends PhetioObject {
     this.circuitChangedEmitter = new Emitter();
     this.vertexDroppedEmitter = new Emitter( { parameters: [ { valueType: Vertex } ] } );
     this.componentEditedEmitter = new Emitter();
+    this.contextStateTracker = new CircuitContextStateTracker( this );
+    this.circuitContextAnnouncementEmitter = this.contextStateTracker.contextAnnouncementEmitter;
 
     this.selectionProperty = new Property<CircuitElement | Vertex | null>( null, {
       tandem: tandem.createTandem( 'selectionProperty' ),
@@ -711,6 +718,10 @@ export default class Circuit extends PhetioObject {
     // Only move interactive circuit elements
     neighborCircuitElements = neighborCircuitElements.filter( circuitElement => circuitElement.interactiveProperty.get() );
 
+    if ( neighborCircuitElements.length > 1 ) {
+      this.contextStateTracker.handleVertexSplit( vertex, neighborCircuitElements.length );
+    }
+
     /**
      * Function that identifies where vertices would go if pulled toward their neighbors
      */
@@ -930,6 +941,9 @@ export default class Circuit extends PhetioObject {
       this.connect( oldVertex, targetVertex );
     }
     else {
+
+      this.contextStateTracker.handleVertexMerged( targetVertex );
+
       this.circuitElements.forEach( circuitElement => {
         if ( circuitElement.containsVertex( oldVertex ) ) {
           circuitElement.replaceVertex( oldVertex, targetVertex );
@@ -1011,6 +1025,7 @@ export default class Circuit extends PhetioObject {
     // Move the charges.  Do this after the circuit has been solved so the conventional current will have the correct
     // current values.
     this.chargeAnimator.step( dt );
+    this.contextStateTracker.handleStepCompleted();
   }
 
   /**

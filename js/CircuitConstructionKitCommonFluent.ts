@@ -90,6 +90,15 @@ addToMapIfDefined( 'a11y_screenSummary_playArea', 'a11y.screenSummary.playAreaSt
 addToMapIfDefined( 'a11y_screenSummary_controlArea', 'a11y.screenSummary.controlAreaStringProperty' );
 addToMapIfDefined( 'a11y_screenSummary_currentDetails', 'a11y.screenSummary.currentDetailsStringProperty' );
 addToMapIfDefined( 'a11y_screenSummary_interactionHint', 'a11y.screenSummary.interactionHintStringProperty' );
+addToMapIfDefined( 'a11y_circuitContextResponses_vertexDefaultLabel', 'a11y.circuitContextResponses.vertexDefaultLabelStringProperty' );
+addToMapIfDefined( 'a11y_circuitContextResponses_connectedElements', 'a11y.circuitContextResponses.connectedElementsStringProperty' );
+addToMapIfDefined( 'a11y_circuitContextResponses_vertexSplit', 'a11y.circuitContextResponses.vertexSplitStringProperty' );
+addToMapIfDefined( 'a11y_circuitContextResponses_currentChangedSingle', 'a11y.circuitContextResponses.currentChangedSingleStringProperty' );
+addToMapIfDefined( 'a11y_circuitContextResponses_currentMultiple', 'a11y.circuitContextResponses.currentMultipleStringProperty' );
+addToMapIfDefined( 'a11y_circuitContextResponses_currentStopped', 'a11y.circuitContextResponses.currentStoppedStringProperty' );
+addToMapIfDefined( 'a11y_circuitContextResponses_elementRemoved', 'a11y.circuitContextResponses.elementRemovedStringProperty' );
+addToMapIfDefined( 'a11y_circuitContextResponses_lightBulbState', 'a11y.circuitContextResponses.lightBulbStateStringProperty' );
+addToMapIfDefined( 'a11y_circuitContextResponses_componentValueChange', 'a11y.circuitContextResponses.componentValueChangeStringProperty' );
 addToMapIfDefined( 'a11y_sensorToolbox_accessibleHeading', 'a11y.sensorToolbox.accessibleHeadingStringProperty' );
 addToMapIfDefined( 'a11y_circuitElementToolbox_accessibleHeading', 'a11y.circuitElementToolbox.accessibleHeadingStringProperty' );
 addToMapIfDefined( 'a11y_circuitElementToolbox_accessibleHelpText', 'a11y.circuitElementToolbox.accessibleHelpTextStringProperty' );
@@ -222,6 +231,17 @@ const CircuitConstructionKitCommonFluent = {
       controlArea: new FluentPattern<{ advancedControls: 'present' | 'absent' | TReadOnlyProperty<'present' | 'absent'> }>( fluentSupport.bundleProperty, 'a11y_screenSummary_controlArea', _.get( CircuitConstructionKitCommonStrings, 'a11y.screenSummary.controlAreaStringProperty' ), [{"name":"advancedControls","variants":["present","absent"]}] ),
       currentDetailsStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_screenSummary_currentDetails', _.get( CircuitConstructionKitCommonStrings, 'a11y.screenSummary.currentDetailsStringProperty' ) ),
       interactionHintStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_screenSummary_interactionHint', _.get( CircuitConstructionKitCommonStrings, 'a11y.screenSummary.interactionHintStringProperty' ) )
+    },
+    circuitContextResponses: {
+      vertexDefaultLabel: new FluentPattern<{ index: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_vertexDefaultLabel', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.vertexDefaultLabelStringProperty' ), [{"name":"index"}] ),
+      connectedElements: new FluentPattern<{ elements: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_connectedElements', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.connectedElementsStringProperty' ), [{"name":"elements"}] ),
+      vertexSplit: new FluentPattern<{ connectionCount: number | 'one' | number | 'other' | TReadOnlyProperty<number | 'one' | number | 'other'>, vertexName: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_vertexSplit', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.vertexSplitStringProperty' ), [{"name":"connectionCount","variants":[{"type":"number","value":"one"},{"type":"number","value":"other"}]},{"name":"vertexName"}] ),
+      currentChangedSingle: new FluentPattern<{ current: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_currentChangedSingle', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.currentChangedSingleStringProperty' ), [{"name":"current"}] ),
+      currentMultipleStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_currentMultiple', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.currentMultipleStringProperty' ) ),
+      currentStoppedStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_currentStopped', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.currentStoppedStringProperty' ) ),
+      elementRemoved: new FluentPattern<{ elementName: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_elementRemoved', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.elementRemovedStringProperty' ), [{"name":"elementName"}] ),
+      lightBulbState: new FluentPattern<{ elementName: FluentVariable, state: 'off' | 'dim' | 'steady' | 'bright' | TReadOnlyProperty<'off' | 'dim' | 'steady' | 'bright'> }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_lightBulbState', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.lightBulbStateStringProperty' ), [{"name":"elementName"},{"name":"state","variants":["off","dim","steady","bright"]}] ),
+      componentValueChange: new FluentPattern<{ elementName: FluentVariable, newValue: FluentVariable, oldValue: FluentVariable, type: 'battery' | 'resistor' | 'lightBulb' | TReadOnlyProperty<'battery' | 'resistor' | 'lightBulb'> }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_componentValueChange', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.componentValueChangeStringProperty' ), [{"name":"elementName"},{"name":"newValue"},{"name":"oldValue"},{"name":"type","variants":["battery","resistor","lightBulb"]}] )
     },
     sensorToolbox: {
       accessibleHeadingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_sensorToolbox_accessibleHeading', _.get( CircuitConstructionKitCommonStrings, 'a11y.sensorToolbox.accessibleHeadingStringProperty' ) )

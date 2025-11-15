@@ -93,6 +93,17 @@ type StringsType = {
       'currentDetailsStringProperty': LocalizedStringProperty;
       'interactionHintStringProperty': LocalizedStringProperty;
     };
+    'circuitContextResponses': {
+      'vertexDefaultLabelStringProperty': LocalizedStringProperty;
+      'connectedElementsStringProperty': LocalizedStringProperty;
+      'vertexSplitStringProperty': LocalizedStringProperty;
+      'currentChangedSingleStringProperty': LocalizedStringProperty;
+      'currentMultipleStringProperty': LocalizedStringProperty;
+      'currentStoppedStringProperty': LocalizedStringProperty;
+      'elementRemovedStringProperty': LocalizedStringProperty;
+      'lightBulbStateStringProperty': LocalizedStringProperty;
+      'componentValueChangeStringProperty': LocalizedStringProperty;
+    };
     'sensorToolbox': {
       'accessibleHeadingStringProperty': LocalizedStringProperty;
     };

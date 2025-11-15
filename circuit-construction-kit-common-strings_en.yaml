@@ -91,6 +91,28 @@ a11y:
         absent:  Show the current as the flow of electrons or conventional current. Show labels or values on circuit elements.
     currentDetails:  Currently, no circuit elements are in the construction area.
     interactionHint: Add circuit elements to the construction area, and connect them to begin. Note, you must include at least one Wire in order to connect a circuit.
+  circuitContextResponses:
+    vertexDefaultLabel: 'vertex { $index }'
+    connectedElements: 'Connected: { $elements }.'
+    vertexSplit:
+      select_connectionCount:
+        one: '{ $vertexName } split into one new connection.'
+        other: '{ $vertexName } split into { $connectionCount } new connections.'
+    currentChangedSingle: 'Current changed to { $current } amps.'
+    currentMultiple: 'Currents flowing at different speeds.'
+    currentStopped: 'Current stopped flowing.'
+    elementRemoved: '{ $elementName } removed.'
+    lightBulbState:
+      select_state:
+        off: '{ $elementName } is now off.'
+        dim: '{ $elementName } glows dimly.'
+        steady: '{ $elementName } glows steadily.'
+        bright: '{ $elementName } shines brightly.'
+    componentValueChange:
+      select_type:
+        battery: '{ $elementName } voltage changed from { $oldValue } to { $newValue } volts.'
+        resistor: '{ $elementName } resistance changed from { $oldValue } to { $newValue } ohms.'
+        lightBulb: '{ $elementName } resistance changed from { $oldValue } to { $newValue } ohms.'
   sensorToolbox:
     accessibleHeading: Sensor Toolbox
   circuitElementToolbox:
