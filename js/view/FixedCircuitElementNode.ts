@@ -14,6 +14,7 @@ import Matrix3 from '../../../dot/js/Matrix3.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import optionize from '../../../phet-core/js/optionize.js';
+import HighlightPath from '../../../scenery/js/accessibility/HighlightPath.js';
 import Image from '../../../scenery/js/nodes/Image.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
@@ -25,6 +26,7 @@ import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import type FixedCircuitElement from '../model/FixedCircuitElement.js';
 import Resistor from '../model/Resistor.js';
 import type Vertex from '../model/Vertex.js';
+import CCKCColors from './CCKCColors.js';
 import type CCKCScreenView from './CCKCScreenView.js';
 import CircuitElementNode, { type CircuitElementNodeOptions } from './CircuitElementNode.js';
 import type CircuitNode from './CircuitNode.js';
@@ -77,6 +79,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
   private readonly updateHighlightVisibility: ( ( circuitElement: CircuitElement | Vertex | null ) => void ) | null;
   private readonly updateFireMultilink: UnknownMultilink | null;
   private readonly keyboardListener: FixedCircuitElementKeyboardListener | null;
+  private readonly myFocusHighlight: FixedCircuitElementHighlightNode | null = null;
 
   /**
    * @param screenView - the main screen view, null for isIcon
@@ -136,10 +139,13 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
     // Add highlight (but not for icons)
     if ( !options.isIcon && options.showHighlight ) {
 
-      this.highlightNode = new FixedCircuitElementHighlightNode( this );
+      this.highlightNode = new FixedCircuitElementHighlightNode( this, CCKCColors.highlightStrokeProperty, 0 );
 
       // Update the highlight bounds after it is created
       this.viewPropertyListener( viewTypeProperty.value );
+
+      this.myFocusHighlight = new FixedCircuitElementHighlightNode( this, HighlightPath.INNER_FOCUS_COLOR, 6 );
+      this.focusHighlight = this.myFocusHighlight;
     }
     else {
       this.highlightNode = null;
@@ -257,6 +263,10 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
 
     if ( this.highlightNode && this.circuitNode!.circuit.selectionProperty.get() === this.circuitElement ) {
       this.highlightNode.setMatrix( matrix );
+    }
+
+    if ( this.myFocusHighlight ) {
+      this.myFocusHighlight.setMatrix( matrix );
     }
 
     // Update the fire transform

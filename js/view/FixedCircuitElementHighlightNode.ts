@@ -7,9 +7,9 @@
  */
 
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
+import TPaint from '../../../scenery/js/util/TPaint.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CCKCColors from './CCKCColors.js';
 import type FixedCircuitElementNode from './FixedCircuitElementNode.js';
 
 // constants
@@ -17,12 +17,12 @@ const CORNER_RADIUS = 8; // in view coordinates
 
 export default class FixedCircuitElementHighlightNode extends Rectangle {
 
-  public constructor( fixedCircuitElementNode: FixedCircuitElementNode ) {
+  public constructor( fixedCircuitElementNode: FixedCircuitElementNode, color: TPaint, private readonly dilation: number ) {
 
     super( 0, 0, 0, 0,
       CORNER_RADIUS,
       CORNER_RADIUS, {
-        stroke: CCKCColors.highlightStrokeProperty,
+        stroke: color,
         lineWidth: CCKCConstants.HIGHLIGHT_LINE_WIDTH,
         pickable: false
       } );
@@ -36,7 +36,7 @@ export default class FixedCircuitElementHighlightNode extends Rectangle {
   public recomputeBounds( fixedCircuitElementNode: FixedCircuitElementNode ): void {
 
     // This is called rarely and hence the extra allocation is OK
-    this.setRectBounds( fixedCircuitElementNode.getHighlightBounds() );
+    this.setRectBounds( fixedCircuitElementNode.getHighlightBounds().dilated( this.dilation ) );
   }
 }
 
