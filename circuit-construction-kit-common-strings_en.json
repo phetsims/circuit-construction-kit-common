@@ -230,6 +230,11 @@
         "value": "Add circuit elements to the construction area, and connect them to begin. Note, you must include at least one Wire in order to connect a circuit."
       }
     },
+    "constructionArea": {
+      "accessibleHeading": {
+        "value": "Construction Area"
+      }
+    },
     "circuitContextResponses": {
       "vertexDefaultLabel": {
         "value": "vertex { $index }"
