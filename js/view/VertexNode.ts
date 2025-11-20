@@ -22,15 +22,15 @@ import Text from '../../../scenery/js/nodes/Text.js';
 import SceneryConstants from '../../../scenery/js/SceneryConstants.js';
 import Color from '../../../scenery/js/util/Color.js';
 import { rasterizeNode } from '../../../scenery/js/util/rasterizeNode.js';
-import RectangularRadioButton from '../../../sun/js/buttons/RectangularRadioButton.js';
-import RectangularRadioButtonGroup from '../../../sun/js/buttons/RectangularRadioButtonGroup.js';
+import ComboBox from '../../../sun/js/ComboBox.js';
+import ComboBoxListItemNode from '../../../sun/js/ComboBoxListItemNode.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import CCKCUtils from '../CCKCUtils.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import type Circuit from '../model/Circuit.js';
-import type Vertex from '../model/Vertex.js';
+import Vertex from '../model/Vertex.js';
 import CCKCColors from './CCKCColors.js';
 import type CircuitNode from './CircuitNode.js';
 import CircuitNodeDragListener from './input/CircuitNodeDragListener.js';
@@ -238,22 +238,22 @@ export default class VertexNode extends Node {
           createNode: () => new Text( 'Detach' )
         } );
 
-        const radioButtonGroup = new RectangularRadioButtonGroup( selectionProperty, items, {
-          accessibleHeading: 'Move to Vertex',
-          orientation: 'horizontal',
+        const comboBox = new ComboBox( selectionProperty, items, this.circuitNode.screenView, {
           tandem: Tandem.OPT_OUT // transient ui
         } );
 
-        const doneCallback = () => {
-          circuitNode.endDrag( vertex, true );
-          radioButtonGroup.dispose();
-          this.focus();
-        };
+        comboBox.listBox.visibleProperty.lazyLink( visible => {
+          console.log( 'list box visible changed to ', visible );
+          if ( !visible ) {
+            circuitNode.endDrag( vertex, true );
 
-        radioButtonGroup.addInputListener( new KeyboardListener( {
-          keys: [ 'space', 'enter' ],
-          fire: doneCallback
-        } ) );
+            animationFrameTimer.runOnNextTick( () => {
+
+              comboBox.dispose();
+              this.focus();
+            } );
+          }
+        } );
 
         circuitNode.startDragVertex( this.parentToGlobalPoint( vertex.positionProperty.value ), vertex, vertex );
 
@@ -267,36 +267,22 @@ export default class VertexNode extends Node {
           }
         } );
 
-        // if focus moves off the radio button group, detach the wire and dispose the radio button group.
-        pdomFocusProperty.lazyLink( pdomFocus => {
+        circuitNode.addChild( comboBox );
 
-          // make sure this runs AFTER the other listener, so it won't call endDrag twice
-          animationFrameTimer.runOnNextTick( () => {
-            if ( !radioButtonGroup.isDisposed ) {
-              const node = pdomFocus?.trail?.lastNode();
+        comboBox.showListBox();
+        comboBox.focusListItemNode( items[ 0 ].value );
 
-              if ( node && !( node instanceof RectangularRadioButton ) ) {
+        pdomFocusProperty.link( focus => {
+          const node = focus?.trail?.lastNode();
+          if ( node && node instanceof ComboBoxListItemNode ) {
+            const value = node.item.value;
 
-                selectionProperty.value = null;
-
-                // like doneCallback, but without the other focus step.
-                circuitNode.endDrag( vertex, true );
-                !radioButtonGroup.isDisposed && radioButtonGroup.dispose();
-              }
+            // Note that another combo box setting null would mess up this logic. We are only safe since this combo box is transient.
+            if ( value instanceof Vertex || value === null ) {
+              selectionProperty.value = value;
             }
-          } );
-
-        }, {
-          disposer: radioButtonGroup
+          }
         } );
-
-        circuitNode.addChild( radioButtonGroup );
-
-        selectionProperty.value = attachableVertices.length > 0 ? attachableVertices[ 0 ] : null;
-        radioButtonGroup.getButtonForValue( attachableVertices[ 0 ] ).focus();
-
-        // TODO: Show the UI? see https://github.com/phetsims/circuit-construction-kit-common/issues/1049
-        radioButtonGroup.y = 10000; // offscreen
       }
     } ) );
 
