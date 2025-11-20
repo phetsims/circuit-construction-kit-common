@@ -243,7 +243,14 @@ export default class VertexNode extends Node {
           tandem: Tandem.OPT_OUT // transient ui
         } );
 
+        let cancelled = false;
+
         comboBox.listBox.visibleProperty.lazyLink( visible => {
+
+          if ( cancelled ) {
+            return;
+          }
+
           console.log( 'list box visible changed to ', visible );
           if ( !visible ) {
             circuitNode.endDrag( vertex, true );
@@ -272,6 +279,20 @@ export default class VertexNode extends Node {
 
         comboBox.showListBox();
         comboBox.focusListItemNode( items[ 0 ].value );
+
+        comboBox.cancelEmitter.addListener( () => {
+          selectionProperty.value = null;
+
+          circuitNode.endDrag( vertex, true );
+          cancelled = true;
+
+          animationFrameTimer.runOnNextTick( () => {
+
+            comboBox.dispose();
+            this.focus();
+          } );
+
+        } );
 
         pdomFocusProperty.link( focus => {
           const node = focus?.trail?.lastNode();
