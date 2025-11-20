@@ -227,17 +227,18 @@ export default class VertexNode extends Node {
 
         const selectionProperty = new Property<Vertex | null>( null );
 
-        const items = attachableVertices.map( v => {
+        // Start with the "don't move" option so it doesn't jump so much when you click it.
+        const items = [ {
+          value: null as Vertex | null,
+          createNode: () => new Text( CircuitConstructionKitCommonFluent.a11y.vertexInteraction.detachStringProperty )
+        } ];
+
+        items.push( ...attachableVertices.map( v => {
           return {
             value: v as Vertex | null,
             createNode: () => new Text( circuitNode.getVertexNode( v ).attachmentName )
           };
-        } );
-
-        items.push( {
-          value: null as Vertex | null,
-          createNode: () => new Text( CircuitConstructionKitCommonFluent.a11y.vertexInteraction.detachStringProperty )
-        } );
+        } ) );
 
         const comboBox = new ComboBox( selectionProperty, items, this.circuitNode.screenView, {
           tandem: Tandem.OPT_OUT // transient ui
