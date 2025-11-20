@@ -32,6 +32,7 @@ import PhetioGroup from '../../../tandem/js/PhetioGroup.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import ACVoltage from '../model/ACVoltage.js';
 import AmmeterConnection from '../model/AmmeterConnection.js';
 import Battery from '../model/Battery.js';
@@ -150,6 +151,7 @@ export default class CircuitNode extends Node {
   public readonly unconnectedCircuitElementsSection: Node;
   public readonly groupsContainer: Node;
   public readonly constructionAreaContainer: Node;
+
   /**
    * @param circuit - the model Circuit
    * @param screenView - for dropping CircuitElement instances back in the toolbox
@@ -631,7 +633,7 @@ export default class CircuitNode extends Node {
     // Construction Area container wraps both circuit elements section and groups
     this.constructionAreaContainer = new Node( {
       tagName: 'div',
-      accessibleHeading: 'Construction Area'
+      accessibleHeading: CircuitConstructionKitCommonFluent.a11y.constructionArea.accessibleHeadingStringProperty
     } );
 
     this.constructionAreaContainer.addChild( this.unconnectedCircuitElementsSection );
