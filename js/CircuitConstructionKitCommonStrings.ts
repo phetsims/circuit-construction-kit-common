@@ -96,6 +96,9 @@ type StringsType = {
     'constructionArea': {
       'accessibleHeadingStringProperty': LocalizedStringProperty;
     };
+    'vertexInteraction': {
+      'detachStringProperty': LocalizedStringProperty;
+    };
     'circuitContextResponses': {
       'vertexDefaultLabelStringProperty': LocalizedStringProperty;
       'connectedElementsStringProperty': LocalizedStringProperty;

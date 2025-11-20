@@ -235,6 +235,11 @@
         "value": "Construction Area"
       }
     },
+    "vertexInteraction": {
+      "detach": {
+        "value": "Detach"
+      }
+    },
     "circuitContextResponses": {
       "vertexDefaultLabel": {
         "value": "vertex { $index }"

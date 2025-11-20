@@ -29,6 +29,7 @@ import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import CCKCUtils from '../CCKCUtils.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import type Circuit from '../model/Circuit.js';
 import Vertex from '../model/Vertex.js';
 import CCKCColors from './CCKCColors.js';
@@ -235,7 +236,7 @@ export default class VertexNode extends Node {
 
         items.push( {
           value: null as Vertex | null,
-          createNode: () => new Text( 'Detach' )
+          createNode: () => new Text( CircuitConstructionKitCommonFluent.a11y.vertexInteraction.detachStringProperty )
         } );
 
         const comboBox = new ComboBox( selectionProperty, items, this.circuitNode.screenView, {
@@ -275,6 +276,7 @@ export default class VertexNode extends Node {
         pdomFocusProperty.link( focus => {
           const node = focus?.trail?.lastNode();
           if ( node && node instanceof ComboBoxListItemNode ) {
+            console.log( 'focused a different item' );
             const value = node.item.value;
 
             // Note that another combo box setting null would mess up this logic. We are only safe since this combo box is transient.
@@ -282,6 +284,11 @@ export default class VertexNode extends Node {
               selectionProperty.value = value;
             }
           }
+          else {
+            console.log( 'focused something else' );
+          }
+        }, {
+          disposer: comboBox
         } );
       }
     } ) );
