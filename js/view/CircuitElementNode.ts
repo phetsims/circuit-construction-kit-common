@@ -94,9 +94,7 @@ export default abstract class CircuitElementNode extends Node {
 
     if ( selectionProperty ) {
       this.addInputListener( new KeyboardListener( {
-        keys: [ 'enter', 'space' ],
-
-        // TODO convert to click, see https://github.com/phetsims/circuit-construction-kit-common/issues/1055
+        fireOnClick: true,
         press: () => {
           if ( selectionProperty.value === this.circuitElement ) {
             selectionProperty.value = null;

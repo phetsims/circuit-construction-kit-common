@@ -253,7 +253,7 @@ export default class SensorToolbox extends CCKCPanel {
     voltmeterToolNode.addInputListener( new KeyboardListener( {
 
       // TODO: Keyboard Help Dialog, see https://github.com/phetsims/circuit-construction-kit-common/issues/1034
-      keys: [ 'enter', 'space' ],
+      fireOnClick: true,
       press: () => {
         createFromKeyboard( voltmeterNodes );
       }
@@ -297,7 +297,7 @@ export default class SensorToolbox extends CCKCPanel {
       const ammeterKeyboardListenerTarget = options.showSeriesAmmeters ? ammeterToolIcon : ammeterToolNode;
       ammeterKeyboardListenerTarget.accessibleName = 'Ammeter';
       ammeterKeyboardListenerTarget.addInputListener( new KeyboardListener( {
-        keys: [ 'enter', 'space' ],
+        fireOnClick: true,
         press: () => {
           createFromKeyboard( ammeterNodes );
         }
