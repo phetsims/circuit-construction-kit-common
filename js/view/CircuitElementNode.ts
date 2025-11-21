@@ -58,35 +58,18 @@ export default abstract class CircuitElementNode extends Node {
     // let accessibleNameProperty: TReadOnlyProperty<string> | null = null;
     if ( circuit && showValuesProperty ) {
 
-      // const showValuesAsStringProperty = showValuesProperty.derived( value => value ? 'true' : 'false' );
-      //
-      // accessibleNameProperty = CircuitConstructionKitCommonFluent.a11y.circuitElement.accessibleName.createProperty( {
-      //   displayMode:
-      //   type: circuitElement.type,
-      //   voltage: circuitElement instanceof Battery ? circuitElement.voltageProperty : 0,
-      //   resistance: circuitElement instanceof Resistor ? circuitElement.resistanceProperty : 0,
-      //   capacitance: circuitElement instanceof Capacitor ? circuitElement.capacitanceProperty : 0,
-      //   inductance: circuitElement instanceof Inductor? circuitElement.inductanceProperty : 0,
-      //   hasPosition: 'false',
-      //   position: 0,
-      //   total: 0
-      // } );
-      // circuitElement.addDisposable( showValuesAsStringProperty, accessibleNameProperty );
-
       providedOptions = optionize<CircuitElementNodeOptions, SelfOptions, NodeOptions>()( {
 
         // eslint-disable-next-line phet/no-object-spread-on-non-literals
         ...AccessibleDraggableOptions,
         tagName: 'div', // HTML tag name for representative element in the document, see ParallelDOM.js
         focusable: true,
-
-        // accessibleName: accessibleNameProperty,
-
         phetioDynamicElement: true,
         phetioState: false,
         phetioVisiblePropertyInstrumented: false,
         phetioInputEnabledPropertyInstrumented: true,
-        useHitTestForSensors: false
+        useHitTestForSensors: false,
+        ariaRole: 'application'
       }, providedOptions );
     }
 
@@ -94,8 +77,9 @@ export default abstract class CircuitElementNode extends Node {
 
     if ( selectionProperty ) {
       this.addInputListener( new KeyboardListener( {
-        fireOnClick: true,
+        keys: [ 'space', 'enter' ], // cannot use fireOnClick since this is also draggable
         press: () => {
+
           if ( selectionProperty.value === this.circuitElement ) {
             selectionProperty.value = null;
           }
