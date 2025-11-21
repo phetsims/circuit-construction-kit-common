@@ -236,8 +236,8 @@
       }
     },
     "vertexInteraction": {
-      "detach": {
-        "value": "Detach"
+      "noNewAttachment": {
+        "value": "No new attachment"
       }
     },
     "circuitContextResponses": {

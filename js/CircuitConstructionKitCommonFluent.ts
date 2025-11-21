@@ -91,7 +91,7 @@ addToMapIfDefined( 'a11y_screenSummary_controlArea', 'a11y.screenSummary.control
 addToMapIfDefined( 'a11y_screenSummary_currentDetails', 'a11y.screenSummary.currentDetailsStringProperty' );
 addToMapIfDefined( 'a11y_screenSummary_interactionHint', 'a11y.screenSummary.interactionHintStringProperty' );
 addToMapIfDefined( 'a11y_constructionArea_accessibleHeading', 'a11y.constructionArea.accessibleHeadingStringProperty' );
-addToMapIfDefined( 'a11y_vertexInteraction_detach', 'a11y.vertexInteraction.detachStringProperty' );
+addToMapIfDefined( 'a11y_vertexInteraction_noNewAttachment', 'a11y.vertexInteraction.noNewAttachmentStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_vertexDefaultLabel', 'a11y.circuitContextResponses.vertexDefaultLabelStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_connectedElements', 'a11y.circuitContextResponses.connectedElementsStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_vertexSplit', 'a11y.circuitContextResponses.vertexSplitStringProperty' );
@@ -238,7 +238,7 @@ const CircuitConstructionKitCommonFluent = {
       accessibleHeadingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_constructionArea_accessibleHeading', _.get( CircuitConstructionKitCommonStrings, 'a11y.constructionArea.accessibleHeadingStringProperty' ) )
     },
     vertexInteraction: {
-      detachStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_vertexInteraction_detach', _.get( CircuitConstructionKitCommonStrings, 'a11y.vertexInteraction.detachStringProperty' ) )
+      noNewAttachmentStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_vertexInteraction_noNewAttachment', _.get( CircuitConstructionKitCommonStrings, 'a11y.vertexInteraction.noNewAttachmentStringProperty' ) )
     },
     circuitContextResponses: {
       vertexDefaultLabel: new FluentPattern<{ index: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_vertexDefaultLabel', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.vertexDefaultLabelStringProperty' ), [{"name":"index"}] ),

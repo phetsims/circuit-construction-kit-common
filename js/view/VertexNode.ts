@@ -237,7 +237,7 @@ export default class VertexNode extends Node {
         // Start with the "don't move" option so it doesn't jump so much when you click it.
         const items = [ {
           value: null as Vertex | null,
-          createNode: () => new Text( CircuitConstructionKitCommonFluent.a11y.vertexInteraction.detachStringProperty )
+          createNode: () => new Text( CircuitConstructionKitCommonFluent.a11y.vertexInteraction.noNewAttachmentStringProperty )
         } ];
 
         items.push( ...attachableVertices.map( v => {

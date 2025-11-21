@@ -94,7 +94,7 @@ a11y:
   constructionArea:
     accessibleHeading: Construction Area
   vertexInteraction:
-    detach: Detach
+    noNewAttachment: No new attachment
   circuitContextResponses:
     vertexDefaultLabel:   'vertex { $index }'
     connectedElements:    'Connected: { $elements }.'

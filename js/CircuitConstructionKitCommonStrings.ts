@@ -97,7 +97,7 @@ type StringsType = {
       'accessibleHeadingStringProperty': LocalizedStringProperty;
     };
     'vertexInteraction': {
-      'detachStringProperty': LocalizedStringProperty;
+      'noNewAttachmentStringProperty': LocalizedStringProperty;
     };
     'circuitContextResponses': {
       'vertexDefaultLabelStringProperty': LocalizedStringProperty;
