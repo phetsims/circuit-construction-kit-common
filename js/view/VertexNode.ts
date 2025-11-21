@@ -97,6 +97,7 @@ export default class VertexNode extends Node {
       phetioDynamicElement: true,
       phetioVisiblePropertyInstrumented: false,
       accessibleName: null, // Set by CircuitDescription.ts
+      ariaRole: 'application', // see https://github.com/phetsims/circuit-construction-kit-common/issues/1079#issue-3649808690
 
       // eslint-disable-next-line phet/no-object-spread-on-non-literals
       ...AccessibleDraggableOptions

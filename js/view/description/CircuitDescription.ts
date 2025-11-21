@@ -362,7 +362,7 @@ export default class CircuitDescription {
       // TODO: Maybe not all of these are necessary? See https://github.com/phetsims/circuit-construction-kit-common/issues/1057
       // TODO: Try just removing focusedElement from its parent pdom order. Walk up the PDOM instances, not the parents. see https://github.com/phetsims/circuit-construction-kit-common/issues/1057
 
-      circuitNode.pdomOrder = [];
+      // circuitNode.pdomOrder = []; // this line was crashing during keyboard dragging a vertex
       circuitNode.unconnectedCircuitElementsSection.pdomOrder = [];
       circuitNode.constructionAreaContainer.pdomOrder = [];
       if ( this.myGroupNodes ) {
