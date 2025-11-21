@@ -29,7 +29,6 @@ import type CircuitElement from '../model/CircuitElement.js';
 import type CircuitElementType from '../model/CircuitElementType.js';
 import type CircuitElementViewType from '../model/CircuitElementViewType.js';
 import CCKCColors from './CCKCColors.js';
-import CCKCHotkeyData from './CCKCHotkeyData.js';
 
 // constants
 const TOOLBOX_ICON_WIDTH = CCKCConstants.TOOLBOX_ICON_WIDTH;
@@ -141,7 +140,7 @@ export default class CircuitElementToolNode extends VBox {
     } ) );
 
     const keyboardListener = new KeyboardListener( {
-      keyStringProperties: CCKCHotkeyData.circuitToolNode.create.keyStringProperties,
+      fireOnClick: true,
       fire: () => {
 
         let center = globalToCircuitNodePoint( this.globalBounds.rightCenter ).plusXY( 100, 0 );
