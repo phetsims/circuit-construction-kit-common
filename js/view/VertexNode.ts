@@ -12,6 +12,7 @@ import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
+import AccessibleDraggableOptions from '../../../scenery-phet/js/accessibility/grab-drag/AccessibleDraggableOptions.js';
 import { pdomFocusProperty } from '../../../scenery/js/accessibility/pdomFocusProperty.js';
 import Grayscale from '../../../scenery/js/filters/Grayscale.js';
 import VBox from '../../../scenery/js/layout/nodes/VBox.js';
@@ -72,7 +73,6 @@ export default class VertexNode extends Node {
   private readonly dragListener: CircuitNodeDragListener;
   private readonly interruptionListener: ( draggable: boolean ) => void;
   private readonly updateVertexNodePositionListener: () => void;
-  public static readonly VERTEX_RADIUS = VERTEX_RADIUS;
 
   // Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
   public static readonly webglSpriteNodes = [
@@ -96,7 +96,10 @@ export default class VertexNode extends Node {
       focusable: true,
       phetioDynamicElement: true,
       phetioVisiblePropertyInstrumented: false,
-      accessibleName: null // Set by CircuitDescription.ts
+      accessibleName: null, // Set by CircuitDescription.ts
+
+      // eslint-disable-next-line phet/no-object-spread-on-non-literals
+      ...AccessibleDraggableOptions
     } );
 
     const circuit = circuitNode.circuit;
@@ -210,7 +213,10 @@ export default class VertexNode extends Node {
 
     // alt-input for attaching vertices, see https://github.com/phetsims/circuit-construction-kit-common/issues/1049
     this.addInputListener( new KeyboardListener( {
-      keys: [ 'space', 'enter' ], // move
+
+      // cannot use fireOnClick because that would interfere with dragging, see https://github.com/phetsims/circuit-construction-kit-common/issues/1079#issuecomment-3560928894
+      keys: [ 'space', 'enter' ],
+
       fire: () => {
         // create a new radio button group that lets the user cycle through attachable vertices
 
