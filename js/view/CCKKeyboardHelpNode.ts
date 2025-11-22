@@ -11,43 +11,39 @@ import KeyboardHelpIconFactory from '../../../scenery-phet/js/keyboard/help/Keyb
 import KeyboardHelpSection from '../../../scenery-phet/js/keyboard/help/KeyboardHelpSection.js';
 import KeyboardHelpSectionRow from '../../../scenery-phet/js/keyboard/help/KeyboardHelpSectionRow.js';
 import TwoColumnKeyboardHelpContent from '../../../scenery-phet/js/keyboard/help/TwoColumnKeyboardHelpContent.js';
-import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 
 export default class CCKKeyboardHelpNode extends TwoColumnKeyboardHelpContent {
 
   public constructor() {
 
-    const keyboardHelpStrings = CircuitConstructionKitCommonStrings.a11y.keyboardHelpDialog;
-    const addElementsStrings = keyboardHelpStrings.addElements;
-    const connectElementsStrings = keyboardHelpStrings.connectElements;
-
-    const addElementsSection = new KeyboardHelpSection( addElementsStrings.headingStringProperty, [
+    const addElementsSection = new KeyboardHelpSection( CircuitConstructionKitCommonStrings.a11y.keyboardHelpDialog.addElements.headingStringProperty, [
       KeyboardHelpSectionRow.labelWithIcon(
-        addElementsStrings.createElement.labelStringProperty,
+        CircuitConstructionKitCommonStrings.a11y.keyboardHelpDialog.addElements.createElement.labelStringProperty,
         KeyboardHelpIconFactory.spaceOrEnter(), {
-          labelInnerContent: addElementsStrings.createElement.labelInnerContentStringProperty
+          labelInnerContent: CircuitConstructionKitCommonStrings.a11y.keyboardHelpDialog.addElements.createElement.labelInnerContentStringProperty
         }
       )
     ] );
 
-    const connectElementsSection = new KeyboardHelpSection( connectElementsStrings.headingStringProperty, [
+    const connectElementsSection = new KeyboardHelpSection( CircuitConstructionKitCommonStrings.a11y.keyboardHelpDialog.connectElements.headingStringProperty, [
       KeyboardHelpSectionRow.labelWithIcon(
-        connectElementsStrings.grabJunction.labelStringProperty,
+        CircuitConstructionKitCommonStrings.a11y.keyboardHelpDialog.connectElements.grabJunction.labelStringProperty,
         KeyboardHelpIconFactory.spaceOrEnter(), {
-          labelInnerContent: connectElementsStrings.grabJunction.labelInnerContentStringProperty
+          labelInnerContent: CircuitConstructionKitCommonStrings.a11y.keyboardHelpDialog.connectElements.grabJunction.labelInnerContentStringProperty
         }
       ),
       KeyboardHelpSectionRow.labelWithIcon(
-        connectElementsStrings.selectTarget.labelStringProperty,
+        CircuitConstructionKitCommonStrings.a11y.keyboardHelpDialog.connectElements.selectTarget.labelStringProperty,
         KeyboardHelpIconFactory.arrowKeysRowIcon(), {
-          labelInnerContent: connectElementsStrings.selectTarget.labelInnerContentStringProperty
+          labelInnerContent: CircuitConstructionKitCommonStrings.a11y.keyboardHelpDialog.connectElements.selectTarget.labelInnerContentStringProperty
         }
       ),
       KeyboardHelpSectionRow.labelWithIcon(
-        connectElementsStrings.attachJunction.labelStringProperty,
+        CircuitConstructionKitCommonStrings.a11y.keyboardHelpDialog.connectElements.attachJunction.labelStringProperty,
         KeyboardHelpIconFactory.spaceOrEnter(), {
-          labelInnerContent: connectElementsStrings.attachJunction.labelInnerContentStringProperty
+          labelInnerContent: CircuitConstructionKitCommonStrings.a11y.keyboardHelpDialog.connectElements.attachJunction.labelInnerContentStringProperty
         }
       )
     ] );
