@@ -334,6 +334,7 @@ export default class CCKCLightBulbNode extends FixedCircuitElementNode {
     this.contentNode.setMatrix( SCRATCH_MATRIX );
     this.rayNodeContainer.setMatrix( SCRATCH_MATRIX );
     this.highlightNode && this.highlightNode.setMatrix( SCRATCH_MATRIX );
+    this.myFocusHighlight && this.myFocusHighlight.setMatrix( SCRATCH_MATRIX );
 
     this.socketNode && this.socketNode.updateRender();
   }

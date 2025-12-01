@@ -79,7 +79,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
   private readonly updateHighlightVisibility: ( ( circuitElement: CircuitElement | Vertex | null ) => void ) | null;
   private readonly updateFireMultilink: UnknownMultilink | null;
   private readonly keyboardListener: FixedCircuitElementKeyboardListener | null;
-  private readonly myFocusHighlight: FixedCircuitElementHighlightNode | null = null;
+  protected readonly myFocusHighlight: FixedCircuitElementHighlightNode | null = null;
 
   /**
    * @param screenView - the main screen view, null for isIcon
