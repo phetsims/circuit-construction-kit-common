@@ -232,6 +232,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
     // Update the dimensions of the highlight.  For Switches, retain the original bounds (big enough to encapsulate
     // both schematic and lifelike open and closed).
     ( this.circuitElement.isSizeChangedOnViewChange && this.highlightNode ) && this.highlightNode.recomputeBounds( this );
+    ( this.circuitElement.isSizeChangedOnViewChange && this.myFocusHighlight ) && this.myFocusHighlight.recomputeBounds( this );
   }
 
   /**

@@ -87,7 +87,6 @@ const GROUP_STARTING_INDEX = 0;
 const RENDERER = 'svg';
 
 export default class CircuitNode extends Node {
-  private readonly viewTypeProperty: Property<CircuitElementViewType>;
   public readonly model: CircuitConstructionKitModel;
   private readonly visibleBoundsProperty: Property<Bounds2>;
   private readonly circuitNodeBackLayer: Node;
@@ -164,7 +163,6 @@ export default class CircuitNode extends Node {
   public constructor( circuit: Circuit, public readonly screenView: CCKCScreenView, tandem: Tandem ) {
     super();
 
-    this.viewTypeProperty = screenView.model.viewTypeProperty;
     this.model = screenView.model;
 
     // the part of the screen that can be seen in view coordinates
@@ -264,8 +262,15 @@ export default class CircuitNode extends Node {
     this.beforeCircuitElementsLayer = new Node();
     this.afterCircuitElementsLayer = new Node();
 
+    // Construction Area container wraps both circuit elements section and groups
+    this.constructionAreaContainer = new Node( {
+      tagName: 'div',
+      accessibleHeading: CircuitConstructionKitCommonFluent.a11y.constructionArea.accessibleHeadingStringProperty
+    } );
+
     // For lifelike: Solder should be in front of wires but behind batteries and resistors.
     const lifelikeLayering = [
+      this.constructionAreaContainer,
       this.lightRaysLayer,
       this.beforeCircuitElementsLayer,
       this.wireLayer, // wires go behind other circuit elements
@@ -284,6 +289,7 @@ export default class CircuitNode extends Node {
 
     // For schematic: Solder should be in front of all components
     const schematicLayering = [
+      this.constructionAreaContainer,
       this.lightRaysLayer,
       this.beforeCircuitElementsLayer,
       this.wireLayer,
@@ -641,16 +647,8 @@ export default class CircuitNode extends Node {
 
     this.groupsContainer = new Node( {} );
 
-    // Construction Area container wraps both circuit elements section and groups
-    this.constructionAreaContainer = new Node( {
-      tagName: 'div',
-      accessibleHeading: CircuitConstructionKitCommonFluent.a11y.constructionArea.accessibleHeadingStringProperty
-    } );
-
     this.constructionAreaContainer.addChild( this.unconnectedCircuitElementsSection );
     this.constructionAreaContainer.addChild( this.groupsContainer );
-
-    this.addChild( this.constructionAreaContainer );
 
     // When two elements combine, it deletes a vertex. In this case, update the description
     circuit.vertexGroup.elementDisposedEmitter.addListener( () => this.updatePDOMOrder() );
