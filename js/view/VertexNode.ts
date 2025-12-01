@@ -6,31 +6,24 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import animationFrameTimer from '../../../axon/js/animationFrameTimer.js';
-import Property from '../../../axon/js/Property.js';
 import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
 import AccessibleDraggableOptions from '../../../scenery-phet/js/accessibility/grab-drag/AccessibleDraggableOptions.js';
-import { pdomFocusProperty } from '../../../scenery/js/accessibility/pdomFocusProperty.js';
 import Grayscale from '../../../scenery/js/filters/Grayscale.js';
 import VBox from '../../../scenery/js/layout/nodes/VBox.js';
-import KeyboardListener from '../../../scenery/js/listeners/KeyboardListener.js';
 import Circle, { type CircleOptions } from '../../../scenery/js/nodes/Circle.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import SceneryConstants from '../../../scenery/js/SceneryConstants.js';
 import Color from '../../../scenery/js/util/Color.js';
 import { rasterizeNode } from '../../../scenery/js/util/rasterizeNode.js';
-import ComboBox from '../../../sun/js/ComboBox.js';
-import ComboBoxListItemNode from '../../../sun/js/ComboBoxListItemNode.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import CCKCUtils from '../CCKCUtils.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import type Circuit from '../model/Circuit.js';
 import Vertex from '../model/Vertex.js';
 import CCKCColors from './CCKCColors.js';
@@ -38,6 +31,7 @@ import type CircuitNode from './CircuitNode.js';
 import CircuitNodeDragListener from './input/CircuitNodeDragListener.js';
 import VertexDragListener from './input/VertexDragListener.js';
 import VertexKeyboardListener from './input/VertexKeyboardListener.js';
+import VertexAttachmentKeyboardListener from './VertexAttachmentKeyboardListener.js';
 
 // constants
 const DISTANCE_TO_CUT_BUTTON = 70; // How far in view coordinates the cut button appears from the vertex node
@@ -213,114 +207,7 @@ export default class VertexNode extends Node {
     this.addInputListener( new VertexKeyboardListener( this, circuitNode ) );
 
     // alt-input for attaching vertices, see https://github.com/phetsims/circuit-construction-kit-common/issues/1049
-    this.addInputListener( new KeyboardListener( {
-
-      // cannot use fireOnClick because that would interfere with dragging, see https://github.com/phetsims/circuit-construction-kit-common/issues/1079#issuecomment-3560928894
-      keys: [ 'space', 'enter' ],
-
-      fire: () => {
-        // create a new radio button group that lets the user cycle through attachable vertices
-
-        const originalPosition = vertex.positionProperty.value.copy();
-
-        const attachableVertices = circuit.vertexGroup.filter( v => v.attachableProperty.get() &&
-                                                                    v !== vertex &&
-                                                                    !circuit.getNeighboringVertices( vertex ).includes( v ) &&
-                                                                    !circuit.findAllFixedVertices( vertex ).includes( v ) );
-
-        if ( attachableVertices.length === 0 ) {
-          return;
-        }
-
-        const selectionProperty = new Property<Vertex | null>( null );
-
-        // Start with the "don't move" option so it doesn't jump so much when you click it.
-        const items = [ {
-          value: null as Vertex | null,
-          createNode: () => new Text( CircuitConstructionKitCommonFluent.a11y.vertexInteraction.noNewAttachmentStringProperty )
-        } ];
-
-        items.push( ...attachableVertices.map( v => {
-          return {
-            value: v as Vertex | null,
-            createNode: () => new Text( circuitNode.getVertexNode( v ).attachmentName )
-          };
-        } ) );
-
-        const comboBox = new ComboBox( selectionProperty, items, this.circuitNode.screenView, {
-          tandem: Tandem.OPT_OUT // transient ui
-        } );
-
-        let cancelled = false;
-
-        comboBox.listBox.visibleProperty.lazyLink( visible => {
-
-          if ( cancelled ) {
-            return;
-          }
-
-          console.log( 'list box visible changed to ', visible );
-          if ( !visible ) {
-            circuitNode.endDrag( vertex, true );
-
-            animationFrameTimer.runOnNextTick( () => {
-
-              comboBox.dispose();
-              this.focus();
-            } );
-          }
-        } );
-
-        circuitNode.startDragVertex( this.parentToGlobalPoint( vertex.positionProperty.value ), vertex, vertex );
-
-        selectionProperty.lazyLink( selectedVertex => {
-          if ( selectedVertex ) {
-            circuitNode.dragVertex( this.parentToGlobalPoint( selectedVertex.positionProperty.value ), vertex, true );
-          }
-          else {
-            // move back to original position
-            circuitNode.dragVertex( this.parentToGlobalPoint( originalPosition ), vertex, true );
-          }
-        } );
-
-        circuitNode.addChild( comboBox );
-
-        comboBox.showListBox();
-        comboBox.focusListItemNode( items[ 0 ].value );
-
-        comboBox.cancelEmitter.addListener( () => {
-          selectionProperty.value = null;
-
-          circuitNode.endDrag( vertex, true );
-          cancelled = true;
-
-          animationFrameTimer.runOnNextTick( () => {
-
-            comboBox.dispose();
-            this.focus();
-          } );
-
-        } );
-
-        pdomFocusProperty.link( focus => {
-          const node = focus?.trail?.lastNode();
-          if ( node && node instanceof ComboBoxListItemNode ) {
-            console.log( 'focused a different item' );
-            const value = node.item.value;
-
-            // Note that another combo box setting null would mess up this logic. We are only safe since this combo box is transient.
-            if ( value instanceof Vertex || value === null ) {
-              selectionProperty.value = value;
-            }
-          }
-          else {
-            console.log( 'focused something else' );
-          }
-        }, {
-          disposer: comboBox
-        } );
-      }
-    } ) );
+    this.addInputListener( new VertexAttachmentKeyboardListener( this, circuitNode, vertex ) );
 
     // Make sure the cut button remains in the visible screen bounds.
     this.updateVertexNodePositionListener = this.updateVertexNodePosition.bind( this );
