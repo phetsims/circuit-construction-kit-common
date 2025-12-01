@@ -12,6 +12,7 @@ import Vector2 from '../../../dot/js/Vector2.js';
 import Shape from '../../../kite/js/Shape.js';
 import LineStyles from '../../../kite/js/util/LineStyles.js';
 import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
+import HighlightPath from '../../../scenery/js/accessibility/HighlightPath.js';
 import Circle from '../../../scenery/js/nodes/Circle.js';
 import Line from '../../../scenery/js/nodes/Line.js';
 import Node from '../../../scenery/js/nodes/Node.js';
@@ -104,6 +105,12 @@ const HIGHLIGHT_STROKE_LINE_STYLES = new LineStyles( {
   lineJoin: 'round'
 } );
 
+const FOCUS_STROKE_LINE_STYLES = new LineStyles( {
+  lineWidth: 32,
+  lineCap: 'round',
+  lineJoin: 'round'
+} );
+
 const TOUCH_AREA_LINE_STYLES = new LineStyles( {
   lineWidth: 23
 } );
@@ -111,11 +118,11 @@ const TOUCH_AREA_LINE_STYLES = new LineStyles( {
 /**
  * Convenience function that gets the stroked shape for the wire line node with the given style
  */
-const getHighlightStrokedShape = ( wire: Wire ) => {
+const getHighlightStrokedShape = ( wire: Wire, lineStyles: LineStyles ) => {
   const startPoint = wire.startPositionProperty.get();
   const endPoint = wire.endPositionProperty.get();
   return Shape.lineSegment( startPoint.x, startPoint.y, endPoint.x, endPoint.y )
-    .getStrokedShape( HIGHLIGHT_STROKE_LINE_STYLES );
+    .getStrokedShape( lineStyles );
 };
 
 /**
@@ -153,6 +160,7 @@ export default class WireNode extends CircuitElementNode {
   private readonly lineNodeParent: Node;
   private readonly lineNode: Node;
   private readonly highlightNode: Path;
+  private readonly focusHighlightPath: Path | null;
   public readonly dragListener: CircuitNodeDragListener | null;
   private readonly disposeWireNode: () => void;
 
@@ -189,6 +197,11 @@ export default class WireNode extends CircuitElementNode {
       pickable: false,
       visible: false
     } );
+    const focusHighlightPath = circuitNode ? new Path( null, {
+      stroke: HighlightPath.INNER_FOCUS_COLOR,
+      lineWidth: CCKCConstants.HIGHLIGHT_LINE_WIDTH,
+      pickable: false
+    } ) : null;
 
     // The node that displays the main line (for both schematic and lifelike).  This does not include
     // the rounded caps for the lifelike view
@@ -225,6 +238,7 @@ export default class WireNode extends CircuitElementNode {
     this.lineNodeParent = lineNodeParent;
     this.lineNode = lineNode;
     this.highlightNode = highlightNode;
+    this.focusHighlightPath = focusHighlightPath;
 
     /**
      * When the view type changes (lifelike vs schematic), update the node
@@ -272,6 +286,7 @@ export default class WireNode extends CircuitElementNode {
       this.addInputListener( new WireKeyboardListener( this, circuitNode, screenView, Tandem.OPT_OUT ) );
 
       circuitNode.circuit.selectionProperty.link( markAsDirty );
+      this.focusHighlight = focusHighlightPath;
     }
     else {
       this.dragListener = null;
@@ -308,6 +323,7 @@ export default class WireNode extends CircuitElementNode {
       wire.connectedEmitter.removeListener( moveToBack );
 
       circuitNode && circuitNode.highlightLayer.removeChild( highlightNodeParent );
+      this.focusHighlightPath && this.focusHighlightPath.dispose();
 
       viewTypeProperty.unlink( markAsDirty );
 
@@ -375,9 +391,10 @@ export default class WireNode extends CircuitElementNode {
       const isCurrentlyHighlighted = selectedCircuitElement === this.wire;
       this.highlightNode.visible = isCurrentlyHighlighted;
       if ( isCurrentlyHighlighted ) {
-        this.highlightNode.shape = getHighlightStrokedShape( this.wire );
+        this.highlightNode.shape = getHighlightStrokedShape( this.wire, HIGHLIGHT_STROKE_LINE_STYLES );
       }
     }
+    this.focusHighlightPath && ( this.focusHighlightPath.shape = getHighlightStrokedShape( this.wire, FOCUS_STROKE_LINE_STYLES ) );
     this.touchArea = getTouchArea( this.wire );
     this.mouseArea = this.touchArea;
   }
