@@ -41,10 +41,12 @@ export default class VertexAttachmentKeyboardListener extends KeyboardListener<O
                                                                     !circuit.findAllFixedVertices( vertex ).includes( v ) );
 
         if ( attachableVertices.length === 0 ) {
+          circuitNode.hideAttachmentHighlight();
           return;
         }
 
         const selectionProperty = new Property<Vertex | null>( null );
+        let targetDropPosition = originalPosition;
 
         // Start with the "don't move" option so it doesn't jump so much when you click it.
         const items = [ {
@@ -73,7 +75,10 @@ export default class VertexAttachmentKeyboardListener extends KeyboardListener<O
 
           console.log( 'list box visible changed to ', visible );
           if ( !visible ) {
+            const dropPosition = targetDropPosition.copy();
+            circuitNode.dragVertex( vertexNode.parentToGlobalPoint( dropPosition ), vertex, true );
             circuitNode.endDrag( vertex, true );
+            circuitNode.hideAttachmentHighlight();
 
             animationFrameTimer.runOnNextTick( () => {
 
@@ -86,13 +91,8 @@ export default class VertexAttachmentKeyboardListener extends KeyboardListener<O
         circuitNode.startDragVertex( vertexNode.parentToGlobalPoint( vertex.positionProperty.value ), vertex, vertex );
 
         selectionProperty.lazyLink( selectedVertex => {
-          if ( selectedVertex ) {
-            circuitNode.dragVertex( vertexNode.parentToGlobalPoint( selectedVertex.positionProperty.value ), vertex, true );
-          }
-          else {
-            // move back to original position
-            circuitNode.dragVertex( vertexNode.parentToGlobalPoint( originalPosition ), vertex, true );
-          }
+          targetDropPosition = selectedVertex ? selectedVertex.positionProperty.value : originalPosition;
+          circuitNode.showAttachmentHighlight( targetDropPosition );
         } );
 
         circuitNode.addChild( comboBox );
@@ -102,9 +102,14 @@ export default class VertexAttachmentKeyboardListener extends KeyboardListener<O
 
         comboBox.cancelEmitter.addListener( () => {
           selectionProperty.value = null;
+          targetDropPosition = originalPosition;
+
+          const dropPosition = targetDropPosition.copy();
+          circuitNode.dragVertex( vertexNode.parentToGlobalPoint( dropPosition ), vertex, true );
 
           circuitNode.endDrag( vertex, true );
           cancelled = true;
+          circuitNode.hideAttachmentHighlight();
 
           animationFrameTimer.runOnNextTick( () => {
 

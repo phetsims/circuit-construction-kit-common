@@ -23,6 +23,7 @@ import Vector2 from '../../../dot/js/Vector2.js';
 import DisplayClickToDismissListener from '../../../joist/js/DisplayClickToDismissListener.js';
 import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import type SceneryEvent from '../../../scenery/js/input/SceneryEvent.js';
+import Circle from '../../../scenery/js/nodes/Circle.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import scissorsShape from '../../../sherpa/js/fontawesome-4/scissorsShape.js';
@@ -93,6 +94,9 @@ export default class CircuitNode extends Node {
 
   // CircuitElementNodes add highlights directly to this layer when they are constructed
   public readonly highlightLayer: Node;
+
+  // For VertexAttachmentKeyboardListener to show where a Vertex will be attached
+  private readonly attachmentHighlightNode: Circle;
 
   // SeriesAmmeterNodes add to this layer when they are constructed
   // Shows the front panel of SeriesAmmeterNodes (which shows the current readout) so the charges look like they
@@ -170,6 +174,13 @@ export default class CircuitNode extends Node {
     this.circuitNodeBackLayer = screenView.circuitNodeBackLayer;
 
     this.highlightLayer = new Node();
+    this.attachmentHighlightNode = new Circle( 30, {
+      stroke: 'red',
+      lineWidth: 2.5,
+      pickable: false,
+      visible: false
+    } );
+    this.highlightLayer.addChild( this.attachmentHighlightNode );
 
     this.seriesAmmeterNodeReadoutPanelLayer = new Node();
 
@@ -686,6 +697,15 @@ export default class CircuitNode extends Node {
    * Get the VertexNode associated with the specified Vertex
    */
   public getVertexNode( vertex: Vertex ): VertexNode { return this.vertexNodes[ vertex.index ]; }
+
+  public showAttachmentHighlight( position: Vector2 ): void {
+    this.attachmentHighlightNode.translation = position;
+    this.attachmentHighlightNode.visible = true;
+  }
+
+  public hideAttachmentHighlight(): void {
+    this.attachmentHighlightNode.visible = false;
+  }
 
   /**
    * Find drop targets for all the given vertices
