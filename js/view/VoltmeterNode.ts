@@ -39,6 +39,7 @@ import type CircuitConstructionKitModel from '../model/CircuitConstructionKitMod
 import type Voltmeter from '../model/Voltmeter.js';
 import type CircuitNode from './CircuitNode.js';
 import ProbeTextNode from './ProbeTextNode.js';
+import VoltmeterProbeNodeAttachmentKeyboardListener from './VoltmeterProbeNodeAttachmentKeyboardListener.js';
 
 const voltageStringProperty = CircuitConstructionKitCommonStrings.voltageStringProperty;
 
@@ -298,9 +299,19 @@ export default class VoltmeterNode extends Node {
 
       this.redProbeNode.addInputListener( redProbeDragListener );
       this.redProbeNode.addInputListener( createProbeKeyboardDragListener( voltmeter.redProbePositionProperty ) );
+      this.redProbeNode.addInputListener( new VoltmeterProbeNodeAttachmentKeyboardListener(
+        this.redProbeNode,
+        circuitNode!,
+        voltmeter.redProbePositionProperty
+      ) );
 
       this.blackProbeNode.addInputListener( blackProbeDragListener );
       this.blackProbeNode.addInputListener( createProbeKeyboardDragListener( voltmeter.blackProbePositionProperty ) );
+      this.blackProbeNode.addInputListener( new VoltmeterProbeNodeAttachmentKeyboardListener(
+        this.blackProbeNode,
+        circuitNode!,
+        voltmeter.blackProbePositionProperty
+      ) );
 
       const erodedBoundsProperty = new DerivedProperty( [ options.visibleBoundsProperty! ], ( visibleBounds: Bounds2 ) => {
         return visibleBounds.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
