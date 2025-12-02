@@ -32,7 +32,9 @@ export default class AmmeterProbeNodeAttachmentKeyboardListener extends Keyboard
       keys: [ 'space', 'enter' ],
 
       fire: () => {
-        const originalPosition = probePositionProperty.value.copy();
+        const centerOffset = probeNode.center.minus( probeNode.centerTop );
+        const verticalFudge = -5; // pixels to move the probe so its center visually aligns with the target
+        const originalCenterPosition = probeNode.center.copy();
 
         const circuitElements = circuit.circuitElements.filter( () => true );
 
@@ -42,7 +44,7 @@ export default class AmmeterProbeNodeAttachmentKeyboardListener extends Keyboard
         }
 
         const selectionProperty = new Property<CircuitElement | null>( null );
-        let targetDropPosition = originalPosition;
+        let targetDropPosition = originalCenterPosition;
 
         // Start with the "don't move" option so it doesn't jump so much when you click it.
         const items = [ {
@@ -72,7 +74,7 @@ export default class AmmeterProbeNodeAttachmentKeyboardListener extends Keyboard
           }
 
           if ( !visible ) {
-            const dropPosition = targetDropPosition.copy();
+            const dropPosition = targetDropPosition.copy().minus( centerOffset ).plusXY( 0, -verticalFudge );
             probePositionProperty.value = dropPosition;
             circuitNode.hideAttachmentHighlight();
 
@@ -90,7 +92,7 @@ export default class AmmeterProbeNodeAttachmentKeyboardListener extends Keyboard
                                  selectedCircuitElement.startVertexProperty.value.positionProperty.value,
                                  selectedCircuitElement.endVertexProperty.value.positionProperty.value
                                ] ) :
-                               originalPosition;
+                               originalCenterPosition;
           circuitNode.showAttachmentHighlight( targetDropPosition );
         } );
 
@@ -105,10 +107,10 @@ export default class AmmeterProbeNodeAttachmentKeyboardListener extends Keyboard
 
         comboBox.cancelEmitter.addListener( () => {
           selectionProperty.value = null;
-          targetDropPosition = originalPosition;
+          targetDropPosition = originalCenterPosition;
 
-          const dropPosition = targetDropPosition.copy();
-          probePositionProperty.value = dropPosition.plusXY( 0, -25 );
+          const dropPosition = targetDropPosition.copy().minus( centerOffset ).plusXY( 0, -verticalFudge );
+          probePositionProperty.value = dropPosition;
           cancelled = true;
           circuitNode.hideAttachmentHighlight();
 
