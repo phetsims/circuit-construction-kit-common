@@ -35,6 +35,7 @@ import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommon
 import type Ammeter from '../model/Ammeter.js';
 import ammeterReadoutTypeProperty from './ammeterReadoutTypeProperty.js';
 import type CircuitNode from './CircuitNode.js';
+import AmmeterProbeNodeAttachmentKeyboardListener from './AmmeterProbeNodeAttachmentKeyboardListener.js';
 import ProbeTextNode from './ProbeTextNode.js';
 
 const currentStringProperty = CircuitConstructionKitCommonStrings.currentStringProperty;
@@ -260,6 +261,11 @@ export default class AmmeterNode extends Node {
         shiftDragSpeed: CCKCConstants.SHIFT_KEYBOARD_DRAG_SPEED,
         tandem: Tandem.OPT_OUT
       } ) );
+      this.probeNode.addInputListener( new AmmeterProbeNodeAttachmentKeyboardListener(
+        this.probeNode,
+        circuitNode!,
+        ammeter.probePositionProperty
+      ) );
 
       /**
        * Detection for ammeter probe + circuit intersection is done in the view since view bounds are used
