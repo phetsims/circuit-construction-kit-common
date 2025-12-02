@@ -17,6 +17,8 @@ import type ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import optionize from '../../../phet-core/js/optionize.js';
+import AccessibleInteractiveOptions from '../../../scenery-phet/js/accessibility/AccessibleInteractiveOptions.js';
+import HotkeyData from '../../../scenery/js/input/HotkeyData.js';
 import type AlignGroup from '../../../scenery/js/layout/constraints/AlignGroup.js';
 import HBox from '../../../scenery/js/layout/nodes/HBox.js';
 import HSeparator from '../../../scenery/js/layout/nodes/HSeparator.js';
@@ -65,6 +67,19 @@ type SelfOptions = {
   showCharts?: boolean;
 };
 type SensorToolboxOptions = SelfOptions & CCKCPanelOptions;
+
+const createVoltmeterHotkeyData = new HotkeyData( {
+  keys: [ 'space', 'enter' ],
+  repoName: circuitConstructionKitCommon.name,
+  binderName: 'voltmeterToolboxHotkey'
+} );
+
+const createAmmeterHotkeyData = new HotkeyData( {
+  keys: [ 'space', 'enter' ],
+  repoName: circuitConstructionKitCommon.name,
+  binderName: 'ammeterToolboxHotkey'
+} );
+
 export default class SensorToolbox extends CCKCPanel {
 
   /**
@@ -122,8 +137,9 @@ export default class SensorToolbox extends CCKCPanel {
         meterModel.isDraggingProbesWithBodyProperty.value = true;
         meterModel.isActiveProperty.value = true;
         meterModel.bodyPositionProperty.value = viewPosition;
-        // meterNode.startDrag( event );
         meterNode.focus();
+
+        console.log( 'hello from keyboard creation of meter' );
       }
     };
 
@@ -148,7 +164,9 @@ export default class SensorToolbox extends CCKCPanel {
       visiblePropertyOptions: {
         phetioFeatured: true
       },
-      tagName: options.showNoncontactAmmeters && options.showSeriesAmmeters ? 'button' : undefined
+      tagName: options.showNoncontactAmmeters && options.showSeriesAmmeters ? 'button' : undefined,
+      // eslint-disable-next-line phet/no-object-spread-on-non-literals
+      ...( options.showNoncontactAmmeters && options.showSeriesAmmeters ? AccessibleInteractiveOptions : {} )
     } );
     const allAmmetersInPlayAreaProperty = DerivedProperty.and( ammeterNodes.map( ammeterNode => ammeterNode.ammeter.isActiveProperty ) );
     allAmmetersInPlayAreaProperty.link( allInPlayArea => {
@@ -248,12 +266,15 @@ export default class SensorToolbox extends CCKCPanel {
         phetioFeatured: true
       },
       tagName: 'button',
-      accessibleName: 'Voltmeter'
+      accessibleName: 'Voltmeter',
+
+      // eslint-disable-next-line phet/no-object-spread-on-non-literals
+      ...AccessibleInteractiveOptions
     } );
     voltmeterToolNode.addInputListener( new KeyboardListener( {
 
-      // TODO: Keyboard Help Dialog, see https://github.com/phetsims/circuit-construction-kit-common/issues/1034
-      fireOnClick: true,
+      // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/1058 should we use fireOnClick here?
+      keyStringProperties: createVoltmeterHotkeyData.keyStringProperties,
       press: () => {
         createFromKeyboard( voltmeterNodes );
       }
@@ -290,14 +311,16 @@ export default class SensorToolbox extends CCKCPanel {
         ammeterText
       ],
       excludeInvisibleChildrenFromBounds: false,
-      tagName: options.showNoncontactAmmeters && options.showSeriesAmmeters ? undefined : 'button'
+      tagName: ( options.showNoncontactAmmeters && options.showSeriesAmmeters ) ? undefined : 'button',
+      // eslint-disable-next-line phet/no-object-spread-on-non-literals
+      ...( ( options.showNoncontactAmmeters && options.showSeriesAmmeters ) ? {} : AccessibleInteractiveOptions )
     } );
 
     if ( options.showNoncontactAmmeters ) {
       const ammeterKeyboardListenerTarget = options.showSeriesAmmeters ? ammeterToolIcon : ammeterToolNode;
       ammeterKeyboardListenerTarget.accessibleName = 'Ammeter';
       ammeterKeyboardListenerTarget.addInputListener( new KeyboardListener( {
-        fireOnClick: true,
+        keyStringProperties: createAmmeterHotkeyData.keyStringProperties,
         press: () => {
           createFromKeyboard( ammeterNodes );
         }
