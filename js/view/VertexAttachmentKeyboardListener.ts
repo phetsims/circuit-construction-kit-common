@@ -15,7 +15,6 @@ import Node from '../../../scenery/js/nodes/Node.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import ComboBox from '../../../sun/js/ComboBox.js';
 import ComboBoxListItemNode from '../../../sun/js/ComboBoxListItemNode.js';
-import multiSelectionSoundPlayerFactory from '../../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
@@ -133,10 +132,6 @@ export default class VertexAttachmentKeyboardListener extends KeyboardListener<O
             // Note that another combo box setting null would mess up this logic. We are only safe since this combo box is transient.
             if ( value instanceof Vertex || value === null ) {
               selectionProperty.value = value;
-
-              const index = attachableVertices.indexOf( value as Vertex ) + 1; // +1 for the "no attachment" option
-              const soundPlayer = multiSelectionSoundPlayerFactory.getSelectionSoundPlayer( index );
-              soundPlayer.play();
             }
           }
           else {
