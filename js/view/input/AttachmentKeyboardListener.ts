@@ -67,12 +67,12 @@ export default class AttachmentKeyboardListener<T> extends KeyboardListener<OneK
 
         const initialPosition = options.getInitialPosition();
 
-        const items: AttachmentItem<T>[] = [ {
+        const items: AttachmentItem<T>[] = [ ...availableItems, {
           value: null,
           createNode: () => new Text( CircuitConstructionKitCommonFluent.a11y.vertexInteraction.noNewAttachmentStringProperty )
-        }, ...availableItems ];
+        } ];
 
-        const selectionProperty = new Property<T | null>( null );
+        const selectionProperty = new Property<T | null>( availableItems[ 0 ].value );
         let targetDropPosition = initialPosition;
 
         const comboBox = new ComboBox( selectionProperty, items, options.circuitNode.screenView, {
@@ -103,7 +103,7 @@ export default class AttachmentKeyboardListener<T> extends KeyboardListener<OneK
 
         options.onOpen?.();
 
-        selectionProperty.lazyLink( selection => {
+        selectionProperty.link( selection => {
           targetDropPosition = options.getHighlightPosition( selection );
           options.circuitNode.showAttachmentHighlight( targetDropPosition );
         } );
@@ -147,6 +147,8 @@ export default class AttachmentKeyboardListener<T> extends KeyboardListener<OneK
         }, {
           disposer: comboBox
         } );
+
+        // selectionProperty.value = availableItems[ 0 ].value;
       }
     } );
   }
