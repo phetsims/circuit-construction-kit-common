@@ -95,7 +95,11 @@ export default class VertexAttachmentKeyboardListener extends KeyboardListener<O
           circuitNode.showAttachmentHighlight( targetDropPosition );
         } );
 
-        circuitNode.addChild( comboBox );
+        // Show in the top center of the ScreenView
+        comboBox.centerX = circuitNode.screenView.layoutBounds.centerX;
+        comboBox.top = circuitNode.screenView.visibleBoundsProperty.value.top + 5;
+
+        circuitNode.screenView.addChild( comboBox );
 
         comboBox.showListBox();
         comboBox.focusListItemNode( items[ 0 ].value );
