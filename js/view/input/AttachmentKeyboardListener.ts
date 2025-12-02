@@ -108,9 +108,9 @@ export default class AttachmentKeyboardListener<T> extends KeyboardListener<OneK
           options.circuitNode.showAttachmentHighlight( targetDropPosition );
         } );
 
-        // Show in the top center of the ScreenView
+        // Offscreen unless in ?dev mode, then in top center of the ScreenView
         comboBox.centerX = options.circuitNode.screenView.layoutBounds.centerX;
-        comboBox.top = options.circuitNode.screenView.visibleBoundsProperty.value.top + 5;
+        comboBox.top = options.circuitNode.screenView.visibleBoundsProperty.value.top + 5 + ( phet.chipper.queryParameters.dev ? 0 : 4000 );
 
         options.circuitNode.screenView.addChild( comboBox );
 
