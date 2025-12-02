@@ -6,12 +6,12 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import Text from '../../../scenery/js/nodes/Text.js';
+import Text from '../../../../scenery/js/nodes/Text.js';
 import AttachmentKeyboardListener from './AttachmentKeyboardListener.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import Vertex from '../model/Vertex.js';
-import type CircuitNode from './CircuitNode.js';
-import type Node from '../../../scenery/js/nodes/Node.js';
+import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
+import Vertex from '../../model/Vertex.js';
+import type CircuitNode from '../CircuitNode.js';
+import type Node from '../../../../scenery/js/nodes/Node.js';
 
 export default class VertexAttachmentKeyboardListener extends AttachmentKeyboardListener<Vertex> {
   public constructor( vertexNode: Node, circuitNode: CircuitNode, vertex: Vertex ) {

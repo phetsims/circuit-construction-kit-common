@@ -6,15 +6,15 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import type TProperty from '../../../axon/js/TProperty.js';
-import Vector2 from '../../../dot/js/Vector2.js';
-import Text from '../../../scenery/js/nodes/Text.js';
-import multiSelectionSoundPlayerFactory from '../../../tambo/js/multiSelectionSoundPlayerFactory.js';
+import type TProperty from '../../../../axon/js/TProperty.js';
+import Vector2 from '../../../../dot/js/Vector2.js';
+import Text from '../../../../scenery/js/nodes/Text.js';
+import multiSelectionSoundPlayerFactory from '../../../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import AttachmentKeyboardListener from './AttachmentKeyboardListener.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitElement from '../model/CircuitElement.js';
-import type CircuitNode from './CircuitNode.js';
-import type Node from '../../../scenery/js/nodes/Node.js';
+import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
+import CircuitElement from '../../model/CircuitElement.js';
+import type CircuitNode from '../CircuitNode.js';
+import type Node from '../../../../scenery/js/nodes/Node.js';
 
 export default class AmmeterProbeNodeAttachmentKeyboardListener extends AttachmentKeyboardListener<CircuitElement> {
   public constructor( probeNode: Node, circuitNode: CircuitNode, probePositionProperty: TProperty<Vector2> ) {

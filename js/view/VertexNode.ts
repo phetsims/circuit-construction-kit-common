@@ -31,7 +31,7 @@ import type CircuitNode from './CircuitNode.js';
 import CircuitNodeDragListener from './input/CircuitNodeDragListener.js';
 import VertexDragListener from './input/VertexDragListener.js';
 import VertexKeyboardListener from './input/VertexKeyboardListener.js';
-import VertexAttachmentKeyboardListener from './VertexAttachmentKeyboardListener.js';
+import VertexAttachmentKeyboardListener from './input/VertexAttachmentKeyboardListener.js';
 
 // constants
 const DISTANCE_TO_CUT_BUTTON = 70; // How far in view coordinates the cut button appears from the vertex node

@@ -6,20 +6,20 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import animationFrameTimer from '../../../axon/js/animationFrameTimer.js';
-import Property from '../../../axon/js/Property.js';
-import type Vector2 from '../../../dot/js/Vector2.js';
-import { pdomFocusProperty } from '../../../scenery/js/accessibility/pdomFocusProperty.js';
-import { OneKeyStroke } from '../../../scenery/js/input/KeyDescriptor.js';
-import KeyboardListener from '../../../scenery/js/listeners/KeyboardListener.js';
-import Node from '../../../scenery/js/nodes/Node.js';
-import Text from '../../../scenery/js/nodes/Text.js';
-import ComboBox from '../../../sun/js/ComboBox.js';
-import ComboBoxListItemNode from '../../../sun/js/ComboBoxListItemNode.js';
-import Tandem from '../../../tandem/js/Tandem.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
-import type CircuitNode from './CircuitNode.js';
+import animationFrameTimer from '../../../../axon/js/animationFrameTimer.js';
+import Property from '../../../../axon/js/Property.js';
+import type Vector2 from '../../../../dot/js/Vector2.js';
+import { pdomFocusProperty } from '../../../../scenery/js/accessibility/pdomFocusProperty.js';
+import { OneKeyStroke } from '../../../../scenery/js/input/KeyDescriptor.js';
+import KeyboardListener from '../../../../scenery/js/listeners/KeyboardListener.js';
+import Node from '../../../../scenery/js/nodes/Node.js';
+import Text from '../../../../scenery/js/nodes/Text.js';
+import ComboBox from '../../../../sun/js/ComboBox.js';
+import ComboBoxListItemNode from '../../../../sun/js/ComboBoxListItemNode.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
+import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
+import CircuitConstructionKitCommonFluent from '../../CircuitConstructionKitCommonFluent.js';
+import type CircuitNode from '../CircuitNode.js';
 
 type AttachmentItem<T> = {
   value: T | null;

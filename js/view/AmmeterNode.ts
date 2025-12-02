@@ -35,7 +35,7 @@ import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommon
 import type Ammeter from '../model/Ammeter.js';
 import ammeterReadoutTypeProperty from './ammeterReadoutTypeProperty.js';
 import type CircuitNode from './CircuitNode.js';
-import AmmeterProbeNodeAttachmentKeyboardListener from './AmmeterProbeNodeAttachmentKeyboardListener.js';
+import AmmeterProbeNodeAttachmentKeyboardListener from './input/AmmeterProbeNodeAttachmentKeyboardListener.js';
 import ProbeTextNode from './ProbeTextNode.js';
 
 const currentStringProperty = CircuitConstructionKitCommonStrings.currentStringProperty;

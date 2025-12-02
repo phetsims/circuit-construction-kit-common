@@ -39,7 +39,7 @@ import type CircuitConstructionKitModel from '../model/CircuitConstructionKitMod
 import type Voltmeter from '../model/Voltmeter.js';
 import type CircuitNode from './CircuitNode.js';
 import ProbeTextNode from './ProbeTextNode.js';
-import VoltmeterProbeNodeAttachmentKeyboardListener from './VoltmeterProbeNodeAttachmentKeyboardListener.js';
+import VoltmeterProbeNodeAttachmentKeyboardListener from './input/VoltmeterProbeNodeAttachmentKeyboardListener.js';
 
 const voltageStringProperty = CircuitConstructionKitCommonStrings.voltageStringProperty;
 
