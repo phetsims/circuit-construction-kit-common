@@ -17,8 +17,6 @@ import type ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import optionize from '../../../phet-core/js/optionize.js';
-import AccessibleInteractiveOptions from '../../../scenery-phet/js/accessibility/AccessibleInteractiveOptions.js';
-import HotkeyData from '../../../scenery/js/input/HotkeyData.js';
 import type AlignGroup from '../../../scenery/js/layout/constraints/AlignGroup.js';
 import HBox from '../../../scenery/js/layout/nodes/HBox.js';
 import HSeparator from '../../../scenery/js/layout/nodes/HSeparator.js';
@@ -67,18 +65,6 @@ type SelfOptions = {
   showCharts?: boolean;
 };
 type SensorToolboxOptions = SelfOptions & CCKCPanelOptions;
-
-const createVoltmeterHotkeyData = new HotkeyData( {
-  keys: [ 'space', 'enter' ],
-  repoName: circuitConstructionKitCommon.name,
-  binderName: 'voltmeterToolboxHotkey'
-} );
-
-const createAmmeterHotkeyData = new HotkeyData( {
-  keys: [ 'space', 'enter' ],
-  repoName: circuitConstructionKitCommon.name,
-  binderName: 'ammeterToolboxHotkey'
-} );
 
 export default class SensorToolbox extends CCKCPanel {
 
@@ -164,9 +150,7 @@ export default class SensorToolbox extends CCKCPanel {
       visiblePropertyOptions: {
         phetioFeatured: true
       },
-      tagName: options.showNoncontactAmmeters && options.showSeriesAmmeters ? 'button' : undefined,
-      // eslint-disable-next-line phet/no-object-spread-on-non-literals
-      ...( options.showNoncontactAmmeters && options.showSeriesAmmeters ? AccessibleInteractiveOptions : {} )
+      tagName: options.showNoncontactAmmeters && options.showSeriesAmmeters ? 'button' : undefined
     } );
     const allAmmetersInPlayAreaProperty = DerivedProperty.and( ammeterNodes.map( ammeterNode => ammeterNode.ammeter.isActiveProperty ) );
     allAmmetersInPlayAreaProperty.link( allInPlayArea => {
@@ -266,16 +250,11 @@ export default class SensorToolbox extends CCKCPanel {
         phetioFeatured: true
       },
       tagName: 'button',
-      accessibleName: 'Voltmeter',
-
-      // eslint-disable-next-line phet/no-object-spread-on-non-literals
-      ...AccessibleInteractiveOptions
+      accessibleName: 'Voltmeter'
     } );
     voltmeterToolNode.addInputListener( new KeyboardListener( {
-
-      // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/1058 should we use fireOnClick here?
-      keyStringProperties: createVoltmeterHotkeyData.keyStringProperties,
-      press: () => {
+      fireOnClick: true,
+      fire: () => {
         createFromKeyboard( voltmeterNodes );
       }
     } ) );
@@ -311,17 +290,15 @@ export default class SensorToolbox extends CCKCPanel {
         ammeterText
       ],
       excludeInvisibleChildrenFromBounds: false,
-      tagName: ( options.showNoncontactAmmeters && options.showSeriesAmmeters ) ? undefined : 'button',
-      // eslint-disable-next-line phet/no-object-spread-on-non-literals
-      ...( ( options.showNoncontactAmmeters && options.showSeriesAmmeters ) ? {} : AccessibleInteractiveOptions )
+      tagName: ( options.showNoncontactAmmeters && options.showSeriesAmmeters ) ? undefined : 'button'
     } );
 
     if ( options.showNoncontactAmmeters ) {
       const ammeterKeyboardListenerTarget = options.showSeriesAmmeters ? ammeterToolIcon : ammeterToolNode;
       ammeterKeyboardListenerTarget.accessibleName = 'Ammeter';
       ammeterKeyboardListenerTarget.addInputListener( new KeyboardListener( {
-        keyStringProperties: createAmmeterHotkeyData.keyStringProperties,
-        press: () => {
+        fireOnClick: true,
+        fire: () => {
           createFromKeyboard( ammeterNodes );
         }
       } ) );
