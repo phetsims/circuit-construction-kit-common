@@ -7,14 +7,14 @@
  */
 
 import Text from '../../../../scenery/js/nodes/Text.js';
-import AttachmentKeyboardListener from './AttachmentKeyboardListener.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import Vertex from '../../model/Vertex.js';
 import type CircuitNode from '../CircuitNode.js';
-import type Node from '../../../../scenery/js/nodes/Node.js';
+import VertexNode from '../VertexNode.js';
+import AttachmentKeyboardListener from './AttachmentKeyboardListener.js';
 
 export default class VertexAttachmentKeyboardListener extends AttachmentKeyboardListener<Vertex> {
-  public constructor( vertexNode: Node, circuitNode: CircuitNode, vertex: Vertex ) {
+  public constructor( vertexNode: VertexNode, circuitNode: CircuitNode, vertex: Vertex ) {
     const circuit = circuitNode.circuit;
 
     super( {
@@ -41,6 +41,7 @@ export default class VertexAttachmentKeyboardListener extends AttachmentKeyboard
         circuitNode.endDrag( vertex, true );
       },
       onOpen: () => {
+        circuitNode.circuit.selectionProperty.value = vertexNode.vertex;
         circuitNode.startDragVertex( vertexNode.parentToGlobalPoint( vertex.positionProperty.value ), vertex, vertex );
       }
     } );

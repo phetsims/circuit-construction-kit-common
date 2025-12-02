@@ -79,6 +79,9 @@ export default class AttachmentKeyboardListener<T> extends KeyboardListener<OneK
           tandem: Tandem.OPT_OUT // transient ui
         } );
 
+        // We must make the button non-focusable, otherwise when a selection is locked in, we will trigger a re-entrant focus property issue. See https://github.com/phetsims/circuit-construction-kit-common/issues/1078
+        comboBox.button.focusable = false;
+
         let cancelled = false;
 
         comboBox.listBox.visibleProperty.lazyLink( visible => {
