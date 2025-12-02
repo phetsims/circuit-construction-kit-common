@@ -81,6 +81,13 @@ const focusCarouselHotkeyData = new HotkeyData( {
   global: true
 } );
 
+const focusConstructionAreaHotkeyData = new HotkeyData( {
+  keys: [ 'a' ],
+  repoName: circuitConstructionKitCommon.name,
+  keyboardHelpDialogLabelStringProperty: new StringProperty( 'focus the first circuit element in the construction area, if any' ),
+  global: true
+} );
+
 type SelfOptions = {
   showResetAllButton?: boolean;
   circuitElementToolboxOptions: CircuitElementToolboxOptions;
@@ -595,6 +602,20 @@ export default class CCKCScreenView extends ScreenView {
       keyStringProperties: focusCarouselHotkeyData.keyStringProperties,
       fire: event => {
         this.circuitElementToolbox.carousel.getFocusableItems()[ 0 ]?.focus();
+      }
+    } );
+
+    KeyboardListener.createGlobal( this, {
+      keyStringProperties: focusConstructionAreaHotkeyData.keyStringProperties,
+      fire: () => {
+        const circuitElements = this.circuitNode.circuit.circuitElements;
+        for ( let i = 0; i < circuitElements.length; i++ ) {
+          const circuitElementNode = this.circuitNode.getCircuitElementNode( circuitElements[ i ] );
+          if ( !circuitElementNode.isDisposed && circuitElementNode.focusable && circuitElementNode.visible && circuitElementNode.inputEnabled ) {
+            circuitElementNode.focus();
+            break;
+          }
+        }
       }
     } );
   }
