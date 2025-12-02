@@ -82,7 +82,7 @@ const focusCarouselHotkeyData = new HotkeyData( {
 } );
 
 const focusConstructionAreaHotkeyData = new HotkeyData( {
-  keys: [ 'a' ],
+  keys: [ 'f' ],
   repoName: circuitConstructionKitCommon.name,
   keyboardHelpDialogLabelStringProperty: new StringProperty( 'focus the first circuit element in the construction area, if any' ),
   global: true
