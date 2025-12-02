@@ -9,6 +9,7 @@
 
 import Multilink from '../../../axon/js/Multilink.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
+import StringProperty from '../../../axon/js/StringProperty.js';
 import type Bounds2 from '../../../dot/js/Bounds2.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import ScreenView, { type ScreenViewOptions } from '../../../joist/js/ScreenView.js';
@@ -71,6 +72,13 @@ const CONTROL_PANEL_ALIGN_GROUP = new AlignGroup( {
 
   // Elements should have the same widths but not constrained to have the same heights
   matchVertical: false
+} );
+
+const focusCarouselHotkeyData = new HotkeyData( {
+  keys: [ 'm' ],
+  repoName: circuitConstructionKitCommon.name,
+  keyboardHelpDialogLabelStringProperty: new StringProperty( 'focus the first item in the carousel, if any' ),
+  global: true
 } );
 
 type SelfOptions = {
@@ -582,6 +590,13 @@ export default class CCKCScreenView extends ScreenView {
 
     this.showAdvancedControls = options.showAdvancedControls;
     this.screenSummaryContent = new CCKCScreenSummaryContent( model, this );
+
+    KeyboardListener.createGlobal( this, {
+      keyStringProperties: focusCarouselHotkeyData.keyStringProperties,
+      fire: event => {
+        this.circuitElementToolbox.carousel.getFocusableItems()[ 0 ]?.focus();
+      }
+    } );
   }
 
   /**
