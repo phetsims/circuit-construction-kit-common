@@ -119,13 +119,30 @@ export default class SensorToolbox extends CCKCPanel {
         const meterModel = meterNode instanceof VoltmeterNode ? meterNode.voltmeter :
                            meterNode instanceof AmmeterNode ? meterNode.ammeter :
                            meterNode.meter;
-        const viewPosition = new Vector2( 400, 400 );
-        meterModel.isDraggingProbesWithBodyProperty.value = true;
-        meterModel.isActiveProperty.value = true;
-        meterModel.bodyPositionProperty.value = viewPosition;
-        meterNode.focus();
 
-        console.log( 'hello from keyboard creation of meter' );
+        // Use the meter's index to offset positions so they don't stack
+        const meterIndex = meterNodes.indexOf( meterNode );
+        const xOffset = meterIndex === 0 ? -150 : 150;
+
+        // Voltmeters at y=0, Ammeters at y=100
+        const yOffset = meterModel instanceof Voltmeter ? -150 : 150;
+        const bodyPosition = new Vector2( xOffset, yOffset );
+
+        // For keyboard, probes are independent of body from the start
+        meterModel.isDraggingProbesWithBodyProperty.value = false;
+        meterModel.bodyPositionProperty.value = bodyPosition;
+
+        // Set probe positions explicitly for keyboard activation
+        if ( meterModel instanceof Voltmeter ) {
+          meterModel.redProbePositionProperty.value = bodyPosition.plusXY( 100, -150 );
+          meterModel.blackProbePositionProperty.value = bodyPosition.plusXY( -100, -150 );
+        }
+        else if ( meterModel instanceof Ammeter ) {
+          meterModel.probePositionProperty.value = bodyPosition.plusXY( 40, -100 );
+        }
+
+        meterModel.isActiveProperty.value = true;
+        meterNode.focus();
       }
     };
 
