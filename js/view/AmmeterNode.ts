@@ -20,6 +20,7 @@ import AccessibleDraggableOptions from '../../../scenery-phet/js/accessibility/g
 import ProbeNode from '../../../scenery-phet/js/ProbeNode.js';
 import SoundKeyboardDragListener from '../../../scenery-phet/js/SoundKeyboardDragListener.js';
 import WireNode from '../../../scenery-phet/js/WireNode.js';
+import HighlightFromNode from '../../../scenery/js/accessibility/HighlightFromNode.js';
 import DragListener from '../../../scenery/js/listeners/DragListener.js';
 import { type PressListenerEvent } from '../../../scenery/js/listeners/PressListener.js';
 import Image from '../../../scenery/js/nodes/Image.js';
@@ -198,6 +199,9 @@ export default class AmmeterNode extends Node {
     } );
 
     if ( !options.isIcon ) {
+
+      // Focus highlight should only surround the body, not the probe
+      this.focusHighlight = new HighlightFromNode( bodyNode );
 
       // Show the ammeter in the play area when dragged from toolbox
       ammeter.isActiveProperty.linkAttribute( this, 'visible' );

@@ -20,6 +20,7 @@ import AccessibleDraggableOptions from '../../../scenery-phet/js/accessibility/g
 import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
 import SoundKeyboardDragListener from '../../../scenery-phet/js/SoundKeyboardDragListener.js';
 import WireNode from '../../../scenery-phet/js/WireNode.js';
+import HighlightFromNode from '../../../scenery/js/accessibility/HighlightFromNode.js';
 import DragListener from '../../../scenery/js/listeners/DragListener.js';
 import { type PressListenerEvent } from '../../../scenery/js/listeners/PressListener.js';
 import Image from '../../../scenery/js/nodes/Image.js';
@@ -261,6 +262,9 @@ export default class VoltmeterNode extends Node {
 
     // For the real version (not the icon), add drag listeners and update visibility
     if ( !isIcon ) {
+
+      // Focus highlight should only surround the body, not the probes
+      this.focusHighlight = new HighlightFromNode( bodyNode );
 
       // Show the voltmeter when icon dragged out of the toolbox
       voltmeter.isActiveProperty.linkAttribute( this, 'visible' );
