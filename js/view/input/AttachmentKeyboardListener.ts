@@ -57,6 +57,10 @@ export type AttachmentKeyboardListenerOptions<T> = {
 };
 
 export default class AttachmentKeyboardListener<T> extends KeyboardListener<OneKeyStroke[]> {
+
+  // Store the last successful connection highlight position for matching on next open
+  private lastConnectionHighlightPosition: Vector2 | null = null;
+
   public constructor( options: AttachmentKeyboardListenerOptions<T> ) {
     super( {
       keys: [ 'space', 'enter' ],
@@ -76,7 +80,19 @@ export default class AttachmentKeyboardListener<T> extends KeyboardListener<OneK
           createNode: () => new Text( CircuitConstructionKitCommonFluent.a11y.vertexInteraction.noNewAttachmentStringProperty )
         } ];
 
-        const selectionProperty = new Property<T | null>( availableItems[ 0 ].value );
+        // Check if the current position matches any available item (from prior discrete interaction)
+        let initialSelection = availableItems[ 0 ].value;
+        if ( this.lastConnectionHighlightPosition ) {
+          for ( const item of availableItems ) {
+            const itemPosition = options.getHighlightPosition( item.value );
+            if ( this.lastConnectionHighlightPosition.equalsEpsilon( itemPosition, 1 ) ) {
+              initialSelection = item.value;
+              break;
+            }
+          }
+        }
+
+        const selectionProperty = new Property<T | null>( initialSelection );
         let targetDropPosition = initialPosition;
 
         const comboBox = new ComboBox( selectionProperty, items, options.circuitNode.screenView, {
@@ -95,6 +111,10 @@ export default class AttachmentKeyboardListener<T> extends KeyboardListener<OneK
 
           if ( !visible ) {
             options.applySelection( selectionProperty.value, targetDropPosition );
+
+            // Store the highlight position for matching on next open (only if an item was selected)
+            this.lastConnectionHighlightPosition = selectionProperty.value !== null ? targetDropPosition.copy() : null;
+
             options.circuitNode.hideAttachmentHighlight();
             options.onClose?.();
 
@@ -119,7 +139,7 @@ export default class AttachmentKeyboardListener<T> extends KeyboardListener<OneK
         options.circuitNode.screenView.addChild( comboBox );
 
         comboBox.showListBox();
-        comboBox.focusListItemNode( items[ 0 ].value );
+        comboBox.focusListItemNode( initialSelection );
 
         comboBox.cancelEmitter.addListener( () => {
           selectionProperty.value = null;
