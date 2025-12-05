@@ -86,6 +86,58 @@ export default class CircuitDescription {
   }
 
   /**
+   * Returns circuit elements in PDOM order: disconnected elements first (sorted by type),
+   * then grouped elements (sorted by type within each group).
+   */
+  public static getOrderedCircuitElements( circuit: Circuit ): CircuitElement[] {
+    const groups = circuit.getGroups();
+
+    // Separate disconnected (single-element) and connected (multi-element) groups
+    const singleElementCircuits = groups
+      .filter( group => group.circuitElements.length === 1 )
+      .map( group => group.circuitElements[ 0 ] );
+    const multiElementGroups = groups.filter( group => group.circuitElements.length > 1 );
+
+    // Sort disconnected elements by type
+    const sortedSingleElements = this.sortCircuitElementsByType( singleElementCircuits );
+
+    // Sort elements within each group by type, then flatten
+    const sortedGroupedElements: CircuitElement[] = [];
+    multiElementGroups.forEach( group => {
+      const sortedGroup = this.sortCircuitElementsByType( group.circuitElements );
+      sortedGroupedElements.push( ...sortedGroup );
+    } );
+
+    return [ ...sortedSingleElements, ...sortedGroupedElements ];
+  }
+
+  /**
+   * Returns vertices derived from the circuit element order. For each circuit element (in order),
+   * adds startVertex then endVertex, skipping duplicates.
+   */
+  public static getOrderedVertices( circuit: Circuit ): Vertex[] {
+    const orderedElements = this.getOrderedCircuitElements( circuit );
+    const vertices: Vertex[] = [];
+    const seen = new Set<Vertex>();
+
+    orderedElements.forEach( circuitElement => {
+      const startVertex = circuitElement.startVertexProperty.value;
+      const endVertex = circuitElement.endVertexProperty.value;
+
+      if ( !seen.has( startVertex ) ) {
+        seen.add( startVertex );
+        vertices.push( startVertex );
+      }
+      if ( !seen.has( endVertex ) ) {
+        seen.add( endVertex );
+        vertices.push( endVertex );
+      }
+    } );
+
+    return vertices;
+  }
+
+  /**
    * Assigns accessible names to circuit elements based on their type and position among elements of the same type.
    * Returns a Map from CircuitElement to its brief name for use in descriptions.
    */

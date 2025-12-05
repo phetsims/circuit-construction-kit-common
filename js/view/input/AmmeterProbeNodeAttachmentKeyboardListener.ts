@@ -8,13 +8,14 @@
 
 import type TProperty from '../../../../axon/js/TProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
+import type Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import multiSelectionSoundPlayerFactory from '../../../../tambo/js/multiSelectionSoundPlayerFactory.js';
-import AttachmentKeyboardListener from './AttachmentKeyboardListener.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import CircuitElement from '../../model/CircuitElement.js';
 import type CircuitNode from '../CircuitNode.js';
-import type Node from '../../../../scenery/js/nodes/Node.js';
+import CircuitDescription from '../description/CircuitDescription.js';
+import AttachmentKeyboardListener from './AttachmentKeyboardListener.js';
 
 export default class AmmeterProbeNodeAttachmentKeyboardListener extends AttachmentKeyboardListener<CircuitElement> {
   public constructor( probeNode: Node, circuitNode: CircuitNode, probePositionProperty: TProperty<Vector2> ) {
@@ -24,7 +25,7 @@ export default class AmmeterProbeNodeAttachmentKeyboardListener extends Attachme
       triggerNode: probeNode,
       circuitNode: circuitNode,
       getItems: () => {
-        const circuitElements = circuit.circuitElements.filter( () => true );
+        const circuitElements = CircuitDescription.getOrderedCircuitElements( circuit );
 
         return circuitElements.map( circuitElement => {
           return {

@@ -10,6 +10,7 @@ import Text from '../../../../scenery/js/nodes/Text.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import Vertex from '../../model/Vertex.js';
 import type CircuitNode from '../CircuitNode.js';
+import CircuitDescription from '../description/CircuitDescription.js';
 import VertexNode from '../VertexNode.js';
 import AttachmentKeyboardListener from './AttachmentKeyboardListener.js';
 
@@ -21,10 +22,11 @@ export default class VertexAttachmentKeyboardListener extends AttachmentKeyboard
       triggerNode: vertexNode,
       circuitNode: circuitNode,
       getItems: () => {
-        const attachableVertices = circuit.vertexGroup.filter( v => v.attachableProperty.get() &&
-                                                                    v !== vertex &&
-                                                                    !circuit.getNeighboringVertices( vertex ).includes( v ) &&
-                                                                    !circuit.findAllFixedVertices( vertex ).includes( v ) );
+        const orderedVertices = CircuitDescription.getOrderedVertices( circuit );
+        const attachableVertices = orderedVertices.filter( v => v.attachableProperty.get() &&
+                                                                v !== vertex &&
+                                                                !circuit.getNeighboringVertices( vertex ).includes( v ) &&
+                                                                !circuit.findAllFixedVertices( vertex ).includes( v ) );
 
         return attachableVertices.map( attachableVertex => {
           return {

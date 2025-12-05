@@ -12,8 +12,9 @@ import Text from '../../../../scenery/js/nodes/Text.js';
 import multiSelectionSoundPlayerFactory from '../../../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import Vertex from '../../model/Vertex.js';
-import AttachmentKeyboardListener from './AttachmentKeyboardListener.js';
 import type CircuitNode from '../CircuitNode.js';
+import CircuitDescription from '../description/CircuitDescription.js';
+import AttachmentKeyboardListener from './AttachmentKeyboardListener.js';
 
 export default class VoltmeterProbeNodeAttachmentKeyboardListener extends AttachmentKeyboardListener<Vertex> {
   public constructor( probeNode: Node, circuitNode: CircuitNode, probePositionProperty: Vector2Property ) {
@@ -23,7 +24,7 @@ export default class VoltmeterProbeNodeAttachmentKeyboardListener extends Attach
       triggerNode: probeNode,
       circuitNode: circuitNode,
       getItems: () => {
-        const vertices = circuit.vertexGroup.filter( () => true );
+        const vertices = CircuitDescription.getOrderedVertices( circuit );
 
         return vertices.map( vertex => {
           return {
