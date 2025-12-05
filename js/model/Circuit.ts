@@ -1679,6 +1679,7 @@ export default class Circuit extends PhetioObject {
    */
   public reset(): void {
     this.clear();
+    this.contextStateTracker.clearPendingContextAnnouncements();
     this.showCurrentProperty.reset();
     this.currentTypeProperty.reset();
     this.wireResistivityProperty.reset();

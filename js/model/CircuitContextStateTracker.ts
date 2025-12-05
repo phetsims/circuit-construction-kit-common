@@ -328,7 +328,7 @@ export default class CircuitContextStateTracker {
     this.clearPendingContextAnnouncements();
   }
 
-  private clearPendingContextAnnouncements(): void {
+  public clearPendingContextAnnouncements(): void {
     this.circuitElementAnnouncementStates = null;
     this.vertexAnnouncementStates = null;
     this.pendingContextEvents.length = 0;
