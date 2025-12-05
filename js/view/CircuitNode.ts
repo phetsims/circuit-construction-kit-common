@@ -665,8 +665,10 @@ export default class CircuitNode extends Node {
 
     circuit.selectionProperty.link( () => {
 
-      // Selecting a circuit element puts its edit panel in the PDOM order right after the circuit element
-      this.updatePDOMOrder();
+      // Selecting a circuit element puts its edit panel in the PDOM order right after the circuit element.
+      // Use surgical update to avoid rebuilding the entire PDOM structure, which would cause focus loss
+      // and reentrancy issues during keyboard drag operations.
+      CircuitDescription.updateEditPanelPosition( this );
     } );
 
     circuit.circuitContextAnnouncementEmitter.addListener( message => this.addAccessibleContextResponse( message ) );

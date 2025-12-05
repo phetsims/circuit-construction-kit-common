@@ -302,11 +302,6 @@ export default class CircuitDescription {
       endVertexNode.attachmentName = 'end junction of a disconnected ' + circuitElement.type;
 
       pdomOrder.push( circuitElementNode );
-
-      if ( circuit.selectionProperty.value === circuitElement ) {
-        pdomOrder.push( circuitNode.screenView.circuitElementEditContainerNode );
-      }
-
       pdomOrder.push( startVertexNode, endVertexNode );
     } );
 
@@ -357,10 +352,6 @@ export default class CircuitDescription {
       sortedCircuitElements.forEach( circuitElement => {
         const circuitElementNode = circuitNode.getCircuitElementNode( circuitElement );
         groupPDOMOrder.push( circuitElementNode );
-
-        if ( circuit.selectionProperty.value === circuitElement ) {
-          groupPDOMOrder.push( circuitNode.screenView.circuitElementEditContainerNode );
-        }
       } );
       group.vertices.forEach( vertex => {
         groupPDOMOrder.push( circuitNode.getVertexNode( vertex ) );
@@ -458,6 +449,80 @@ export default class CircuitDescription {
     // Or we can try splicing in the edit panel node at the right location in the pdomOrder array without resetting the whole array.
     // Or we can try a modal operation for the edit panel (removing other content from the PDOM while it's open).
     focusedElement && !focusedElement.isFocused() && focusedElement.focus();
+  }
+
+  /**
+   * Surgically updates the edit panel position in the PDOM without rebuilding the entire structure.
+   * This preserves focus on other elements (like vertices being dragged) while moving the edit panel.
+   * See https://github.com/phetsims/circuit-construction-kit-common/issues/1064
+   */
+  public static updateEditPanelPosition( circuitNode: CircuitNode ): void {
+    const circuit = circuitNode.circuit;
+    const editPanel = circuitNode.screenView.circuitElementEditContainerNode;
+    const selection = circuit.selectionProperty.value;
+
+    // Helper to remove edit panel from a pdomOrder array if present
+    const removeFromPdomOrder = ( pdomOrder: ( Node | null )[] | null ): ( Node | null )[] | null => {
+      if ( !pdomOrder ) {
+        return null;
+      }
+      const index = pdomOrder.indexOf( editPanel );
+      if ( index !== -1 ) {
+        const newOrder = pdomOrder.slice();
+        newOrder.splice( index, 1 );
+        return newOrder;
+      }
+      return null; // No change needed
+    };
+
+    // Remove edit panel from unconnectedCircuitElementsSection if present
+    const unconnectedOrder = removeFromPdomOrder( circuitNode.unconnectedCircuitElementsSection.pdomOrder );
+    if ( unconnectedOrder ) {
+      circuitNode.unconnectedCircuitElementsSection.pdomOrder = unconnectedOrder;
+    }
+
+    // Remove edit panel from any group nodes if present
+    if ( this.myGroupNodes ) {
+      this.myGroupNodes.forEach( groupNode => {
+        const groupOrder = removeFromPdomOrder( groupNode.pdomOrder );
+        if ( groupOrder ) {
+          groupNode.pdomOrder = groupOrder;
+        }
+      } );
+    }
+
+    // If a circuit element is selected, insert the edit panel after it
+    if ( selection instanceof CircuitElement ) {
+      const circuitElementNode = circuitNode.getCircuitElementNode( selection );
+
+      // Check if it's in the unconnected section
+      const unconnectedPdomOrder = circuitNode.unconnectedCircuitElementsSection.pdomOrder;
+      if ( unconnectedPdomOrder ) {
+        const elementIndex = unconnectedPdomOrder.indexOf( circuitElementNode );
+        if ( elementIndex !== -1 ) {
+          const newOrder = unconnectedPdomOrder.slice();
+          newOrder.splice( elementIndex + 1, 0, editPanel );
+          circuitNode.unconnectedCircuitElementsSection.pdomOrder = newOrder;
+          return;
+        }
+      }
+
+      // Check if it's in one of the group nodes
+      if ( this.myGroupNodes ) {
+        for ( const groupNode of this.myGroupNodes ) {
+          const groupPdomOrder = groupNode.pdomOrder;
+          if ( groupPdomOrder ) {
+            const elementIndex = groupPdomOrder.indexOf( circuitElementNode );
+            if ( elementIndex !== -1 ) {
+              const newOrder = groupPdomOrder.slice();
+              newOrder.splice( elementIndex + 1, 0, editPanel );
+              groupNode.pdomOrder = newOrder;
+              return;
+            }
+          }
+        }
+      }
+    }
   }
 }
 
