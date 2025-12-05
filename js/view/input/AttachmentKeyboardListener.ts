@@ -8,6 +8,7 @@
 
 import animationFrameTimer from '../../../../axon/js/animationFrameTimer.js';
 import Property from '../../../../axon/js/Property.js';
+import type { TReadOnlyEmitter } from '../../../../axon/js/TEmitter.js';
 import type Vector2 from '../../../../dot/js/Vector2.js';
 import { pdomFocusProperty } from '../../../../scenery/js/accessibility/pdomFocusProperty.js';
 import { OneKeyStroke } from '../../../../scenery/js/input/KeyDescriptor.js';
@@ -50,6 +51,9 @@ export type AttachmentKeyboardListenerOptions<T> = {
 
   // invoked when a list item receives focus
   onItemFocused?: ( value: T | null, index: number ) => void;
+
+  // If the target being attached is disposed while the combo box is open, cancel the combo box
+  targetDisposeEmitter?: TReadOnlyEmitter;
 };
 
 export default class AttachmentKeyboardListener<T> extends KeyboardListener<OneKeyStroke[]> {
@@ -132,6 +136,27 @@ export default class AttachmentKeyboardListener<T> extends KeyboardListener<OneK
           } );
 
         } );
+
+        // If the target (e.g., vertex) is disposed while the combo box is open, cancel without applying selection.
+        // See https://github.com/phetsims/circuit-construction-kit-common/issues/1090
+        if ( options.targetDisposeEmitter ) {
+          const disposeListener = () => {
+            cancelled = true;
+            options.circuitNode.hideAttachmentHighlight();
+
+            animationFrameTimer.runOnNextTick( () => {
+              comboBox.dispose();
+            } );
+          };
+          options.targetDisposeEmitter.addListener( disposeListener );
+
+          // Clean up the listener when the combo box is disposed
+          comboBox.disposeEmitter.addListener( () => {
+            if ( options.targetDisposeEmitter!.hasListener( disposeListener ) ) {
+              options.targetDisposeEmitter!.removeListener( disposeListener );
+            }
+          } );
+        }
 
         pdomFocusProperty.link( focus => {
           const node = focus?.trail?.lastNode();
