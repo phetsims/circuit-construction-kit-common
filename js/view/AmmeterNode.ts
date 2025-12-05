@@ -238,12 +238,14 @@ export default class AmmeterNode extends Node {
         tandem: Tandem.OPT_OUT,
         positionProperty: ammeter.bodyPositionProperty,
         dragBoundsProperty: erodedDragBoundsProperty,
-        start: () => this.moveToFront(),
+        start: () => {
+          this.moveToFront();
+
+          // For keyboard interaction, probes should not move with the body
+          ammeter.isDraggingProbesWithBodyProperty.set( false );
+        },
         end: () => {
           ammeter.droppedEmitter.emit( bodyNode.globalBounds );
-
-          // After dropping in the play area the probes move independently of the body
-          ammeter.isDraggingProbesWithBodyProperty.set( false );
         },
         dragSpeed: CCKCConstants.KEYBOARD_DRAG_SPEED,
         shiftDragSpeed: CCKCConstants.SHIFT_KEYBOARD_DRAG_SPEED

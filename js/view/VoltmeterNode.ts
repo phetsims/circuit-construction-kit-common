@@ -354,13 +354,12 @@ export default class VoltmeterNode extends Node {
         // TODO: Some duplication with DragListener, see https://github.com/phetsims/circuit-construction-kit-common/issues/1034
         start: () => {
           this.moveToFront();
+
+          // For keyboard interaction, probes should not move with the body
+          voltmeter.isDraggingProbesWithBodyProperty.set( false );
         },
         end: () => {
-
           voltmeter.droppedEmitter.emit( bodyNode.globalBounds );
-
-          // After dropping in the play area the probes move independently of the body
-          voltmeter.isDraggingProbesWithBodyProperty.set( false );
         },
 
         dragSpeed: CCKCConstants.KEYBOARD_DRAG_SPEED,
