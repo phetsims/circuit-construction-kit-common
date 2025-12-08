@@ -174,6 +174,9 @@ export default class Circuit extends PhetioObject {
   public readonly circuitContextAnnouncementEmitter: TEmitter<[ string ]>;
   private readonly contextStateTracker: CircuitContextStateTracker;
 
+  // Circuit elements in PDOM order, for keyboard navigation. Set by CircuitDescription.updateCircuitNode.
+  public circuitElementsInPDOMOrder: CircuitElement[] = [];
+
   public constructor( viewTypeProperty: Property<CircuitElementViewType>, addRealBulbsProperty: Property<boolean>, tandem: Tandem,
                       providedOptions: CircuitOptions ) {
 
@@ -677,6 +680,7 @@ export default class Circuit extends PhetioObject {
   private clear(): void {
 
     this.selectionProperty.reset();
+    this.circuitElementsInPDOMOrder.length = 0;
 
     // Vertices must be cleared from the black box screen--it's not handled by clearing the circuit elements
     if ( this.blackBoxStudy ) {

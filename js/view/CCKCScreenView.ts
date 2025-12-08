@@ -608,7 +608,7 @@ export default class CCKCScreenView extends ScreenView {
     KeyboardListener.createGlobal( this, {
       keyStringProperties: focusConstructionAreaHotkeyData.keyStringProperties,
       fire: () => {
-        const circuitElements = this.circuitNode.circuit.circuitElements;
+        const circuitElements = model.circuit.circuitElementsInPDOMOrder;
         for ( let i = 0; i < circuitElements.length; i++ ) {
           const circuitElementNode = this.circuitNode.getCircuitElementNode( circuitElements[ i ] );
           if ( !circuitElementNode.isDisposed && circuitElementNode.focusable && circuitElementNode.visible && circuitElementNode.inputEnabled ) {

@@ -391,6 +391,13 @@ export default class CircuitDescription {
     // Check if construction area is empty
     const hasElements = singleElementCircuits.length > 0 || multiElementGroups.length > 0;
 
+    // Update circuit elements in PDOM order for keyboard navigation
+    circuit.circuitElementsInPDOMOrder.length = 0;
+    circuit.circuitElementsInPDOMOrder.push( ...singleElementCircuits );
+    multiElementGroups.forEach( group => {
+      circuit.circuitElementsInPDOMOrder.push( ...this.sortCircuitElementsByType( group.circuitElements ) );
+    } );
+
     const focusedElement = getPDOMFocusedNode();
 
     if ( !hasElements ) {
