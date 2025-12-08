@@ -78,6 +78,8 @@ export default class Vertex extends PhetioObject {
   // Whether the vertex is being actively dragged.
   public isDragged: boolean;
 
+  public isKeyboardDragging = false;
+
   // for black box study
   public outerWireStub: boolean;
   public isCuttableProperty: BooleanProperty;

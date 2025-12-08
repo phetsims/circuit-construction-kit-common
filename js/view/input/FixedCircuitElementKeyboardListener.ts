@@ -33,6 +33,7 @@ export default class FixedCircuitElementKeyboardListener extends SoundKeyboardDr
 
       // TODO: Some duplication with DragListener, see https://github.com/phetsims/circuit-construction-kit-common/issues/1034
       start: () => {
+        circuitElement.isKeyboardDragging = true;
 
         const vertices = vertexGetters.map( vertexGetter => vertexGetter() );
 
@@ -62,6 +63,7 @@ export default class FixedCircuitElementKeyboardListener extends SoundKeyboardDr
 
       },
       end: () => {
+        circuitElement.isKeyboardDragging = false;
         circuitElementNode.endDrag( circuitElementNode.contentNode, [ circuitElement.endVertexProperty.get() ],
           screenView, circuitNode, initialPosition!, position!, false, false );
       },

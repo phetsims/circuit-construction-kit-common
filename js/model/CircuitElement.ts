@@ -149,7 +149,9 @@ export default abstract class CircuitElement extends PhetioObject {
 
   public readonly focusEmitter = new Emitter();
 
-  public constructor( type: CircuitElementType, startVertex: Vertex, endVertex: Vertex, chargePathLength: number, tandem: Tandem, providedOptions?: CircuitElementOptions ) {
+  public isKeyboardDragging = false;
+
+  protected constructor( type: CircuitElementType, startVertex: Vertex, endVertex: Vertex, chargePathLength: number, tandem: Tandem, providedOptions?: CircuitElementOptions ) {
     affirm( startVertex !== endVertex, 'startVertex cannot be the same as endVertex' );
     affirm( chargePathLength > 0, 'charge path length must be positive' );
 
@@ -392,7 +394,7 @@ export default abstract class CircuitElement extends PhetioObject {
     affirm( oldVertex !== newVertex, 'Cannot replace with the same vertex' );
     affirm( oldVertex === startVertex || oldVertex === endVertex, 'Cannot replace a nonexistent vertex' );
     affirm( newVertex !== startVertex && newVertex !== endVertex, 'The new vertex shouldn\'t already be ' +
-                                                                            'in the circuit element.' );
+                                                                  'in the circuit element.' );
 
     if ( oldVertex === startVertex ) {
       this.startVertexProperty.set( newVertex );

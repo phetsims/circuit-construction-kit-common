@@ -42,6 +42,7 @@ import Battery from './Battery.js';
 import Capacitor from './Capacitor.js';
 import Charge from './Charge.js';
 import ChargeAnimator from './ChargeAnimator.js';
+import CircuitContextStateTracker from './CircuitContextStateTracker.js';
 import CircuitElement from './CircuitElement.js';
 import type CircuitElementViewType from './CircuitElementViewType.js';
 import CircuitGroup from './CircuitGroup.js';
@@ -60,7 +61,6 @@ import Switch from './Switch.js';
 import Vertex from './Vertex.js';
 import type VoltageConnection from './VoltageConnection.js';
 import Wire from './Wire.js';
-import CircuitContextStateTracker from './CircuitContextStateTracker.js';
 
 // constants
 const SNAP_RADIUS = 30; // For two vertices to join together, they must be this close, in view coordinates
@@ -1396,6 +1396,30 @@ export default class Circuit extends PhetioObject {
   }
 
   /**
+   * If anything is keyboard dragging, connectivity is disabled.
+   */
+  private isKeyboardDragging(): boolean {
+
+    const vertexArray = this.vertexGroup.getArray();
+    for ( let i = 0; i < vertexArray.length; i++ ) {
+      const v = vertexArray[ i ];
+      if ( v.isKeyboardDragging ) {
+        return true;
+      }
+    }
+
+    const circuitElementArray = this.circuitElements;
+    for ( let i = 0; i < circuitElementArray.length; i++ ) {
+      const circuitElement = circuitElementArray[ i ];
+      if ( circuitElement.isKeyboardDragging ) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  /**
    * A vertex has been dragged, is it a candidate for joining with other vertices?  If so, return the candidate
    * vertex.  Otherwise, return null.
    * @param vertex - the dragged vertex
@@ -1404,6 +1428,10 @@ export default class Circuit extends PhetioObject {
    * @returns - the vertex it will be able to connect to, if dropped or null if no connection is available
    */
   public getDropTarget( vertex: Vertex, mode: InteractionMode, blackBoxBounds: Bounds2 | null ): Vertex | null {
+
+    if ( this.isKeyboardDragging() ) {
+      return null;
+    }
 
     if ( mode === InteractionMode.TEST ) {
       affirm( blackBoxBounds, 'bounds should be provided for build mode' );

@@ -30,6 +30,9 @@ export default class VertexKeyboardListener extends SoundKeyboardDragListener {
 
       // TODO: Some duplication with DragListener, see https://github.com/phetsims/circuit-construction-kit-common/issues/1034
       start: () => {
+
+        vertex.isKeyboardDragging = true;
+
         initialPoint = vertexNode.globalBounds.center.copy();
         latestPoint = vertexNode.globalBounds.center.copy();
         circuitNode.startDragVertex( initialPoint, vertex, vertex );
@@ -44,6 +47,8 @@ export default class VertexKeyboardListener extends SoundKeyboardDragListener {
         circuitNode.dragVertex( latestPoint!, vertex, true );
       },
       end: () => {
+
+        vertex.isKeyboardDragging = false;
 
         // The vertex can only connect to something if it was actually moved.
         circuitNode.endDrag( vertex, false );
