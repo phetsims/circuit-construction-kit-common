@@ -25,7 +25,6 @@ export default class VertexKeyboardListener extends SoundKeyboardDragListener {
 
     let initialPoint: Vector2 | null = null;
     let latestPoint: Vector2 | null = null;
-    let dragged = false;
 
     super( {
 
@@ -34,7 +33,6 @@ export default class VertexKeyboardListener extends SoundKeyboardDragListener {
         initialPoint = vertexNode.globalBounds.center.copy();
         latestPoint = vertexNode.globalBounds.center.copy();
         circuitNode.startDragVertex( initialPoint, vertex, vertex );
-        dragged = false;
       },
       drag: ( _event, listener ) => {
 
@@ -43,13 +41,12 @@ export default class VertexKeyboardListener extends SoundKeyboardDragListener {
         const delta = vertexNode.localToGlobalDelta( listener.modelDelta );
 
         latestPoint!.addXY( delta.x, delta.y );
-        dragged = true;
         circuitNode.dragVertex( latestPoint!, vertex, true );
       },
       end: () => {
 
         // The vertex can only connect to something if it was actually moved.
-        circuitNode.endDrag( vertex, dragged );
+        circuitNode.endDrag( vertex, false );
 
         // Only show on a tap, not on every drag.
         if (

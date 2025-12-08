@@ -26,7 +26,6 @@ export default class WireKeyboardListener extends SoundKeyboardDragListener {
 
     let initialPoint: Vector2 | null = null;
     let latestPoint: Vector2 | null = null;
-    let dragged = false;
 
     super( {
 
@@ -40,7 +39,6 @@ export default class WireKeyboardListener extends SoundKeyboardDragListener {
           // Start drag by starting a drag on start and end vertices
           circuitNode.startDragVertex( latestPoint, wire.startVertexProperty.get(), wire );
           circuitNode.startDragVertex( latestPoint, wire.endVertexProperty.get(), wire );
-          dragged = false;
         }
       },
       drag: ( _event, listener ) => {
@@ -55,14 +53,13 @@ export default class WireKeyboardListener extends SoundKeyboardDragListener {
           // Drag by translating both of the vertices
           circuitNode.dragVertex( latestPoint!, wire.startVertexProperty.get(), false );
           circuitNode.dragVertex( latestPoint!, wire.endVertexProperty.get(), false );
-          dragged = true;
         }
       },
       end: () => {
         circuitElementNode.endDrag( circuitElementNode, [
           wire.startVertexProperty.get(),
           wire.endVertexProperty.get()
-        ], screenView, circuitNode, initialPoint!, latestPoint!, dragged, false );
+        ], screenView, circuitNode, initialPoint!, latestPoint!, false, false );
       },
 
       dragSpeed: CCKCConstants.KEYBOARD_DRAG_SPEED,

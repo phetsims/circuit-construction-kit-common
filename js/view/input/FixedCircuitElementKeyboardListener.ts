@@ -28,7 +28,6 @@ export default class FixedCircuitElementKeyboardListener extends SoundKeyboardDr
 
     let initialPosition: Vector2 | null = null;
     let position: Vector2 | null = null;
-    let dragged = false;
 
     super( {
 
@@ -45,7 +44,6 @@ export default class FixedCircuitElementKeyboardListener extends SoundKeyboardDr
           position = circuitElementNode.globalBounds.center;
           initialPosition = position.copy();
           circuitNode.startDragVertex( position, circuitElement.endVertexProperty.get(), circuitElement );
-          dragged = false;
         }
 
       },
@@ -62,11 +60,10 @@ export default class FixedCircuitElementKeyboardListener extends SoundKeyboardDr
           circuitNode.dragVertex( position!, circuitElement.endVertexProperty.get(), false );
         }
 
-        dragged = true;
       },
       end: () => {
         circuitElementNode.endDrag( circuitElementNode.contentNode, [ circuitElement.endVertexProperty.get() ],
-          screenView, circuitNode, initialPosition!, position!, dragged, false );
+          screenView, circuitNode, initialPosition!, position!, false, false );
       },
 
       dragSpeed: CCKCConstants.KEYBOARD_DRAG_SPEED,
