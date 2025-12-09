@@ -707,18 +707,26 @@ export default class CircuitNode extends Node {
         if ( focusedNode instanceof VertexNode &&
              !focusedNode.vertex.hasBeenKeyboardActivated &&
              circuit.hasAttachableVertices( focusedNode.vertex ) ) {
-          const vertexPosition = focusedNode.vertex.positionProperty.value;
-          this.vertexGrabReleaseCueNode.centerTop = vertexPosition.plusXY( 0, 30 );
+          this.updateVertexCuePosition( focusedNode );
           this.vertexGrabReleaseCueNode.visible = true;
         }
         else if ( focusedNode instanceof CircuitElementNode && !focusedNode.circuitElement.hasBeenKeyboardActivated ) {
-          const globalBounds = focusedNode.getGlobalBounds();
-          const localBounds = this.globalToLocalBounds( globalBounds );
-          this.circuitElementGrabReleaseCueNode.centerTop = new Vector2( localBounds.centerX, localBounds.maxY + 10 );
+          this.updateCircuitElementCuePosition( focusedNode );
           this.circuitElementGrabReleaseCueNode.visible = true;
         }
       }
     } );
+  }
+
+  private updateVertexCuePosition( vertexNode: VertexNode ): void {
+    const vertexPosition = vertexNode.vertex.positionProperty.value;
+    this.vertexGrabReleaseCueNode.centerTop = vertexPosition.plusXY( 0, 30 );
+  }
+
+  private updateCircuitElementCuePosition( circuitElementNode: CircuitElementNode ): void {
+    const globalBounds = circuitElementNode.getGlobalBounds();
+    const localBounds = this.globalToLocalBounds( globalBounds );
+    this.circuitElementGrabReleaseCueNode.centerTop = new Vector2( localBounds.centerX, localBounds.maxY + 10 );
   }
 
   private updatePDOMOrder(): void {
@@ -811,16 +819,27 @@ export default class CircuitNode extends Node {
 
     this.circuitDebugLayer && this.circuitDebugLayer.step();
 
-    // Hide grab/release cue nodes if the focused element has been keyboard activated.
+    // Update grab/release cue node positions and visibility.
     // This is checked in step() rather than via an Emitter for simplicity, since the 1-frame delay is imperceptible.
+    // Updating positions here keeps cues properly positioned when elements are dragged.
     const focus = pdomFocusProperty.value;
     if ( focus ) {
       const focusedNode = focus.trail.lastNode();
-      if ( this.vertexGrabReleaseCueNode.visible && focusedNode instanceof VertexNode && focusedNode.vertex.hasBeenKeyboardActivated ) {
-        this.vertexGrabReleaseCueNode.visible = false;
+      if ( this.vertexGrabReleaseCueNode.visible && focusedNode instanceof VertexNode ) {
+        if ( focusedNode.vertex.hasBeenKeyboardActivated ) {
+          this.vertexGrabReleaseCueNode.visible = false;
+        }
+        else {
+          this.updateVertexCuePosition( focusedNode );
+        }
       }
-      if ( this.circuitElementGrabReleaseCueNode.visible && focusedNode instanceof CircuitElementNode && focusedNode.circuitElement.hasBeenKeyboardActivated ) {
-        this.circuitElementGrabReleaseCueNode.visible = false;
+      if ( this.circuitElementGrabReleaseCueNode.visible && focusedNode instanceof CircuitElementNode ) {
+        if ( focusedNode.circuitElement.hasBeenKeyboardActivated ) {
+          this.circuitElementGrabReleaseCueNode.visible = false;
+        }
+        else {
+          this.updateCircuitElementCuePosition( focusedNode );
+        }
       }
     }
   }
