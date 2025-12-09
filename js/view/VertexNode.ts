@@ -11,12 +11,10 @@ import type Vector2 from '../../../dot/js/Vector2.js';
 import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
 import AccessibleDraggableOptions from '../../../scenery-phet/js/accessibility/grab-drag/AccessibleDraggableOptions.js';
-import Grayscale from '../../../scenery/js/filters/Grayscale.js';
 import VBox from '../../../scenery/js/layout/nodes/VBox.js';
 import Circle, { type CircleOptions } from '../../../scenery/js/nodes/Circle.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Text from '../../../scenery/js/nodes/Text.js';
-import SceneryConstants from '../../../scenery/js/SceneryConstants.js';
 import Color from '../../../scenery/js/util/Color.js';
 import { rasterizeNode } from '../../../scenery/js/util/rasterizeNode.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -29,9 +27,9 @@ import Vertex from '../model/Vertex.js';
 import CCKCColors from './CCKCColors.js';
 import type CircuitNode from './CircuitNode.js';
 import CircuitNodeDragListener from './input/CircuitNodeDragListener.js';
+import VertexAttachmentKeyboardListener from './input/VertexAttachmentKeyboardListener.js';
 import VertexDragListener from './input/VertexDragListener.js';
 import VertexKeyboardListener from './input/VertexKeyboardListener.js';
-import VertexAttachmentKeyboardListener from './input/VertexAttachmentKeyboardListener.js';
 
 // constants
 const VERTEX_RADIUS = 16; // for hit testing with probes
@@ -285,10 +283,7 @@ export default class VertexNode extends Node {
       // Show a disabled button as a cue that the vertex could be cuttable, but it isn't right now.
       const isConnectedBlackBoxVertex = numberConnections === 1 && !this.vertex.isDraggableProperty.get();
 
-      const enabled = numberConnections > 1 || isConnectedBlackBoxVertex;
-      this.vertexCutButtonContainer.filters = enabled ? [] : [ Grayscale.FULL ];
-      this.vertexCutButtonContainer.opacity = enabled ? 1 : SceneryConstants.DISABLED_OPACITY;
-      this.vertexCutButtonContainer.inputEnabled = enabled;
+      this.vertexCutButtonContainer.visible = numberConnections > 1 || isConnectedBlackBoxVertex;
     }
   }
 
