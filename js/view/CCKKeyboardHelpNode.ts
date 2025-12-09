@@ -29,27 +29,6 @@ export default class CCKKeyboardHelpNode extends TwoColumnKeyboardHelpContent {
       )
     ] );
 
-    const connectElementsSection = new KeyboardHelpSection( CircuitConstructionKitCommonStrings.a11y.keyboardHelpDialog.connectElements.headingStringProperty, [
-      KeyboardHelpSectionRow.labelWithIcon(
-        CircuitConstructionKitCommonStrings.a11y.keyboardHelpDialog.connectElements.grabJunction.labelStringProperty,
-        KeyboardHelpIconFactory.spaceOrEnter(), {
-          labelInnerContent: CircuitConstructionKitCommonStrings.a11y.keyboardHelpDialog.connectElements.grabJunction.labelInnerContentStringProperty
-        }
-      ),
-      KeyboardHelpSectionRow.labelWithIcon(
-        CircuitConstructionKitCommonStrings.a11y.keyboardHelpDialog.connectElements.selectTarget.labelStringProperty,
-        KeyboardHelpIconFactory.arrowKeysRowIcon(), {
-          labelInnerContent: CircuitConstructionKitCommonStrings.a11y.keyboardHelpDialog.connectElements.selectTarget.labelInnerContentStringProperty
-        }
-      ),
-      KeyboardHelpSectionRow.labelWithIcon(
-        CircuitConstructionKitCommonStrings.a11y.keyboardHelpDialog.connectElements.attachJunction.labelStringProperty,
-        KeyboardHelpIconFactory.spaceOrEnter(), {
-          labelInnerContent: CircuitConstructionKitCommonStrings.a11y.keyboardHelpDialog.connectElements.attachJunction.labelInnerContentStringProperty
-        }
-      )
-    ] );
-
     const focusSection = new KeyboardHelpSection( CircuitConstructionKitCommonStrings.a11y.keyboardHelpDialog.focus.headingStringProperty, [
       KeyboardHelpSectionRow.fromHotkeyData( CCKCScreenView.FOCUS_TOOLBOX_HOTKEY_DATA ),
       KeyboardHelpSectionRow.fromHotkeyData( CCKCScreenView.FOCUS_CONSTRUCTION_AREA_HOTKEY_DATA )
@@ -61,7 +40,7 @@ export default class CCKKeyboardHelpNode extends TwoColumnKeyboardHelpContent {
       withCheckboxContent: true
     } );
 
-    super( [ addElementsSection, connectElementsSection, focusSection ], [ chooseJunctionConnectionSection, basicActionsSection ] );
+    super( [ addElementsSection, chooseJunctionConnectionSection, focusSection ], [ basicActionsSection ] );
   }
 }
 
