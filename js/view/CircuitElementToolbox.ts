@@ -68,10 +68,7 @@ export default class CircuitElementToolbox extends HBox {
       pageStroke: Color.BLACK,
       currentPageStroke: Color.TRANSPARENT,
       interactive: true,
-      tandem: tandem.createTandem( 'pageControl' ),
-
-      // The carousel "dot" page controls are inconvenient in the focus order, see https://github.com/phetsims/circuit-construction-kit-common/issues/1095
-      accessibleVisible: false
+      tandem: tandem.createTandem( 'pageControl' )
     } );
 
     super( {
