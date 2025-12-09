@@ -163,6 +163,11 @@ export default class CircuitNode extends Node {
   private readonly vertexGrabReleaseCueNode: GrabReleaseCueNode;
   private readonly circuitElementGrabReleaseCueNode: GrabReleaseCueNode;
 
+  // Track whether any vertex or circuit element has been keyboard activated.
+  // Once the user activates any element, they understand the pattern and we hide cues for all.
+  private anyVertexActivated = false;
+  private anyCircuitElementActivated = false;
+
   /**
    * @param circuit - the model Circuit
    * @param screenView - for dropping CircuitElement instances back in the toolbox
@@ -703,14 +708,14 @@ export default class CircuitNode extends Node {
       if ( focus ) {
         const focusedNode = focus.trail.lastNode();
 
-        // Show the vertex cue if the vertex hasn't been activated and there are attachable vertices
+        // Show the vertex cue if no vertex has been activated and there are attachable vertices
         if ( focusedNode instanceof VertexNode &&
-             !focusedNode.vertex.hasBeenKeyboardActivated &&
+             !this.anyVertexActivated &&
              circuit.hasAttachableVertices( focusedNode.vertex ) ) {
           this.updateVertexCuePosition( focusedNode );
           this.vertexGrabReleaseCueNode.visible = true;
         }
-        else if ( focusedNode instanceof CircuitElementNode && !focusedNode.circuitElement.hasBeenKeyboardActivated ) {
+        else if ( focusedNode instanceof CircuitElementNode && !this.anyCircuitElementActivated ) {
           this.updateCircuitElementCuePosition( focusedNode );
           this.circuitElementGrabReleaseCueNode.visible = true;
         }
@@ -727,6 +732,11 @@ export default class CircuitNode extends Node {
     const globalBounds = circuitElementNode.getGlobalBounds();
     const localBounds = this.globalToLocalBounds( globalBounds );
     this.circuitElementGrabReleaseCueNode.centerTop = new Vector2( localBounds.centerX, localBounds.maxY + 10 );
+  }
+
+  public reset(): void {
+    this.anyVertexActivated = false;
+    this.anyCircuitElementActivated = false;
   }
 
   private updatePDOMOrder(): void {
@@ -827,6 +837,7 @@ export default class CircuitNode extends Node {
       const focusedNode = focus.trail.lastNode();
       if ( this.vertexGrabReleaseCueNode.visible && focusedNode instanceof VertexNode ) {
         if ( focusedNode.vertex.hasBeenKeyboardActivated ) {
+          this.anyVertexActivated = true;
           this.vertexGrabReleaseCueNode.visible = false;
         }
         else {
@@ -835,6 +846,7 @@ export default class CircuitNode extends Node {
       }
       if ( this.circuitElementGrabReleaseCueNode.visible && focusedNode instanceof CircuitElementNode ) {
         if ( focusedNode.circuitElement.hasBeenKeyboardActivated ) {
+          this.anyCircuitElementActivated = true;
           this.circuitElementGrabReleaseCueNode.visible = false;
         }
         else {

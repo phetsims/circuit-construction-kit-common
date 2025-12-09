@@ -656,6 +656,7 @@ export default class CCKCScreenView extends ScreenView {
   private reset(): void {
     this.stopwatchNodePositionDirty = true;
     this.circuitElementToolbox.reset();
+    this.circuitNode.reset();
     this.advancedAccordionBox && this.advancedAccordionBox.expandedProperty.reset();
     this.chartNodes.forEach( chartNode => chartNode.reset() );
   }
