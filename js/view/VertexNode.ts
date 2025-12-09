@@ -7,7 +7,7 @@
  */
 
 import Utils from '../../../dot/js/Utils.js';
-import Vector2 from '../../../dot/js/Vector2.js';
+import type Vector2 from '../../../dot/js/Vector2.js';
 import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
 import AccessibleDraggableOptions from '../../../scenery-phet/js/accessibility/grab-drag/AccessibleDraggableOptions.js';
@@ -34,7 +34,6 @@ import VertexKeyboardListener from './input/VertexKeyboardListener.js';
 import VertexAttachmentKeyboardListener from './input/VertexAttachmentKeyboardListener.js';
 
 // constants
-const DISTANCE_TO_CUT_BUTTON = 70; // How far in view coordinates the cut button appears from the vertex node
 const VERTEX_RADIUS = 16; // for hit testing with probes
 
 // rasterize the images for the red and black dotted lines so they can be rendered with WebGL to improve performance
@@ -311,32 +310,9 @@ export default class VertexNode extends Node {
 
   // update the position of the cut button
   private updateVertexCutButtonPosition(): void {
-    const position = this.vertex.positionProperty.get();
-
-    const neighbors = this.circuit.getNeighborCircuitElements( this.vertex );
-
-    // Compute an unweighted sum of adjacent element directions, and point in the opposite direction so the button
-    // will appear in the least populated area.
-    const sumOfDirections = new Vector2( 0, 0 );
-    for ( let i = 0; i < neighbors.length; i++ ) {
-      const v = this.vertex.positionProperty.get().minus(
-        neighbors[ i ].getOppositeVertex( this.vertex ).positionProperty.get()
-      );
-      if ( v.magnitude > 0 ) {
-        sumOfDirections.add( v.normalized() );
-      }
-    }
-    if ( sumOfDirections.magnitude < 1E-6 ) {
-      sumOfDirections.setXY( 0, -1 ); // Show the scissors above
-    }
-
-    const proposedPosition = position.plus( sumOfDirections.normalized().timesScalar( DISTANCE_TO_CUT_BUTTON ) );
-
-    // Property doesn't exist until the node is attached to scene graph
     const bounds = this.circuitNode.visibleBoundsInCircuitCoordinateFrameProperty.get();
-
     const availableBounds = bounds.eroded( this.vertexCutButtonContainer.width / 2 );
-    this.vertexCutButtonContainer.center = availableBounds.closestPointTo( proposedPosition );
+    this.vertexCutButtonContainer.center = this.circuitNode.vertexCutButton.getPositionForVertex( this.vertex, availableBounds );
   }
 
   /**

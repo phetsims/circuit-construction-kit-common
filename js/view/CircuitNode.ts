@@ -29,9 +29,6 @@ import { pdomFocusProperty } from '../../../scenery/js/accessibility/pdomFocusPr
 import type SceneryEvent from '../../../scenery/js/input/SceneryEvent.js';
 import Circle from '../../../scenery/js/nodes/Circle.js';
 import Node from '../../../scenery/js/nodes/Node.js';
-import Path from '../../../scenery/js/nodes/Path.js';
-import scissorsShape from '../../../sherpa/js/fontawesome-4/scissorsShape.js';
-import RoundPushButton from '../../../sun/js/buttons/RoundPushButton.js';
 import isSettingPhetioStateProperty from '../../../tandem/js/isSettingPhetioStateProperty.js';
 import PhetioGroup from '../../../tandem/js/PhetioGroup.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -64,6 +61,7 @@ import CapacitorCircuitElementNode from './CapacitorCircuitElementNode.js';
 import CCKCLightBulbNode from './CCKCLightBulbNode.js';
 import type CCKCScreenView from './CCKCScreenView.js';
 import ChargeNode from './ChargeNode.js';
+import CutButton from './CutButton.js';
 import CircuitDebugLayer from './CircuitDebugLayer.js';
 import CircuitElementEditContainerNode from './CircuitElementEditContainerNode.js';
 import CircuitElementNode from './CircuitElementNode.js';
@@ -153,7 +151,7 @@ export default class CircuitNode extends Node {
 
   // Map of Vertex.index => VertexNode
   private readonly vertexNodes: Record<number, VertexNode>;
-  public readonly vertexCutButton: RoundPushButton;
+  public readonly vertexCutButton: CutButton;
   private readonly circuitDebugLayer: CircuitDebugLayer | null;
   public readonly unconnectedCircuitElementsSection: Node;
   public readonly groupsContainer: Node;
@@ -529,38 +527,9 @@ export default class CircuitNode extends Node {
     // is allocated for all vertices (per screen) to use because it is too performance demanding to create these
     // dynamically when circuit elements are dragged from the toolbox.  Also, only one vertex can be selected at once
     // so there is only a need for one cut button.
-    const cutIcon = new Path( scissorsShape, {
-      fill: 'black',
-      rotation: -Math.PI / 2, // scissors point up
-      maxWidth: 36
-    } );
-
-    this.vertexCutButton = new RoundPushButton( {
-      baseColor: 'yellow',
-      content: cutIcon,
-      xMargin: 10,
-      yMargin: 10,
-
-      // The cut button should appear at the top level of the view in the PhET-iO tree (consistent
-      // with other global-use buttons), so we are using the screenView tandem here
-      tandem: screenView.tandem.createTandem( 'vertexCutButton' ),
-      phetioVisiblePropertyInstrumented: false,
-      enabledPropertyOptions: {
-        phetioReadOnly: true,
-        phetioFeatured: false
-      },
-      focusable: false // Delete with delete/backspace on the element rather than focusing this button itself
-    } );
-    this.vertexCutButton.addListener( () => {
-      const selectedVertex = circuit.getSelectedVertex();
-      affirm( selectedVertex, 'Button should only be available if a vertex is selected' );
-      if ( selectedVertex ) {
-        circuit.cutVertex( selectedVertex );
-
-        // Make sure no vertices got nudged out of bounds during a cut, see https://github.com/phetsims/circuit-construction-kit-dc/issues/138
-        moveVerticesInBounds( this.visibleBoundsInCircuitCoordinateFrameProperty.value );
-      }
-    } );
+    // The cut button should appear at the top level of the view in the PhET-iO tree (consistent
+    // with other global-use buttons), so we are using the screenView tandem here
+    this.vertexCutButton = new CutButton( circuit, this.visibleBoundsInCircuitCoordinateFrameProperty, screenView.tandem.createTandem( 'vertexCutButton' ) );
 
     const vertexNodeGroup = new PhetioGroup<VertexNode, [ Vertex ]>( ( tandem, vertex: Vertex ) => {
       return new VertexNode( this, vertex, tandem );
@@ -619,6 +588,11 @@ export default class CircuitNode extends Node {
       }
     };
     this.visibleBoundsInCircuitCoordinateFrameProperty.link( moveVerticesInBounds );
+
+    // Make sure no vertices got nudged out of bounds during a cut, see https://github.com/phetsims/circuit-construction-kit-dc/issues/138
+    circuit.vertexDisconnectedEmitter.addListener( () => {
+      moveVerticesInBounds( this.visibleBoundsInCircuitCoordinateFrameProperty.value );
+    } );
 
     // When a charge is added, add the corresponding ChargeNode (removed it its dispose call)
     circuit.charges.addItemAddedListener( charge => this.chargeLayer.addChild( new ChargeNode( charge, this ) ) );
