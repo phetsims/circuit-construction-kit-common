@@ -445,6 +445,17 @@
             "value": "Press Space or Enter again to complete the connection, or to detach."
           }
         }
+      },
+      "focus": {
+        "heading": {
+          "value": "Focus"
+        },
+        "focusToolbox": {
+          "value": "Focus circuit element toolbox"
+        },
+        "focusConstructionArea": {
+          "value": "Focus circuit in construction area"
+        }
       }
     }
   }

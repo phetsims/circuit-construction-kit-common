@@ -202,6 +202,11 @@ type StringsType = {
           'labelStringProperty': LocalizedStringProperty;
           'labelInnerContentStringProperty': LocalizedStringProperty;
         }
+      };
+      'focus': {
+        'headingStringProperty': LocalizedStringProperty;
+        'focusToolboxStringProperty': LocalizedStringProperty;
+        'focusConstructionAreaStringProperty': LocalizedStringProperty;
       }
     }
   }

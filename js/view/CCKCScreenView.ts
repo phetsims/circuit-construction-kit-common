@@ -9,7 +9,6 @@
 
 import Multilink from '../../../axon/js/Multilink.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
-import StringProperty from '../../../axon/js/StringProperty.js';
 import type Bounds2 from '../../../dot/js/Bounds2.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import ScreenView, { type ScreenViewOptions } from '../../../joist/js/ScreenView.js';
@@ -72,20 +71,6 @@ const CONTROL_PANEL_ALIGN_GROUP = new AlignGroup( {
 
   // Elements should have the same widths but not constrained to have the same heights
   matchVertical: false
-} );
-
-const focusToolboxHotkeyData = new HotkeyData( {
-  keys: [ 'alt+t' ],
-  repoName: circuitConstructionKitCommon.name,
-  keyboardHelpDialogLabelStringProperty: new StringProperty( 'focus the first item in the carousel, if any' ),
-  global: true
-} );
-
-const focusConstructionAreaHotkeyData = new HotkeyData( {
-  keys: [ 'alt+c' ],
-  repoName: circuitConstructionKitCommon.name,
-  keyboardHelpDialogLabelStringProperty: new StringProperty( 'focus the first circuit element in the construction area, if any' ),
-  global: true
 } );
 
 type SelfOptions = {
@@ -599,14 +584,14 @@ export default class CCKCScreenView extends ScreenView {
     this.screenSummaryContent = new CCKCScreenSummaryContent( model, this );
 
     KeyboardListener.createGlobal( this, {
-      keyStringProperties: focusToolboxHotkeyData.keyStringProperties,
+      keyStringProperties: CCKCScreenView.FOCUS_TOOLBOX_HOTKEY_DATA.keyStringProperties,
       fire: event => {
         this.circuitElementToolbox.carousel.getFocusableItems()[ 0 ]?.focus();
       }
     } );
 
     KeyboardListener.createGlobal( this, {
-      keyStringProperties: focusConstructionAreaHotkeyData.keyStringProperties,
+      keyStringProperties: CCKCScreenView.FOCUS_CONSTRUCTION_AREA_HOTKEY_DATA.keyStringProperties,
       fire: () => {
         const circuitElements = model.circuit.circuitElementsInPDOMOrder;
         for ( let i = 0; i < circuitElements.length; i++ ) {
@@ -706,6 +691,20 @@ export default class CCKCScreenView extends ScreenView {
     keys: [ 'space', 'enter' ],
     repoName: circuitConstructionKitCommon.name,
     binderName: 'Toggle switch open/closed',
+    global: true
+  } );
+
+  public static readonly FOCUS_TOOLBOX_HOTKEY_DATA = new HotkeyData( {
+    keys: [ 'alt+t' ],
+    repoName: circuitConstructionKitCommon.name,
+    keyboardHelpDialogLabelStringProperty: CircuitConstructionKitCommonStrings.a11y.keyboardHelpDialog.focus.focusToolboxStringProperty,
+    global: true
+  } );
+
+  public static readonly FOCUS_CONSTRUCTION_AREA_HOTKEY_DATA = new HotkeyData( {
+    keys: [ 'alt+c' ],
+    repoName: circuitConstructionKitCommon.name,
+    keyboardHelpDialogLabelStringProperty: CircuitConstructionKitCommonStrings.a11y.keyboardHelpDialog.focus.focusConstructionAreaStringProperty,
     global: true
   } );
 }

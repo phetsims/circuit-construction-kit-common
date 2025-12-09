@@ -278,3 +278,7 @@ a11y:
       attachJunction:
         label:             Attach junctions
         labelInnerContent: Press Space or Enter again to complete the connection, or to detach.
+    focus:
+      heading:               Focus
+      focusToolbox:          Focus circuit element toolbox
+      focusConstructionArea: Focus circuit in construction area

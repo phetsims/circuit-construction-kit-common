@@ -143,6 +143,9 @@ addToMapIfDefined( 'a11y_keyboardHelpDialog_connectElements_selectTarget_label',
 addToMapIfDefined( 'a11y_keyboardHelpDialog_connectElements_selectTarget_labelInnerContent', 'a11y.keyboardHelpDialog.connectElements.selectTarget.labelInnerContentStringProperty' );
 addToMapIfDefined( 'a11y_keyboardHelpDialog_connectElements_attachJunction_label', 'a11y.keyboardHelpDialog.connectElements.attachJunction.labelStringProperty' );
 addToMapIfDefined( 'a11y_keyboardHelpDialog_connectElements_attachJunction_labelInnerContent', 'a11y.keyboardHelpDialog.connectElements.attachJunction.labelInnerContentStringProperty' );
+addToMapIfDefined( 'a11y_keyboardHelpDialog_focus_heading', 'a11y.keyboardHelpDialog.focus.headingStringProperty' );
+addToMapIfDefined( 'a11y_keyboardHelpDialog_focus_focusToolbox', 'a11y.keyboardHelpDialog.focus.focusToolboxStringProperty' );
+addToMapIfDefined( 'a11y_keyboardHelpDialog_focus_focusConstructionArea', 'a11y.keyboardHelpDialog.focus.focusConstructionAreaStringProperty' );
 
 // A function that creates contents for a new Fluent file, which will be needed if any string changes.
 const createFluentFile = (): string => {
@@ -346,6 +349,11 @@ const CircuitConstructionKitCommonFluent = {
           labelStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_connectElements_attachJunction_label', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.connectElements.attachJunction.labelStringProperty' ) ),
           labelInnerContentStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_connectElements_attachJunction_labelInnerContent', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.connectElements.attachJunction.labelInnerContentStringProperty' ) )
         }
+      },
+      focus: {
+        headingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_focus_heading', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.focus.headingStringProperty' ) ),
+        focusToolboxStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_focus_focusToolbox', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.focus.focusToolboxStringProperty' ) ),
+        focusConstructionAreaStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_focus_focusConstructionArea', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.focus.focusConstructionAreaStringProperty' ) )
       }
     }
   }
