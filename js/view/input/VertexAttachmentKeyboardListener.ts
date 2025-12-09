@@ -47,7 +47,14 @@ export default class VertexAttachmentKeyboardListener extends AttachmentKeyboard
         circuitNode.circuit.selectionProperty.value = vertexNode.vertex;
         circuitNode.startDragVertex( vertexNode.parentToGlobalPoint( vertex.positionProperty.value ), vertex, vertex );
       },
-      targetDisposeEmitter: vertex.disposeEmitter
+      targetDisposeEmitter: vertex.disposeEmitter,
+
+      // Prefer vertices in the same group as the selected vertex
+      getPreferredInitialValue: availableItems => {
+        const sameGroupVertices = circuit.findAllConnectedVertices( vertex );
+        const sameGroupItem = availableItems.find( item => item.value && sameGroupVertices.includes( item.value ) );
+        return sameGroupItem?.value ?? null;
+      }
     } );
   }
 }
