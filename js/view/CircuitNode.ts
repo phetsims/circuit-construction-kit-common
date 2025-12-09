@@ -737,10 +737,8 @@ export default class CircuitNode extends Node {
   }
 
   private updateDeleteCuePosition( vertexNode: VertexNode ): void {
-    const bounds = this.visibleBoundsInCircuitCoordinateFrameProperty.get();
-    const availableBounds = bounds.eroded( this.vertexCutButton.width / 2 );
-    const buttonCenter = this.vertexCutButton.getPositionForVertex( vertexNode.vertex, availableBounds );
-    this.deleteCueNode.centerTop = buttonCenter.plusXY( 0, this.vertexCutButton.height / 2 + 5 );
+    const vertexPosition = vertexNode.vertex.positionProperty.value;
+    this.deleteCueNode.centerBottom = vertexPosition.plusXY( 0, -30 );
   }
 
   public reset(): void {

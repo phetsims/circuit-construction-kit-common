@@ -304,15 +304,12 @@ export default class VertexNode extends Node {
     }
   }
 
-  // update the position of the cut button and delete cue
+  // Update the position of the cut button
   private updateVertexCutButtonPosition(): void {
     const bounds = this.circuitNode.visibleBoundsInCircuitCoordinateFrameProperty.get();
     const availableBounds = bounds.eroded( this.vertexCutButtonContainer.width / 2 );
     const buttonCenter = this.circuitNode.vertexCutButton.getPositionForVertex( this.vertex, availableBounds );
     this.vertexCutButtonContainer.center = buttonCenter;
-
-    // Position the delete cue node directly below the cut button
-    this.circuitNode.deleteCueNode.centerTop = this.vertexCutButtonContainer.centerBottom.plusXY( 0, 5 );
   }
 
   /**
