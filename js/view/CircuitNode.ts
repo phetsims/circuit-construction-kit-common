@@ -15,7 +15,6 @@
  * @author Denzell Barnett (PhET Interactive Simulations)
  */
 
-import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Multilink from '../../../axon/js/Multilink.js';
 import Property from '../../../axon/js/Property.js';
 import StringProperty from '../../../axon/js/StringProperty.js';
@@ -28,7 +27,6 @@ import GrabReleaseCueNode from '../../../scenery-phet/js/accessibility/nodes/Gra
 import type Focus from '../../../scenery/js/accessibility/Focus.js';
 import { pdomFocusProperty } from '../../../scenery/js/accessibility/pdomFocusProperty.js';
 import type SceneryEvent from '../../../scenery/js/input/SceneryEvent.js';
-import KeyboardListener from '../../../scenery/js/listeners/KeyboardListener.js';
 import Circle from '../../../scenery/js/nodes/Circle.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Path from '../../../scenery/js/nodes/Path.js';
@@ -164,10 +162,6 @@ export default class CircuitNode extends Node {
   // Cue nodes to show the user how to grab vertices and circuit elements
   private readonly vertexGrabReleaseCueNode: GrabReleaseCueNode;
   private readonly circuitElementGrabReleaseCueNode: GrabReleaseCueNode;
-
-  // Track whether the user has grabbed each type, to hide the cue after first grab
-  private readonly vertexGrabCueVisibleProperty: BooleanProperty;
-  private readonly circuitElementGrabCueVisibleProperty: BooleanProperty;
 
   /**
    * @param circuit - the model Circuit
@@ -688,9 +682,6 @@ export default class CircuitNode extends Node {
     circuit.circuitContextAnnouncementEmitter.addListener( message => this.addAccessibleContextResponse( message ) );
 
     // Initialize the grab/release cue nodes
-    this.vertexGrabCueVisibleProperty = new BooleanProperty( true );
-    this.circuitElementGrabCueVisibleProperty = new BooleanProperty( true );
-
     this.vertexGrabReleaseCueNode = new GrabReleaseCueNode( {
       visible: false,
       stringProperty: new StringProperty( 'to Choose Connection' )
@@ -712,35 +703,16 @@ export default class CircuitNode extends Node {
       if ( focus ) {
         const focusedNode = focus.trail.lastNode();
 
-        if ( focusedNode instanceof VertexNode && this.vertexGrabCueVisibleProperty.value ) {
+        if ( focusedNode instanceof VertexNode && !focusedNode.vertex.hasBeenKeyboardActivated ) {
           const vertexPosition = focusedNode.vertex.positionProperty.value;
           this.vertexGrabReleaseCueNode.centerTop = vertexPosition.plusXY( 0, 30 );
           this.vertexGrabReleaseCueNode.visible = true;
         }
-        else if ( focusedNode instanceof CircuitElementNode && this.circuitElementGrabCueVisibleProperty.value ) {
+        else if ( focusedNode instanceof CircuitElementNode && !focusedNode.circuitElement.hasBeenKeyboardActivated ) {
           const globalBounds = focusedNode.getGlobalBounds();
           const localBounds = this.globalToLocalBounds( globalBounds );
           this.circuitElementGrabReleaseCueNode.centerTop = new Vector2( localBounds.centerX, localBounds.maxY + 10 );
           this.circuitElementGrabReleaseCueNode.visible = true;
-        }
-      }
-    } );
-
-    // When space/enter is pressed on a vertex or circuit element, hide the corresponding cue
-    KeyboardListener.createGlobal( this, {
-      keys: [ 'space', 'enter' ],
-      fire: () => {
-        const focus = pdomFocusProperty.value;
-        if ( focus ) {
-          const focusedNode = focus.trail.lastNode();
-          if ( focusedNode instanceof VertexNode ) {
-            this.vertexGrabCueVisibleProperty.value = false;
-            this.vertexGrabReleaseCueNode.visible = false;
-          }
-          else if ( focusedNode instanceof CircuitElementNode ) {
-            this.circuitElementGrabCueVisibleProperty.value = false;
-            this.circuitElementGrabReleaseCueNode.visible = false;
-          }
         }
       }
     } );
@@ -751,14 +723,6 @@ export default class CircuitNode extends Node {
     if ( !isSettingPhetioStateProperty.value ) {
       CircuitDescription.updateCircuitNode( this );
     }
-  }
-
-  /**
-   * Reset the CircuitNode to its initial state.
-   */
-  public reset(): void {
-    this.vertexGrabCueVisibleProperty.reset();
-    this.circuitElementGrabCueVisibleProperty.reset();
   }
 
   /**
@@ -843,6 +807,19 @@ export default class CircuitNode extends Node {
     } );
 
     this.circuitDebugLayer && this.circuitDebugLayer.step();
+
+    // Hide grab/release cue nodes if the focused element has been keyboard activated.
+    // This is checked in step() rather than via an Emitter for simplicity, since the 1-frame delay is imperceptible.
+    const focus = pdomFocusProperty.value;
+    if ( focus ) {
+      const focusedNode = focus.trail.lastNode();
+      if ( this.vertexGrabReleaseCueNode.visible && focusedNode instanceof VertexNode && focusedNode.vertex.hasBeenKeyboardActivated ) {
+        this.vertexGrabReleaseCueNode.visible = false;
+      }
+      if ( this.circuitElementGrabReleaseCueNode.visible && focusedNode instanceof CircuitElementNode && focusedNode.circuitElement.hasBeenKeyboardActivated ) {
+        this.circuitElementGrabReleaseCueNode.visible = false;
+      }
+    }
   }
 
   /**

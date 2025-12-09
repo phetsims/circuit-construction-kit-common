@@ -79,6 +79,7 @@ export default abstract class CircuitElementNode extends Node {
       this.addInputListener( new KeyboardListener( {
         keys: [ 'space', 'enter' ], // cannot use fireOnClick since this is also draggable
         press: () => {
+          circuitElement.hasBeenKeyboardActivated = true;
 
           if ( selectionProperty.value === this.circuitElement ) {
             selectionProperty.value = null;
