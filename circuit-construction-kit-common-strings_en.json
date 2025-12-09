@@ -456,6 +456,20 @@
         "focusConstructionArea": {
           "value": "Focus circuit in construction area"
         }
+      },
+      "chooseConnection": {
+        "heading": {
+          "value": "Choose a Connection"
+        },
+        "thingSingular": {
+          "value": "connection"
+        },
+        "thingPlural": {
+          "value": "connections"
+        },
+        "cancelConnection": {
+          "value": "4. Cancel connection"
+        }
       }
     }
   }

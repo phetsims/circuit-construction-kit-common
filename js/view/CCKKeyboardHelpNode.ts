@@ -14,6 +14,7 @@ import TwoColumnKeyboardHelpContent from '../../../scenery-phet/js/keyboard/help
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import CCKCScreenView from './CCKCScreenView.js';
+import ChooseJunctionConnectionKeyboardHelpSection from './ChooseJunctionConnectionKeyboardHelpSection.js';
 
 export default class CCKKeyboardHelpNode extends TwoColumnKeyboardHelpContent {
 
@@ -54,11 +55,13 @@ export default class CCKKeyboardHelpNode extends TwoColumnKeyboardHelpContent {
       KeyboardHelpSectionRow.fromHotkeyData( CCKCScreenView.FOCUS_CONSTRUCTION_AREA_HOTKEY_DATA )
     ] );
 
+    const chooseJunctionConnectionSection = new ChooseJunctionConnectionKeyboardHelpSection();
+
     const basicActionsSection = new BasicActionsKeyboardHelpSection( {
       withCheckboxContent: true
     } );
 
-    super( [ addElementsSection, connectElementsSection, focusSection ], [ basicActionsSection ] );
+    super( [ addElementsSection, connectElementsSection, focusSection ], [ chooseJunctionConnectionSection, basicActionsSection ] );
   }
 }
 

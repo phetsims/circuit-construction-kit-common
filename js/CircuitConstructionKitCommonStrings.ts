@@ -207,6 +207,12 @@ type StringsType = {
         'headingStringProperty': LocalizedStringProperty;
         'focusToolboxStringProperty': LocalizedStringProperty;
         'focusConstructionAreaStringProperty': LocalizedStringProperty;
+      };
+      'chooseConnection': {
+        'headingStringProperty': LocalizedStringProperty;
+        'thingSingularStringProperty': LocalizedStringProperty;
+        'thingPluralStringProperty': LocalizedStringProperty;
+        'cancelConnectionStringProperty': LocalizedStringProperty;
       }
     }
   }

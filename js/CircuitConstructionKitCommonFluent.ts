@@ -10,6 +10,7 @@ import type { FluentVariable } from '../../chipper/js/browser/FluentPattern.js';
 import FluentPattern from '../../chipper/js/browser/FluentPattern.js';
 import FluentConstant from '../../chipper/js/browser/FluentConstant.js';
 import FluentContainer from '../../chipper/js/browser/FluentContainer.js';
+import FluentComment from '../../chipper/js/browser/FluentComment.js';
 import circuitConstructionKitCommon from './circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonStrings from './CircuitConstructionKitCommonStrings.js';
 
@@ -146,6 +147,10 @@ addToMapIfDefined( 'a11y_keyboardHelpDialog_connectElements_attachJunction_label
 addToMapIfDefined( 'a11y_keyboardHelpDialog_focus_heading', 'a11y.keyboardHelpDialog.focus.headingStringProperty' );
 addToMapIfDefined( 'a11y_keyboardHelpDialog_focus_focusToolbox', 'a11y.keyboardHelpDialog.focus.focusToolboxStringProperty' );
 addToMapIfDefined( 'a11y_keyboardHelpDialog_focus_focusConstructionArea', 'a11y.keyboardHelpDialog.focus.focusConstructionAreaStringProperty' );
+addToMapIfDefined( 'a11y_keyboardHelpDialog_chooseConnection_heading', 'a11y.keyboardHelpDialog.chooseConnection.headingStringProperty' );
+addToMapIfDefined( 'a11y_keyboardHelpDialog_chooseConnection_thingSingular', 'a11y.keyboardHelpDialog.chooseConnection.thingSingularStringProperty' );
+addToMapIfDefined( 'a11y_keyboardHelpDialog_chooseConnection_thingPlural', 'a11y.keyboardHelpDialog.chooseConnection.thingPluralStringProperty' );
+addToMapIfDefined( 'a11y_keyboardHelpDialog_chooseConnection_cancelConnection', 'a11y.keyboardHelpDialog.chooseConnection.cancelConnectionStringProperty' );
 
 // A function that creates contents for a new Fluent file, which will be needed if any string changes.
 const createFluentFile = (): string => {
@@ -354,6 +359,13 @@ const CircuitConstructionKitCommonFluent = {
         headingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_focus_heading', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.focus.headingStringProperty' ) ),
         focusToolboxStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_focus_focusToolbox', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.focus.focusToolboxStringProperty' ) ),
         focusConstructionAreaStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_focus_focusConstructionArea', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.focus.focusConstructionAreaStringProperty' ) )
+      },
+      _comment_0: new FluentComment( {"comment":"For connecting junctions or attaching a voltmeter probe or ammeter probe","associatedKey":"chooseConnection"} ),
+      chooseConnection: {
+        headingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_chooseConnection_heading', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.chooseConnection.headingStringProperty' ) ),
+        thingSingularStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_chooseConnection_thingSingular', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.chooseConnection.thingSingularStringProperty' ) ),
+        thingPluralStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_chooseConnection_thingPlural', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.chooseConnection.thingPluralStringProperty' ) ),
+        cancelConnectionStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_chooseConnection_cancelConnection', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.chooseConnection.cancelConnectionStringProperty' ) )
       }
     }
   }

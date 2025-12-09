@@ -282,3 +282,10 @@ a11y:
       heading:               Focus
       focusToolbox:          Focus circuit element toolbox
       focusConstructionArea: Focus circuit in construction area
+
+    # For connecting junctions or attaching a voltmeter probe or ammeter probe
+    chooseConnection:
+      heading:          Choose a Connection
+      thingSingular:    connection
+      thingPlural:      connections
+      cancelConnection: 4. Cancel connection
