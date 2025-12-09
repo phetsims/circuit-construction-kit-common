@@ -74,15 +74,15 @@ const CONTROL_PANEL_ALIGN_GROUP = new AlignGroup( {
   matchVertical: false
 } );
 
-const focusCarouselHotkeyData = new HotkeyData( {
-  keys: [ 'm' ],
+const focusToolboxHotkeyData = new HotkeyData( {
+  keys: [ 'alt+t' ],
   repoName: circuitConstructionKitCommon.name,
   keyboardHelpDialogLabelStringProperty: new StringProperty( 'focus the first item in the carousel, if any' ),
   global: true
 } );
 
 const focusConstructionAreaHotkeyData = new HotkeyData( {
-  keys: [ 'f' ],
+  keys: [ 'alt+c' ],
   repoName: circuitConstructionKitCommon.name,
   keyboardHelpDialogLabelStringProperty: new StringProperty( 'focus the first circuit element in the construction area, if any' ),
   global: true
@@ -599,7 +599,7 @@ export default class CCKCScreenView extends ScreenView {
     this.screenSummaryContent = new CCKCScreenSummaryContent( model, this );
 
     KeyboardListener.createGlobal( this, {
-      keyStringProperties: focusCarouselHotkeyData.keyStringProperties,
+      keyStringProperties: focusToolboxHotkeyData.keyStringProperties,
       fire: event => {
         this.circuitElementToolbox.carousel.getFocusableItems()[ 0 ]?.focus();
       }
