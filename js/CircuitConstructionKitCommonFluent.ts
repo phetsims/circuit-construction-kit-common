@@ -87,6 +87,8 @@ addToMapIfDefined( 'magnitude', 'magnitudeStringProperty' );
 addToMapIfDefined( 'signed', 'signedStringProperty' );
 addToMapIfDefined( 'dataOutOfRange', 'dataOutOfRangeStringProperty' );
 addToMapIfDefined( 'key_toCut', 'key.toCutStringProperty' );
+addToMapIfDefined( 'key_toEditComponent', 'key.toEditComponentStringProperty' );
+addToMapIfDefined( 'key_toChooseConnection', 'key.toChooseConnectionStringProperty' );
 addToMapIfDefined( 'a11y_screenSummary_playArea', 'a11y.screenSummary.playAreaStringProperty' );
 addToMapIfDefined( 'a11y_screenSummary_controlArea', 'a11y.screenSummary.controlAreaStringProperty' );
 addToMapIfDefined( 'a11y_screenSummary_currentDetails', 'a11y.screenSummary.currentDetailsStringProperty' );
@@ -229,7 +231,9 @@ const CircuitConstructionKitCommonFluent = {
   signedStringProperty: _.get( CircuitConstructionKitCommonStrings, 'signedStringProperty' ),
   dataOutOfRangeStringProperty: _.get( CircuitConstructionKitCommonStrings, 'dataOutOfRangeStringProperty' ),
   key: {
-    toCutStringProperty: _.get( CircuitConstructionKitCommonStrings, 'key.toCutStringProperty' )
+    toCutStringProperty: _.get( CircuitConstructionKitCommonStrings, 'key.toCutStringProperty' ),
+    toEditComponentStringProperty: _.get( CircuitConstructionKitCommonStrings, 'key.toEditComponentStringProperty' ),
+    toChooseConnectionStringProperty: _.get( CircuitConstructionKitCommonStrings, 'key.toChooseConnectionStringProperty' )
   },
   a11y: {
     screenSummary: {

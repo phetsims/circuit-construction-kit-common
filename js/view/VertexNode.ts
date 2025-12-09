@@ -285,9 +285,6 @@ export default class VertexNode extends Node {
 
       const cutButtonVisible = numberConnections > 1 || isConnectedBlackBoxVertex;
       this.vertexCutButtonContainer.visible = cutButtonVisible;
-
-      // Show the delete cue node when the cut button is visible and the vertex is selected
-      this.circuitNode.deleteCueNode.visible = selected && this.vertex.isCuttableProperty.value && cutButtonVisible;
     }
   }
 

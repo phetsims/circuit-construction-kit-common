@@ -76,7 +76,9 @@ signed:                                Signed
 dataOutOfRange:                        Data out of range
 
 key:
-  toCut: to <b>Cut</b>
+  toCut:              to <b>Cut</b>
+  toEditComponent:    to <b>Edit Component</b>
+  toChooseConnection: to <b>Choose Connection</b>
 
 a11y:
   screenSummary:

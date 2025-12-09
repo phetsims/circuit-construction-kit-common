@@ -218,6 +218,12 @@
   "key": {
     "toCut": {
       "value": "to <b>Cut</b>"
+    },
+    "toEditComponent": {
+      "value": "to <b>Edit Component</b>"
+    },
+    "toChooseConnection": {
+      "value": "to <b>Choose Connection</b>"
     }
   },
   "a11y": {

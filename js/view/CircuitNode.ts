@@ -17,7 +17,6 @@
 
 import Multilink from '../../../axon/js/Multilink.js';
 import Property from '../../../axon/js/Property.js';
-import StringProperty from '../../../axon/js/StringProperty.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
@@ -62,11 +61,11 @@ import CapacitorCircuitElementNode from './CapacitorCircuitElementNode.js';
 import CCKCLightBulbNode from './CCKCLightBulbNode.js';
 import type CCKCScreenView from './CCKCScreenView.js';
 import ChargeNode from './ChargeNode.js';
-import CutButton from './CutButton.js';
 import CircuitDebugLayer from './CircuitDebugLayer.js';
 import CircuitElementEditContainerNode from './CircuitElementEditContainerNode.js';
 import CircuitElementNode from './CircuitElementNode.js';
 import CustomLightBulbNode from './CustomLightBulbNode.js';
+import CutButton from './CutButton.js';
 import DeleteCueNode from './DeleteCueNode.js';
 import CircuitDescription from './description/CircuitDescription.js';
 import FixedCircuitElementNode from './FixedCircuitElementNode.js';
@@ -170,6 +169,9 @@ export default class CircuitNode extends Node {
   // Once the user activates any element, they understand the pattern and we hide cues for all.
   private anyVertexActivated = false;
   private anyCircuitElementActivated = false;
+
+  // Track whether any vertex has been cut. Once the user cuts a vertex, hide the delete cue permanently.
+  private anyVertexCut = false;
 
   /**
    * @param circuit - the model Circuit
@@ -595,8 +597,13 @@ export default class CircuitNode extends Node {
     this.visibleBoundsInCircuitCoordinateFrameProperty.link( moveVerticesInBounds );
 
     // Make sure no vertices got nudged out of bounds during a cut, see https://github.com/phetsims/circuit-construction-kit-dc/issues/138
+    // Also hide the delete cue permanently once the user performs a cut operation.
     circuit.vertexDisconnectedEmitter.addListener( () => {
       moveVerticesInBounds( this.visibleBoundsInCircuitCoordinateFrameProperty.value );
+
+      // Once the user has cut a vertex, they understand the pattern, so hide the delete cue permanently.
+      this.anyVertexCut = true;
+      this.deleteCueNode.visible = false;
     } );
 
     // When a charge is added, add the corresponding ChargeNode (removed it its dispose call)
@@ -668,11 +675,11 @@ export default class CircuitNode extends Node {
     // Initialize the grab/release cue nodes
     this.vertexGrabReleaseCueNode = new GrabReleaseCueNode( {
       visible: false,
-      stringProperty: new StringProperty( 'to Choose Connection' )
+      stringProperty: CircuitConstructionKitCommonFluent.key.toChooseConnectionStringProperty
     } );
     this.circuitElementGrabReleaseCueNode = new GrabReleaseCueNode( {
       visible: false,
-      stringProperty: new StringProperty( 'to Edit Component' )
+      stringProperty: CircuitConstructionKitCommonFluent.key.toEditComponentStringProperty
     } );
 
     this.highlightLayer.addChild( this.vertexGrabReleaseCueNode );
@@ -687,9 +694,10 @@ export default class CircuitNode extends Node {
 
     // Listen to focus changes to show/hide and position the cue nodes
     pdomFocusProperty.link( ( focus: Focus | null ) => {
-      // Hide both cues first
+      // Hide all cues first
       this.vertexGrabReleaseCueNode.visible = false;
       this.circuitElementGrabReleaseCueNode.visible = false;
+      this.deleteCueNode.visible = false;
 
       if ( focus ) {
         const focusedNode = focus.trail.lastNode();
@@ -704,6 +712,14 @@ export default class CircuitNode extends Node {
         else if ( focusedNode instanceof CircuitElementNode && !this.anyCircuitElementActivated ) {
           this.updateCircuitElementCuePosition( focusedNode );
           this.circuitElementGrabReleaseCueNode.visible = true;
+        }
+
+        // Show the delete cue for cuttable vertices (vertices with multiple connections)
+        if ( focusedNode instanceof VertexNode &&
+             !this.anyVertexCut &&
+             circuit.getNeighborCircuitElements( focusedNode.vertex ).length > 1 ) {
+          this.updateDeleteCuePosition( focusedNode );
+          this.deleteCueNode.visible = true;
         }
       }
     } );
@@ -720,9 +736,17 @@ export default class CircuitNode extends Node {
     this.circuitElementGrabReleaseCueNode.centerTop = new Vector2( localBounds.centerX, localBounds.maxY + 10 );
   }
 
+  private updateDeleteCuePosition( vertexNode: VertexNode ): void {
+    const bounds = this.visibleBoundsInCircuitCoordinateFrameProperty.get();
+    const availableBounds = bounds.eroded( this.vertexCutButton.width / 2 );
+    const buttonCenter = this.vertexCutButton.getPositionForVertex( vertexNode.vertex, availableBounds );
+    this.deleteCueNode.centerTop = buttonCenter.plusXY( 0, this.vertexCutButton.height / 2 + 5 );
+  }
+
   public reset(): void {
     this.anyVertexActivated = false;
     this.anyCircuitElementActivated = false;
+    this.anyVertexCut = false;
   }
 
   private updatePDOMOrder(): void {
@@ -838,6 +862,11 @@ export default class CircuitNode extends Node {
         else {
           this.updateCircuitElementCuePosition( focusedNode );
         }
+      }
+
+      // Update delete cue position (visibility is handled by pdomFocusProperty.link and vertexDisconnectedEmitter)
+      if ( this.deleteCueNode.visible && focusedNode instanceof VertexNode ) {
+        this.updateDeleteCuePosition( focusedNode );
       }
     }
   }

@@ -88,6 +88,8 @@ type StringsType = {
   'dataOutOfRangeStringProperty': LocalizedStringProperty;
   'key': {
     'toCutStringProperty': LocalizedStringProperty;
+    'toEditComponentStringProperty': LocalizedStringProperty;
+    'toChooseConnectionStringProperty': LocalizedStringProperty;
   };
   'a11y': {
     'screenSummary': {
