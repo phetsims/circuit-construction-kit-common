@@ -529,7 +529,7 @@ export default class CircuitNode extends Node {
     // so there is only a need for one cut button.
     // The cut button should appear at the top level of the view in the PhET-iO tree (consistent
     // with other global-use buttons), so we are using the screenView tandem here
-    this.vertexCutButton = new CutButton( circuit, this.visibleBoundsInCircuitCoordinateFrameProperty, screenView.tandem.createTandem( 'vertexCutButton' ) );
+    this.vertexCutButton = new CutButton( circuit, screenView.tandem.createTandem( 'vertexCutButton' ) );
 
     const vertexNodeGroup = new PhetioGroup<VertexNode, [ Vertex ]>( ( tandem, vertex: Vertex ) => {
       return new VertexNode( this, vertex, tandem );

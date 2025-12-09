@@ -23,9 +23,7 @@ const DISTANCE_TO_CUT_BUTTON = 70;
 
 export default class CutButton extends RoundPushButton {
 
-  private readonly circuit: Circuit;
-
-  public constructor( circuit: Circuit, visibleBoundsInCircuitCoordinateFrameProperty: { get: () => Bounds2 }, tandem: Tandem ) {
+  public constructor( private readonly circuit: Circuit, tandem: Tandem ) {
 
     const cutIcon = new Path( scissorsShape, {
       fill: 'black',
@@ -46,8 +44,6 @@ export default class CutButton extends RoundPushButton {
       },
       focusable: false // Delete with delete/backspace on the element rather than focusing this button itself
     } );
-
-    this.circuit = circuit;
 
     this.addListener( () => {
       const selectedVertex = circuit.getSelectedVertex();
