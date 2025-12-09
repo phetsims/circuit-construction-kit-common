@@ -676,14 +676,14 @@ export default class CCKCScreenView extends ScreenView {
   public static readonly DELETE_HOTKEY_DATA = new HotkeyData( {
     keys: [ 'delete', 'backspace' ],
     repoName: circuitConstructionKitCommon.name,
-    binderName: 'Delete circuit element',
+    keyboardHelpDialogLabelStringProperty: CircuitConstructionKitCommonStrings.a11y.keyboardHelpDialog.editCircuitElements.deleteCircuitElementStringProperty,
     global: true
   } );
 
   public static readonly EDIT_HOTKEY_DATA = new HotkeyData( {
-    keys: [ 'e', 'm' ],
+    keys: [ 'space', 'enter' ],
     repoName: circuitConstructionKitCommon.name,
-    binderName: 'Edit circuit element',
+    keyboardHelpDialogLabelStringProperty: CircuitConstructionKitCommonStrings.a11y.keyboardHelpDialog.editCircuitElements.editCircuitElementStringProperty,
     global: true
   } );
 

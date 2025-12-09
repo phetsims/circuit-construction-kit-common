@@ -278,6 +278,10 @@ a11y:
       attachJunction:
         label:             Attach junctions
         labelInnerContent: Press Space or Enter again to complete the connection, or to detach.
+    editCircuitElements:
+      heading:            Edit Circuit Elements
+      editCircuitElement: Edit circuit element
+      deleteCircuitElement: Delete or cut circuit element
     focus:
       heading:               Focus
       focusToolbox:          Focus circuit element toolbox

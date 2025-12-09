@@ -144,6 +144,9 @@ addToMapIfDefined( 'a11y_keyboardHelpDialog_connectElements_selectTarget_label',
 addToMapIfDefined( 'a11y_keyboardHelpDialog_connectElements_selectTarget_labelInnerContent', 'a11y.keyboardHelpDialog.connectElements.selectTarget.labelInnerContentStringProperty' );
 addToMapIfDefined( 'a11y_keyboardHelpDialog_connectElements_attachJunction_label', 'a11y.keyboardHelpDialog.connectElements.attachJunction.labelStringProperty' );
 addToMapIfDefined( 'a11y_keyboardHelpDialog_connectElements_attachJunction_labelInnerContent', 'a11y.keyboardHelpDialog.connectElements.attachJunction.labelInnerContentStringProperty' );
+addToMapIfDefined( 'a11y_keyboardHelpDialog_editCircuitElements_heading', 'a11y.keyboardHelpDialog.editCircuitElements.headingStringProperty' );
+addToMapIfDefined( 'a11y_keyboardHelpDialog_editCircuitElements_editCircuitElement', 'a11y.keyboardHelpDialog.editCircuitElements.editCircuitElementStringProperty' );
+addToMapIfDefined( 'a11y_keyboardHelpDialog_editCircuitElements_deleteCircuitElement', 'a11y.keyboardHelpDialog.editCircuitElements.deleteCircuitElementStringProperty' );
 addToMapIfDefined( 'a11y_keyboardHelpDialog_focus_heading', 'a11y.keyboardHelpDialog.focus.headingStringProperty' );
 addToMapIfDefined( 'a11y_keyboardHelpDialog_focus_focusToolbox', 'a11y.keyboardHelpDialog.focus.focusToolboxStringProperty' );
 addToMapIfDefined( 'a11y_keyboardHelpDialog_focus_focusConstructionArea', 'a11y.keyboardHelpDialog.focus.focusConstructionAreaStringProperty' );
@@ -354,6 +357,11 @@ const CircuitConstructionKitCommonFluent = {
           labelStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_connectElements_attachJunction_label', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.connectElements.attachJunction.labelStringProperty' ) ),
           labelInnerContentStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_connectElements_attachJunction_labelInnerContent', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.connectElements.attachJunction.labelInnerContentStringProperty' ) )
         }
+      },
+      editCircuitElements: {
+        headingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_editCircuitElements_heading', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.editCircuitElements.headingStringProperty' ) ),
+        editCircuitElementStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_editCircuitElements_editCircuitElement', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.editCircuitElements.editCircuitElementStringProperty' ) ),
+        deleteCircuitElementStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_editCircuitElements_deleteCircuitElement', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.editCircuitElements.deleteCircuitElementStringProperty' ) )
       },
       focus: {
         headingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_focus_heading', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.focus.headingStringProperty' ) ),

@@ -203,6 +203,11 @@ type StringsType = {
           'labelInnerContentStringProperty': LocalizedStringProperty;
         }
       };
+      'editCircuitElements': {
+        'headingStringProperty': LocalizedStringProperty;
+        'editCircuitElementStringProperty': LocalizedStringProperty;
+        'deleteCircuitElementStringProperty': LocalizedStringProperty;
+      };
       'focus': {
         'headingStringProperty': LocalizedStringProperty;
         'focusToolboxStringProperty': LocalizedStringProperty;

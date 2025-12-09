@@ -446,6 +446,17 @@
           }
         }
       },
+      "editCircuitElements": {
+        "heading": {
+          "value": "Edit Circuit Elements"
+        },
+        "editCircuitElement": {
+          "value": "Edit circuit element"
+        },
+        "deleteCircuitElement": {
+          "value": "Delete or cut circuit element"
+        }
+      },
       "focus": {
         "heading": {
           "value": "Focus"

@@ -29,18 +29,23 @@ export default class CCKKeyboardHelpNode extends TwoColumnKeyboardHelpContent {
       )
     ] );
 
+    const editCircuitElementsSection = new KeyboardHelpSection( CircuitConstructionKitCommonStrings.a11y.keyboardHelpDialog.editCircuitElements.headingStringProperty, [
+      KeyboardHelpSectionRow.fromHotkeyData( CCKCScreenView.EDIT_HOTKEY_DATA ),
+      KeyboardHelpSectionRow.fromHotkeyData( CCKCScreenView.DELETE_HOTKEY_DATA )
+    ] );
+
+    const chooseConnectionSection = new ChooseJunctionConnectionKeyboardHelpSection();
+
     const focusSection = new KeyboardHelpSection( CircuitConstructionKitCommonStrings.a11y.keyboardHelpDialog.focus.headingStringProperty, [
       KeyboardHelpSectionRow.fromHotkeyData( CCKCScreenView.FOCUS_TOOLBOX_HOTKEY_DATA ),
       KeyboardHelpSectionRow.fromHotkeyData( CCKCScreenView.FOCUS_CONSTRUCTION_AREA_HOTKEY_DATA )
     ] );
 
-    const chooseJunctionConnectionSection = new ChooseJunctionConnectionKeyboardHelpSection();
-
     const basicActionsSection = new BasicActionsKeyboardHelpSection( {
       withCheckboxContent: true
     } );
 
-    super( [ addElementsSection, chooseJunctionConnectionSection, focusSection ], [ basicActionsSection ] );
+    super( [ addElementsSection, editCircuitElementsSection, chooseConnectionSection ], [ basicActionsSection, focusSection ] );
   }
 }
 
