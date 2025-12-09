@@ -703,7 +703,10 @@ export default class CircuitNode extends Node {
       if ( focus ) {
         const focusedNode = focus.trail.lastNode();
 
-        if ( focusedNode instanceof VertexNode && !focusedNode.vertex.hasBeenKeyboardActivated ) {
+        // Show the vertex cue if the vertex hasn't been activated and there are attachable vertices
+        if ( focusedNode instanceof VertexNode &&
+             !focusedNode.vertex.hasBeenKeyboardActivated &&
+             circuit.hasAttachableVertices( focusedNode.vertex ) ) {
           const vertexPosition = focusedNode.vertex.positionProperty.value;
           this.vertexGrabReleaseCueNode.centerTop = vertexPosition.plusXY( 0, 30 );
           this.vertexGrabReleaseCueNode.visible = true;

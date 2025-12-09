@@ -1081,6 +1081,26 @@ export default class Circuit extends PhetioObject {
   }
 
   /**
+   * Returns true if there are any vertices that the given vertex could be attached to.
+   * Used to determine whether to show the grab/release cue for vertices.
+   */
+  public hasAttachableVertices( vertex: Vertex ): boolean {
+    const neighboringVertices = this.getNeighboringVertices( vertex );
+    const fixedVertices = this.findAllFixedVertices( vertex );
+
+    for ( let i = 0; i < this.vertexGroup.count; i++ ) {
+      const v = this.vertexGroup.getElement( i );
+      if ( v.attachableProperty.get() &&
+           v !== vertex &&
+           !neighboringVertices.includes( v ) &&
+           !fixedVertices.includes( v ) ) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
    * Marks all connected circuit elements as dirty (so electrons will be layed out again), called when any wire length is changed.
    */
   private markAllConnectedCircuitElementsDirty( vertex: Vertex ): void {
