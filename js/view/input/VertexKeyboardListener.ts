@@ -25,6 +25,8 @@ export default class VertexKeyboardListener extends SoundKeyboardDragListener {
 
     let initialPoint: Vector2 | null = null;
     let latestPoint: Vector2 | null = null;
+    
+    let dragged = false;
 
     super( {
 
@@ -36,8 +38,12 @@ export default class VertexKeyboardListener extends SoundKeyboardDragListener {
         initialPoint = vertexNode.globalBounds.center.copy();
         latestPoint = vertexNode.globalBounds.center.copy();
         circuitNode.startDragVertex( initialPoint, vertex, vertex );
+        
+        dragged = false;
       },
       drag: ( _event, listener ) => {
+        
+        dragged = true;
 
         // get the global delta, so that the drag speed will be the same no matter the size of the window.
         // see https://github.com/phetsims/circuit-construction-kit-common/issues/1059
@@ -51,7 +57,7 @@ export default class VertexKeyboardListener extends SoundKeyboardDragListener {
         vertex.isKeyboardDragging = false;
 
         // The vertex can only connect to something if it was actually moved.
-        circuitNode.endDrag( vertex, false );
+        circuitNode.endDrag( vertex, dragged );
 
         // Only show on a tap, not on every drag.
         if (
@@ -62,6 +68,8 @@ export default class VertexKeyboardListener extends SoundKeyboardDragListener {
 
           vertex.selectionProperty.value = vertex;
         }
+        
+        dragged = false;
       },
 
       dragSpeed: CCKCConstants.KEYBOARD_DRAG_SPEED,

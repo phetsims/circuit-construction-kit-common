@@ -1453,7 +1453,8 @@ export default class Circuit extends PhetioObject {
    */
   public getDropTarget( vertex: Vertex, mode: InteractionMode, blackBoxBounds: Bounds2 | null ): Vertex | null {
 
-    if ( this.isKeyboardDragging() ) {
+    // Only when a vertex is being keyboard dragged can it be connected. Others being dragged in tow cannot propose or connect.
+    if ( this.isKeyboardDragging() && !vertex.isKeyboardDragging ) {
       return null;
     }
 
