@@ -215,6 +215,11 @@
   "dataOutOfRange": {
     "value": "Data out of range"
   },
+  "key": {
+    "toCut": {
+      "value": "to <b>Cut</b>"
+    }
+  },
   "a11y": {
     "screenSummary": {
       "playArea": {

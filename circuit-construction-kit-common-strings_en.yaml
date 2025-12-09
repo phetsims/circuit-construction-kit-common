@@ -75,6 +75,9 @@ magnitude:                             Magnitude
 signed:                                Signed
 dataOutOfRange:                        Data out of range
 
+key:
+  toCut: to <b>Cut</b>
+
 a11y:
   screenSummary:
     playArea:        |-

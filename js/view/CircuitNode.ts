@@ -35,6 +35,7 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
+import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import ACVoltage from '../model/ACVoltage.js';
 import AmmeterConnection from '../model/AmmeterConnection.js';
 import Battery from '../model/Battery.js';
@@ -66,6 +67,7 @@ import CircuitDebugLayer from './CircuitDebugLayer.js';
 import CircuitElementEditContainerNode from './CircuitElementEditContainerNode.js';
 import CircuitElementNode from './CircuitElementNode.js';
 import CustomLightBulbNode from './CustomLightBulbNode.js';
+import DeleteCueNode from './DeleteCueNode.js';
 import CircuitDescription from './description/CircuitDescription.js';
 import FixedCircuitElementNode from './FixedCircuitElementNode.js';
 import FuseNode from './FuseNode.js';
@@ -160,6 +162,9 @@ export default class CircuitNode extends Node {
   // Cue nodes to show the user how to grab vertices and circuit elements
   private readonly vertexGrabReleaseCueNode: GrabReleaseCueNode;
   private readonly circuitElementGrabReleaseCueNode: GrabReleaseCueNode;
+
+  // Cue node to show the user how to cut a vertex with the delete key
+  public readonly deleteCueNode: DeleteCueNode;
 
   // Track whether any vertex or circuit element has been keyboard activated.
   // Once the user activates any element, they understand the pattern and we hide cues for all.
@@ -672,6 +677,13 @@ export default class CircuitNode extends Node {
 
     this.highlightLayer.addChild( this.vertexGrabReleaseCueNode );
     this.highlightLayer.addChild( this.circuitElementGrabReleaseCueNode );
+
+    // Initialize the delete cue node (shown below the cut button when a vertex is selected)
+    this.deleteCueNode = new DeleteCueNode( {
+      visible: false,
+      stringProperty: CircuitConstructionKitCommonStrings.key.toCutStringProperty
+    } );
+    this.buttonLayer.addChild( this.deleteCueNode );
 
     // Listen to focus changes to show/hide and position the cue nodes
     pdomFocusProperty.link( ( focus: Focus | null ) => {

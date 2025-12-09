@@ -86,6 +86,9 @@ type StringsType = {
   'magnitudeStringProperty': LocalizedStringProperty;
   'signedStringProperty': LocalizedStringProperty;
   'dataOutOfRangeStringProperty': LocalizedStringProperty;
+  'key': {
+    'toCutStringProperty': LocalizedStringProperty;
+  };
   'a11y': {
     'screenSummary': {
       'playAreaStringProperty': LocalizedStringProperty;

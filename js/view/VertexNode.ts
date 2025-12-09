@@ -283,7 +283,11 @@ export default class VertexNode extends Node {
       // Show a disabled button as a cue that the vertex could be cuttable, but it isn't right now.
       const isConnectedBlackBoxVertex = numberConnections === 1 && !this.vertex.isDraggableProperty.get();
 
-      this.vertexCutButtonContainer.visible = numberConnections > 1 || isConnectedBlackBoxVertex;
+      const cutButtonVisible = numberConnections > 1 || isConnectedBlackBoxVertex;
+      this.vertexCutButtonContainer.visible = cutButtonVisible;
+
+      // Show the delete cue node when the cut button is visible and the vertex is selected
+      this.circuitNode.deleteCueNode.visible = selected && this.vertex.isCuttableProperty.value && cutButtonVisible;
     }
   }
 
@@ -303,11 +307,15 @@ export default class VertexNode extends Node {
     }
   }
 
-  // update the position of the cut button
+  // update the position of the cut button and delete cue
   private updateVertexCutButtonPosition(): void {
     const bounds = this.circuitNode.visibleBoundsInCircuitCoordinateFrameProperty.get();
     const availableBounds = bounds.eroded( this.vertexCutButtonContainer.width / 2 );
-    this.vertexCutButtonContainer.center = this.circuitNode.vertexCutButton.getPositionForVertex( this.vertex, availableBounds );
+    const buttonCenter = this.circuitNode.vertexCutButton.getPositionForVertex( this.vertex, availableBounds );
+    this.vertexCutButtonContainer.center = buttonCenter;
+
+    // Position the delete cue node directly below the cut button
+    this.circuitNode.deleteCueNode.centerTop = this.vertexCutButtonContainer.centerBottom.plusXY( 0, 5 );
   }
 
   /**
