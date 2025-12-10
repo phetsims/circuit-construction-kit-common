@@ -31,7 +31,6 @@ export default class FixedCircuitElementKeyboardListener extends SoundKeyboardDr
 
     super( {
 
-      // TODO: Some duplication with DragListener, see https://github.com/phetsims/circuit-construction-kit-common/issues/1034
       start: () => {
         circuitElement.isKeyboardDragging = true;
 

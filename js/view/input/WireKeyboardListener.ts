@@ -29,7 +29,6 @@ export default class WireKeyboardListener extends SoundKeyboardDragListener {
 
     super( {
 
-      // TODO: Some duplication with DragListener, see https://github.com/phetsims/circuit-construction-kit-common/issues/1034
       start: () => {
         wire.isKeyboardDragging = true;
         if ( wire.interactiveProperty.get() ) {

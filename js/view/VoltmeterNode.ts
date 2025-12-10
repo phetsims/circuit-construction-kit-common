@@ -338,7 +338,6 @@ export default class VoltmeterNode extends Node {
 
         positionProperty: voltmeter.bodyPositionProperty,
 
-        // TODO: Some duplication with DragListener, see https://github.com/phetsims/circuit-construction-kit-common/issues/1034
         start: () => {
           this.moveToFront();
 
