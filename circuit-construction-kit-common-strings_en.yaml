@@ -160,7 +160,9 @@ a11y:
       accessibleName: Series Ammeter
   circuitElementToolbox:
     accessibleHeading:  Circuit Component Toolbox
-    accessibleHelpText: Grab a circuit component to create it in the construction area.
+    accessibleHelpText: >-
+      Look for components in carousel, add them to Construction Area, and then look for terminals and leads to start
+      connecting.
   advancedAccordionBox:
     accessibleName: Advanced Settings
     addRealBulbsCheckbox:

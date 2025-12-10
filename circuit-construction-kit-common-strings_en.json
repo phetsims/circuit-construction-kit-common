@@ -360,7 +360,7 @@
         "value": "Circuit Component Toolbox"
       },
       "accessibleHelpText": {
-        "value": "Grab a circuit component to create it in the construction area."
+        "value": "Look for components in carousel, add them to Construction Area, and then look for terminals and leads to start connecting."
       }
     },
     "advancedAccordionBox": {
