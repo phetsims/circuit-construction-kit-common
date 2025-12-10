@@ -117,7 +117,7 @@
     "value": "Conventional"
   },
   "tapCircuitElementToEdit": {
-    "value": "Tap circuit element to edit."
+    "value": "Tap circuit component to edit."
   },
   "current": {
     "value": "Current"
@@ -229,16 +229,16 @@
   "a11y": {
     "screenSummary": {
       "playArea": {
-        "value": "There is a toolbox of circuit elements on the left, and a construction area in the center, where\n  you can connect circuit elements to form a circuit. On the right, there is another toolbox with \n  sensors you can \n  use to measure properties like voltage and current."
+        "value": "There is a toolbox of circuit components on the left, and a construction area in the center, where\n  you can connect circuit components to form a circuit. On the right, there is another toolbox with \n  sensors you can \n  use to measure properties like voltage and current."
       },
       "controlArea": {
-        "value": "{ $advancedControls ->\n  [present] Show the current as the flow of electrons or conventional current. Show labels or values on circuit \n              elements. Additionally, change wire resistivity, battery internal resistance, or add real light bulbs \n              to the circuit element toolbox.\n  *[absent] Show the current as the flow of electrons or conventional current. Show labels or values on circuit elements.\n}"
+        "value": "{ $advancedControls ->\n  [present] Show the current as the flow of electrons or conventional current. Show labels or values on circuit \n              elements. Additionally, change wire resistivity, battery internal resistance, or add real light bulbs \n              to the circuit component toolbox.\n  *[absent] Show the current as the flow of electrons or conventional current. Show labels or values on circuit components.\n}"
       },
       "currentDetails": {
-        "value": "Currently, no circuit elements are in the construction area."
+        "value": "Currently, no circuit components are in the construction area."
       },
       "interactionHint": {
-        "value": "Add circuit elements to the construction area, and connect them to begin. Note, you must include at least one Wire in order to connect a circuit."
+        "value": "Add circuit components to the construction area, and connect them to begin. Note, you must include at least one Wire in order to connect a circuit."
       }
     },
     "constructionArea": {
@@ -287,10 +287,10 @@
     },
     "circuitElementToolbox": {
       "accessibleHeading": {
-        "value": "Circuit Element Toolbox"
+        "value": "Circuit Component Toolbox"
       },
       "accessibleHelpText": {
-        "value": "Grab a circuit element to create it in the construction area."
+        "value": "Grab a circuit component to create it in the construction area."
       }
     },
     "advancedAccordionBox": {
@@ -299,10 +299,10 @@
       },
       "addRealBulbsCheckbox": {
         "accessibleContextResponseChecked": {
-          "value": "Real light bulbs added to circuit element toolbox."
+          "value": "Real light bulbs added to circuit component toolbox."
         },
         "accessibleContextResponseUnchecked": {
-          "value": "Real light bulbs removed from circuit element toolbox."
+          "value": "Real light bulbs removed from circuit component toolbox."
         }
       }
     },
@@ -332,10 +332,10 @@
       },
       "labelsCheckbox": {
         "accessibleContextResponseChecked": {
-          "value": "Toolbox labels shown under circuit elements."
+          "value": "Toolbox labels shown under circuit components."
         },
         "accessibleContextResponseUnchecked": {
-          "value": "Toolbox labels hidden under circuit elements."
+          "value": "Toolbox labels hidden under circuit components."
         }
       },
       "valuesCheckbox": {
@@ -343,7 +343,7 @@
           "value": "Circuit element values shown on each component."
         },
         "accessibleContextResponseUnchecked": {
-          "value": "Circuit element values hidden on circuit elements."
+          "value": "Circuit element values hidden on circuit components."
         }
       }
     },
@@ -355,14 +355,14 @@
         "value": "View Type Selection"
       },
       "accessibleHelpText": {
-        "value": "Select the view type for circuit elements"
+        "value": "Select the view type for circuit components"
       },
       "lifelikeRadioButton": {
         "accessibleName": {
           "value": "Lifelike View"
         },
         "accessibleHelpText": {
-          "value": "Show the circuit elements like they would look in real life."
+          "value": "Show the circuit components like they would look in real life."
         },
         "accessibleContextResponse": {
           "value": "Circuit elements displayed with lifelike appearance."
@@ -373,7 +373,7 @@
           "value": "Schematic View"
         },
         "accessibleHelpText": {
-          "value": "Show the circuit elements like they would look in a schematic circuit diagram."
+          "value": "Show the circuit components like they would look in a schematic circuit diagram."
         },
         "accessibleContextResponse": {
           "value": "Circuit elements displayed with schematic symbols."
@@ -451,10 +451,10 @@
           "value": "Edit Circuit Elements"
         },
         "editCircuitElement": {
-          "value": "Edit circuit element"
+          "value": "Edit circuit component"
         },
         "deleteCircuitElement": {
-          "value": "Delete or cut circuit element"
+          "value": "Delete or cut circuit component"
         }
       },
       "focus": {
@@ -462,7 +462,7 @@
           "value": "Focus"
         },
         "focusToolbox": {
-          "value": "Focus circuit element toolbox"
+          "value": "Focus circuit component toolbox"
         },
         "focusConstructionArea": {
           "value": "Focus circuit in construction area"

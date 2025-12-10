@@ -83,8 +83,8 @@ key:
 a11y:
   screenSummary:
     playArea:        |-
-                     There is a toolbox of circuit elements on the left, and a construction area in the center, where
-                       you can connect circuit elements to form a circuit. On the right, there is another toolbox with 
+                     There is a toolbox of circuit components on the left, and a construction area in the center, where
+                       you can connect circuit components to form a circuit. On the right, there is another toolbox with 
                        sensors you can 
                        use to measure properties like voltage and current.
     controlArea:
@@ -92,10 +92,10 @@ a11y:
         present: |-
                  Show the current as the flow of electrons or conventional current. Show labels or values on circuit 
                    elements. Additionally, change wire resistivity, battery internal resistance, or add real light bulbs 
-                   to the circuit element toolbox.
-        absent:  Show the current as the flow of electrons or conventional current. Show labels or values on circuit elements.
-    currentDetails:  Currently, no circuit elements are in the construction area.
-    interactionHint: Add circuit elements to the construction area, and connect them to begin. Note, you must include at least one Wire in order to connect a circuit.
+                   to the circuit component toolbox.
+        absent:  Show the current as the flow of electrons or conventional current. Show labels or values on circuit components.
+    currentDetails:  Currently, no circuit components are in the construction area.
+    interactionHint: Add circuit components to the construction area, and connect them to begin. Note, you must include at least one Wire in order to connect a circuit.
   constructionArea:
     accessibleHeading: Construction Area
   vertexInteraction:
@@ -125,13 +125,13 @@ a11y:
   sensorToolbox:
     accessibleHeading: Sensor Toolbox
   circuitElementToolbox:
-    accessibleHeading:  Circuit Element Toolbox
-    accessibleHelpText: Grab a circuit element to create it in the construction area.
+    accessibleHeading:  Circuit Component Toolbox
+    accessibleHelpText: Grab a circuit component to create it in the construction area.
   advancedAccordionBox:
     accessibleName: Advanced Settings
     addRealBulbsCheckbox:
-      accessibleContextResponseChecked:   Real light bulbs added to circuit element toolbox.
-      accessibleContextResponseUnchecked: Real light bulbs removed from circuit element toolbox.
+      accessibleContextResponseChecked:   Real light bulbs added to circuit component toolbox.
+      accessibleContextResponseUnchecked: Real light bulbs removed from circuit component toolbox.
   displayOptionsPanel:
     accessibleHeading: Display Options
     showCurrentCheckbox:
@@ -149,22 +149,22 @@ a11y:
       conventionalRadioButton:
         accessibleContextResponse: Current animation shows conventional current arrows.
     labelsCheckbox:
-      accessibleContextResponseChecked:   Toolbox labels shown under circuit elements.
-      accessibleContextResponseUnchecked: Toolbox labels hidden under circuit elements.
+      accessibleContextResponseChecked:   Toolbox labels shown under circuit components.
+      accessibleContextResponseUnchecked: Toolbox labels hidden under circuit components.
     valuesCheckbox:
       accessibleContextResponseChecked:   Circuit element values shown on each component.
-      accessibleContextResponseUnchecked: Circuit element values hidden on circuit elements.
+      accessibleContextResponseUnchecked: Circuit element values hidden on circuit components.
   viewRadioButtonGroup:
     accessibleHeading:  View Type
     accessibleName:     View Type Selection
-    accessibleHelpText: Select the view type for circuit elements
+    accessibleHelpText: Select the view type for circuit components
     lifelikeRadioButton:
       accessibleName:            Lifelike View
-      accessibleHelpText:        Show the circuit elements like they would look in real life.
+      accessibleHelpText:        Show the circuit components like they would look in real life.
       accessibleContextResponse: Circuit elements displayed with lifelike appearance.
     schematicRadioButton:
       accessibleName:            Schematic View
-      accessibleHelpText:        Show the circuit elements like they would look in a schematic circuit diagram.
+      accessibleHelpText:        Show the circuit components like they would look in a schematic circuit diagram.
       accessibleContextResponse: Circuit elements displayed with schematic symbols.
   circuitElementToolNode:
     accessibleHelpText: Drag this tool to the circuit to create a new { a11y.circuitElement.accessibleName }.
@@ -280,11 +280,11 @@ a11y:
         labelInnerContent: Press Space or Enter again to complete the connection, or to detach.
     editCircuitElements:
       heading:            Edit Circuit Elements
-      editCircuitElement: Edit circuit element
-      deleteCircuitElement: Delete or cut circuit element
+      editCircuitElement: Edit circuit component
+      deleteCircuitElement: Delete or cut circuit component
     focus:
       heading:               Focus
-      focusToolbox:          Focus circuit element toolbox
+      focusToolbox:          Focus circuit component toolbox
       focusConstructionArea: Focus circuit in construction area
 
     # For connecting junctions or attaching a voltmeter probe or ammeter probe
