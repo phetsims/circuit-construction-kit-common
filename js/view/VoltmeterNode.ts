@@ -109,8 +109,6 @@ export default class VoltmeterNode extends Node {
     }, providedOptions );
 
     const blackProbeNode = new Rectangle( -2, -2, 4, 4, { // the hit area
-      // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/1034
-      // @ts-expect-error
       fill: CCKCQueryParameters.showVoltmeterSamplePoints ? Color.BLACK : null,
       cursor: 'pointer',
       children: [ new Image( probeBlack_png, {
@@ -122,13 +120,11 @@ export default class VoltmeterNode extends Node {
         x: -9.5,
         y: -5
       } ) ],
-      ...( isIcon ? [] : AccessibleDraggableOptions )
+      ...( isIcon ? {} : AccessibleDraggableOptions )
     } );
 
     // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/1034 factor out probe node
     const redProbeNode = new Rectangle( -2, -2, 4, 4, { // the hit area
-      // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/1034
-      // @ts-expect-error
       fill: CCKCQueryParameters.showVoltmeterSamplePoints ? Color.RED : null,
       cursor: 'pointer',
       children: [ new Image( probeRed_png, {
@@ -140,7 +136,7 @@ export default class VoltmeterNode extends Node {
         x: -11,
         y: +4
       } ) ],
-      ...( isIcon ? [] : AccessibleDraggableOptions )
+      ...( isIcon ? {} : AccessibleDraggableOptions )
     } );
 
     // Displays the voltage reading
