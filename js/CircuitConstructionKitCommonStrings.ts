@@ -122,6 +122,16 @@ type StringsType = {
     'constructionArea': {
       'accessibleHeadingStringProperty': LocalizedStringProperty;
     };
+    'constructionAreaStatus': {
+      'leadingNoCircuitStringProperty': LocalizedStringProperty;
+      'leadingCircuitActiveStringProperty': LocalizedStringProperty;
+      'wireCountStringProperty': LocalizedStringProperty;
+      'additionalComponentCountStringProperty': LocalizedStringProperty;
+      'connectionCountStringProperty': LocalizedStringProperty;
+      'helpTextCase1StringProperty': LocalizedStringProperty;
+      'helpTextCase2StringProperty': LocalizedStringProperty;
+      'helpTextCase3StringProperty': LocalizedStringProperty;
+    };
     'vertexInteraction': {
       'noNewAttachmentStringProperty': LocalizedStringProperty;
     };

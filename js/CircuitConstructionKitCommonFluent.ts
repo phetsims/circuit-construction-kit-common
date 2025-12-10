@@ -112,6 +112,14 @@ addToMapIfDefined( 'a11y_screenSummary_controlArea', 'a11y.screenSummary.control
 addToMapIfDefined( 'a11y_screenSummary_currentDetails', 'a11y.screenSummary.currentDetailsStringProperty' );
 addToMapIfDefined( 'a11y_screenSummary_interactionHint', 'a11y.screenSummary.interactionHintStringProperty' );
 addToMapIfDefined( 'a11y_constructionArea_accessibleHeading', 'a11y.constructionArea.accessibleHeadingStringProperty' );
+addToMapIfDefined( 'a11y_constructionAreaStatus_leadingNoCircuit', 'a11y.constructionAreaStatus.leadingNoCircuitStringProperty' );
+addToMapIfDefined( 'a11y_constructionAreaStatus_leadingCircuitActive', 'a11y.constructionAreaStatus.leadingCircuitActiveStringProperty' );
+addToMapIfDefined( 'a11y_constructionAreaStatus_wireCount', 'a11y.constructionAreaStatus.wireCountStringProperty' );
+addToMapIfDefined( 'a11y_constructionAreaStatus_additionalComponentCount', 'a11y.constructionAreaStatus.additionalComponentCountStringProperty' );
+addToMapIfDefined( 'a11y_constructionAreaStatus_connectionCount', 'a11y.constructionAreaStatus.connectionCountStringProperty' );
+addToMapIfDefined( 'a11y_constructionAreaStatus_helpTextCase1', 'a11y.constructionAreaStatus.helpTextCase1StringProperty' );
+addToMapIfDefined( 'a11y_constructionAreaStatus_helpTextCase2', 'a11y.constructionAreaStatus.helpTextCase2StringProperty' );
+addToMapIfDefined( 'a11y_constructionAreaStatus_helpTextCase3', 'a11y.constructionAreaStatus.helpTextCase3StringProperty' );
 addToMapIfDefined( 'a11y_vertexInteraction_noNewAttachment', 'a11y.vertexInteraction.noNewAttachmentStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_vertexDefaultLabel', 'a11y.circuitContextResponses.vertexDefaultLabelStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_connectedElements', 'a11y.circuitContextResponses.connectedElementsStringProperty' );
@@ -297,6 +305,16 @@ const CircuitConstructionKitCommonFluent = {
     },
     constructionArea: {
       accessibleHeadingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_constructionArea_accessibleHeading', _.get( CircuitConstructionKitCommonStrings, 'a11y.constructionArea.accessibleHeadingStringProperty' ) )
+    },
+    constructionAreaStatus: {
+      leadingNoCircuitStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_constructionAreaStatus_leadingNoCircuit', _.get( CircuitConstructionKitCommonStrings, 'a11y.constructionAreaStatus.leadingNoCircuitStringProperty' ) ),
+      leadingCircuitActive: new FluentPattern<{ currentLevel: 'low' | 'medium' | 'high' | TReadOnlyProperty<'low' | 'medium' | 'high'> }>( fluentSupport.bundleProperty, 'a11y_constructionAreaStatus_leadingCircuitActive', _.get( CircuitConstructionKitCommonStrings, 'a11y.constructionAreaStatus.leadingCircuitActiveStringProperty' ), [{"name":"currentLevel","variants":["low","medium","high"]}] ),
+      wireCount: new FluentPattern<{ count: number | 'one' | number | 'other' | TReadOnlyProperty<number | 'one' | number | 'other'> }>( fluentSupport.bundleProperty, 'a11y_constructionAreaStatus_wireCount', _.get( CircuitConstructionKitCommonStrings, 'a11y.constructionAreaStatus.wireCountStringProperty' ), [{"name":"count","variants":[{"type":"number","value":"one"},{"type":"number","value":"other"}]}] ),
+      additionalComponentCount: new FluentPattern<{ count: number | 'one' | number | 'other' | TReadOnlyProperty<number | 'one' | number | 'other'> }>( fluentSupport.bundleProperty, 'a11y_constructionAreaStatus_additionalComponentCount', _.get( CircuitConstructionKitCommonStrings, 'a11y.constructionAreaStatus.additionalComponentCountStringProperty' ), [{"name":"count","variants":[{"type":"number","value":"one"},{"type":"number","value":"other"}]}] ),
+      connectionCount: new FluentPattern<{ count: number | 'zero' | number | 'one' | number | 'other' | TReadOnlyProperty<number | 'zero' | number | 'one' | number | 'other'> }>( fluentSupport.bundleProperty, 'a11y_constructionAreaStatus_connectionCount', _.get( CircuitConstructionKitCommonStrings, 'a11y.constructionAreaStatus.connectionCountStringProperty' ), [{"name":"count","variants":[{"type":"number","value":"zero"},{"type":"number","value":"one"},{"type":"number","value":"other"}]}] ),
+      helpTextCase1StringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_constructionAreaStatus_helpTextCase1', _.get( CircuitConstructionKitCommonStrings, 'a11y.constructionAreaStatus.helpTextCase1StringProperty' ) ),
+      helpTextCase2StringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_constructionAreaStatus_helpTextCase2', _.get( CircuitConstructionKitCommonStrings, 'a11y.constructionAreaStatus.helpTextCase2StringProperty' ) ),
+      helpTextCase3StringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_constructionAreaStatus_helpTextCase3', _.get( CircuitConstructionKitCommonStrings, 'a11y.constructionAreaStatus.helpTextCase3StringProperty' ) )
     },
     vertexInteraction: {
       noNewAttachmentStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_vertexInteraction_noNewAttachment', _.get( CircuitConstructionKitCommonStrings, 'a11y.vertexInteraction.noNewAttachmentStringProperty' ) )

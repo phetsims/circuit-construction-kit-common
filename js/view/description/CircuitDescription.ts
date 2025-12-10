@@ -436,6 +436,10 @@ export default class CircuitDescription {
 
       // Build construction area PDOM order
       const constructionAreaPDOMOrder: Node[] = [];
+
+      // Add status node first (shows counts and help text)
+      constructionAreaPDOMOrder.push( circuitNode.constructionAreaStatusNode );
+
       if ( circuitNode.unconnectedCircuitElementsSection.visible ) {
         constructionAreaPDOMOrder.push( circuitNode.unconnectedCircuitElementsSection );
       }

@@ -301,6 +301,32 @@
         "value": "Construction Area"
       }
     },
+    "constructionAreaStatus": {
+      "leadingNoCircuit": {
+        "value": "No circuit yet:"
+      },
+      "leadingCircuitActive": {
+        "value": "{ $currentLevel ->\n  [low] In circuit, electrons flow slowly, lightbulb glows dimly. Circuit has:\n  [medium] In circuit, electrons flow at medium speed, lightbulb glows moderately. Circuit has:\n  *[high] In circuit, electrons flow quickly, lightbulb glows brightly. Circuit has:\n}"
+      },
+      "wireCount": {
+        "value": "{ $count ->\n  [one] { $count } wire\n  *[other] { $count } wires\n}"
+      },
+      "additionalComponentCount": {
+        "value": "{ $count ->\n  [one] { $count } additional circuit component\n  *[other] { $count } additional circuit components\n}"
+      },
+      "connectionCount": {
+        "value": "{ $count ->\n  [zero] { $count } connections\n  [one] { $count } connection\n  *[other] { $count } connections\n}"
+      },
+      "helpTextCase1": {
+        "value": "Add Circuit Components. You need a wire and at least 2 additional components to build a circuit. Check out Keyboard Shortcuts for more details."
+      },
+      "helpTextCase2": {
+        "value": "Look for leads and terminals on any component and hit Space to pop up options for making a junction. Disconnect junctions or remove components with Delete key. Check out Keyboard Shortcuts for more details."
+      },
+      "helpTextCase3": {
+        "value": "Look for components and hit Space to pop up options for editing. Remove selected component with Delete key. Check out Keyboard Shortcuts for more details."
+      }
+    },
     "vertexInteraction": {
       "noNewAttachment": {
         "value": "No new attachment"

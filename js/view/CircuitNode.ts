@@ -68,6 +68,7 @@ import CustomLightBulbNode from './CustomLightBulbNode.js';
 import CutButton from './CutButton.js';
 import DeleteCueNode from './DeleteCueNode.js';
 import CircuitDescription from './description/CircuitDescription.js';
+import ConstructionAreaStatusNode from './description/ConstructionAreaStatusNode.js';
 import FixedCircuitElementNode from './FixedCircuitElementNode.js';
 import FuseNode from './FuseNode.js';
 import InductorNode from './InductorNode.js';
@@ -157,6 +158,7 @@ export default class CircuitNode extends Node {
   public readonly unconnectedCircuitElementsSection: Node;
   public readonly groupsContainer: Node;
   public readonly constructionAreaContainer: Node;
+  public readonly constructionAreaStatusNode: ConstructionAreaStatusNode;
 
   // Cue nodes to show the user how to grab vertices and circuit elements
   private readonly vertexGrabReleaseCueNode: GrabReleaseCueNode;
@@ -646,6 +648,10 @@ export default class CircuitNode extends Node {
 
     this.groupsContainer = new Node( {} );
 
+    // Status node shows counts of wires, components, and connections with contextual help
+    this.constructionAreaStatusNode = new ConstructionAreaStatusNode( circuit );
+
+    this.constructionAreaContainer.addChild( this.constructionAreaStatusNode );
     this.constructionAreaContainer.addChild( this.unconnectedCircuitElementsSection );
     this.constructionAreaContainer.addChild( this.groupsContainer );
 
