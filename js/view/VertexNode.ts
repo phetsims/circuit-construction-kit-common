@@ -16,7 +16,6 @@ import Circle, { type CircleOptions } from '../../../scenery/js/nodes/Circle.js'
 import Node from '../../../scenery/js/nodes/Node.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import Color from '../../../scenery/js/util/Color.js';
-import { rasterizeNode } from '../../../scenery/js/util/rasterizeNode.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
@@ -39,12 +38,16 @@ const CIRCLE_OPTIONS = {
   lineWidth: 1.3,
   lineDash: [ 6, 4 ]
 };
-const RED_CIRCLE_NODE = rasterizeNode( new Circle( VERTEX_RADIUS, combineOptions<CircleOptions>( {
-  stroke: Color.RED
-}, CIRCLE_OPTIONS ) ), { wrap: false } );
-const BLACK_CIRCLE_NODE = rasterizeNode( new Circle( VERTEX_RADIUS, combineOptions<CircleOptions>( {
-  stroke: Color.BLACK
-}, CIRCLE_OPTIONS ) ), { wrap: false } );
+const RED_CIRCLE_NODE = new Node( {
+  children: [ new Circle( VERTEX_RADIUS, combineOptions<CircleOptions>( {
+    stroke: Color.RED
+  }, CIRCLE_OPTIONS ) ) ]
+} );
+const BLACK_CIRCLE_NODE = new Node( {
+  children: [ new Circle( VERTEX_RADIUS, combineOptions<CircleOptions>( {
+    stroke: Color.BLACK
+  }, CIRCLE_OPTIONS ) ) ]
+} );
 
 export default class VertexNode extends Node {
   private readonly circuit: Circuit;
