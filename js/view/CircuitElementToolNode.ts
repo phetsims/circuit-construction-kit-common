@@ -24,6 +24,7 @@ import type Node from '../../../scenery/js/nodes/Node.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import type Circuit from '../model/Circuit.js';
 import type CircuitElement from '../model/CircuitElement.js';
 import type CircuitElementType from '../model/CircuitElementType.js';
@@ -98,21 +99,9 @@ export default class CircuitElementToolNode extends VBox {
       ghostOpacity: 0.4,
 
       tagName: 'button',
-      accessibleName: labelStringProperty
-
-      // accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.circuitElementToolNode.accessibleHelpText.createProperty( {
-      //   type: circuitElementType,
-      //   voltage: 0,
-      //   resistance: 0,
-      //   displayMode: 'name',
-      //   capacitance: 0,
-      //   inductance: 0,
-      //   switchState: 'open',
-      //   hasPosition: 'false',
-      //   position: 0,
-      //   total: 0
-      // } ),
-      // accessibleHelpTextBehavior: ParallelDOM.HELP_TEXT_AFTER_CONTENT
+      accessibleName: CircuitConstructionKitCommonFluent.a11y.circuitElementToolbox.toolAccessibleName.createProperty( {
+        componentName: labelStringProperty
+      } )
     }, providedOptions );
 
     super( options );

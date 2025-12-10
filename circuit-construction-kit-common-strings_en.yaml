@@ -163,6 +163,7 @@ a11y:
     accessibleHelpText: >-
       Look for components in carousel, add them to Construction Area, and then look for terminals and leads to start
       connecting.
+    toolAccessibleName: 'Add { $componentName }'
   advancedAccordionBox:
     accessibleName: Advanced Settings
     addRealBulbsCheckbox:

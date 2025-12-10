@@ -361,6 +361,9 @@
       },
       "accessibleHelpText": {
         "value": "Look for components in carousel, add them to Construction Area, and then look for terminals and leads to start connecting."
+      },
+      "toolAccessibleName": {
+        "value": "Add { $componentName }"
       }
     },
     "advancedAccordionBox": {
