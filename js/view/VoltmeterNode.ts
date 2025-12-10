@@ -39,8 +39,8 @@ import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommon
 import type CircuitConstructionKitModel from '../model/CircuitConstructionKitModel.js';
 import type Voltmeter from '../model/Voltmeter.js';
 import type CircuitNode from './CircuitNode.js';
-import ProbeTextNode from './ProbeTextNode.js';
 import VoltmeterProbeNodeAttachmentKeyboardListener from './input/VoltmeterProbeNodeAttachmentKeyboardListener.js';
+import ProbeTextNode from './ProbeTextNode.js';
 
 const voltageStringProperty = CircuitConstructionKitCommonStrings.voltageStringProperty;
 
@@ -362,10 +362,6 @@ export default class VoltmeterNode extends Node {
 
         dragSpeed: CCKCConstants.KEYBOARD_DRAG_SPEED,
         shiftDragSpeed: CCKCConstants.SHIFT_KEYBOARD_DRAG_SPEED
-
-        // TODO: phet-io see https://github.com/phetsims/circuit-construction-kit-common/issues/1034
-        // tandem: tandem
-
       } ) );
 
       /**
