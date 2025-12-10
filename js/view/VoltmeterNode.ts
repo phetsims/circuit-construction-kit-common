@@ -104,9 +104,6 @@ export default class VoltmeterNode extends Node {
 
       tagName: isIcon ? null : 'div',
       focusable: !isIcon,
-
-      // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/1034
-      // eslint-disable-next-line phet/no-object-spread-on-non-literals
       ...( isIcon ? [] : AccessibleDraggableOptions )
 
     }, providedOptions );
@@ -125,7 +122,6 @@ export default class VoltmeterNode extends Node {
         x: -9.5,
         y: -5
       } ) ],
-      // eslint-disable-next-line phet/no-object-spread-on-non-literals
       ...( isIcon ? [] : AccessibleDraggableOptions )
     } );
 
@@ -144,8 +140,6 @@ export default class VoltmeterNode extends Node {
         x: -11,
         y: +4
       } ) ],
-      // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/1034
-      // eslint-disable-next-line phet/no-object-spread-on-non-literals
       ...( isIcon ? [] : AccessibleDraggableOptions )
     } );
 

@@ -160,8 +160,6 @@ export default class AmmeterNode extends Node {
           fill: '#e79547' // Match the orange of the ammeter image
         } )
       ],
-      // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/1034
-      // eslint-disable-next-line phet/no-object-spread-on-non-literals
       ...( options.isIcon ? [] : AccessibleDraggableOptions )
     } );
 

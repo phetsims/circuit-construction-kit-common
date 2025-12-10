@@ -60,7 +60,7 @@ export default abstract class CircuitElementNode extends Node {
 
       providedOptions = optionize<CircuitElementNodeOptions, SelfOptions, NodeOptions>()( {
 
-        // eslint-disable-next-line phet/no-object-spread-on-non-literals
+         
         ...AccessibleDraggableOptions,
         tagName: 'div', // HTML tag name for representative element in the document, see ParallelDOM.js
         focusable: true,
