@@ -9,6 +9,7 @@
 
 import affirm from '../../../../perennial-alias/js/browser-and-node/affirm.js';
 import CCKCConstants from '../../CCKCConstants.js';
+import CCKCQueryParameters from '../../CCKCQueryParameters.js';
 import CCKCUtils from '../../CCKCUtils.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import Capacitor from '../Capacitor.js';
@@ -23,12 +24,15 @@ import Switch from '../Switch.js';
 import type Vertex from '../Vertex.js';
 import VoltageSource from '../VoltageSource.js';
 import Wire from '../Wire.js';
+import EEcircuitSolverManager from './EEcircuitSolverManager.js';
 import LTACapacitor from './LTACapacitor.js';
 import LTACircuit from './LTACircuit.js';
 import LTAInductor from './LTAInductor.js';
 import LTAResistiveBattery from './LTAResistiveBattery.js';
 import type LTAState from './LTAState.js';
+import MNABattery from './mna/MNABattery.js';
 import MNAResistor from './mna/MNAResistor.js';
+import type MNASolution from './mna/MNASolution.js';
 import TimestepSubdivisions from './TimestepSubdivisions.js';
 
 // constants
@@ -42,6 +46,248 @@ export default class LinearTransientAnalysis {
    * Solves the system with Modified Nodal Analysis, and apply the results back to the Circuit.
    */
   public static solveModifiedNodalAnalysis( circuit: Circuit, dt: number ): void {
+
+    // Branch based on solver selection
+    if ( CCKCQueryParameters.solver === 'eecircuit' ) {
+      this.solveWithEEcircuit( circuit );
+    }
+    else {
+      this.solveWithPhetMNA( circuit, dt );
+    }
+  }
+
+  /**
+   * Solve using EEcircuit SPICE solver (async with buffering).
+   * Currently supports DC circuits only (batteries + resistors).
+   */
+  private static solveWithEEcircuit( circuit: Circuit ): void {
+
+    // Build arrays of MNA elements for the solver
+    const batteries: MNABattery[] = [];
+    const resistors: MNAResistor[] = [];
+
+    // Maps to apply results back to circuit elements
+    const batteryMap = new Map<string, VoltageSource>(); // nodeId0_nodeId1 -> VoltageSource
+    const batteryMNAMap = new Map<string, MNABattery>(); // nodeId0_nodeId1 -> MNABattery (for current lookup)
+    const resistorMap = new Map<string, CircuitElement>(); // nodeId0_nodeId1 -> CircuitElement
+
+    // Identify non-participants (elements not in a loop with voltage source)
+    const nonParticipants: CircuitElement[] = [];
+
+    for ( const circuitElement of circuit.circuitElements ) {
+      const inLoop = circuit.isInLoop( circuitElement );
+
+      if ( !inLoop ) {
+        nonParticipants.push( circuitElement );
+        continue;
+      }
+
+      if ( !circuitElement.isTraversibleProperty.value ) {
+        // Cannot participate (e.g., open switch)
+        continue;
+      }
+
+      const nodeId0 = circuitElement.startVertexProperty.value.index + '';
+      const nodeId1 = circuitElement.endVertexProperty.value.index + '';
+
+      if ( circuitElement instanceof VoltageSource ) {
+        // Create MNA battery (ideal, no internal resistance for now)
+        const battery = new MNABattery( nodeId0, nodeId1, circuitElement.voltageProperty.value );
+        batteries.push( battery );
+        const key = `${nodeId0}_${nodeId1}`;
+        batteryMap.set( key, circuitElement );
+        batteryMNAMap.set( key, battery );
+
+        // If battery has internal resistance, add it as a resistor
+        if ( circuitElement.internalResistanceProperty.value > 0 ) {
+          // For internal resistance, we'd need a synthetic node - skip for MVP
+        }
+      }
+      else if ( circuitElement instanceof Resistor ||
+                circuitElement instanceof Wire ||
+                circuitElement instanceof LightBulb ||
+                circuitElement instanceof SeriesAmmeter ||
+                circuitElement instanceof Switch ||
+                circuitElement instanceof Fuse ) {
+
+        const resistance = circuitElement.resistanceProperty.value || CCKCConstants.MINIMUM_RESISTANCE;
+        const resistor = new MNAResistor( nodeId0, nodeId1, resistance );
+        resistors.push( resistor );
+        resistorMap.set( `${nodeId0}_${nodeId1}`, circuitElement );
+      }
+      else if ( circuitElement instanceof Capacitor || circuitElement instanceof Inductor ) {
+        // Skip capacitors/inductors for DC-only MVP
+        // Treat them as open circuits (don't add to solver)
+        nonParticipants.push( circuitElement );
+      }
+    }
+
+    // Request async solve - pass the maps so they're stored with the solution
+    EEcircuitSolverManager.instance.requestSolve( batteries, resistors, batteryMap, batteryMNAMap, resistorMap, nonParticipants );
+
+    // Get cached result (from previous frame) - includes solution AND the maps that go with it
+    const cachedResult = EEcircuitSolverManager.instance.getCachedResult();
+
+    if ( cachedResult ) {
+      // Apply solution using the maps that were captured when the solve was requested
+      this.applyEEcircuitSolution(
+        circuit,
+        cachedResult.solution,
+        cachedResult.batteryMap,
+        cachedResult.batteryMNAMap,
+        cachedResult.resistorMap,
+        cachedResult.nonParticipants
+      );
+    }
+    else {
+      // No solution yet (first frame) - zero out everything
+      for ( const circuitElement of circuit.circuitElements ) {
+        circuitElement.currentProperty.value = 0;
+      }
+    }
+  }
+
+  /**
+   * Apply EEcircuit solution back to the circuit elements.
+   */
+  private static applyEEcircuitSolution(
+    circuit: Circuit,
+    solution: MNASolution,
+    batteryMap: Map<string, VoltageSource>,
+    batteryMNAMap: Map<string, MNABattery>,
+    resistorMap: Map<string, CircuitElement>,
+    nonParticipants: CircuitElement[]
+  ): void {
+
+    // Apply currents to batteries
+    for ( const [ key, voltageSource ] of batteryMap ) {
+      const mnaBattery = batteryMNAMap.get( key );
+      if ( mnaBattery ) {
+        // Get the solved current directly from the solution
+        const current = solution.getSolvedCurrent( mnaBattery );
+        voltageSource.currentProperty.value = current;
+      }
+      else {
+        voltageSource.currentProperty.value = 0;
+      }
+    }
+
+    // Apply currents to resistors
+    for ( const [ key, circuitElement ] of resistorMap ) {
+      const [ nodeId0, nodeId1 ] = key.split( '_' );
+      const v0 = solution.getNodeVoltage( nodeId0 );
+      const v1 = solution.getNodeVoltage( nodeId1 );
+
+      affirm( v0 !== undefined, `v0 is undefined for nodeId0=${nodeId0}` );
+      affirm( v1 !== undefined, `v1 is undefined for nodeId1=${nodeId1}` );
+
+      // Get resistance from the circuit element (all resistor-like elements have resistanceProperty)
+      let resistance = CCKCConstants.MINIMUM_RESISTANCE;
+      if ( circuitElement instanceof Resistor ||
+           circuitElement instanceof Wire ||
+           circuitElement instanceof LightBulb ||
+           circuitElement instanceof Switch ||
+           circuitElement instanceof Fuse ) {
+        resistance = circuitElement.resistanceProperty.value || CCKCConstants.MINIMUM_RESISTANCE;
+      }
+      else if ( circuitElement instanceof SeriesAmmeter ) {
+        resistance = CCKCConstants.MINIMUM_RESISTANCE; // Ammeter has ~0 resistance
+      }
+
+      // Current from Ohm's law: I = V/R
+      // Note: sign convention - current flows from high to low potential
+      const current = -( v1 - v0 ) / resistance;
+      circuitElement.currentProperty.value = current;
+    }
+
+    // Zero out non-participants
+    for ( const circuitElement of nonParticipants ) {
+      circuitElement.currentProperty.value = 0;
+    }
+
+    // Apply node voltages to vertices
+    const solvedVertices: Vertex[] = [];
+    const unsolvedVertices: Vertex[] = [];
+
+    circuit.vertexGroup.forEach( vertex => {
+      const nodeId = vertex.index + '';
+      const voltage = solution.getNodeVoltage( nodeId );
+
+      if ( typeof voltage === 'number' && !isNaN( voltage ) ) {
+        // EEcircuit uses standard SPICE convention, PhET negates
+        vertex.voltageProperty.value = voltage;
+        solvedVertices.push( vertex );
+      }
+      else {
+        unsolvedVertices.push( vertex );
+      }
+    } );
+
+    // Propagate voltages to unsolved vertices via DFS
+    this.propagateVoltages( circuit, solvedVertices, unsolvedVertices );
+  }
+
+  /**
+   * Propagate voltages from solved to unsolved vertices.
+   */
+  private static propagateVoltages( circuit: Circuit, solvedVertices: Vertex[], unsolvedVertices: Vertex[] ): void {
+    const visited: Vertex[] = [];
+
+    const visitVoltage = ( startVertex: Vertex, circuitElement: CircuitElement, endVertex: Vertex ) => {
+      if ( solvedVertices.includes( endVertex ) ) {
+        return;
+      }
+
+      const sign = startVertex === circuitElement.startVertexProperty.value ? 1 : -1;
+
+      if ( !circuitElement.isTraversibleProperty.value ) {
+        // no-op
+      }
+      else if ( circuitElement instanceof Resistor ||
+                circuitElement instanceof Wire ||
+                circuitElement instanceof LightBulb ||
+                circuitElement instanceof Switch ||
+                circuitElement instanceof Fuse ||
+                circuitElement instanceof SeriesAmmeter ) {
+        // Zero current means zero voltage drop
+        endVertex.voltageProperty.value = startVertex.voltageProperty.value;
+        solvedVertices.push( endVertex );
+      }
+      else if ( circuitElement instanceof VoltageSource ) {
+        endVertex.voltageProperty.value = startVertex.voltageProperty.value + sign * circuitElement.voltageProperty.value;
+        solvedVertices.push( endVertex );
+      }
+      else if ( circuitElement instanceof Capacitor || circuitElement instanceof Inductor ) {
+        endVertex.voltageProperty.value = startVertex.voltageProperty.value - sign * circuitElement.mnaVoltageDrop;
+        solvedVertices.push( endVertex );
+      }
+    };
+
+    const dfs = ( vertex: Vertex ) => {
+      visited.push( vertex );
+      for ( const circuitElement of circuit.circuitElements ) {
+        if ( circuitElement.containsVertex( vertex ) ) {
+          const opposite = circuitElement.getOppositeVertex( vertex );
+          if ( !visited.includes( opposite ) && circuitElement.isTraversibleProperty.value ) {
+            visitVoltage( vertex, circuitElement, opposite );
+            dfs( opposite );
+          }
+        }
+      }
+    };
+
+    const allVertices = [ ...solvedVertices, ...unsolvedVertices ];
+    for ( const vertex of allVertices ) {
+      if ( !visited.includes( vertex ) ) {
+        dfs( vertex );
+      }
+    }
+  }
+
+  /**
+   * Solve using PhET's in-house MNA solver (original implementation).
+   */
+  private static solveWithPhetMNA( circuit: Circuit, dt: number ): void {
 
     const ltaBatteries = [];
     const ltaResistors = [];
