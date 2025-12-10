@@ -101,18 +101,13 @@ a11y:
     group:                        Group
     emptyConstructionAreaMessage: Create circuit elements to get started
   screenSummary:
-    playArea:        |-
-                     There is a toolbox of circuit components on the left, and a construction area in the center, where
-                       you can connect circuit components to form a circuit. On the right, there is another toolbox with 
-                       sensors you can 
-                       use to measure properties like voltage and current.
-    controlArea:
-      select_advancedControls:
-        present: |-
-                 Show the current as the flow of electrons or conventional current. Show labels or values on circuit 
-                   elements. Additionally, change wire resistivity, battery internal resistance, or add real light bulbs 
-                   to the circuit component toolbox.
-        absent:  Show the current as the flow of electrons or conventional current. Show labels or values on circuit components.
+    playArea: >-
+      A Construction Area creates a building space for components added from a Circuit Components carousel. Build and
+      navigate your circuits there. A Voltmeter and Ammeter can be found in the Measurement Tools toolbox. Display
+      Options provide ways to add and remove visual information from components in the Construction Area.
+    controlArea: >-
+      There's an option to choose between a Lifelike View or a Schematic View for any components and circuits, and you
+      can Reset All to clear everything and start over.
     currentDetails:  Currently, no circuit components are in the construction area.
     interactionHint: Add circuit components to the construction area, and connect them to begin. Note, you must include at least one Wire in order to connect a circuit.
   constructionArea:

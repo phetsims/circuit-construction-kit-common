@@ -18,9 +18,7 @@ export default class CCKCScreenSummaryContent extends ScreenSummaryContent {
   public constructor( model: CircuitConstructionKitModel, screenView: CCKCScreenView ) {
     super( {
       playAreaContent: CircuitConstructionKitCommonFluent.a11y.screenSummary.playAreaStringProperty,
-      controlAreaContent: CircuitConstructionKitCommonFluent.a11y.screenSummary.controlArea.createProperty( {
-        advancedControls: screenView.showAdvancedControls ? 'present' : 'absent'
-      } ),
+      controlAreaContent: CircuitConstructionKitCommonFluent.a11y.screenSummary.controlAreaStringProperty,
       currentDetailsContent: CircuitConstructionKitCommonFluent.a11y.screenSummary.currentDetailsStringProperty,
       interactionHintContent: CircuitConstructionKitCommonFluent.a11y.screenSummary.interactionHintStringProperty
     } );

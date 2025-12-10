@@ -284,10 +284,10 @@
     },
     "screenSummary": {
       "playArea": {
-        "value": "There is a toolbox of circuit components on the left, and a construction area in the center, where\n  you can connect circuit components to form a circuit. On the right, there is another toolbox with \n  sensors you can \n  use to measure properties like voltage and current."
+        "value": "A Construction Area creates a building space for components added from a Circuit Components carousel. Build and navigate your circuits there. A Voltmeter and Ammeter can be found in the Measurement Tools toolbox. Display Options provide ways to add and remove visual information from components in the Construction Area."
       },
       "controlArea": {
-        "value": "{ $advancedControls ->\n  [present] Show the current as the flow of electrons or conventional current. Show labels or values on circuit \n              elements. Additionally, change wire resistivity, battery internal resistance, or add real light bulbs \n              to the circuit component toolbox.\n  *[absent] Show the current as the flow of electrons or conventional current. Show labels or values on circuit components.\n}"
+        "value": "There's an option to choose between a Lifelike View or a Schematic View for any components and circuits, and you can Reset All to clear everything and start over."
       },
       "currentDetails": {
         "value": "Currently, no circuit components are in the construction area."
