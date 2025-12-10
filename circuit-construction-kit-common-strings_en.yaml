@@ -149,8 +149,8 @@ a11y:
       conventionalRadioButton:
         accessibleContextResponse: Current animation shows conventional current arrows.
     labelsCheckbox:
-      accessibleContextResponseChecked:   Toolbox labels shown under circuit components.
-      accessibleContextResponseUnchecked: Toolbox labels hidden under circuit components.
+      accessibleContextResponseChecked:   Labels shown under circuit components.
+      accessibleContextResponseUnchecked: Labels hidden under circuit components.
     valuesCheckbox:
       accessibleContextResponseChecked:   Circuit element values shown on each component.
       accessibleContextResponseUnchecked: Circuit element values hidden on circuit components.
@@ -261,6 +261,8 @@ a11y:
           select_switchState:
             closed: 'This switch is closed. Press Space or Enter to open the switch.'
             open:   'This switch is open. Press Space or Enter to close the switch.'
+
+  # TODO: Move some of this outside of a11y key
   keyboardHelpDialog:
     addElements:
       heading: Add Circuit Elements
@@ -279,13 +281,13 @@ a11y:
         label:             Attach junctions
         labelInnerContent: Press Space or Enter again to complete the connection, or to detach.
     editCircuitElements:
-      heading:            Edit Circuit Elements
-      editCircuitElement: Edit circuit component
+      heading:              Edit Circuit Elements
+      editCircuitElement:   Edit circuit component
       deleteCircuitElement: Delete or cut circuit component
     focus:
-      heading:               Focus
-      focusToolbox:          Focus circuit component toolbox
-      focusConstructionArea: Focus circuit in construction area
+      heading:               From Anywhere in Screen
+      focusToolbox:          Jump to Circuit Component Toolbox
+      focusConstructionArea: Jump to construction area
 
     # For connecting junctions or attaching a voltmeter probe or ammeter probe
     chooseConnection:

@@ -117,7 +117,7 @@
     "value": "Conventional"
   },
   "tapCircuitElementToEdit": {
-    "value": "Tap circuit component to edit."
+    "value": "Tap circuit element to edit."
   },
   "current": {
     "value": "Current"
@@ -332,10 +332,10 @@
       },
       "labelsCheckbox": {
         "accessibleContextResponseChecked": {
-          "value": "Toolbox labels shown under circuit components."
+          "value": "Labels shown under circuit components."
         },
         "accessibleContextResponseUnchecked": {
-          "value": "Toolbox labels hidden under circuit components."
+          "value": "Labels hidden under circuit components."
         }
       },
       "valuesCheckbox": {
@@ -459,13 +459,13 @@
       },
       "focus": {
         "heading": {
-          "value": "Focus"
+          "value": "From Anywhere in Screen"
         },
         "focusToolbox": {
-          "value": "Focus circuit component toolbox"
+          "value": "Jump to Circuit Component Toolbox"
         },
         "focusConstructionArea": {
-          "value": "Focus circuit in construction area"
+          "value": "Jump to construction area"
         }
       },
       "chooseConnection": {
