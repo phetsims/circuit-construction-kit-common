@@ -143,6 +143,9 @@ type StringsType = {
       };
       'voltmeter': {
         'accessibleNameStringProperty': LocalizedStringProperty;
+      };
+      'seriesAmmeter': {
+        'accessibleNameStringProperty': LocalizedStringProperty;
       }
     };
     'circuitElementToolbox': {

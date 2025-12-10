@@ -237,6 +237,7 @@ export default class SensorToolbox extends CCKCPanel {
           phetioFeatured: true
         }
       } );
+    seriesAmmeterToolNode.accessibleName = CircuitConstructionKitCommonFluent.a11y.sensorToolbox.seriesAmmeter.accessibleNameStringProperty;
     const allSeriesAmmetersInPlayAreaProperty = new DerivedProperty( [ circuit.circuitElements.lengthProperty ], ( () => {
       return circuit.circuitElements.count( circuitElement => circuitElement instanceof SeriesAmmeter ) === MAX_SERIES_AMMETERS;
     } ) );

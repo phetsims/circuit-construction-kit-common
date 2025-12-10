@@ -125,6 +125,7 @@ addToMapIfDefined( 'a11y_circuitContextResponses_componentValueChange', 'a11y.ci
 addToMapIfDefined( 'a11y_sensorToolbox_accessibleHeading', 'a11y.sensorToolbox.accessibleHeadingStringProperty' );
 addToMapIfDefined( 'a11y_sensorToolbox_ammeter_accessibleName', 'a11y.sensorToolbox.ammeter.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_sensorToolbox_voltmeter_accessibleName', 'a11y.sensorToolbox.voltmeter.accessibleNameStringProperty' );
+addToMapIfDefined( 'a11y_sensorToolbox_seriesAmmeter_accessibleName', 'a11y.sensorToolbox.seriesAmmeter.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_circuitElementToolbox_accessibleHeading', 'a11y.circuitElementToolbox.accessibleHeadingStringProperty' );
 addToMapIfDefined( 'a11y_circuitElementToolbox_accessibleHelpText', 'a11y.circuitElementToolbox.accessibleHelpTextStringProperty' );
 addToMapIfDefined( 'a11y_advancedAccordionBox_accessibleName', 'a11y.advancedAccordionBox.accessibleNameStringProperty' );
@@ -317,6 +318,9 @@ const CircuitConstructionKitCommonFluent = {
       },
       voltmeter: {
         accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_sensorToolbox_voltmeter_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.sensorToolbox.voltmeter.accessibleNameStringProperty' ) )
+      },
+      seriesAmmeter: {
+        accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_sensorToolbox_seriesAmmeter_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.sensorToolbox.seriesAmmeter.accessibleNameStringProperty' ) )
       }
     },
     circuitElementToolbox: {

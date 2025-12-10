@@ -348,6 +348,11 @@
         "accessibleName": {
           "value": "Voltmeter"
         }
+      },
+      "seriesAmmeter": {
+        "accessibleName": {
+          "value": "Series Ammeter"
+        }
       }
     },
     "circuitElementToolbox": {

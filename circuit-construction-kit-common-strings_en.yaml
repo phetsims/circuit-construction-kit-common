@@ -147,6 +147,8 @@ a11y:
       accessibleName: Ammeter
     voltmeter:
       accessibleName: Voltmeter
+    seriesAmmeter:
+      accessibleName: Series Ammeter
   circuitElementToolbox:
     accessibleHeading:  Circuit Component Toolbox
     accessibleHelpText: Grab a circuit component to create it in the construction area.
