@@ -92,6 +92,27 @@ type StringsType = {
     'toChooseConnectionStringProperty': LocalizedStringProperty;
   };
   'a11y': {
+    'circuitDescription': {
+      'circuitElementTypeLabels': {
+        'wireStringProperty': LocalizedStringProperty;
+        'batteryStringProperty': LocalizedStringProperty;
+        'resistorStringProperty': LocalizedStringProperty;
+        'capacitorStringProperty': LocalizedStringProperty;
+        'inductorStringProperty': LocalizedStringProperty;
+        'lightBulbStringProperty': LocalizedStringProperty;
+        'acSourceStringProperty': LocalizedStringProperty;
+        'fuseStringProperty': LocalizedStringProperty;
+        'switchStringProperty': LocalizedStringProperty;
+        'voltmeterStringProperty': LocalizedStringProperty;
+        'ammeterStringProperty': LocalizedStringProperty;
+        'stopwatchStringProperty': LocalizedStringProperty;
+      };
+      'junctionStringProperty': LocalizedStringProperty;
+      'disconnectedStringProperty': LocalizedStringProperty;
+      'connectsStringProperty': LocalizedStringProperty;
+      'groupStringProperty': LocalizedStringProperty;
+      'emptyConstructionAreaMessageStringProperty': LocalizedStringProperty;
+    };
     'screenSummary': {
       'playAreaStringProperty': LocalizedStringProperty;
       'controlAreaStringProperty': LocalizedStringProperty;

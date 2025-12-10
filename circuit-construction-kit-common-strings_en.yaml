@@ -81,6 +81,25 @@ key:
   toChooseConnection: to <b>Choose Connection</b>
 
 a11y:
+  circuitDescription:
+    circuitElementTypeLabels:
+      wire: Wire
+      battery: Battery
+      resistor: Resistor
+      capacitor: Capacitor
+      inductor: Inductor
+      lightBulb: Light bulb
+      acSource: AC Source
+      fuse: Fuse
+      switch: Switch
+      voltmeter: Voltmeter
+      ammeter: Ammeter
+      stopwatch: Stopwatch
+    junction: Junction
+    disconnected: disconnected
+    connects: connects
+    group: Group
+    emptyConstructionAreaMessage: Create circuit elements to get started
   screenSummary:
     playArea:        |-
                      There is a toolbox of circuit components on the left, and a construction area in the center, where

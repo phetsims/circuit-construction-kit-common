@@ -90,6 +90,23 @@ addToMapIfDefined( 'dataOutOfRange', 'dataOutOfRangeStringProperty' );
 addToMapIfDefined( 'key_toCut', 'key.toCutStringProperty' );
 addToMapIfDefined( 'key_toEditComponent', 'key.toEditComponentStringProperty' );
 addToMapIfDefined( 'key_toChooseConnection', 'key.toChooseConnectionStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitElementTypeLabels_wire', 'a11y.circuitDescription.circuitElementTypeLabels.wireStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitElementTypeLabels_battery', 'a11y.circuitDescription.circuitElementTypeLabels.batteryStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitElementTypeLabels_resistor', 'a11y.circuitDescription.circuitElementTypeLabels.resistorStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitElementTypeLabels_capacitor', 'a11y.circuitDescription.circuitElementTypeLabels.capacitorStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitElementTypeLabels_inductor', 'a11y.circuitDescription.circuitElementTypeLabels.inductorStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitElementTypeLabels_lightBulb', 'a11y.circuitDescription.circuitElementTypeLabels.lightBulbStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitElementTypeLabels_acSource', 'a11y.circuitDescription.circuitElementTypeLabels.acSourceStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitElementTypeLabels_fuse', 'a11y.circuitDescription.circuitElementTypeLabels.fuseStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitElementTypeLabels_switch', 'a11y.circuitDescription.circuitElementTypeLabels.switchStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitElementTypeLabels_voltmeter', 'a11y.circuitDescription.circuitElementTypeLabels.voltmeterStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitElementTypeLabels_ammeter', 'a11y.circuitDescription.circuitElementTypeLabels.ammeterStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitElementTypeLabels_stopwatch', 'a11y.circuitDescription.circuitElementTypeLabels.stopwatchStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_junction', 'a11y.circuitDescription.junctionStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_disconnected', 'a11y.circuitDescription.disconnectedStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_connects', 'a11y.circuitDescription.connectsStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_group', 'a11y.circuitDescription.groupStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_emptyConstructionAreaMessage', 'a11y.circuitDescription.emptyConstructionAreaMessageStringProperty' );
 addToMapIfDefined( 'a11y_screenSummary_playArea', 'a11y.screenSummary.playAreaStringProperty' );
 addToMapIfDefined( 'a11y_screenSummary_controlArea', 'a11y.screenSummary.controlAreaStringProperty' );
 addToMapIfDefined( 'a11y_screenSummary_currentDetails', 'a11y.screenSummary.currentDetailsStringProperty' );
@@ -247,6 +264,27 @@ const CircuitConstructionKitCommonFluent = {
     toChooseConnectionStringProperty: _.get( CircuitConstructionKitCommonStrings, 'key.toChooseConnectionStringProperty' )
   },
   a11y: {
+    circuitDescription: {
+      circuitElementTypeLabels: {
+        wireStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitElementTypeLabels_wire', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitElementTypeLabels.wireStringProperty' ) ),
+        batteryStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitElementTypeLabels_battery', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitElementTypeLabels.batteryStringProperty' ) ),
+        resistorStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitElementTypeLabels_resistor', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitElementTypeLabels.resistorStringProperty' ) ),
+        capacitorStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitElementTypeLabels_capacitor', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitElementTypeLabels.capacitorStringProperty' ) ),
+        inductorStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitElementTypeLabels_inductor', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitElementTypeLabels.inductorStringProperty' ) ),
+        lightBulbStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitElementTypeLabels_lightBulb', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitElementTypeLabels.lightBulbStringProperty' ) ),
+        acSourceStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitElementTypeLabels_acSource', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitElementTypeLabels.acSourceStringProperty' ) ),
+        fuseStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitElementTypeLabels_fuse', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitElementTypeLabels.fuseStringProperty' ) ),
+        switchStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitElementTypeLabels_switch', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitElementTypeLabels.switchStringProperty' ) ),
+        voltmeterStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitElementTypeLabels_voltmeter', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitElementTypeLabels.voltmeterStringProperty' ) ),
+        ammeterStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitElementTypeLabels_ammeter', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitElementTypeLabels.ammeterStringProperty' ) ),
+        stopwatchStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitElementTypeLabels_stopwatch', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitElementTypeLabels.stopwatchStringProperty' ) )
+      },
+      junctionStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_junction', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.junctionStringProperty' ) ),
+      disconnectedStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_disconnected', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.disconnectedStringProperty' ) ),
+      connectsStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_connects', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.connectsStringProperty' ) ),
+      groupStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_group', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.groupStringProperty' ) ),
+      emptyConstructionAreaMessageStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_emptyConstructionAreaMessage', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.emptyConstructionAreaMessageStringProperty' ) )
+    },
     screenSummary: {
       playAreaStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_screenSummary_playArea', _.get( CircuitConstructionKitCommonStrings, 'a11y.screenSummary.playAreaStringProperty' ) ),
       controlArea: new FluentPattern<{ advancedControls: 'present' | 'absent' | TReadOnlyProperty<'present' | 'absent'> }>( fluentSupport.bundleProperty, 'a11y_screenSummary_controlArea', _.get( CircuitConstructionKitCommonStrings, 'a11y.screenSummary.controlAreaStringProperty' ), [{"name":"advancedControls","variants":["present","absent"]}] ),

@@ -30,34 +30,39 @@ const positionedPropertiesMap = new WeakMap<CircuitElement, {
 // Constants for preferred ordering of circuit elements in groups
 const GROUPED_CIRCUIT_ELEMENT_TYPE_ORDER: CircuitElementType[] = [ 'battery', 'resistor', 'lightBulb', 'wire' ];
 
-// Human-readable labels for circuit element types
-const CIRCUIT_ELEMENT_TYPE_LABELS: Record<CircuitElementType, string> = {
-  wire: 'Wire',
-  battery: 'Battery',
-  resistor: 'Resistor',
-  capacitor: 'Capacitor',
-  inductor: 'Inductor',
-  lightBulb: 'Light bulb',
-  acSource: 'AC Source',
-  fuse: 'Fuse',
-  switch: 'Switch',
-  voltmeter: 'Voltmeter',
-  ammeter: 'Ammeter',
-  stopwatch: 'Stopwatch'
-};
-
-// String constants for vertex descriptions
-const JUNCTION_LABEL = 'Junction';
-const DISCONNECTED_LABEL = 'disconnected';
-const CONNECTS_LABEL = 'connects';
-const GROUP_LABEL = 'Group';
-const EMPTY_CONSTRUCTION_AREA_MESSAGE = 'Create circuit elements to get started';
 
 /**
  * Gets the human-readable label for a circuit element type.
  */
 const getCircuitElementTypeLabel = ( type: CircuitElementType ): string => {
-  return CIRCUIT_ELEMENT_TYPE_LABELS[ type ];
+  switch( type ) {
+    case 'wire':
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitElementTypeLabels.wireStringProperty.value;
+    case 'battery':
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitElementTypeLabels.batteryStringProperty.value;
+    case 'resistor':
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitElementTypeLabels.resistorStringProperty.value;
+    case 'capacitor':
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitElementTypeLabels.capacitorStringProperty.value;
+    case 'inductor':
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitElementTypeLabels.inductorStringProperty.value;
+    case 'lightBulb':
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitElementTypeLabels.lightBulbStringProperty.value;
+    case 'acSource':
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitElementTypeLabels.acSourceStringProperty.value;
+    case 'fuse':
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitElementTypeLabels.fuseStringProperty.value;
+    case 'switch':
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitElementTypeLabels.switchStringProperty.value;
+    case 'voltmeter':
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitElementTypeLabels.voltmeterStringProperty.value;
+    case 'ammeter':
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitElementTypeLabels.ammeterStringProperty.value;
+    case 'stopwatch':
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitElementTypeLabels.stopwatchStringProperty.value;
+    default:
+      return type;
+  }
 };
 
 /**
@@ -226,21 +231,21 @@ export default class CircuitDescription {
     neighbors: CircuitElement[],
     briefNames: Map<CircuitElement, string>
   ): string {
-    const baseLabel = `${JUNCTION_LABEL} ${vertexIndex + 1} of ${totalVertices}`;
+    const baseLabel = `${CircuitConstructionKitCommonFluent.a11y.circuitDescription.junctionStringProperty.value} ${vertexIndex + 1} of ${totalVertices}`;
 
     if ( neighbors.length === 1 ) {
-      return `${baseLabel}, ${DISCONNECTED_LABEL}`;
+      return `${baseLabel}, ${CircuitConstructionKitCommonFluent.a11y.circuitDescription.disconnectedStringProperty.value}`;
     }
     else if ( neighbors.length === 2 ) {
       const name0 = briefNames.get( neighbors[ 0 ] ) || '';
       const name1 = briefNames.get( neighbors[ 1 ] ) || '';
-      return `${baseLabel}, ${CONNECTS_LABEL} ${name0} to ${name1}`;
+      return `${baseLabel}, ${CircuitConstructionKitCommonFluent.a11y.circuitDescription.connectsStringProperty.value} ${name0} to ${name1}`;
     }
     else {
       const neighborNames = neighbors.map( neighbor =>
         briefNames.get( neighbor ) || ''
       ).join( ', ' );
-      return `${baseLabel}, ${CONNECTS_LABEL} ${neighborNames}`;
+      return `${baseLabel}, ${CircuitConstructionKitCommonFluent.a11y.circuitDescription.connectsStringProperty.value} ${neighborNames}`;
     }
   }
 
@@ -253,21 +258,21 @@ export default class CircuitDescription {
     neighbors: CircuitElement[],
     briefNames: Map<CircuitElement, string>
   ): string {
-    const baseLabel = `${JUNCTION_LABEL} ${vertexNumber}`;
+    const baseLabel = `${CircuitConstructionKitCommonFluent.a11y.circuitDescription.junctionStringProperty.value} ${vertexNumber}`;
 
     if ( neighbors.length === 1 ) {
-      return `${baseLabel}, ${DISCONNECTED_LABEL}`;
+      return `${baseLabel}, ${CircuitConstructionKitCommonFluent.a11y.circuitDescription.disconnectedStringProperty.value}`;
     }
     else if ( neighbors.length === 2 ) {
       const name0 = briefNames.get( neighbors[ 0 ] ) || '';
       const name1 = briefNames.get( neighbors[ 1 ] ) || '';
-      return `${baseLabel}, ${CONNECTS_LABEL} ${name0} to ${name1}`;
+      return `${baseLabel}, ${CircuitConstructionKitCommonFluent.a11y.circuitDescription.connectsStringProperty.value} ${name0} to ${name1}`;
     }
     else {
       const neighborNames = neighbors.map( neighbor =>
         briefNames.get( neighbor ) || ''
       ).join( ', ' );
-      return `${baseLabel}, ${CONNECTS_LABEL} ${neighborNames}`;
+      return `${baseLabel}, ${CircuitConstructionKitCommonFluent.a11y.circuitDescription.connectsStringProperty.value} ${neighborNames}`;
     }
   }
 
@@ -363,7 +368,7 @@ export default class CircuitDescription {
       // Create group node
       const groupNode = new Node( {
         tagName: 'div',
-        accessibleHeading: `${GROUP_LABEL} ${groupIndex + 1} of ${multiElementGroups.length}`,
+        accessibleHeading: `${CircuitConstructionKitCommonFluent.a11y.circuitDescription.groupStringProperty.value} ${groupIndex + 1} of ${multiElementGroups.length}`,
         pdomOrder: uniquePDOMOrder
       } );
 
@@ -401,7 +406,7 @@ export default class CircuitDescription {
     const focusedElement = getPDOMFocusedNode();
 
     if ( !hasElements ) {
-      circuitNode.constructionAreaContainer.accessibleParagraph = EMPTY_CONSTRUCTION_AREA_MESSAGE;
+      circuitNode.constructionAreaContainer.accessibleParagraph = CircuitConstructionKitCommonFluent.a11y.circuitDescription.emptyConstructionAreaMessageStringProperty.value;
       circuitNode.unconnectedCircuitElementsSection.visible = false;
     }
     else {

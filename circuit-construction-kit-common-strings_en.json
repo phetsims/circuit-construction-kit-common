@@ -227,6 +227,61 @@
     }
   },
   "a11y": {
+    "circuitDescription": {
+      "circuitElementTypeLabels": {
+        "wire": {
+          "value": "Wire"
+        },
+        "battery": {
+          "value": "Battery"
+        },
+        "resistor": {
+          "value": "Resistor"
+        },
+        "capacitor": {
+          "value": "Capacitor"
+        },
+        "inductor": {
+          "value": "Inductor"
+        },
+        "lightBulb": {
+          "value": "Light bulb"
+        },
+        "acSource": {
+          "value": "AC Source"
+        },
+        "fuse": {
+          "value": "Fuse"
+        },
+        "switch": {
+          "value": "Switch"
+        },
+        "voltmeter": {
+          "value": "Voltmeter"
+        },
+        "ammeter": {
+          "value": "Ammeter"
+        },
+        "stopwatch": {
+          "value": "Stopwatch"
+        }
+      },
+      "junction": {
+        "value": "Junction"
+      },
+      "disconnected": {
+        "value": "disconnected"
+      },
+      "connects": {
+        "value": "connects"
+      },
+      "group": {
+        "value": "Group"
+      },
+      "emptyConstructionAreaMessage": {
+        "value": "Create circuit elements to get started"
+      }
+    },
     "screenSummary": {
       "playArea": {
         "value": "There is a toolbox of circuit components on the left, and a construction area in the center, where\n  you can connect circuit components to form a circuit. On the right, there is another toolbox with \n  sensors you can \n  use to measure properties like voltage and current."
