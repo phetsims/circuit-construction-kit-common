@@ -338,6 +338,16 @@
     "sensorToolbox": {
       "accessibleHeading": {
         "value": "Sensor Toolbox"
+      },
+      "ammeter": {
+        "accessibleName": {
+          "value": "Ammeter"
+        }
+      },
+      "voltmeter": {
+        "accessibleName": {
+          "value": "Voltmeter"
+        }
       }
     },
     "circuitElementToolbox": {

@@ -83,22 +83,22 @@ key:
 a11y:
   circuitDescription:
     circuitElementTypeLabels:
-      wire: Wire
-      battery: Battery
-      resistor: Resistor
+      wire:      Wire
+      battery:   Battery
+      resistor:  Resistor
       capacitor: Capacitor
-      inductor: Inductor
+      inductor:  Inductor
       lightBulb: Light bulb
-      acSource: AC Source
-      fuse: Fuse
-      switch: Switch
+      acSource:  AC Source
+      fuse:      Fuse
+      switch:    Switch
       voltmeter: Voltmeter
-      ammeter: Ammeter
+      ammeter:   Ammeter
       stopwatch: Stopwatch
-    junction: Junction
-    disconnected: disconnected
-    connects: connects
-    group: Group
+    junction:                     Junction
+    disconnected:                 disconnected
+    connects:                     connects
+    group:                        Group
     emptyConstructionAreaMessage: Create circuit elements to get started
   screenSummary:
     playArea:        |-
@@ -143,6 +143,10 @@ a11y:
         lightBulb: '{ $elementName } resistance changed from { $oldValue } to { $newValue } ohms.'
   sensorToolbox:
     accessibleHeading: Sensor Toolbox
+    ammeter:
+      accessibleName: Ammeter
+    voltmeter:
+      accessibleName: Voltmeter
   circuitElementToolbox:
     accessibleHeading:  Circuit Component Toolbox
     accessibleHelpText: Grab a circuit component to create it in the construction area.

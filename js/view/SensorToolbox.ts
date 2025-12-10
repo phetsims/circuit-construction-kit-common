@@ -281,7 +281,7 @@ export default class SensorToolbox extends CCKCPanel {
         phetioFeatured: true
       },
       tagName: 'button',
-      accessibleName: 'Voltmeter'
+      accessibleName: CircuitConstructionKitCommonFluent.a11y.sensorToolbox.voltmeter.accessibleNameStringProperty
     } );
     voltmeterToolNode.addInputListener( new KeyboardListener( {
       fireOnClick: true,
@@ -326,7 +326,7 @@ export default class SensorToolbox extends CCKCPanel {
 
     if ( options.showNoncontactAmmeters ) {
       const ammeterKeyboardListenerTarget = options.showSeriesAmmeters ? ammeterToolIcon : ammeterToolNode;
-      ammeterKeyboardListenerTarget.accessibleName = 'Ammeter';
+      ammeterKeyboardListenerTarget.accessibleName = CircuitConstructionKitCommonFluent.a11y.sensorToolbox.ammeter.accessibleNameStringProperty;
       ammeterKeyboardListenerTarget.addInputListener( new KeyboardListener( {
         fireOnClick: true,
         fire: () => {
