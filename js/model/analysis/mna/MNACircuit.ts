@@ -280,6 +280,8 @@ export default class MNACircuit {
    * Solves for all unknown currents and voltages in the circuit.
    */
   public solve(): MNASolution {
+
+    console.log( '--- MNACircuit.solve() ---' );
     const equations = this.getEquations();
     const unknownCurrents = this.getUnknownCurrents();
     const unknownVoltages = this.nodes.map( node => new UnknownVoltage( node ) );
