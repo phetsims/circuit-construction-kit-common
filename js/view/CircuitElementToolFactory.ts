@@ -387,7 +387,7 @@ export default class CircuitElementToolFactory {
   }
 
   public createSwitchToolNode( tandem: Tandem ): CircuitElementToolNode {
-    return this.createCircuitElementToolNode( 'switch', switchStringProperty, 5,
+    return this.createCircuitElementToolNode( 'switch', switchStringProperty, 10,
       ( tandem, viewTypeProperty ) => new SwitchNode( null, null,
         new Switch(
           new Vertex( Vector2.ZERO, this.circuit.selectionProperty ),
