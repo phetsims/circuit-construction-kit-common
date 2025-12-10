@@ -1025,6 +1025,7 @@ export default class Circuit extends PhetioObject {
     }
 
     this.determineSenses();
+    this.updateSeriesAmmeterReadouts();
 
     // Move the charges.  Do this after the circuit has been solved so the conventional current will have the correct
     // current values.
@@ -1221,6 +1222,29 @@ export default class Circuit extends PhetioObject {
         wasSenseAssigned = true;
       }
     }
+  }
+
+  /**
+   * Update the currentReadoutProperty for all SeriesAmmeters based on their connection status.
+   * A SeriesAmmeter shows a reading when both its start and end vertices are connected to other circuit elements.
+   */
+  private updateSeriesAmmeterReadouts(): void {
+    if ( !this.seriesAmmeterGroup ) {
+      return;
+    }
+
+    this.seriesAmmeterGroup.forEach( seriesAmmeter => {
+      const startConnection = this.getNeighboringVertices( seriesAmmeter.startVertexProperty.value ).length > 1;
+      const endConnection = this.getNeighboringVertices( seriesAmmeter.endVertexProperty.value ).length > 1;
+
+      if ( startConnection && endConnection ) {
+        const sign = seriesAmmeter.currentSenseProperty.value === CurrentSense.BACKWARD ? -1 : 1;
+        seriesAmmeter.currentReadoutProperty.value = seriesAmmeter.currentProperty.value * sign;
+      }
+      else {
+        seriesAmmeter.currentReadoutProperty.value = null;
+      }
+    } );
   }
 
   // Assign the sense to an un-sensed circuit element based on matching the sign of a corresponding reference element.

@@ -22,7 +22,6 @@ import CCKCUtils from '../CCKCUtils.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
-import CurrentSense from '../model/CurrentSense.js';
 import type SeriesAmmeter from '../model/SeriesAmmeter.js';
 import ammeterReadoutTypeProperty from './ammeterReadoutTypeProperty.js';
 import type CCKCScreenView from './CCKCScreenView.js';
@@ -75,37 +74,16 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
       } );
 
     /**
-     * Update the text in the numeric readout text box.  Shows '?' if disconnected.
+     * Update the text in the numeric readout text box. Shows '?' if not fully connected.
+     * The currentReadoutProperty is computed by the model (Circuit) and includes connection status and sign.
      */
     const updateText = () => {
-      let readout: string = MathSymbols.NO_VALUE;
-
-      // If it is not an icon and connected at both sides, show the current, otherwise show '-'
-      if ( screenView ) {
-
-        const circuit = screenView.model.circuit;
-        const startConnection = circuit.getNeighboringVertices( seriesAmmeter.startVertexProperty.get() ).length > 1;
-        const endConnection = circuit.getNeighboringVertices( seriesAmmeter.endVertexProperty.get() ).length > 1;
-
-        if ( startConnection && endConnection ) {
-
-          const sign = seriesAmmeter.currentSenseProperty.value === CurrentSense.BACKWARD ? -1 : +1;
-          readout = CCKCUtils.createCurrentReadout( seriesAmmeter.currentProperty.get() * sign, false );
-        }
-      }
-
-      stringProperty.value = readout;
+      stringProperty.value = CCKCUtils.createCurrentReadout( seriesAmmeter.currentReadoutProperty.value, false );
     };
 
-    seriesAmmeter.currentProperty.link( updateText );
-    seriesAmmeter.startVertexProperty.lazyLink( updateText );
-    seriesAmmeter.endVertexProperty.lazyLink( updateText );
-    seriesAmmeter.currentSenseProperty.lazyLink( updateText );
+    seriesAmmeter.currentReadoutProperty.link( updateText );
     ammeterReadoutTypeProperty.lazyLink( updateText );
     CircuitConstructionKitCommonStrings.currentUnitsStringProperty.lazyLink( updateText );
-
-    // NOTE: This is called every frame
-    circuitNode && circuitNode.circuit.circuitChangedEmitter.addListener( updateText );
 
     // This node only has a lifelike representation because it is a sensor
     const lifelikeNode = new Node( {
@@ -171,13 +149,10 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
 
     this.disposeSeriesAmmeterNode = () => {
 
-      seriesAmmeter.currentSenseProperty.unlink( updateText );
+      seriesAmmeter.currentReadoutProperty.unlink( updateText );
+      ammeterReadoutTypeProperty.unlink( updateText );
       CircuitConstructionKitCommonStrings.currentUnitsStringProperty.unlink( updateText );
 
-      seriesAmmeter.currentProperty.unlink( updateText );
-      seriesAmmeter.startVertexProperty.unlink( updateText );
-      seriesAmmeter.endVertexProperty.unlink( updateText );
-      ammeterReadoutTypeProperty.unlink( updateText );
       if ( !this.isIcon ) {
         affirm( !!circuitNode );
         if ( circuitNode ) {
@@ -187,7 +162,6 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
       lifelikeNode.dispose();
       this.frontPanelContainer.dispose();
       probeTextNode.dispose();
-      circuitNode && circuitNode.circuit.circuitChangedEmitter.removeListener( updateText );
       stringProperty.dispose();
     };
   }
