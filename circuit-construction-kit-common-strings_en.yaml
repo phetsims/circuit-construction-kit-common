@@ -108,7 +108,18 @@ a11y:
     controlArea: >-
       There's an option to choose between a Lifelike View or a Schematic View for any components and circuits, and you
       can Reset All to clear everything and start over.
-    currentDetails:  Currently, no circuit components are in the construction area.
+    currentDetails:
+      select_componentCount:
+        zero: >-
+          Currently, Construction Area has no circuit components. Several { $viewType } components are available
+          in Circuit Components carousel. There is no current flowing.
+        other: >-
+          Currently, Construction Area has { $componentCount } circuit components. Several { $viewType } components
+          are available in Circuit Components carousel.
+          { $currentStatus ->
+            [flowing] Current is flowing.
+           *[notFlowing] There is no current flowing.
+          }
     interactionHint: Add circuit components to the construction area, and connect them to begin. Note, you must include at least one Wire in order to connect a circuit.
   constructionArea:
     accessibleHeading: Construction Area

@@ -291,7 +291,7 @@ const CircuitConstructionKitCommonFluent = {
     screenSummary: {
       playAreaStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_screenSummary_playArea', _.get( CircuitConstructionKitCommonStrings, 'a11y.screenSummary.playAreaStringProperty' ) ),
       controlAreaStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_screenSummary_controlArea', _.get( CircuitConstructionKitCommonStrings, 'a11y.screenSummary.controlAreaStringProperty' ) ),
-      currentDetailsStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_screenSummary_currentDetails', _.get( CircuitConstructionKitCommonStrings, 'a11y.screenSummary.currentDetailsStringProperty' ) ),
+      currentDetails: new FluentPattern<{ componentCount: number | 'zero' | number | 'other' | TReadOnlyProperty<number | 'zero' | number | 'other'>, currentStatus: 'flowing' | 'notFlowing' | TReadOnlyProperty<'flowing' | 'notFlowing'>, viewType: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_screenSummary_currentDetails', _.get( CircuitConstructionKitCommonStrings, 'a11y.screenSummary.currentDetailsStringProperty' ), [{"name":"componentCount","variants":[{"type":"number","value":"zero"},{"type":"number","value":"other"}]},{"name":"currentStatus","variants":["flowing","notFlowing"]},{"name":"viewType"}] ),
       interactionHintStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_screenSummary_interactionHint', _.get( CircuitConstructionKitCommonStrings, 'a11y.screenSummary.interactionHintStringProperty' ) )
     },
     constructionArea: {

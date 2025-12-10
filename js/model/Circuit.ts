@@ -177,6 +177,9 @@ export default class Circuit extends PhetioObject {
   // Circuit elements in PDOM order, for keyboard navigation. Set by CircuitDescription.updateCircuitNode.
   public circuitElementsInPDOMOrder: CircuitElement[] = [];
 
+  // Whether any circuit element has current flowing through it, updated in step()
+  public readonly hasCurrentFlowingProperty: BooleanProperty;
+
   public constructor( viewTypeProperty: Property<CircuitElementViewType>, addRealBulbsProperty: Property<boolean>, tandem: Tandem,
                       providedOptions: CircuitOptions ) {
 
@@ -242,6 +245,7 @@ export default class Circuit extends PhetioObject {
 
     this.timeProperty = new NumberProperty( 0 );
     this.chargeAnimator = new ChargeAnimator( this );
+    this.hasCurrentFlowingProperty = new BooleanProperty( false );
 
     // Mark as dirty when voltages or resistances change.
     const markDirtyListener = this.markDirty.bind( this );
@@ -1026,6 +1030,12 @@ export default class Circuit extends PhetioObject {
 
     this.determineSenses();
     this.updateSeriesAmmeterReadouts();
+
+    // Update whether current is flowing in any circuit element
+    const hasCurrentFlowing = this.circuitElements.some(
+      element => Math.abs( element.currentProperty.value ) > 1e-10
+    );
+    this.hasCurrentFlowingProperty.value = hasCurrentFlowing;
 
     // Move the charges.  Do this after the circuit has been solved so the conventional current will have the correct
     // current values.
