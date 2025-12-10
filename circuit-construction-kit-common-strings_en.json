@@ -279,7 +279,7 @@
         "value": "Group"
       },
       "emptyConstructionAreaMessage": {
-        "value": "Create circuit elements to get started"
+        "value": "Add Circuit Components. Once added, select a component or a lead or terminal with Space to pop up options for editing or connecting. Remove components or disconnect junctions with Delete. Check out Keyboard Shortcuts for more details."
       }
     },
     "screenSummary": {
@@ -293,7 +293,7 @@
         "value": "{ $componentCount ->\n  [zero] Currently, Construction Area has no circuit components. Several { $viewType } components are available in Circuit Components carousel. There is no current flowing.\n  *[other] Currently, Construction Area has { $componentCount } circuit components. Several { $viewType } components are available in Circuit Components carousel. { $currentStatus ->\n             [flowing] Current is flowing.\n            *[notFlowing] There is no current flowing.\n           }\n}"
       },
       "interactionHint": {
-        "value": "Add circuit components to the construction area, and connect them to begin. Note, you must include at least one Wire in order to connect a circuit."
+        "value": "Add circuit components and start connecting. Be sure to add at least one Wire."
       }
     },
     "constructionArea": {
