@@ -24,6 +24,7 @@ import HighlightFromNode from '../../../scenery/js/accessibility/HighlightFromNo
 import DragListener from '../../../scenery/js/listeners/DragListener.js';
 import { type PressListenerEvent } from '../../../scenery/js/listeners/PressListener.js';
 import Image from '../../../scenery/js/nodes/Image.js';
+import { ImageableImage } from '../../../scenery/js/nodes/Imageable.js';
 import Node, { type NodeOptions } from '../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
 import Color from '../../../scenery/js/util/Color.js';
@@ -108,36 +109,28 @@ export default class VoltmeterNode extends Node {
 
     }, providedOptions );
 
-    const blackProbeNode = new Rectangle( -2, -2, 4, 4, { // the hit area
-      fill: CCKCQueryParameters.showVoltmeterSamplePoints ? Color.BLACK : null,
-      cursor: 'pointer',
-      children: [ new Image( probeBlack_png, {
-        scale: PROBE_SCALE,
-        rotation: PROBE_ANGLE,
+    /**
+     * Creates a probe node with the specified configuration.
+     */
+    const createProbeNode = ( color: Color, image: ImageableImage, rotation: number, imageX: number, imageY: number ): Rectangle => {
+      return new Rectangle( -2, -2, 4, 4, { // the hit area
+        fill: CCKCQueryParameters.showVoltmeterSamplePoints ? color : null,
+        cursor: 'pointer',
+        children: [ new Image( image, {
+          scale: PROBE_SCALE,
+          rotation: rotation,
 
-        // Determined empirically by showing the probe hot spot and zooming in by a factor of 2 in
-        // CircuitConstructionKitModel.  Will need to change if PROBE_ANGLE changes
-        x: -9.5,
-        y: -5
-      } ) ],
-      ...( isIcon ? {} : AccessibleDraggableOptions )
-    } );
+          // Determined empirically by showing the probe hot spot and zooming in by a factor of 2 in
+          // CircuitConstructionKitModel. Will need to change if PROBE_ANGLE changes
+          x: imageX,
+          y: imageY
+        } ) ],
+        ...( isIcon ? {} : AccessibleDraggableOptions )
+      } );
+    };
 
-    // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/1034 factor out probe node
-    const redProbeNode = new Rectangle( -2, -2, 4, 4, { // the hit area
-      fill: CCKCQueryParameters.showVoltmeterSamplePoints ? Color.RED : null,
-      cursor: 'pointer',
-      children: [ new Image( probeRed_png, {
-        scale: PROBE_SCALE,
-        rotation: -PROBE_ANGLE,
-
-        // Determined empirically by showing the probe hot spot and zooming in by a factor of 2 in
-        // CircuitConstructionKitModel.  Will need to change if PROBE_ANGLE changes
-        x: -11,
-        y: +4
-      } ) ],
-      ...( isIcon ? {} : AccessibleDraggableOptions )
-    } );
+    const blackProbeNode = createProbeNode( Color.BLACK, probeBlack_png, PROBE_ANGLE, -9.5, -5 );
+    const redProbeNode = createProbeNode( Color.RED, probeRed_png, -PROBE_ANGLE, -11, +4 );
 
     // Displays the voltage reading
     const voltageReadoutProperty = new DerivedStringProperty( [
