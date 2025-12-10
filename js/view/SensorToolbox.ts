@@ -34,6 +34,7 @@ import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonF
 import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import Ammeter from '../model/Ammeter.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
+import type Meter from '../model/Meter.js';
 import SeriesAmmeter from '../model/SeriesAmmeter.js';
 import Vertex from '../model/Vertex.js';
 import Voltmeter from '../model/Voltmeter.js';
@@ -90,16 +91,29 @@ export default class SensorToolbox extends CCKCPanel {
       showCharts: false
     }, providedOptions );
 
-    const createListenerMulti = ( meterNodes: Array<VoltageChartNode | CurrentChartNode | VoltmeterNode | AmmeterNode> ): object =>
+    type MeterNode = VoltageChartNode | CurrentChartNode | VoltmeterNode | AmmeterNode;
+
+    /**
+     * Finds the first non-visible meter node and returns it along with its model.
+     */
+    const findAvailableMeter = ( meterNodes: MeterNode[] ): { meterNode: MeterNode; meterModel: Meter } | null => {
+      const meterNode = _.find( meterNodes, meterNode => !meterNode.visible );
+      if ( meterNode ) {
+        const meterModel = meterNode instanceof VoltmeterNode ? meterNode.voltmeter :
+                           meterNode instanceof AmmeterNode ? meterNode.ammeter :
+                           meterNode.meter;
+        return { meterNode: meterNode, meterModel: meterModel };
+      }
+      return null;
+    };
+
+    const createListenerMulti = ( meterNodes: MeterNode[] ): object =>
 
       DragListener.createForwardingListener( ( event: PressListenerEvent ) => {
 
-        // Select a non-visible meter node
-        const meterNode = _.find( meterNodes, meterNode => !meterNode.visible )!;
-        if ( meterNode ) {
-          const meterModel = meterNode instanceof VoltmeterNode ? meterNode.voltmeter :
-                             meterNode instanceof AmmeterNode ? meterNode.ammeter :
-                             meterNode.meter;
+        const available = findAvailableMeter( meterNodes );
+        if ( available ) {
+          const { meterNode, meterModel } = available;
           const viewPosition = circuitNode.globalToLocalPoint( event.pointer.point );
           meterModel.isDraggingProbesWithBodyProperty.value = true;
           meterModel.isActiveProperty.value = true;
@@ -110,15 +124,11 @@ export default class SensorToolbox extends CCKCPanel {
         allowTouchSnag: true
       } );
 
-    const createFromKeyboard = ( meterNodes: Array<VoltageChartNode | CurrentChartNode | VoltmeterNode | AmmeterNode> ): void => {
+    const createFromKeyboard = ( meterNodes: MeterNode[] ): void => {
 
-      // TODO: Duplicated with above, see https://github.com/phetsims/circuit-construction-kit-common/issues/1034
-      // Select a non-visible meter node
-      const meterNode = _.find( meterNodes, meterNode => !meterNode.visible )!;
-      if ( meterNode ) {
-        const meterModel = meterNode instanceof VoltmeterNode ? meterNode.voltmeter :
-                           meterNode instanceof AmmeterNode ? meterNode.ammeter :
-                           meterNode.meter;
+      const available = findAvailableMeter( meterNodes );
+      if ( available ) {
+        const { meterNode, meterModel } = available;
 
         // Use the meter's index to offset positions so they don't stack
         const meterIndex = meterNodes.indexOf( meterNode );
