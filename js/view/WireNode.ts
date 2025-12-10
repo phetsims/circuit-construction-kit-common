@@ -282,7 +282,6 @@ export default class WireNode extends CircuitElementNode {
       this.dragListener = new WireDragListener( this, circuitNode, screenView, tandem.createTandem( 'dragListener' ) );
       this.addInputListener( this.dragListener );
 
-      // TODO: add tandem and regenerate phet-io apis, see https://github.com/phetsims/circuit-construction-kit-common/issues/1034
       this.addInputListener( new WireKeyboardListener( this, circuitNode, screenView, Tandem.OPT_OUT ) );
 
       circuitNode.circuit.selectionProperty.link( markAsDirty );
