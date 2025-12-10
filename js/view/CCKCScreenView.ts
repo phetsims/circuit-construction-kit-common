@@ -565,6 +565,18 @@ export default class CCKCScreenView extends ScreenView {
             }
           }
         }
+
+        // Return voltmeter to toolbox when delete/backspace is pressed on the body (not the probes)
+        else if ( nodeToDelete instanceof VoltmeterNode ) {
+          nodeToDelete.voltmeter.isActiveProperty.value = false;
+          this.sensorToolbox.voltmeterToolNode.focus();
+        }
+
+        // Return ammeter to toolbox when delete/backspace is pressed on the body (not the probes)
+        else if ( nodeToDelete instanceof AmmeterNode ) {
+          nodeToDelete.ammeter.isActiveProperty.value = false;
+          this.sensorToolbox.ammeterToolNode.focus();
+        }
       }
     } );
 

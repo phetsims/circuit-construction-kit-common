@@ -69,6 +69,10 @@ type SensorToolboxOptions = SelfOptions & CCKCPanelOptions;
 
 export default class SensorToolbox extends CCKCPanel {
 
+  // Tool nodes that can be focused when meters are returned to the toolbox via delete/backspace key
+  public readonly voltmeterToolNode: Node;
+  public readonly ammeterToolNode: Node;
+
   /**
    * @param alignGroup - for alignment with other controls
    * @param circuitNode - the main circuit node to use as a coordinate frame
@@ -417,6 +421,10 @@ export default class SensorToolbox extends CCKCPanel {
         phetioFeatured: true
       }
     } );
+
+    // Restore focus to the appropriate tool when the meter is deleted from the circuit construction area
+    this.voltmeterToolNode = voltmeterToolNode;
+    this.ammeterToolNode = ( options.showNoncontactAmmeters && options.showSeriesAmmeters ) ? ammeterToolIcon : ammeterToolNode;
   }
 }
 
