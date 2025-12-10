@@ -1102,6 +1102,14 @@ export default class CircuitNode extends Node {
     }
 
     const bestDropTarget = this.getBestDropTarget( vertices );
+
+    // When keyboard dragging, only the keyboard controlled vertex can connect
+    if ( this.getVertexNode( vertex ).isFocused() ) {
+      if ( bestDropTarget?.src !== vertex ) {
+        return;
+      }
+    }
+
     if ( bestDropTarget && dragged ) {
       this.circuit.connect( bestDropTarget.src, bestDropTarget.dst );
 
