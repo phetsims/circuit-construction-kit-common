@@ -12,8 +12,8 @@ import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import ScreenSummaryContent from '../../../../joist/js/ScreenSummaryContent.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../../CircuitConstructionKitCommonFluent.js';
-import CircuitElementViewType from '../../model/CircuitElementViewType.js';
 import CircuitConstructionKitModel from '../../model/CircuitConstructionKitModel.js';
+import CircuitElementViewType from '../../model/CircuitElementViewType.js';
 import CCKCScreenView from '../CCKCScreenView.js';
 
 export default class CCKCScreenSummaryContent extends ScreenSummaryContent {
@@ -118,7 +118,7 @@ export default class CCKCScreenSummaryContent extends ScreenSummaryContent {
       playAreaContent: CircuitConstructionKitCommonFluent.a11y.screenSummary.playAreaStringProperty,
       controlAreaContent: CircuitConstructionKitCommonFluent.a11y.screenSummary.controlAreaStringProperty,
       currentDetailsContent: CircuitConstructionKitCommonFluent.a11y.screenSummary.currentDetails.createProperty( {
-        componentCount: circuit.circuitElements.lengthProperty,
+        componentCount: circuit.circuitElements.lengthProperty.derived( length => length === 0 ? 'zero' : 'other' ),
         viewType: viewTypeStringProperty,
         connectivityPhrase: connectivityPhraseProperty,
         currentFlowingPhrase: currentFlowingPhraseProperty
