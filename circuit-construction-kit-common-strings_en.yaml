@@ -155,8 +155,8 @@ a11y:
                in Circuit Components carousel. There is no current flowing.
         other: >-
                Currently, Construction Area has { $componentCount } circuit components{ $connectivityPhrase }
-               Several { $viewType } components are available in Circuit Components carousel.
                { $currentFlowingPhrase }
+               Several { $viewType } components are available in Circuit Components carousel.
     connectivityPhrase:
       select_disconnectedCount:
         zero:
