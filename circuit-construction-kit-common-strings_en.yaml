@@ -147,18 +147,37 @@ a11y:
     controlArea:     >-
                      There's an option to choose between a Lifelike View or a Schematic View for any components and circuits, and you
                      can Reset All to clear everything and start over.
+
     currentDetails:
       select_componentCount:
         zero:  >-
                Currently, Construction Area has no circuit components. Several { $viewType } components are available
                in Circuit Components carousel. There is no current flowing.
         other: >-
-               Currently, Construction Area has { $componentCount } circuit components. Several { $viewType } components
-               are available in Circuit Components carousel.
-               { $currentStatus ->
-                 [flowing] Current is flowing.
-                *[notFlowing] There is no current flowing.
-               }
+               Currently, Construction Area has { $componentCount } circuit components{ $connectivityPhrase }
+               Several { $viewType } components are available in Circuit Components carousel.
+               { $currentFlowingPhrase }
+    connectivityPhrase:
+      select_disconnectedCount:
+        zero:
+          select_groupCount:
+            zero:  .
+            one:   ', connected in 1 group.'
+            other: ', connected in { $groupCountNumber } separate groups.'
+        one:
+          select_groupCount:
+            zero:  . One is disconnected.
+            one:   '. One is disconnected. The remaining { $connectedCount } are connected in 1 group.'
+            other: '. One is disconnected. The remaining { $connectedCount } are connected in { $groupCountNumber } separate groups.'
+        other:
+          select_groupCount:
+            zero:  '. { $disconnectedCountNumber } are disconnected.'
+            one:   '. { $disconnectedCountNumber } are disconnected. The remaining { $connectedCount } are connected in 1 group.'
+            other: '. { $disconnectedCountNumber } are disconnected. The remaining { $connectedCount } are connected in { $groupCountNumber } separate groups.'
+    currentFlowingPhrase:
+      select_hasCurrentFlowing:
+        flowing:    Current is flowing in { $groupsWithCurrent } of { $groupCountNumber } groups.
+        notFlowing: There is no current flowing.
     interactionHint: Add circuit components and start connecting. Be sure to add at least one Wire.
   constructionArea:
     accessibleHeading: Construction Area

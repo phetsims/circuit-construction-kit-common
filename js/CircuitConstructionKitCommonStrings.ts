@@ -157,6 +157,8 @@ type StringsType = {
       'playAreaStringProperty': LocalizedStringProperty;
       'controlAreaStringProperty': LocalizedStringProperty;
       'currentDetailsStringProperty': LocalizedStringProperty;
+      'connectivityPhraseStringProperty': LocalizedStringProperty;
+      'currentFlowingPhraseStringProperty': LocalizedStringProperty;
       'interactionHintStringProperty': LocalizedStringProperty;
     };
     'constructionArea': {

@@ -641,7 +641,7 @@ export default class CircuitNode extends Node {
 
     this.unconnectedCircuitElementsSection = new Node( {
       tagName: 'div',
-      accessibleHeading: 'Unconnected Circuit Elements',
+      accessibleHeading: 'Unconnected Circuit Components',
       visible: false // shown when it has elements in it
     } );
 
