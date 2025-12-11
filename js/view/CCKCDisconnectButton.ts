@@ -63,46 +63,54 @@ export default class CCKCDisconnectButton extends CCKCRoundPushButton {
       touchAreaDilation: 5,
       content: scissorsIcon,
       enabledProperty: enabledProperty,
-      listener: () => {
-        const circuitElement = circuit.selectionProperty.value;
-        if ( circuitElement instanceof CircuitElement ) {
-
-          // Only permit disconnection when not being dragged
-          if ( !circuitElement.startVertexProperty.value.isDragged && !circuitElement.endVertexProperty.value.isDragged ) {
-
-            const startVertex = circuitElement.startVertexProperty.value;
-            const endVertex = circuitElement.endVertexProperty.value;
-
-            // Check if the start vertex is connected to other elements
-            const startNeighbors = circuit.getNeighborCircuitElements( startVertex );
-            if ( startNeighbors.length > 1 ) {
-              // Create a new vertex at the same position for this circuit element
-              const newStartVertex = circuit.vertexGroup.createNextElement( startVertex.positionProperty.value );
-              circuitElement.startVertexProperty.value = newStartVertex;
-            }
-
-            // Check if the end vertex is connected to other elements
-            const endNeighbors = circuit.getNeighborCircuitElements( endVertex );
-            if ( endNeighbors.length > 1 ) {
-              // Create a new vertex at the same position for this circuit element
-              const newEndVertex = circuit.vertexGroup.createNextElement( endVertex.positionProperty.value );
-              circuitElement.endVertexProperty.value = newEndVertex;
-            }
-
-            // Move the disconnected element 50px down and 50px right
-            // Use setPosition to update both positionProperty and unsnappedPositionProperty
-            // Note: Must get the current vertices since they may have been replaced with new ones above
-            const currentStartVertex = circuitElement.startVertexProperty.value;
-            const currentEndVertex = circuitElement.endVertexProperty.value;
-
-            currentStartVertex.setPosition( currentStartVertex.positionProperty.value.plus( DISCONNECT_OFFSET ) );
-            currentEndVertex.setPosition( currentEndVertex.positionProperty.value.plus( DISCONNECT_OFFSET ) );
-          }
-        }
-      },
       isDisposable: false,
       tandem: tandem,
       phetioVisiblePropertyInstrumented: false
+    } );
+
+    // Add listener after super() so we can reference 'this' for focus restoration
+    this.addListener( () => {
+      const circuitElement = circuit.selectionProperty.value;
+      if ( circuitElement instanceof CircuitElement ) {
+
+        // Only permit disconnection when not being dragged
+        if ( !circuitElement.startVertexProperty.value.isDragged && !circuitElement.endVertexProperty.value.isDragged ) {
+
+          const startVertex = circuitElement.startVertexProperty.value;
+          const endVertex = circuitElement.endVertexProperty.value;
+
+          // Check if the start vertex is connected to other elements
+          const startNeighbors = circuit.getNeighborCircuitElements( startVertex );
+          if ( startNeighbors.length > 1 ) {
+            // Create a new vertex at the same position for this circuit element
+            const newStartVertex = circuit.vertexGroup.createNextElement( startVertex.positionProperty.value );
+            circuitElement.startVertexProperty.value = newStartVertex;
+          }
+
+          // Check if the end vertex is connected to other elements
+          const endNeighbors = circuit.getNeighborCircuitElements( endVertex );
+          if ( endNeighbors.length > 1 ) {
+            // Create a new vertex at the same position for this circuit element
+            const newEndVertex = circuit.vertexGroup.createNextElement( endVertex.positionProperty.value );
+            circuitElement.endVertexProperty.value = newEndVertex;
+          }
+
+          // Move the disconnected element 50px down and 50px right
+          // Use setPosition to update both positionProperty and unsnappedPositionProperty
+          // Note: Must get the current vertices since they may have been replaced with new ones above
+          const currentStartVertex = circuitElement.startVertexProperty.value;
+          const currentEndVertex = circuitElement.endVertexProperty.value;
+
+          currentStartVertex.setPosition( currentStartVertex.positionProperty.value.plus( DISCONNECT_OFFSET ) );
+          currentEndVertex.setPosition( currentEndVertex.positionProperty.value.plus( DISCONNECT_OFFSET ) );
+
+          // Restore selection since vertex creation clears it
+          circuit.selectionProperty.value = circuitElement;
+
+          // Restore focus to this button (which is now disabled)
+          this.focus();
+        }
+      }
     } );
   }
 }
