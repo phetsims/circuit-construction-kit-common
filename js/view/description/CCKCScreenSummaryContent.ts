@@ -118,7 +118,7 @@ export default class CCKCScreenSummaryContent extends ScreenSummaryContent {
       playAreaContent: CircuitConstructionKitCommonFluent.a11y.screenSummary.playAreaStringProperty,
       controlAreaContent: CircuitConstructionKitCommonFluent.a11y.screenSummary.controlAreaStringProperty,
       currentDetailsContent: CircuitConstructionKitCommonFluent.a11y.screenSummary.currentDetails.createProperty( {
-        componentCount: circuit.circuitElements.lengthProperty.derived( length => length === 0 ? 'zero' : 'other' ),
+        componentCount: circuit.circuitElements.lengthProperty.derived( length => length === 0 ? 'zero' : length ),
         viewType: viewTypeStringProperty,
         connectivityPhrase: connectivityPhraseProperty,
         currentFlowingPhrase: currentFlowingPhraseProperty
