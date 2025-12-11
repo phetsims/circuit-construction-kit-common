@@ -31,7 +31,6 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
-import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import Ammeter from '../model/Ammeter.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import type Meter from '../model/Meter.js';
@@ -48,11 +47,11 @@ import SeriesAmmeterNode from './SeriesAmmeterNode.js';
 import VoltageChartNode from './VoltageChartNode.js';
 import VoltmeterNode from './VoltmeterNode.js';
 
-const ammetersStringProperty = CircuitConstructionKitCommonStrings.ammetersStringProperty;
-const ammeterStringProperty = CircuitConstructionKitCommonStrings.ammeterStringProperty;
-const currentChartStringProperty = CircuitConstructionKitCommonStrings.currentChartStringProperty;
-const voltageChartStringProperty = CircuitConstructionKitCommonStrings.voltageChartStringProperty;
-const voltmeterStringProperty = CircuitConstructionKitCommonStrings.voltmeterStringProperty;
+const ammetersStringProperty = CircuitConstructionKitCommonFluent.ammetersStringProperty;
+const ammeterStringProperty = CircuitConstructionKitCommonFluent.ammeterStringProperty;
+const currentChartStringProperty = CircuitConstructionKitCommonFluent.currentChartStringProperty;
+const voltageChartStringProperty = CircuitConstructionKitCommonFluent.voltageChartStringProperty;
+const voltmeterStringProperty = CircuitConstructionKitCommonFluent.voltmeterStringProperty;
 
 // constants
 const TOOLBOX_ICON_HEIGHT = 53;

@@ -34,7 +34,6 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
-import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import ACVoltage from '../model/ACVoltage.js';
 import AmmeterConnection from '../model/AmmeterConnection.js';
 import Battery from '../model/Battery.js';
@@ -694,7 +693,7 @@ export default class CircuitNode extends Node {
     // Initialize the delete cue node (shown below the cut button when a vertex is selected)
     this.deleteCueNode = new DeleteCueNode( {
       visible: false,
-      stringProperty: CircuitConstructionKitCommonStrings.key.toCutStringProperty
+      stringProperty: CircuitConstructionKitCommonFluent.key.toCutStringProperty
     } );
     this.buttonLayer.addChild( this.deleteCueNode );
 

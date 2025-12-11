@@ -36,14 +36,14 @@ import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import CCKCUtils from '../CCKCUtils.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import type CircuitConstructionKitModel from '../model/CircuitConstructionKitModel.js';
 import type Voltmeter from '../model/Voltmeter.js';
 import type CircuitNode from './CircuitNode.js';
 import VoltmeterProbeNodeAttachmentKeyboardListener from './input/VoltmeterProbeNodeAttachmentKeyboardListener.js';
 import ProbeTextNode from './ProbeTextNode.js';
 
-const voltageStringProperty = CircuitConstructionKitCommonStrings.voltageStringProperty;
+const voltageStringProperty = CircuitConstructionKitCommonFluent.voltageStringProperty;
 
 // constants
 const VOLTMETER_PROBE_TIP_LENGTH = 20; // The probe tip is about 20 view coordinates tall
@@ -135,7 +135,7 @@ export default class VoltmeterNode extends Node {
     // Displays the voltage reading
     const voltageReadoutProperty = new DerivedStringProperty( [
       voltmeter.voltageProperty,
-      CircuitConstructionKitCommonStrings.voltageUnitsStringProperty
+      CircuitConstructionKitCommonFluent.voltageUnitsStringProperty
     ], voltage =>
       voltage === null ? MathSymbols.NO_VALUE : CCKCUtils.createVoltageReadout( voltage ) );
 

@@ -26,7 +26,7 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import ACVoltage from '../model/ACVoltage.js';
 import Battery from '../model/Battery.js';
 import Capacitor from '../model/Capacitor.js';
@@ -53,21 +53,21 @@ import FuseRepairButton from './FuseRepairButton.js';
 import PhaseShiftControl from './PhaseShiftControl.js';
 import SwitchReadoutNode from './SwitchReadoutNode.js';
 
-const capacitanceStringProperty = CircuitConstructionKitCommonStrings.capacitanceStringProperty;
-const capacitanceUnitsStringProperty = CircuitConstructionKitCommonStrings.capacitanceUnitsStringProperty;
-const currentRatingStringProperty = CircuitConstructionKitCommonStrings.currentRatingStringProperty;
-const currentUnitsStringProperty = CircuitConstructionKitCommonStrings.currentUnitsStringProperty;
-const frequencyHzValuePatternStringProperty = CircuitConstructionKitCommonStrings.frequencyHzValuePatternStringProperty;
-const frequencyStringProperty = CircuitConstructionKitCommonStrings.frequencyStringProperty;
-const inductanceStringProperty = CircuitConstructionKitCommonStrings.inductanceStringProperty;
-const inductanceUnitsStringProperty = CircuitConstructionKitCommonStrings.inductanceUnitsStringProperty;
-const resistanceOhmsValuePatternStringProperty = CircuitConstructionKitCommonStrings.resistanceOhmsValuePatternStringProperty;
-const resistanceStringProperty = CircuitConstructionKitCommonStrings.resistanceStringProperty;
-const tapCircuitElementToEditStringProperty = CircuitConstructionKitCommonStrings.tapCircuitElementToEditStringProperty;
-const theSwitchIsClosedStringProperty = CircuitConstructionKitCommonStrings.theSwitchIsClosedStringProperty;
-const theSwitchIsOpenStringProperty = CircuitConstructionKitCommonStrings.theSwitchIsOpenStringProperty;
-const voltageStringProperty = CircuitConstructionKitCommonStrings.voltageStringProperty;
-const voltageVoltsValuePatternStringProperty = CircuitConstructionKitCommonStrings.voltageVoltsValuePatternStringProperty;
+const capacitanceStringProperty = CircuitConstructionKitCommonFluent.capacitanceStringProperty;
+const capacitanceUnitsStringProperty = CircuitConstructionKitCommonFluent.capacitanceUnitsStringProperty;
+const currentRatingStringProperty = CircuitConstructionKitCommonFluent.currentRatingStringProperty;
+const currentUnitsStringProperty = CircuitConstructionKitCommonFluent.currentUnitsStringProperty;
+const frequencyHzValuePatternStringProperty = CircuitConstructionKitCommonFluent.frequencyHzValuePatternStringProperty;
+const frequencyStringProperty = CircuitConstructionKitCommonFluent.frequencyStringProperty;
+const inductanceStringProperty = CircuitConstructionKitCommonFluent.inductanceStringProperty;
+const inductanceUnitsStringProperty = CircuitConstructionKitCommonFluent.inductanceUnitsStringProperty;
+const resistanceOhmsValuePatternStringProperty = CircuitConstructionKitCommonFluent.resistanceOhmsValuePatternStringProperty;
+const resistanceStringProperty = CircuitConstructionKitCommonFluent.resistanceStringProperty;
+const tapCircuitElementToEditStringProperty = CircuitConstructionKitCommonFluent.tapCircuitElementToEditStringProperty;
+const theSwitchIsClosedStringProperty = CircuitConstructionKitCommonFluent.theSwitchIsClosedStringProperty;
+const theSwitchIsOpenStringProperty = CircuitConstructionKitCommonFluent.theSwitchIsOpenStringProperty;
+const voltageStringProperty = CircuitConstructionKitCommonFluent.voltageStringProperty;
+const voltageVoltsValuePatternStringProperty = CircuitConstructionKitCommonFluent.voltageVoltsValuePatternStringProperty;
 
 // constants
 const GET_LAYOUT_POSITION = ( visibleBounds: Bounds2, centerX: number ) => {

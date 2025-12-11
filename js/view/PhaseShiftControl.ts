@@ -19,7 +19,7 @@ import Text from '../../../scenery/js/nodes/Text.js';
 import NumberSpinner, { type NumberSpinnerOptions } from '../../../sun/js/NumberSpinner.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import ACVoltage from '../model/ACVoltage.js';
 import type Circuit from '../model/Circuit.js';
 import type CircuitElement from '../model/CircuitElement.js';
@@ -59,7 +59,7 @@ export default class PhaseShiftControl extends VBox {
       tandem: providedOptions.tandem.createTandem( 'numberSpinner' )
     };
 
-    const title = new Text( CircuitConstructionKitCommonStrings.phaseShiftStringProperty, {
+    const title = new Text( CircuitConstructionKitCommonFluent.phaseShiftStringProperty, {
       font: CCKCConstants.DEFAULT_FONT,
       maxWidth: CircuitElementNumberControl.NUMBER_CONTROL_ELEMENT_MAX_WIDTH,
       fill: CCKCColors.textFillProperty

@@ -40,14 +40,14 @@ import ButtonNode from '../../../sun/js/buttons/ButtonNode.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import Meter from '../model/Meter.js';
 import CCKCProbeNode from './CCKCProbeNode.js';
 import type CCKCScreenView from './CCKCScreenView.js';
 import type CircuitNode from './CircuitNode.js';
 
-const oneSecondStringProperty = CircuitConstructionKitCommonStrings.oneSecondStringProperty;
-const timeStringProperty = CircuitConstructionKitCommonStrings.timeStringProperty;
+const oneSecondStringProperty = CircuitConstructionKitCommonFluent.oneSecondStringProperty;
+const timeStringProperty = CircuitConstructionKitCommonFluent.timeStringProperty;
 
 // constants
 const AXIS_LABEL_FILL = 'white';
@@ -272,7 +272,7 @@ export default class CCKCChartNode extends Node {
       } ) ] );
 
     // Show a text message when there is data, but none of the data is in range.
-    const dataOutOfRangeMessage = new Text( CircuitConstructionKitCommonStrings.dataOutOfRangeStringProperty, {
+    const dataOutOfRangeMessage = new Text( CircuitConstructionKitCommonFluent.dataOutOfRangeStringProperty, {
       fill: 'red',
       centerX: linePlot.centerX,
       centerY: linePlot.centerY,

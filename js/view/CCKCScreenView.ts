@@ -32,7 +32,7 @@ import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import CCKCUtils from '../CCKCUtils.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import type CircuitConstructionKitModel from '../model/CircuitConstructionKitModel.js';
 import CircuitElement from '../model/CircuitElement.js';
 import SeriesAmmeter from '../model/SeriesAmmeter.js';
@@ -55,8 +55,8 @@ import ViewRadioButtonGroup from './ViewRadioButtonGroup.js';
 import VoltageChartNode from './VoltageChartNode.js';
 import VoltmeterNode from './VoltmeterNode.js';
 
-const batteryResistanceStringProperty = CircuitConstructionKitCommonStrings.batteryResistanceStringProperty;
-const sourceResistanceStringProperty = CircuitConstructionKitCommonStrings.sourceResistanceStringProperty;
+const batteryResistanceStringProperty = CircuitConstructionKitCommonFluent.batteryResistanceStringProperty;
+const sourceResistanceStringProperty = CircuitConstructionKitCommonFluent.sourceResistanceStringProperty;
 
 // constants
 const VERTICAL_MARGIN = CCKCConstants.VERTICAL_MARGIN;
@@ -687,14 +687,14 @@ export default class CCKCScreenView extends ScreenView {
   public static readonly DELETE_HOTKEY_DATA = new HotkeyData( {
     keys: [ 'delete', 'backspace' ],
     repoName: circuitConstructionKitCommon.name,
-    keyboardHelpDialogLabelStringProperty: CircuitConstructionKitCommonStrings.a11y.keyboardHelpDialog.editCircuitComponents.deleteCircuitComponentStringProperty,
+    keyboardHelpDialogLabelStringProperty: CircuitConstructionKitCommonFluent.keyboardHelpDialog.editCircuitComponents.deleteCircuitComponentStringProperty,
     global: true
   } );
 
   public static readonly EDIT_HOTKEY_DATA = new HotkeyData( {
     keys: [ 'space', 'enter' ],
     repoName: circuitConstructionKitCommon.name,
-    keyboardHelpDialogLabelStringProperty: CircuitConstructionKitCommonStrings.a11y.keyboardHelpDialog.editCircuitComponents.editCircuitComponentStringProperty,
+    keyboardHelpDialogLabelStringProperty: CircuitConstructionKitCommonFluent.keyboardHelpDialog.editCircuitComponents.editCircuitComponentStringProperty,
     global: true
   } );
 
@@ -708,14 +708,14 @@ export default class CCKCScreenView extends ScreenView {
   public static readonly FOCUS_TOOLBOX_HOTKEY_DATA = new HotkeyData( {
     keys: [ 'alt+t' ],
     repoName: circuitConstructionKitCommon.name,
-    keyboardHelpDialogLabelStringProperty: CircuitConstructionKitCommonStrings.a11y.keyboardHelpDialog.focus.focusToolboxStringProperty,
+    keyboardHelpDialogLabelStringProperty: CircuitConstructionKitCommonFluent.keyboardHelpDialog.focus.focusToolboxStringProperty,
     global: true
   } );
 
   public static readonly FOCUS_CONSTRUCTION_AREA_HOTKEY_DATA = new HotkeyData( {
     keys: [ 'alt+c' ],
     repoName: circuitConstructionKitCommon.name,
-    keyboardHelpDialogLabelStringProperty: CircuitConstructionKitCommonStrings.a11y.keyboardHelpDialog.focus.focusConstructionAreaStringProperty,
+    keyboardHelpDialogLabelStringProperty: CircuitConstructionKitCommonFluent.keyboardHelpDialog.focus.focusConstructionAreaStringProperty,
     global: true
   } );
 }

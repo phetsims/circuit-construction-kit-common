@@ -91,6 +91,46 @@ type StringsType = {
     'toEditComponentStringProperty': LocalizedStringProperty;
     'toChooseConnectionStringProperty': LocalizedStringProperty;
   };
+  'keyboardHelpDialog': {
+    'addComponents': {
+      'headingStringProperty': LocalizedStringProperty;
+      'createComponent': {
+        'labelStringProperty': LocalizedStringProperty;
+        'labelInnerContentStringProperty': LocalizedStringProperty;
+      }
+    };
+    'connectComponents': {
+      'headingStringProperty': LocalizedStringProperty;
+      'grabJunction': {
+        'labelStringProperty': LocalizedStringProperty;
+        'labelInnerContentStringProperty': LocalizedStringProperty;
+      };
+      'selectTarget': {
+        'labelStringProperty': LocalizedStringProperty;
+        'labelInnerContentStringProperty': LocalizedStringProperty;
+      };
+      'attachJunction': {
+        'labelStringProperty': LocalizedStringProperty;
+        'labelInnerContentStringProperty': LocalizedStringProperty;
+      }
+    };
+    'editCircuitComponents': {
+      'headingStringProperty': LocalizedStringProperty;
+      'editCircuitComponentStringProperty': LocalizedStringProperty;
+      'deleteCircuitComponentStringProperty': LocalizedStringProperty;
+    };
+    'focus': {
+      'headingStringProperty': LocalizedStringProperty;
+      'focusToolboxStringProperty': LocalizedStringProperty;
+      'focusConstructionAreaStringProperty': LocalizedStringProperty;
+    };
+    'chooseConnection': {
+      'headingStringProperty': LocalizedStringProperty;
+      'thingSingularStringProperty': LocalizedStringProperty;
+      'thingPluralStringProperty': LocalizedStringProperty;
+      'cancelConnectionStringProperty': LocalizedStringProperty;
+    }
+  };
   'a11y': {
     'circuitDescription': {
       'circuitComponentTypeLabels': {
@@ -220,46 +260,6 @@ type StringsType = {
     'circuitComponent': {
       'accessibleNameStringProperty': LocalizedStringProperty;
       'accessibleHelpTextStringProperty': LocalizedStringProperty;
-    };
-    'keyboardHelpDialog': {
-      'addComponents': {
-        'headingStringProperty': LocalizedStringProperty;
-        'createComponent': {
-          'labelStringProperty': LocalizedStringProperty;
-          'labelInnerContentStringProperty': LocalizedStringProperty;
-        }
-      };
-      'connectComponents': {
-        'headingStringProperty': LocalizedStringProperty;
-        'grabJunction': {
-          'labelStringProperty': LocalizedStringProperty;
-          'labelInnerContentStringProperty': LocalizedStringProperty;
-        };
-        'selectTarget': {
-          'labelStringProperty': LocalizedStringProperty;
-          'labelInnerContentStringProperty': LocalizedStringProperty;
-        };
-        'attachJunction': {
-          'labelStringProperty': LocalizedStringProperty;
-          'labelInnerContentStringProperty': LocalizedStringProperty;
-        }
-      };
-      'editCircuitComponents': {
-        'headingStringProperty': LocalizedStringProperty;
-        'editCircuitComponentStringProperty': LocalizedStringProperty;
-        'deleteCircuitComponentStringProperty': LocalizedStringProperty;
-      };
-      'focus': {
-        'headingStringProperty': LocalizedStringProperty;
-        'focusToolboxStringProperty': LocalizedStringProperty;
-        'focusConstructionAreaStringProperty': LocalizedStringProperty;
-      };
-      'chooseConnection': {
-        'headingStringProperty': LocalizedStringProperty;
-        'thingSingularStringProperty': LocalizedStringProperty;
-        'thingPluralStringProperty': LocalizedStringProperty;
-        'cancelConnectionStringProperty': LocalizedStringProperty;
-      }
     }
   }
 };

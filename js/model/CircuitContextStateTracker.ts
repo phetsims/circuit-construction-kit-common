@@ -13,7 +13,6 @@ import type TEmitter from '../../../axon/js/TEmitter.js';
 import Utils from '../../../dot/js/Utils.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
-import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import Battery from './Battery.js';
 import type Circuit from './Circuit.js';
 import CircuitElement from './CircuitElement.js';
@@ -353,12 +352,12 @@ export default class CircuitContextStateTracker {
     if ( label.length > 0 ) {
       return label;
     }
-    const stringProperty = _.get( CircuitConstructionKitCommonStrings, `${circuitElement.type}StringProperty` );
+    const stringProperty = _.get( CircuitConstructionKitCommonFluent, `${circuitElement.type}StringProperty` );
     return stringProperty ? stringProperty.value : circuitElement.type;
   }
 
   private getElementTypeLabel( circuitElement: CircuitElement ): string {
-    const stringProperty = _.get( CircuitConstructionKitCommonStrings, `${circuitElement.type}StringProperty` );
+    const stringProperty = _.get( CircuitConstructionKitCommonFluent, `${circuitElement.type}StringProperty` );
     const label = stringProperty ? stringProperty.value : circuitElement.type;
     return label.toLowerCase();
   }

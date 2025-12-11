@@ -16,12 +16,12 @@ import HSlider from '../../../sun/js/HSlider.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import CCKCColors from './CCKCColors.js';
 
-const lotsStringProperty = CircuitConstructionKitCommonStrings.lotsStringProperty;
-const tinyStringProperty = CircuitConstructionKitCommonStrings.tinyStringProperty;
-const wireResistivityStringProperty = CircuitConstructionKitCommonStrings.wireResistivityStringProperty;
+const lotsStringProperty = CircuitConstructionKitCommonFluent.lotsStringProperty;
+const tinyStringProperty = CircuitConstructionKitCommonFluent.tinyStringProperty;
+const wireResistivityStringProperty = CircuitConstructionKitCommonFluent.wireResistivityStringProperty;
 
 // constants
 const TICK_LABEL_TEXT_OPTIONS = { fontSize: 12, maxWidth: 45, fill: CCKCColors.textFillProperty };

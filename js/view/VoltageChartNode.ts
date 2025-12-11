@@ -19,12 +19,12 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import CCKCChartNode, { type CCKCChartNodeOptions } from './CCKCChartNode.js';
 import type CCKCProbeNode from './CCKCProbeNode.js';
 import type CircuitNode from './CircuitNode.js';
 
-const voltageWithUnitsStringProperty = CircuitConstructionKitCommonStrings.voltageWithUnitsStringProperty;
+const voltageWithUnitsStringProperty = CircuitConstructionKitCommonFluent.voltageWithUnitsStringProperty;
 
 // constants
 const SERIES_1_COLOR = '#ec3223';

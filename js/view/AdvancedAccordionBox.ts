@@ -18,7 +18,6 @@ import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
-import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import type Circuit from '../model/Circuit.js';
 import CCKCAccordionBox, { type CCKCAccordionBoxOptions } from './CCKCAccordionBox.js';
 import CCKCCheckbox from './CCKCCheckbox.js';
@@ -60,7 +59,7 @@ export default class AdvancedAccordionBox extends CCKCAccordionBox {
     if ( options.showRealBulbsCheckbox ) {
       const addRealBulbsCheckboxTandem = tandem.createTandem( 'addRealBulbsCheckbox' );
       children.push(
-        new CCKCCheckbox( circuit.addRealBulbsProperty, new Text( CircuitConstructionKitCommonStrings.addRealBulbsStringProperty, combineOptions<CheckboxOptions>( {
+        new CCKCCheckbox( circuit.addRealBulbsProperty, new Text( CircuitConstructionKitCommonFluent.addRealBulbsStringProperty, combineOptions<CheckboxOptions>( {
           tandem: addRealBulbsCheckboxTandem.createTandem( 'labelText' )
         }, TEXT_OPTIONS ) ), {
           tandem: addRealBulbsCheckboxTandem,
@@ -73,7 +72,7 @@ export default class AdvancedAccordionBox extends CCKCAccordionBox {
       align: 'left',
       spacing: 15,
       children: children
-    } ) ), CircuitConstructionKitCommonStrings.advancedStringProperty, tandem, {
+    } ) ), CircuitConstructionKitCommonFluent.advancedStringProperty, tandem, {
 
       // Left align the title, with no padding
       titleAlignX: 'left',

@@ -32,14 +32,14 @@ import ammeterBody_png from '../../images/ammeterBody_png.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCUtils from '../CCKCUtils.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import type Ammeter from '../model/Ammeter.js';
 import ammeterReadoutTypeProperty from './ammeterReadoutTypeProperty.js';
 import type CircuitNode from './CircuitNode.js';
 import AmmeterProbeNodeAttachmentKeyboardListener from './input/AmmeterProbeNodeAttachmentKeyboardListener.js';
 import ProbeTextNode from './ProbeTextNode.js';
 
-const currentStringProperty = CircuitConstructionKitCommonStrings.currentStringProperty;
+const currentStringProperty = CircuitConstructionKitCommonFluent.currentStringProperty;
 
 // constants
 // measurements for the cubic curve for the wire nodes
@@ -121,7 +121,7 @@ export default class AmmeterNode extends Node {
     const currentReadoutProperty = new DerivedStringProperty( [
         ammeter.currentProperty,
         ammeterReadoutTypeProperty,
-        CircuitConstructionKitCommonStrings.currentUnitsStringProperty
+        CircuitConstructionKitCommonFluent.currentUnitsStringProperty
       ],
       current => CCKCUtils.createCurrentReadout( current, options.blackBoxStudy ) );
 

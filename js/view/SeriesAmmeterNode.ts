@@ -20,7 +20,7 @@ import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCUtils from '../CCKCUtils.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import type SeriesAmmeter from '../model/SeriesAmmeter.js';
 import ammeterReadoutTypeProperty from './ammeterReadoutTypeProperty.js';
@@ -29,7 +29,7 @@ import type CircuitNode from './CircuitNode.js';
 import FixedCircuitElementNode, { type FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
 import ProbeTextNode from './ProbeTextNode.js';
 
-const currentStringProperty = CircuitConstructionKitCommonStrings.currentStringProperty;
+const currentStringProperty = CircuitConstructionKitCommonFluent.currentStringProperty;
 
 // constants
 const PANEL_HEIGHT = 40;
@@ -83,7 +83,7 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
 
     seriesAmmeter.currentReadoutProperty.link( updateText );
     ammeterReadoutTypeProperty.lazyLink( updateText );
-    CircuitConstructionKitCommonStrings.currentUnitsStringProperty.lazyLink( updateText );
+    CircuitConstructionKitCommonFluent.currentUnitsStringProperty.lazyLink( updateText );
 
     // This node only has a lifelike representation because it is a sensor
     const lifelikeNode = new Node( {
@@ -151,7 +151,7 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
 
       seriesAmmeter.currentReadoutProperty.unlink( updateText );
       ammeterReadoutTypeProperty.unlink( updateText );
-      CircuitConstructionKitCommonStrings.currentUnitsStringProperty.unlink( updateText );
+      CircuitConstructionKitCommonFluent.currentUnitsStringProperty.unlink( updateText );
 
       if ( !this.isIcon ) {
         affirm( !!circuitNode );

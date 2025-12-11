@@ -15,12 +15,12 @@ import type Node from '../../scenery/js/nodes/Node.js';
 import CCKCConstants from './CCKCConstants.js';
 import CCKCQueryParameters from './CCKCQueryParameters.js';
 import circuitConstructionKitCommon from './circuitConstructionKitCommon.js';
-import CircuitConstructionKitCommonStrings from './CircuitConstructionKitCommonStrings.js';
+import CircuitConstructionKitCommonFluent from './CircuitConstructionKitCommonFluent.js';
 import AmmeterReadoutType from './model/AmmeterReadoutType.js';
 import ammeterReadoutTypeProperty from './view/ammeterReadoutTypeProperty.js';
 
-const currentUnitsStringProperty = CircuitConstructionKitCommonStrings.currentUnitsStringProperty;
-const voltageUnitsStringProperty = CircuitConstructionKitCommonStrings.voltageUnitsStringProperty;
+const currentUnitsStringProperty = CircuitConstructionKitCommonFluent.currentUnitsStringProperty;
+const voltageUnitsStringProperty = CircuitConstructionKitCommonFluent.voltageUnitsStringProperty;
 
 // Number of accumulated solve steps within a single frame.  We use high precision for the first
 // several steps, then go to high performance for remaining steps.

@@ -20,10 +20,10 @@ import HSlider from '../../../sun/js/HSlider.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import CCKCColors from './CCKCColors.js';
 
-const resistanceOhmsSymbolStringProperty = CircuitConstructionKitCommonStrings.resistanceOhmsSymbolStringProperty;
+const resistanceOhmsSymbolStringProperty = CircuitConstructionKitCommonFluent.resistanceOhmsSymbolStringProperty;
 
 export default class SourceResistanceControl extends VBox {
 
@@ -60,7 +60,7 @@ export default class SourceResistanceControl extends VBox {
       phetioVisiblePropertyInstrumented: false,
       tandem: tandem.createTandem( 'slider' )
     } );
-    slider.addMajorTick( range.min, createLabel( CircuitConstructionKitCommonStrings.tinyStringProperty, tandem.createTandem( 'tinyLabelText' ) ) );
+    slider.addMajorTick( range.min, createLabel( CircuitConstructionKitCommonFluent.tinyStringProperty, tandem.createTandem( 'tinyLabelText' ) ) );
     slider.addMajorTick( midpoint );
     slider.addMajorTick( range.max, createLabel( new PatternStringProperty( resistanceOhmsSymbolStringProperty, {
       resistance: Utils.toFixed( range.max, 0 )

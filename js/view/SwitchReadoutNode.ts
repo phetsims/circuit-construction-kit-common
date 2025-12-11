@@ -11,15 +11,15 @@ import Node from '../../../scenery/js/nodes/Node.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import type Circuit from '../model/Circuit.js';
 import type CircuitElement from '../model/CircuitElement.js';
 import Switch from '../model/Switch.js';
 import type Vertex from '../model/Vertex.js';
 import CCKCColors from './CCKCColors.js';
 
-const theSwitchIsClosedStringProperty = CircuitConstructionKitCommonStrings.theSwitchIsClosedStringProperty;
-const theSwitchIsOpenStringProperty = CircuitConstructionKitCommonStrings.theSwitchIsOpenStringProperty;
+const theSwitchIsClosedStringProperty = CircuitConstructionKitCommonFluent.theSwitchIsClosedStringProperty;
+const theSwitchIsOpenStringProperty = CircuitConstructionKitCommonFluent.theSwitchIsOpenStringProperty;
 
 // constants
 const MAX_TEXT_WIDTH = 300;

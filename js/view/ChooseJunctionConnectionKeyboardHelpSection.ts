@@ -15,14 +15,14 @@ import KeyboardHelpSectionRow from '../../../scenery-phet/js/keyboard/help/Keybo
 import SceneryPhetStrings from '../../../scenery-phet/js/SceneryPhetStrings.js';
 import TextKeyNode from '../../../scenery-phet/js/keyboard/TextKeyNode.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 
 export default class ChooseJunctionConnectionKeyboardHelpSection extends KeyboardHelpSection {
 
   public constructor() {
 
-    const thingAsLowerCasePluralStringProperty = CircuitConstructionKitCommonStrings.a11y.keyboardHelpDialog.chooseConnection.thingPluralStringProperty;
-    const thingAsLowerCaseSingularStringProperty = CircuitConstructionKitCommonStrings.a11y.keyboardHelpDialog.chooseConnection.thingSingularStringProperty;
+    const thingAsLowerCasePluralStringProperty = CircuitConstructionKitCommonFluent.keyboardHelpDialog.chooseConnection.thingPluralStringProperty;
+    const thingAsLowerCaseSingularStringProperty = CircuitConstructionKitCommonFluent.keyboardHelpDialog.chooseConnection.thingSingularStringProperty;
 
     // Create a PatternStringProperty that fills in a plural/singular pattern, and support dynamic locale.
     const createPatternStringProperty = ( providedStringProperty: typeof SceneryPhetStrings.keyboardHelpDialog.comboBox.popUpListPatternStringProperty ) => {
@@ -63,7 +63,7 @@ export default class ChooseJunctionConnectionKeyboardHelpSection extends Keyboar
 
     const escapeKeyNode = TextKeyNode.esc();
     const cancelConnection = KeyboardHelpSectionRow.labelWithIcon(
-      CircuitConstructionKitCommonStrings.a11y.keyboardHelpDialog.chooseConnection.cancelConnectionStringProperty,
+      CircuitConstructionKitCommonFluent.keyboardHelpDialog.chooseConnection.cancelConnectionStringProperty,
       escapeKeyNode, {
         labelInnerContent: SceneryPhetStrings.a11y.keyboardHelpDialog.comboBox.closeWithoutChangingDescriptionStringProperty
       } );
@@ -71,7 +71,7 @@ export default class ChooseJunctionConnectionKeyboardHelpSection extends Keyboar
     const rows = [ popUpList, moveThrough, chooseNew, cancelConnection ];
 
     super(
-      CircuitConstructionKitCommonStrings.a11y.keyboardHelpDialog.chooseConnection.headingStringProperty,
+      CircuitConstructionKitCommonFluent.keyboardHelpDialog.chooseConnection.headingStringProperty,
       rows, {
         a11yContentTagName: 'ol',
         vBoxOptions: {

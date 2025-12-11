@@ -226,6 +226,86 @@
       "value": "to <b>Choose Connection</b>"
     }
   },
+  "keyboardHelpDialog": {
+    "addComponents": {
+      "heading": {
+        "value": "Add Circuit Components"
+      },
+      "createComponent": {
+        "label": {
+          "value": "Add focused tool to construction area"
+        },
+        "labelInnerContent": {
+          "value": "Press Space or Enter to drop the selected component into the circuit."
+        }
+      }
+    },
+    "connectComponents": {
+      "heading": {
+        "value": "Connect Components"
+      },
+      "grabJunction": {
+        "label": {
+          "value": "Grab highlighted junction"
+        },
+        "labelInnerContent": {
+          "value": "Press Space or Enter to begin connecting from the focused junction."
+        }
+      },
+      "selectTarget": {
+        "label": {
+          "value": "Move grabbed junction"
+        },
+        "labelInnerContent": {
+          "value": "Use arrow keys to move grabbed junction to different attachment choices."
+        }
+      },
+      "attachJunction": {
+        "label": {
+          "value": "Attach junctions"
+        },
+        "labelInnerContent": {
+          "value": "Press Space or Enter again to complete the connection, or to detach."
+        }
+      }
+    },
+    "editCircuitComponents": {
+      "heading": {
+        "value": "Edit Circuit Components"
+      },
+      "editCircuitComponent": {
+        "value": "Edit circuit component"
+      },
+      "deleteCircuitComponent": {
+        "value": "Delete or cut circuit component"
+      }
+    },
+    "focus": {
+      "heading": {
+        "value": "From Anywhere in Screen"
+      },
+      "focusToolbox": {
+        "value": "Jump to Circuit Component Toolbox"
+      },
+      "focusConstructionArea": {
+        "value": "Jump to construction area"
+      }
+    },
+    "chooseConnection": {
+      "heading": {
+        "value": "Choose a Connection"
+      },
+      "thingSingular": {
+        "value": "connection"
+      },
+      "thingPlural": {
+        "value": "connections"
+      },
+      "cancelConnection": {
+        "value": "4. Cancel connection"
+      }
+    }
+  },
   "a11y": {
     "circuitDescription": {
       "circuitComponentTypeLabels": {
@@ -500,86 +580,6 @@
       },
       "accessibleHelpText": {
         "value": "{ $type ->\n  *[switch] { $switchState ->\n              [closed] This switch is closed. Press Space or Enter to open the switch.\n              *[open] This switch is open. Press Space or Enter to close the switch.\n            }\n}"
-      }
-    },
-    "keyboardHelpDialog": {
-      "addComponents": {
-        "heading": {
-          "value": "Add Circuit Components"
-        },
-        "createComponent": {
-          "label": {
-            "value": "Add focused tool to construction area"
-          },
-          "labelInnerContent": {
-            "value": "Press Space or Enter to drop the selected component into the circuit."
-          }
-        }
-      },
-      "connectComponents": {
-        "heading": {
-          "value": "Connect Components"
-        },
-        "grabJunction": {
-          "label": {
-            "value": "Grab highlighted junction"
-          },
-          "labelInnerContent": {
-            "value": "Press Space or Enter to begin connecting from the focused junction."
-          }
-        },
-        "selectTarget": {
-          "label": {
-            "value": "Move grabbed junction"
-          },
-          "labelInnerContent": {
-            "value": "Use arrow keys to move grabbed junction to different attachment choices."
-          }
-        },
-        "attachJunction": {
-          "label": {
-            "value": "Attach junctions"
-          },
-          "labelInnerContent": {
-            "value": "Press Space or Enter again to complete the connection, or to detach."
-          }
-        }
-      },
-      "editCircuitComponents": {
-        "heading": {
-          "value": "Edit Circuit Components"
-        },
-        "editCircuitComponent": {
-          "value": "Edit circuit component"
-        },
-        "deleteCircuitComponent": {
-          "value": "Delete or cut circuit component"
-        }
-      },
-      "focus": {
-        "heading": {
-          "value": "From Anywhere in Screen"
-        },
-        "focusToolbox": {
-          "value": "Jump to Circuit Component Toolbox"
-        },
-        "focusConstructionArea": {
-          "value": "Jump to construction area"
-        }
-      },
-      "chooseConnection": {
-        "heading": {
-          "value": "Choose a Connection"
-        },
-        "thingSingular": {
-          "value": "connection"
-        },
-        "thingPlural": {
-          "value": "connections"
-        },
-        "cancelConnection": {
-          "value": "4. Cancel connection"
-        }
       }
     }
   }

@@ -22,19 +22,18 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
-import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
 import CurrentType from '../model/CurrentType.js';
 import CCKCCheckbox from './CCKCCheckbox.js';
 import CCKCColors from './CCKCColors.js';
 import CCKCPanel from './CCKCPanel.js';
 import ConventionalCurrentArrowNode from './ConventionalCurrentArrowNode.js';
 
-const conventionalStringProperty = CircuitConstructionKitCommonStrings.conventionalStringProperty;
-const electronsStringProperty = CircuitConstructionKitCommonStrings.electronsStringProperty;
-const labelsStringProperty = CircuitConstructionKitCommonStrings.labelsStringProperty;
-const showCurrentStringProperty = CircuitConstructionKitCommonStrings.showCurrentStringProperty;
-const stopwatchStringProperty = CircuitConstructionKitCommonStrings.stopwatchStringProperty;
-const valuesStringProperty = CircuitConstructionKitCommonStrings.valuesStringProperty;
+const conventionalStringProperty = CircuitConstructionKitCommonFluent.conventionalStringProperty;
+const electronsStringProperty = CircuitConstructionKitCommonFluent.electronsStringProperty;
+const labelsStringProperty = CircuitConstructionKitCommonFluent.labelsStringProperty;
+const showCurrentStringProperty = CircuitConstructionKitCommonFluent.showCurrentStringProperty;
+const stopwatchStringProperty = CircuitConstructionKitCommonFluent.stopwatchStringProperty;
+const valuesStringProperty = CircuitConstructionKitCommonFluent.valuesStringProperty;
 
 // constants
 const BOX_ALIGNMENT = { xAlign: 'left' as const };

@@ -83,6 +83,39 @@ key:
   toEditComponent:    to <b>Edit Component</b>
   toChooseConnection: to <b>Choose Connection</b>
 
+# TODO: Some of this text is PDOM only and should not appear in rosetta
+keyboardHelpDialog:
+  addComponents:
+    heading: Add Circuit Components
+    createComponent:
+      label:             Add focused tool to construction area
+      labelInnerContent: Press Space or Enter to drop the selected component into the circuit.
+  connectComponents:
+    heading: Connect Components
+    grabJunction:
+      label:             Grab highlighted junction
+      labelInnerContent: Press Space or Enter to begin connecting from the focused junction.
+    selectTarget:
+      label:             Move grabbed junction
+      labelInnerContent: Use arrow keys to move grabbed junction to different attachment choices.
+    attachJunction:
+      label:             Attach junctions
+      labelInnerContent: Press Space or Enter again to complete the connection, or to detach.
+  editCircuitComponents:
+    heading:                Edit Circuit Components
+    editCircuitComponent:   Edit circuit component
+    deleteCircuitComponent: Delete or cut circuit component
+  focus:
+    heading:               From Anywhere in Screen
+    focusToolbox:          Jump to Circuit Component Toolbox
+    focusConstructionArea: Jump to construction area
+  # For connecting junctions or attaching a voltmeter probe or ammeter probe
+  chooseConnection:
+    heading:          Choose a Connection
+    thingSingular:    connection
+    thingPlural:      connections
+    cancelConnection: 4. Cancel connection
+
 a11y:
   circuitDescription:
     circuitComponentTypeLabels:
@@ -333,37 +366,3 @@ a11y:
           select_switchState:
             closed: 'This switch is closed. Press Space or Enter to open the switch.'
             open:   'This switch is open. Press Space or Enter to close the switch.'
-
-  # TODO: Move some of this outside of a11y key
-  keyboardHelpDialog:
-    addComponents:
-      heading: Add Circuit Components
-      createComponent:
-        label:             Add focused tool to construction area
-        labelInnerContent: Press Space or Enter to drop the selected component into the circuit.
-    connectComponents:
-      heading: Connect Components
-      grabJunction:
-        label:             Grab highlighted junction
-        labelInnerContent: Press Space or Enter to begin connecting from the focused junction.
-      selectTarget:
-        label:             Move grabbed junction
-        labelInnerContent: Use arrow keys to move grabbed junction to different attachment choices.
-      attachJunction:
-        label:             Attach junctions
-        labelInnerContent: Press Space or Enter again to complete the connection, or to detach.
-    editCircuitComponents:
-      heading:                Edit Circuit Components
-      editCircuitComponent:   Edit circuit component
-      deleteCircuitComponent: Delete or cut circuit component
-    focus:
-      heading:               From Anywhere in Screen
-      focusToolbox:          Jump to Circuit Component Toolbox
-      focusConstructionArea: Jump to construction area
-
-    # For connecting junctions or attaching a voltmeter probe or ammeter probe
-    chooseConnection:
-      heading:          Choose a Connection
-      thingSingular:    connection
-      thingPlural:      connections
-      cancelConnection: 4. Cancel connection

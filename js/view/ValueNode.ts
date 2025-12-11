@@ -25,7 +25,7 @@ import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import Capacitor from '../model/Capacitor.js';
 import type CircuitElement from '../model/CircuitElement.js';
 import type CircuitElementViewType from '../model/CircuitElementViewType.js';
@@ -37,11 +37,11 @@ import Switch from '../model/Switch.js';
 import VoltageSource from '../model/VoltageSource.js';
 import CCKCColors from './CCKCColors.js';
 
-const capacitanceFaradsSymbolStringProperty = CircuitConstructionKitCommonStrings.capacitanceFaradsSymbolStringProperty;
-const fuseValueStringProperty = CircuitConstructionKitCommonStrings.fuseValueStringProperty;
-const inductanceHenriesSymbolStringProperty = CircuitConstructionKitCommonStrings.inductanceHenriesSymbolStringProperty;
-const resistanceOhmsSymbolStringProperty = CircuitConstructionKitCommonStrings.resistanceOhmsSymbolStringProperty;
-const voltageUnitsStringProperty = CircuitConstructionKitCommonStrings.voltageUnitsStringProperty;
+const capacitanceFaradsSymbolStringProperty = CircuitConstructionKitCommonFluent.capacitanceFaradsSymbolStringProperty;
+const fuseValueStringProperty = CircuitConstructionKitCommonFluent.fuseValueStringProperty;
+const inductanceHenriesSymbolStringProperty = CircuitConstructionKitCommonFluent.inductanceHenriesSymbolStringProperty;
+const resistanceOhmsSymbolStringProperty = CircuitConstructionKitCommonFluent.resistanceOhmsSymbolStringProperty;
+const voltageUnitsStringProperty = CircuitConstructionKitCommonFluent.voltageUnitsStringProperty;
 
 // constants
 const VERTICAL_OFFSET = 24;

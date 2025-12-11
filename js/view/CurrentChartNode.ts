@@ -14,12 +14,12 @@ import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import optionize, { type EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import CCKCChartNode, { type CCKCChartNodeOptions } from './CCKCChartNode.js';
 import type CCKCProbeNode from './CCKCProbeNode.js';
 import type CircuitNode from './CircuitNode.js';
 
-const currentWithUnitsStringProperty = CircuitConstructionKitCommonStrings.currentWithUnitsStringProperty;
+const currentWithUnitsStringProperty = CircuitConstructionKitCommonFluent.currentWithUnitsStringProperty;
 
 export default class CurrentChartNode extends CCKCChartNode {
   private readonly probeNode1: CCKCProbeNode;
