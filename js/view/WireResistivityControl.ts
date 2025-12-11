@@ -43,6 +43,7 @@ export default class WireResistivityControl extends VBox {
       trackSize: CCKCConstants.SLIDER_TRACK_SIZE,
       thumbSize: CCKCConstants.THUMB_SIZE,
       majorTickLength: CCKCConstants.MAJOR_TICK_LENGTH,
+      shiftKeyboardStep: CCKCConstants.WIRE_RESISTIVITY_RANGE.getLength() / 100,
       phetioVisiblePropertyInstrumented: false,
       tandem: tandem.createTandem( 'slider' )
     } );

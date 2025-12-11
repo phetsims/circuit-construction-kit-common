@@ -54,6 +54,7 @@ export default class SourceResistanceControl extends VBox {
       thumbSize: CCKCConstants.THUMB_SIZE,
       majorTickLength: CCKCConstants.MAJOR_TICK_LENGTH,
       minorTickLength: CCKCConstants.MINOR_TICK_LENGTH,
+      shiftKeyboardStep: 1,
 
       // Snap to the nearest whole number.
       constrainValue: ( value: number ) => range.constrainValue( Utils.roundSymmetric( value ) ),

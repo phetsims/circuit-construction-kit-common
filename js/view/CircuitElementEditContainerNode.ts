@@ -226,7 +226,8 @@ export default class CircuitElementEditContainerNode extends Node {
         tandem: tandem.createTandem( 'fuseCurrentRatingControl' ),
         delta: NORMAL_TWEAKER_DELTA, // For the tweakers
         sliderOptions: {
-          constrainValue: ( value: number ) => Utils.roundToInterval( value, 0.5 )
+          constrainValue: ( value: number ) => Utils.roundToInterval( value, 0.5 ),
+          shiftKeyboardStep: 0.5
         }
       } );
 
@@ -238,7 +239,8 @@ export default class CircuitElementEditContainerNode extends Node {
         delta: CCKCQueryParameters.capacitanceStep,
         // For dragging the slider knob
         sliderOptions: {
-          constrainValue: ( value: number ) => Utils.roundToInterval( value, CCKCQueryParameters.capacitanceStep )
+          constrainValue: ( value: number ) => Utils.roundToInterval( value, CCKCQueryParameters.capacitanceStep ),
+          shiftKeyboardStep: CCKCQueryParameters.capacitanceStep
         }
       } );
 
@@ -251,7 +253,8 @@ export default class CircuitElementEditContainerNode extends Node {
 
         // For dragging the slider knob
         sliderOptions: {
-          constrainValue: ( value: number ) => Utils.roundToInterval( value, 0.1 )
+          constrainValue: ( value: number ) => Utils.roundToInterval( value, 0.1 ),
+          shiftKeyboardStep: 0.1
         }
       } );
 
@@ -270,7 +273,8 @@ export default class CircuitElementEditContainerNode extends Node {
         tandem: tandem.createTandem( tandemName ),
         delta: NORMAL_TWEAKER_DELTA,
         sliderOptions: {
-          constrainValue: ( value: number ) => Utils.roundToInterval( value, NORMAL_SLIDER_KNOB_DELTA ) // For dragging the slider knob
+          constrainValue: ( value: number ) => Utils.roundToInterval( value, NORMAL_SLIDER_KNOB_DELTA ), // For dragging the slider knob
+          shiftKeyboardStep: NORMAL_SLIDER_KNOB_DELTA
         },
         numberDisplayOptions: { decimalPlaces: Resistor.RESISTANCE_DECIMAL_PLACES }
       } );
@@ -285,7 +289,8 @@ export default class CircuitElementEditContainerNode extends Node {
         tandem: circuit.includeLabElements ? tandem.createTandem( tandemName ) : Tandem.OPT_OUT,
         delta: HIGH_TWEAKER_DELTA,
         sliderOptions: {
-          constrainValue: ( value: number ) => Utils.roundToInterval( value, HIGH_SLIDER_KNOB_DELTA ) // For dragging the slider knob
+          constrainValue: ( value: number ) => Utils.roundToInterval( value, HIGH_SLIDER_KNOB_DELTA ), // For dragging the slider knob
+          shiftKeyboardStep: HIGH_SLIDER_KNOB_DELTA
         },
         numberDisplayOptions: { decimalPlaces: Resistor.HIGH_RESISTANCE_DECIMAL_PLACES }
       } );
@@ -305,7 +310,8 @@ export default class CircuitElementEditContainerNode extends Node {
         tandem: tandem.createTandem( 'batteryVoltageNumberControl' ),
         delta: NORMAL_TWEAKER_DELTA,
         sliderOptions: { // For dragging the slider knob
-          constrainValue: ( value: number ) => Utils.roundToInterval( value, NORMAL_SLIDER_KNOB_DELTA )
+          constrainValue: ( value: number ) => Utils.roundToInterval( value, NORMAL_SLIDER_KNOB_DELTA ),
+          shiftKeyboardStep: NORMAL_SLIDER_KNOB_DELTA
         },
         numberDisplayOptions: { decimalPlaces: Battery.VOLTAGE_DECIMAL_PLACES }
       } );
@@ -318,7 +324,8 @@ export default class CircuitElementEditContainerNode extends Node {
         tandem: circuit.includeLabElements ? tandem.createTandem( 'extremeBatteryVoltageNumberControl' ) : Tandem.OPT_OUT,
         delta: HIGH_TWEAKER_DELTA,
         sliderOptions: { // For dragging the slider knob
-          constrainValue: ( value: number ) => Utils.roundToInterval( value, HIGH_SLIDER_KNOB_DELTA )
+          constrainValue: ( value: number ) => Utils.roundToInterval( value, HIGH_SLIDER_KNOB_DELTA ),
+          shiftKeyboardStep: HIGH_SLIDER_KNOB_DELTA
         },
         numberDisplayOptions: { decimalPlaces: Battery.HIGH_VOLTAGE_DECIMAL_PLACES }
       } );
@@ -350,6 +357,9 @@ export default class CircuitElementEditContainerNode extends Node {
       2, {
         tandem: circuit.includeACElements ? tandem.createTandem( 'frequencyControl' ) : Tandem.OPT_OUT,
         delta: 0.01,
+        sliderOptions: {
+          shiftKeyboardStep: 0.01
+        },
         getAdditionalVisibilityProperties: ( c: CircuitElement ) => {
           return c instanceof ACVoltage ? [ c.isFrequencyEditableProperty ] : [];
         }
