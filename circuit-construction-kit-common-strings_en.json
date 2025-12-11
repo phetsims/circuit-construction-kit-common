@@ -309,13 +309,13 @@
         "value": "{ $currentLevel ->\n  [low] In circuit, electrons flow slowly, lightbulb glows dimly. Circuit has:\n  [medium] In circuit, electrons flow at medium speed, lightbulb glows moderately. Circuit has:\n  *[high] In circuit, electrons flow quickly, lightbulb glows brightly. Circuit has:\n}"
       },
       "wireCount": {
-        "value": "{ $count ->\n  [one] { $count } wire\n  *[other] { $count } wires\n}"
+        "value": "{ $count ->\n  [one] { $count } wire\n *[other] { $count } wires\n}"
       },
       "additionalComponentCount": {
-        "value": "{ $count ->\n  [one] { $count } additional circuit component\n  *[other] { $count } additional circuit components\n}"
+        "value": "{ $count ->\n  [one] { $count } additional circuit component\n *[other] { $count } additional circuit components\n}"
       },
       "connectionCount": {
-        "value": "{ $count ->\n  [zero] { $count } connections\n  [one] { $count } connection\n  *[other] { $count } connections\n}"
+        "value": "{ $count ->\n  [zero] { $count } connections\n  [one] { $count } connection\n *[other] { $count } connections\n}"
       },
       "helpTextCase1": {
         "value": "Add Circuit Components. You need a wire and at least 2 additional components to build a circuit. Check out Keyboard Shortcuts for more details."

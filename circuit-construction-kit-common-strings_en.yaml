@@ -133,19 +133,22 @@ a11y:
         low:    'In circuit, electrons flow slowly, lightbulb glows dimly. Circuit has:'
         medium: 'In circuit, electrons flow at medium speed, lightbulb glows moderately. Circuit has:'
         high:   'In circuit, electrons flow quickly, lightbulb glows brightly. Circuit has:'
-    wireCount:
-      select_count:
-        one:   '{ $count } wire'
-        other: '{ $count } wires'
-    additionalComponentCount:
-      select_count:
-        one:   '{ $count } additional circuit component'
-        other: '{ $count } additional circuit components'
-    connectionCount:
-      select_count:
-        zero:  '{ $count } connections'
-        one:   '{ $count } connection'
-        other: '{ $count } connections'
+    wireCount: >-
+      { $count ->
+        [one] { $count } wire
+       *[other] { $count } wires
+      }
+    additionalComponentCount: >-
+      { $count ->
+        [one] { $count } additional circuit component
+       *[other] { $count } additional circuit components
+      }
+    connectionCount: >-
+      { $count ->
+        [zero] { $count } connections
+        [one] { $count } connection
+       *[other] { $count } connections
+      }
     helpTextCase1:    >-
                       Add Circuit Components. You need a wire and at least 2 additional components to build a circuit.
                       Check out Keyboard Shortcuts for more details.
