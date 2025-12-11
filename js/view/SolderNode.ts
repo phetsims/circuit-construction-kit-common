@@ -69,6 +69,9 @@ export default class SolderNode extends Node {
     circuit.circuitElements.addItemAddedListener( updateFill );
     circuit.circuitElements.addItemRemovedListener( updateFill );
 
+    // When circuit topology changes (e.g., disconnect button reassigns vertex references), update solder visibility
+    circuit.circuitChangedEmitter.addListener( updateFill );
+
     const updateSolderNodePosition = this.setTranslation.bind( this );
 
     vertex.positionProperty.link( updateSolderNodePosition );
@@ -83,6 +86,8 @@ export default class SolderNode extends Node {
       // In Black Box, other wires can be detached from a vertex and this should also update the solder
       circuit.circuitElements.removeItemAddedListener( updateFill );
       circuit.circuitElements.removeItemRemovedListener( updateFill );
+
+      circuit.circuitChangedEmitter.removeListener( updateFill );
     };
 
     updateFill();

@@ -107,6 +107,9 @@ export default class CCKCDisconnectButton extends CCKCRoundPushButton {
           // Restore selection since vertex creation clears it
           circuit.selectionProperty.value = circuitElement;
 
+          // Notify that circuit topology changed so solder nodes update visibility
+          circuit.circuitChangedEmitter.emit();
+
           // Restore focus to this button (which is now disabled)
           this.focus();
         }
