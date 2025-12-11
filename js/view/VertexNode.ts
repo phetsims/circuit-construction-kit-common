@@ -91,10 +91,10 @@ export default class VertexNode extends Node {
       phetioDynamicElement: true,
       phetioVisiblePropertyInstrumented: false,
       accessibleName: null, // Set by CircuitDescription.ts
-      ariaRole: 'application', // see https://github.com/phetsims/circuit-construction-kit-common/issues/1079#issue-3649808690
 
-       
-      ...AccessibleDraggableOptions
+      ...AccessibleDraggableOptions,
+
+      accessibleRoleDescription: 'listbox button' // see https://github.com/phetsims/circuit-construction-kit-common/issues/1079#issue-3649808690
     } );
 
     const circuit = circuitNode.circuit;
