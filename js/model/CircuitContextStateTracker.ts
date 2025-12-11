@@ -263,8 +263,8 @@ export default class CircuitContextStateTracker {
         }
       }
       else if ( event.type === 'vertex-split' ) {
-        sentences.push( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.vertexSplit.format( {
-          vertexName: event.vertexLabel,
+        sentences.push( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.junctionSplit.format( {
+          junctionName: event.vertexLabel,
           connectionCount: event.createdVertexCount
         } ) );
       }
@@ -368,7 +368,7 @@ export default class CircuitContextStateTracker {
     if ( label.length > 0 ) {
       return label;
     }
-    return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.vertexDefaultLabel.format( {
+    return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.junctionDefaultLabel.format( {
       index: vertex.index + 1
     } );
   }

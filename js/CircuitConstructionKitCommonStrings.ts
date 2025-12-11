@@ -132,13 +132,13 @@ type StringsType = {
       'helpTextCase2StringProperty': LocalizedStringProperty;
       'helpTextCase3StringProperty': LocalizedStringProperty;
     };
-    'vertexInteraction': {
+    'junctionInteraction': {
       'noNewAttachmentStringProperty': LocalizedStringProperty;
     };
     'circuitContextResponses': {
-      'vertexDefaultLabelStringProperty': LocalizedStringProperty;
+      'junctionDefaultLabelStringProperty': LocalizedStringProperty;
       'connectedElementsStringProperty': LocalizedStringProperty;
-      'vertexSplitStringProperty': LocalizedStringProperty;
+      'junctionSplitStringProperty': LocalizedStringProperty;
       'currentChangedSingleStringProperty': LocalizedStringProperty;
       'currentMultipleStringProperty': LocalizedStringProperty;
       'currentStoppedStringProperty': LocalizedStringProperty;

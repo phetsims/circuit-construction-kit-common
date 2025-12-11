@@ -120,10 +120,10 @@ addToMapIfDefined( 'a11y_constructionAreaStatus_connectionCount', 'a11y.construc
 addToMapIfDefined( 'a11y_constructionAreaStatus_helpTextCase1', 'a11y.constructionAreaStatus.helpTextCase1StringProperty' );
 addToMapIfDefined( 'a11y_constructionAreaStatus_helpTextCase2', 'a11y.constructionAreaStatus.helpTextCase2StringProperty' );
 addToMapIfDefined( 'a11y_constructionAreaStatus_helpTextCase3', 'a11y.constructionAreaStatus.helpTextCase3StringProperty' );
-addToMapIfDefined( 'a11y_vertexInteraction_noNewAttachment', 'a11y.vertexInteraction.noNewAttachmentStringProperty' );
-addToMapIfDefined( 'a11y_circuitContextResponses_vertexDefaultLabel', 'a11y.circuitContextResponses.vertexDefaultLabelStringProperty' );
+addToMapIfDefined( 'a11y_junctionInteraction_noNewAttachment', 'a11y.junctionInteraction.noNewAttachmentStringProperty' );
+addToMapIfDefined( 'a11y_circuitContextResponses_junctionDefaultLabel', 'a11y.circuitContextResponses.junctionDefaultLabelStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_connectedElements', 'a11y.circuitContextResponses.connectedElementsStringProperty' );
-addToMapIfDefined( 'a11y_circuitContextResponses_vertexSplit', 'a11y.circuitContextResponses.vertexSplitStringProperty' );
+addToMapIfDefined( 'a11y_circuitContextResponses_junctionSplit', 'a11y.circuitContextResponses.junctionSplitStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_currentChangedSingle', 'a11y.circuitContextResponses.currentChangedSingleStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_currentMultiple', 'a11y.circuitContextResponses.currentMultipleStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_currentStopped', 'a11y.circuitContextResponses.currentStoppedStringProperty' );
@@ -317,13 +317,13 @@ const CircuitConstructionKitCommonFluent = {
       helpTextCase2StringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_constructionAreaStatus_helpTextCase2', _.get( CircuitConstructionKitCommonStrings, 'a11y.constructionAreaStatus.helpTextCase2StringProperty' ) ),
       helpTextCase3StringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_constructionAreaStatus_helpTextCase3', _.get( CircuitConstructionKitCommonStrings, 'a11y.constructionAreaStatus.helpTextCase3StringProperty' ) )
     },
-    vertexInteraction: {
-      noNewAttachmentStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_vertexInteraction_noNewAttachment', _.get( CircuitConstructionKitCommonStrings, 'a11y.vertexInteraction.noNewAttachmentStringProperty' ) )
+    junctionInteraction: {
+      noNewAttachmentStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_junctionInteraction_noNewAttachment', _.get( CircuitConstructionKitCommonStrings, 'a11y.junctionInteraction.noNewAttachmentStringProperty' ) )
     },
     circuitContextResponses: {
-      vertexDefaultLabel: new FluentPattern<{ index: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_vertexDefaultLabel', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.vertexDefaultLabelStringProperty' ), [{"name":"index"}] ),
+      junctionDefaultLabel: new FluentPattern<{ index: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_junctionDefaultLabel', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.junctionDefaultLabelStringProperty' ), [{"name":"index"}] ),
       connectedElements: new FluentPattern<{ elements: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_connectedElements', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.connectedElementsStringProperty' ), [{"name":"elements"}] ),
-      vertexSplit: new FluentPattern<{ connectionCount: number | 'one' | number | 'other' | TReadOnlyProperty<number | 'one' | number | 'other'>, vertexName: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_vertexSplit', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.vertexSplitStringProperty' ), [{"name":"connectionCount","variants":[{"type":"number","value":"one"},{"type":"number","value":"other"}]},{"name":"vertexName"}] ),
+      junctionSplit: new FluentPattern<{ connectionCount: number | 'one' | number | 'other' | TReadOnlyProperty<number | 'one' | number | 'other'>, junctionName: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_junctionSplit', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.junctionSplitStringProperty' ), [{"name":"connectionCount","variants":[{"type":"number","value":"one"},{"type":"number","value":"other"}]},{"name":"junctionName"}] ),
       currentChangedSingle: new FluentPattern<{ current: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_currentChangedSingle', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.currentChangedSingleStringProperty' ), [{"name":"current"}] ),
       currentMultipleStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_currentMultiple', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.currentMultipleStringProperty' ) ),
       currentStoppedStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_currentStopped', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.currentStoppedStringProperty' ) ),

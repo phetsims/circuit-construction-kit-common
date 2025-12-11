@@ -161,15 +161,15 @@ a11y:
     helpTextCase3:            >-
                               Look for components and hit Space to pop up options for editing. Remove selected component with
                               Delete key. Check out Keyboard Shortcuts for more details.
-  vertexInteraction:
+  junctionInteraction:
     noNewAttachment: No new attachment
   circuitContextResponses:
-    vertexDefaultLabel:   'Vertex { $index }'
+    junctionDefaultLabel: 'Junction { $index }'
     connectedElements:    'Connected: { $elements }.'
-    vertexSplit:
+    junctionSplit:
       select_connectionCount:
-        one:   '{ $vertexName } split into one new connection.'
-        other: '{ $vertexName } split into { $connectionCount } new connections.'
+        one:   '{ $junctionName } split into one new connection.'
+        other: '{ $junctionName } split into { $connectionCount } new connections.'
     currentChangedSingle: 'Current changed to { $current } amps.'
     currentMultiple:      'Currents flowing at different speeds.'
     currentStopped:       'Current stopped flowing.'

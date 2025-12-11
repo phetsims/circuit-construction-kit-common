@@ -327,20 +327,20 @@
         "value": "Look for components and hit Space to pop up options for editing. Remove selected component with Delete key. Check out Keyboard Shortcuts for more details."
       }
     },
-    "vertexInteraction": {
+    "junctionInteraction": {
       "noNewAttachment": {
         "value": "No new attachment"
       }
     },
     "circuitContextResponses": {
-      "vertexDefaultLabel": {
-        "value": "Vertex { $index }"
+      "junctionDefaultLabel": {
+        "value": "Junction { $index }"
       },
       "connectedElements": {
         "value": "Connected: { $elements }."
       },
-      "vertexSplit": {
-        "value": "{ $connectionCount ->\n  [one] { $vertexName } split into one new connection.\n  *[other] { $vertexName } split into { $connectionCount } new connections.\n}"
+      "junctionSplit": {
+        "value": "{ $connectionCount ->\n  [one] { $junctionName } split into one new connection.\n  *[other] { $junctionName } split into { $connectionCount } new connections.\n}"
       },
       "currentChangedSingle": {
         "value": "Current changed to { $current } amps."

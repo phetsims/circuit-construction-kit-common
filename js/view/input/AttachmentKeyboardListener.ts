@@ -82,7 +82,7 @@ export default class AttachmentKeyboardListener<T> extends KeyboardListener<OneK
 
         const items: AttachmentItem<T>[] = [ ...availableItems, {
           value: null,
-          createNode: () => new Text( CircuitConstructionKitCommonFluent.a11y.vertexInteraction.noNewAttachmentStringProperty )
+          createNode: () => new Text( CircuitConstructionKitCommonFluent.a11y.junctionInteraction.noNewAttachmentStringProperty )
         } ];
 
         // Check if the current position matches any available item (from prior discrete interaction)
