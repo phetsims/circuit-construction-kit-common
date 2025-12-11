@@ -254,6 +254,9 @@ type StringsType = {
     'reverseBatteryButton': {
       'accessibleNameStringProperty': LocalizedStringProperty;
     };
+    'disconnectButton': {
+      'accessibleNameStringProperty': LocalizedStringProperty;
+    };
     'trashButton': {
       'accessibleNameStringProperty': LocalizedStringProperty;
     };

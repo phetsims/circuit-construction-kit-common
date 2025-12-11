@@ -275,6 +275,8 @@ a11y:
     accessibleHelpText: Drag this tool to the circuit to create a new { a11y.circuitComponent.accessibleName }.
   reverseBatteryButton:
     accessibleName: Reverse Battery Direction
+  disconnectButton:
+    accessibleName: Disconnect { a11y.circuitComponent.accessibleName }
   trashButton:
     accessibleName: Delete { a11y.circuitComponent.accessibleName }
   circuitComponent:

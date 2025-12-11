@@ -45,6 +45,7 @@ import type Vertex from '../model/Vertex.js';
 import Wire from '../model/Wire.js';
 import BatteryReverseButton from './BatteryReverseButton.js';
 import CCKCColors from './CCKCColors.js';
+import CCKCDisconnectButton from './CCKCDisconnectButton.js';
 import CCKCTrashButton from './CCKCTrashButton.js';
 import CircuitElementNumberControl from './CircuitElementNumberControl.js';
 import CircuitNode from './CircuitNode.js';
@@ -140,6 +141,13 @@ export default class CircuitElementEditContainerNode extends Node {
       // Ensure panel bounds reflow when the child is made invisible via phet-io
       excludeInvisibleChildrenFromBounds: true,
       children: [ trashButton ]
+    } );
+
+    const disconnectButton = new CCKCDisconnectButton( circuit, tandem.createTandem( 'disconnectButton' ) );
+
+    const disconnectButtonContainer = new Node( {
+      excludeInvisibleChildrenFromBounds: true,
+      children: [ disconnectButton ]
     } );
 
     const fuseRepairButton = new FuseRepairButton( circuit, {
@@ -393,7 +401,7 @@ export default class CircuitElementEditContainerNode extends Node {
     circuit.selectionProperty.link( selectedCircuitElement => {
       if ( editNode ) {
         this.hasChild( editNode ) && this.removeChild( editNode );
-        if ( editNode !== tapInstructionText && editNode !== trashButtonContainer ) {
+        if ( editNode !== tapInstructionText ) {
           editNode.dispose();
           disposeActions.forEach( disposeAction => disposeAction() );
           disposeActions.length = 0;
@@ -408,6 +416,7 @@ export default class CircuitElementEditContainerNode extends Node {
           const isExtreme = selectedCircuitElement.resistorType === ResistorType.EXTREME_RESISTOR;
           editNode = new EditPanel( [
             isExtreme ? extremeResistorResistanceNumberControl : resistorResistanceNumberControl,
+            disconnectButtonContainer,
             trashButtonContainer
           ] );
         }
@@ -416,14 +425,18 @@ export default class CircuitElementEditContainerNode extends Node {
         else if ( selectedCircuitElement instanceof LightBulb && !selectedCircuitElement.isReal ) {
           editNode = new EditPanel( [
               selectedCircuitElement.isExtreme ? extremeLightBulbResistanceNumberControl : lightBulbResistanceNumberControl,
+              disconnectButtonContainer,
               trashButtonContainer
             ]
           );
         }
         else if ( selectedCircuitElement instanceof Resistor || ( selectedCircuitElement instanceof LightBulb && selectedCircuitElement.isReal ) ) {
 
-          // Just show a trash button for non-editable resistors which are household items and for isReal bulbs
-          editNode = trashButtonContainer;
+          // Just show disconnect and trash buttons for non-editable resistors which are household items and for isReal bulbs
+          editNode = new EditPanel( [
+            disconnectButtonContainer,
+            trashButtonContainer
+          ] );
         }
         else if ( selectedCircuitElement instanceof Battery ) {
           const node = new Node( {
@@ -435,6 +448,7 @@ export default class CircuitElementEditContainerNode extends Node {
               // Batteries can be reversed, nest in a Node so the layout will reflow correctly
               node,
               selectedCircuitElement.batteryType === 'high-voltage' ? extremeBatteryVoltageNumberControl : batteryVoltageNumberControl,
+              disconnectButtonContainer,
               trashButtonContainer
             ]
           );
@@ -444,6 +458,7 @@ export default class CircuitElementEditContainerNode extends Node {
           editNode = new EditPanel( [
               fuseRepairButtonContainer,
               fuseCurrentRatingControl,
+              disconnectButtonContainer,
               trashButtonContainer
             ]
           );
@@ -453,6 +468,7 @@ export default class CircuitElementEditContainerNode extends Node {
             children: [
               switchReadoutNode,
               switchToggleSwitch,
+              disconnectButtonContainer,
               trashButtonContainer
             ],
             spacing: 25,
@@ -461,8 +477,11 @@ export default class CircuitElementEditContainerNode extends Node {
         }
         else if ( selectedCircuitElement instanceof SeriesAmmeter || selectedCircuitElement instanceof Wire ) {
 
-          // Just show a trash button
-          editNode = trashButtonContainer;
+          // Just show disconnect and trash buttons
+          editNode = new EditPanel( [
+            disconnectButtonContainer,
+            trashButtonContainer
+          ] );
         }
         else if ( selectedCircuitElement instanceof ACVoltage ) {
           const children: Node[] = [
@@ -473,6 +492,7 @@ export default class CircuitElementEditContainerNode extends Node {
           if ( options.showPhaseShiftControl ) {
             children.push( phaseShiftControl );
           }
+          children.push( disconnectButtonContainer );
           children.push( trashButtonContainer );
           editNode = new EditPanel( children );
         }
@@ -480,6 +500,7 @@ export default class CircuitElementEditContainerNode extends Node {
           editNode = new EditPanel( [
             clearDynamicsButton,
             capacitorEditControl,
+            disconnectButtonContainer,
             trashButtonContainer
           ] );
         }
@@ -487,6 +508,7 @@ export default class CircuitElementEditContainerNode extends Node {
           editNode = new EditPanel( [
               clearDynamicsButton,
               inductanceControl,
+              disconnectButtonContainer,
               trashButtonContainer
             ]
           );

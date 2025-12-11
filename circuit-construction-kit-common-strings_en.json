@@ -569,6 +569,11 @@
         "value": "Reverse Battery Direction"
       }
     },
+    "disconnectButton": {
+      "accessibleName": {
+        "value": "Disconnect { a11y_circuitComponent_accessibleName }"
+      }
+    },
     "trashButton": {
       "accessibleName": {
         "value": "Delete { a11y_circuitComponent_accessibleName }"
