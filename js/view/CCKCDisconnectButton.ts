@@ -33,7 +33,9 @@ export default class CCKCDisconnectButton extends CCKCRoundPushButton {
     const scissorsIcon = new Path( scissorsShape, {
       fill: 'black',
       rotation: -Math.PI / 2, // scissors point up
-      maxWidth: 24
+
+      // Make the same size as the delete button
+      maxWidth: 28
     } );
 
     // The button is enabled when the selected circuit element is connected to other elements
