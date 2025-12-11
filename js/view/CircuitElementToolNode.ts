@@ -99,7 +99,7 @@ export default class CircuitElementToolNode extends VBox {
       ghostOpacity: 0.4,
 
       tagName: 'button',
-      accessibleName: CircuitConstructionKitCommonFluent.a11y.circuitElementToolbox.toolAccessibleName.createProperty( {
+      accessibleName: CircuitConstructionKitCommonFluent.a11y.circuitComponentToolbox.toolAccessibleName.createProperty( {
         componentName: labelStringProperty
       } )
     }, providedOptions );

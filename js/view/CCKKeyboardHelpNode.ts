@@ -20,16 +20,16 @@ export default class CCKKeyboardHelpNode extends TwoColumnKeyboardHelpContent {
 
   public constructor() {
 
-    const addElementsSection = new KeyboardHelpSection( CircuitConstructionKitCommonStrings.a11y.keyboardHelpDialog.addElements.headingStringProperty, [
+    const addComponentsSection = new KeyboardHelpSection( CircuitConstructionKitCommonStrings.a11y.keyboardHelpDialog.addComponents.headingStringProperty, [
       KeyboardHelpSectionRow.labelWithIcon(
-        CircuitConstructionKitCommonStrings.a11y.keyboardHelpDialog.addElements.createElement.labelStringProperty,
+        CircuitConstructionKitCommonStrings.a11y.keyboardHelpDialog.addComponents.createComponent.labelStringProperty,
         KeyboardHelpIconFactory.spaceOrEnter(), {
-          labelInnerContent: CircuitConstructionKitCommonStrings.a11y.keyboardHelpDialog.addElements.createElement.labelInnerContentStringProperty
+          labelInnerContent: CircuitConstructionKitCommonStrings.a11y.keyboardHelpDialog.addComponents.createComponent.labelInnerContentStringProperty
         }
       )
     ] );
 
-    const editCircuitElementsSection = new KeyboardHelpSection( CircuitConstructionKitCommonStrings.a11y.keyboardHelpDialog.editCircuitElements.headingStringProperty, [
+    const editCircuitComponentsSection = new KeyboardHelpSection( CircuitConstructionKitCommonStrings.a11y.keyboardHelpDialog.editCircuitComponents.headingStringProperty, [
       KeyboardHelpSectionRow.fromHotkeyData( CCKCScreenView.EDIT_HOTKEY_DATA ),
       KeyboardHelpSectionRow.fromHotkeyData( CCKCScreenView.DELETE_HOTKEY_DATA )
     ] );
@@ -45,7 +45,7 @@ export default class CCKKeyboardHelpNode extends TwoColumnKeyboardHelpContent {
       withCheckboxContent: true
     } );
 
-    super( [ addElementsSection, editCircuitElementsSection, chooseConnectionSection ], [ basicActionsSection, focusSection ] );
+    super( [ addComponentsSection, editCircuitComponentsSection, chooseConnectionSection ], [ basicActionsSection, focusSection ] );
   }
 }
 

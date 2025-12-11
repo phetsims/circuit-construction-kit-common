@@ -36,29 +36,29 @@ const GROUPED_CIRCUIT_ELEMENT_TYPE_ORDER: CircuitElementType[] = [ 'battery', 'r
 const getCircuitElementTypeLabel = ( type: CircuitElementType ): string => {
   switch( type ) {
     case 'wire':
-      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitElementTypeLabels.wireStringProperty.value;
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypeLabels.wireStringProperty.value;
     case 'battery':
-      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitElementTypeLabels.batteryStringProperty.value;
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypeLabels.batteryStringProperty.value;
     case 'resistor':
-      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitElementTypeLabels.resistorStringProperty.value;
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypeLabels.resistorStringProperty.value;
     case 'capacitor':
-      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitElementTypeLabels.capacitorStringProperty.value;
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypeLabels.capacitorStringProperty.value;
     case 'inductor':
-      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitElementTypeLabels.inductorStringProperty.value;
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypeLabels.inductorStringProperty.value;
     case 'lightBulb':
-      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitElementTypeLabels.lightBulbStringProperty.value;
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypeLabels.lightBulbStringProperty.value;
     case 'acSource':
-      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitElementTypeLabels.acSourceStringProperty.value;
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypeLabels.acSourceStringProperty.value;
     case 'fuse':
-      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitElementTypeLabels.fuseStringProperty.value;
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypeLabels.fuseStringProperty.value;
     case 'switch':
-      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitElementTypeLabels.switchStringProperty.value;
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypeLabels.switchStringProperty.value;
     case 'voltmeter':
-      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitElementTypeLabels.voltmeterStringProperty.value;
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypeLabels.voltmeterStringProperty.value;
     case 'ammeter':
-      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitElementTypeLabels.ammeterStringProperty.value;
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypeLabels.ammeterStringProperty.value;
     case 'stopwatch':
-      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitElementTypeLabels.stopwatchStringProperty.value;
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypeLabels.stopwatchStringProperty.value;
     default:
       return type;
   }
@@ -179,7 +179,7 @@ export default class CircuitDescription {
       const showValuesAsStringProperty = showValuesProperty.derived( value => value ? 'true' : 'false' );
 
       const numbered = totalForType > 1;
-      const accessibleName = CircuitConstructionKitCommonFluent.a11y.circuitElement.accessibleName.format( {
+      const accessibleName = CircuitConstructionKitCommonFluent.a11y.circuitComponent.accessibleName.format( {
         displayMode: showValuesProperty.value && numbered ? 'countAndValue' :
                      showValuesProperty.value && !numbered ? 'value' :
                      !showValuesProperty.value && numbered ? 'count' :

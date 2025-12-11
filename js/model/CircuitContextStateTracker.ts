@@ -255,10 +255,10 @@ export default class CircuitContextStateTracker {
 
     this.pendingContextEvents.forEach( event => {
       if ( event.type === 'vertices-joined' ) {
-        const connectedElements = this.getConnectedElementTypeDescriptions( event.vertex );
-        if ( connectedElements.length > 0 ) {
-          sentences.push( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.connectedElements.format( {
-            elements: connectedElements.join( ', ' )
+        const connectedComponents = this.getConnectedComponentTypeDescriptions( event.vertex );
+        if ( connectedComponents.length > 0 ) {
+          sentences.push( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.connectedComponents.format( {
+            components: connectedComponents.join( ', ' )
           } ) );
         }
       }
@@ -269,8 +269,8 @@ export default class CircuitContextStateTracker {
         } ) );
       }
       else {
-        sentences.push( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.elementRemoved.format( {
-          elementName: event.elementName
+        sentences.push( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.componentRemoved.format( {
+          componentName: event.elementName
         } ) );
       }
     } );
@@ -285,7 +285,7 @@ export default class CircuitContextStateTracker {
         if ( previousState.brightnessState && currentState.brightnessState &&
              previousState.brightnessState !== currentState.brightnessState ) {
           sentences.push( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.lightBulbState.format( {
-            elementName: this.getElementDisplayName( circuitElement ),
+            componentName: this.getElementDisplayName( circuitElement ),
             state: currentState.brightnessState
           } ) );
         }
@@ -294,7 +294,7 @@ export default class CircuitContextStateTracker {
              !this.areValuesClose( previousState.resistance, currentState.resistance ) ) {
           const type = circuitElement instanceof LightBulb ? 'lightBulb' : 'resistor';
           sentences.push( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.componentValueChange.format( {
-            elementName: this.getElementDisplayName( circuitElement ),
+            componentName: this.getElementDisplayName( circuitElement ),
             type: type,
             oldValue: this.formatValue( previousState.resistance, this.getDisplayDecimalPlaces( circuitElement ) ),
             newValue: this.formatValue( currentState.resistance, this.getDisplayDecimalPlaces( circuitElement ) )
@@ -304,7 +304,7 @@ export default class CircuitContextStateTracker {
         if ( previousState.voltage !== null && currentState.voltage !== null &&
              !this.areValuesClose( previousState.voltage, currentState.voltage ) ) {
           sentences.push( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.componentValueChange.format( {
-            elementName: this.getElementDisplayName( circuitElement ),
+            componentName: this.getElementDisplayName( circuitElement ),
             type: 'battery',
             oldValue: this.formatValue( previousState.voltage, this.getDisplayDecimalPlaces( circuitElement ) ),
             newValue: this.formatValue( currentState.voltage, this.getDisplayDecimalPlaces( circuitElement ) )
@@ -334,7 +334,7 @@ export default class CircuitContextStateTracker {
     this.pendingContextEvents.length = 0;
   }
 
-  private getConnectedElementTypeDescriptions( vertex: Vertex ): string[] {
+  private getConnectedComponentTypeDescriptions( vertex: Vertex ): string[] {
     const connectedElements = this.circuit.getNeighborCircuitElements( vertex );
     const seen = new Set<string>();
     const descriptions: string[] = [];

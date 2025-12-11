@@ -228,7 +228,7 @@
   },
   "a11y": {
     "circuitDescription": {
-      "circuitElementTypeLabels": {
+      "circuitComponentTypeLabels": {
         "wire": {
           "value": "Wire"
         },
@@ -336,8 +336,8 @@
       "junctionDefaultLabel": {
         "value": "Junction { $index }"
       },
-      "connectedElements": {
-        "value": "Connected: { $elements }."
+      "connectedComponents": {
+        "value": "Connected: { $components }."
       },
       "junctionSplit": {
         "value": "{ $connectionCount ->\n  [one] { $junctionName } split into one new connection.\n  *[other] { $junctionName } split into { $connectionCount } new connections.\n}"
@@ -351,14 +351,14 @@
       "currentStopped": {
         "value": "Current stopped flowing."
       },
-      "elementRemoved": {
-        "value": "{ $elementName } removed."
+      "componentRemoved": {
+        "value": "{ $componentName } removed."
       },
       "lightBulbState": {
-        "value": "{ $state ->\n  [off] { $elementName } is now off.\n  [dim] { $elementName } glows dimly.\n  [steady] { $elementName } glows steadily.\n  *[bright] { $elementName } shines brightly.\n}"
+        "value": "{ $state ->\n  [off] { $componentName } is now off.\n  [dim] { $componentName } glows dimly.\n  [steady] { $componentName } glows steadily.\n  *[bright] { $componentName } shines brightly.\n}"
       },
       "componentValueChange": {
-        "value": "{ $type ->\n  [battery] { $elementName } voltage changed from { $oldValue } to { $newValue } volts.\n  [resistor] { $elementName } resistance changed from { $oldValue } to { $newValue } ohms.\n  *[lightBulb] { $elementName } resistance changed from { $oldValue } to { $newValue } ohms.\n}"
+        "value": "{ $type ->\n  [battery] { $componentName } voltage changed from { $oldValue } to { $newValue } volts.\n  [resistor] { $componentName } resistance changed from { $oldValue } to { $newValue } ohms.\n  *[lightBulb] { $componentName } resistance changed from { $oldValue } to { $newValue } ohms.\n}"
       }
     },
     "sensorToolbox": {
@@ -381,7 +381,7 @@
         }
       }
     },
-    "circuitElementToolbox": {
+    "circuitComponentToolbox": {
       "accessibleHeading": {
         "value": "Circuit Component Toolbox"
       },
@@ -439,10 +439,10 @@
       },
       "valuesCheckbox": {
         "accessibleContextResponseChecked": {
-          "value": "Circuit element values shown on each component."
+          "value": "Circuit component values shown on each component."
         },
         "accessibleContextResponseUnchecked": {
-          "value": "Circuit element values hidden on circuit components."
+          "value": "Circuit component values hidden on circuit components."
         }
       }
     },
@@ -464,7 +464,7 @@
           "value": "Show the circuit components like they would look in real life."
         },
         "accessibleContextResponse": {
-          "value": "Circuit elements displayed with lifelike appearance."
+          "value": "Circuit components displayed with lifelike appearance."
         }
       },
       "schematicRadioButton": {
@@ -475,13 +475,13 @@
           "value": "Show the circuit components like they would look in a schematic circuit diagram."
         },
         "accessibleContextResponse": {
-          "value": "Circuit elements displayed with schematic symbols."
+          "value": "Circuit components displayed with schematic symbols."
         }
       }
     },
-    "circuitElementToolNode": {
+    "circuitComponentToolNode": {
       "accessibleHelpText": {
-        "value": "Drag this tool to the circuit to create a new { a11y_circuitElement_accessibleName }."
+        "value": "Drag this tool to the circuit to create a new { a11y_circuitComponent_accessibleName }."
       }
     },
     "reverseBatteryButton": {
@@ -491,10 +491,10 @@
     },
     "trashButton": {
       "accessibleName": {
-        "value": "Delete { a11y_circuitElement_accessibleName }"
+        "value": "Delete { a11y_circuitComponent_accessibleName }"
       }
     },
-    "circuitElement": {
+    "circuitComponent": {
       "accessibleName": {
         "value": "{ $type ->\n  [resistor] { $displayMode ->\n               [name] Resistor\n               [value] Resistor, { $resistance } ohms\n               [count] Resistor { $position } of { $total }\n               *[countAndValue] Resistor { $position } of { $total }, { $resistance } ohms\n             }\n  [battery] { $displayMode ->\n              [name] Battery\n              [value] Battery, { $voltage } volts\n              [count] Battery { $position } of { $total }\n              *[countAndValue] Battery { $position } of { $total }, { $voltage } volts\n            }\n  [lightBulb] { $displayMode ->\n                [name] Light Bulb\n                [value] Light Bulb, { $resistance } ohms\n                [count] Light Bulb { $position } of { $total }\n                *[countAndValue] Light Bulb { $position } of { $total }, { $resistance } ohms\n              }\n  [capacitor] { $displayMode ->\n                [name] Capacitor\n                [value] Capacitor, { $capacitance } farads\n                [count] Capacitor { $position } of { $total }\n                *[countAndValue] Capacitor { $position } of { $total }, { $capacitance } farads\n              }\n  [inductor] { $displayMode ->\n               [name] Inductor\n               [value] Inductor, { $inductance } henries\n               [count] Inductor { $position } of { $total }\n               *[countAndValue] Inductor { $position } of { $total }, { $inductance } henries\n             }\n  [acSource] { $displayMode ->\n               [name] AC Voltage Source\n               [value] AC Voltage Source, { $voltage } volts\n               [count] AC Voltage Source { $position } of { $total }\n               *[countAndValue] AC Voltage Source { $position } of { $total }, { $voltage } volts\n             }\n  [fuse] { $displayMode ->\n           [name] Fuse\n           [value] Fuse, { $resistance } milliohms ≤ currentRating amps\n           [count] Fuse { $position } of { $total }\n           *[countAndValue] Fuse { $position } of { $total }, { $resistance } milliohms ≤ currentRating amps\n         }\n  [switch] { $displayMode ->\n             [name] { $switchState ->\n                      [closed] Switch, closed\n                      *[open] Switch, open\n                    }\n             [value] { $switchState ->\n                       [closed] Switch, closed\n                       *[open] Switch, open\n                     }\n             [count] { $switchState ->\n                       [closed] Switch { $position } of { $total }, closed\n                       *[open] Switch { $position } of { $total }, open\n                     }\n             *[countAndValue] { $switchState ->\n                                [closed] Switch { $position } of { $total }, closed\n                                *[open] Switch { $position } of { $total }, open\n                              }\n           }\n  [voltmeter] { $hasPosition ->\n                [true] Voltmeter { $position } of { $total }\n                *[false] Voltmeter\n              }\n  [ammeter] { $hasPosition ->\n              [true] Ammeter { $position } of { $total }\n              *[false] Ammeter\n            }\n  [stopwatch] { $hasPosition ->\n                [true] Stopwatch { $position } of { $total }\n                *[false] Stopwatch\n              }\n  [wire] { $hasPosition ->\n           [true] Wire { $position } of { $total }\n           *[false] Wire\n         }\n  *[false] { $hasPosition ->\n             [true] Wire { $position } of { $total }\n             *[false] Wire\n           }\n}"
       },
@@ -503,11 +503,11 @@
       }
     },
     "keyboardHelpDialog": {
-      "addElements": {
+      "addComponents": {
         "heading": {
-          "value": "Add Circuit Elements"
+          "value": "Add Circuit Components"
         },
-        "createElement": {
+        "createComponent": {
           "label": {
             "value": "Add focused tool to construction area"
           },
@@ -516,9 +516,9 @@
           }
         }
       },
-      "connectElements": {
+      "connectComponents": {
         "heading": {
-          "value": "Connect Elements"
+          "value": "Connect Components"
         },
         "grabJunction": {
           "label": {
@@ -545,14 +545,14 @@
           }
         }
       },
-      "editCircuitElements": {
+      "editCircuitComponents": {
         "heading": {
-          "value": "Edit Circuit Elements"
+          "value": "Edit Circuit Components"
         },
-        "editCircuitElement": {
+        "editCircuitComponent": {
           "value": "Edit circuit component"
         },
-        "deleteCircuitElement": {
+        "deleteCircuitComponent": {
           "value": "Delete or cut circuit component"
         }
       },

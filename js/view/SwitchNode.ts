@@ -192,7 +192,7 @@ export default class SwitchNode extends FixedCircuitElementNode {
     );
 
     // Set accessible help text based on switch state
-    const switchAccessibleHelpTextProperty = CircuitConstructionKitCommonFluent.a11y.circuitElement.accessibleHelpText.createProperty( {
+    const switchAccessibleHelpTextProperty = CircuitConstructionKitCommonFluent.a11y.circuitComponent.accessibleHelpText.createProperty( {
       type: 'switch',
       switchState: circuitSwitch.isClosedProperty.derived( isClosed => isClosed ? 'closed' : 'open' )
     } );

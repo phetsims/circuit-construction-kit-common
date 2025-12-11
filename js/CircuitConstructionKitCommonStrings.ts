@@ -93,7 +93,7 @@ type StringsType = {
   };
   'a11y': {
     'circuitDescription': {
-      'circuitElementTypeLabels': {
+      'circuitComponentTypeLabels': {
         'wireStringProperty': LocalizedStringProperty;
         'batteryStringProperty': LocalizedStringProperty;
         'resistorStringProperty': LocalizedStringProperty;
@@ -137,12 +137,12 @@ type StringsType = {
     };
     'circuitContextResponses': {
       'junctionDefaultLabelStringProperty': LocalizedStringProperty;
-      'connectedElementsStringProperty': LocalizedStringProperty;
+      'connectedComponentsStringProperty': LocalizedStringProperty;
       'junctionSplitStringProperty': LocalizedStringProperty;
       'currentChangedSingleStringProperty': LocalizedStringProperty;
       'currentMultipleStringProperty': LocalizedStringProperty;
       'currentStoppedStringProperty': LocalizedStringProperty;
-      'elementRemovedStringProperty': LocalizedStringProperty;
+      'componentRemovedStringProperty': LocalizedStringProperty;
       'lightBulbStateStringProperty': LocalizedStringProperty;
       'componentValueChangeStringProperty': LocalizedStringProperty;
     };
@@ -158,7 +158,7 @@ type StringsType = {
         'accessibleNameStringProperty': LocalizedStringProperty;
       }
     };
-    'circuitElementToolbox': {
+    'circuitComponentToolbox': {
       'accessibleHeadingStringProperty': LocalizedStringProperty;
       'accessibleHelpTextStringProperty': LocalizedStringProperty;
       'toolAccessibleNameStringProperty': LocalizedStringProperty;
@@ -208,7 +208,7 @@ type StringsType = {
         'accessibleContextResponseStringProperty': LocalizedStringProperty;
       }
     };
-    'circuitElementToolNode': {
+    'circuitComponentToolNode': {
       'accessibleHelpTextStringProperty': LocalizedStringProperty;
     };
     'reverseBatteryButton': {
@@ -217,19 +217,19 @@ type StringsType = {
     'trashButton': {
       'accessibleNameStringProperty': LocalizedStringProperty;
     };
-    'circuitElement': {
+    'circuitComponent': {
       'accessibleNameStringProperty': LocalizedStringProperty;
       'accessibleHelpTextStringProperty': LocalizedStringProperty;
     };
     'keyboardHelpDialog': {
-      'addElements': {
+      'addComponents': {
         'headingStringProperty': LocalizedStringProperty;
-        'createElement': {
+        'createComponent': {
           'labelStringProperty': LocalizedStringProperty;
           'labelInnerContentStringProperty': LocalizedStringProperty;
         }
       };
-      'connectElements': {
+      'connectComponents': {
         'headingStringProperty': LocalizedStringProperty;
         'grabJunction': {
           'labelStringProperty': LocalizedStringProperty;
@@ -244,10 +244,10 @@ type StringsType = {
           'labelInnerContentStringProperty': LocalizedStringProperty;
         }
       };
-      'editCircuitElements': {
+      'editCircuitComponents': {
         'headingStringProperty': LocalizedStringProperty;
-        'editCircuitElementStringProperty': LocalizedStringProperty;
-        'deleteCircuitElementStringProperty': LocalizedStringProperty;
+        'editCircuitComponentStringProperty': LocalizedStringProperty;
+        'deleteCircuitComponentStringProperty': LocalizedStringProperty;
       };
       'focus': {
         'headingStringProperty': LocalizedStringProperty;

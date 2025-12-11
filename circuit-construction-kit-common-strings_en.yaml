@@ -85,7 +85,7 @@ key:
 
 a11y:
   circuitDescription:
-    circuitElementTypeLabels:
+    circuitComponentTypeLabels:
       wire:      Wire
       battery:   Battery
       resistor:  Resistor
@@ -165,7 +165,7 @@ a11y:
     noNewAttachment: No new attachment
   circuitContextResponses:
     junctionDefaultLabel: 'Junction { $index }'
-    connectedElements:    'Connected: { $elements }.'
+    connectedComponents:  'Connected: { $components }.'
     junctionSplit:
       select_connectionCount:
         one:   '{ $junctionName } split into one new connection.'
@@ -173,18 +173,18 @@ a11y:
     currentChangedSingle: 'Current changed to { $current } amps.'
     currentMultiple:      'Currents flowing at different speeds.'
     currentStopped:       'Current stopped flowing.'
-    elementRemoved:       '{ $elementName } removed.'
+    componentRemoved:     '{ $componentName } removed.'
     lightBulbState:
       select_state:
-        off:    '{ $elementName } is now off.'
-        dim:    '{ $elementName } glows dimly.'
-        steady: '{ $elementName } glows steadily.'
-        bright: '{ $elementName } shines brightly.'
+        off:    '{ $componentName } is now off.'
+        dim:    '{ $componentName } glows dimly.'
+        steady: '{ $componentName } glows steadily.'
+        bright: '{ $componentName } shines brightly.'
     componentValueChange:
       select_type:
-        battery:   '{ $elementName } voltage changed from { $oldValue } to { $newValue } volts.'
-        resistor:  '{ $elementName } resistance changed from { $oldValue } to { $newValue } ohms.'
-        lightBulb: '{ $elementName } resistance changed from { $oldValue } to { $newValue } ohms.'
+        battery:   '{ $componentName } voltage changed from { $oldValue } to { $newValue } volts.'
+        resistor:  '{ $componentName } resistance changed from { $oldValue } to { $newValue } ohms.'
+        lightBulb: '{ $componentName } resistance changed from { $oldValue } to { $newValue } ohms.'
   sensorToolbox:
     accessibleHeading: Sensor Toolbox
     ammeter:
@@ -193,7 +193,7 @@ a11y:
       accessibleName: Voltmeter
     seriesAmmeter:
       accessibleName: Series Ammeter
-  circuitElementToolbox:
+  circuitComponentToolbox:
     accessibleHeading:  Circuit Component Toolbox
     accessibleHelpText: >-
                         Look for components in carousel, add them to Construction Area, and then look for terminals and leads to start
@@ -224,8 +224,8 @@ a11y:
       accessibleContextResponseChecked:   Labels shown under circuit components.
       accessibleContextResponseUnchecked: Labels hidden under circuit components.
     valuesCheckbox:
-      accessibleContextResponseChecked:   Circuit element values shown on each component.
-      accessibleContextResponseUnchecked: Circuit element values hidden on circuit components.
+      accessibleContextResponseChecked:   Circuit component values shown on each component.
+      accessibleContextResponseUnchecked: Circuit component values hidden on circuit components.
   viewRadioButtonGroup:
     accessibleHeading:  View Type
     accessibleName:     View Type Selection
@@ -233,18 +233,18 @@ a11y:
     lifelikeRadioButton:
       accessibleName:            Lifelike View
       accessibleHelpText:        Show the circuit components like they would look in real life.
-      accessibleContextResponse: Circuit elements displayed with lifelike appearance.
+      accessibleContextResponse: Circuit components displayed with lifelike appearance.
     schematicRadioButton:
       accessibleName:            Schematic View
       accessibleHelpText:        Show the circuit components like they would look in a schematic circuit diagram.
-      accessibleContextResponse: Circuit elements displayed with schematic symbols.
-  circuitElementToolNode:
-    accessibleHelpText: Drag this tool to the circuit to create a new { a11y.circuitElement.accessibleName }.
+      accessibleContextResponse: Circuit components displayed with schematic symbols.
+  circuitComponentToolNode:
+    accessibleHelpText: Drag this tool to the circuit to create a new { a11y.circuitComponent.accessibleName }.
   reverseBatteryButton:
     accessibleName: Reverse Battery Direction
   trashButton:
-    accessibleName: Delete { a11y.circuitElement.accessibleName }
-  circuitElement:
+    accessibleName: Delete { a11y.circuitComponent.accessibleName }
+  circuitComponent:
     accessibleName:
       select_type:
         resistor:
@@ -336,13 +336,13 @@ a11y:
 
   # TODO: Move some of this outside of a11y key
   keyboardHelpDialog:
-    addElements:
-      heading: Add Circuit Elements
-      createElement:
+    addComponents:
+      heading: Add Circuit Components
+      createComponent:
         label:             Add focused tool to construction area
         labelInnerContent: Press Space or Enter to drop the selected component into the circuit.
-    connectElements:
-      heading: Connect Elements
+    connectComponents:
+      heading: Connect Components
       grabJunction:
         label:             Grab highlighted junction
         labelInnerContent: Press Space or Enter to begin connecting from the focused junction.
@@ -352,10 +352,10 @@ a11y:
       attachJunction:
         label:             Attach junctions
         labelInnerContent: Press Space or Enter again to complete the connection, or to detach.
-    editCircuitElements:
-      heading:              Edit Circuit Elements
-      editCircuitElement:   Edit circuit component
-      deleteCircuitElement: Delete or cut circuit component
+    editCircuitComponents:
+      heading:                Edit Circuit Components
+      editCircuitComponent:   Edit circuit component
+      deleteCircuitComponent: Delete or cut circuit component
     focus:
       heading:               From Anywhere in Screen
       focusToolbox:          Jump to Circuit Component Toolbox

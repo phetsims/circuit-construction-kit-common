@@ -90,18 +90,18 @@ addToMapIfDefined( 'dataOutOfRange', 'dataOutOfRangeStringProperty' );
 addToMapIfDefined( 'key_toCut', 'key.toCutStringProperty' );
 addToMapIfDefined( 'key_toEditComponent', 'key.toEditComponentStringProperty' );
 addToMapIfDefined( 'key_toChooseConnection', 'key.toChooseConnectionStringProperty' );
-addToMapIfDefined( 'a11y_circuitDescription_circuitElementTypeLabels_wire', 'a11y.circuitDescription.circuitElementTypeLabels.wireStringProperty' );
-addToMapIfDefined( 'a11y_circuitDescription_circuitElementTypeLabels_battery', 'a11y.circuitDescription.circuitElementTypeLabels.batteryStringProperty' );
-addToMapIfDefined( 'a11y_circuitDescription_circuitElementTypeLabels_resistor', 'a11y.circuitDescription.circuitElementTypeLabels.resistorStringProperty' );
-addToMapIfDefined( 'a11y_circuitDescription_circuitElementTypeLabels_capacitor', 'a11y.circuitDescription.circuitElementTypeLabels.capacitorStringProperty' );
-addToMapIfDefined( 'a11y_circuitDescription_circuitElementTypeLabels_inductor', 'a11y.circuitDescription.circuitElementTypeLabels.inductorStringProperty' );
-addToMapIfDefined( 'a11y_circuitDescription_circuitElementTypeLabels_lightBulb', 'a11y.circuitDescription.circuitElementTypeLabels.lightBulbStringProperty' );
-addToMapIfDefined( 'a11y_circuitDescription_circuitElementTypeLabels_acSource', 'a11y.circuitDescription.circuitElementTypeLabels.acSourceStringProperty' );
-addToMapIfDefined( 'a11y_circuitDescription_circuitElementTypeLabels_fuse', 'a11y.circuitDescription.circuitElementTypeLabels.fuseStringProperty' );
-addToMapIfDefined( 'a11y_circuitDescription_circuitElementTypeLabels_switch', 'a11y.circuitDescription.circuitElementTypeLabels.switchStringProperty' );
-addToMapIfDefined( 'a11y_circuitDescription_circuitElementTypeLabels_voltmeter', 'a11y.circuitDescription.circuitElementTypeLabels.voltmeterStringProperty' );
-addToMapIfDefined( 'a11y_circuitDescription_circuitElementTypeLabels_ammeter', 'a11y.circuitDescription.circuitElementTypeLabels.ammeterStringProperty' );
-addToMapIfDefined( 'a11y_circuitDescription_circuitElementTypeLabels_stopwatch', 'a11y.circuitDescription.circuitElementTypeLabels.stopwatchStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_wire', 'a11y.circuitDescription.circuitComponentTypeLabels.wireStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_battery', 'a11y.circuitDescription.circuitComponentTypeLabels.batteryStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_resistor', 'a11y.circuitDescription.circuitComponentTypeLabels.resistorStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_capacitor', 'a11y.circuitDescription.circuitComponentTypeLabels.capacitorStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_inductor', 'a11y.circuitDescription.circuitComponentTypeLabels.inductorStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_lightBulb', 'a11y.circuitDescription.circuitComponentTypeLabels.lightBulbStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_acSource', 'a11y.circuitDescription.circuitComponentTypeLabels.acSourceStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_fuse', 'a11y.circuitDescription.circuitComponentTypeLabels.fuseStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_switch', 'a11y.circuitDescription.circuitComponentTypeLabels.switchStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_voltmeter', 'a11y.circuitDescription.circuitComponentTypeLabels.voltmeterStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_ammeter', 'a11y.circuitDescription.circuitComponentTypeLabels.ammeterStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_stopwatch', 'a11y.circuitDescription.circuitComponentTypeLabels.stopwatchStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_junction', 'a11y.circuitDescription.junctionStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_disconnected', 'a11y.circuitDescription.disconnectedStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_connects', 'a11y.circuitDescription.connectsStringProperty' );
@@ -122,21 +122,21 @@ addToMapIfDefined( 'a11y_constructionAreaStatus_helpTextCase2', 'a11y.constructi
 addToMapIfDefined( 'a11y_constructionAreaStatus_helpTextCase3', 'a11y.constructionAreaStatus.helpTextCase3StringProperty' );
 addToMapIfDefined( 'a11y_junctionInteraction_noNewAttachment', 'a11y.junctionInteraction.noNewAttachmentStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_junctionDefaultLabel', 'a11y.circuitContextResponses.junctionDefaultLabelStringProperty' );
-addToMapIfDefined( 'a11y_circuitContextResponses_connectedElements', 'a11y.circuitContextResponses.connectedElementsStringProperty' );
+addToMapIfDefined( 'a11y_circuitContextResponses_connectedComponents', 'a11y.circuitContextResponses.connectedComponentsStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_junctionSplit', 'a11y.circuitContextResponses.junctionSplitStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_currentChangedSingle', 'a11y.circuitContextResponses.currentChangedSingleStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_currentMultiple', 'a11y.circuitContextResponses.currentMultipleStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_currentStopped', 'a11y.circuitContextResponses.currentStoppedStringProperty' );
-addToMapIfDefined( 'a11y_circuitContextResponses_elementRemoved', 'a11y.circuitContextResponses.elementRemovedStringProperty' );
+addToMapIfDefined( 'a11y_circuitContextResponses_componentRemoved', 'a11y.circuitContextResponses.componentRemovedStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_lightBulbState', 'a11y.circuitContextResponses.lightBulbStateStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_componentValueChange', 'a11y.circuitContextResponses.componentValueChangeStringProperty' );
 addToMapIfDefined( 'a11y_sensorToolbox_accessibleHeading', 'a11y.sensorToolbox.accessibleHeadingStringProperty' );
 addToMapIfDefined( 'a11y_sensorToolbox_ammeter_accessibleName', 'a11y.sensorToolbox.ammeter.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_sensorToolbox_voltmeter_accessibleName', 'a11y.sensorToolbox.voltmeter.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_sensorToolbox_seriesAmmeter_accessibleName', 'a11y.sensorToolbox.seriesAmmeter.accessibleNameStringProperty' );
-addToMapIfDefined( 'a11y_circuitElementToolbox_accessibleHeading', 'a11y.circuitElementToolbox.accessibleHeadingStringProperty' );
-addToMapIfDefined( 'a11y_circuitElementToolbox_accessibleHelpText', 'a11y.circuitElementToolbox.accessibleHelpTextStringProperty' );
-addToMapIfDefined( 'a11y_circuitElementToolbox_toolAccessibleName', 'a11y.circuitElementToolbox.toolAccessibleNameStringProperty' );
+addToMapIfDefined( 'a11y_circuitComponentToolbox_accessibleHeading', 'a11y.circuitComponentToolbox.accessibleHeadingStringProperty' );
+addToMapIfDefined( 'a11y_circuitComponentToolbox_accessibleHelpText', 'a11y.circuitComponentToolbox.accessibleHelpTextStringProperty' );
+addToMapIfDefined( 'a11y_circuitComponentToolbox_toolAccessibleName', 'a11y.circuitComponentToolbox.toolAccessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_advancedAccordionBox_accessibleName', 'a11y.advancedAccordionBox.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_advancedAccordionBox_addRealBulbsCheckbox_accessibleContextResponseChecked', 'a11y.advancedAccordionBox.addRealBulbsCheckbox.accessibleContextResponseCheckedStringProperty' );
 addToMapIfDefined( 'a11y_advancedAccordionBox_addRealBulbsCheckbox_accessibleContextResponseUnchecked', 'a11y.advancedAccordionBox.addRealBulbsCheckbox.accessibleContextResponseUncheckedStringProperty' );
@@ -158,24 +158,24 @@ addToMapIfDefined( 'a11y_viewRadioButtonGroup_lifelikeRadioButton_accessibleCont
 addToMapIfDefined( 'a11y_viewRadioButtonGroup_schematicRadioButton_accessibleName', 'a11y.viewRadioButtonGroup.schematicRadioButton.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_viewRadioButtonGroup_schematicRadioButton_accessibleHelpText', 'a11y.viewRadioButtonGroup.schematicRadioButton.accessibleHelpTextStringProperty' );
 addToMapIfDefined( 'a11y_viewRadioButtonGroup_schematicRadioButton_accessibleContextResponse', 'a11y.viewRadioButtonGroup.schematicRadioButton.accessibleContextResponseStringProperty' );
-addToMapIfDefined( 'a11y_circuitElementToolNode_accessibleHelpText', 'a11y.circuitElementToolNode.accessibleHelpTextStringProperty' );
+addToMapIfDefined( 'a11y_circuitComponentToolNode_accessibleHelpText', 'a11y.circuitComponentToolNode.accessibleHelpTextStringProperty' );
 addToMapIfDefined( 'a11y_reverseBatteryButton_accessibleName', 'a11y.reverseBatteryButton.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_trashButton_accessibleName', 'a11y.trashButton.accessibleNameStringProperty' );
-addToMapIfDefined( 'a11y_circuitElement_accessibleName', 'a11y.circuitElement.accessibleNameStringProperty' );
-addToMapIfDefined( 'a11y_circuitElement_accessibleHelpText', 'a11y.circuitElement.accessibleHelpTextStringProperty' );
-addToMapIfDefined( 'a11y_keyboardHelpDialog_addElements_heading', 'a11y.keyboardHelpDialog.addElements.headingStringProperty' );
-addToMapIfDefined( 'a11y_keyboardHelpDialog_addElements_createElement_label', 'a11y.keyboardHelpDialog.addElements.createElement.labelStringProperty' );
-addToMapIfDefined( 'a11y_keyboardHelpDialog_addElements_createElement_labelInnerContent', 'a11y.keyboardHelpDialog.addElements.createElement.labelInnerContentStringProperty' );
-addToMapIfDefined( 'a11y_keyboardHelpDialog_connectElements_heading', 'a11y.keyboardHelpDialog.connectElements.headingStringProperty' );
-addToMapIfDefined( 'a11y_keyboardHelpDialog_connectElements_grabJunction_label', 'a11y.keyboardHelpDialog.connectElements.grabJunction.labelStringProperty' );
-addToMapIfDefined( 'a11y_keyboardHelpDialog_connectElements_grabJunction_labelInnerContent', 'a11y.keyboardHelpDialog.connectElements.grabJunction.labelInnerContentStringProperty' );
-addToMapIfDefined( 'a11y_keyboardHelpDialog_connectElements_selectTarget_label', 'a11y.keyboardHelpDialog.connectElements.selectTarget.labelStringProperty' );
-addToMapIfDefined( 'a11y_keyboardHelpDialog_connectElements_selectTarget_labelInnerContent', 'a11y.keyboardHelpDialog.connectElements.selectTarget.labelInnerContentStringProperty' );
-addToMapIfDefined( 'a11y_keyboardHelpDialog_connectElements_attachJunction_label', 'a11y.keyboardHelpDialog.connectElements.attachJunction.labelStringProperty' );
-addToMapIfDefined( 'a11y_keyboardHelpDialog_connectElements_attachJunction_labelInnerContent', 'a11y.keyboardHelpDialog.connectElements.attachJunction.labelInnerContentStringProperty' );
-addToMapIfDefined( 'a11y_keyboardHelpDialog_editCircuitElements_heading', 'a11y.keyboardHelpDialog.editCircuitElements.headingStringProperty' );
-addToMapIfDefined( 'a11y_keyboardHelpDialog_editCircuitElements_editCircuitElement', 'a11y.keyboardHelpDialog.editCircuitElements.editCircuitElementStringProperty' );
-addToMapIfDefined( 'a11y_keyboardHelpDialog_editCircuitElements_deleteCircuitElement', 'a11y.keyboardHelpDialog.editCircuitElements.deleteCircuitElementStringProperty' );
+addToMapIfDefined( 'a11y_circuitComponent_accessibleName', 'a11y.circuitComponent.accessibleNameStringProperty' );
+addToMapIfDefined( 'a11y_circuitComponent_accessibleHelpText', 'a11y.circuitComponent.accessibleHelpTextStringProperty' );
+addToMapIfDefined( 'a11y_keyboardHelpDialog_addComponents_heading', 'a11y.keyboardHelpDialog.addComponents.headingStringProperty' );
+addToMapIfDefined( 'a11y_keyboardHelpDialog_addComponents_createComponent_label', 'a11y.keyboardHelpDialog.addComponents.createComponent.labelStringProperty' );
+addToMapIfDefined( 'a11y_keyboardHelpDialog_addComponents_createComponent_labelInnerContent', 'a11y.keyboardHelpDialog.addComponents.createComponent.labelInnerContentStringProperty' );
+addToMapIfDefined( 'a11y_keyboardHelpDialog_connectComponents_heading', 'a11y.keyboardHelpDialog.connectComponents.headingStringProperty' );
+addToMapIfDefined( 'a11y_keyboardHelpDialog_connectComponents_grabJunction_label', 'a11y.keyboardHelpDialog.connectComponents.grabJunction.labelStringProperty' );
+addToMapIfDefined( 'a11y_keyboardHelpDialog_connectComponents_grabJunction_labelInnerContent', 'a11y.keyboardHelpDialog.connectComponents.grabJunction.labelInnerContentStringProperty' );
+addToMapIfDefined( 'a11y_keyboardHelpDialog_connectComponents_selectTarget_label', 'a11y.keyboardHelpDialog.connectComponents.selectTarget.labelStringProperty' );
+addToMapIfDefined( 'a11y_keyboardHelpDialog_connectComponents_selectTarget_labelInnerContent', 'a11y.keyboardHelpDialog.connectComponents.selectTarget.labelInnerContentStringProperty' );
+addToMapIfDefined( 'a11y_keyboardHelpDialog_connectComponents_attachJunction_label', 'a11y.keyboardHelpDialog.connectComponents.attachJunction.labelStringProperty' );
+addToMapIfDefined( 'a11y_keyboardHelpDialog_connectComponents_attachJunction_labelInnerContent', 'a11y.keyboardHelpDialog.connectComponents.attachJunction.labelInnerContentStringProperty' );
+addToMapIfDefined( 'a11y_keyboardHelpDialog_editCircuitComponents_heading', 'a11y.keyboardHelpDialog.editCircuitComponents.headingStringProperty' );
+addToMapIfDefined( 'a11y_keyboardHelpDialog_editCircuitComponents_editCircuitComponent', 'a11y.keyboardHelpDialog.editCircuitComponents.editCircuitComponentStringProperty' );
+addToMapIfDefined( 'a11y_keyboardHelpDialog_editCircuitComponents_deleteCircuitComponent', 'a11y.keyboardHelpDialog.editCircuitComponents.deleteCircuitComponentStringProperty' );
 addToMapIfDefined( 'a11y_keyboardHelpDialog_focus_heading', 'a11y.keyboardHelpDialog.focus.headingStringProperty' );
 addToMapIfDefined( 'a11y_keyboardHelpDialog_focus_focusToolbox', 'a11y.keyboardHelpDialog.focus.focusToolboxStringProperty' );
 addToMapIfDefined( 'a11y_keyboardHelpDialog_focus_focusConstructionArea', 'a11y.keyboardHelpDialog.focus.focusConstructionAreaStringProperty' );
@@ -278,19 +278,19 @@ const CircuitConstructionKitCommonFluent = {
   },
   a11y: {
     circuitDescription: {
-      circuitElementTypeLabels: {
-        wireStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitElementTypeLabels_wire', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitElementTypeLabels.wireStringProperty' ) ),
-        batteryStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitElementTypeLabels_battery', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitElementTypeLabels.batteryStringProperty' ) ),
-        resistorStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitElementTypeLabels_resistor', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitElementTypeLabels.resistorStringProperty' ) ),
-        capacitorStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitElementTypeLabels_capacitor', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitElementTypeLabels.capacitorStringProperty' ) ),
-        inductorStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitElementTypeLabels_inductor', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitElementTypeLabels.inductorStringProperty' ) ),
-        lightBulbStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitElementTypeLabels_lightBulb', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitElementTypeLabels.lightBulbStringProperty' ) ),
-        acSourceStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitElementTypeLabels_acSource', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitElementTypeLabels.acSourceStringProperty' ) ),
-        fuseStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitElementTypeLabels_fuse', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitElementTypeLabels.fuseStringProperty' ) ),
-        switchStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitElementTypeLabels_switch', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitElementTypeLabels.switchStringProperty' ) ),
-        voltmeterStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitElementTypeLabels_voltmeter', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitElementTypeLabels.voltmeterStringProperty' ) ),
-        ammeterStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitElementTypeLabels_ammeter', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitElementTypeLabels.ammeterStringProperty' ) ),
-        stopwatchStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitElementTypeLabels_stopwatch', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitElementTypeLabels.stopwatchStringProperty' ) )
+      circuitComponentTypeLabels: {
+        wireStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypeLabels_wire', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypeLabels.wireStringProperty' ) ),
+        batteryStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypeLabels_battery', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypeLabels.batteryStringProperty' ) ),
+        resistorStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypeLabels_resistor', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypeLabels.resistorStringProperty' ) ),
+        capacitorStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypeLabels_capacitor', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypeLabels.capacitorStringProperty' ) ),
+        inductorStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypeLabels_inductor', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypeLabels.inductorStringProperty' ) ),
+        lightBulbStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypeLabels_lightBulb', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypeLabels.lightBulbStringProperty' ) ),
+        acSourceStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypeLabels_acSource', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypeLabels.acSourceStringProperty' ) ),
+        fuseStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypeLabels_fuse', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypeLabels.fuseStringProperty' ) ),
+        switchStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypeLabels_switch', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypeLabels.switchStringProperty' ) ),
+        voltmeterStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypeLabels_voltmeter', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypeLabels.voltmeterStringProperty' ) ),
+        ammeterStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypeLabels_ammeter', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypeLabels.ammeterStringProperty' ) ),
+        stopwatchStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypeLabels_stopwatch', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypeLabels.stopwatchStringProperty' ) )
       },
       junctionStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_junction', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.junctionStringProperty' ) ),
       disconnectedStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_disconnected', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.disconnectedStringProperty' ) ),
@@ -322,14 +322,14 @@ const CircuitConstructionKitCommonFluent = {
     },
     circuitContextResponses: {
       junctionDefaultLabel: new FluentPattern<{ index: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_junctionDefaultLabel', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.junctionDefaultLabelStringProperty' ), [{"name":"index"}] ),
-      connectedElements: new FluentPattern<{ elements: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_connectedElements', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.connectedElementsStringProperty' ), [{"name":"elements"}] ),
+      connectedComponents: new FluentPattern<{ components: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_connectedComponents', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.connectedComponentsStringProperty' ), [{"name":"components"}] ),
       junctionSplit: new FluentPattern<{ connectionCount: number | 'one' | number | 'other' | TReadOnlyProperty<number | 'one' | number | 'other'>, junctionName: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_junctionSplit', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.junctionSplitStringProperty' ), [{"name":"connectionCount","variants":[{"type":"number","value":"one"},{"type":"number","value":"other"}]},{"name":"junctionName"}] ),
       currentChangedSingle: new FluentPattern<{ current: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_currentChangedSingle', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.currentChangedSingleStringProperty' ), [{"name":"current"}] ),
       currentMultipleStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_currentMultiple', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.currentMultipleStringProperty' ) ),
       currentStoppedStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_currentStopped', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.currentStoppedStringProperty' ) ),
-      elementRemoved: new FluentPattern<{ elementName: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_elementRemoved', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.elementRemovedStringProperty' ), [{"name":"elementName"}] ),
-      lightBulbState: new FluentPattern<{ elementName: FluentVariable, state: 'off' | 'dim' | 'steady' | 'bright' | TReadOnlyProperty<'off' | 'dim' | 'steady' | 'bright'> }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_lightBulbState', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.lightBulbStateStringProperty' ), [{"name":"elementName"},{"name":"state","variants":["off","dim","steady","bright"]}] ),
-      componentValueChange: new FluentPattern<{ elementName: FluentVariable, newValue: FluentVariable, oldValue: FluentVariable, type: 'battery' | 'resistor' | 'lightBulb' | TReadOnlyProperty<'battery' | 'resistor' | 'lightBulb'> }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_componentValueChange', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.componentValueChangeStringProperty' ), [{"name":"elementName"},{"name":"newValue"},{"name":"oldValue"},{"name":"type","variants":["battery","resistor","lightBulb"]}] )
+      componentRemoved: new FluentPattern<{ componentName: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_componentRemoved', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.componentRemovedStringProperty' ), [{"name":"componentName"}] ),
+      lightBulbState: new FluentPattern<{ componentName: FluentVariable, state: 'off' | 'dim' | 'steady' | 'bright' | TReadOnlyProperty<'off' | 'dim' | 'steady' | 'bright'> }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_lightBulbState', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.lightBulbStateStringProperty' ), [{"name":"componentName"},{"name":"state","variants":["off","dim","steady","bright"]}] ),
+      componentValueChange: new FluentPattern<{ componentName: FluentVariable, newValue: FluentVariable, oldValue: FluentVariable, type: 'battery' | 'resistor' | 'lightBulb' | TReadOnlyProperty<'battery' | 'resistor' | 'lightBulb'> }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_componentValueChange', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.componentValueChangeStringProperty' ), [{"name":"componentName"},{"name":"newValue"},{"name":"oldValue"},{"name":"type","variants":["battery","resistor","lightBulb"]}] )
     },
     sensorToolbox: {
       accessibleHeadingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_sensorToolbox_accessibleHeading', _.get( CircuitConstructionKitCommonStrings, 'a11y.sensorToolbox.accessibleHeadingStringProperty' ) ),
@@ -343,10 +343,10 @@ const CircuitConstructionKitCommonFluent = {
         accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_sensorToolbox_seriesAmmeter_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.sensorToolbox.seriesAmmeter.accessibleNameStringProperty' ) )
       }
     },
-    circuitElementToolbox: {
-      accessibleHeadingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitElementToolbox_accessibleHeading', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitElementToolbox.accessibleHeadingStringProperty' ) ),
-      accessibleHelpTextStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitElementToolbox_accessibleHelpText', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitElementToolbox.accessibleHelpTextStringProperty' ) ),
-      toolAccessibleName: new FluentPattern<{ componentName: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitElementToolbox_toolAccessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitElementToolbox.toolAccessibleNameStringProperty' ), [{"name":"componentName"}] )
+    circuitComponentToolbox: {
+      accessibleHeadingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitComponentToolbox_accessibleHeading', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitComponentToolbox.accessibleHeadingStringProperty' ) ),
+      accessibleHelpTextStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitComponentToolbox_accessibleHelpText', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitComponentToolbox.accessibleHelpTextStringProperty' ) ),
+      toolAccessibleName: new FluentPattern<{ componentName: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitComponentToolbox_toolAccessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitComponentToolbox.toolAccessibleNameStringProperty' ), [{"name":"componentName"}] )
     },
     advancedAccordionBox: {
       accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_advancedAccordionBox_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.advancedAccordionBox.accessibleNameStringProperty' ) ),
@@ -393,8 +393,8 @@ const CircuitConstructionKitCommonFluent = {
         accessibleContextResponseStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_viewRadioButtonGroup_schematicRadioButton_accessibleContextResponse', _.get( CircuitConstructionKitCommonStrings, 'a11y.viewRadioButtonGroup.schematicRadioButton.accessibleContextResponseStringProperty' ) )
       }
     },
-    circuitElementToolNode: {
-      accessibleHelpText: new FluentPattern<{ capacitance: FluentVariable, displayMode: 'name' | 'value' | 'count' | 'countAndValue' | TReadOnlyProperty<'name' | 'value' | 'count' | 'countAndValue'>, hasPosition: 'true' | 'false' | TReadOnlyProperty<'true' | 'false'>, inductance: FluentVariable, position: FluentVariable, resistance: FluentVariable, switchState: 'closed' | 'open' | TReadOnlyProperty<'closed' | 'open'>, total: FluentVariable, type: 'resistor' | 'battery' | 'lightBulb' | 'capacitor' | 'inductor' | 'acSource' | 'fuse' | 'switch' | 'voltmeter' | 'ammeter' | 'stopwatch' | 'wire' | 'false' | TReadOnlyProperty<'resistor' | 'battery' | 'lightBulb' | 'capacitor' | 'inductor' | 'acSource' | 'fuse' | 'switch' | 'voltmeter' | 'ammeter' | 'stopwatch' | 'wire' | 'false'>, voltage: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitElementToolNode_accessibleHelpText', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitElementToolNode.accessibleHelpTextStringProperty' ), [{"name":"capacitance"},{"name":"displayMode","variants":["name","value","count","countAndValue"]},{"name":"hasPosition","variants":["true","false"]},{"name":"inductance"},{"name":"position"},{"name":"resistance"},{"name":"switchState","variants":["closed","open"]},{"name":"total"},{"name":"type","variants":["resistor","battery","lightBulb","capacitor","inductor","acSource","fuse","switch","voltmeter","ammeter","stopwatch","wire","false"]},{"name":"voltage"}] )
+    circuitComponentToolNode: {
+      accessibleHelpText: new FluentPattern<{ capacitance: FluentVariable, displayMode: 'name' | 'value' | 'count' | 'countAndValue' | TReadOnlyProperty<'name' | 'value' | 'count' | 'countAndValue'>, hasPosition: 'true' | 'false' | TReadOnlyProperty<'true' | 'false'>, inductance: FluentVariable, position: FluentVariable, resistance: FluentVariable, switchState: 'closed' | 'open' | TReadOnlyProperty<'closed' | 'open'>, total: FluentVariable, type: 'resistor' | 'battery' | 'lightBulb' | 'capacitor' | 'inductor' | 'acSource' | 'fuse' | 'switch' | 'voltmeter' | 'ammeter' | 'stopwatch' | 'wire' | 'false' | TReadOnlyProperty<'resistor' | 'battery' | 'lightBulb' | 'capacitor' | 'inductor' | 'acSource' | 'fuse' | 'switch' | 'voltmeter' | 'ammeter' | 'stopwatch' | 'wire' | 'false'>, voltage: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitComponentToolNode_accessibleHelpText', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitComponentToolNode.accessibleHelpTextStringProperty' ), [{"name":"capacitance"},{"name":"displayMode","variants":["name","value","count","countAndValue"]},{"name":"hasPosition","variants":["true","false"]},{"name":"inductance"},{"name":"position"},{"name":"resistance"},{"name":"switchState","variants":["closed","open"]},{"name":"total"},{"name":"type","variants":["resistor","battery","lightBulb","capacitor","inductor","acSource","fuse","switch","voltmeter","ammeter","stopwatch","wire","false"]},{"name":"voltage"}] )
     },
     reverseBatteryButton: {
       accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_reverseBatteryButton_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.reverseBatteryButton.accessibleNameStringProperty' ) )
@@ -402,38 +402,38 @@ const CircuitConstructionKitCommonFluent = {
     trashButton: {
       accessibleName: new FluentPattern<{ capacitance: FluentVariable, displayMode: 'name' | 'value' | 'count' | 'countAndValue' | TReadOnlyProperty<'name' | 'value' | 'count' | 'countAndValue'>, hasPosition: 'true' | 'false' | TReadOnlyProperty<'true' | 'false'>, inductance: FluentVariable, position: FluentVariable, resistance: FluentVariable, switchState: 'closed' | 'open' | TReadOnlyProperty<'closed' | 'open'>, total: FluentVariable, type: 'resistor' | 'battery' | 'lightBulb' | 'capacitor' | 'inductor' | 'acSource' | 'fuse' | 'switch' | 'voltmeter' | 'ammeter' | 'stopwatch' | 'wire' | 'false' | TReadOnlyProperty<'resistor' | 'battery' | 'lightBulb' | 'capacitor' | 'inductor' | 'acSource' | 'fuse' | 'switch' | 'voltmeter' | 'ammeter' | 'stopwatch' | 'wire' | 'false'>, voltage: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_trashButton_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.trashButton.accessibleNameStringProperty' ), [{"name":"capacitance"},{"name":"displayMode","variants":["name","value","count","countAndValue"]},{"name":"hasPosition","variants":["true","false"]},{"name":"inductance"},{"name":"position"},{"name":"resistance"},{"name":"switchState","variants":["closed","open"]},{"name":"total"},{"name":"type","variants":["resistor","battery","lightBulb","capacitor","inductor","acSource","fuse","switch","voltmeter","ammeter","stopwatch","wire","false"]},{"name":"voltage"}] )
     },
-    circuitElement: {
-      accessibleName: new FluentPattern<{ capacitance: FluentVariable, displayMode: 'name' | 'value' | 'count' | 'countAndValue' | TReadOnlyProperty<'name' | 'value' | 'count' | 'countAndValue'>, hasPosition: 'true' | 'false' | TReadOnlyProperty<'true' | 'false'>, inductance: FluentVariable, position: FluentVariable, resistance: FluentVariable, switchState: 'closed' | 'open' | TReadOnlyProperty<'closed' | 'open'>, total: FluentVariable, type: 'resistor' | 'battery' | 'lightBulb' | 'capacitor' | 'inductor' | 'acSource' | 'fuse' | 'switch' | 'voltmeter' | 'ammeter' | 'stopwatch' | 'wire' | 'false' | TReadOnlyProperty<'resistor' | 'battery' | 'lightBulb' | 'capacitor' | 'inductor' | 'acSource' | 'fuse' | 'switch' | 'voltmeter' | 'ammeter' | 'stopwatch' | 'wire' | 'false'>, voltage: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitElement_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitElement.accessibleNameStringProperty' ), [{"name":"capacitance"},{"name":"displayMode","variants":["name","value","count","countAndValue"]},{"name":"hasPosition","variants":["true","false"]},{"name":"inductance"},{"name":"position"},{"name":"resistance"},{"name":"switchState","variants":["closed","open"]},{"name":"total"},{"name":"type","variants":["resistor","battery","lightBulb","capacitor","inductor","acSource","fuse","switch","voltmeter","ammeter","stopwatch","wire","false"]},{"name":"voltage"}] ),
-      accessibleHelpText: new FluentPattern<{ switchState: 'closed' | 'open' | TReadOnlyProperty<'closed' | 'open'>, type: 'switch' | TReadOnlyProperty<'switch'> }>( fluentSupport.bundleProperty, 'a11y_circuitElement_accessibleHelpText', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitElement.accessibleHelpTextStringProperty' ), [{"name":"switchState","variants":["closed","open"]},{"name":"type","variants":["switch"]}] )
+    circuitComponent: {
+      accessibleName: new FluentPattern<{ capacitance: FluentVariable, displayMode: 'name' | 'value' | 'count' | 'countAndValue' | TReadOnlyProperty<'name' | 'value' | 'count' | 'countAndValue'>, hasPosition: 'true' | 'false' | TReadOnlyProperty<'true' | 'false'>, inductance: FluentVariable, position: FluentVariable, resistance: FluentVariable, switchState: 'closed' | 'open' | TReadOnlyProperty<'closed' | 'open'>, total: FluentVariable, type: 'resistor' | 'battery' | 'lightBulb' | 'capacitor' | 'inductor' | 'acSource' | 'fuse' | 'switch' | 'voltmeter' | 'ammeter' | 'stopwatch' | 'wire' | 'false' | TReadOnlyProperty<'resistor' | 'battery' | 'lightBulb' | 'capacitor' | 'inductor' | 'acSource' | 'fuse' | 'switch' | 'voltmeter' | 'ammeter' | 'stopwatch' | 'wire' | 'false'>, voltage: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitComponent_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitComponent.accessibleNameStringProperty' ), [{"name":"capacitance"},{"name":"displayMode","variants":["name","value","count","countAndValue"]},{"name":"hasPosition","variants":["true","false"]},{"name":"inductance"},{"name":"position"},{"name":"resistance"},{"name":"switchState","variants":["closed","open"]},{"name":"total"},{"name":"type","variants":["resistor","battery","lightBulb","capacitor","inductor","acSource","fuse","switch","voltmeter","ammeter","stopwatch","wire","false"]},{"name":"voltage"}] ),
+      accessibleHelpText: new FluentPattern<{ switchState: 'closed' | 'open' | TReadOnlyProperty<'closed' | 'open'>, type: 'switch' | TReadOnlyProperty<'switch'> }>( fluentSupport.bundleProperty, 'a11y_circuitComponent_accessibleHelpText', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitComponent.accessibleHelpTextStringProperty' ), [{"name":"switchState","variants":["closed","open"]},{"name":"type","variants":["switch"]}] )
     },
     _comment_0: new FluentComment( {"comment":"TODO: Move some of this outside of a11y key","associatedKey":"keyboardHelpDialog"} ),
     keyboardHelpDialog: {
-      addElements: {
-        headingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_addElements_heading', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.addElements.headingStringProperty' ) ),
-        createElement: {
-          labelStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_addElements_createElement_label', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.addElements.createElement.labelStringProperty' ) ),
-          labelInnerContentStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_addElements_createElement_labelInnerContent', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.addElements.createElement.labelInnerContentStringProperty' ) )
+      addComponents: {
+        headingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_addComponents_heading', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.addComponents.headingStringProperty' ) ),
+        createComponent: {
+          labelStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_addComponents_createComponent_label', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.addComponents.createComponent.labelStringProperty' ) ),
+          labelInnerContentStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_addComponents_createComponent_labelInnerContent', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.addComponents.createComponent.labelInnerContentStringProperty' ) )
         }
       },
-      connectElements: {
-        headingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_connectElements_heading', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.connectElements.headingStringProperty' ) ),
+      connectComponents: {
+        headingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_connectComponents_heading', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.connectComponents.headingStringProperty' ) ),
         grabJunction: {
-          labelStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_connectElements_grabJunction_label', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.connectElements.grabJunction.labelStringProperty' ) ),
-          labelInnerContentStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_connectElements_grabJunction_labelInnerContent', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.connectElements.grabJunction.labelInnerContentStringProperty' ) )
+          labelStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_connectComponents_grabJunction_label', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.connectComponents.grabJunction.labelStringProperty' ) ),
+          labelInnerContentStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_connectComponents_grabJunction_labelInnerContent', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.connectComponents.grabJunction.labelInnerContentStringProperty' ) )
         },
         selectTarget: {
-          labelStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_connectElements_selectTarget_label', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.connectElements.selectTarget.labelStringProperty' ) ),
-          labelInnerContentStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_connectElements_selectTarget_labelInnerContent', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.connectElements.selectTarget.labelInnerContentStringProperty' ) )
+          labelStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_connectComponents_selectTarget_label', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.connectComponents.selectTarget.labelStringProperty' ) ),
+          labelInnerContentStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_connectComponents_selectTarget_labelInnerContent', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.connectComponents.selectTarget.labelInnerContentStringProperty' ) )
         },
         attachJunction: {
-          labelStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_connectElements_attachJunction_label', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.connectElements.attachJunction.labelStringProperty' ) ),
-          labelInnerContentStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_connectElements_attachJunction_labelInnerContent', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.connectElements.attachJunction.labelInnerContentStringProperty' ) )
+          labelStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_connectComponents_attachJunction_label', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.connectComponents.attachJunction.labelStringProperty' ) ),
+          labelInnerContentStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_connectComponents_attachJunction_labelInnerContent', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.connectComponents.attachJunction.labelInnerContentStringProperty' ) )
         }
       },
-      editCircuitElements: {
-        headingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_editCircuitElements_heading', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.editCircuitElements.headingStringProperty' ) ),
-        editCircuitElementStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_editCircuitElements_editCircuitElement', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.editCircuitElements.editCircuitElementStringProperty' ) ),
-        deleteCircuitElementStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_editCircuitElements_deleteCircuitElement', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.editCircuitElements.deleteCircuitElementStringProperty' ) )
+      editCircuitComponents: {
+        headingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_editCircuitComponents_heading', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.editCircuitComponents.headingStringProperty' ) ),
+        editCircuitComponentStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_editCircuitComponents_editCircuitComponent', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.editCircuitComponents.editCircuitComponentStringProperty' ) ),
+        deleteCircuitComponentStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_editCircuitComponents_deleteCircuitComponent', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.editCircuitComponents.deleteCircuitComponentStringProperty' ) )
       },
       focus: {
         headingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_focus_heading', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.focus.headingStringProperty' ) ),
