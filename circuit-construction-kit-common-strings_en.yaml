@@ -100,29 +100,29 @@ a11y:
     connects:                     connects
     group:                        Group
     emptyConstructionAreaMessage: >-
-      Add Circuit Components. Once added, select a component or a lead or terminal with Space to pop up options for
-      editing or connecting. Remove components or disconnect junctions with Delete. Check out Keyboard Shortcuts for
-      more details.
+                                  Add Circuit Components. Once added, select a component or a lead or terminal with Space to pop up options for
+                                  editing or connecting. Remove components or disconnect junctions with Delete. Check out Keyboard Shortcuts for
+                                  more details.
   screenSummary:
-    playArea: >-
-      A Construction Area creates a building space for components added from a Circuit Components carousel. Build and
-      navigate your circuits there. A Voltmeter and Ammeter can be found in the Measurement Tools toolbox. Display
-      Options provide ways to add and remove visual information from components in the Construction Area.
-    controlArea: >-
-      There's an option to choose between a Lifelike View or a Schematic View for any components and circuits, and you
-      can Reset All to clear everything and start over.
+    playArea:        >-
+                     A Construction Area creates a building space for components added from a Circuit Components carousel. Build and
+                     navigate your circuits there. A Voltmeter and Ammeter can be found in the Measurement Tools toolbox. Display
+                     Options provide ways to add and remove visual information from components in the Construction Area.
+    controlArea:     >-
+                     There's an option to choose between a Lifelike View or a Schematic View for any components and circuits, and you
+                     can Reset All to clear everything and start over.
     currentDetails:
       select_componentCount:
-        zero: >-
-          Currently, Construction Area has no circuit components. Several { $viewType } components are available
-          in Circuit Components carousel. There is no current flowing.
+        zero:  >-
+               Currently, Construction Area has no circuit components. Several { $viewType } components are available
+               in Circuit Components carousel. There is no current flowing.
         other: >-
-          Currently, Construction Area has { $componentCount } circuit components. Several { $viewType } components
-          are available in Circuit Components carousel.
-          { $currentStatus ->
-            [flowing] Current is flowing.
-           *[notFlowing] There is no current flowing.
-          }
+               Currently, Construction Area has { $componentCount } circuit components. Several { $viewType } components
+               are available in Circuit Components carousel.
+               { $currentStatus ->
+                 [flowing] Current is flowing.
+                *[notFlowing] There is no current flowing.
+               }
     interactionHint: Add circuit components and start connecting. Be sure to add at least one Wire.
   constructionArea:
     accessibleHeading: Construction Area
@@ -130,31 +130,31 @@ a11y:
     leadingNoCircuit: 'No circuit yet:'
     leadingCircuitActive:
       select_currentLevel:
-        low: 'In circuit, electrons flow slowly, lightbulb glows dimly. Circuit has:'
+        low:    'In circuit, electrons flow slowly, lightbulb glows dimly. Circuit has:'
         medium: 'In circuit, electrons flow at medium speed, lightbulb glows moderately. Circuit has:'
-        high: 'In circuit, electrons flow quickly, lightbulb glows brightly. Circuit has:'
+        high:   'In circuit, electrons flow quickly, lightbulb glows brightly. Circuit has:'
     wireCount:
       select_count:
-        one: '{ $count } wire'
+        one:   '{ $count } wire'
         other: '{ $count } wires'
     additionalComponentCount:
       select_count:
-        one: '{ $count } additional circuit component'
+        one:   '{ $count } additional circuit component'
         other: '{ $count } additional circuit components'
     connectionCount:
       select_count:
-        zero: '{ $count } connections'
-        one: '{ $count } connection'
+        zero:  '{ $count } connections'
+        one:   '{ $count } connection'
         other: '{ $count } connections'
-    helpTextCase1: >-
-      Add Circuit Components. You need a wire and at least 2 additional components to build a circuit.
-      Check out Keyboard Shortcuts for more details.
-    helpTextCase2: >-
-      Look for leads and terminals on any component and hit Space to pop up options for making a junction.
-      Disconnect junctions or remove components with Delete key. Check out Keyboard Shortcuts for more details.
-    helpTextCase3: >-
-      Look for components and hit Space to pop up options for editing. Remove selected component with
-      Delete key. Check out Keyboard Shortcuts for more details.
+    helpTextCase1:    >-
+                      Add Circuit Components. You need a wire and at least 2 additional components to build a circuit.
+                      Check out Keyboard Shortcuts for more details.
+    helpTextCase2:    >-
+                      Look for leads and terminals on any component and hit Space to pop up options for making a junction.
+                      Disconnect junctions or remove components with Delete key. Check out Keyboard Shortcuts for more details.
+    helpTextCase3:    >-
+                      Look for components and hit Space to pop up options for editing. Remove selected component with
+                      Delete key. Check out Keyboard Shortcuts for more details.
   vertexInteraction:
     noNewAttachment: No new attachment
   circuitContextResponses:
@@ -190,8 +190,8 @@ a11y:
   circuitElementToolbox:
     accessibleHeading:  Circuit Component Toolbox
     accessibleHelpText: >-
-      Look for components in carousel, add them to Construction Area, and then look for terminals and leads to start
-      connecting.
+                        Look for components in carousel, add them to Construction Area, and then look for terminals and leads to start
+                        connecting.
     toolAccessibleName: 'Add { $componentName }'
   advancedAccordionBox:
     accessibleName: Advanced Settings

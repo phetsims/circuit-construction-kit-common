@@ -30,7 +30,6 @@ const positionedPropertiesMap = new WeakMap<CircuitElement, {
 // Constants for preferred ordering of circuit elements in groups
 const GROUPED_CIRCUIT_ELEMENT_TYPE_ORDER: CircuitElementType[] = [ 'battery', 'resistor', 'lightBulb', 'wire' ];
 
-
 /**
  * Gets the human-readable label for a circuit element type.
  */
