@@ -127,37 +127,37 @@ a11y:
   constructionArea:
     accessibleHeading: Construction Area
   constructionAreaStatus:
-    leadingNoCircuit: 'No circuit yet:'
+    leadingNoCircuit:         'No circuit yet:'
     leadingCircuitActive:
       select_currentLevel:
         low:    'In circuit, electrons flow slowly, lightbulb glows dimly. Circuit has:'
         medium: 'In circuit, electrons flow at medium speed, lightbulb glows moderately. Circuit has:'
         high:   'In circuit, electrons flow quickly, lightbulb glows brightly. Circuit has:'
-    wireCount: >-
-      { $count ->
-        [one] { $count } wire
-       *[other] { $count } wires
-      }
+    wireCount:                >-
+                              { $count ->
+                                [one] { $count } wire
+                               *[other] { $count } wires
+                              }
     additionalComponentCount: >-
-      { $count ->
-        [one] { $count } additional circuit component
-       *[other] { $count } additional circuit components
-      }
-    connectionCount: >-
-      { $count ->
-        [zero] { $count } connections
-        [one] { $count } connection
-       *[other] { $count } connections
-      }
-    helpTextCase1:    >-
-                      Add Circuit Components. You need a wire and at least 2 additional components to build a circuit.
-                      Check out Keyboard Shortcuts for more details.
-    helpTextCase2:    >-
-                      Look for leads and terminals on any component and hit Space to pop up options for making a junction.
-                      Disconnect junctions or remove components with Delete key. Check out Keyboard Shortcuts for more details.
-    helpTextCase3:    >-
-                      Look for components and hit Space to pop up options for editing. Remove selected component with
-                      Delete key. Check out Keyboard Shortcuts for more details.
+                              { $count ->
+                                [one] { $count } additional circuit component
+                               *[other] { $count } additional circuit components
+                              }
+    connectionCount:          >-
+                              { $count ->
+                                [zero] { $count } connections
+                                [one] { $count } connection
+                               *[other] { $count } connections
+                              }
+    helpTextCase1:            >-
+                              Add Circuit Components. You need a wire and at least 2 additional components to build a circuit.
+                              Check out Keyboard Shortcuts for more details.
+    helpTextCase2:            >-
+                              Look for leads and terminals on any component and hit Space to pop up options for making a junction.
+                              Disconnect junctions or remove components with Delete key. Check out Keyboard Shortcuts for more details.
+    helpTextCase3:            >-
+                              Look for components and hit Space to pop up options for editing. Remove selected component with
+                              Delete key. Check out Keyboard Shortcuts for more details.
   vertexInteraction:
     noNewAttachment: No new attachment
   circuitContextResponses:
