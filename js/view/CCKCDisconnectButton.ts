@@ -90,11 +90,13 @@ export default class CCKCDisconnectButton extends CCKCRoundPushButton {
             }
 
             // Move the disconnected element 50px down and 50px right
-            const currentStartPos = circuitElement.startVertexProperty.value.positionProperty.value;
-            const currentEndPos = circuitElement.endVertexProperty.value.positionProperty.value;
+            // Use setPosition to update both positionProperty and unsnappedPositionProperty
+            // Note: Must get the current vertices since they may have been replaced with new ones above
+            const currentStartVertex = circuitElement.startVertexProperty.value;
+            const currentEndVertex = circuitElement.endVertexProperty.value;
 
-            circuitElement.startVertexProperty.value.positionProperty.value = currentStartPos.plus( DISCONNECT_OFFSET );
-            circuitElement.endVertexProperty.value.positionProperty.value = currentEndPos.plus( DISCONNECT_OFFSET );
+            currentStartVertex.setPosition( currentStartVertex.positionProperty.value.plus( DISCONNECT_OFFSET ) );
+            currentEndVertex.setPosition( currentEndVertex.positionProperty.value.plus( DISCONNECT_OFFSET ) );
           }
         }
       },
