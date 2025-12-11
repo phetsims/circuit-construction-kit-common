@@ -558,8 +558,7 @@ export default class CCKCScreenView extends ScreenView {
               }
               else {
 
-                // If there are no more circuit elements, move focus to the circuit element toolbox
-                // TODO: Move focus to the first item in the carousel, if there is one? See https://github.com/phetsims/circuit-construction-kit-common/issues/1062
+                // If there are no more circuit elements, move focus to the 1st item in the circuit element toolbox, if there is one
                 this.circuitElementToolbox.carousel.focus();
               }
             }
