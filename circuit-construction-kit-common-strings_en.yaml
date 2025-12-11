@@ -65,8 +65,11 @@ fuseValue:                             >-
                                        {{resistance}} mΩ<br><span style="font-size: 16px;">≤ {{currentRating}}
                                        A</span>
 resistanceOhmsSymbol:                  '{{resistance}} Ω'
+
+# THESE ARE BUGGY BUT WE HAVE TO COORDINATE WITH i18n TOOLING TO FIX THEM
 capacitanceFaradsSymbol:               '{{resistance}} F'
 inductanceHenriesSymbol:               '{{resistance}} H'
+
 resistanceOhmsValuePattern:            '{{resistance}} ohms'
 theSwitchIsClosed:                     The switch is closed.
 theSwitchIsOpen:                       The switch is open.
@@ -88,7 +91,7 @@ a11y:
       resistor:  Resistor
       capacitor: Capacitor
       inductor:  Inductor
-      lightBulb: Light bulb
+      lightBulb: Light Bulb
       acSource:  AC Source
       fuse:      Fuse
       switch:    Switch
@@ -130,9 +133,9 @@ a11y:
     leadingNoCircuit:         'No circuit yet:'
     leadingCircuitActive:
       select_currentLevel:
-        low:    'In circuit, electrons flow slowly, lightbulb glows dimly. Circuit has:'
-        medium: 'In circuit, electrons flow at medium speed, lightbulb glows moderately. Circuit has:'
-        high:   'In circuit, electrons flow quickly, lightbulb glows brightly. Circuit has:'
+        low:    'In circuit, electrons flow slowly, light bulb glows dimly. Circuit has:'
+        medium: 'In circuit, electrons flow at medium speed, light bulb glows moderately. Circuit has:'
+        high:   'In circuit, electrons flow quickly, light bulb glows brightly. Circuit has:'
     wireCount:                >-
                               { $count ->
                                 [one] { $count } wire
@@ -161,7 +164,7 @@ a11y:
   vertexInteraction:
     noNewAttachment: No new attachment
   circuitContextResponses:
-    vertexDefaultLabel:   'vertex { $index }'
+    vertexDefaultLabel:   'Vertex { $index }'
     connectedElements:    'Connected: { $elements }.'
     vertexSplit:
       select_connectionCount:
@@ -226,7 +229,7 @@ a11y:
   viewRadioButtonGroup:
     accessibleHeading:  View Type
     accessibleName:     View Type Selection
-    accessibleHelpText: Select the view type for circuit components
+    accessibleHelpText: Select the view type for circuit components.
     lifelikeRadioButton:
       accessibleName:            Lifelike View
       accessibleHelpText:        Show the circuit components like they would look in real life.

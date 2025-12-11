@@ -245,7 +245,7 @@
           "value": "Inductor"
         },
         "lightBulb": {
-          "value": "Light bulb"
+          "value": "Light Bulb"
         },
         "acSource": {
           "value": "AC Source"
@@ -306,7 +306,7 @@
         "value": "No circuit yet:"
       },
       "leadingCircuitActive": {
-        "value": "{ $currentLevel ->\n  [low] In circuit, electrons flow slowly, lightbulb glows dimly. Circuit has:\n  [medium] In circuit, electrons flow at medium speed, lightbulb glows moderately. Circuit has:\n  *[high] In circuit, electrons flow quickly, lightbulb glows brightly. Circuit has:\n}"
+        "value": "{ $currentLevel ->\n  [low] In circuit, electrons flow slowly, light bulb glows dimly. Circuit has:\n  [medium] In circuit, electrons flow at medium speed, light bulb glows moderately. Circuit has:\n  *[high] In circuit, electrons flow quickly, light bulb glows brightly. Circuit has:\n}"
       },
       "wireCount": {
         "value": "{ $count ->\n  [one] { $count } wire\n *[other] { $count } wires\n}"
@@ -334,7 +334,7 @@
     },
     "circuitContextResponses": {
       "vertexDefaultLabel": {
-        "value": "vertex { $index }"
+        "value": "Vertex { $index }"
       },
       "connectedElements": {
         "value": "Connected: { $elements }."
@@ -454,7 +454,7 @@
         "value": "View Type Selection"
       },
       "accessibleHelpText": {
-        "value": "Select the view type for circuit components"
+        "value": "Select the view type for circuit components."
       },
       "lifelikeRadioButton": {
         "accessibleName": {
