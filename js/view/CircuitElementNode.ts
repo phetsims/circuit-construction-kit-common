@@ -60,7 +60,7 @@ export default abstract class CircuitElementNode extends Node {
 
       providedOptions = optionize<CircuitElementNodeOptions, SelfOptions, NodeOptions>()( {
 
-         
+
         ...AccessibleDraggableOptions,
         tagName: 'div', // HTML tag name for representative element in the document, see ParallelDOM.js
         focusable: true,
@@ -69,7 +69,8 @@ export default abstract class CircuitElementNode extends Node {
         phetioVisiblePropertyInstrumented: false,
         phetioInputEnabledPropertyInstrumented: true,
         useHitTestForSensors: false,
-        ariaRole: 'application'
+        ariaRole: 'application',
+        accessibleRoleDescription: 'edit pop-up button'
       }, providedOptions );
     }
 
