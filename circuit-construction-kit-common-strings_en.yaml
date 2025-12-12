@@ -185,9 +185,9 @@ a11y:
     leadingNoCircuit:         'No circuit yet:'
     leadingCircuitActive:
       select_currentLevel:
-        low:    'In circuit, electrons flow slowly, light bulb glows dimly. Circuit has:'
-        medium: 'In circuit, electrons flow at medium speed, light bulb glows moderately. Circuit has:'
-        high:   'In circuit, electrons flow quickly, light bulb glows brightly. Circuit has:'
+        low:    'In circuit, electrons flow slowly. Circuit has:'
+        medium: 'In circuit, electrons flow at medium speed. Circuit has:'
+        high:   'In circuit, electrons flow quickly. Circuit has:'
     wireCount:                >-
                               { $count ->
                                 [one] { $count } wire

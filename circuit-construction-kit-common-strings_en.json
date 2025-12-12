@@ -392,7 +392,7 @@
         "value": "No circuit yet:"
       },
       "leadingCircuitActive": {
-        "value": "{ $currentLevel ->\n  [low] In circuit, electrons flow slowly, light bulb glows dimly. Circuit has:\n  [medium] In circuit, electrons flow at medium speed, light bulb glows moderately. Circuit has:\n  *[high] In circuit, electrons flow quickly, light bulb glows brightly. Circuit has:\n}"
+        "value": "{ $currentLevel ->\n  [low] In circuit, electrons flow slowly. Circuit has:\n  [medium] In circuit, electrons flow at medium speed. Circuit has:\n  *[high] In circuit, electrons flow quickly. Circuit has:\n}"
       },
       "wireCount": {
         "value": "{ $count ->\n  [one] { $count } wire\n *[other] { $count } wires\n}"
