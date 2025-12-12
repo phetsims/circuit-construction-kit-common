@@ -8,8 +8,8 @@
 
 import type Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
+import { linear } from '../../../dot/js/util/linear.js';
 import { roundSymmetric } from '../../../dot/js/util/roundSymmetric.js';
-import Utils from '../../../dot/js/Utils.js';
 import Shape from '../../../kite/js/Shape.js';
 import LineStyles from '../../../kite/js/util/LineStyles.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
@@ -99,7 +99,7 @@ export default class InductorNode extends FixedCircuitElementNode {
     inductor.inductanceProperty.link( inductance => {
 
       // Determine the number of loops, including the start and end segments, which are each half.
-      const numLoops = roundSymmetric( Utils.linear( 5, 10, 12, 20, inductance ) );
+      const numLoops = roundSymmetric( linear( 5, 10, 12, 20, inductance ) );
       const children = [];
       for ( let i = 0; i < numLoops; i++ ) {
 
@@ -109,7 +109,7 @@ export default class InductorNode extends FixedCircuitElementNode {
         const antiClockwise = i === numLoops - 1;
 
         // Positioning for the loop arc
-        const x = Utils.linear(
+        const x = linear(
           numLoops / 2, numLoops / 2 + 1,
           LIFELIKE_WIDTH / 2 + LIFELIKE_RADIUS_X / 2, LIFELIKE_WIDTH / 2 + LIFELIKE_WIRE_LINE_WIDTH + LIFELIKE_RADIUS_X / 2,
           i );

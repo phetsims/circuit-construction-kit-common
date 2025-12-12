@@ -8,8 +8,8 @@
 
 import type Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
+import { linear } from '../../../dot/js/util/linear.js';
 import { roundSymmetric } from '../../../dot/js/util/roundSymmetric.js';
-import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Shape from '../../../kite/js/Shape.js';
 import optionize, { type EmptySelfOptions } from '../../../phet-core/js/optionize.js';
@@ -92,7 +92,7 @@ export default class FuseNode extends FixedCircuitElementNode {
     } );
 
     // Fuse filament thickness is proportional to its current rating
-    const updateFilamentPathLineWidth = ( currentRating: number ) => filamentPath.setLineWidth( Utils.linear(
+    const updateFilamentPathLineWidth = ( currentRating: number ) => filamentPath.setLineWidth( linear(
       fuse.currentRatingProperty.range.min, fuse.currentRatingProperty.range.max, 1, 4, currentRating
     ) );
     fuse.currentRatingProperty.link( updateFilamentPathLineWidth );

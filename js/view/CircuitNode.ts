@@ -19,7 +19,7 @@ import Multilink from '../../../axon/js/Multilink.js';
 import Property from '../../../axon/js/Property.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import { clamp } from '../../../dot/js/util/clamp.js';
-import Utils from '../../../dot/js/Utils.js';
+import { linear } from '../../../dot/js/util/linear.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import DisplayClickToDismissListener from '../../../joist/js/DisplayClickToDismissListener.js';
 import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
@@ -1225,7 +1225,7 @@ export default class CircuitNode extends Node {
                                                                        segmentVector.magnitudeSquared );
       distanceAlongSegment = clamp( distanceAlongSegment, 0, 1 );
 
-      const voltageAlongWire = Utils.linear( 0, 1,
+      const voltageAlongWire = linear( 0, 1,
         metallicCircuitElement.circuitElement.startVertexProperty.get().voltageProperty.get(),
         metallicCircuitElement.circuitElement.endVertexProperty.get().voltageProperty.get(),
         distanceAlongSegment

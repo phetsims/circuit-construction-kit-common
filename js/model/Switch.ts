@@ -11,7 +11,7 @@ import NumberProperty from '../../../axon/js/NumberProperty.js';
 import type Property from '../../../axon/js/Property.js';
 import { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import type Matrix3 from '../../../dot/js/Matrix3.js';
-import Utils from '../../../dot/js/Utils.js';
+import { linear } from '../../../dot/js/util/linear.js';
 import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -90,7 +90,7 @@ export default class Switch extends FixedCircuitElement {
       const twoThirdsPoint = startPosition.blend( endPosition, SWITCH_END );
       const rotatedPoint = twoThirdsPoint.rotatedAboutPoint( pivot, -Math.PI / 4 );
 
-      const distanceAlongSegment = Utils.linear( SWITCH_START, SWITCH_END, 0, 1, fractionAlongWire );
+      const distanceAlongSegment = linear( SWITCH_START, SWITCH_END, 0, 1, fractionAlongWire );
       const translation = pivot.blend( rotatedPoint, distanceAlongSegment );
       matrix.setToTranslationRotationPoint( translation, endPosition.minus( startPosition ).angle );
     }
