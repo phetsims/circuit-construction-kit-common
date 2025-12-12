@@ -33,7 +33,6 @@ import VertexKeyboardListener from './input/VertexKeyboardListener.js';
 // constants
 const VERTEX_RADIUS = 16; // for hit testing with probes
 
-// rasterize the images for the red and black dotted lines so they can be rendered with WebGL to improve performance
 const CIRCLE_OPTIONS = {
   lineWidth: 1.3,
   lineDash: [ 6, 4 ]

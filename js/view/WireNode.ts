@@ -43,17 +43,25 @@ const MATRIX = new Matrix3(); // The Matrix entries are mutable
 const WIRE_RASTER_LENGTH = 100;
 
 // Node used to render the black line for schematic, rasterized so it can render with WebGL
-const BLACK_LINE_NODE = rasterizeNode( new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
-  lineWidth: SCHEMATIC_LINE_WIDTH,
-  stroke: Color.BLACK
-} ), { wrap: false } );
+const BLACK_LINE_NODE = new Node( {
+  children: [
+    new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
+      lineWidth: SCHEMATIC_LINE_WIDTH,
+      stroke: Color.BLACK
+    } )
+  ]
+} );
 
 // Not displayed, used to get accurate hit bounds for the schematic view.
-const SCHEMATIC_BACKGROUND = rasterizeNode( new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
-  lineWidth: LIFELIKE_LINE_WIDTH,
-  stroke: Color.BLUE,
-  opacity: 0.0
-} ), { wrap: false } );
+const SCHEMATIC_BACKGROUND = new Node( {
+  children: [
+    new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
+      lineWidth: LIFELIKE_LINE_WIDTH,
+      stroke: Color.BLUE,
+      opacity: 0.0
+    } )
+  ]
+} );
 
 /**
  * Create a LinearGradient for the wire, depending on the orientation relative to the shading (light comes from

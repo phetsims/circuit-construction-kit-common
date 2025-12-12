@@ -105,7 +105,7 @@ export default class CircuitNode extends Node {
   // layer for "show values"
   private readonly valueLayer: Node;
 
-  // layer for light rays, since it cannot be rendered in WebGL
+  // layer for light rays
   private readonly lightRaysLayer: Node;
 
   // layer that contains the wires

@@ -62,7 +62,7 @@ export default class InductorNode extends FixedCircuitElementNode {
 
   /**
    * @param screenView - main screen view, null for isIcon
-   * @param circuitNode, null for icon
+   * @param circuitNode
    * @param inductor
    * @param viewTypeProperty
    * @param tandem
