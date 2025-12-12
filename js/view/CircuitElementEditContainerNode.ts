@@ -11,7 +11,7 @@ import type EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import PatternStringProperty from '../../../axon/js/PatternStringProperty.js';
 import Property from '../../../axon/js/Property.js';
 import type Bounds2 from '../../../dot/js/Bounds2.js';
-import Utils from '../../../dot/js/Utils.js';
+import { roundToInterval } from '../../../dot/js/util/roundToInterval.js';
 import optionize, { type EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import AccessibleInteractiveOptions from '../../../scenery-phet/js/accessibility/AccessibleInteractiveOptions.js';
@@ -81,11 +81,6 @@ const GET_LAYOUT_POSITION = ( visibleBounds: Bounds2, centerX: number ) => {
 // So we can pass classes as types for instanceof checks, I've been using https://www.typescriptlang.org/docs/handbook/mixins.html
 // as a reference for how to create this type
 type GConstructor<T = EmptySelfOptions> = new ( ...args: IntentionalAny[] ) => T;
-
-const NORMAL_SLIDER_KNOB_DELTA = 1;
-const HIGH_SLIDER_KNOB_DELTA = 100;
-const NORMAL_TWEAKER_DELTA = 0.1;
-const HIGH_TWEAKER_DELTA = 10;
 
 // a singleton adapter property allows for the same EditContainerNode to be repurposed for different circuit components of the same type
 // this is because we want to have a single control for editing any component of that type
@@ -224,9 +219,9 @@ export default class CircuitElementEditContainerNode extends Node {
       Fuse.RANGE, circuit,
       1, {
         tandem: tandem.createTandem( 'fuseCurrentRatingControl' ),
-        delta: NORMAL_TWEAKER_DELTA, // For the tweakers
+        delta: 0.1, // For the tweakers
         sliderOptions: {
-          constrainValue: ( value: number ) => Utils.roundToInterval( value, 0.5 ),
+          constrainValue: ( value: number ) => roundToInterval( value, 0.5 ),
           shiftKeyboardStep: 0.5
         }
       } );
@@ -237,9 +232,9 @@ export default class CircuitElementEditContainerNode extends Node {
       Capacitor.CAPACITANCE_RANGE, circuit, Capacitor.NUMBER_OF_DECIMAL_PLACES, {
         tandem: circuit.includeACElements ? tandem.createTandem( 'capacitanceNumberControl' ) : Tandem.OPT_OUT,
         delta: CCKCQueryParameters.capacitanceStep,
-        // For dragging the slider knob
+
         sliderOptions: {
-          constrainValue: ( value: number ) => Utils.roundToInterval( value, CCKCQueryParameters.capacitanceStep ),
+          constrainValue: ( value: number ) => roundToInterval( value, CCKCQueryParameters.capacitanceStep ),
           shiftKeyboardStep: CCKCQueryParameters.capacitanceStep
         }
       } );
@@ -251,9 +246,9 @@ export default class CircuitElementEditContainerNode extends Node {
         tandem: circuit.includeACElements ? tandem.createTandem( 'inductanceNumberControl' ) : Tandem.OPT_OUT,
         delta: CCKCQueryParameters.inductanceStep,
 
-        // For dragging the slider knob
+
         sliderOptions: {
-          constrainValue: ( value: number ) => Utils.roundToInterval( value, 0.1 ),
+          constrainValue: ( value: number ) => roundToInterval( value, 0.1 ),
           shiftKeyboardStep: 0.1
         }
       } );
@@ -271,10 +266,10 @@ export default class CircuitElementEditContainerNode extends Node {
       ),
       ResistorType.RESISTOR.range, circuit, Resistor.RESISTANCE_DECIMAL_PLACES, {
         tandem: tandem.createTandem( tandemName ),
-        delta: NORMAL_TWEAKER_DELTA,
+        delta: 0.1,
         sliderOptions: {
-          constrainValue: ( value: number ) => Utils.roundToInterval( value, NORMAL_SLIDER_KNOB_DELTA ), // For dragging the slider knob
-          shiftKeyboardStep: NORMAL_SLIDER_KNOB_DELTA
+          constrainValue: ( value: number ) => roundToInterval( value, 1 ),
+          shiftKeyboardStep: 1
         },
         numberDisplayOptions: { decimalPlaces: Resistor.RESISTANCE_DECIMAL_PLACES }
       } );
@@ -287,10 +282,10 @@ export default class CircuitElementEditContainerNode extends Node {
       ),
       ResistorType.EXTREME_RESISTOR.range, circuit, Resistor.HIGH_RESISTANCE_DECIMAL_PLACES, {
         tandem: circuit.includeLabElements ? tandem.createTandem( tandemName ) : Tandem.OPT_OUT,
-        delta: HIGH_TWEAKER_DELTA,
+        delta: 10,
         sliderOptions: {
-          constrainValue: ( value: number ) => Utils.roundToInterval( value, HIGH_SLIDER_KNOB_DELTA ), // For dragging the slider knob
-          shiftKeyboardStep: HIGH_SLIDER_KNOB_DELTA
+          constrainValue: ( value: number ) => roundToInterval( value, 100 ),
+          shiftKeyboardStep: 100
         },
         numberDisplayOptions: { decimalPlaces: Resistor.HIGH_RESISTANCE_DECIMAL_PLACES }
       } );
@@ -308,11 +303,8 @@ export default class CircuitElementEditContainerNode extends Node {
       circuit,
       Battery.VOLTAGE_DECIMAL_PLACES, {
         tandem: tandem.createTandem( 'batteryVoltageNumberControl' ),
-        delta: NORMAL_TWEAKER_DELTA,
-        sliderOptions: { // For dragging the slider knob
-          constrainValue: ( value: number ) => Utils.roundToInterval( value, NORMAL_SLIDER_KNOB_DELTA ),
-          shiftKeyboardStep: NORMAL_SLIDER_KNOB_DELTA
-        },
+        delta: CCKCConstants.SLIDER_STEPS.batteryVoltageNumberControl.step,
+        sliderOptions: CCKCConstants.SLIDER_STEPS.batteryVoltageNumberControl,
         numberDisplayOptions: { decimalPlaces: Battery.VOLTAGE_DECIMAL_PLACES }
       } );
     const extremeBatteryVoltageNumberControl = new CircuitElementNumberControl( voltageStringProperty,
@@ -322,10 +314,10 @@ export default class CircuitElementEditContainerNode extends Node {
       circuit,
       Battery.HIGH_VOLTAGE_DECIMAL_PLACES, {
         tandem: circuit.includeLabElements ? tandem.createTandem( 'extremeBatteryVoltageNumberControl' ) : Tandem.OPT_OUT,
-        delta: HIGH_TWEAKER_DELTA,
-        sliderOptions: { // For dragging the slider knob
-          constrainValue: ( value: number ) => Utils.roundToInterval( value, HIGH_SLIDER_KNOB_DELTA ),
-          shiftKeyboardStep: HIGH_SLIDER_KNOB_DELTA
+        delta: 10,
+        sliderOptions: {
+          constrainValue: ( value: number ) => roundToInterval( value, 100 ),
+          shiftKeyboardStep: 100
         },
         numberDisplayOptions: { decimalPlaces: Battery.HIGH_VOLTAGE_DECIMAL_PLACES }
       } );
