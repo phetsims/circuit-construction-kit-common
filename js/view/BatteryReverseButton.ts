@@ -27,10 +27,6 @@ type ReverseBatteryButtonOptions = SelfOptions & RoundPushButtonOptions;
 
 export default class BatteryReverseButton extends CCKCRoundPushButton {
 
-  /**
-   * @param circuit - the circuit that contains the battery
-   * @param providedOptions
-   */
   public constructor( circuit: Circuit, providedOptions?: ReverseBatteryButtonOptions ) {
 
     // This SVG data was exported from assets/flip_battery_icon.ai, which was created by @arouinfar.  Using illustrator,

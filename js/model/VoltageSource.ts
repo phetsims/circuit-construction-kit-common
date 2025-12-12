@@ -56,7 +56,7 @@ export default abstract class VoltageSource extends FixedCircuitElement {
    * @param tandem
    * @param [providedOptions]
    */
-  public constructor( type: CircuitElementType, startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, length: number, tandem: Tandem, providedOptions?: VoltageSourceOptions ) {
+  protected constructor( type: CircuitElementType, startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, length: number, tandem: Tandem, providedOptions?: VoltageSourceOptions ) {
     affirm( internalResistanceProperty, 'internalResistanceProperty should be defined' );
     const options = optionize<VoltageSourceOptions, SelfOptions, FixedCircuitElementOptions>()( {
       initialOrientation: 'right',
