@@ -10,6 +10,7 @@
 
 import Emitter from '../../../axon/js/Emitter.js';
 import type TEmitter from '../../../axon/js/TEmitter.js';
+import { toFixed } from '../../../dot/js/util/toFixed.js';
 import Utils from '../../../dot/js/Utils.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
@@ -373,11 +374,11 @@ export default class CircuitContextStateTracker {
   }
 
   private formatValue( value: number, decimalPlaces: number ): string {
-    return Utils.toFixed( value, decimalPlaces );
+    return toFixed( value, decimalPlaces );
   }
 
   private formatCurrent( magnitude: number ): string {
-    return Utils.toFixed( magnitude, 2 );
+    return toFixed( magnitude, 2 );
   }
 
   private areValuesClose( a: number, b: number ): boolean {

@@ -7,7 +7,7 @@
  */
 
 import type Bounds2 from '../../dot/js/Bounds2.js';
-import Utils from '../../dot/js/Utils.js';
+import { toFixed } from '../../dot/js/util/toFixed.js';
 import affirm from '../../perennial-alias/js/browser-and-node/affirm.js';
 import StringUtils from '../../phetcommon/js/util/StringUtils.js';
 import MathSymbols from '../../scenery-phet/js/MathSymbols.js';
@@ -55,7 +55,7 @@ const CCKCUtils = {
       }
       else {
         const signedCurrent = ammeterReadoutTypeProperty.value === AmmeterReadoutType.MAGNITUDE ? Math.abs( current ) : current;
-        return StringUtils.fillIn( currentUnitsStringProperty, { current: Utils.toFixed( signedCurrent, CCKCConstants.METER_PRECISION ) } );
+        return StringUtils.fillIn( currentUnitsStringProperty, { current: toFixed( signedCurrent, CCKCConstants.METER_PRECISION ) } );
       }
     }
   },
@@ -65,7 +65,7 @@ const CCKCUtils = {
    * @param value - voltage value in Volts
    */
   createVoltageReadout: function( value: number ): string {
-    return StringUtils.fillIn( voltageUnitsStringProperty, { voltage: Utils.toFixed( value, CCKCConstants.METER_PRECISION ) } );
+    return StringUtils.fillIn( voltageUnitsStringProperty, { voltage: toFixed( value, CCKCConstants.METER_PRECISION ) } );
   },
 
   /**

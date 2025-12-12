@@ -6,7 +6,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import Utils from '../../../dot/js/Utils.js';
+import { toFixed } from '../../../dot/js/util/toFixed.js';
 import type Vector2 from '../../../dot/js/Vector2.js';
 import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
@@ -146,7 +146,7 @@ export default class VertexNode extends Node {
       vertex.voltageProperty.link( voltage => {
 
         // No need for i18n because this is for debugging only
-        const voltageText = `${Utils.toFixed( voltage, 3 )}V`;
+        const voltageText = `${toFixed( voltage, 3 )}V`;
         voltageReadout.setString( `${vertex.index} @ ${voltageText}` );
         affirm( this.updateReadoutTextPosition );
         if ( this.updateReadoutTextPosition ) {

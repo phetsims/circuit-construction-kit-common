@@ -12,7 +12,7 @@ import PatternStringProperty from '../../../axon/js/PatternStringProperty.js';
 import type Property from '../../../axon/js/Property.js';
 import type { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import { roundSymmetric } from '../../../dot/js/util/roundSymmetric.js';
-import Utils from '../../../dot/js/Utils.js';
+import { toFixed } from '../../../dot/js/util/toFixed.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
 import type AlignGroup from '../../../scenery/js/layout/constraints/AlignGroup.js';
 import VBox from '../../../scenery/js/layout/nodes/VBox.js';
@@ -67,7 +67,7 @@ export default class SourceResistanceControl extends VBox {
     slider.addMajorTick( range.min, createLabel( CircuitConstructionKitCommonFluent.tinyStringProperty, tandem.createTandem( 'tinyLabelText' ) ) );
     slider.addMajorTick( midpoint );
     slider.addMajorTick( range.max, createLabel( new PatternStringProperty( resistanceOhmsSymbolStringProperty, {
-      resistance: Utils.toFixed( range.max, 0 )
+      resistance: toFixed( range.max, 0 )
     }, {
       tandem: tandem.createTandem( 'maxLabelText' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME )
     } ), tandem.createTandem( 'maxLabelText' ) ) );

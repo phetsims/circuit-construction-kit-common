@@ -12,7 +12,7 @@
  */
 
 import Matrix, { QRDecomposition } from '../../../../../dot/js/Matrix.js';
-import Utils from '../../../../../dot/js/Utils.js';
+import { toFixed } from '../../../../../dot/js/util/toFixed.js';
 import affirm from '../../../../../perennial-alias/js/browser-and-node/affirm.js';
 import arrayRemove from '../../../../../phet-core/js/arrayRemove.js';
 import type IntentionalAny from '../../../../../phet-core/js/types/IntentionalAny.js';
@@ -515,7 +515,7 @@ const getDebugInfo = ( modifiedNodalAnalysisCircuit: MNACircuit, A: Matrix, z: M
     equations:
 ${equations.join( '\n' )}
 
-A.cond=1E${Utils.toFixed( Math.log10( conditionNumber ), 4 )} = ${Utils.toFixed( conditionNumber, 4 )}  
+A.cond=1E${toFixed( Math.log10( conditionNumber ), 4 )} = ${toFixed( conditionNumber, 4 )}  
 A=\n${A.transpose().toString()}
 z=\n${z.transpose().toString()}
 unknowns=\n${unknowns.map( u => u.toTermName() ).join( ', ' )}

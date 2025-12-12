@@ -9,7 +9,7 @@
 import Multilink from '../../../axon/js/Multilink.js';
 import type Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
-import Utils from '../../../dot/js/Utils.js';
+import { toFixed } from '../../../dot/js/util/toFixed.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
@@ -96,7 +96,7 @@ export default class ValueNode extends Panel {
 
       const voltageMultilink = Multilink.multilink( [ circuitElement.voltageProperty, voltageUnitsStringProperty ], ( voltage, voltageString ) => {
         voltageText.string = StringUtils.fillIn( voltageString, {
-          voltage: Utils.toFixed( voltage, circuitElement.numberOfDecimalPlaces )
+          voltage: toFixed( voltage, circuitElement.numberOfDecimalPlaces )
         } );
         update && update();
       } );
@@ -111,7 +111,7 @@ export default class ValueNode extends Panel {
 
       const sourceResistanceMultilink = Multilink.multilink( [ sourceResistanceProperty, resistanceOhmsSymbolStringProperty ], ( sourceResistance, sourceResistanceString ) => {
         resistanceNode.string = StringUtils.fillIn( sourceResistanceString, {
-          resistance: Utils.toFixed( sourceResistance, 1 )
+          resistance: toFixed( sourceResistance, 1 )
         } );
 
         // If the children should change, update them here
@@ -138,7 +138,7 @@ export default class ValueNode extends Panel {
 
       const resistanceMultilink = Multilink.multilink( [ circuitElement.resistanceProperty, resistanceOhmsSymbolStringProperty ], ( resistance, resistanceString ) => {
         ( readoutValueNode as Text ).string = StringUtils.fillIn( resistanceString, {
-          resistance: Utils.toFixed( resistance, circuitElement.numberOfDecimalPlaces )
+          resistance: toFixed( resistance, circuitElement.numberOfDecimalPlaces )
         } );
         update && update();
       } );
@@ -152,7 +152,7 @@ export default class ValueNode extends Panel {
 
       const capacitanceMultilink = Multilink.multilink( [ circuitElement.capacitanceProperty, capacitanceFaradsSymbolStringProperty ], ( capacitance, capacitanceString ) => {
         ( readoutValueNode as Text ).string = StringUtils.fillIn( capacitanceString, {
-          resistance: Utils.toFixed( capacitance, circuitElement.numberOfDecimalPlaces )
+          resistance: toFixed( capacitance, circuitElement.numberOfDecimalPlaces )
         } );
         update && update();
       } );
@@ -164,7 +164,7 @@ export default class ValueNode extends Panel {
 
       const inductanceMultilink = Multilink.multilink( [ circuitElement.inductanceProperty, inductanceHenriesSymbolStringProperty ], ( inductance, inductanceString ) => {
         ( readoutValueNode as Text ).string = StringUtils.fillIn( inductanceString, {
-          resistance: Utils.toFixed( inductance, circuitElement.numberOfDecimalPlaces )
+          resistance: toFixed( inductance, circuitElement.numberOfDecimalPlaces )
         } );
         update && update();
       } );
@@ -198,12 +198,12 @@ export default class ValueNode extends Panel {
       const multilink = Multilink.multilink( [ circuitElement.resistanceProperty, circuitElement.currentRatingProperty, fuseValueStringProperty ],
         ( resistance, currentRating, fuseValueString ) => {
           const milliOhmString = resistance === CCKCConstants.MAX_RESISTANCE ? infinitySpan :
-                                 Utils.toFixed( resistance * 1000, circuitElement.numberOfDecimalPlaces );
+                                 toFixed( resistance * 1000, circuitElement.numberOfDecimalPlaces );
           ( readoutValueNode as RichText ).string = StringUtils.fillIn( fuseValueString, {
 
             // Convert to milli
             resistance: milliOhmString,
-            currentRating: Utils.toFixed( currentRating, circuitElement.numberOfDecimalPlaces )
+            currentRating: toFixed( currentRating, circuitElement.numberOfDecimalPlaces )
           } );
           update && update();
         }

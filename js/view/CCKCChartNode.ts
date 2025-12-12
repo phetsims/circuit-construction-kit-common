@@ -23,7 +23,7 @@ import SpanNode from '../../../bamboo/js/SpanNode.js';
 import TickLabelSet from '../../../bamboo/js/TickLabelSet.js';
 import type Bounds2 from '../../../dot/js/Bounds2.js';
 import Range from '../../../dot/js/Range.js';
-import Utils from '../../../dot/js/Utils.js';
+import { toFixed } from '../../../dot/js/util/toFixed.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
 import optionize from '../../../phet-core/js/optionize.js';
@@ -200,7 +200,7 @@ export default class CCKCChartNode extends Node {
     const verticalLabelSet = new TickLabelSet( chartTransform, Orientation.VERTICAL, 1, {
       edge: 'min',
       extent: 1.5,
-      createLabel: ( value: number ) => new Text( Utils.toFixed( value, this.zoomLevelProperty.value === zoomRanges.length - 1 ? 1 : 0 ), {
+      createLabel: ( value: number ) => new Text( toFixed( value, this.zoomLevelProperty.value === zoomRanges.length - 1 ? 1 : 0 ), {
         fontSize: 10,
         fill: 'white'
       } )
