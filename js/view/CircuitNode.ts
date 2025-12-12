@@ -18,6 +18,7 @@
 import Multilink from '../../../axon/js/Multilink.js';
 import Property from '../../../axon/js/Property.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
+import { clamp } from '../../../dot/js/util/clamp.js';
 import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import DisplayClickToDismissListener from '../../../joist/js/DisplayClickToDismissListener.js';
@@ -1222,7 +1223,7 @@ export default class CircuitNode extends Node {
       const probeVector = probePosition.minus( startPoint );
       let distanceAlongSegment = segmentVector.magnitude === 0 ? 0 : ( probeVector.dot( segmentVector ) /
                                                                        segmentVector.magnitudeSquared );
-      distanceAlongSegment = Utils.clamp( distanceAlongSegment, 0, 1 );
+      distanceAlongSegment = clamp( distanceAlongSegment, 0, 1 );
 
       const voltageAlongWire = Utils.linear( 0, 1,
         metallicCircuitElement.circuitElement.startVertexProperty.get().voltageProperty.get(),

@@ -12,7 +12,7 @@ import NumberProperty from '../../../axon/js/NumberProperty.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
 import Range from '../../../dot/js/Range.js';
 import RunningAverage from '../../../dot/js/RunningAverage.js';
-import Utils from '../../../dot/js/Utils.js';
+import { clamp } from '../../../dot/js/util/clamp.js';
 import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -104,7 +104,7 @@ export default class ChargeAnimator {
     this.scale = ( maxPositionChange >= MAX_POSITION_CHANGE ) ? ( MAX_POSITION_CHANGE / maxPositionChange ) : 1;
 
     // Average over scale values to smooth them out
-    const averageScale = Utils.clamp( this.timeScaleRunningAverage.updateRunningAverage( this.scale ), 0, 1 );
+    const averageScale = clamp( this.timeScaleRunningAverage.updateRunningAverage( this.scale ), 0, 1 );
     this.timeScaleProperty.set( averageScale );
 
     for ( let i = 0; i < this.charges.length; i++ ) {
@@ -273,13 +273,13 @@ export default class ChargeAnimator {
       if ( current > MINIMUM_CURRENT && circuitElement.startVertexProperty.get() === vertex ) {
 
         // Start near the beginning.
-        distance = Utils.clamp( overshoot, 0, circuitElement.chargePathLength ); // Note, this can be zero
+        distance = clamp( overshoot, 0, circuitElement.chargePathLength ); // Note, this can be zero
         found = true;
       }
       else if ( current < -MINIMUM_CURRENT && circuitElement.endVertexProperty.get() === vertex ) {
 
         // start near the end
-        distance = Utils.clamp( circuitElement.chargePathLength - overshoot, 0, circuitElement.chargePathLength ); // can be zero
+        distance = clamp( circuitElement.chargePathLength - overshoot, 0, circuitElement.chargePathLength ); // can be zero
         found = true;
       }
       else {

@@ -9,6 +9,7 @@
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Multilink from '../../../axon/js/Multilink.js';
+import { clamp } from '../../../dot/js/util/clamp.js';
 import Utils from '../../../dot/js/Utils.js';
 import Shape from '../../../kite/js/Shape.js';
 import ElectronChargeNode from '../../../scenery-phet/js/ElectronChargeNode.js';
@@ -114,7 +115,7 @@ export default class ChargeNode extends Node {
       this.rotation = charge.matrix.getRotation() + ( current > 0 ? Math.PI : 0 );
 
       const opacity = Utils.linear( 0.015, CONVENTIONAL_CHARGE_THRESHOLD, 1, 0, Math.abs( charge.circuitElement.currentProperty.get() ) );
-      const clampedOpacity = Utils.clamp( opacity, 0, 1 );
+      const clampedOpacity = clamp( opacity, 0, 1 );
       this.setOpacity( clampedOpacity );
     }
     else {

@@ -17,7 +17,7 @@ import type TEmitter from '../../../axon/js/TEmitter.js';
 import type { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import type Bounds2 from '../../../dot/js/Bounds2.js';
 import Range from '../../../dot/js/Range.js';
-import Utils from '../../../dot/js/Utils.js';
+import { clamp } from '../../../dot/js/util/clamp.js';
 import type TModel from '../../../joist/js/TModel.js';
 import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import optionize from '../../../phet-core/js/optionize.js';
@@ -204,7 +204,7 @@ export default class CircuitConstructionKitModel implements TModel {
           const proposedZoomValue = this.animatedZoomScaleProperty.value + delta;
           const minZoomScale = Math.min( ...CCKCConstants.ZOOM_SCALES );
           const maxZoomScale = Math.max( ...CCKCConstants.ZOOM_SCALES );
-          const boundedValue = Utils.clamp( proposedZoomValue, minZoomScale, maxZoomScale );
+          const boundedValue = clamp( proposedZoomValue, minZoomScale, maxZoomScale );
           this.animatedZoomScaleProperty.value = boundedValue;
         } );
       }

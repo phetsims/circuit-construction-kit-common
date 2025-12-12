@@ -8,6 +8,7 @@
  */
 
 import type Property from '../../../axon/js/Property.js';
+import { clamp } from '../../../dot/js/util/clamp.js';
 import Utils from '../../../dot/js/Utils.js';
 import Shape from '../../../kite/js/Shape.js';
 import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
@@ -180,7 +181,7 @@ export default class CustomLightBulbNode extends Node {
       affirm( brightness >= 0 && brightness <= 1 );
       this.backNode.visible = ( brightness > 0 );
       if ( this.backNode.visible ) {
-        this.backNode.imageOpacity = Utils.clamp( Utils.linear( 0, 0.5, 0, 1, brightness ), 0, 1 );
+        this.backNode.imageOpacity = clamp( Utils.linear( 0, 0.5, 0, 1, brightness ), 0, 1 );
       }
 
       affirm( this.raysNode );

@@ -10,8 +10,8 @@
 
 import Emitter from '../../../axon/js/Emitter.js';
 import type TEmitter from '../../../axon/js/TEmitter.js';
+import { clamp } from '../../../dot/js/util/clamp.js';
 import { toFixed } from '../../../dot/js/util/toFixed.js';
-import Utils from '../../../dot/js/Utils.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import Battery from './Battery.js';
@@ -242,7 +242,7 @@ export default class CircuitContextStateTracker {
     const power = Math.abs( current * current * resistance );
     const numerator = Math.log( 1 + power * LIGHT_BULB_BRIGHTNESS_MULTIPLIER );
     const denominator = Math.log( 1 + LIGHT_BULB_MAXIMUM_POWER * LIGHT_BULB_BRIGHTNESS_MULTIPLIER );
-    return Utils.clamp( denominator === 0 ? 0 : numerator / denominator, 0, 1 );
+    return clamp( denominator === 0 ? 0 : numerator / denominator, 0, 1 );
   }
 
   private processPendingContextAnnouncements(): void {

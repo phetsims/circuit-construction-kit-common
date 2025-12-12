@@ -11,7 +11,7 @@ import Multilink from '../../../axon/js/Multilink.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import type Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
-import Utils from '../../../dot/js/Utils.js';
+import { clamp } from '../../../dot/js/util/clamp.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Shape from '../../../kite/js/Shape.js';
 import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
@@ -120,7 +120,7 @@ export default class CCKCLightBulbNode extends FixedCircuitElementNode {
           brightness = 0;
         }
 
-        brightnessProperty.value = Utils.clamp( brightness, 0, 1 );
+        brightnessProperty.value = clamp( brightness, 0, 1 );
       } );
     let lightBulbNode: CustomLightBulbNode | Image = new CustomLightBulbNode( brightnessProperty, {
       isReal: lightBulb.isReal

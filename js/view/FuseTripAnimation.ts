@@ -6,6 +6,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import { clamp } from '../../../dot/js/util/clamp.js';
 import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Shape from '../../../kite/js/Shape.js';
@@ -52,7 +53,7 @@ export default class FuseTripAnimation extends Node {
       setValue: ( value: number ) => {
         const center = this.center;
         const scale = Utils.linear( 0, 1, 0.75, 2, value );
-        const opacity = Utils.clamp( Utils.linear( 0.8, 1, 1, 0, value ), 0, 1 );
+        const opacity = clamp( Utils.linear( 0.8, 1, 1, 0, value ), 0, 1 );
         this.setScaleMagnitude( scale );
         this.setOpacity( opacity );
         this.center = center;
