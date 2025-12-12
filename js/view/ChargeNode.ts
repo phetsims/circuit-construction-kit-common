@@ -14,7 +14,6 @@ import { linear } from '../../../dot/js/util/linear.js';
 import Shape from '../../../kite/js/Shape.js';
 import ElectronChargeNode from '../../../scenery-phet/js/ElectronChargeNode.js';
 import Node from '../../../scenery/js/nodes/Node.js';
-import { rasterizeNode } from '../../../scenery/js/util/rasterizeNode.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Capacitor from '../model/Capacitor.js';
@@ -26,24 +25,34 @@ import type CircuitNode from './CircuitNode.js';
 import ConventionalCurrentArrowNode from './ConventionalCurrentArrowNode.js';
 
 // constants
-const ELECTRON_CHARGE_NODE = rasterizeNode( new ElectronChargeNode( {
+const ELECTRON_CHARGE_NODE = new Node( {
+  children: [ new ElectronChargeNode( {
 
-  // Electrons are transparent to convey they are a representation rather than physical objects
-  // Workaround for https://github.com/phetsims/circuit-construction-kit-dc/issues/160
-  sphereOpacity: 0.75,
-  minusSignOpacity: 0.75,
+    // Electrons are transparent to convey they are a representation rather than physical objects
+    // Workaround for https://github.com/phetsims/circuit-construction-kit-dc/issues/160
+    sphereOpacity: 0.75,
+    minusSignOpacity: 0.75,
 
-  // selected so an electron will exactly fit the width of a wire
-  scale: 0.78
-} ), { wrap: false } );
+    // selected so an electron will exactly fit the width of a wire
+    scale: 0.78
+  } ) ]
+} );
 
-const INITIAL_ARROW_NODE = rasterizeNode( new ConventionalCurrentArrowNode( Tandem.OPT_OUT ), { wrap: false } );
+const INITIAL_ARROW_NODE = new Node( {
+  children: [
+    new ConventionalCurrentArrowNode( Tandem.OPT_OUT )
+  ]
+} );
 
 const arrowNode = new Node( { children: [ INITIAL_ARROW_NODE ] } );
 
 Multilink.multilink( [ CCKCColors.conventionalCurrentArrowFillProperty, CCKCColors.conventionalCurrentArrowStrokeProperty ],
-  ( arrowFill, arrowStroke ) => {
-    arrowNode.children = [ rasterizeNode( new ConventionalCurrentArrowNode( Tandem.OPT_OUT ), { wrap: false } ) ];
+  () => {
+    arrowNode.children = [ new Node( {
+      children: [
+        new ConventionalCurrentArrowNode( Tandem.OPT_OUT )
+      ]
+    } ) ];
   } );
 
 // Below this amperage, no conventional current will be rendered.
