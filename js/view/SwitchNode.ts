@@ -17,7 +17,6 @@ import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
 import Color from '../../../scenery/js/util/Color.js';
 import type Gradient from '../../../scenery/js/util/Gradient.js';
 import LinearGradient from '../../../scenery/js/util/LinearGradient.js';
-import { rasterizeNode } from '../../../scenery/js/util/rasterizeNode.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -139,20 +138,20 @@ const createNode = function( viewType: CircuitElementViewType, fill: Gradient | 
 const lifelikeOpenNode = createNode(
   CircuitElementViewType.LIFELIKE, lifelikeGradient, LIFELIKE_DIAMETER, 6, false
 );
-const lifelikeOpenImage = rasterizeNode( lifelikeOpenNode, { wrap: false } );
+const lifelikeOpenImage = lifelikeOpenNode;
 
 const lifelikeClosedNode = createNode(
   CircuitElementViewType.LIFELIKE, lifelikeGradient, LIFELIKE_DIAMETER, 6, true
 );
-const lifelikeClosedImage = rasterizeNode( lifelikeClosedNode, { wrap: false } );
+const lifelikeClosedImage = lifelikeClosedNode;
 
-const schematicOpenImage = rasterizeNode( createNode(
+const schematicOpenImage = createNode(
   CircuitElementViewType.SCHEMATIC, Color.BLACK, CCKCConstants.SCHEMATIC_LINE_WIDTH, 0, false
-), { wrap: false } );
+);
 
-const schematicClosedImage = rasterizeNode( createNode(
+const schematicClosedImage = createNode(
   CircuitElementViewType.SCHEMATIC, Color.BLACK, CCKCConstants.SCHEMATIC_LINE_WIDTH, 0, true
-), { wrap: false } );
+);
 
 export default class SwitchNode extends FixedCircuitElementNode {
 

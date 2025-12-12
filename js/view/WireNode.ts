@@ -19,7 +19,6 @@ import Node from '../../../scenery/js/nodes/Node.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import Color from '../../../scenery/js/util/Color.js';
 import LinearGradient from '../../../scenery/js/util/LinearGradient.js';
-import { rasterizeNode } from '../../../scenery/js/util/rasterizeNode.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -87,25 +86,25 @@ const colorStops = [
 const normalGradient = createGradient( colorStops, _.identity );
 const reverseGradient = createGradient( colorStops.reverse(), ( e: number ) => 1.0 - e );
 
-const lifelikeNodeNormal = rasterizeNode( new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
+const lifelikeNodeNormal = new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
   lineWidth: LIFELIKE_LINE_WIDTH,
   stroke: normalGradient
-} ), { wrap: false } );
+} );
 
-const lifelikeNodeReversed = rasterizeNode( new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
+const lifelikeNodeReversed = new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
   lineWidth: LIFELIKE_LINE_WIDTH,
   stroke: reverseGradient
-} ), { wrap: false } );
+} );
 
 // Make sure the heights are the same as the wires so they will line up properly, see
 // https://github.com/phetsims/circuit-construction-kit-common/issues/390
-const lifelikeRoundedCapNormal = rasterizeNode( new Circle( LIFELIKE_LINE_WIDTH / 2, {
+const lifelikeRoundedCapNormal = new Circle( LIFELIKE_LINE_WIDTH / 2, {
   fill: normalGradient
-} ), { wrap: false } );
+} );
 
-const lifelikeRoundedCapReversed = rasterizeNode( new Circle( LIFELIKE_LINE_WIDTH / 2, {
+const lifelikeRoundedCapReversed = new Circle( LIFELIKE_LINE_WIDTH / 2, {
   fill: reverseGradient
-} ), { wrap: false } );
+} );
 
 const HIGHLIGHT_STROKE_LINE_STYLES = new LineStyles( {
   lineWidth: 26,
