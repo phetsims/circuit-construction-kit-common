@@ -8,6 +8,7 @@
 
 import type Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
+import { roundSymmetric } from '../../../dot/js/util/roundSymmetric.js';
 import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Shape from '../../../kite/js/Shape.js';
@@ -76,13 +77,13 @@ export default class FuseNode extends FixedCircuitElementNode {
     const startPoint = new Vector2( CAP_WIDTH, 0 );
     const endPoint = new Vector2( fuseImageNode.width - CAP_WIDTH, 0 );
     const filamentShape = new Shape().moveToPoint( startPoint )
-      .zigZagToPoint( endPoint, VERTICAL_ZIG_ZAG_HEIGHT, Utils.roundSymmetric( numberOfZigZags ), false );
+      .zigZagToPoint( endPoint, VERTICAL_ZIG_ZAG_HEIGHT, roundSymmetric( numberOfZigZags ), false );
 
     const brokenFilamentShape = new Shape().moveToPoint( startPoint )
-      .zigZagToPoint( new Vector2( fuseImageNode.width / 2 - SPLIT_DX, SPLIT_DY ), VERTICAL_ZIG_ZAG_HEIGHT, Utils.roundSymmetric( numberOfZigZags / 2 ) - 1, false );
+      .zigZagToPoint( new Vector2( fuseImageNode.width / 2 - SPLIT_DX, SPLIT_DY ), VERTICAL_ZIG_ZAG_HEIGHT, roundSymmetric( numberOfZigZags / 2 ) - 1, false );
     brokenFilamentShape.moveToPoint( endPoint );
     brokenFilamentShape
-      .zigZagToPoint( new Vector2( fuseImageNode.width / 2 + SPLIT_DX, -SPLIT_DY ), VERTICAL_ZIG_ZAG_HEIGHT, Utils.roundSymmetric( numberOfZigZags / 2 ) - 1, false );
+      .zigZagToPoint( new Vector2( fuseImageNode.width / 2 + SPLIT_DX, -SPLIT_DY ), VERTICAL_ZIG_ZAG_HEIGHT, roundSymmetric( numberOfZigZags / 2 ) - 1, false );
 
     const filamentPath = new Path( filamentShape, {
       stroke: '#302b2b',

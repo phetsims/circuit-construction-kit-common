@@ -8,6 +8,7 @@
 
 import type Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
+import { roundSymmetric } from '../../../dot/js/util/roundSymmetric.js';
 import Utils from '../../../dot/js/Utils.js';
 import Shape from '../../../kite/js/Shape.js';
 import LineStyles from '../../../kite/js/util/LineStyles.js';
@@ -98,14 +99,14 @@ export default class InductorNode extends FixedCircuitElementNode {
     inductor.inductanceProperty.link( inductance => {
 
       // Determine the number of loops, including the start and end segments, which are each half.
-      const numLoops = Utils.roundSymmetric( Utils.linear( 5, 10, 12, 20, inductance ) );
+      const numLoops = roundSymmetric( Utils.linear( 5, 10, 12, 20, inductance ) );
       const children = [];
       for ( let i = 0; i < numLoops; i++ ) {
 
-        // Loops for the main body, with special cases for the start end end loop, which are halved.
+        // Loops for the main body, with special cases for the start and end loop, which are halved.
         const startAngle = i === numLoops - 1 ? Math.PI / 2 : -Math.PI / 2;
         const endAngle = i === 0 || i === numLoops - 1 ? 0 : Math.PI / 2;
-        const anticounterclockwise = i === numLoops - 1;
+        const antiClockwise = i === numLoops - 1;
 
         // Positioning for the loop arc
         const x = Utils.linear(
@@ -113,7 +114,7 @@ export default class InductorNode extends FixedCircuitElementNode {
           LIFELIKE_WIDTH / 2 + LIFELIKE_RADIUS_X / 2, LIFELIKE_WIDTH / 2 + LIFELIKE_WIRE_LINE_WIDTH + LIFELIKE_RADIUS_X / 2,
           i );
         const pathShape = new Shape()
-          .ellipticalArc( x, LIFELIKE_HEIGHT / 2, LIFELIKE_RADIUS_X, LIFELIKE_RADIUS_Y, 0, startAngle, endAngle, anticounterclockwise );
+          .ellipticalArc( x, LIFELIKE_HEIGHT / 2, LIFELIKE_RADIUS_X, LIFELIKE_RADIUS_Y, 0, startAngle, endAngle, antiClockwise );
 
         // Wire segments for the start and end
         if ( i === 0 ) {

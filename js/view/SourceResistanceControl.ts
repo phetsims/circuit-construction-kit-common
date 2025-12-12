@@ -11,6 +11,7 @@
 import PatternStringProperty from '../../../axon/js/PatternStringProperty.js';
 import type Property from '../../../axon/js/Property.js';
 import type { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
+import { roundSymmetric } from '../../../dot/js/util/roundSymmetric.js';
 import Utils from '../../../dot/js/Utils.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
 import type AlignGroup from '../../../scenery/js/layout/constraints/AlignGroup.js';
@@ -57,7 +58,7 @@ export default class SourceResistanceControl extends VBox {
       shiftKeyboardStep: 1,
 
       // Snap to the nearest whole number.
-      constrainValue: ( value: number ) => range.constrainValue( Utils.roundSymmetric( value ) ),
+      constrainValue: ( value: number ) => range.constrainValue( roundSymmetric( value ) ),
       phetioVisiblePropertyInstrumented: false,
       tandem: tandem.createTandem( 'slider' ),
 
