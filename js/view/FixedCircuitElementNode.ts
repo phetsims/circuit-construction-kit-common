@@ -71,11 +71,6 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
   protected readonly pickableListener: ( pickable: boolean | null ) => Node;
   private readonly fixedCircuitElementNodePickable: boolean | null;
   public readonly dragListener: CircuitNodeDragListener | null;
-
-  // Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
-  public static readonly webglSpriteNodes: Node[] = [
-    new Image( fire_png )
-  ];
   private readonly updateHighlightVisibility: ( ( circuitElement: CircuitElement | Vertex | null ) => void ) | null;
   private readonly updateFireMultilink: UnknownMultilink | null;
   private readonly keyboardListener: FixedCircuitElementKeyboardListener | null;

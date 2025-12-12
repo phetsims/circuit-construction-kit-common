@@ -63,13 +63,6 @@ schematicNode.mouseArea = schematicNode.bounds.shiftedY( schematicNode.height / 
 schematicNode.touchArea = schematicNode.bounds.shiftedY( schematicNode.height / 2 );
 
 export default class BatteryNode extends FixedCircuitElementNode {
-  private readonly battery: Battery;
-
-  // Identifies the images used to render this node so they can be pre-populated in the WebGL sprite sheet.
-  public static override readonly webglSpriteNodes = [
-    new Image( battery_png ),
-    new Image( batteryHigh_png )
-  ];
 
   /**
    * @param screenView - main screen view, null for isIcon
@@ -102,8 +95,6 @@ export default class BatteryNode extends FixedCircuitElementNode {
       tandem,
       providedOptions
     );
-
-    this.battery = battery;
   }
 }
 

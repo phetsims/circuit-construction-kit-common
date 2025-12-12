@@ -44,13 +44,6 @@ export default class CustomLightBulbNode extends Node {
   private readonly brightnessObserver: ( ( brightness: number ) => void ) | null;
   private readonly disposeCustomLightBulbNode: () => void;
 
-  // Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
-  public static readonly webglSpriteNodes = [
-    new Image( lightBulbBack_png ),
-    new Image( lightBulbMiddle_png ),
-    new Image( lightBulbFront_png ),
-    new Image( lightBulbFrontHigh_png ) ];
-
   /**
    * @param brightnessProperty 0 (off) to 1 (full brightness)
    * @param [providedOptions]

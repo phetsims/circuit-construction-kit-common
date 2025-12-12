@@ -93,12 +93,6 @@ type ACVoltageNodeOptions = FixedCircuitElementNodeOptions;
 
 export default class ACVoltageNode extends FixedCircuitElementNode {
 
-  // the ACVoltage rendered by this Node
-  private readonly acSource: ACVoltage;
-
-  // Identifies the images used to render this node so they can be pre-populated in the WebGL sprite sheet.
-  public static override readonly webglSpriteNodes = [ schematicNode, lifelikeNode ];
-
   /**
    * @param screenView - main screen view, null for isIcon
    * @param circuitNode, null for icon
@@ -126,8 +120,6 @@ export default class ACVoltageNode extends FixedCircuitElementNode {
       tandem,
       options
     );
-
-    this.acSource = acSource;
   }
 }
 

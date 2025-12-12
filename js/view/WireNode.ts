@@ -164,14 +164,6 @@ export default class WireNode extends CircuitElementNode {
   public readonly dragListener: CircuitNodeDragListener | null;
   private readonly disposeWireNode: () => void;
 
-  // Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
-  public static readonly webglSpriteNodes = [
-    BLACK_LINE_NODE,
-    lifelikeNodeNormal,
-    lifelikeNodeReversed,
-    lifelikeRoundedCapNormal
-  ];
-
   /**
    * @param screenView - the icon is created separately in CircuitElementToolFactory, so (unlike
    *                                    - other CircuitElement types) the screenView is required

@@ -79,9 +79,6 @@ ModifiedNodalAnalysisCircuit.js for details.
   bulb socket in another layer makes it possible to show the electrons going "through" the socket (in z-ordering). The
   CircuitElementNode constructors populate different layers of the CircuitNode in their constructors and depopulate in
   their dispose functions.
-* To attain reasonable performance on iPad2, some of the CircuitNode child node layers have been implemented in WebGL
-  using `renderer:'webgl'`. This means all of the nodes must be rendered with solid-fill Rectangle (without rounded
-  corners or gradients), and images. rasterizeNode() is used throughout these view layers to rasterize as images.
 * CircuitElementNumberControl (which appears at the bottom of the screen when a CircuitElement is selected) and
   ValueNode.js (which shows a text readout over an item when "values" is checked) use a similar pattern of containing
   logic for the different kinds of CircuitElements. Other ways to solve this may have been:

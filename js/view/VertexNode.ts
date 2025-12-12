@@ -68,10 +68,6 @@ export default class VertexNode extends Node {
   private readonly interruptionListener: ( draggable: boolean ) => void;
   private readonly updateVertexNodePositionListener: () => void;
 
-  // Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
-  public static readonly webglSpriteNodes = [
-    BLACK_CIRCLE_NODE, RED_CIRCLE_NODE
-  ];
   public attachmentName = '';
 
   /**

@@ -80,9 +80,6 @@ export default class CapacitorCircuitElementNode extends FixedCircuitElementNode
   private readonly rightSchematicHitAreaPath: Path;
   private readonly disposeCapacitorCircuitElementNode: () => void;
 
-  // Identifies the images used to render this node so they can be pre-populated in the WebGL sprite sheet.
-  public static override readonly webglSpriteNodes = [ new Image( wireIcon_png ) ];
-
   /**
    * @param screenView - main screen view, null for isIcon
    * @param circuitNode, null for icon

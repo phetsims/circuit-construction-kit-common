@@ -59,10 +59,6 @@ const LIFELIKE_PATH_FILL_STYLES = new LineStyles( {
 } );
 
 export default class InductorNode extends FixedCircuitElementNode {
-  private readonly inductor: Inductor;
-
-  // Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
-  public static override readonly webglSpriteNodes = [];
 
   /**
    * @param screenView - main screen view, null for isIcon
@@ -162,8 +158,6 @@ export default class InductorNode extends FixedCircuitElementNode {
       tandem,
       providedOptions
     );
-
-    this.inductor = inductor;
   }
 }
 

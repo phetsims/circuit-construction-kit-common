@@ -58,9 +58,6 @@ export default class ChargeNode extends Node {
   private readonly updateVisibleListener: () => void;
   private readonly updateTransformListener: () => void;
 
-  // Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
-  public static readonly webglSpriteNodes = [ ELECTRON_CHARGE_NODE, arrowNode ];
-
   /**
    * @param charge - the model element
    * @param circuitNode

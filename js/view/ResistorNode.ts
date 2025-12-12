@@ -77,19 +77,6 @@ export default class ResistorNode extends FixedCircuitElementNode {
   private readonly lifelikeResistorImageNode: Node;
   private readonly disposeResistorNode: () => void;
 
-  // Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
-  public static override readonly webglSpriteNodes = [
-    new Image( resistor_png ),
-    new Image( paperClip_png ),
-    new Image( coin_png ),
-    new Image( pencil_png ),
-    new Image( eraser_png ),
-    new Image( hand_png ),
-    new Image( resistorHigh_png ),
-    new Image( dog_png ),
-    new Image( dollar_png )
-  ];
-
   /**
    * @param screenView - main screen view, null for isIcon
    * @param circuitNode, null for isIcon

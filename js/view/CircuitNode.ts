@@ -64,12 +64,10 @@ import ChargeNode from './ChargeNode.js';
 import CircuitDebugLayer from './CircuitDebugLayer.js';
 import CircuitElementEditContainerNode from './CircuitElementEditContainerNode.js';
 import CircuitElementNode from './CircuitElementNode.js';
-import CustomLightBulbNode from './CustomLightBulbNode.js';
 import CutButton from './CutButton.js';
 import DeleteCueNode from './DeleteCueNode.js';
 import CircuitDescription from './description/CircuitDescription.js';
 import ConstructionAreaStatusNode from './description/ConstructionAreaStatusNode.js';
-import FixedCircuitElementNode from './FixedCircuitElementNode.js';
 import FuseNode from './FuseNode.js';
 import InductorNode from './InductorNode.js';
 import ResistorNode from './ResistorNode.js';
@@ -84,11 +82,6 @@ import WireNode from './WireNode.js';
 // Since this sim has already been published with PhET-iO + migration support, it isn't worth changing initial indexing
 // of group elements from 0 -> 1, see https://github.com/phetsims/tandem/issues/226
 const GROUP_STARTING_INDEX = 0;
-
-// In https://github.com/phetsims/circuit-construction-kit-dc/issues/140 we decided to test every platform with
-// svg rendering to avoid svg/webgl lag issues and have a consistent renderer across platforms.  However, we will
-// leave in all the WebGL code in case we have performance problems on a platform that require WebGL to be restored?
-const RENDERER = 'svg';
 
 export default class CircuitNode extends Node {
   public readonly model: CircuitConstructionKitModel;
@@ -201,77 +194,15 @@ export default class CircuitNode extends Node {
     this.highlightLayer.addChild( this.attachmentHighlightNode );
 
     this.seriesAmmeterNodeReadoutPanelLayer = new Node();
-
     this.buttonLayer = new Node();
-
     this.valueLayer = new Node();
-
     this.lightRaysLayer = new Node();
-
-    this.wireLayer = new Node( {
-      renderer: RENDERER,
-
-      // preallocate sprite sheet
-      children: [ new Node( {
-        visible: false,
-        children: WireNode.webglSpriteNodes
-      } ) ]
-    } );
-
-    this.solderLayer = new Node( {
-      renderer: RENDERER,
-
-      // preallocate sprite sheet
-      children: [ new Node( {
-        visible: false,
-        children: SolderNode.webglSpriteNodes
-      } ) ]
-    } );
-
-    this.vertexLayer = new Node( {
-      renderer: RENDERER,
-
-      // preallocate sprite sheet
-      children: [ new Node( {
-        visible: false,
-        children: VertexNode.webglSpriteNodes
-      } ) ]
-    } );
-
-    this.fixedCircuitElementLayer = new Node( {
-
-      // add a child eagerly so the WebGL block is all allocated when 1st object is dragged out of toolbox
-      renderer: RENDERER,
-      children: [ new Node( {
-        visible: false,
-        children: ( [] as Node[] )
-          .concat( BatteryNode.webglSpriteNodes )
-          .concat( ResistorNode.webglSpriteNodes )
-          .concat( FixedCircuitElementNode.webglSpriteNodes )
-          .concat( CustomLightBulbNode.webglSpriteNodes )
-          .concat( FuseNode.webglSpriteNodes )
-      } ) ]
-    } );
-
-    this.lightBulbSocketLayer = new Node( {
-      renderer: RENDERER,
-
-      // preallocate sprite sheet
-      children: [ new Node( {
-        visible: false,
-        children: CustomLightBulbNode.webglSpriteNodes
-      } ) ]
-    } );
-
-    this.chargeLayer = new Node( {
-      renderer: RENDERER
-
-      // preallocate sprite sheet
-      // children: [ new Node( {
-      //   visible: false,
-      //   // children: ChargeNode.webglSpriteNodes
-      // } ) ]
-    } );
+    this.wireLayer = new Node();
+    this.solderLayer = new Node();
+    this.vertexLayer = new Node();
+    this.fixedCircuitElementLayer = new Node();
+    this.lightBulbSocketLayer = new Node();
+    this.chargeLayer = new Node();
 
     Multilink.multilink( [ screenView.model.isValueDepictionEnabledProperty, screenView.model.revealingProperty ], ( isValueDepictionEnabled, revealing ) => {
       this.chargeLayer.visible = isValueDepictionEnabled && revealing;

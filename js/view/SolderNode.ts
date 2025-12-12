@@ -31,9 +31,6 @@ export default class SolderNode extends Node {
   private readonly startOffset: Vector2 | null;
   private readonly disposeSolderNode: () => void;
 
-  // Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
-  public static readonly webglSpriteNodes = [ CIRCLE_NODE ];
-
   // radius of solder in model=view coordinates, for hit testing with probes
   public static readonly SOLDER_RADIUS = SOLDER_RADIUS;
 

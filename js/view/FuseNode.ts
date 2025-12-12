@@ -49,11 +49,6 @@ export default class FuseNode extends FixedCircuitElementNode {
   private readonly fuse: Fuse;
   private readonly disposeFuseNode: () => void;
 
-  // Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
-  public static override readonly webglSpriteNodes = [
-    new Image( fuse_png )
-  ];
-
   /**
    * @param screenView - main screen view, null for isIcon
    * @param circuitNode, null for isIcon
