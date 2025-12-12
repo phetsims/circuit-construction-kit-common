@@ -59,7 +59,9 @@ export default class SourceResistanceControl extends VBox {
       // Snap to the nearest whole number.
       constrainValue: ( value: number ) => range.constrainValue( Utils.roundSymmetric( value ) ),
       phetioVisiblePropertyInstrumented: false,
-      tandem: tandem.createTandem( 'slider' )
+      tandem: tandem.createTandem( 'slider' ),
+
+      accessibleName: batteryResistanceControlString
     } );
     slider.addMajorTick( range.min, createLabel( CircuitConstructionKitCommonFluent.tinyStringProperty, tandem.createTandem( 'tinyLabelText' ) ) );
     slider.addMajorTick( midpoint );

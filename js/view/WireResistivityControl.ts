@@ -45,7 +45,8 @@ export default class WireResistivityControl extends VBox {
       majorTickLength: CCKCConstants.MAJOR_TICK_LENGTH,
       shiftKeyboardStep: CCKCConstants.WIRE_RESISTIVITY_RANGE.getLength() / 100,
       phetioVisiblePropertyInstrumented: false,
-      tandem: tandem.createTandem( 'slider' )
+      tandem: tandem.createTandem( 'slider' ),
+      accessibleName: wireResistivityStringProperty
     } );
 
     slider.addMajorTick( 0, new Text( tinyStringProperty, TICK_LABEL_TEXT_OPTIONS ) );
