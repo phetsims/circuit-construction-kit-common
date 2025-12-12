@@ -20,7 +20,6 @@ const SOLDER_COLOR = '#ae9f9e';
 // for hit testing with probes, in view coordinates
 const SOLDER_RADIUS = 11.2;
 
-// {Image} raster created by init() for WebGL usage
 const CIRCLE_NODE = new Node( {
   children: [
     new Circle( SOLDER_RADIUS, { fill: SOLDER_COLOR } )

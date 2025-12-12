@@ -39,12 +39,12 @@ const SCHEMATIC_LINE_WIDTH = CCKCConstants.SCHEMATIC_LINE_WIDTH; // line width i
 
 // constants
 const MATRIX = new Matrix3(); // The Matrix entries are mutable
-const WIRE_RASTER_LENGTH = 100;
+const WIRE_LENGTH = 100;
 
-// Node used to render the black line for schematic, rasterized so it can render with WebGL
+// Node used to render the black line for schematic
 const BLACK_LINE_NODE = new Node( {
   children: [
-    new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
+    new Line( 0, 0, WIRE_LENGTH, 0, {
       lineWidth: SCHEMATIC_LINE_WIDTH,
       stroke: Color.BLACK
     } )
@@ -54,7 +54,7 @@ const BLACK_LINE_NODE = new Node( {
 // Not displayed, used to get accurate hit bounds for the schematic view.
 const SCHEMATIC_BACKGROUND = new Node( {
   children: [
-    new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
+    new Line( 0, 0, WIRE_LENGTH, 0, {
       lineWidth: LIFELIKE_LINE_WIDTH,
       stroke: Color.BLUE,
       opacity: 0.0
@@ -86,12 +86,12 @@ const colorStops = [
 const normalGradient = createGradient( colorStops, _.identity );
 const reverseGradient = createGradient( colorStops.reverse(), ( e: number ) => 1.0 - e );
 
-const lifelikeNodeNormal = new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
+const lifelikeNodeNormal = new Line( 0, 0, WIRE_LENGTH, 0, {
   lineWidth: LIFELIKE_LINE_WIDTH,
   stroke: normalGradient
 } );
 
-const lifelikeNodeReversed = new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
+const lifelikeNodeReversed = new Line( 0, 0, WIRE_LENGTH, 0, {
   lineWidth: LIFELIKE_LINE_WIDTH,
   stroke: reverseGradient
 } );
@@ -381,7 +381,7 @@ export default class WireNode extends CircuitElementNode {
     // This transform is done second so the matrix is already in good shape for the scaling step
     this.startCapParent.setMatrix( MATRIX.setToTranslationRotationPoint( startPosition, angle ) );
 
-    MATRIX.multiplyMatrix( Matrix3.scaling( magnitude / WIRE_RASTER_LENGTH, 1 ) );
+    MATRIX.multiplyMatrix( Matrix3.scaling( magnitude / WIRE_LENGTH, 1 ) );
     this.lineNodeParent.setMatrix( MATRIX );
 
     if ( this.circuitNode ) {
