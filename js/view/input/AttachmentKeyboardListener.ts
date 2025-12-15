@@ -101,6 +101,7 @@ export default class AttachmentKeyboardListener<T> extends KeyboardListener<OneK
         let targetDropPosition = initialPosition;
 
         const comboBox = new ComboBox( selectionProperty, items, options.circuitNode.screenView, {
+          opacity: 0.8,
           tandem: Tandem.OPT_OUT // transient ui
         } );
 

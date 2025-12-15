@@ -71,19 +71,32 @@ const getCircuitElementTypeLabel = ( type: CircuitElementType ): string => {
  */
 const getPluralTypeLabel = ( type: CircuitElementType ): string => {
   switch( type ) {
-    case 'wire': return 'Wires';
-    case 'battery': return 'Batteries';
-    case 'resistor': return 'Resistors';
-    case 'capacitor': return 'Capacitors';
-    case 'inductor': return 'Inductors';
-    case 'lightBulb': return 'Light Bulbs';
-    case 'acSource': return 'AC Sources';
-    case 'fuse': return 'Fuses';
-    case 'switch': return 'Switches';
-    case 'voltmeter': return 'Voltmeters';
-    case 'ammeter': return 'Ammeters';
-    case 'stopwatch': return 'Stopwatches';
-    default: return type + 's';
+    case 'wire':
+      return 'Wires';
+    case 'battery':
+      return 'Batteries';
+    case 'resistor':
+      return 'Resistors';
+    case 'capacitor':
+      return 'Capacitors';
+    case 'inductor':
+      return 'Inductors';
+    case 'lightBulb':
+      return 'Light Bulbs';
+    case 'acSource':
+      return 'AC Sources';
+    case 'fuse':
+      return 'Fuses';
+    case 'switch':
+      return 'Switches';
+    case 'voltmeter':
+      return 'Voltmeters';
+    case 'ammeter':
+      return 'Ammeters';
+    case 'stopwatch':
+      return 'Stopwatches';
+    default:
+      return type + 's';
   }
 };
 
@@ -371,8 +384,8 @@ export default class CircuitDescription {
       startVertexNode.accessibleName = CircuitDescription.createVertexDescription( startVertex, 1, 2, [ circuitElement ], briefNames );
       endVertexNode.accessibleName = CircuitDescription.createVertexDescription( endVertex, 2, 2, [ circuitElement ], briefNames );
 
-      startVertexNode.attachmentName = 'start junction of a disconnected ' + circuitElement.type;
-      endVertexNode.attachmentName = 'end junction of a disconnected ' + circuitElement.type;
+      startVertexNode.attachmentName = startVertexNode.accessibleName;
+      endVertexNode.attachmentName = endVertexNode.accessibleName;
 
       pdomOrder.push( circuitElementNode );
       pdomOrder.push( startVertexNode, endVertexNode );
@@ -417,7 +430,7 @@ export default class CircuitDescription {
           allBriefNames
         );
         circuitNode.getVertexNode( vertex ).accessibleName = description;
-        circuitNode.getVertexNode( vertex ).attachmentName = `junction ${vertexIndex + 1} of group ${groupIndex + 1}, which is connected to ${neighbors.length} circuit elements`;
+        circuitNode.getVertexNode( vertex ).attachmentName = `Group ${groupIndex + 1}: ${description}`;
       } );
 
       // Build PDOM order for this group
