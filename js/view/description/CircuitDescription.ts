@@ -218,6 +218,26 @@ export default class CircuitDescription {
   }
 
   /**
+   * Returns the type-specific prefix for describing a vertex's connection to a circuit element.
+   * For example, "Positive Terminal of " for a battery's endVertex, or "Bottom of " for a light bulb's endVertex.
+   */
+  private static getTypeSpecificPrefix( vertex: Vertex, circuitElement: CircuitElement ): string {
+    if ( circuitElement.type === 'battery' ) {
+      const battery = circuitElement as Battery;
+
+      // endVertex is the positive terminal (higher voltage)
+      return vertex === battery.endVertexProperty.value ? 'Positive Terminal of ' : 'Negative Terminal of ';
+    }
+    else if ( circuitElement.type === 'lightBulb' ) {
+      const lightBulb = circuitElement as LightBulb;
+
+      // startVertex is the side, endVertex is the bottom
+      return vertex === lightBulb.endVertexProperty.value ? 'Side of ' : 'Bottom of ';
+    }
+    return '';
+  }
+
+  /**
    * Creates an accessible description for a vertex based on its connections.
    * Uses brief names for circuit elements to keep descriptions concise.
    */
@@ -231,31 +251,15 @@ export default class CircuitDescription {
     const baseLabel = `${CircuitConstructionKitCommonFluent.a11y.circuitDescription.connectionPointStringProperty.value} ${vertexIndex} of ${totalVertices}`;
 
     if ( neighbors.length === 1 ) {
-
-      let typeSpecificDetail = '';
-
-      if ( neighbors[ 0 ].type === 'battery' ) {
-        const battery = neighbors[ 0 ] as Battery;
-
-        // endVertex is the positive terminal (higher voltage)
-        typeSpecificDetail = vertex === battery.endVertexProperty.value ?
-                             'Positive Terminal of ' : 'Negative Terminal of ';
-      }
-      else if ( neighbors[ 0 ].type === 'lightBulb' ) {
-        const lightBulb = neighbors[ 0 ] as LightBulb;
-
-        // startVertex is the side, endVertex is the bottom
-        typeSpecificDetail = vertex === lightBulb.endVertexProperty.value ?
-                             'Side of ' : 'Bottom of ';
-      }
-
-      return `${baseLabel}, ${typeSpecificDetail} ${briefNames.get( neighbors[ 0 ] ) || ''}`;
+      const prefix = this.getTypeSpecificPrefix( vertex, neighbors[ 0 ] );
+      return `${baseLabel}, ${prefix}${briefNames.get( neighbors[ 0 ] ) || ''}`;
     }
     else {
-      const neighborNames = neighbors.map( neighbor =>
-        briefNames.get( neighbor ) || ''
-      ).join( ', ' );
-      return `${baseLabel}, joins ${CircuitConstructionKitCommonFluent.a11y.circuitDescription.joinsStringProperty.value} ${neighborNames}`;
+      const neighborNames = neighbors.map( neighbor => {
+        const prefix = this.getTypeSpecificPrefix( vertex, neighbor );
+        return `${prefix}${briefNames.get( neighbor ) || ''}`;
+      } ).join( ', ' );
+      return `${baseLabel}, joins ${neighborNames}`;
     }
   }
 
