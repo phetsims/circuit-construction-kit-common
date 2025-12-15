@@ -257,38 +257,48 @@ export default class CircuitElementEditContainerNode extends Node {
 
     const resistanceOhmsValueStringProperty = new PatternStringProperty( resistanceOhmsValuePatternStringProperty, { resistance: SunConstants.VALUE_NAMED_PLACEHOLDER } );
 
-    const createResistanceNumberControl = ( tandemName: string, CircuitElementType: GConstructor<LightBulb | Resistor> ) => new CircuitElementNumberControl( resistanceStringProperty,
-      resistanceOhmsValueStringProperty,
-      createSingletonAdapterProperty( ResistorType.RESISTOR.defaultResistance, CircuitElementType, circuit, ( c: LightBulb | Resistor ) => c.resistanceProperty,
-        ( c: LightBulb | Resistor ) =>
-          ( c instanceof LightBulb && !c.isExtreme ) ||
-          ( c instanceof Resistor && c.resistorType !== ResistorType.EXTREME_RESISTOR )
-      ),
-      ResistorType.RESISTOR.range, circuit, Resistor.RESISTANCE_DECIMAL_PLACES, {
-        tandem: tandem.createTandem( tandemName ),
-        delta: 0.1,
-        sliderOptions: {
-          constrainValue: ( value: number ) => roundToInterval( value, 1 ),
-          shiftKeyboardStep: 1
-        },
-        numberDisplayOptions: { decimalPlaces: Resistor.RESISTANCE_DECIMAL_PLACES }
-      } );
-    const createExtremeResistanceNumberControl = ( tandemName: string, CircuitElementType: GConstructor<LightBulb | Resistor> ) => new CircuitElementNumberControl( resistanceStringProperty,
-      resistanceOhmsValueStringProperty,
-      createSingletonAdapterProperty( ResistorType.EXTREME_RESISTOR.defaultResistance, CircuitElementType, circuit, ( c: LightBulb | Resistor ) => c.resistanceProperty,
-        ( c: LightBulb | Resistor ) =>
-          ( c instanceof LightBulb && c.isExtreme ) ||
-          ( c instanceof Resistor && c.resistorType === ResistorType.EXTREME_RESISTOR )
-      ),
-      ResistorType.EXTREME_RESISTOR.range, circuit, Resistor.HIGH_RESISTANCE_DECIMAL_PLACES, {
-        tandem: circuit.includeLabElements ? tandem.createTandem( tandemName ) : Tandem.OPT_OUT,
-        delta: 10,
-        sliderOptions: {
-          constrainValue: ( value: number ) => roundToInterval( value, 100 ),
-          shiftKeyboardStep: 100
-        },
-        numberDisplayOptions: { decimalPlaces: Resistor.HIGH_RESISTANCE_DECIMAL_PLACES }
-      } );
+    const createResistanceNumberControl = ( tandemName: 'resistorResistanceNumberControl' | 'lightBulbResistanceNumberControl', CircuitElementType: GConstructor<LightBulb | Resistor> ) => {
+      const sliderSteps = CCKCConstants.SLIDER_STEPS[ tandemName ];
+      return new CircuitElementNumberControl( resistanceStringProperty,
+        resistanceOhmsValueStringProperty,
+        createSingletonAdapterProperty( ResistorType.RESISTOR.defaultResistance, CircuitElementType, circuit, ( c: LightBulb | Resistor ) => c.resistanceProperty,
+          ( c: LightBulb | Resistor ) =>
+            ( c instanceof LightBulb && !c.isExtreme ) ||
+            ( c instanceof Resistor && c.resistorType !== ResistorType.EXTREME_RESISTOR )
+        ),
+        ResistorType.RESISTOR.range, circuit, Resistor.RESISTANCE_DECIMAL_PLACES, {
+          tandem: tandem.createTandem( tandemName ),
+          delta: sliderSteps.step,
+          sliderOptions: {
+            keyboardStep: sliderSteps.step,
+            shiftKeyboardStep: sliderSteps.shiftKeyboardStep,
+            pageKeyboardStep: sliderSteps.pageKeyboardStep,
+            constrainValue: ( value: number ) => roundToInterval( value, sliderSteps.shiftKeyboardStep )
+          },
+          numberDisplayOptions: { decimalPlaces: Resistor.RESISTANCE_DECIMAL_PLACES }
+        } );
+    };
+    const createExtremeResistanceNumberControl = ( tandemName: 'extremeResistorResistanceNumberControl' | 'extremeLightBulbResistanceNumberControl', CircuitElementType: GConstructor<LightBulb | Resistor> ) => {
+      const sliderSteps = CCKCConstants.SLIDER_STEPS[ tandemName ];
+      return new CircuitElementNumberControl( resistanceStringProperty,
+        resistanceOhmsValueStringProperty,
+        createSingletonAdapterProperty( ResistorType.EXTREME_RESISTOR.defaultResistance, CircuitElementType, circuit, ( c: LightBulb | Resistor ) => c.resistanceProperty,
+          ( c: LightBulb | Resistor ) =>
+            ( c instanceof LightBulb && c.isExtreme ) ||
+            ( c instanceof Resistor && c.resistorType === ResistorType.EXTREME_RESISTOR )
+        ),
+        ResistorType.EXTREME_RESISTOR.range, circuit, Resistor.HIGH_RESISTANCE_DECIMAL_PLACES, {
+          tandem: circuit.includeLabElements ? tandem.createTandem( tandemName ) : Tandem.OPT_OUT,
+          delta: sliderSteps.step,
+          sliderOptions: {
+            keyboardStep: sliderSteps.step,
+            shiftKeyboardStep: sliderSteps.shiftKeyboardStep,
+            pageKeyboardStep: sliderSteps.pageKeyboardStep,
+            constrainValue: ( value: number ) => roundToInterval( value, sliderSteps.shiftKeyboardStep )
+          },
+          numberDisplayOptions: { decimalPlaces: Resistor.HIGH_RESISTANCE_DECIMAL_PLACES }
+        } );
+    };
 
     const resistorResistanceNumberControl = createResistanceNumberControl( 'resistorResistanceNumberControl', Resistor );
     const lightBulbResistanceNumberControl = createResistanceNumberControl( 'lightBulbResistanceNumberControl', LightBulb );
