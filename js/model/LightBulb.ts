@@ -111,8 +111,8 @@ export default class LightBulb extends FixedCircuitElement {
   private readonly powerDissipatedProperty: PowerDissipatedProperty;
 
   public constructor(
-    startVertex: Vertex, // side
-    endVertex: Vertex, // bottom
+    startVertex: Vertex, // bottom
+    endVertex: Vertex, // side
     resistance: number,
     viewTypeProperty: Property<CircuitElementViewType>,
     tandem: Tandem,
