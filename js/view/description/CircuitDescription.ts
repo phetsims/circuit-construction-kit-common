@@ -230,7 +230,6 @@ export default class CircuitDescription {
   ): string {
     const baseLabel = `${CircuitConstructionKitCommonFluent.a11y.circuitDescription.connectionPointStringProperty.value} ${vertexIndex} of ${totalVertices}`;
 
-
     if ( neighbors.length === 1 ) {
 
       let typeSpecificDetail = '';
@@ -256,7 +255,7 @@ export default class CircuitDescription {
       const neighborNames = neighbors.map( neighbor =>
         briefNames.get( neighbor ) || ''
       ).join( ', ' );
-      return `${baseLabel}, joins ${CircuitConstructionKitCommonFluent.a11y.circuitDescription.connectsStringProperty.value} ${neighborNames}`;
+      return `${baseLabel}, joins ${CircuitConstructionKitCommonFluent.a11y.circuitDescription.joinsStringProperty.value} ${neighborNames}`;
     }
   }
 
@@ -323,7 +322,7 @@ export default class CircuitDescription {
         const neighbors = circuit.getNeighborCircuitElements( vertex );
         const description = CircuitDescription.createVertexDescription(
           vertex,
-          vertexIndex,
+          vertexIndex + 1,
           group.vertices.length,
           neighbors,
           allBriefNames

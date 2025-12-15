@@ -149,7 +149,7 @@ type StringsType = {
       };
       'connectionPointStringProperty': LocalizedStringProperty;
       'disconnectedStringProperty': LocalizedStringProperty;
-      'connectsStringProperty': LocalizedStringProperty;
+      'joinsStringProperty': LocalizedStringProperty;
       'groupStringProperty': LocalizedStringProperty;
       'emptyConstructionAreaMessageStringProperty': LocalizedStringProperty;
     };

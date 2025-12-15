@@ -352,8 +352,8 @@
       "disconnected": {
         "value": "disconnected"
       },
-      "connects": {
-        "value": "connects"
+      "joins": {
+        "value": "joins"
       },
       "group": {
         "value": "Group"

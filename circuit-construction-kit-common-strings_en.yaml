@@ -133,7 +133,7 @@ a11y:
       stopwatch: Stopwatch
     connectionPoint:              Connection Point
     disconnected:                 disconnected
-    connects:                     connects
+    joins:                        joins
     group:                        Group
     emptyConstructionAreaMessage: >-
                                   Add Circuit Components. Once added, select a component or a lead or terminal with Space to pop up options for

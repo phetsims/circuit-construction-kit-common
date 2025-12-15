@@ -124,7 +124,7 @@ addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_ammeter',
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_stopwatch', 'a11y.circuitDescription.circuitComponentTypeLabels.stopwatchStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_connectionPoint', 'a11y.circuitDescription.connectionPointStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_disconnected', 'a11y.circuitDescription.disconnectedStringProperty' );
-addToMapIfDefined( 'a11y_circuitDescription_connects', 'a11y.circuitDescription.connectsStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_joins', 'a11y.circuitDescription.joinsStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_group', 'a11y.circuitDescription.groupStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_emptyConstructionAreaMessage', 'a11y.circuitDescription.emptyConstructionAreaMessageStringProperty' );
 addToMapIfDefined( 'a11y_screenSummary_playArea', 'a11y.screenSummary.playAreaStringProperty' );
@@ -339,7 +339,7 @@ const CircuitConstructionKitCommonFluent = {
       },
       connectionPointStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_connectionPoint', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.connectionPointStringProperty' ) ),
       disconnectedStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_disconnected', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.disconnectedStringProperty' ) ),
-      connectsStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_connects', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.connectsStringProperty' ) ),
+      joinsStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_joins', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.joinsStringProperty' ) ),
       groupStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_group', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.groupStringProperty' ) ),
       emptyConstructionAreaMessageStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_emptyConstructionAreaMessage', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.emptyConstructionAreaMessageStringProperty' ) )
     },
