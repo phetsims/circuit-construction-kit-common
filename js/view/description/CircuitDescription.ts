@@ -17,6 +17,7 @@ import Circuit from '../../model/Circuit.js';
 import CircuitElement from '../../model/CircuitElement.js';
 import CircuitElementType from '../../model/CircuitElementType.js';
 import Inductor from '../../model/Inductor.js';
+import LightBulb from '../../model/LightBulb.js';
 import Resistor from '../../model/Resistor.js';
 import Switch from '../../model/Switch.js';
 import Vertex from '../../model/Vertex.js';
@@ -242,9 +243,11 @@ export default class CircuitDescription {
                              'Positive Terminal of ' : 'Negative Terminal of ';
       }
       else if ( neighbors[ 0 ].type === 'lightBulb' ) {
+        const lightBulb = neighbors[ 0 ] as LightBulb;
 
-        // CLAUDE HELP
-        typeSpecificDetail = vertexIndex === 0 ? 'Bottom of ' : 'Side of ';
+        // startVertex is the side, endVertex is the bottom
+        typeSpecificDetail = vertex === lightBulb.endVertexProperty.value ?
+                             'Side of ' : 'Bottom of ';
       }
 
       return `${baseLabel}, ${typeSpecificDetail} ${briefNames.get( neighbors[ 0 ] ) || ''}`;
