@@ -50,12 +50,14 @@ export default class SourceResistanceControl extends VBox {
 
     const range = CCKCConstants.BATTERY_RESISTANCE_RANGE;
     const midpoint = ( range.max + range.min ) / 2;
+    const sliderSteps = CCKCConstants.SLIDER_STEPS.sourceResistanceControl;
     const slider = new HSlider( sourceResistanceProperty, range, {
       trackSize: CCKCConstants.SLIDER_TRACK_SIZE,
       thumbSize: CCKCConstants.THUMB_SIZE,
       majorTickLength: CCKCConstants.MAJOR_TICK_LENGTH,
       minorTickLength: CCKCConstants.MINOR_TICK_LENGTH,
-      shiftKeyboardStep: 1,
+      keyboardStep: sliderSteps.step,
+      pageKeyboardStep: sliderSteps.pageKeyboardStep,
 
       // Snap to the nearest whole number.
       constrainValue: ( value: number ) => range.constrainValue( roundSymmetric( value ) ),

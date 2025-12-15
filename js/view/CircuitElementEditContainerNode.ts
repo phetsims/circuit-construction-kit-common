@@ -24,7 +24,6 @@ import ToggleSwitch from '../../../sun/js/ToggleSwitch.js';
 import isSettingPhetioStateProperty from '../../../tandem/js/isSettingPhetioStateProperty.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
-import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import ACVoltage from '../model/ACVoltage.js';
@@ -211,6 +210,7 @@ export default class CircuitElementEditContainerNode extends Node {
     } );
 
     // For PhET-iO, NumberControls are created statically on startup and switch between which CircuitElement it controls.
+    const fuseSliderSteps = CCKCConstants.SLIDER_STEPS.fuseCurrentRatingControl;
     const fuseCurrentRatingControl = new CircuitElementNumberControl( currentRatingStringProperty,
 
       // Adapter to take from {{named}} to {{value}} for usage in common code
@@ -219,37 +219,42 @@ export default class CircuitElementEditContainerNode extends Node {
       Fuse.RANGE, circuit,
       1, {
         tandem: tandem.createTandem( 'fuseCurrentRatingControl' ),
-        delta: 0.1, // For the tweakers
+        delta: fuseSliderSteps.step,
         sliderOptions: {
-          constrainValue: ( value: number ) => roundToInterval( value, 0.5 ),
-          shiftKeyboardStep: 0.5
+          keyboardStep: fuseSliderSteps.step,
+          shiftKeyboardStep: fuseSliderSteps.shiftKeyboardStep,
+          pageKeyboardStep: fuseSliderSteps.pageKeyboardStep,
+          constrainValue: ( value: number ) => roundToInterval( value, fuseSliderSteps.shiftKeyboardStep )
         }
       } );
 
+    const capacitanceSliderSteps = CCKCConstants.SLIDER_STEPS.capacitanceNumberControl;
     const capacitorEditControl = new CircuitElementNumberControl( capacitanceStringProperty,
       new PatternStringProperty( capacitanceUnitsStringProperty, { capacitance: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
       createSingletonAdapterProperty( Capacitor.CAPACITANCE_DEFAULT, Capacitor, circuit, ( c: Capacitor ) => c.capacitanceProperty ),
       Capacitor.CAPACITANCE_RANGE, circuit, Capacitor.NUMBER_OF_DECIMAL_PLACES, {
         tandem: circuit.includeACElements ? tandem.createTandem( 'capacitanceNumberControl' ) : Tandem.OPT_OUT,
-        delta: CCKCQueryParameters.capacitanceStep,
-
+        delta: capacitanceSliderSteps.step,
         sliderOptions: {
-          constrainValue: ( value: number ) => roundToInterval( value, CCKCQueryParameters.capacitanceStep ),
-          shiftKeyboardStep: CCKCQueryParameters.capacitanceStep
+          keyboardStep: capacitanceSliderSteps.step,
+          shiftKeyboardStep: capacitanceSliderSteps.shiftKeyboardStep,
+          pageKeyboardStep: capacitanceSliderSteps.pageKeyboardStep,
+          constrainValue: ( value: number ) => roundToInterval( value, capacitanceSliderSteps.shiftKeyboardStep )
         }
       } );
 
+    const inductanceSliderSteps = CCKCConstants.SLIDER_STEPS.inductanceNumberControl;
     const inductanceControl = new CircuitElementNumberControl( inductanceStringProperty,
       new PatternStringProperty( inductanceUnitsStringProperty, { inductance: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
       createSingletonAdapterProperty( Inductor.INDUCTANCE_DEFAULT, Inductor, circuit, ( c: Inductor ) => c.inductanceProperty ),
       Inductor.INDUCTANCE_RANGE, circuit, Inductor.INDUCTANCE_NUMBER_OF_DECIMAL_PLACES, {
         tandem: circuit.includeACElements ? tandem.createTandem( 'inductanceNumberControl' ) : Tandem.OPT_OUT,
-        delta: CCKCQueryParameters.inductanceStep,
-
-
+        delta: inductanceSliderSteps.step,
         sliderOptions: {
-          constrainValue: ( value: number ) => roundToInterval( value, 0.1 ),
-          shiftKeyboardStep: 0.1
+          keyboardStep: inductanceSliderSteps.step,
+          shiftKeyboardStep: inductanceSliderSteps.shiftKeyboardStep,
+          pageKeyboardStep: inductanceSliderSteps.pageKeyboardStep,
+          constrainValue: ( value: number ) => roundToInterval( value, inductanceSliderSteps.shiftKeyboardStep )
         }
       } );
 
@@ -343,6 +348,7 @@ export default class CircuitElementEditContainerNode extends Node {
       tandem: circuit.includeACElements ? tandem.createTandem( 'phaseShiftControl' ) : Tandem.OPT_OUT
     } );
 
+    const acVoltageSliderSteps = CCKCConstants.SLIDER_STEPS.acVoltageControl;
     const acVoltageControl = new CircuitElementNumberControl(
       voltageStringProperty,
       voltageVoltsValueStringProperty,
@@ -351,12 +357,20 @@ export default class CircuitElementEditContainerNode extends Node {
       circuit,
       2, {
         tandem: circuit.includeACElements ? tandem.createTandem( 'acVoltageControl' ) : Tandem.OPT_OUT,
+        delta: acVoltageSliderSteps.step,
+        sliderOptions: {
+          keyboardStep: acVoltageSliderSteps.step,
+          shiftKeyboardStep: acVoltageSliderSteps.shiftKeyboardStep,
+          pageKeyboardStep: acVoltageSliderSteps.pageKeyboardStep,
+          constrainValue: ( value: number ) => roundToInterval( value, acVoltageSliderSteps.shiftKeyboardStep )
+        },
         getAdditionalVisibilityProperties: ( c: CircuitElement ) => {
           return c instanceof ACVoltage ? [ c.isVoltageEditableProperty ] : [];
         }
       }
     );
 
+    const frequencySliderSteps = CCKCConstants.SLIDER_STEPS.frequencyControl;
     const acFrequencyControl = new CircuitElementNumberControl(
       frequencyStringProperty,
       new PatternStringProperty( frequencyHzValuePatternStringProperty, { frequency: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
@@ -365,9 +379,12 @@ export default class CircuitElementEditContainerNode extends Node {
       circuit,
       2, {
         tandem: circuit.includeACElements ? tandem.createTandem( 'frequencyControl' ) : Tandem.OPT_OUT,
-        delta: 0.01,
+        delta: frequencySliderSteps.step,
         sliderOptions: {
-          shiftKeyboardStep: 0.01
+          keyboardStep: frequencySliderSteps.step,
+          shiftKeyboardStep: frequencySliderSteps.shiftKeyboardStep,
+          pageKeyboardStep: frequencySliderSteps.pageKeyboardStep,
+          constrainValue: ( value: number ) => roundToInterval( value, frequencySliderSteps.shiftKeyboardStep )
         },
         getAdditionalVisibilityProperties: ( c: CircuitElement ) => {
           return c instanceof ACVoltage ? [ c.isFrequencyEditableProperty ] : [];
