@@ -8,7 +8,6 @@
 
 import Dimension2 from '../../dot/js/Dimension2.js';
 import Range from '../../dot/js/Range.js';
-import { roundToInterval } from '../../dot/js/util/roundToInterval.js';
 import PhetFont from '../../scenery-phet/js/PhetFont.js';
 import CCKCQueryParameters from './CCKCQueryParameters.js';
 import circuitConstructionKitCommon from './circuitConstructionKitCommon.js';
@@ -178,8 +177,7 @@ export default class CCKCConstants {
     batteryVoltageNumberControl: {
       step: 10,
       pageKeyboardStep: 20,
-      shiftKeyboardStep: 0.1,
-      constrainValue: ( value: number ) => roundToInterval( value, 0.1 )  // For dragging the slider knob
+      shiftKeyboardStep: 0.1
     },
     extremeBatteryVoltageNumberControl: {
       step: 5000,

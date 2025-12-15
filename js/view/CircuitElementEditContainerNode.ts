@@ -305,10 +305,10 @@ export default class CircuitElementEditContainerNode extends Node {
         tandem: tandem.createTandem( 'batteryVoltageNumberControl' ),
         delta: CCKCConstants.SLIDER_STEPS.batteryVoltageNumberControl.step,
         sliderOptions: {
-          constrainValue: CCKCConstants.SLIDER_STEPS.batteryVoltageNumberControl.constrainValue,
-          shiftKeyboardStep: CCKCConstants.SLIDER_STEPS.batteryVoltageNumberControl.shiftKeyboardStep,
           keyboardStep: CCKCConstants.SLIDER_STEPS.batteryVoltageNumberControl.step,
-          pageKeyboardStep: CCKCConstants.SLIDER_STEPS.batteryVoltageNumberControl.pageKeyboardStep
+          shiftKeyboardStep: CCKCConstants.SLIDER_STEPS.batteryVoltageNumberControl.shiftKeyboardStep,
+          pageKeyboardStep: CCKCConstants.SLIDER_STEPS.batteryVoltageNumberControl.pageKeyboardStep,
+          constrainValue: ( value: number ) => roundToInterval( value, CCKCConstants.SLIDER_STEPS.batteryVoltageNumberControl.shiftKeyboardStep )
         },
         numberDisplayOptions: { decimalPlaces: Battery.VOLTAGE_DECIMAL_PLACES }
       } );
@@ -321,8 +321,10 @@ export default class CircuitElementEditContainerNode extends Node {
         tandem: circuit.includeLabElements ? tandem.createTandem( 'extremeBatteryVoltageNumberControl' ) : Tandem.OPT_OUT,
         delta: 10,
         sliderOptions: {
-          constrainValue: ( value: number ) => roundToInterval( value, 100 ),
-          shiftKeyboardStep: 100
+          keyboardStep: CCKCConstants.SLIDER_STEPS.extremeBatteryVoltageNumberControl.step,
+          shiftKeyboardStep: CCKCConstants.SLIDER_STEPS.extremeBatteryVoltageNumberControl.shiftKeyboardStep,
+          pageKeyboardStep: CCKCConstants.SLIDER_STEPS.extremeBatteryVoltageNumberControl.pageKeyboardStep,
+          constrainValue: ( value: number ) => roundToInterval( value, CCKCConstants.SLIDER_STEPS.extremeBatteryVoltageNumberControl.shiftKeyboardStep )
         },
         numberDisplayOptions: { decimalPlaces: Battery.HIGH_VOLTAGE_DECIMAL_PLACES }
       } );
