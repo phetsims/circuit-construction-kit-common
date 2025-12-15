@@ -66,7 +66,6 @@ const getCircuitElementTypeLabel = ( type: CircuitElementType ): string => {
 
 /**
  * Formats a brief name for a circuit element for use in junction descriptions and other contexts.
- * Uses just the type and position number without "of total" suffix.
  */
 const formatCircuitElementBriefName = ( type: CircuitElementType, position: number, total: number ): string => {
   const baseLabel = getCircuitElementTypeLabel( type );
@@ -178,11 +177,9 @@ export default class CircuitDescription {
       const showValuesProperty = circuitNode.model.showValuesProperty;
       const showValuesAsStringProperty = showValuesProperty.derived( value => value ? 'true' : 'false' );
 
-      const numbered = totalForType > 1;
       const accessibleName = CircuitConstructionKitCommonFluent.a11y.circuitComponent.accessibleName.format( {
-        displayMode: showValuesProperty.value && numbered ? 'countAndValue' :
-                     showValuesProperty.value && !numbered ? 'value' :
-                     !showValuesProperty.value && numbered ? 'count' :
+        displayMode: showValuesProperty.value ? 'countAndValue' :
+                     !showValuesProperty.value ? 'count' :
                      'name',
         type: circuitElement.type,
         voltage: circuitElement instanceof Battery ? circuitElement.voltageProperty : 0,
