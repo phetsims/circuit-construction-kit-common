@@ -23,10 +23,14 @@ export default class VertexAttachmentKeyboardListener extends AttachmentKeyboard
       circuitNode: circuitNode,
       getItems: () => {
         const orderedVertices = CircuitDescription.getOrderedVertices( circuit );
+        const neighborVertices = circuit.getNeighboringVertices( vertex );
         const attachableVertices = orderedVertices.filter( v => v.attachableProperty.get() &&
                                                                 v !== vertex &&
-                                                                !circuit.getNeighboringVertices( vertex ).includes( v ) &&
-                                                                !circuit.findAllFixedVertices( vertex ).includes( v ) );
+                                                                !neighborVertices.includes( v ) &&
+                                                                !circuit.findAllFixedVertices( vertex ).includes( v ) &&
+
+                                                                // A wire vertex cannot double connect to an object, creating a tiny short circuit
+                                                                _.intersection( circuit.getNeighboringVertices( v ), neighborVertices ).length === 0 );
 
         return attachableVertices.map( attachableVertex => {
           return {
