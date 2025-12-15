@@ -122,7 +122,7 @@ addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_switch', 
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_voltmeter', 'a11y.circuitDescription.circuitComponentTypeLabels.voltmeterStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_ammeter', 'a11y.circuitDescription.circuitComponentTypeLabels.ammeterStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_stopwatch', 'a11y.circuitDescription.circuitComponentTypeLabels.stopwatchStringProperty' );
-addToMapIfDefined( 'a11y_circuitDescription_junction', 'a11y.circuitDescription.junctionStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_connectionPoint', 'a11y.circuitDescription.connectionPointStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_disconnected', 'a11y.circuitDescription.disconnectedStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_connects', 'a11y.circuitDescription.connectsStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_group', 'a11y.circuitDescription.groupStringProperty' );
@@ -337,7 +337,7 @@ const CircuitConstructionKitCommonFluent = {
         ammeterStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypeLabels_ammeter', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypeLabels.ammeterStringProperty' ) ),
         stopwatchStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypeLabels_stopwatch', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypeLabels.stopwatchStringProperty' ) )
       },
-      junctionStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_junction', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.junctionStringProperty' ) ),
+      connectionPointStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_connectionPoint', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.connectionPointStringProperty' ) ),
       disconnectedStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_disconnected', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.disconnectedStringProperty' ) ),
       connectsStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_connects', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.connectsStringProperty' ) ),
       groupStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_group', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.groupStringProperty' ) ),

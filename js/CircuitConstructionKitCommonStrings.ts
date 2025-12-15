@@ -147,7 +147,7 @@ type StringsType = {
         'ammeterStringProperty': LocalizedStringProperty;
         'stopwatchStringProperty': LocalizedStringProperty;
       };
-      'junctionStringProperty': LocalizedStringProperty;
+      'connectionPointStringProperty': LocalizedStringProperty;
       'disconnectedStringProperty': LocalizedStringProperty;
       'connectsStringProperty': LocalizedStringProperty;
       'groupStringProperty': LocalizedStringProperty;

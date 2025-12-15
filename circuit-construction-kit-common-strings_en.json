@@ -346,8 +346,8 @@
           "value": "Stopwatch"
         }
       },
-      "junction": {
-        "value": "Junction"
+      "connectionPoint": {
+        "value": "Connection Point"
       },
       "disconnected": {
         "value": "disconnected"

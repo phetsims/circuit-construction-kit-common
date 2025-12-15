@@ -131,7 +131,7 @@ a11y:
       voltmeter: Voltmeter
       ammeter:   Ammeter
       stopwatch: Stopwatch
-    junction:                     Junction
+    connectionPoint:              Connection Point
     disconnected:                 disconnected
     connects:                     connects
     group:                        Group
