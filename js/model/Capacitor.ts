@@ -73,7 +73,7 @@ export default class Capacitor extends DynamicCircuitElement {
 
       this.startVertexProperty.value.voltageProperty.value -= adjustment;
       this.endVertexProperty.value.voltageProperty.value += adjustment;
-      // this.voltageDiffereneProperty is computed based on those changed values.
+      // this.voltageDifferenceProperty is computed based on those changed values.
 
       // For debugging
       // console.log( v2, this.endVertexProperty.value.voltageProperty.value - this.startVertexProperty.value.voltageProperty.value, this.voltageDifferenceProperty.value );

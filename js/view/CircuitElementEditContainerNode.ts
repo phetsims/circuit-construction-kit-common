@@ -304,7 +304,12 @@ export default class CircuitElementEditContainerNode extends Node {
       Battery.VOLTAGE_DECIMAL_PLACES, {
         tandem: tandem.createTandem( 'batteryVoltageNumberControl' ),
         delta: CCKCConstants.SLIDER_STEPS.batteryVoltageNumberControl.step,
-        sliderOptions: CCKCConstants.SLIDER_STEPS.batteryVoltageNumberControl,
+        sliderOptions: {
+          constrainValue: CCKCConstants.SLIDER_STEPS.batteryVoltageNumberControl.constrainValue,
+          shiftKeyboardStep: CCKCConstants.SLIDER_STEPS.batteryVoltageNumberControl.shiftKeyboardStep,
+          keyboardStep: CCKCConstants.SLIDER_STEPS.batteryVoltageNumberControl.step,
+          pageKeyboardStep: CCKCConstants.SLIDER_STEPS.batteryVoltageNumberControl.pageKeyboardStep
+        },
         numberDisplayOptions: { decimalPlaces: Battery.VOLTAGE_DECIMAL_PLACES }
       } );
     const extremeBatteryVoltageNumberControl = new CircuitElementNumberControl( voltageStringProperty,

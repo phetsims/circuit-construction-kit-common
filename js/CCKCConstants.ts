@@ -179,7 +179,7 @@ export default class CCKCConstants {
       step: 10,
       pageKeyboardStep: 20,
       shiftKeyboardStep: 0.1,
-      constrainValue: ( value: number ) => roundToInterval( value, 1 )  // For dragging the slider knob
+      constrainValue: ( value: number ) => roundToInterval( value, 0.1 )  // For dragging the slider knob
     },
     extremeBatteryVoltageNumberControl: {
       step: 5000,
