@@ -66,6 +66,28 @@ const getCircuitElementTypeLabel = ( type: CircuitElementType ): string => {
 };
 
 /**
+ * Returns the plural form for a circuit element type.
+ * Hard-coded for now; will eventually move to strings YAML.
+ */
+const getPluralTypeLabel = ( type: CircuitElementType ): string => {
+  switch( type ) {
+    case 'wire': return 'Wires';
+    case 'battery': return 'Batteries';
+    case 'resistor': return 'Resistors';
+    case 'capacitor': return 'Capacitors';
+    case 'inductor': return 'Inductors';
+    case 'lightBulb': return 'Light Bulbs';
+    case 'acSource': return 'AC Sources';
+    case 'fuse': return 'Fuses';
+    case 'switch': return 'Switches';
+    case 'voltmeter': return 'Voltmeters';
+    case 'ammeter': return 'Ammeters';
+    case 'stopwatch': return 'Stopwatches';
+    default: return type + 's';
+  }
+};
+
+/**
  * Formats a brief name for a circuit element for use in junction descriptions and other contexts.
  */
 const formatCircuitElementBriefName = ( type: CircuitElementType, position: number, total: number ): string => {
@@ -240,6 +262,7 @@ export default class CircuitDescription {
   /**
    * Creates an accessible description for a vertex based on its connections.
    * Uses brief names for circuit elements to keep descriptions concise.
+   * For vertices with 4+ connections, uses a compressed form grouping by type.
    */
   private static createVertexDescription(
     vertex: Vertex,
@@ -252,13 +275,75 @@ export default class CircuitDescription {
 
     if ( neighbors.length === 1 ) {
       const prefix = this.getTypeSpecificPrefix( vertex, neighbors[ 0 ] );
+      vertex.completeDescription = null;
       return `${baseLabel}, ${prefix}${briefNames.get( neighbors[ 0 ] ) || ''}`;
+    }
+    else if ( neighbors.length >= 4 ) {
+      // Compute the full description with all details
+      const neighborNames = neighbors.map( neighbor => {
+        const prefix = this.getTypeSpecificPrefix( vertex, neighbor );
+        return `${prefix}${briefNames.get( neighbor ) || ''}`;
+      } ).join( ', ' );
+      const fullDescription = `${baseLabel}, joins ${neighborNames}`;
+
+      // Store complete description on vertex for accessibility
+      vertex.completeDescription = fullDescription;
+
+      // Create compressed form by counting types
+      const typeCounts = new Map<CircuitElementType, number>();
+      neighbors.forEach( neighbor => {
+        const count = typeCounts.get( neighbor.type ) || 0;
+        typeCounts.set( neighbor.type, count + 1 );
+      } );
+
+      // Build type descriptions in preferred order
+      const typeDescriptions: string[] = [];
+      const orderedTypes = [ ...GROUPED_CIRCUIT_ELEMENT_TYPE_ORDER ];
+
+      // Add any types not in the preferred order
+      typeCounts.forEach( ( _, type ) => {
+        if ( !orderedTypes.includes( type ) ) {
+          orderedTypes.push( type );
+        }
+      } );
+
+      orderedTypes.forEach( type => {
+        const count = typeCounts.get( type );
+        if ( count !== undefined ) {
+          if ( count === 1 ) {
+            const typeLabel = getCircuitElementTypeLabel( type );
+            // Use article "a" or "an"
+            const article = /^[aeiou]/i.test( typeLabel ) ? 'an' : 'a';
+            typeDescriptions.push( `${article} ${typeLabel}` );
+          }
+          else {
+            const pluralLabel = getPluralTypeLabel( type );
+            typeDescriptions.push( `${count} ${pluralLabel}` );
+          }
+        }
+      } );
+
+      // Join with commas and "and" before the last item
+      let joinedTypes: string;
+      if ( typeDescriptions.length === 1 ) {
+        joinedTypes = typeDescriptions[ 0 ];
+      }
+      else if ( typeDescriptions.length === 2 ) {
+        joinedTypes = `${typeDescriptions[ 0 ]} and ${typeDescriptions[ 1 ]}`;
+      }
+      else {
+        const lastType = typeDescriptions.pop()!;
+        joinedTypes = `${typeDescriptions.join( ', ' )}, and ${lastType}`;
+      }
+
+      return `${baseLabel}, Joins ${joinedTypes}`;
     }
     else {
       const neighborNames = neighbors.map( neighbor => {
         const prefix = this.getTypeSpecificPrefix( vertex, neighbor );
         return `${prefix}${briefNames.get( neighbor ) || ''}`;
       } ).join( ', ' );
+      vertex.completeDescription = null;
       return `${baseLabel}, joins ${neighborNames}`;
     }
   }

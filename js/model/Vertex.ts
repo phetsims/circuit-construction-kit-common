@@ -88,6 +88,9 @@ export default class Vertex extends PhetioObject {
   public isCuttableProperty: BooleanProperty;
   public labelStringProperty: TProperty<string>;
 
+  // Complete description for accessibility when compressed form is used (4+ connections)
+  public completeDescription: string | null = null;
+
   public static readonly VertexIO = new IOType<Vertex, VertexState>( 'VertexIO', {
     valueType: Vertex,
     toStateObject: ( vertex: Vertex ) => ( { position: Vector2.Vector2IO.toStateObject( vertex.positionProperty.value ) } ),
