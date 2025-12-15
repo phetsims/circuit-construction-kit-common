@@ -304,7 +304,7 @@ export default class CircuitNode extends Node {
           }
 
           // Do this after the Node exists in the circuitElementNodeMap (not when the model element is created)
-          this.updatePDOMOrder();
+          this.updateCircuitDescription();
         }
       };
       circuit.circuitElements.addItemAddedListener( addCircuitElement );
@@ -317,7 +317,7 @@ export default class CircuitNode extends Node {
           phetioGroup.disposeElement( circuitElementNode );
 
           delete this.circuitElementNodeMap[ circuitElement.id ];
-          this.updatePDOMOrder();
+          this.updateCircuitDescription();
         }
       } );
     };
@@ -587,17 +587,19 @@ export default class CircuitNode extends Node {
     this.constructionAreaContainer.addChild( this.groupsContainer );
 
     // When two elements combine, it deletes a vertex. In this case, update the description
-    circuit.vertexGroup.elementDisposedEmitter.addListener( () => this.updatePDOMOrder() );
+    circuit.vertexGroup.elementDisposedEmitter.addListener( () => this.updateCircuitDescription() );
 
     // Update PDOM when show values property changes (link is called eagerly, so no need for separate initial call)
-    this.model.showValuesProperty.link( () => this.updatePDOMOrder() );
+    this.model.showValuesProperty.link( () => this.updateCircuitDescription() );
 
     // Set the state once after fully reconstructed, not at a partial intermediate state
     isSettingPhetioStateProperty.lazyLink( isSettingPhetioState => {
       if ( !isSettingPhetioState ) {
-        this.updatePDOMOrder();
+        this.updateCircuitDescription();
       }
     } );
+
+    circuit.descriptionChangeEmitter.addListener( () => this.updateCircuitDescription() );
 
     circuit.selectionProperty.link( () => {
 
@@ -684,7 +686,8 @@ export default class CircuitNode extends Node {
     this.anyVertexCut = false;
   }
 
-  private updatePDOMOrder(): void {
+  private updateCircuitDescription(): void {
+
     // Set the state once after fully reconstructed, not at a partial intermediate state
     if ( !isSettingPhetioStateProperty.value ) {
       CircuitDescription.updateCircuitNode( this );

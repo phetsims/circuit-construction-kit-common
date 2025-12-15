@@ -221,6 +221,7 @@ export default class CircuitDescription {
    * Uses brief names for circuit elements to keep descriptions concise.
    */
   private static createVertexDescription(
+    vertex: Vertex,
     vertexIndex: number,
     totalVertices: number,
     neighbors: CircuitElement[],
@@ -228,8 +229,25 @@ export default class CircuitDescription {
   ): string {
     const baseLabel = `${CircuitConstructionKitCommonFluent.a11y.circuitDescription.connectionPointStringProperty.value} ${vertexIndex} of ${totalVertices}`;
 
+
     if ( neighbors.length === 1 ) {
-      return `${baseLabel}, ${briefNames.get( neighbors[ 0 ] ) || ''}`;
+
+      let typeSpecificDetail = '';
+
+      if ( neighbors[ 0 ].type === 'battery' ) {
+        const battery = neighbors[ 0 ] as Battery;
+
+        // endVertex is the positive terminal (higher voltage)
+        typeSpecificDetail = vertex === battery.endVertexProperty.value ?
+                             'Positive Terminal of ' : 'Negative Terminal of ';
+      }
+      else if ( neighbors[ 0 ].type === 'lightBulb' ) {
+
+        // CLAUDE HELP
+        typeSpecificDetail = vertexIndex === 0 ? 'Bottom of ' : 'Side of ';
+      }
+
+      return `${baseLabel}, ${typeSpecificDetail} ${briefNames.get( neighbors[ 0 ] ) || ''}`;
     }
     else {
       const neighborNames = neighbors.map( neighbor =>
@@ -259,8 +277,8 @@ export default class CircuitDescription {
       const startVertexNode = circuitNode.getVertexNode( startVertex );
       const endVertexNode = circuitNode.getVertexNode( endVertex );
 
-      startVertexNode.accessibleName = CircuitDescription.createVertexDescription( 1, 2, [ circuitElement ], briefNames );
-      endVertexNode.accessibleName = CircuitDescription.createVertexDescription( 2, 2, [ circuitElement ], briefNames );
+      startVertexNode.accessibleName = CircuitDescription.createVertexDescription( startVertex, 1, 2, [ circuitElement ], briefNames );
+      endVertexNode.accessibleName = CircuitDescription.createVertexDescription( endVertex, 2, 2, [ circuitElement ], briefNames );
 
       startVertexNode.attachmentName = 'start junction of a disconnected ' + circuitElement.type;
       endVertexNode.attachmentName = 'end junction of a disconnected ' + circuitElement.type;
@@ -301,6 +319,7 @@ export default class CircuitDescription {
       group.vertices.forEach( ( vertex, vertexIndex ) => {
         const neighbors = circuit.getNeighborCircuitElements( vertex );
         const description = CircuitDescription.createVertexDescription(
+          vertex,
           vertexIndex,
           group.vertices.length,
           neighbors,

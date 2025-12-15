@@ -70,6 +70,7 @@ export default class BatteryReverseButton extends CCKCRoundPushButton {
         if ( battery instanceof Battery ) {
           circuit.flip( battery );
           circuit.componentEditedEmitter.emit();
+          circuit.descriptionChangeEmitter.emit();
         }
         else {
           affirm( false, 'selected circuit element should have been a battery' );

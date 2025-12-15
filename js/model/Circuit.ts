@@ -180,6 +180,8 @@ export default class Circuit extends PhetioObject {
   // Whether any circuit element has current flowing through it, updated in step()
   public readonly hasCurrentFlowingProperty: BooleanProperty;
 
+  public readonly descriptionChangeEmitter = new Emitter();
+
   public constructor( viewTypeProperty: Property<CircuitElementViewType>, addRealBulbsProperty: Property<boolean>, tandem: Tandem,
                       providedOptions: CircuitOptions ) {
 
