@@ -12,6 +12,7 @@ import type ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
 import type { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import type Range from '../../../dot/js/Range.js';
+import { roundToInterval } from '../../../dot/js/util/roundToInterval.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import NumberControl, { type LayoutFunction } from '../../../scenery-phet/js/NumberControl.js';
 import { type NumberDisplayOptions } from '../../../scenery-phet/js/NumberDisplay.js';
@@ -34,6 +35,7 @@ type SelfOptions = {
   sliderOptions?: SliderOptions;
   getAdditionalVisibilityProperties?: ( circuitElement: CircuitElement ) => ReadOnlyProperty<boolean>[];
   delta?: number;
+  pointerRoundingInterval: number;
 };
 type CircuitElementNumberControlOptions = SelfOptions & HBoxOptions;
 
@@ -77,7 +79,20 @@ export default class CircuitElementNumberControl extends HBox {
       isDisposable: false,
       getAdditionalVisibilityProperties: ( c: CircuitElement ) => {return [];}
     }, providedOptions );
-    const numberControl = new NumberControl( title, valueProperty, range, options );
+
+    const numberControl = new NumberControl( title, valueProperty, range, {
+      ...options,
+      sliderOptions: {
+        drag: event => {
+
+          // when from mouse, round to nearest whole number. HACK ALERT, see https://github.com/phetsims/circuit-construction-kit-common/issues/1103#issuecomment-3661150577
+          if ( !event.isFromPDOM() ) {
+
+            valueProperty.value = roundToInterval( valueProperty.value, options.pointerRoundingInterval );
+          }
+        }
+      }
+    } );
 
     super( { children: [ numberControl ] } );
 

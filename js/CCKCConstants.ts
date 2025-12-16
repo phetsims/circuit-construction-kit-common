@@ -180,27 +180,32 @@ export default class CCKCConstants {
     batteryVoltageNumberControl: {
       step: 10,
       pageKeyboardStep: 20,
-      shiftKeyboardStep: 0.1
+      shiftKeyboardStep: 0.1,
+      pointerRoundingInterval: 1
     },
     extremeBatteryVoltageNumberControl: {
       step: 5000,
       pageKeyboardStep: 10000,
-      shiftKeyboardStep: 10
+      shiftKeyboardStep: 10,
+      pointerRoundingInterval: 1000
     },
     resistorAndLightBulbResistanceNumberControl: {
       step: 10,
       pageKeyboardStep: 20,
-      shiftKeyboardStep: 0.1
+      shiftKeyboardStep: 0.1,
+      pointerRoundingInterval: 1
     },
     extremeResistorAndLightBulbResistanceNumberControl: {
       step: 500,
       pageKeyboardStep: 1000,
-      shiftKeyboardStep: 10
+      shiftKeyboardStep: 10,
+      pointerRoundingInterval: 100
     },
     fuseCurrentRatingControl: {
       step: 1,
       pageKeyboardStep: 2.5,
-      shiftKeyboardStep: 0.1
+      shiftKeyboardStep: 0.1,
+      pointerRoundingInterval: 0.1
     },
     sourceResistanceControl: {
       step: 1,
@@ -209,22 +214,27 @@ export default class CCKCConstants {
     acVoltageControl: {
       step: 10,
       pageKeyboardStep: 20,
-      shiftKeyboardStep: 0.01
+      shiftKeyboardStep: 0.01,
+      pointerRoundingInterval: 1
     },
     frequencyControl: {
       step: 0.1,
       pageKeyboardStep: 0.25,
-      shiftKeyboardStep: 0.01
+      shiftKeyboardStep: 0.01,
+      pointerRoundingInterval: 0.01
     },
     capacitanceNumberControl: {
       step: 0.1,
       pageKeyboardStep: 0.25,
-      shiftKeyboardStep: 0.01
+      shiftKeyboardStep: 0.01,
+
+      pointerRoundingInterval: 0.01
     },
     inductanceNumberControl: {
       step: 0.5,
       pageKeyboardStep: 1,
-      shiftKeyboardStep: 0.001
+      shiftKeyboardStep: 0.001,
+      pointerRoundingInterval: 0.1
     }
   } as const;
 }

@@ -219,6 +219,7 @@ export default class CircuitElementEditContainerNode extends Node {
       1, {
         tandem: tandem.createTandem( 'fuseCurrentRatingControl' ),
         delta: CCKCConstants.SLIDER_STEPS.fuseCurrentRatingControl.shiftKeyboardStep,
+        pointerRoundingInterval: CCKCConstants.SLIDER_STEPS.fuseCurrentRatingControl.pointerRoundingInterval,
         sliderOptions: {
           keyboardStep: CCKCConstants.SLIDER_STEPS.fuseCurrentRatingControl.step,
           pageKeyboardStep: CCKCConstants.SLIDER_STEPS.fuseCurrentRatingControl.pageKeyboardStep,
@@ -232,6 +233,7 @@ export default class CircuitElementEditContainerNode extends Node {
       Capacitor.CAPACITANCE_RANGE, circuit, Capacitor.NUMBER_OF_DECIMAL_PLACES, {
         tandem: circuit.includeACElements ? tandem.createTandem( 'capacitanceNumberControl' ) : Tandem.OPT_OUT,
         delta: CCKCConstants.SLIDER_STEPS.capacitanceNumberControl.shiftKeyboardStep,
+        pointerRoundingInterval: CCKCConstants.SLIDER_STEPS.capacitanceNumberControl.pointerRoundingInterval,
         sliderOptions: {
           keyboardStep: CCKCConstants.SLIDER_STEPS.capacitanceNumberControl.step,
           pageKeyboardStep: CCKCConstants.SLIDER_STEPS.capacitanceNumberControl.pageKeyboardStep,
@@ -245,6 +247,7 @@ export default class CircuitElementEditContainerNode extends Node {
       Inductor.INDUCTANCE_RANGE, circuit, Inductor.INDUCTANCE_NUMBER_OF_DECIMAL_PLACES, {
         tandem: circuit.includeACElements ? tandem.createTandem( 'inductanceNumberControl' ) : Tandem.OPT_OUT,
         delta: CCKCConstants.SLIDER_STEPS.inductanceNumberControl.shiftKeyboardStep,
+        pointerRoundingInterval: CCKCConstants.SLIDER_STEPS.inductanceNumberControl.pointerRoundingInterval,
         sliderOptions: {
           keyboardStep: CCKCConstants.SLIDER_STEPS.inductanceNumberControl.step,
           pageKeyboardStep: CCKCConstants.SLIDER_STEPS.inductanceNumberControl.pageKeyboardStep,
@@ -267,6 +270,7 @@ export default class CircuitElementEditContainerNode extends Node {
         ResistorType.RESISTOR.range, circuit, Resistor.RESISTANCE_DECIMAL_PLACES, {
           tandem: tandem.createTandem( tandemName ),
           delta: CCKCConstants.SLIDER_STEPS.resistorAndLightBulbResistanceNumberControl.shiftKeyboardStep,
+          pointerRoundingInterval: CCKCConstants.SLIDER_STEPS.resistorAndLightBulbResistanceNumberControl.pointerRoundingInterval,
           sliderOptions: {
             keyboardStep: CCKCConstants.SLIDER_STEPS.resistorAndLightBulbResistanceNumberControl.step,
             pageKeyboardStep: CCKCConstants.SLIDER_STEPS.resistorAndLightBulbResistanceNumberControl.pageKeyboardStep,
@@ -286,6 +290,7 @@ export default class CircuitElementEditContainerNode extends Node {
         ResistorType.EXTREME_RESISTOR.range, circuit, Resistor.HIGH_RESISTANCE_DECIMAL_PLACES, {
           tandem: circuit.includeLabElements ? tandem.createTandem( tandemName ) : Tandem.OPT_OUT,
           delta: CCKCConstants.SLIDER_STEPS.extremeResistorAndLightBulbResistanceNumberControl.shiftKeyboardStep,
+          pointerRoundingInterval: CCKCConstants.SLIDER_STEPS.extremeResistorAndLightBulbResistanceNumberControl.pointerRoundingInterval,
           sliderOptions: {
             keyboardStep: CCKCConstants.SLIDER_STEPS.extremeResistorAndLightBulbResistanceNumberControl.step,
             pageKeyboardStep: CCKCConstants.SLIDER_STEPS.extremeResistorAndLightBulbResistanceNumberControl.pageKeyboardStep,
@@ -309,6 +314,7 @@ export default class CircuitElementEditContainerNode extends Node {
       Battery.VOLTAGE_DECIMAL_PLACES, {
         tandem: tandem.createTandem( 'batteryVoltageNumberControl' ),
         delta: CCKCConstants.SLIDER_STEPS.batteryVoltageNumberControl.shiftKeyboardStep,
+        pointerRoundingInterval: CCKCConstants.SLIDER_STEPS.batteryVoltageNumberControl.pointerRoundingInterval,
         sliderOptions: {
           keyboardStep: CCKCConstants.SLIDER_STEPS.batteryVoltageNumberControl.step,
           pageKeyboardStep: CCKCConstants.SLIDER_STEPS.batteryVoltageNumberControl.pageKeyboardStep,
@@ -324,6 +330,7 @@ export default class CircuitElementEditContainerNode extends Node {
       Battery.HIGH_VOLTAGE_DECIMAL_PLACES, {
         tandem: circuit.includeLabElements ? tandem.createTandem( 'extremeBatteryVoltageNumberControl' ) : Tandem.OPT_OUT,
         delta: CCKCConstants.SLIDER_STEPS.extremeBatteryVoltageNumberControl.shiftKeyboardStep,
+        pointerRoundingInterval: CCKCConstants.SLIDER_STEPS.extremeBatteryVoltageNumberControl.pointerRoundingInterval,
         sliderOptions: {
           keyboardStep: CCKCConstants.SLIDER_STEPS.extremeBatteryVoltageNumberControl.step,
           pageKeyboardStep: CCKCConstants.SLIDER_STEPS.extremeBatteryVoltageNumberControl.pageKeyboardStep,
@@ -345,6 +352,7 @@ export default class CircuitElementEditContainerNode extends Node {
       2, {
         tandem: circuit.includeACElements ? tandem.createTandem( 'acVoltageControl' ) : Tandem.OPT_OUT,
         delta: CCKCConstants.SLIDER_STEPS.acVoltageControl.shiftKeyboardStep,
+        pointerRoundingInterval: CCKCConstants.SLIDER_STEPS.acVoltageControl.pointerRoundingInterval,
         sliderOptions: {
           keyboardStep: CCKCConstants.SLIDER_STEPS.acVoltageControl.step,
           pageKeyboardStep: CCKCConstants.SLIDER_STEPS.acVoltageControl.pageKeyboardStep,
@@ -365,6 +373,7 @@ export default class CircuitElementEditContainerNode extends Node {
       2, {
         tandem: circuit.includeACElements ? tandem.createTandem( 'frequencyControl' ) : Tandem.OPT_OUT,
         delta: CCKCConstants.SLIDER_STEPS.frequencyControl.shiftKeyboardStep,
+        pointerRoundingInterval: CCKCConstants.SLIDER_STEPS.frequencyControl.pointerRoundingInterval,
         sliderOptions: {
           keyboardStep: CCKCConstants.SLIDER_STEPS.frequencyControl.step,
           pageKeyboardStep: CCKCConstants.SLIDER_STEPS.frequencyControl.pageKeyboardStep,
