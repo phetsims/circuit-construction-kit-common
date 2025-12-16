@@ -172,7 +172,10 @@ export default class CCKCConstants {
   public static readonly SHIFT_KEYBOARD_DRAG_SPEED = 50;
 
   // Slider step specifications for keyboard accessibility
-  // TODO: Not all these values are used yet, see https://github.com/phetsims/circuit-construction-kit-common/issues/1103
+  // Note that shiftKeyboardStep is provided to delta and to shiftKeyboardStep, see where NumberControl says:
+  //
+  // > pdom - by default, shiftKeyboardStep should most likely be the same as clicking the arrow buttons.
+  // > shiftKeyboardStep: options.delta,
   public static readonly SLIDER_STEPS = {
     batteryVoltageNumberControl: {
       step: 10,
@@ -184,22 +187,12 @@ export default class CCKCConstants {
       pageKeyboardStep: 10000,
       shiftKeyboardStep: 10
     },
-    resistorResistanceNumberControl: {
+    resistorAndLightBulbResistanceNumberControl: {
       step: 10,
       pageKeyboardStep: 20,
       shiftKeyboardStep: 0.1
     },
-    extremeResistorResistanceNumberControl: {
-      step: 500,
-      pageKeyboardStep: 1000,
-      shiftKeyboardStep: 10
-    },
-    lightBulbResistanceNumberControl: {
-      step: 10,
-      pageKeyboardStep: 20,
-      shiftKeyboardStep: 0.1
-    },
-    extremeLightBulbResistanceNumberControl: {
+    extremeResistorAndLightBulbResistanceNumberControl: {
       step: 500,
       pageKeyboardStep: 1000,
       shiftKeyboardStep: 10
@@ -209,15 +202,9 @@ export default class CCKCConstants {
       pageKeyboardStep: 2.5,
       shiftKeyboardStep: 0.1
     },
-    wireResistivityControl: {
-      step: 0.05,
-      pageKeyboardStep: 0.10,
-      shiftKeyboardStep: 0.01
-    },
     sourceResistanceControl: {
       step: 1,
-      pageKeyboardStep: 2,
-      shiftKeyboardStep: null
+      pageKeyboardStep: 2
     },
     acVoltageControl: {
       step: 10,
