@@ -46,6 +46,12 @@ export default class VertexAttachmentKeyboardListener extends AttachmentKeyboard
         const dropPosition = targetPosition.copy();
         circuitNode.dragVertex( vertexNode.parentToGlobalPoint( dropPosition ), vertex, true );
         circuitNode.endDrag( vertex, true );
+
+        // When attaching with the keyboard, the vertex is supposed to be selected when the combo box opens and deselected after a successful attachment.
+        // See
+        if ( circuitNode.circuit.selectionProperty.value === vertex ) {
+          circuitNode.circuit.selectionProperty.value = null;
+        }
       },
       onOpen: () => {
         vertex.hasBeenKeyboardActivated = true;

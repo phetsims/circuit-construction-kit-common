@@ -198,8 +198,6 @@ export default class AttachmentKeyboardListener<T> extends KeyboardListener<OneK
         }, {
           disposer: comboBox
         } );
-
-        // selectionProperty.value = availableItems[ 0 ].value;
       }
     } );
   }
