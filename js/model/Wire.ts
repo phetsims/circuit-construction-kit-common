@@ -46,7 +46,7 @@ export default class Wire extends CircuitElement {
   public override readonly lengthProperty: NumberProperty;
   private updateListener: () => void;
 
-  public readonly isTraversibleProperty = new BooleanProperty( true );
+  public readonly isTraversableProperty = new BooleanProperty( true );
 
   public constructor( startVertex: Vertex, endVertex: Vertex, resistivityProperty: NumberProperty, tandem: Tandem, providedOptions?: WireOptions ) {
     affirm( typeof resistivityProperty !== 'number', 'property should not be a number' );

@@ -925,7 +925,7 @@ export default class Circuit extends PhetioObject {
    */
   private areVerticesElectricallyConnected( vertex1: Vertex, vertex2: Vertex ): boolean {
     const connectedVertices = this.searchVertices( vertex1, ( startVertex, circuitElement ) => {
-        return circuitElement.isTraversibleProperty.value;
+        return circuitElement.isTraversableProperty.value;
       }
     );
     return connectedVertices.includes( vertex2 );
@@ -1321,7 +1321,7 @@ export default class Circuit extends PhetioObject {
   }
 
   /**
-   * Find the subgraph where all vertices are connected, given the list of traversible circuit elements.
+   * Find the subgraph where all vertices are connected, given the list of Traversable circuit elements.
    * There are a few other ad-hoc graph searches around, such as isInLoop and in LinearTransientAnalysis
    * @param vertex
    * @param okToVisit - (startVertex:Vertex,circuitElement:CircuitElement,endVertex:Vertex)=>boolean, rule
@@ -1373,7 +1373,7 @@ export default class Circuit extends PhetioObject {
     // cannot be in a loop since their vertices are not directly connected.  Note the search
     // algorithm below gives the wrong answer because the start vertex and end vertex can be connected
     // by other circuit elements.
-    if ( !circuitElement.isTraversibleProperty.value ) {
+    if ( !circuitElement.isTraversableProperty.value ) {
       return false;
     }
 
@@ -1404,7 +1404,7 @@ export default class Circuit extends PhetioObject {
                // no shortcuts!
                neighbor !== circuitElement &&
 
-               neighbor.isTraversibleProperty.value
+               neighbor.isTraversableProperty.value
           ) {
             const opposite = neighbor.getOppositeVertex( vertex );
             if ( opposite === circuitElement.endVertexProperty.value ) {

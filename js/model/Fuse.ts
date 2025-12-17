@@ -43,7 +43,7 @@ export default class Fuse extends FixedCircuitElement {
   private timeCurrentRatingExceeded: number;
   public readonly isRepairableProperty: BooleanProperty;
 
-  public readonly isTraversibleProperty: TReadOnlyProperty<boolean>;
+  public readonly isTraversableProperty: TReadOnlyProperty<boolean>;
 
   public constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, circuit: Circuit | null, providedOptions?: FuseOptions ) {
     const options = optionize<FuseOptions, SelfOptions, FixedCircuitElementOptions>()( {
@@ -66,7 +66,7 @@ export default class Fuse extends FixedCircuitElement {
       phetioFeatured: true
     } );
 
-    this.isTraversibleProperty = DerivedProperty.not( this.isTrippedProperty );
+    this.isTraversableProperty = DerivedProperty.not( this.isTrippedProperty );
 
     this.resistanceProperty = new NumberProperty( CCKCConstants.MINIMUM_RESISTANCE );
 

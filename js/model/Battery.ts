@@ -34,7 +34,7 @@ export default class Battery extends VoltageSource {
   public static readonly HIGH_VOLTAGE_DECIMAL_PLACES = 0;
   public readonly isReversibleProperty: BooleanProperty;
 
-  public readonly isTraversibleProperty = new BooleanProperty( true );
+  public readonly isTraversableProperty = new BooleanProperty( true );
 
   public constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, batteryType: BatteryType,
                       tandem: Tandem, providedOptions?: BatteryOptions ) {

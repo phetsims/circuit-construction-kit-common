@@ -65,7 +65,7 @@ export default class LinearTransientAnalysis {
 
       if ( inLoop ) {
         participants.push( circuitElement );
-        if ( !circuitElement.isTraversibleProperty.value ) {
+        if ( !circuitElement.isTraversableProperty.value ) {
 
           // Cannot participate in the MNA
         }
@@ -252,7 +252,7 @@ export default class LinearTransientAnalysis {
 
         // compute end voltage from start voltage
 
-        if ( !circuitElement.isTraversibleProperty.value ) {
+        if ( !circuitElement.isTraversableProperty.value ) {
 
           // no-op
         }
@@ -289,7 +289,7 @@ export default class LinearTransientAnalysis {
       circuit.circuitElements.forEach( circuitElement => {
         if ( circuitElement.containsVertex( vertex ) ) {
           const opposite = circuitElement.getOppositeVertex( vertex );
-          if ( !visited.includes( opposite ) && circuitElement.isTraversibleProperty.value ) {
+          if ( !visited.includes( opposite ) && circuitElement.isTraversableProperty.value ) {
             visit( vertex, circuitElement, opposite );
             dfs( opposite, visit );
           }

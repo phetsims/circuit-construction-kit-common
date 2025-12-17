@@ -33,7 +33,7 @@ export default class Switch extends FixedCircuitElement {
   // whether the switch is closed (and current can flow through it)
   public readonly isClosedProperty: Property<boolean>;
 
-  public readonly isTraversibleProperty: TReadOnlyProperty<boolean>;
+  public readonly isTraversableProperty: TReadOnlyProperty<boolean>;
 
   public constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, circuit: Circuit | null ) {
 
@@ -56,7 +56,7 @@ export default class Switch extends FixedCircuitElement {
       phetioFeatured: true
     } );
 
-    this.isTraversibleProperty = this.isClosedProperty;
+    this.isTraversableProperty = this.isClosedProperty;
 
     this.isClosedProperty.link( closed => {
       this.resistanceProperty.value = closed ? 0 : CCKCConstants.MAX_RESISTANCE;

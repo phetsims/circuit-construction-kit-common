@@ -32,7 +32,7 @@ export default class Capacitor extends DynamicCircuitElement {
   public static readonly NUMBER_OF_DECIMAL_PLACES = CCKCQueryParameters.capacitorNumberDecimalPlaces;
   public static readonly CAPACITANCE_DEFAULT = CCKCQueryParameters.capacitanceDefault;
 
-  public readonly isTraversibleProperty = new BooleanProperty( true );
+  public readonly isTraversableProperty = new BooleanProperty( true );
 
   public constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: CapacitorOptions ) {
     const options = optionize<CapacitorOptions, SelfOptions, DynamicCircuitElementOptions>()( {

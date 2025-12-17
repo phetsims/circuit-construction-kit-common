@@ -74,7 +74,7 @@ export default class LightBulb extends FixedCircuitElement {
   public readonly resistanceProperty: NumberProperty;
   private readonly viewTypeProperty: Property<CircuitElementViewType>;
 
-  public readonly isTraversibleProperty = new BooleanProperty( true );
+  public readonly isTraversableProperty = new BooleanProperty( true );
 
   public static createAtPosition( startVertex: Vertex,
                                   endVertex: Vertex,

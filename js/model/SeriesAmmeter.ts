@@ -22,7 +22,7 @@ type SeriesAmmeterOptions = SelfOptions & FixedCircuitElementOptions;
 
 export default class SeriesAmmeter extends FixedCircuitElement {
 
-  public readonly isTraversibleProperty = new BooleanProperty( true );
+  public readonly isTraversableProperty = new BooleanProperty( true );
 
   // the resistance in ohms.  A constant, but modeled as a property for uniformity with other resistive elements.
   public readonly resistanceProperty: NumberProperty;

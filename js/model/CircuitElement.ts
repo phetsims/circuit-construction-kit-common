@@ -145,7 +145,7 @@ export default abstract class CircuitElement extends PhetioObject {
    * Many algorithms, such as voltage computation, MNA solving, etc. need to know whether the circuit element participates
    * in the circuit. For instance, an open switch or tripped fuse should not be part of the circuit graph.
    */
-  public abstract readonly isTraversibleProperty: TReadOnlyProperty<boolean>;
+  public abstract readonly isTraversableProperty: TReadOnlyProperty<boolean>;
 
   public readonly focusEmitter = new Emitter();
 

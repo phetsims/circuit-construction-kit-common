@@ -35,7 +35,7 @@ export default class Inductor extends DynamicCircuitElement {
   public static readonly INDUCTANCE_RANGE = new Range( CCKCQueryParameters.inductanceMin, CCKCQueryParameters.inductanceMax );
   public static readonly INDUCTANCE_NUMBER_OF_DECIMAL_PLACES = CCKCQueryParameters.inductorNumberDecimalPlaces;
 
-  public readonly isTraversibleProperty = new BooleanProperty( true );
+  public readonly isTraversableProperty = new BooleanProperty( true );
 
   public constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: InductorOptions ) {
     const options = optionize<InductorOptions, SelfOptions, DynamicCircuitElementOptions>()( {
