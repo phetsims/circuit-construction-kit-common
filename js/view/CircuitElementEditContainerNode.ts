@@ -493,16 +493,12 @@ export default class CircuitElementEditContainerNode extends Node {
           );
         }
         else if ( selectedCircuitElement instanceof Switch ) {
-          editNode = new HBox( {
-            children: [
-              switchReadoutNode,
-              switchToggleSwitch,
-              disconnectButtonContainer,
-              trashButtonContainer
-            ],
-            spacing: 25,
-            align: 'bottom'
-          } );
+          editNode = new EditPanel( [
+            switchReadoutNode,
+            switchToggleSwitch,
+            disconnectButtonContainer,
+            trashButtonContainer
+          ] );
         }
         else if ( selectedCircuitElement instanceof SeriesAmmeter || selectedCircuitElement instanceof Wire ) {
 
