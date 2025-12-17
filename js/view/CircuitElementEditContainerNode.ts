@@ -20,7 +20,6 @@ import Node, { type NodeOptions } from '../../../scenery/js/nodes/Node.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import Panel from '../../../sun/js/Panel.js';
 import SunConstants from '../../../sun/js/SunConstants.js';
-import ToggleSwitch from '../../../sun/js/ToggleSwitch.js';
 import isSettingPhetioStateProperty from '../../../tandem/js/isSettingPhetioStateProperty.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -52,6 +51,7 @@ import ClearDynamicsButton from './ClearDynamicsButton.js';
 import FuseRepairButton from './FuseRepairButton.js';
 import PhaseShiftControl from './PhaseShiftControl.js';
 import SwitchReadoutNode from './SwitchReadoutNode.js';
+import SwitchToggleButton from './SwitchToggleButton.js';
 
 const capacitanceStringProperty = CircuitConstructionKitCommonFluent.capacitanceStringProperty;
 const capacitanceUnitsStringProperty = CircuitConstructionKitCommonFluent.capacitanceUnitsStringProperty;
@@ -64,8 +64,6 @@ const inductanceUnitsStringProperty = CircuitConstructionKitCommonFluent.inducta
 const resistanceOhmsValuePatternStringProperty = CircuitConstructionKitCommonFluent.resistanceOhmsValuePatternStringProperty;
 const resistanceStringProperty = CircuitConstructionKitCommonFluent.resistanceStringProperty;
 const tapCircuitElementToEditStringProperty = CircuitConstructionKitCommonFluent.tapCircuitElementToEditStringProperty;
-const theSwitchIsClosedStringProperty = CircuitConstructionKitCommonFluent.theSwitchIsClosedStringProperty;
-const theSwitchIsOpenStringProperty = CircuitConstructionKitCommonFluent.theSwitchIsOpenStringProperty;
 const voltageStringProperty = CircuitConstructionKitCommonFluent.voltageStringProperty;
 const voltageVoltsValuePatternStringProperty = CircuitConstructionKitCommonFluent.voltageVoltsValuePatternStringProperty;
 
@@ -193,12 +191,9 @@ export default class CircuitElementEditContainerNode extends Node {
     } );
 
     const switchReadoutNode = new SwitchReadoutNode( circuit, tandem.createTandem( 'switchReadoutNode' ) );
-    const switchIsClosedControlProperty = createSingletonAdapterProperty( false, Switch, circuit, ( c: Switch ) => c.isClosedProperty );
-    const switchToggleSwitch = new ToggleSwitch( switchIsClosedControlProperty, false, true, {
-      tandem: tandem.createTandem( 'switchToggleSwitch' ),
-      accessibleName: switchIsClosedControlProperty.derived( closed => closed ? 'open switch' : 'close switch' ),
-      accessibleContextResponseLeftValue: theSwitchIsOpenStringProperty,
-      accessibleContextResponseRightValue: theSwitchIsClosedStringProperty
+    const switchToggleButton = new SwitchToggleButton( circuit, {
+      tandem: tandem.createTandem( 'switchToggleButton' ),
+      maxWidth: trashButton.width
     } );
 
     const listener = ( isDisposable: boolean ) => trashButtonContainer.setVisible( isDisposable );
@@ -495,7 +490,7 @@ export default class CircuitElementEditContainerNode extends Node {
         else if ( selectedCircuitElement instanceof Switch ) {
           editNode = new EditPanel( [
             switchReadoutNode,
-            switchToggleSwitch,
+            switchToggleButton,
             disconnectButtonContainer,
             trashButtonContainer
           ] );

@@ -182,6 +182,8 @@ addToMapIfDefined( 'a11y_viewRadioButtonGroup_schematicRadioButton_accessibleHel
 addToMapIfDefined( 'a11y_viewRadioButtonGroup_schematicRadioButton_accessibleContextResponse', 'a11y.viewRadioButtonGroup.schematicRadioButton.accessibleContextResponseStringProperty' );
 addToMapIfDefined( 'a11y_circuitComponentToolNode_accessibleHelpText', 'a11y.circuitComponentToolNode.accessibleHelpTextStringProperty' );
 addToMapIfDefined( 'a11y_reverseBatteryButton_accessibleName', 'a11y.reverseBatteryButton.accessibleNameStringProperty' );
+addToMapIfDefined( 'a11y_switchToggleButton_openSwitch', 'a11y.switchToggleButton.openSwitchStringProperty' );
+addToMapIfDefined( 'a11y_switchToggleButton_closeSwitch', 'a11y.switchToggleButton.closeSwitchStringProperty' );
 addToMapIfDefined( 'a11y_disconnectButton_accessibleName', 'a11y.disconnectButton.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_trashButton_accessibleName', 'a11y.trashButton.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_circuitComponent_accessibleName', 'a11y.circuitComponent.accessibleNameStringProperty' );
@@ -445,6 +447,10 @@ const CircuitConstructionKitCommonFluent = {
     },
     reverseBatteryButton: {
       accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_reverseBatteryButton_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.reverseBatteryButton.accessibleNameStringProperty' ) )
+    },
+    switchToggleButton: {
+      openSwitchStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_switchToggleButton_openSwitch', _.get( CircuitConstructionKitCommonStrings, 'a11y.switchToggleButton.openSwitchStringProperty' ) ),
+      closeSwitchStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_switchToggleButton_closeSwitch', _.get( CircuitConstructionKitCommonStrings, 'a11y.switchToggleButton.closeSwitchStringProperty' ) )
     },
     disconnectButton: {
       accessibleName: new FluentPattern<{ capacitance: FluentVariable, displayMode: 'name' | 'value' | 'count' | 'countAndValue' | TReadOnlyProperty<'name' | 'value' | 'count' | 'countAndValue'>, hasPosition: 'true' | 'false' | TReadOnlyProperty<'true' | 'false'>, inductance: FluentVariable, position: FluentVariable, resistance: FluentVariable, switchState: 'closed' | 'open' | TReadOnlyProperty<'closed' | 'open'>, total: FluentVariable, type: 'resistor' | 'battery' | 'lightBulb' | 'capacitor' | 'inductor' | 'acSource' | 'fuse' | 'switch' | 'voltmeter' | 'ammeter' | 'stopwatch' | 'wire' | 'false' | TReadOnlyProperty<'resistor' | 'battery' | 'lightBulb' | 'capacitor' | 'inductor' | 'acSource' | 'fuse' | 'switch' | 'voltmeter' | 'ammeter' | 'stopwatch' | 'wire' | 'false'>, voltage: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_disconnectButton_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.disconnectButton.accessibleNameStringProperty' ), [{"name":"capacitance"},{"name":"displayMode","variants":["name","value","count","countAndValue"]},{"name":"hasPosition","variants":["true","false"]},{"name":"inductance"},{"name":"position"},{"name":"resistance"},{"name":"switchState","variants":["closed","open"]},{"name":"total"},{"name":"type","variants":["resistor","battery","lightBulb","capacitor","inductor","acSource","fuse","switch","voltmeter","ammeter","stopwatch","wire","false"]},{"name":"voltage"}] )

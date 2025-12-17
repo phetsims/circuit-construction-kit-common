@@ -575,6 +575,14 @@
         "value": "Reverse Battery Direction"
       }
     },
+    "switchToggleButton": {
+      "openSwitch": {
+        "value": "Open Switch"
+      },
+      "closeSwitch": {
+        "value": "Close Switch"
+      }
+    },
     "disconnectButton": {
       "accessibleName": {
         "value": "Disconnect { a11y_circuitComponent_accessibleName }"
