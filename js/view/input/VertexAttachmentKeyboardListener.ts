@@ -18,27 +18,28 @@ export default class VertexAttachmentKeyboardListener extends AttachmentKeyboard
   public constructor( vertexNode: VertexNode, circuitNode: CircuitNode, vertex: Vertex ) {
     const circuit = circuitNode.circuit;
 
+    const getItems = () => {
+      const orderedVertices = CircuitDescription.getOrderedVertices( circuit );
+      const neighborVertices = circuit.getNeighboringVertices( vertex );
+      const attachableVertices = orderedVertices.filter( v => v.attachableProperty.get() &&
+                                                              v !== vertex &&
+                                                              !neighborVertices.includes( v ) &&
+                                                              !circuit.findAllFixedVertices( vertex ).includes( v ) &&
+
+                                                              // A wire vertex cannot double connect to an object, creating a tiny short circuit
+                                                              _.intersection( circuit.getNeighboringVertices( v ), neighborVertices ).length === 0 );
+
+      return attachableVertices.map( attachableVertex => {
+        return {
+          value: attachableVertex as Vertex | null,
+          createNode: () => new Text( circuitNode.getVertexNode( attachableVertex ).attachmentName )
+        };
+      } );
+    };
     super( {
       triggerNode: vertexNode,
       circuitNode: circuitNode,
-      getItems: () => {
-        const orderedVertices = CircuitDescription.getOrderedVertices( circuit );
-        const neighborVertices = circuit.getNeighboringVertices( vertex );
-        const attachableVertices = orderedVertices.filter( v => v.attachableProperty.get() &&
-                                                                v !== vertex &&
-                                                                !neighborVertices.includes( v ) &&
-                                                                !circuit.findAllFixedVertices( vertex ).includes( v ) &&
-
-                                                                // A wire vertex cannot double connect to an object, creating a tiny short circuit
-                                                                _.intersection( circuit.getNeighboringVertices( v ), neighborVertices ).length === 0 );
-
-        return attachableVertices.map( attachableVertex => {
-          return {
-            value: attachableVertex as Vertex | null,
-            createNode: () => new Text( circuitNode.getVertexNode( attachableVertex ).attachmentName )
-          };
-        } );
-      },
+      getItems: getItems,
       getInitialPosition: () => vertex.positionProperty.value.copy(),
       getHighlightPosition: selectedVertex => selectedVertex ? selectedVertex.positionProperty.value : vertex.positionProperty.value,
       applySelection: ( _selection, targetPosition ) => {
@@ -57,6 +58,18 @@ export default class VertexAttachmentKeyboardListener extends AttachmentKeyboard
         const sameGroupVertices = circuit.findAllConnectedVertices( vertex );
         const sameGroupItem = availableItems.find( item => item.value && sameGroupVertices.includes( item.value ) );
         return sameGroupItem?.value ?? null;
+      }
+    } );
+
+    // Change the accessible role description based on whether there are any attachable vertices, see https://github.com/phetsims/circuit-construction-kit-common/issues/1129#issuecomment-3666436903
+    circuit.circuitChangedEmitter.addListener( () => {
+      const items = getItems();
+
+      if ( items.length === 0 ) {
+        vertexNode.accessibleRoleDescription = 'movable';
+      }
+      else {
+        vertexNode.accessibleRoleDescription = 'listbox button';
       }
     } );
   }
