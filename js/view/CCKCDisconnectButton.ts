@@ -39,10 +39,20 @@ export default class CCKCDisconnectButton extends CCKCRoundPushButton {
     } );
 
     // The button is enabled when the selected circuit element is connected to other elements
+    // and the connected vertices have isCuttableProperty = true
     const enabledProperty = new DerivedProperty( [ circuit.selectionProperty ], selection => {
       if ( selection instanceof CircuitElement ) {
-        // isSingle returns true when the element is NOT connected to anything else
-        return !circuit.isSingle( selection );
+        const startVertex = selection.startVertexProperty.value;
+        const endVertex = selection.endVertexProperty.value;
+
+        const startNeighbors = circuit.getNeighborCircuitElements( startVertex );
+        const endNeighbors = circuit.getNeighborCircuitElements( endVertex );
+
+        // A vertex can be cut if it's connected (more than 1 neighbor) AND its isCuttableProperty is true
+        const startCanBeCut = startNeighbors.length > 1 && startVertex.isCuttableProperty.value;
+        const endCanBeCut = endNeighbors.length > 1 && endVertex.isCuttableProperty.value;
+
+        return startCanBeCut || endCanBeCut;
       }
       return false;
     } );
@@ -82,17 +92,19 @@ export default class CCKCDisconnectButton extends CCKCRoundPushButton {
           const startVertex = circuitElement.startVertexProperty.value;
           const endVertex = circuitElement.endVertexProperty.value;
 
-          // Check if the start vertex is connected to other elements
+          // Check if the start vertex is connected to other elements and can be cut
           const startNeighbors = circuit.getNeighborCircuitElements( startVertex );
-          if ( startNeighbors.length > 1 ) {
+          if ( startNeighbors.length > 1 && startVertex.isCuttableProperty.value ) {
+
             // Create a new vertex at the same position for this circuit element
             const newStartVertex = circuit.vertexGroup.createNextElement( startVertex.positionProperty.value );
             circuitElement.startVertexProperty.value = newStartVertex;
           }
 
-          // Check if the end vertex is connected to other elements
+          // Check if the end vertex is connected to other elements and can be cut
           const endNeighbors = circuit.getNeighborCircuitElements( endVertex );
-          if ( endNeighbors.length > 1 ) {
+          if ( endNeighbors.length > 1 && endVertex.isCuttableProperty.value ) {
+
             // Create a new vertex at the same position for this circuit element
             const newEndVertex = circuit.vertexGroup.createNextElement( endVertex.positionProperty.value );
             circuitElement.endVertexProperty.value = newEndVertex;

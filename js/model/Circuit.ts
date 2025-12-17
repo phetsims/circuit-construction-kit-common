@@ -334,6 +334,9 @@ export default class Circuit extends PhetioObject {
       // Observe the change in position of the vertices, to update the ammeter and voltmeter
       vertex.positionProperty.link( emitCircuitChanged );
 
+      // When isCuttableProperty changes, emit circuitChangedEmitter so the disconnect button updates
+      vertex.isCuttableProperty.link( emitCircuitChanged );
+
       const filtered = this.vertexGroup.filter( candidateVertex => vertex === candidateVertex );
       affirm( filtered.length === 1, 'should only have one copy of each vertex' );
 
