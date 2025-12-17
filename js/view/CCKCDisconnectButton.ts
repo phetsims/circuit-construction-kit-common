@@ -9,7 +9,6 @@
  */
 
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
-import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import scissorsShape from '../../../sherpa/js/fontawesome-4/scissorsShape.js';
@@ -39,19 +38,17 @@ export default class CCKCDisconnectButton extends CCKCRoundPushButton {
       maxWidth: 28
     } );
 
-    const circuitChangeCountProperty = new NumberProperty( 0 );
-    circuit.circuitChangedEmitter.addListener( () => {
-      circuitChangeCountProperty.value++;
-    } );
-
     // The button is enabled when the selected circuit element is connected to other elements
-    const enabledProperty = new DerivedProperty( [ circuit.selectionProperty, circuitChangeCountProperty ], selection => {
+    const enabledProperty = new DerivedProperty( [ circuit.selectionProperty ], selection => {
       if ( selection instanceof CircuitElement ) {
         // isSingle returns true when the element is NOT connected to anything else
         return !circuit.isSingle( selection );
       }
       return false;
     } );
+
+    // Recompute when circuit topology changes (elements connected/disconnected)
+    circuit.circuitChangedEmitter.addListener( () => enabledProperty.recomputeDerivation() );
 
     super( {
       accessibleName: CircuitConstructionKitCommonFluent.a11y.disconnectButton.accessibleName.createProperty( {
