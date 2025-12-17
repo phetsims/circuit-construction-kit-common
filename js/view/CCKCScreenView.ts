@@ -614,6 +614,25 @@ export default class CCKCScreenView extends ScreenView {
         }
       }
     } );
+
+    KeyboardListener.createGlobal( this, {
+      keyStringProperties: CCKCScreenView.DESELECT_CIRCUIT_ELEMENT_HOTKEY_DATA.keyStringProperties,
+      fire: () => {
+        const selection = model.circuit.selectionProperty.value;
+        if ( selection instanceof CircuitElement ) {
+
+          const originalFocusedNode = getPDOMFocusedNode();
+
+          model.circuit.selectionProperty.value = null;
+
+          // If focus was in the edit controls, then focus may be lost. In that case, restore focus to the CircuitElementNode
+          if ( getPDOMFocusedNode() === null && originalFocusedNode !== null ) {
+            const circuitElementNode = this.circuitNode.getCircuitElementNode( selection );
+            circuitElementNode.focus();
+          }
+        }
+      }
+    } );
   }
 
   /**
@@ -716,6 +735,13 @@ export default class CCKCScreenView extends ScreenView {
     keys: [ 'alt+c' ],
     repoName: circuitConstructionKitCommon.name,
     keyboardHelpDialogLabelStringProperty: CircuitConstructionKitCommonFluent.keyboardHelpDialog.focus.focusConstructionAreaStringProperty,
+    global: true
+  } );
+
+  public static readonly DESELECT_CIRCUIT_ELEMENT_HOTKEY_DATA = new HotkeyData( {
+    keys: [ 'escape' ],
+    repoName: circuitConstructionKitCommon.name,
+    binderName: 'Deselect circuit element',
     global: true
   } );
 }
