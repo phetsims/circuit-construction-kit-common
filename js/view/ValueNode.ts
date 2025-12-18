@@ -134,7 +134,7 @@ export default class ValueNode extends Panel {
               circuitElement instanceof LightBulb ) {
       readoutValueNode = createText( tandem.createTandem( 'resistanceText' ) );
 
-      // Items like the hand and dog and high resistance resistor shouldn't show ".0"
+      // Items like the hand and high resistance resistor shouldn't show ".0"
 
       const resistanceMultilink = Multilink.multilink( [ circuitElement.resistanceProperty, resistanceOhmsSymbolStringProperty ], ( resistance, resistanceString ) => {
         ( readoutValueNode as Text ).string = StringUtils.fillIn( resistanceString, {
@@ -148,7 +148,7 @@ export default class ValueNode extends Panel {
     else if ( circuitElement instanceof Capacitor ) {
       readoutValueNode = createText( tandem.createTandem( 'capacitorText' ) );
 
-      // Items like the hand and dog and high resistance resistor shouldn't show ".0"
+      // Items like the hand and high resistance resistor shouldn't show ".0"
 
       const capacitanceMultilink = Multilink.multilink( [ circuitElement.capacitanceProperty, capacitanceFaradsSymbolStringProperty ], ( capacitance, capacitanceString ) => {
         ( readoutValueNode as Text ).string = StringUtils.fillIn( capacitanceString, {

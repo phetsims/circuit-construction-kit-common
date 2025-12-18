@@ -59,7 +59,6 @@ const capacitorStringProperty = CircuitConstructionKitCommonFluent.capacitorStri
 const inductorStringProperty = CircuitConstructionKitCommonFluent.inductorStringProperty;
 const batteryStringProperty = CircuitConstructionKitCommonFluent.batteryStringProperty;
 const coinStringProperty = CircuitConstructionKitCommonFluent.coinStringProperty;
-const dogStringProperty = CircuitConstructionKitCommonFluent.dogStringProperty;
 const dollarBillStringProperty = CircuitConstructionKitCommonFluent.dollarBillStringProperty;
 const eraserStringProperty = CircuitConstructionKitCommonFluent.eraserStringProperty;
 const fuseStringProperty = CircuitConstructionKitCommonFluent.fuseStringProperty;
@@ -465,17 +464,6 @@ export default class CircuitElementToolFactory {
       resistorType: ResistorType.HAND,
       tandemName: 'handToolNode',
       labelStringProperty: handStringProperty,
-      lifelikeIconHeight: 30
-    } );
-  }
-
-  // Same docs as for createPaperClipToolNode
-  public createDogToolNode( tandem: Tandem ): CircuitElementToolNode {
-    return this.createResistorToolNode( tandem, this.circuit.householdObjectGroup, {
-      count: 1,
-      resistorType: ResistorType.DOG,
-      tandemName: 'dogToolNode',
-      labelStringProperty: dogStringProperty,
       lifelikeIconHeight: 30
     } );
   }

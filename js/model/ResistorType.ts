@@ -26,9 +26,6 @@ export default class ResistorType extends EnumerationValue {
   public static readonly PENCIL = ResistorType.fixed( 25, false, CCKCConstants.PENCIL_LENGTH );
   public static readonly ERASER = ResistorType.fixed( LARGE_RESISTANCE, false, CCKCConstants.ERASER_LENGTH );
   public static readonly HAND = ResistorType.fixed( 100000, false, CCKCConstants.HAND_LENGTH, 15 );
-
-  // Adjust the dog so the charges travel along the tail/legs, see https://github.com/phetsims/circuit-construction-kit-common/issues/364
-  public static readonly DOG = ResistorType.fixed( 100000, false, CCKCConstants.DOG_LENGTH, -40 );
   public static readonly DOLLAR_BILL = ResistorType.fixed( LARGE_RESISTANCE, false, CCKCConstants.DOLLAR_BILL_LENGTH );
 
   public static readonly enumeration = new Enumeration( ResistorType );

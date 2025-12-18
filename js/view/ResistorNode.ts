@@ -19,7 +19,6 @@ import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
 import Color from '../../../scenery/js/util/Color.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import coin_png from '../../images/coin_png.js';
-import dog_png from '../../images/dog_png.js';
 import dollar_png from '../../images/dollar_png.js';
 import eraser_png from '../../images/eraser_png.js';
 import hand_png from '../../images/hand_png.js';
@@ -69,7 +68,6 @@ RESISTOR_IMAGE_MAP.set( ResistorType.ERASER, eraser_png );
 RESISTOR_IMAGE_MAP.set( ResistorType.HAND, hand_png );
 RESISTOR_IMAGE_MAP.set( ResistorType.EXTREME_RESISTOR, resistorHigh_png );
 RESISTOR_IMAGE_MAP.set( ResistorType.RESISTOR, resistor_png );
-RESISTOR_IMAGE_MAP.set( ResistorType.DOG, dog_png );
 RESISTOR_IMAGE_MAP.set( ResistorType.DOLLAR_BILL, dollar_png );
 
 export default class ResistorNode extends FixedCircuitElementNode {

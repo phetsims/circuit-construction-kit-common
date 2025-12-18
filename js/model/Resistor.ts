@@ -57,7 +57,9 @@ export default class Resistor extends FixedCircuitElement {
    */
   public constructor( startVertex: Vertex, endVertex: Vertex, resistorType: ResistorType, tandem: Tandem, providedOptions?: ResistorOptions ) {
     const options = optionize<ResistorOptions, SelfOptions, FixedCircuitElementOptions>()( {
-      isFlammable: true, // All resistors are flammable except for the dog, which automatically disconnects at high current.
+
+      // TODO: Remove isFlammable since everything except the resistor dog is flammable. See https://github.com/phetsims/circuit-construction-kit-common/issues/882
+      isFlammable: true,
       phetioType: Resistor.ResistorIO,
       numberOfDecimalPlaces: resistorType === ResistorType.RESISTOR ? 1 : 0
     }, providedOptions );

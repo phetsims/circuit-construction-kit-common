@@ -31,7 +31,6 @@ const HOUSEHOLD_RESISTOR_TYPES = [
   ResistorType.PENCIL,
   ResistorType.ERASER,
   ResistorType.HAND,
-  ResistorType.DOG,
   ResistorType.DOLLAR_BILL
 ];
 
@@ -48,7 +47,6 @@ const getDescriptionType = ( circuitElement: CircuitElement ): string => {
     if ( resistorType === ResistorType.PENCIL ) { return 'pencil'; }
     if ( resistorType === ResistorType.ERASER ) { return 'eraser'; }
     if ( resistorType === ResistorType.HAND ) { return 'hand'; }
-    if ( resistorType === ResistorType.DOG ) { return 'dog'; }
     if ( resistorType === ResistorType.DOLLAR_BILL ) { return 'dollarBill'; }
   }
   return circuitElement.type;
@@ -111,8 +109,6 @@ const getCircuitElementTypeLabel = ( type: CircuitElementType | string ): string
       return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypeLabels.eraserStringProperty.value;
     case 'hand':
       return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypeLabels.handStringProperty.value;
-    case 'dog':
-      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypeLabels.dogStringProperty.value;
     case 'dollarBill':
       return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypeLabels.dollarBillStringProperty.value;
     default:
@@ -161,8 +157,6 @@ const getPluralTypeLabel = ( type: CircuitElementType | string ): string => {
       return 'Erasers';
     case 'hand':
       return 'Hands';
-    case 'dog':
-      return 'Dogs';
     case 'dollarBill':
       return 'Dollar Bills';
     default:

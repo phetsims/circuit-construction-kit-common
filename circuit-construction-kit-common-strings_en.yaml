@@ -137,7 +137,6 @@ a11y:
       pencil:     Pencil
       eraser:     Eraser
       hand:       Hand
-      dog:        Dog
       dollarBill: Dollar Bill
     connectionPoint:              Connection Point
     disconnected:                 disconnected
@@ -404,7 +403,6 @@ a11y:
         pencil:     Pencil
         eraser:     Eraser
         hand:       Hand
-        dog:        Dog
         dollarBill: Dollar Bill
     accessibleHelpText:
       select_type:

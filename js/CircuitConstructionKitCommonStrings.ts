@@ -151,7 +151,6 @@ type StringsType = {
         'pencilStringProperty': LocalizedStringProperty;
         'eraserStringProperty': LocalizedStringProperty;
         'handStringProperty': LocalizedStringProperty;
-        'dogStringProperty': LocalizedStringProperty;
         'dollarBillStringProperty': LocalizedStringProperty;
       };
       'connectionPointStringProperty': LocalizedStringProperty;
