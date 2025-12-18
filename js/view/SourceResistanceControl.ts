@@ -64,7 +64,9 @@ export default class SourceResistanceControl extends VBox {
       phetioVisiblePropertyInstrumented: false,
       tandem: tandem.createTandem( 'slider' ),
 
-      accessibleName: batteryResistanceControlString
+      accessibleName: batteryResistanceControlString,
+
+      createAriaValueText: ( value: number ) => `${value} ohms`
     } );
     slider.addMajorTick( range.min, createLabel( CircuitConstructionKitCommonFluent.tinyStringProperty, tandem.createTandem( 'tinyLabelText' ) ) );
     slider.addMajorTick( midpoint );

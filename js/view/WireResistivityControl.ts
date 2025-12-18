@@ -8,6 +8,7 @@
  */
 
 import type Property from '../../../axon/js/Property.js';
+import { toFixedNumber } from '../../../dot/js/util/toFixedNumber.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
 import type AlignGroup from '../../../scenery/js/layout/constraints/AlignGroup.js';
 import VBox from '../../../scenery/js/layout/nodes/VBox.js';
@@ -46,7 +47,8 @@ export default class WireResistivityControl extends VBox {
       shiftKeyboardStep: CCKCConstants.WIRE_RESISTIVITY_RANGE.getLength() / 100,
       phetioVisiblePropertyInstrumented: false,
       tandem: tandem.createTandem( 'slider' ),
-      accessibleName: wireResistivityStringProperty
+      accessibleName: wireResistivityStringProperty,
+      createAriaValueText: ( value: number ) => `${value < 1E-4 ? value : toFixedNumber( value, 4 )} ohm-meters`
     } );
 
     slider.addMajorTick( 0, new Text( tinyStringProperty, TICK_LABEL_TEXT_OPTIONS ) );
