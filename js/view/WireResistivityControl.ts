@@ -9,7 +9,6 @@
 
 import type Property from '../../../axon/js/Property.js';
 import { toFixed } from '../../../dot/js/util/toFixed.js';
-import { toFixedNumber } from '../../../dot/js/util/toFixedNumber.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
 import type AlignGroup from '../../../scenery/js/layout/constraints/AlignGroup.js';
 import VBox from '../../../scenery/js/layout/nodes/VBox.js';
