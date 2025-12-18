@@ -1,4 +1,4 @@
-# EEcircuit Multi-Group Solving and Double-Buffer Pattern
+# EEcircuit Multi-Group Solving and Callback Pattern
 
 This document explains how Circuit Construction Kit handles multiple disconnected circuit groups and asynchronous SPICE solving with EEcircuit.
 
@@ -32,106 +32,90 @@ const groupsWithVoltageSources = groups.filter( group =>
 );
 
 for ( const group of groupsWithVoltageSources ) {
-  this.solveGroup( group, allNonParticipants );
+  this.solveGroup( circuit, group );
 }
 ```
 
-## The Problem: Async Solving in a Sync World
+## Async Pattern: Callback-Based Direct Application
 
-PhET's `Circuit.step()` method is synchronous, but EEcircuit's SPICE solver is asynchronous (it runs WebAssembly). We cannot block the UI waiting for results.
+Since `Circuit.step()` is synchronous but EEcircuit's SPICE solver is asynchronous, we use a simple callback pattern:
 
-### Naive Approach (Broken)
-```
-Frame N:
-1. Clear cached results
-2. Queue new solves (async)
-3. Read cached results → EMPTY! (solves haven't completed yet)
-```
-
-This causes flickering or zero current display because results are cleared before new ones are ready.
-
-## Solution: Double-Buffer Pattern
-
-We use two result buffers:
-- **`currentResults`**: Stable buffer returned to callers. Contains completed results from the previous batch.
-- **`pendingResults`**: Accumulates results from the current batch of solves.
-
-When all solves in a batch complete, we swap: `currentResults = pendingResults`.
+1. **Request solve with callback**: Pass a callback function that will apply results when the solve completes
+2. **Queue processing**: Solves are processed sequentially (SPICE limitation)
+3. **Direct application**: When each solve completes, its callback immediately applies results to circuit elements
 
 ### Flow
 
 ```
-Frame 1:
-├─ startNewBatch() → reset counters, clear pendingResults (currentResults preserved)
-├─ requestSolveForGroup() × N → queue groups, increment groupsQueuedThisFrame
-├─ getAllCachedResults() → return currentResults (empty on first frame)
-└─ [async] solves complete → add to pendingResults, when all done: swap buffers
-
-Frame 2:
-├─ startNewBatch() → reset counters, clear pendingResults
-├─ requestSolveForGroup() × N → queue groups
-├─ getAllCachedResults() → return currentResults (Frame 1's completed results!)
-└─ [async] solves complete → swap buffers
-
-Frame 3+:
-└─ Same pattern: always returning previous frame's completed results
+Frame N:
+├─ For each group with voltage source:
+│   └─ requestSolve(batteries, resistors, callback)
+│       └─ callback captures: circuit, batteryMap, resistorMap, etc.
+└─ [async] When solve completes:
+    └─ callback(solution) → applies results directly to circuit elements
 ```
 
-### Implementation Details
+### Implementation
 
 **`EEcircuitSolverManager`** manages the async solving:
 
 ```typescript
-// Double-buffer for async results
-private currentResults: CachedSolveResult[] = [];
-private pendingResults: CachedSolveResult[] = [];
+public requestSolve(
+  batteries: MNABattery[],
+  resistors: MNAResistor[],
+  onSolved: (solution: MNASolution) => void
+): void {
+  // Validate circuit has complete loop
+  if (!this.hasCompletePath(batteries, resistors)) return;
 
-// Track batch completion
-private groupsQueuedThisFrame = 0;
-private groupsCompletedThisFrame = 0;
+  // Add to queue
+  const adapter = new EECircuitAdapter(batteries, resistors);
+  this.solveQueue.push({ adapter, onSolved });
 
-public startNewBatch(): void {
-  this.pendingGroups = [];
-  this.groupsQueuedThisFrame = 0;
-  this.groupsCompletedThisFrame = 0;
-  this.pendingResults = [];
-  // Note: currentResults is NOT cleared - it's still being read
+  // Process queue
+  this.processQueue();
 }
 
-public getAllCachedResults(): CachedSolveResult[] {
-  return this.currentResults;  // Always return stable buffer
-}
+private processQueue(): void {
+  if (this.isProcessing || this.solveQueue.length === 0) return;
 
-private processNextGroup(): void {
-  // ... solve async ...
-  this.solveAsync( adapter ).then( solution => {
-    this.pendingResults.push( { solution, ... } );
-    this.groupsCompletedThisFrame++;
+  this.isProcessing = true;
+  const { adapter, onSolved } = this.solveQueue.shift()!;
 
-    // Check if batch is complete
-    if ( this.groupsCompletedThisFrame === this.groupsQueuedThisFrame ) {
-      // Swap buffers
-      this.currentResults = this.pendingResults;
-      this.pendingResults = [];
-    }
+  this.solveAsync(adapter).then(solution => {
+    onSolved(solution);  // Apply results via callback
+    this.isProcessing = false;
+    this.processQueue();  // Process next
   });
 }
 ```
 
+**`LinearTransientAnalysis`** uses the callback to apply results:
+
+```typescript
+EEcircuitSolverManager.instance.requestSolve(
+  batteries,
+  resistors,
+  (solution: MNASolution) => {
+    this.applyEEcircuitSolution(circuit, solution, batteryMap, ...);
+  }
+);
+```
+
 ## Latency Characteristics
 
-- **First frame**: No results (currentResults is empty). Circuit shows 0 current.
-- **Subsequent frames**: Results are from the previous frame's solves.
-- **Latency**: At most 1 frame (~16ms at 60fps). Imperceptible for DC circuits.
+- **First frame**: Results may not be ready yet (solve in progress)
+- **Subsequent frames**: Results apply as soon as each solve completes
+- **Typical latency**: Depends on SPICE solve time, but usually < 1 frame
 
-For rapidly changing circuits (e.g., dragging a slider), there's a 1-frame delay before the display updates. This is acceptable for the simulation's use case.
+For rapidly changing circuits (e.g., dragging a slider), there may be a brief delay before the display updates. This is acceptable for the simulation's use case.
 
 ## Pre-validation: Complete Path Check
 
 Before sending a circuit to SPICE, we validate that it forms a complete loop. Open circuits (e.g., battery with only one terminal connected) cause SPICE singularity errors.
 
 ```typescript
-private hasCompletePath( batteries: MNABattery[], resistors: MNAResistor[] ): boolean {
+private hasCompletePath(batteries: MNABattery[], resistors: MNAResistor[]): boolean {
   // Build adjacency graph
   // For each battery, BFS to find if there's a path from one terminal
   // back to the other through other elements (not the battery itself)
@@ -143,18 +127,16 @@ This prevents sending unsolvable circuits to SPICE and avoids crashes.
 
 ## Files Involved
 
-- **`EEcircuitSolverManager.ts`**: Singleton managing async solves, double-buffering, and pre-validation
-- **`LinearTransientAnalysis.ts`**: Orchestrates per-group solving and applies results to circuit elements
+- **`EEcircuitSolverManager.ts`**: Singleton managing async solves with callback queue
+- **`LinearTransientAnalysis.ts`**: Orchestrates per-group solving and provides callbacks to apply results
 - **`EECircuitAdapter.ts`**: Converts PhET circuit model to SPICE netlist and parses results back
 - **`Circuit.ts`**: Provides `getGroups()` for connected component detection
 
-## Debugging
+## Architecture Summary
 
-Console logs are included for debugging (can be removed in production):
-```
-[EEcircuit] processNextGroup: isProcessing=false, pendingGroups=1, queued=1, completed=0
-[EEcircuit] Starting async solve...
-[EEcircuit] Solve completed, adding to pendingResults
-[EEcircuit] Batch complete! Swapping buffers: 1 results
-[EEcircuit] getAllCachedResults: 1 current, 0 pending, isProcessing=false
-```
+| Component | Responsibility |
+|-----------|---------------|
+| `EEcircuitSolverManager` | Queue management, async solve execution |
+| `LinearTransientAnalysis` | Build MNA elements, provide result callbacks |
+| `EECircuitAdapter` | Netlist generation, result parsing |
+| Callback closure | Captures context, applies results to circuit |

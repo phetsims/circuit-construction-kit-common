@@ -58,17 +58,14 @@ export default class LinearTransientAnalysis {
   }
 
   /**
-   * Solve using EEcircuit SPICE solver (async with buffering).
+   * Solve using EEcircuit SPICE solver (async with callbacks).
    * Currently supports DC circuits only (batteries + resistors).
    *
    * IMPORTANT: SPICE cannot handle disconnected subcircuits in a single solve.
    * We use circuit.getGroups() to find connected components and solve each one separately.
+   * When each solve completes, a callback applies results directly to circuit elements.
    */
   private static solveWithEEcircuit( circuit: Circuit ): void {
-
-    // Start a new batch of solves for this frame.
-    // This preserves currentResults until the new batch completes.
-    EEcircuitSolverManager.instance.startNewBatch();
 
     // Use circuit.getGroups() to find connected components.
     // Each group is solved separately by SPICE to avoid singularity errors.
@@ -90,9 +87,9 @@ export default class LinearTransientAnalysis {
       }
     }
 
-    // Request solve for each valid group
-    for ( const group of groupsWithVoltageSources ) {
-      this.solveGroup( group, allNonParticipants );
+    // Zero out non-participants immediately
+    for ( const element of allNonParticipants ) {
+      element.currentProperty.value = 0;
     }
 
     // If no groups have voltage sources, zero out everything
@@ -100,36 +97,26 @@ export default class LinearTransientAnalysis {
       for ( const circuitElement of circuit.circuitElements ) {
         circuitElement.currentProperty.value = 0;
       }
+      return;
     }
 
-    // Apply cached results from all groups
-    const cachedResults = EEcircuitSolverManager.instance.getAllCachedResults();
-    for ( const cachedResult of cachedResults ) {
-      this.applyEEcircuitSolution(
-        circuit,
-        cachedResult.solution,
-        cachedResult.batteryMap,
-        cachedResult.batteryMNAMap,
-        cachedResult.resistorMap,
-        cachedResult.nonParticipants
-      );
-    }
-
-    // Zero out non-participants
-    for ( const element of allNonParticipants ) {
-      element.currentProperty.value = 0;
+    // Request solve for each valid group (results applied via callback)
+    for ( const group of groupsWithVoltageSources ) {
+      this.solveGroup( circuit, group );
     }
   }
 
   /**
    * Build MNA elements and request a solve for a single connected component (group).
+   * When the solve completes, the callback applies results directly to circuit elements.
    */
-  private static solveGroup( group: CircuitGroup, nonParticipants: CircuitElement[] ): void {
+  private static solveGroup( circuit: Circuit, group: CircuitGroup ): void {
     const batteries: MNABattery[] = [];
     const resistors: MNAResistor[] = [];
     const batteryMap = new Map<string, VoltageSource>();
     const batteryMNAMap = new Map<string, MNABattery>();
     const resistorMap = new Map<string, CircuitElement>();
+    const nonParticipants: CircuitElement[] = [];
 
     for ( const circuitElement of group.circuitElements ) {
 
@@ -167,8 +154,19 @@ export default class LinearTransientAnalysis {
       }
     }
 
-    // Request solve for this group
-    EEcircuitSolverManager.instance.requestSolveForGroup( batteries, resistors, batteryMap, batteryMNAMap, resistorMap, nonParticipants );
+    // Skip if no batteries after filtering
+    if ( batteries.length === 0 ) {
+      return;
+    }
+
+    // Request solve with callback that applies results when complete
+    EEcircuitSolverManager.instance.requestSolve(
+      batteries,
+      resistors,
+      ( solution: MNASolution ) => {
+        this.applyEEcircuitSolution( circuit, solution, batteryMap, batteryMNAMap, resistorMap, nonParticipants );
+      }
+    );
   }
 
   /**
