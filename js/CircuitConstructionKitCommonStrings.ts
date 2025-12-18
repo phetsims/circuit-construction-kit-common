@@ -270,6 +270,12 @@ type StringsType = {
     'trashButton': {
       'accessibleNameStringProperty': LocalizedStringProperty;
     };
+    'sourceResistanceControl': {
+      'ariaValueTextStringProperty': LocalizedStringProperty;
+    };
+    'wireResistivityControl': {
+      'ariaValueTextStringProperty': LocalizedStringProperty;
+    };
     'circuitComponent': {
       'accessibleNameStringProperty': LocalizedStringProperty;
       'accessibleHelpTextStringProperty': LocalizedStringProperty;

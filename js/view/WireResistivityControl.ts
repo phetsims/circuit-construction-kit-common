@@ -8,6 +8,7 @@
  */
 
 import type Property from '../../../axon/js/Property.js';
+import { toFixed } from '../../../dot/js/util/toFixed.js';
 import { toFixedNumber } from '../../../dot/js/util/toFixedNumber.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
 import type AlignGroup from '../../../scenery/js/layout/constraints/AlignGroup.js';
@@ -23,6 +24,7 @@ import CCKCColors from './CCKCColors.js';
 const lotsStringProperty = CircuitConstructionKitCommonFluent.lotsStringProperty;
 const tinyStringProperty = CircuitConstructionKitCommonFluent.tinyStringProperty;
 const wireResistivityStringProperty = CircuitConstructionKitCommonFluent.wireResistivityStringProperty;
+const ariaValueTextPattern = CircuitConstructionKitCommonFluent.a11y.wireResistivityControl.ariaValueText;
 
 // constants
 const TICK_LABEL_TEXT_OPTIONS = { fontSize: 12, maxWidth: 45, fill: CCKCColors.textFillProperty };
@@ -48,7 +50,9 @@ export default class WireResistivityControl extends VBox {
       phetioVisiblePropertyInstrumented: false,
       tandem: tandem.createTandem( 'slider' ),
       accessibleName: wireResistivityStringProperty,
-      createAriaValueText: ( value: number ) => `${value < 1E-4 ? value : toFixedNumber( value, 4 )} ohm-meters`
+      createAriaValueText: value => ariaValueTextPattern.format( {
+        resistivity: value < 1E-4 ? value.toString() : toFixed( value, 4 )
+      } )
     } );
 
     slider.addMajorTick( 0, new Text( tinyStringProperty, TICK_LABEL_TEXT_OPTIONS ) );

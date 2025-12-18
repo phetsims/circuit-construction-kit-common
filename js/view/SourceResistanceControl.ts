@@ -66,7 +66,7 @@ export default class SourceResistanceControl extends VBox {
 
       accessibleName: batteryResistanceControlString,
 
-      createAriaValueText: ( value: number ) => `${value} ohms`
+      createAriaValueText: ( value: number ) => CircuitConstructionKitCommonFluent.a11y.sourceResistanceControl.ariaValueText.format( { resistance: value } )
     } );
     slider.addMajorTick( range.min, createLabel( CircuitConstructionKitCommonFluent.tinyStringProperty, tandem.createTandem( 'tinyLabelText' ) ) );
     slider.addMajorTick( midpoint );

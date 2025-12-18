@@ -307,6 +307,14 @@ a11y:
     accessibleName: Disconnect { a11y.circuitComponent.accessibleName }
   trashButton:
     accessibleName: Delete { a11y.circuitComponent.accessibleName }
+  sourceResistanceControl:
+    ariaValueText: >-
+                   { $resistance ->
+                     [one] { $resistance } ohm
+                    *[other] { $resistance } ohms
+                   }
+  wireResistivityControl:
+    ariaValueText: '{ $resistivity } ohm-meters'
   circuitComponent:
     accessibleName:
       select_type:
