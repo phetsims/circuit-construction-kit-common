@@ -15,6 +15,7 @@ import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js'
 import Capacitor from '../Capacitor.js';
 import type Circuit from '../Circuit.js';
 import type CircuitElement from '../CircuitElement.js';
+import type CircuitGroup from '../CircuitGroup.js';
 import Fuse from '../Fuse.js';
 import Inductor from '../Inductor.js';
 import LightBulb from '../LightBulb.js';
@@ -59,33 +60,81 @@ export default class LinearTransientAnalysis {
   /**
    * Solve using EEcircuit SPICE solver (async with buffering).
    * Currently supports DC circuits only (batteries + resistors).
+   *
+   * IMPORTANT: SPICE cannot handle disconnected subcircuits in a single solve.
+   * We use circuit.getGroups() to find connected components and solve each one separately.
    */
   private static solveWithEEcircuit( circuit: Circuit ): void {
 
-    // Build arrays of MNA elements for the solver
+    // Start a new batch of solves for this frame.
+    // This preserves currentResults until the new batch completes.
+    EEcircuitSolverManager.instance.startNewBatch();
+
+    // Use circuit.getGroups() to find connected components.
+    // Each group is solved separately by SPICE to avoid singularity errors.
+    const groups = circuit.getGroups();
+
+    // Filter to groups that have voltage sources (others have no current flow)
+    const groupsWithVoltageSources = groups.filter( group =>
+      group.circuitElements.some( element => element instanceof VoltageSource )
+    );
+
+    // Track all non-participants (elements not being solved)
+    const allNonParticipants: CircuitElement[] = [];
+
+    // Elements in groups without voltage sources are non-participants
+    for ( const group of groups ) {
+      const hasVoltageSource = group.circuitElements.some( e => e instanceof VoltageSource );
+      if ( !hasVoltageSource ) {
+        allNonParticipants.push( ...group.circuitElements );
+      }
+    }
+
+    // Request solve for each valid group
+    for ( const group of groupsWithVoltageSources ) {
+      this.solveGroup( group, allNonParticipants );
+    }
+
+    // If no groups have voltage sources, zero out everything
+    if ( groupsWithVoltageSources.length === 0 ) {
+      for ( const circuitElement of circuit.circuitElements ) {
+        circuitElement.currentProperty.value = 0;
+      }
+    }
+
+    // Apply cached results from all groups
+    const cachedResults = EEcircuitSolverManager.instance.getAllCachedResults();
+    for ( const cachedResult of cachedResults ) {
+      this.applyEEcircuitSolution(
+        circuit,
+        cachedResult.solution,
+        cachedResult.batteryMap,
+        cachedResult.batteryMNAMap,
+        cachedResult.resistorMap,
+        cachedResult.nonParticipants
+      );
+    }
+
+    // Zero out non-participants
+    for ( const element of allNonParticipants ) {
+      element.currentProperty.value = 0;
+    }
+  }
+
+  /**
+   * Build MNA elements and request a solve for a single connected component (group).
+   */
+  private static solveGroup( group: CircuitGroup, nonParticipants: CircuitElement[] ): void {
     const batteries: MNABattery[] = [];
     const resistors: MNAResistor[] = [];
+    const batteryMap = new Map<string, VoltageSource>();
+    const batteryMNAMap = new Map<string, MNABattery>();
+    const resistorMap = new Map<string, CircuitElement>();
 
-    // Maps to apply results back to circuit elements
-    const batteryMap = new Map<string, VoltageSource>(); // nodeId0_nodeId1 -> VoltageSource
-    const batteryMNAMap = new Map<string, MNABattery>(); // nodeId0_nodeId1 -> MNABattery (for current lookup)
-    const resistorMap = new Map<string, CircuitElement>(); // nodeId0_nodeId1 -> CircuitElement
+    for ( const circuitElement of group.circuitElements ) {
 
-    // Non-participants are elements that can't conduct (like open switches)
-    const nonParticipants: CircuitElement[] = [];
-
-    for ( const circuitElement of circuit.circuitElements ) {
-
-      // For EEcircuit/SPICE, we don't use the isInLoop() filter that the PhET MNA solver uses.
-      // SPICE is robust and can handle:
-      // - Connected components joined at a single point (like a bridge resistor)
-      // - Elements not in closed loops (they'll correctly get 0 current)
-      // - Complex topologies that the simpler PhET solver couldn't handle
-      //
-      // We only skip non-traversable elements (like open switches).
-
+      // Skip non-traversable elements (like open switches)
       if ( !circuitElement.isTraversibleProperty.value ) {
-        // Cannot participate (e.g., open switch)
         nonParticipants.push( circuitElement );
         continue;
       }
@@ -94,17 +143,11 @@ export default class LinearTransientAnalysis {
       const nodeId1 = circuitElement.endVertexProperty.value.index + '';
 
       if ( circuitElement instanceof VoltageSource ) {
-        // Create MNA battery (ideal, no internal resistance for now)
         const battery = new MNABattery( nodeId0, nodeId1, circuitElement.voltageProperty.value );
         batteries.push( battery );
         const key = `${nodeId0}_${nodeId1}`;
         batteryMap.set( key, circuitElement );
         batteryMNAMap.set( key, battery );
-
-        // If battery has internal resistance, add it as a resistor
-        if ( circuitElement.internalResistanceProperty.value > 0 ) {
-          // For internal resistance, we'd need a synthetic node - skip for MVP
-        }
       }
       else if ( circuitElement instanceof Resistor ||
                 circuitElement instanceof Wire ||
@@ -120,34 +163,12 @@ export default class LinearTransientAnalysis {
       }
       else if ( circuitElement instanceof Capacitor || circuitElement instanceof Inductor ) {
         // Skip capacitors/inductors for DC-only MVP
-        // Treat them as open circuits (don't add to solver)
         nonParticipants.push( circuitElement );
       }
     }
 
-    // Request async solve - pass the maps so they're stored with the solution
-    EEcircuitSolverManager.instance.requestSolve( batteries, resistors, batteryMap, batteryMNAMap, resistorMap, nonParticipants );
-
-    // Get cached result (from previous frame) - includes solution AND the maps that go with it
-    const cachedResult = EEcircuitSolverManager.instance.getCachedResult();
-
-    if ( cachedResult ) {
-      // Apply solution using the maps that were captured when the solve was requested
-      this.applyEEcircuitSolution(
-        circuit,
-        cachedResult.solution,
-        cachedResult.batteryMap,
-        cachedResult.batteryMNAMap,
-        cachedResult.resistorMap,
-        cachedResult.nonParticipants
-      );
-    }
-    else {
-      // No solution yet (first frame) - zero out everything
-      for ( const circuitElement of circuit.circuitElements ) {
-        circuitElement.currentProperty.value = 0;
-      }
-    }
+    // Request solve for this group
+    EEcircuitSolverManager.instance.requestSolveForGroup( batteries, resistors, batteryMap, batteryMNAMap, resistorMap, nonParticipants );
   }
 
   /**

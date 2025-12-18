@@ -173,6 +173,9 @@ export default class EECircuitAdapter {
    *
    * PhET node IDs are mapped to SPICE node numbers (0, 1, 2, ...) with one node
    * designated as ground (0).
+   *
+   * NOTE: This assumes a single connected component. Disconnected subcircuits should
+   * be solved separately (each gets its own SPICE solve with its own ground reference).
    */
   public generateTransientNetlist(): string {
     const lines: string[] = [];
@@ -330,12 +333,12 @@ export default class EECircuitAdapter {
   public async solve( eesim: EEcircuitSimulation ): Promise<MNASolution> {
     const netlist = this.generateTransientNetlist();
 
-    console.log( 'EECircuitAdapter netlist:', netlist );
+    // console.log( 'EECircuitAdapter netlist:', netlist );
 
     eesim.setNetList( netlist );
     const result = await eesim.runSim();
 
-    console.log( 'EECircuitAdapter result:', result );
+    // console.log( 'EECircuitAdapter result:', result );
 
     return this.parseResult( result );
   }

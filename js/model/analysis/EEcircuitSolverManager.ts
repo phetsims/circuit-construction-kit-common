@@ -46,11 +46,28 @@ export default class EEcircuitSolverManager {
   // The EEcircuit simulation instance
   private eesim: EEcircuitSimulation | null = null;
 
-  // Cached result from the last completed solve (solution + maps)
-  private cachedResult: CachedSolveResult | null = null;
+  // Double-buffer pattern for async results:
+  // - currentResults: Results returned to callers (from previous frame's solves)
+  // - pendingResults: Results being built from current frame's solves
+  private currentResults: CachedSolveResult[] = [];
+  private pendingResults: CachedSolveResult[] = [];
 
-  // Promise for the currently running solve (null if not solving)
-  private pendingPromise: Promise<CachedSolveResult> | null = null;
+  // Pending solves queue - we process groups sequentially
+  private pendingGroups: Array<{
+    batteries: MNABattery[];
+    resistors: MNAResistor[];
+    batteryMap: Map<string, VoltageSource>;
+    batteryMNAMap: Map<string, MNABattery>;
+    resistorMap: Map<string, CircuitElement>;
+    nonParticipants: CircuitElement[];
+  }> = [];
+
+  // Track the number of groups queued this frame (to know when batch is complete)
+  private groupsQueuedThisFrame = 0;
+  private groupsCompletedThisFrame = 0;
+
+  // Whether we're currently processing the queue
+  private isProcessing = false;
 
   // Track if initialization has completed
   private initialized = false;
@@ -76,26 +93,31 @@ export default class EEcircuitSolverManager {
   }
 
   /**
-   * Returns the cached result from the previous solve (solution + maps).
-   * May return null if no solve has completed yet.
+   * Returns all cached results from completed solves (one per group).
+   * Returns the stable "current" buffer - results from the most recently completed batch.
    */
-  public getCachedResult(): CachedSolveResult | null {
-    return this.cachedResult;
+  public getAllCachedResults(): CachedSolveResult[] {
+    console.log( `[EEcircuit] getAllCachedResults: ${this.currentResults.length} current, ${this.pendingResults.length} pending, isProcessing=${this.isProcessing}` );
+    return this.currentResults;
   }
 
   /**
-   * Returns true if a solve is currently in progress.
+   * Start a new batch of solves. Call this at the beginning of each frame.
+   * This resets the pending queue and counters but preserves currentResults
+   * so they remain available until the new batch completes.
    */
-  public isSolving(): boolean {
-    return this.pendingPromise !== null;
+  public startNewBatch(): void {
+    this.pendingGroups = [];
+    this.groupsQueuedThisFrame = 0;
+    this.groupsCompletedThisFrame = 0;
+    this.pendingResults = [];
   }
 
   /**
-   * Request an async solve with the given circuit elements and maps.
-   * The maps are stored alongside the solution so they can be used to apply results correctly.
-   * If a solve is already in progress, this request is skipped (next frame will trigger another).
+   * Queue a group for solving. Groups are processed sequentially.
+   * Call processAllGroups() after queuing all groups to start solving.
    */
-  public requestSolve(
+  public requestSolveForGroup(
     batteries: MNABattery[],
     resistors: MNAResistor[],
     batteryMap: Map<string, VoltageSource>,
@@ -104,40 +126,166 @@ export default class EEcircuitSolverManager {
     nonParticipants: CircuitElement[]
   ): void {
     if ( !this.initialized || !this.eesim ) {
-      console.warn( 'EEcircuitSolverManager.requestSolve called before initialization' );
+      console.warn( 'EEcircuitSolverManager.requestSolveForGroup called before initialization' );
       return;
     }
 
-    // If a solve is already in progress, let it complete
-    // The next frame will trigger another solve with updated values
-    if ( this.pendingPromise ) {
+    // Skip if no batteries
+    if ( batteries.length === 0 ) {
       return;
     }
 
-    // Create adapter and start async solve
-    const adapter = new EECircuitAdapter( batteries, resistors );
+    // Check if the group forms a complete loop
+    if ( !this.hasCompletePath( batteries, resistors ) ) {
+      return;
+    }
 
-    // Store copies of the maps to use when solution completes
-    const capturedBatteryMap = new Map( batteryMap );
-    const capturedBatteryMNAMap = new Map( batteryMNAMap );
-    const capturedResistorMap = new Map( resistorMap );
-    const capturedNonParticipants = [ ...nonParticipants ];
+    // Track how many groups are queued this frame
+    this.groupsQueuedThisFrame++;
 
-    this.pendingPromise = this.solveAsync( adapter ).then( solution => {
-      this.cachedResult = {
-        solution: solution,
-        batteryMap: capturedBatteryMap,
-        batteryMNAMap: capturedBatteryMNAMap,
-        resistorMap: capturedResistorMap,
-        nonParticipants: capturedNonParticipants
-      };
-      this.pendingPromise = null;
-      return this.cachedResult;
-    } ).catch( error => {
-      console.error( 'EEcircuit solve failed:', error );
-      this.pendingPromise = null;
-      throw error;
+    // Add to pending queue
+    this.pendingGroups.push( {
+      batteries: batteries,
+      resistors: resistors,
+      batteryMap: new Map( batteryMap ),
+      batteryMNAMap: new Map( batteryMNAMap ),
+      resistorMap: new Map( resistorMap ),
+      nonParticipants: [ ...nonParticipants ]
     } );
+
+    // Start processing if not already
+    this.processNextGroup();
+  }
+
+  /**
+   * Process the next group in the queue.
+   * Results are added to pendingResults. When the batch completes, buffers are swapped.
+   */
+  private processNextGroup(): void {
+    console.log( `[EEcircuit] processNextGroup: isProcessing=${this.isProcessing}, pendingGroups=${this.pendingGroups.length}, queued=${this.groupsQueuedThisFrame}, completed=${this.groupsCompletedThisFrame}` );
+    if ( this.isProcessing || this.pendingGroups.length === 0 ) {
+      return;
+    }
+
+    this.isProcessing = true;
+
+    const group = this.pendingGroups.shift()!;
+    const adapter = new EECircuitAdapter( group.batteries, group.resistors );
+
+    console.log( '[EEcircuit] Starting async solve...' );
+    this.solveAsync( adapter ).then( solution => {
+      console.log( '[EEcircuit] Solve completed, adding to pendingResults' );
+
+      // Add to pending results (not current - those are still being read)
+      this.pendingResults.push( {
+        solution: solution,
+        batteryMap: group.batteryMap,
+        batteryMNAMap: group.batteryMNAMap,
+        resistorMap: group.resistorMap,
+        nonParticipants: group.nonParticipants
+      } );
+
+      this.groupsCompletedThisFrame++;
+
+      // Check if batch is complete (all queued groups have been solved)
+      if ( this.groupsCompletedThisFrame === this.groupsQueuedThisFrame && this.pendingGroups.length === 0 ) {
+        console.log( `[EEcircuit] Batch complete! Swapping buffers: ${this.pendingResults.length} results` );
+        // Swap buffers - pending becomes current
+        this.currentResults = this.pendingResults;
+        this.pendingResults = [];
+      }
+
+      this.isProcessing = false;
+      this.processNextGroup(); // Process next group in queue
+    } ).catch( error => {
+      console.warn( 'EEcircuit solve failed for group:', error );
+      this.groupsCompletedThisFrame++;
+
+      // Still check for batch completion even on failure
+      if ( this.groupsCompletedThisFrame === this.groupsQueuedThisFrame && this.pendingGroups.length === 0 ) {
+        console.log( `[EEcircuit] Batch complete (with failures)! Swapping buffers: ${this.pendingResults.length} results` );
+        this.currentResults = this.pendingResults;
+        this.pendingResults = [];
+      }
+
+      this.isProcessing = false;
+      this.processNextGroup(); // Continue with next group even if one fails
+    } );
+  }
+
+  /**
+   * Check if the circuit has at least one complete path (loop) that SPICE can solve.
+   * This prevents sending unsolvable circuits to SPICE which would cause singularity errors.
+   */
+  private hasCompletePath( batteries: MNABattery[], resistors: MNAResistor[] ): boolean {
+
+    // Build adjacency list for the circuit graph
+    const adjacency = new Map<string, Set<string>>();
+
+    const addEdge = ( node1: string, node2: string ) => {
+      if ( !adjacency.has( node1 ) ) {
+        adjacency.set( node1, new Set() );
+      }
+      if ( !adjacency.has( node2 ) ) {
+        adjacency.set( node2, new Set() );
+      }
+      adjacency.get( node1 )!.add( node2 );
+      adjacency.get( node2 )!.add( node1 );
+    };
+
+    // Add all elements as edges
+    for ( const battery of batteries ) {
+      addEdge( battery.nodeId0, battery.nodeId1 );
+    }
+    for ( const resistor of resistors ) {
+      addEdge( resistor.nodeId0, resistor.nodeId1 );
+    }
+
+    // For each battery, check if there's a path from one terminal back to the other
+    // (without using the battery itself - i.e., through other elements)
+    for ( const battery of batteries ) {
+      const start = battery.nodeId0;
+      const end = battery.nodeId1;
+
+      // BFS to find if there's a path from start to end through other elements
+      const visited = new Set<string>();
+      const queue: string[] = [ start ];
+      visited.add( start );
+
+      let foundPath = false;
+      while ( queue.length > 0 && !foundPath ) {
+        const current = queue.shift()!;
+
+        const neighbors = adjacency.get( current );
+        if ( neighbors ) {
+          for ( const neighbor of neighbors ) {
+            // Skip the direct battery connection
+            if ( current === start && neighbor === end ) {
+              continue;
+            }
+            if ( current === end && neighbor === start ) {
+              continue;
+            }
+
+            if ( neighbor === end ) {
+              foundPath = true;
+              break;
+            }
+
+            if ( !visited.has( neighbor ) ) {
+              visited.add( neighbor );
+              queue.push( neighbor );
+            }
+          }
+        }
+      }
+
+      if ( foundPath ) {
+        return true; // At least one battery has a complete loop
+      }
+    }
+
+    return false; // No complete loops found
   }
 
   /**
@@ -146,7 +294,7 @@ export default class EEcircuitSolverManager {
   private async solveAsync( adapter: EECircuitAdapter ): Promise<MNASolution> {
     const netlist = adapter.generateTransientNetlist();
 
-    console.log( 'EEcircuit solving netlist:\n', netlist );
+    // console.log( 'EEcircuit solving netlist:\n', netlist );
 
     this.eesim!.setNetList( netlist );
     const result = await this.eesim!.runSim();
