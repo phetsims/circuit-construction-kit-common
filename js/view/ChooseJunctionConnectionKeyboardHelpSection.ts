@@ -12,7 +12,7 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import KeyboardHelpIconFactory from '../../../scenery-phet/js/keyboard/help/KeyboardHelpIconFactory.js';
 import KeyboardHelpSection from '../../../scenery-phet/js/keyboard/help/KeyboardHelpSection.js';
 import KeyboardHelpSectionRow from '../../../scenery-phet/js/keyboard/help/KeyboardHelpSectionRow.js';
-import SceneryPhetStrings from '../../../scenery-phet/js/SceneryPhetStrings.js';
+import SceneryPhetFluent from '../../../scenery-phet/js/SceneryPhetFluent.js';
 import TextKeyNode from '../../../scenery-phet/js/keyboard/TextKeyNode.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
@@ -25,7 +25,7 @@ export default class ChooseJunctionConnectionKeyboardHelpSection extends Keyboar
     const thingAsLowerCaseSingularStringProperty = CircuitConstructionKitCommonFluent.keyboardHelpDialog.chooseConnection.thingSingularStringProperty;
 
     // Create a PatternStringProperty that fills in a plural/singular pattern, and support dynamic locale.
-    const createPatternStringProperty = ( providedStringProperty: typeof SceneryPhetStrings.keyboardHelpDialog.comboBox.popUpListPatternStringProperty ) => {
+    const createPatternStringProperty = ( providedStringProperty: typeof SceneryPhetFluent.keyboardHelpDialog.comboBox.popUpListPatternStringProperty ) => {
       return new PatternStringProperty(
         providedStringProperty, {
           thingPlural: thingAsLowerCasePluralStringProperty,
@@ -38,24 +38,24 @@ export default class ChooseJunctionConnectionKeyboardHelpSection extends Keyboar
     const spaceOrEnterIcon = KeyboardHelpIconFactory.iconOrIcon( spaceKeyNode, enterKeyNode );
 
     const popUpList = KeyboardHelpSectionRow.labelWithIcon(
-      createPatternStringProperty( SceneryPhetStrings.keyboardHelpDialog.comboBox.popUpListPatternStringProperty ),
+      createPatternStringProperty( SceneryPhetFluent.keyboardHelpDialog.comboBox.popUpListPatternStringProperty ),
       spaceOrEnterIcon, {
-        labelInnerContent: new PatternStringProperty( SceneryPhetStrings.a11y.keyboardHelpDialog.comboBox.popUpListPatternDescriptionStringProperty, {
+        labelInnerContent: new PatternStringProperty( SceneryPhetFluent.a11y.keyboardHelpDialog.comboBox.popUpListPatternDescriptionStringProperty, {
           thingPlural: thingAsLowerCasePluralStringProperty,
           enterOrReturn: TextKeyNode.getEnterKeyString()
         } )
       } );
 
     const moveThrough = KeyboardHelpSectionRow.labelWithIcon(
-      createPatternStringProperty( SceneryPhetStrings.keyboardHelpDialog.comboBox.moveThroughPatternStringProperty ),
+      createPatternStringProperty( SceneryPhetFluent.keyboardHelpDialog.comboBox.moveThroughPatternStringProperty ),
       KeyboardHelpIconFactory.upDownArrowKeysRowIcon(), {
-        labelInnerContent: createPatternStringProperty( SceneryPhetStrings.a11y.keyboardHelpDialog.comboBox.moveThroughPatternDescriptionStringProperty )
+        labelInnerContent: createPatternStringProperty( SceneryPhetFluent.a11y.keyboardHelpDialog.comboBox.moveThroughPatternDescriptionStringProperty )
       } );
 
     const chooseNew = KeyboardHelpSectionRow.labelWithIcon(
-      createPatternStringProperty( SceneryPhetStrings.keyboardHelpDialog.comboBox.chooseNewPatternStringProperty ),
+      createPatternStringProperty( SceneryPhetFluent.keyboardHelpDialog.comboBox.chooseNewPatternStringProperty ),
       enterKeyNode, {
-        labelInnerContent: new PatternStringProperty( SceneryPhetStrings.a11y.keyboardHelpDialog.comboBox.chooseNewPatternDescriptionStringProperty, {
+        labelInnerContent: new PatternStringProperty( SceneryPhetFluent.a11y.keyboardHelpDialog.comboBox.chooseNewPatternDescriptionStringProperty, {
           thingSingular: thingAsLowerCaseSingularStringProperty,
           enterOrReturn: TextKeyNode.getEnterKeyString()
         } )
@@ -65,7 +65,7 @@ export default class ChooseJunctionConnectionKeyboardHelpSection extends Keyboar
     const cancelConnection = KeyboardHelpSectionRow.labelWithIcon(
       CircuitConstructionKitCommonFluent.keyboardHelpDialog.chooseConnection.cancelConnectionStringProperty,
       escapeKeyNode, {
-        labelInnerContent: SceneryPhetStrings.a11y.keyboardHelpDialog.comboBox.closeWithoutChangingDescriptionStringProperty
+        labelInnerContent: SceneryPhetFluent.a11y.keyboardHelpDialog.comboBox.closeWithoutChangingDescriptionStringProperty
       } );
 
     const rows = [ popUpList, moveThrough, chooseNew, cancelConnection ];
