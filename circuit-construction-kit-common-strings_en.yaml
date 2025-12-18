@@ -119,18 +119,26 @@ keyboardHelpDialog:
 a11y:
   circuitDescription:
     circuitComponentTypeLabels:
-      wire:      Wire
-      battery:   Battery
-      resistor:  Resistor
-      capacitor: Capacitor
-      inductor:  Inductor
-      lightBulb: Light Bulb
-      acSource:  AC Source
-      fuse:      Fuse
-      switch:    Switch
-      voltmeter: Voltmeter
-      ammeter:   Ammeter
-      stopwatch: Stopwatch
+      wire:       Wire
+      battery:    Battery
+      resistor:   Resistor
+      capacitor:  Capacitor
+      inductor:   Inductor
+      lightBulb:  Light Bulb
+      acSource:   AC Source
+      fuse:       Fuse
+      switch:     Switch
+      voltmeter:  Voltmeter
+      ammeter:    Ammeter
+      stopwatch:  Stopwatch
+      # Household items (max 1 each)
+      coin:       Coin
+      paperClip:  Paper Clip
+      pencil:     Pencil
+      eraser:     Eraser
+      hand:       Hand
+      dog:        Dog
+      dollarBill: Dollar Bill
     connectionPoint:              Connection Point
     disconnected:                 disconnected
     joins:                        joins
@@ -382,6 +390,14 @@ a11y:
           select_hasPosition:
             true:  'Wire { $position } of { $total }'
             false: 'Wire'
+        # Household items (max 1 each, so no position needed)
+        coin:       Coin
+        paperClip:  Paper Clip
+        pencil:     Pencil
+        eraser:     Eraser
+        hand:       Hand
+        dog:        Dog
+        dollarBill: Dollar Bill
     accessibleHelpText:
       select_type:
         switch:

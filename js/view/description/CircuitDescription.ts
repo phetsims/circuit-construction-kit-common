@@ -19,9 +19,48 @@ import CircuitElementType from '../../model/CircuitElementType.js';
 import Inductor from '../../model/Inductor.js';
 import LightBulb from '../../model/LightBulb.js';
 import Resistor from '../../model/Resistor.js';
+import ResistorType from '../../model/ResistorType.js';
 import Switch from '../../model/Switch.js';
 import Vertex from '../../model/Vertex.js';
 import CircuitNode from '../CircuitNode.js';
+
+// Household item ResistorTypes that have a max of 1 in the circuit
+const HOUSEHOLD_RESISTOR_TYPES = [
+  ResistorType.COIN,
+  ResistorType.PAPER_CLIP,
+  ResistorType.PENCIL,
+  ResistorType.ERASER,
+  ResistorType.HAND,
+  ResistorType.DOG,
+  ResistorType.DOLLAR_BILL
+];
+
+/**
+ * Gets the description type string for a circuit element. For household item resistors,
+ * returns their specific type (e.g., 'coin', 'paperClip'). For other elements, returns
+ * the standard CircuitElementType.
+ */
+const getDescriptionType = ( circuitElement: CircuitElement ): string => {
+  if ( circuitElement instanceof Resistor ) {
+    const resistorType = circuitElement.resistorType;
+    if ( resistorType === ResistorType.COIN ) { return 'coin'; }
+    if ( resistorType === ResistorType.PAPER_CLIP ) { return 'paperClip'; }
+    if ( resistorType === ResistorType.PENCIL ) { return 'pencil'; }
+    if ( resistorType === ResistorType.ERASER ) { return 'eraser'; }
+    if ( resistorType === ResistorType.HAND ) { return 'hand'; }
+    if ( resistorType === ResistorType.DOG ) { return 'dog'; }
+    if ( resistorType === ResistorType.DOLLAR_BILL ) { return 'dollarBill'; }
+  }
+  return circuitElement.type;
+};
+
+/**
+ * Returns true if the circuit element is a household item that can only have one instance.
+ */
+const isSingleMaxItem = ( circuitElement: CircuitElement ): boolean => {
+  return circuitElement instanceof Resistor &&
+         HOUSEHOLD_RESISTOR_TYPES.includes( circuitElement.resistorType );
+};
 
 // Track properties for each circuit element so we can dispose them when updating
 const positionedPropertiesMap = new WeakMap<CircuitElement, {
@@ -32,9 +71,10 @@ const positionedPropertiesMap = new WeakMap<CircuitElement, {
 const GROUPED_CIRCUIT_ELEMENT_TYPE_ORDER: CircuitElementType[] = [ 'battery', 'resistor', 'lightBulb', 'wire' ];
 
 /**
- * Gets the human-readable label for a circuit element type.
+ * Gets the human-readable label for a circuit element type or description type.
+ * Accepts both CircuitElementType and description types like 'coin', 'paperClip', etc.
  */
-const getCircuitElementTypeLabel = ( type: CircuitElementType ): string => {
+const getCircuitElementTypeLabel = ( type: CircuitElementType | string ): string => {
   switch( type ) {
     case 'wire':
       return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypeLabels.wireStringProperty.value;
@@ -60,16 +100,31 @@ const getCircuitElementTypeLabel = ( type: CircuitElementType ): string => {
       return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypeLabels.ammeterStringProperty.value;
     case 'stopwatch':
       return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypeLabels.stopwatchStringProperty.value;
+    // Household item types
+    case 'coin':
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypeLabels.coinStringProperty.value;
+    case 'paperClip':
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypeLabels.paperClipStringProperty.value;
+    case 'pencil':
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypeLabels.pencilStringProperty.value;
+    case 'eraser':
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypeLabels.eraserStringProperty.value;
+    case 'hand':
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypeLabels.handStringProperty.value;
+    case 'dog':
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypeLabels.dogStringProperty.value;
+    case 'dollarBill':
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypeLabels.dollarBillStringProperty.value;
     default:
       return type;
   }
 };
 
 /**
- * Returns the plural form for a circuit element type.
+ * Returns the plural form for a circuit element type or description type.
  * Hard-coded for now; will eventually move to strings YAML.
  */
-const getPluralTypeLabel = ( type: CircuitElementType ): string => {
+const getPluralTypeLabel = ( type: CircuitElementType | string ): string => {
   switch( type ) {
     case 'wire':
       return 'Wires';
@@ -95,6 +150,21 @@ const getPluralTypeLabel = ( type: CircuitElementType ): string => {
       return 'Ammeters';
     case 'stopwatch':
       return 'Stopwatches';
+    // Household items (max 1, so plurals unlikely but included for completeness)
+    case 'coin':
+      return 'Coins';
+    case 'paperClip':
+      return 'Paper Clips';
+    case 'pencil':
+      return 'Pencils';
+    case 'eraser':
+      return 'Erasers';
+    case 'hand':
+      return 'Hands';
+    case 'dog':
+      return 'Dogs';
+    case 'dollarBill':
+      return 'Dollar Bills';
     default:
       return type + 's';
   }
@@ -102,9 +172,16 @@ const getPluralTypeLabel = ( type: CircuitElementType ): string => {
 
 /**
  * Formats a brief name for a circuit element for use in junction descriptions and other contexts.
+ * For household items (single-max), just returns the name without position.
  */
-const formatCircuitElementBriefName = ( type: CircuitElementType, position: number, total: number ): string => {
-  const baseLabel = getCircuitElementTypeLabel( type );
+const formatCircuitElementBriefName = ( circuitElement: CircuitElement, position: number, total: number ): string => {
+  const descriptionType = getDescriptionType( circuitElement );
+  const baseLabel = getCircuitElementTypeLabel( descriptionType );
+
+  // For single-max items (household items), don't show position numbers
+  if ( isSingleMaxItem( circuitElement ) ) {
+    return baseLabel;
+  }
   return `${baseLabel} ${position}`;
 };
 
@@ -184,23 +261,24 @@ export default class CircuitDescription {
     circuitElements: CircuitElement[],
     circuitNode: CircuitNode
   ): Map<CircuitElement, string> {
-    // First pass: count how many of each type
-    const typeCounts = new Map<CircuitElementType, number>();
+    // First pass: count how many of each description type (uses specific names for household items)
+    const typeCounts = new Map<string, number>();
     circuitElements.forEach( circuitElement => {
-      const count = typeCounts.get( circuitElement.type ) || 0;
-      typeCounts.set( circuitElement.type, count + 1 );
+      const descriptionType = getDescriptionType( circuitElement );
+      const count = typeCounts.get( descriptionType ) || 0;
+      typeCounts.set( descriptionType, count + 1 );
     } );
 
     // Second pass: assign names with position info
-    const typeIndices = new Map<CircuitElementType, number>();
+    const typeIndices = new Map<string, number>();
     const briefNames = new Map<CircuitElement, string>();
 
     circuitElements.forEach( circuitElement => {
       const circuitElementNode = circuitNode.getCircuitElementNode( circuitElement );
-      const type = circuitElement.type;
-      const indexForType = ( typeIndices.get( type ) || 0 ) + 1;
-      typeIndices.set( type, indexForType );
-      const totalForType = typeCounts.get( type ) || 0;
+      const descriptionType = getDescriptionType( circuitElement );
+      const indexForType = ( typeIndices.get( descriptionType ) || 0 ) + 1;
+      typeIndices.set( descriptionType, indexForType );
+      const totalForType = typeCounts.get( descriptionType ) || 0;
 
       // Dispose any existing positioned properties for this element
       const oldProperties = positionedPropertiesMap.get( circuitElement );
@@ -213,17 +291,21 @@ export default class CircuitDescription {
       const showValuesProperty = circuitNode.model.showValuesProperty;
       const showValuesAsStringProperty = showValuesProperty.derived( value => value ? 'true' : 'false' );
 
+      // For single-max items (household items), don't show position info
+      const shouldShowPosition = !isSingleMaxItem( circuitElement );
+
+      // Use type assertion since descriptionType is always a valid Fluent type key
       const accessibleName = CircuitConstructionKitCommonFluent.a11y.circuitComponent.accessibleName.format( {
         displayMode: showValuesProperty.value ? 'countAndValue' :
                      !showValuesProperty.value ? 'count' :
                      'name',
-        type: circuitElement.type,
+        type: descriptionType as CircuitElementType,
         voltage: circuitElement instanceof Battery ? circuitElement.voltageProperty : 0,
         resistance: circuitElement instanceof Resistor ? circuitElement.resistanceProperty : 0,
         capacitance: circuitElement instanceof Capacitor ? circuitElement.capacitanceProperty : 0,
         inductance: circuitElement instanceof Inductor ? circuitElement.inductanceProperty : 0,
         switchState: circuitElement instanceof Switch ? circuitElement.isClosedProperty.derived( value => value ? 'closed' : 'open' ) : 'open',
-        hasPosition: 'true',
+        hasPosition: shouldShowPosition ? 'true' : 'false',
         position: indexForType,
         total: totalForType
       } );
@@ -246,7 +328,7 @@ export default class CircuitDescription {
       circuitElementNode.accessibleName = accessibleName;
 
       // Store brief name for junction descriptions (type + number, no values)
-      briefNames.set( circuitElement, formatCircuitElementBriefName( type, indexForType, totalForType ) );
+      briefNames.set( circuitElement, formatCircuitElementBriefName( circuitElement, indexForType, totalForType ) );
     } );
 
     return briefNames;
@@ -302,16 +384,17 @@ export default class CircuitDescription {
       // Store complete description on vertex for accessibility
       vertex.completeDescription = fullDescription;
 
-      // Create compressed form by counting types
-      const typeCounts = new Map<CircuitElementType, number>();
+      // Create compressed form by counting description types (uses specific names for household items)
+      const typeCounts = new Map<string, number>();
       neighbors.forEach( neighbor => {
-        const count = typeCounts.get( neighbor.type ) || 0;
-        typeCounts.set( neighbor.type, count + 1 );
+        const descriptionType = getDescriptionType( neighbor );
+        const count = typeCounts.get( descriptionType ) || 0;
+        typeCounts.set( descriptionType, count + 1 );
       } );
 
       // Build type descriptions in preferred order
       const typeDescriptions: string[] = [];
-      const orderedTypes = [ ...GROUPED_CIRCUIT_ELEMENT_TYPE_ORDER ];
+      const orderedTypes: string[] = [ ...GROUPED_CIRCUIT_ELEMENT_TYPE_ORDER ];
 
       // Add any types not in the preferred order
       typeCounts.forEach( ( _, type ) => {

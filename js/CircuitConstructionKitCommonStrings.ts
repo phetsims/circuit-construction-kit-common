@@ -146,6 +146,13 @@ type StringsType = {
         'voltmeterStringProperty': LocalizedStringProperty;
         'ammeterStringProperty': LocalizedStringProperty;
         'stopwatchStringProperty': LocalizedStringProperty;
+        'coinStringProperty': LocalizedStringProperty;
+        'paperClipStringProperty': LocalizedStringProperty;
+        'pencilStringProperty': LocalizedStringProperty;
+        'eraserStringProperty': LocalizedStringProperty;
+        'handStringProperty': LocalizedStringProperty;
+        'dogStringProperty': LocalizedStringProperty;
+        'dollarBillStringProperty': LocalizedStringProperty;
       };
       'connectionPointStringProperty': LocalizedStringProperty;
       'disconnectedStringProperty': LocalizedStringProperty;
