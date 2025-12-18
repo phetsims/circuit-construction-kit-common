@@ -213,8 +213,6 @@ a11y:
     helpTextCase3:            >-
                               Look for components and hit Space to pop up options for editing. Remove selected component with
                               Delete key. Check out Keyboard Shortcuts for more details.
-  junctionInteraction:
-    noNewAttachment: No new attachment
   circuitContextResponses:
     junctionDefaultLabel: 'Junction { $index }'
     connectedComponents:  'Connected: { $components }.'
@@ -295,7 +293,7 @@ a11y:
   reverseBatteryButton:
     accessibleName: Reverse Battery Direction
   switchToggleButton:
-    openSwitch: Open Switch
+    openSwitch:  Open Switch
     closeSwitch: Close Switch
   disconnectButton:
     accessibleName: Disconnect { a11y.circuitComponent.accessibleName }

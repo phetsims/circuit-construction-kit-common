@@ -14,12 +14,10 @@ import { pdomFocusProperty } from '../../../../scenery/js/accessibility/pdomFocu
 import { OneKeyStroke } from '../../../../scenery/js/input/KeyDescriptor.js';
 import KeyboardListener from '../../../../scenery/js/listeners/KeyboardListener.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
-import Text from '../../../../scenery/js/nodes/Text.js';
 import ComboBox from '../../../../sun/js/ComboBox.js';
 import ComboBoxListItemNode from '../../../../sun/js/ComboBoxListItemNode.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
-import CircuitConstructionKitCommonFluent from '../../CircuitConstructionKitCommonFluent.js';
 import type CircuitNode from '../CircuitNode.js';
 
 type AttachmentItem<T> = {
@@ -80,10 +78,7 @@ export default class AttachmentKeyboardListener<T> extends KeyboardListener<OneK
 
         const initialPosition = options.getInitialPosition();
 
-        const items: AttachmentItem<T>[] = [ ...availableItems, {
-          value: null,
-          createNode: () => new Text( CircuitConstructionKitCommonFluent.a11y.junctionInteraction.noNewAttachmentStringProperty )
-        } ];
+        const items: AttachmentItem<T>[] = [ ...availableItems ];
 
         // Check if the current position matches any available item (from prior discrete interaction)
         let initialSelection = options.getPreferredInitialValue?.( availableItems ) ?? availableItems[ 0 ].value;
@@ -148,10 +143,9 @@ export default class AttachmentKeyboardListener<T> extends KeyboardListener<OneK
         comboBox.focusListItemNode( initialSelection );
 
         comboBox.cancelEmitter.addListener( () => {
-          selectionProperty.value = null;
           targetDropPosition = initialPosition;
 
-          options.applySelection( selectionProperty.value, targetDropPosition );
+          options.applySelection( null, targetDropPosition );
           cancelled = true;
           options.circuitNode.hideAttachmentHighlight();
           options.onCancel?.();

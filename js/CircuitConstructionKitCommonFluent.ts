@@ -142,7 +142,6 @@ addToMapIfDefined( 'a11y_constructionAreaStatus_connectionCount', 'a11y.construc
 addToMapIfDefined( 'a11y_constructionAreaStatus_helpTextCase1', 'a11y.constructionAreaStatus.helpTextCase1StringProperty' );
 addToMapIfDefined( 'a11y_constructionAreaStatus_helpTextCase2', 'a11y.constructionAreaStatus.helpTextCase2StringProperty' );
 addToMapIfDefined( 'a11y_constructionAreaStatus_helpTextCase3', 'a11y.constructionAreaStatus.helpTextCase3StringProperty' );
-addToMapIfDefined( 'a11y_junctionInteraction_noNewAttachment', 'a11y.junctionInteraction.noNewAttachmentStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_junctionDefaultLabel', 'a11y.circuitContextResponses.junctionDefaultLabelStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_connectedComponents', 'a11y.circuitContextResponses.connectedComponentsStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_junctionSplit', 'a11y.circuitContextResponses.junctionSplitStringProperty' );
@@ -365,9 +364,6 @@ const CircuitConstructionKitCommonFluent = {
       helpTextCase1StringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_constructionAreaStatus_helpTextCase1', _.get( CircuitConstructionKitCommonStrings, 'a11y.constructionAreaStatus.helpTextCase1StringProperty' ) ),
       helpTextCase2StringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_constructionAreaStatus_helpTextCase2', _.get( CircuitConstructionKitCommonStrings, 'a11y.constructionAreaStatus.helpTextCase2StringProperty' ) ),
       helpTextCase3StringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_constructionAreaStatus_helpTextCase3', _.get( CircuitConstructionKitCommonStrings, 'a11y.constructionAreaStatus.helpTextCase3StringProperty' ) )
-    },
-    junctionInteraction: {
-      noNewAttachmentStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_junctionInteraction_noNewAttachment', _.get( CircuitConstructionKitCommonStrings, 'a11y.junctionInteraction.noNewAttachmentStringProperty' ) )
     },
     circuitContextResponses: {
       junctionDefaultLabel: new FluentPattern<{ index: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_junctionDefaultLabel', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.junctionDefaultLabelStringProperty' ), [{"name":"index"}] ),

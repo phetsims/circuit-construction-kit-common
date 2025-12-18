@@ -413,11 +413,6 @@
         "value": "Look for components and hit Space to pop up options for editing. Remove selected component with Delete key. Check out Keyboard Shortcuts for more details."
       }
     },
-    "junctionInteraction": {
-      "noNewAttachment": {
-        "value": "No new attachment"
-      }
-    },
     "circuitContextResponses": {
       "junctionDefaultLabel": {
         "value": "Junction { $index }"

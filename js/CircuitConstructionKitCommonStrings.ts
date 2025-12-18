@@ -174,9 +174,6 @@ type StringsType = {
       'helpTextCase2StringProperty': LocalizedStringProperty;
       'helpTextCase3StringProperty': LocalizedStringProperty;
     };
-    'junctionInteraction': {
-      'noNewAttachmentStringProperty': LocalizedStringProperty;
-    };
     'circuitContextResponses': {
       'junctionDefaultLabelStringProperty': LocalizedStringProperty;
       'connectedComponentsStringProperty': LocalizedStringProperty;
