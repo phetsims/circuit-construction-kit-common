@@ -52,8 +52,14 @@ export default class EECircuitAdapter {
   private readonly batteryNameMap: Map<string, MNABattery>;
   private readonly resistorNameMap: Map<string, MNAResistor>;
 
-  // Node name mappings (PhET uses string indices like '0', '1', etc.)
+  // Node name mappings (PhET uses string indices like '41', '42', etc.)
   private readonly nodeSet: Set<string>;
+
+  // Maps PhET node IDs to SPICE node numbers (0, 1, 2, ...)
+  // SPICE requires node 0 as ground reference
+  private readonly phetToSpiceNode: Map<string, number>;
+  private readonly spiceToPhetNode: Map<number, string>;
+  private readonly groundNodeId: string; // The PhET node ID chosen as ground
 
   public constructor( batteries: MNABattery[], resistors: MNAResistor[] ) {
     this.batteries = batteries;
@@ -61,6 +67,8 @@ export default class EECircuitAdapter {
     this.batteryNameMap = new Map();
     this.resistorNameMap = new Map();
     this.nodeSet = new Set();
+    this.phetToSpiceNode = new Map();
+    this.spiceToPhetNode = new Map();
 
     // Collect all nodes
     for ( const battery of batteries ) {
@@ -71,6 +79,36 @@ export default class EECircuitAdapter {
       this.nodeSet.add( resistor.nodeId0 );
       this.nodeSet.add( resistor.nodeId1 );
     }
+
+    // Create node mapping: pick the first node as ground (SPICE node 0)
+    // and assign sequential numbers to the rest
+    const nodeArray = Array.from( this.nodeSet );
+    this.groundNodeId = nodeArray[ 0 ] || '0';
+
+    // Map ground node to SPICE node 0
+    this.phetToSpiceNode.set( this.groundNodeId, 0 );
+    this.spiceToPhetNode.set( 0, this.groundNodeId );
+
+    // Map remaining nodes to SPICE nodes 1, 2, 3, ...
+    let spiceNodeNum = 1;
+    for ( const phetNode of nodeArray ) {
+      if ( phetNode !== this.groundNodeId ) {
+        this.phetToSpiceNode.set( phetNode, spiceNodeNum );
+        this.spiceToPhetNode.set( spiceNodeNum, phetNode );
+        spiceNodeNum++;
+      }
+    }
+  }
+
+  /**
+   * Convert a PhET node ID to its SPICE node number.
+   */
+  private toSpiceNode( phetNodeId: string ): number {
+    const spiceNode = this.phetToSpiceNode.get( phetNodeId );
+    if ( spiceNode === undefined ) {
+      throw new Error( `Unknown PhET node ID: ${phetNodeId}` );
+    }
+    return spiceNode;
   }
 
   /**
@@ -83,7 +121,8 @@ export default class EECircuitAdapter {
    * - .OP for DC operating point analysis
    * - .END to terminate
    *
-   * Note: SPICE uses node 0 as ground by convention.
+   * Note: SPICE uses node 0 as ground by convention. PhET node IDs are mapped
+   * to SPICE node numbers (0, 1, 2, ...) with one node designated as ground (0).
    */
   public generateNetlist(): string {
     const lines: string[] = [];
@@ -102,7 +141,9 @@ export default class EECircuitAdapter {
       // SPICE: positive terminal first, then negative terminal
       // PhET battery: nodeId0 is negative (low potential), nodeId1 is positive (high potential)
       // The voltage is the drop from nodeId0 to nodeId1
-      lines.push( `${name} ${battery.nodeId1} ${battery.nodeId0} DC ${battery.voltage}` );
+      const posNode = this.toSpiceNode( battery.nodeId1 );
+      const negNode = this.toSpiceNode( battery.nodeId0 );
+      lines.push( `${name} ${posNode} ${negNode} DC ${battery.voltage}` );
     }
 
     // Add resistors
@@ -114,7 +155,9 @@ export default class EECircuitAdapter {
 
       // Ensure non-zero resistance (SPICE doesn't like 0-resistance)
       const resistance = resistor.resistance > 0 ? resistor.resistance : 1e-9;
-      lines.push( `${name} ${resistor.nodeId0} ${resistor.nodeId1} ${resistance}` );
+      const node1 = this.toSpiceNode( resistor.nodeId0 );
+      const node2 = this.toSpiceNode( resistor.nodeId1 );
+      lines.push( `${name} ${node1} ${node2} ${resistance}` );
     }
 
     // DC operating point analysis
@@ -127,6 +170,9 @@ export default class EECircuitAdapter {
   /**
    * Alternative: Generate a transient analysis netlist with very short time step
    * to effectively get DC solution. This might be more compatible with EEcircuit's API.
+   *
+   * PhET node IDs are mapped to SPICE node numbers (0, 1, 2, ...) with one node
+   * designated as ground (0).
    */
   public generateTransientNetlist(): string {
     const lines: string[] = [];
@@ -138,7 +184,9 @@ export default class EECircuitAdapter {
       const battery = this.batteries[ i ];
       const name = `V${i + 1}`;
       this.batteryNameMap.set( name, battery );
-      lines.push( `${name} ${battery.nodeId1} ${battery.nodeId0} DC ${battery.voltage}` );
+      const posNode = this.toSpiceNode( battery.nodeId1 );
+      const negNode = this.toSpiceNode( battery.nodeId0 );
+      lines.push( `${name} ${posNode} ${negNode} DC ${battery.voltage}` );
     }
 
     // Add resistors
@@ -147,7 +195,9 @@ export default class EECircuitAdapter {
       const name = `R${i + 1}`;
       this.resistorNameMap.set( name, resistor );
       const resistance = resistor.resistance > 0 ? resistor.resistance : 1e-9;
-      lines.push( `${name} ${resistor.nodeId0} ${resistor.nodeId1} ${resistance}` );
+      const node1 = this.toSpiceNode( resistor.nodeId0 );
+      const node2 = this.toSpiceNode( resistor.nodeId1 );
+      lines.push( `${name} ${node1} ${node2} ${resistance}` );
     }
 
     // Short transient to reach steady state
@@ -192,6 +242,9 @@ export default class EECircuitAdapter {
    * - data: Array of { name, type, values }
    * - Variable names are like 'time', 'v(1)', 'v(2)', 'i(v1)'
    *
+   * SPICE results use SPICE node numbers (0, 1, 2, ...) which must be mapped
+   * back to PhET node IDs.
+   *
    * @param result - The result from EEcircuit's runSim()
    * @returns MNASolution compatible with PhET's existing code
    */
@@ -201,10 +254,13 @@ export default class EECircuitAdapter {
     const voltageMap = new Map<string, number>();
 
     // EEcircuit returns data as an array of { name, type, values }
-    // Variable names are like 'v(1)', 'v(2)' for node voltages
-    for ( const node of this.nodeSet ) {
-      // Try different naming conventions SPICE might use
-      const entry = this.findDataEntry( result, `v(${node})` );
+    // Variable names are like 'v(1)', 'v(2)' for node voltages (using SPICE node numbers)
+    for ( const phetNode of this.nodeSet ) {
+      // Convert PhET node ID to SPICE node number
+      const spiceNodeNum = this.toSpiceNode( phetNode );
+
+      // Look up voltage using SPICE node number
+      const entry = this.findDataEntry( result, `v(${spiceNodeNum})` );
 
       if ( entry ) {
         // Get the last value (steady-state for DC circuits)
@@ -218,16 +274,13 @@ export default class EECircuitAdapter {
         // Actually, after reviewing the tests more carefully:
         // - In PhET, the battery's positive terminal (nodeId1) gets the negative voltage
         // - This is because PhET measures voltage drop across elements differently
-        voltageMap.set( node, -spiceVoltage );
+        voltageMap.set( phetNode, -spiceVoltage );
       }
       else {
-        // Node 0 is always ground
-        voltageMap.set( node, 0 );
+        // Node 0 (ground) won't have a voltage entry - it's implicitly 0V
+        voltageMap.set( phetNode, 0 );
       }
     }
-
-    // Ensure node 0 is ground in both conventions
-    voltageMap.set( '0', 0 );
 
     // Build current map for batteries (and zero-resistance elements)
     const currentMap = new Map<MNACircuitElement, number>();

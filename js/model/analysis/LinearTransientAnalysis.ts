@@ -71,19 +71,22 @@ export default class LinearTransientAnalysis {
     const batteryMNAMap = new Map<string, MNABattery>(); // nodeId0_nodeId1 -> MNABattery (for current lookup)
     const resistorMap = new Map<string, CircuitElement>(); // nodeId0_nodeId1 -> CircuitElement
 
-    // Identify non-participants (elements not in a loop with voltage source)
+    // Non-participants are elements that can't conduct (like open switches)
     const nonParticipants: CircuitElement[] = [];
 
     for ( const circuitElement of circuit.circuitElements ) {
-      const inLoop = circuit.isInLoop( circuitElement );
 
-      if ( !inLoop ) {
-        nonParticipants.push( circuitElement );
-        continue;
-      }
+      // For EEcircuit/SPICE, we don't use the isInLoop() filter that the PhET MNA solver uses.
+      // SPICE is robust and can handle:
+      // - Connected components joined at a single point (like a bridge resistor)
+      // - Elements not in closed loops (they'll correctly get 0 current)
+      // - Complex topologies that the simpler PhET solver couldn't handle
+      //
+      // We only skip non-traversable elements (like open switches).
 
       if ( !circuitElement.isTraversibleProperty.value ) {
         // Cannot participate (e.g., open switch)
+        nonParticipants.push( circuitElement );
         continue;
       }
 

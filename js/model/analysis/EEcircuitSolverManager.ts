@@ -146,6 +146,8 @@ export default class EEcircuitSolverManager {
   private async solveAsync( adapter: EECircuitAdapter ): Promise<MNASolution> {
     const netlist = adapter.generateTransientNetlist();
 
+    console.log( 'EEcircuit solving netlist:\n', netlist );
+
     this.eesim!.setNetList( netlist );
     const result = await this.eesim!.runSim();
 
