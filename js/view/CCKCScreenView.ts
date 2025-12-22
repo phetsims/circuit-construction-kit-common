@@ -732,7 +732,7 @@ export default class CCKCScreenView extends ScreenView {
   } );
 
   public static readonly FOCUS_CONSTRUCTION_AREA_HOTKEY_DATA = new HotkeyData( {
-    keys: [ 'alt+c' ],
+    keys: [ 'alt+p' ],
     repoName: circuitConstructionKitCommon.name,
     keyboardHelpDialogLabelStringProperty: CircuitConstructionKitCommonFluent.keyboardHelpDialog.focus.focusConstructionAreaStringProperty,
     global: true
