@@ -254,6 +254,7 @@ export default class VertexNode extends Node {
    * Update whether the vertex is shown as selected.
    */
   private updateSelected(): void {
+
     //if this vertex is set to be disposed, do not update its selected logic
     if ( !this.isDisposed ) {
       const selected = this.vertex.isSelected();
@@ -275,7 +276,7 @@ export default class VertexNode extends Node {
       }
       CCKCUtils.setInSceneGraph( selected, this.circuitNode.highlightLayer, this.highlightNode );
       const numberConnections = neighborCircuitElements.length;
-      CCKCUtils.setInSceneGraph( selected && this.vertex.isCuttableProperty.value, this.circuitNode.buttonLayer, this.vertexCutButtonContainer );
+      CCKCUtils.setInSceneGraph( selected && this.circuitNode.vertexAttachmentListenerCount === 0 && this.vertex.isCuttableProperty.value, this.circuitNode.buttonLayer, this.vertexCutButtonContainer );
       selected && this.updateVertexCutButtonPosition();
 
       // Show a disabled button as a cue that the vertex could be cuttable, but it isn't right now.

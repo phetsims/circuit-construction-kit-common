@@ -55,7 +55,10 @@ export default class VertexAttachmentKeyboardListener extends AttachmentKeyboard
       },
       onOpen: () => {
         vertex.hasBeenKeyboardActivated = true;
+
+        circuitNode.vertexAttachmentListenerCount++;
         circuitNode.circuit.selectionProperty.value = vertexNode.vertex;
+        circuitNode.vertexAttachmentListenerCount--;
         circuitNode.startDragVertex( vertexNode.parentToGlobalPoint( vertex.positionProperty.value ), vertex, vertex );
       },
       targetDisposeEmitter: vertex.disposeEmitter,

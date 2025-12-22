@@ -175,6 +175,9 @@ export default class CircuitNode extends Node {
   // Track whether any vertex has been cut. Once the user cuts a vertex, hide the delete cue permanently.
   private anyVertexCut = false;
 
+  // VertexNode shows a cut button ONLY when activated by pointer, not when activated by keyboard, so we must track that.
+  public vertexAttachmentListenerCount = 0;
+
   /**
    * @param circuit - the model Circuit
    * @param screenView - for dropping CircuitElement instances back in the toolbox
@@ -477,8 +480,8 @@ export default class CircuitNode extends Node {
           supportsDynamicState: false
         } ) );
 
-    // When a vertex is selected, a cut button is shown near to the vertex.  If the vertex is connected to >1 circuit
-    // element, the button is enabled.  Pressing the button will cut the vertex from the neighbors.  Only one vertexCutButton
+    // When a vertex is selected via mouse/touch, a cut button is shown near to the vertex.  If the vertex is connected to >1 circuit
+    // element, the button is enabled. Pressing the button will cut the vertex from the neighbors.  Only one vertexCutButton
     // is allocated for all vertices (per screen) to use because it is too performance demanding to create these
     // dynamically when circuit elements are dragged from the toolbox.  Also, only one vertex can be selected at once
     // so there is only a need for one cut button.
