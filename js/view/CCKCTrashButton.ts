@@ -57,7 +57,8 @@ export default class CCKCTrashButton extends CCKCRoundPushButton {
       },
       isDisposable: false,
       tandem: tandem,
-      phetioVisiblePropertyInstrumented: false
+      phetioVisiblePropertyInstrumented: false,
+      phetioEnabledPropertyInstrumented: false
     } );
   }
 }
