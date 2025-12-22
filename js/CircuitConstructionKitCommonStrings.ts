@@ -153,9 +153,8 @@ type StringsType = {
         'handStringProperty': LocalizedStringProperty;
         'dollarBillStringProperty': LocalizedStringProperty;
       };
-      'connectionPointStringProperty': LocalizedStringProperty;
+      'connectionStringProperty': LocalizedStringProperty;
       'disconnectedStringProperty': LocalizedStringProperty;
-      'joinsStringProperty': LocalizedStringProperty;
       'groupStringProperty': LocalizedStringProperty;
       'emptyConstructionAreaMessageStringProperty': LocalizedStringProperty;
     };

@@ -362,18 +362,18 @@ export default class CircuitDescription {
     briefNames: Map<CircuitElement, string>,
     isFullyDisconnected: boolean
   ): string {
-    const baseLabel = `${CircuitConstructionKitCommonFluent.a11y.circuitDescription.connectionPointStringProperty.value} ${vertexIndex} of ${totalVertices}`;
+    const connectionLabel = `${CircuitConstructionKitCommonFluent.a11y.circuitDescription.connectionStringProperty.value} ${vertexIndex}`;
 
     if ( neighbors.length === 1 ) {
       const prefix = this.getTypeSpecificPrefix( vertex, neighbors[ 0 ] );
       vertex.completeDescription = null;
       const briefName = briefNames.get( neighbors[ 0 ] ) || '';
 
-      // For fully disconnected elements, use simplified format without "Connection Point X of Y"
+      // For fully disconnected elements, use simplified format without "Connection X"
       if ( isFullyDisconnected ) {
         return `${prefix}${briefName}`;
       }
-      return `${baseLabel}, ${prefix}${briefName}`;
+      return `${connectionLabel}: ${prefix}${briefName}`;
     }
     else if ( neighbors.length >= 4 ) {
       // Compute the full description with all details
@@ -381,7 +381,7 @@ export default class CircuitDescription {
         const prefix = this.getTypeSpecificPrefix( vertex, neighbor );
         return `${prefix}${briefNames.get( neighbor ) || ''}`;
       } ).join( ', ' );
-      const fullDescription = `${baseLabel}, joins ${neighborNames}`;
+      const fullDescription = `${connectionLabel}: ${neighborNames}`;
 
       // Store complete description on vertex for accessibility
       vertex.completeDescription = fullDescription;
@@ -434,7 +434,7 @@ export default class CircuitDescription {
         joinedTypes = `${typeDescriptions.join( ', ' )}, and ${lastType}`;
       }
 
-      return `${baseLabel}, Joins ${joinedTypes}`;
+      return `${connectionLabel}: ${joinedTypes}`;
     }
     else {
       const neighborNames = neighbors.map( neighbor => {
@@ -442,7 +442,7 @@ export default class CircuitDescription {
         return `${prefix}${briefNames.get( neighbor ) || ''}`;
       } ).join( ', ' );
       vertex.completeDescription = null;
-      return `${baseLabel}, joins ${neighborNames}`;
+      return `${connectionLabel}: ${neighborNames}`;
     }
   }
 
@@ -516,7 +516,7 @@ export default class CircuitDescription {
           false
         );
         circuitNode.getVertexNode( vertex ).accessibleName = description;
-        circuitNode.getVertexNode( vertex ).attachmentName = `Group ${groupIndex + 1}: ${description}`;
+        circuitNode.getVertexNode( vertex ).attachmentName = `${CircuitConstructionKitCommonFluent.a11y.circuitDescription.groupStringProperty.value} ${groupIndex + 1}, ${description}`;
       } );
 
       // Build PDOM order for this group

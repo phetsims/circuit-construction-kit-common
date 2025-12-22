@@ -138,9 +138,8 @@ a11y:
       eraser:     Eraser
       hand:       Hand
       dollarBill: Dollar Bill
-    connectionPoint:              Connection Point
+    connection:                   Connection
     disconnected:                 disconnected
-    joins:                        joins
     group:                        Group
     emptyConstructionAreaMessage: >-
                                   Add Circuit Components. Once added, select a component or a lead or terminal with Space to pop up options for
