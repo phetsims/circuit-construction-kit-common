@@ -17,7 +17,8 @@ import CircuitDescription from '../description/CircuitDescription.js';
 import AttachmentKeyboardListener from './AttachmentKeyboardListener.js';
 
 export default class VoltmeterProbeNodeAttachmentKeyboardListener extends AttachmentKeyboardListener<Vertex> {
-  public constructor( probeNode: Node, circuitNode: CircuitNode, probePositionProperty: Vector2Property ) {
+
+  public constructor( probeNode: Node, circuitNode: CircuitNode, probePositionProperty: Vector2Property, highlightNode: Node ) {
     const circuit = circuitNode.circuit;
 
     super( {
@@ -43,6 +44,15 @@ export default class VoltmeterProbeNodeAttachmentKeyboardListener extends Attach
           const soundPlayer = multiSelectionSoundPlayerFactory.getSelectionSoundPlayer( index );
           soundPlayer.play();
         }
+      },
+      onOpen: () => {
+        highlightNode.visible = true;
+      },
+      onClose: () => {
+        highlightNode.visible = false;
+      },
+      onCancel: () => {
+        highlightNode.visible = false;
       }
     } );
   }

@@ -36,6 +36,7 @@ import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import CCKCUtils from '../CCKCUtils.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CCKCColors from './CCKCColors.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import type CircuitConstructionKitModel from '../model/CircuitConstructionKitModel.js';
 import type Voltmeter from '../model/Voltmeter.js';
@@ -60,6 +61,8 @@ const PROBE_ANGLE = 22 * Math.PI * 2 / 360;
 const CONTROL_POINT_X = 30;
 const CONTROL_POINT_Y1 = 15;
 const CONTROL_POINT_Y2 = 60;
+
+const HIGHLIGHT_CORNER_RADIUS = 8; // in view coordinates
 
 type SelfOptions = {
   visibleBoundsProperty?: ReadOnlyProperty<Bounds2> | null;
@@ -284,12 +287,30 @@ export default class VoltmeterNode extends Node {
       const redProbeDragListener = createProbeDragListener( voltmeter.redProbePositionProperty, options.tandem.createTandem( 'redProbeDragListener' ) );
       const blackProbeDragListener = createProbeDragListener( voltmeter.blackProbePositionProperty, options.tandem.createTandem( 'blackProbeDragListener' ) );
 
+      // Create highlight rectangles for selection mode. These are created once and their visibility is toggled.
+      // Erode by half the line width so the stroke stays within the probe's existing bounds and doesn't affect layout.
+      const createProbeHighlight = ( probeNode: Rectangle ): Rectangle => {
+        const highlightNode = new Rectangle( 0, 0, 0, 0, HIGHLIGHT_CORNER_RADIUS, HIGHLIGHT_CORNER_RADIUS, {
+          stroke: CCKCColors.highlightStrokeProperty,
+          lineWidth: CCKCConstants.HIGHLIGHT_LINE_WIDTH,
+          pickable: false,
+          visible: false
+        } );
+        highlightNode.setRectBounds( probeNode.localBounds.eroded( CCKCConstants.HIGHLIGHT_LINE_WIDTH / 2 ) );
+        probeNode.addChild( highlightNode );
+        return highlightNode;
+      };
+
+      const redProbeHighlightNode = createProbeHighlight( this.redProbeNode );
+      const blackProbeHighlightNode = createProbeHighlight( this.blackProbeNode );
+
       this.redProbeNode.addInputListener( redProbeDragListener );
       this.redProbeNode.addInputListener( createProbeKeyboardDragListener( voltmeter.redProbePositionProperty ) );
       this.redProbeNode.addInputListener( new VoltmeterProbeNodeAttachmentKeyboardListener(
         this.redProbeNode,
         circuitNode!,
-        voltmeter.redProbePositionProperty
+        voltmeter.redProbePositionProperty,
+        redProbeHighlightNode
       ) );
 
       this.blackProbeNode.addInputListener( blackProbeDragListener );
@@ -297,7 +318,8 @@ export default class VoltmeterNode extends Node {
       this.blackProbeNode.addInputListener( new VoltmeterProbeNodeAttachmentKeyboardListener(
         this.blackProbeNode,
         circuitNode!,
-        voltmeter.blackProbePositionProperty
+        voltmeter.blackProbePositionProperty,
+        blackProbeHighlightNode
       ) );
 
       const erodedBoundsProperty = new DerivedProperty( [ options.visibleBoundsProperty! ], ( visibleBounds: Bounds2 ) => {
