@@ -39,7 +39,7 @@ export default class CCKCDisconnectButton extends CCKCRoundPushButton {
     } );
 
     // The button is enabled when the selected circuit element is connected to other elements
-    // and the connected vertices have isCuttableProperty = true
+    // and BOTH vertices allow cutting (either detached or isCuttableProperty = true)
     const enabledProperty = new DerivedProperty( [ circuit.selectionProperty ], selection => {
       if ( selection instanceof CircuitElement ) {
         const startVertex = selection.startVertexProperty.value;
@@ -48,11 +48,14 @@ export default class CCKCDisconnectButton extends CCKCRoundPushButton {
         const startNeighbors = circuit.getNeighborCircuitElements( startVertex );
         const endNeighbors = circuit.getNeighborCircuitElements( endVertex );
 
-        // A vertex can be cut if it's connected (more than 1 neighbor) AND its isCuttableProperty is true
-        const startCanBeCut = startNeighbors.length > 1 && startVertex.isCuttableProperty.value;
-        const endCanBeCut = endNeighbors.length > 1 && endVertex.isCuttableProperty.value;
+        // Must have at least one connection to cut
+        const hasConnectionToCut = startNeighbors.length > 1 || endNeighbors.length > 1;
 
-        return startCanBeCut || endCanBeCut;
+        // A side allows cutting if it's either already detached (no other neighbors) OR isCuttableProperty is true
+        const startAllowsCut = startNeighbors.length <= 1 || startVertex.isCuttableProperty.value;
+        const endAllowsCut = endNeighbors.length <= 1 || endVertex.isCuttableProperty.value;
+
+        return hasConnectionToCut && startAllowsCut && endAllowsCut;
       }
       return false;
     } );
