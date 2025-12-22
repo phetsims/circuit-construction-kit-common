@@ -18,7 +18,7 @@ import CircuitDescription from '../description/CircuitDescription.js';
 import AttachmentKeyboardListener from './AttachmentKeyboardListener.js';
 
 export default class AmmeterProbeNodeAttachmentKeyboardListener extends AttachmentKeyboardListener<CircuitElement> {
-  public constructor( probeNode: Node, circuitNode: CircuitNode, probePositionProperty: TProperty<Vector2>, highlightNode: Node ) {
+  public constructor( probeNode: Node, circuitNode: CircuitNode, probePositionProperty: TProperty<Vector2> ) {
     const circuit = circuitNode.circuit;
 
     super( {
@@ -57,13 +57,13 @@ export default class AmmeterProbeNodeAttachmentKeyboardListener extends Attachme
         }
       },
       onOpen: () => {
-        highlightNode.visible = true;
+        circuitNode.showProbeSelectionHighlight( probeNode );
       },
       onClose: () => {
-        highlightNode.visible = false;
+        circuitNode.hideProbeSelectionHighlight();
       },
       onCancel: () => {
-        highlightNode.visible = false;
+        circuitNode.hideProbeSelectionHighlight();
       }
     } );
   }

@@ -29,9 +29,11 @@ import { pdomFocusProperty } from '../../../scenery/js/accessibility/pdomFocusPr
 import type SceneryEvent from '../../../scenery/js/input/SceneryEvent.js';
 import Circle from '../../../scenery/js/nodes/Circle.js';
 import Node from '../../../scenery/js/nodes/Node.js';
+import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
 import isSettingPhetioStateProperty from '../../../tandem/js/isSettingPhetioStateProperty.js';
 import PhetioGroup from '../../../tandem/js/PhetioGroup.js';
 import Tandem from '../../../tandem/js/Tandem.js';
+import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
@@ -58,6 +60,7 @@ import Wire from '../model/Wire.js';
 import ACVoltageNode from './ACVoltageNode.js';
 import BatteryNode from './BatteryNode.js';
 import CapacitorCircuitElementNode from './CapacitorCircuitElementNode.js';
+import CCKCColors from './CCKCColors.js';
 import CCKCLightBulbNode from './CCKCLightBulbNode.js';
 import type CCKCScreenView from './CCKCScreenView.js';
 import ChargeNode from './ChargeNode.js';
@@ -93,6 +96,10 @@ export default class CircuitNode extends Node {
 
   // For VertexAttachmentKeyboardListener to show where a Vertex will be attached
   private readonly attachmentHighlightNode: Circle;
+
+  // For showing a yellow highlight around a probe (voltmeter or ammeter) when in selection mode
+  // Shared highlight for voltmeter/ammeter probes in selection mode. One rectangle is reused for all probes, so we only need 1
+  private readonly probeSelectionHighlightNode: Rectangle;
 
   // SeriesAmmeterNodes add to this layer when they are constructed
   // Shows the front panel of SeriesAmmeterNodes (which shows the current readout) so the charges look like they
@@ -192,6 +199,14 @@ export default class CircuitNode extends Node {
       visible: false
     } );
     this.highlightLayer.addChild( this.attachmentHighlightNode );
+
+    this.probeSelectionHighlightNode = new Rectangle( 0, 0, 0, 0, 8, 8, {
+      stroke: CCKCColors.highlightStrokeProperty,
+      lineWidth: CCKCConstants.HIGHLIGHT_LINE_WIDTH,
+      pickable: false,
+      visible: false
+    } );
+    this.highlightLayer.addChild( this.probeSelectionHighlightNode );
 
     this.seriesAmmeterNodeReadoutPanelLayer = new Node();
     this.buttonLayer = new Node();
@@ -718,6 +733,22 @@ export default class CircuitNode extends Node {
 
   public hideAttachmentHighlight(): void {
     this.attachmentHighlightNode.visible = false;
+  }
+
+  /**
+   * Show the probe selection highlight around the given probe node. Uses coordinate transforms so the highlight
+   * appears correctly regardless of the probe's scale or position.
+   */
+  public showProbeSelectionHighlight( probeNode: Node ): void {
+    const dilatedBounds = probeNode.localBounds.dilated( 0 );
+    const globalBounds = probeNode.localToGlobalBounds( dilatedBounds );
+    const localBounds = this.globalToLocalBounds( globalBounds );
+    this.probeSelectionHighlightNode.setRectBounds( localBounds.dilated( 2 ) );
+    this.probeSelectionHighlightNode.visible = true;
+  }
+
+  public hideProbeSelectionHighlight(): void {
+    this.probeSelectionHighlightNode.visible = false;
   }
 
   /**
