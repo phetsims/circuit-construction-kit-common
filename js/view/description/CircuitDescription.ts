@@ -526,6 +526,8 @@ export default class CircuitDescription {
       // Create group node
       const groupNode = new Node( {
         tagName: 'div',
+
+        // TODO: Move the number to fluent/yaml, see https://github.com/phetsims/circuit-construction-kit-common/issues/1043
         accessibleHeading: `${CircuitConstructionKitCommonFluent.a11y.circuitDescription.groupStringProperty.value} ${groupIndex + 1} of ${multiElementGroups.length}`,
         pdomOrder: uniquePDOMOrder
       } );
