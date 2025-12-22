@@ -14,6 +14,7 @@ import { clamp } from '../../../dot/js/util/clamp.js';
 import { toFixed } from '../../../dot/js/util/toFixed.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
+import CircuitDescriptionUtils from '../CircuitDescriptionUtils.js';
 import Battery from './Battery.js';
 import type Circuit from './Circuit.js';
 import CircuitElement from './CircuitElement.js';
@@ -39,6 +40,8 @@ type PendingContextEvent =
   | {
   type: 'vertices-joined';
   vertex: Vertex;
+  wasInExistingGroup: boolean; // True if vertex was already in a multi-element group before merge
+  groupIndex: number | null; // Group index if joining an existing group
 }
   | {
   type: 'vertex-split';
@@ -93,9 +96,27 @@ export default class CircuitContextStateTracker {
 
   public handleVertexMerged( vertex: Vertex ): void {
     this.captureCircuitContextState();
+
+    // Check if we're joining an existing group (more than 2 elements means it was already a group)
+    const groups = this.circuit.getGroups();
+    const currentGroup = groups.find( g => g.vertices.includes( vertex ) );
+    const groupSize = currentGroup ? currentGroup.circuitElements.length : 0;
+
+    // If group has more than 2 elements, we joined an existing group
+    const wasInExistingGroup = groupSize > 2;
+
+    // Get the group index if joining an existing group
+    let groupIndex: number | null = null;
+    if ( wasInExistingGroup && currentGroup ) {
+      const multiElementGroups = groups.filter( g => g.circuitElements.length > 1 );
+      groupIndex = multiElementGroups.indexOf( currentGroup ) + 1;
+    }
+
     this.pendingContextEvents.push( {
       type: 'vertices-joined',
-      vertex: vertex
+      vertex: vertex,
+      wasInExistingGroup: wasInExistingGroup,
+      groupIndex: groupIndex
     } );
   }
 
@@ -255,10 +276,12 @@ export default class CircuitContextStateTracker {
 
     this.pendingContextEvents.forEach( event => {
       if ( event.type === 'vertices-joined' ) {
-        const connectedComponents = this.getConnectedComponentTypeDescriptions( event.vertex );
+        const connectedComponents = this.getConnectedComponentDescriptions( event.vertex );
         if ( connectedComponents.length > 0 ) {
           sentences.push( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.connectedComponents.format( {
-            components: connectedComponents.join( ', ' )
+            components: connectedComponents.join( ', ' ),
+            inGroup: event.wasInExistingGroup ? 'true' : 'false',
+            groupIndex: event.groupIndex || 0
           } ) );
         }
       }
@@ -334,17 +357,26 @@ export default class CircuitContextStateTracker {
     this.pendingContextEvents.length = 0;
   }
 
-  private getConnectedComponentTypeDescriptions( vertex: Vertex ): string[] {
+  /**
+   * Returns rich descriptions for each circuit element connected to the vertex.
+   * Each description includes the element's brief name (e.g., "Wire 1") and terminal info
+   * (e.g., "Negative Terminal of Battery 2").
+   */
+  private getConnectedComponentDescriptions( vertex: Vertex ): string[] {
     const connectedElements = this.circuit.getNeighborCircuitElements( vertex );
-    const seen = new Set<string>();
     const descriptions: string[] = [];
+
     connectedElements.forEach( element => {
-      const label = this.getElementTypeLabel( element );
-      if ( !seen.has( label ) ) {
-        seen.add( label );
-        descriptions.push( label );
-      }
+      // Get the position of this element among elements of the same type
+      const position = CircuitDescriptionUtils.getElementPosition( this.circuit, element );
+      const briefName = CircuitDescriptionUtils.formatCircuitElementBriefName( element, position );
+
+      // Get the terminal description for this vertex connection
+      const terminalDescription = CircuitDescriptionUtils.formatTerminalDescription( vertex, element, briefName );
+
+      descriptions.push( terminalDescription );
     } );
+
     return descriptions;
   }
 
@@ -353,14 +385,9 @@ export default class CircuitContextStateTracker {
     if ( label.length > 0 ) {
       return label;
     }
-    const stringProperty = _.get( CircuitConstructionKitCommonFluent, `${circuitElement.type}StringProperty` );
-    return stringProperty ? stringProperty.value : circuitElement.type;
-  }
-
-  private getElementTypeLabel( circuitElement: CircuitElement ): string {
-    const stringProperty = _.get( CircuitConstructionKitCommonFluent, `${circuitElement.type}StringProperty` );
-    const label = stringProperty ? stringProperty.value : circuitElement.type;
-    return label.toLowerCase();
+    // Use CircuitDescriptionUtils to get the proper type label (handles household items correctly)
+    const position = CircuitDescriptionUtils.getElementPosition( this.circuit, circuitElement );
+    return CircuitDescriptionUtils.formatCircuitElementBriefName( circuitElement, position );
   }
 
   private getVertexLabel( vertex: Vertex ): string {

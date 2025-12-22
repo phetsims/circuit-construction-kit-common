@@ -269,7 +269,10 @@ a11y:
                               Delete key. Check out Keyboard Shortcuts for more details.
   circuitContextResponses:
     junctionDefaultLabel: 'Junction { $index }'
-    connectedComponents:  'Connected: { $components }.'
+    connectedComponents:
+      select_inGroup:
+        true:  'Connected: { $components }, in Group { $groupIndex }.'
+        false: 'Connected: { $components }.'
     junctionSplit:
       select_connectionCount:
         one:   '{ $junctionName } split into one new connection.'

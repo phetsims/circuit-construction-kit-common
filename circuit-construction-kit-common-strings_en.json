@@ -522,7 +522,7 @@
         "value": "Junction { $index }"
       },
       "connectedComponents": {
-        "value": "Connected: { $components }."
+        "value": "{ $inGroup ->\n  [true] Connected: { $components }, in Group { $groupIndex }.\n  *[false] Connected: { $components }.\n}"
       },
       "junctionSplit": {
         "value": "{ $connectionCount ->\n  [one] { $junctionName } split into one new connection.\n  *[other] { $junctionName } split into { $connectionCount } new connections.\n}"
