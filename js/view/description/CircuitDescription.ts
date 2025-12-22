@@ -183,6 +183,22 @@ export default class CircuitDescription {
   private static myGroupNodes: Node[] | null = null;
 
   /**
+   * Returns the 1-based group index for a circuit element if it's in a multi-element group,
+   * or null if it's disconnected (single-element group).
+   */
+  public static getGroupIndex( circuit: Circuit, circuitElement: CircuitElement ): number | null {
+    const groups = circuit.getGroups();
+    const multiElementGroups = groups.filter( group => group.circuitElements.length > 1 );
+
+    for ( let i = 0; i < multiElementGroups.length; i++ ) {
+      if ( multiElementGroups[ i ].circuitElements.includes( circuitElement ) ) {
+        return i + 1; // 1-based index
+      }
+    }
+    return null; // Disconnected element
+  }
+
+  /**
    * Sorts circuit elements by the preferred type order, with unlisted types at the end.
    */
   private static sortCircuitElementsByType( circuitElements: CircuitElement[] ): CircuitElement[] {
