@@ -364,6 +364,95 @@
           "value": "Dollar Bill"
         }
       },
+      "circuitComponentTypePlurals": {
+        "wire": {
+          "value": "Wires"
+        },
+        "battery": {
+          "value": "Batteries"
+        },
+        "resistor": {
+          "value": "Resistors"
+        },
+        "capacitor": {
+          "value": "Capacitors"
+        },
+        "inductor": {
+          "value": "Inductors"
+        },
+        "lightBulb": {
+          "value": "Light Bulbs"
+        },
+        "acSource": {
+          "value": "AC Sources"
+        },
+        "fuse": {
+          "value": "Fuses"
+        },
+        "switch": {
+          "value": "Switches"
+        },
+        "voltmeter": {
+          "value": "Voltmeters"
+        },
+        "ammeter": {
+          "value": "Ammeters"
+        },
+        "stopwatch": {
+          "value": "Stopwatches"
+        },
+        "coin": {
+          "value": "Coins"
+        },
+        "paperClip": {
+          "value": "Paper Clips"
+        },
+        "pencil": {
+          "value": "Pencils"
+        },
+        "eraser": {
+          "value": "Erasers"
+        },
+        "hand": {
+          "value": "Hands"
+        },
+        "dollarBill": {
+          "value": "Dollar Bills"
+        }
+      },
+      "terminalPrefix": {
+        "value": "{ $terminalType ->\n  [positiveTerminal] Positive Terminal of { $componentName }\n  [negativeTerminal] Negative Terminal of { $componentName }\n  [side] Side of { $componentName }\n  [bottom] Bottom of { $componentName }\n  *[none] { $componentName }\n}"
+      },
+      "briefName": {
+        "value": "{ $typeLabel } { $position }"
+      },
+      "connectionDescription": {
+        "value": "{ $connectionLabel }: { $neighbors }"
+      },
+      "compressedSingular": {
+        "value": "{ $article } { $typeLabel }"
+      },
+      "compressedPlural": {
+        "value": "{ $count } { $pluralLabel }"
+      },
+      "listAnd": {
+        "value": "and"
+      },
+      "listTwoItems": {
+        "value": "{ $first } and { $second }"
+      },
+      "listFinalSeparator": {
+        "value": ", and { $last }"
+      },
+      "groupHeading": {
+        "value": "Group { $groupIndex } of { $totalGroups }"
+      },
+      "groupWithConnection": {
+        "value": "Group { $groupIndex }, { $description }"
+      },
+      "article": {
+        "value": "{ $startsWithVowel ->\n  [true] an\n  *[false] a\n}"
+      },
       "connection": {
         "value": "Connection"
       },

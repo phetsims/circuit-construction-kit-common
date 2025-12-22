@@ -129,6 +129,35 @@ addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_pencil', 
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_eraser', 'a11y.circuitDescription.circuitComponentTypeLabels.eraserStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_hand', 'a11y.circuitDescription.circuitComponentTypeLabels.handStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_dollarBill', 'a11y.circuitDescription.circuitComponentTypeLabels.dollarBillStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypePlurals_wire', 'a11y.circuitDescription.circuitComponentTypePlurals.wireStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypePlurals_battery', 'a11y.circuitDescription.circuitComponentTypePlurals.batteryStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypePlurals_resistor', 'a11y.circuitDescription.circuitComponentTypePlurals.resistorStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypePlurals_capacitor', 'a11y.circuitDescription.circuitComponentTypePlurals.capacitorStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypePlurals_inductor', 'a11y.circuitDescription.circuitComponentTypePlurals.inductorStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypePlurals_lightBulb', 'a11y.circuitDescription.circuitComponentTypePlurals.lightBulbStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypePlurals_acSource', 'a11y.circuitDescription.circuitComponentTypePlurals.acSourceStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypePlurals_fuse', 'a11y.circuitDescription.circuitComponentTypePlurals.fuseStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypePlurals_switch', 'a11y.circuitDescription.circuitComponentTypePlurals.switchStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypePlurals_voltmeter', 'a11y.circuitDescription.circuitComponentTypePlurals.voltmeterStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypePlurals_ammeter', 'a11y.circuitDescription.circuitComponentTypePlurals.ammeterStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypePlurals_stopwatch', 'a11y.circuitDescription.circuitComponentTypePlurals.stopwatchStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypePlurals_coin', 'a11y.circuitDescription.circuitComponentTypePlurals.coinStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypePlurals_paperClip', 'a11y.circuitDescription.circuitComponentTypePlurals.paperClipStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypePlurals_pencil', 'a11y.circuitDescription.circuitComponentTypePlurals.pencilStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypePlurals_eraser', 'a11y.circuitDescription.circuitComponentTypePlurals.eraserStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypePlurals_hand', 'a11y.circuitDescription.circuitComponentTypePlurals.handStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypePlurals_dollarBill', 'a11y.circuitDescription.circuitComponentTypePlurals.dollarBillStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_terminalPrefix', 'a11y.circuitDescription.terminalPrefixStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_briefName', 'a11y.circuitDescription.briefNameStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_connectionDescription', 'a11y.circuitDescription.connectionDescriptionStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_compressedSingular', 'a11y.circuitDescription.compressedSingularStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_compressedPlural', 'a11y.circuitDescription.compressedPluralStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_listAnd', 'a11y.circuitDescription.listAndStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_listTwoItems', 'a11y.circuitDescription.listTwoItemsStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_listFinalSeparator', 'a11y.circuitDescription.listFinalSeparatorStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_groupHeading', 'a11y.circuitDescription.groupHeadingStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_groupWithConnection', 'a11y.circuitDescription.groupWithConnectionStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_article', 'a11y.circuitDescription.articleStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_connection', 'a11y.circuitDescription.connectionStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_disconnected', 'a11y.circuitDescription.disconnectedStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_group', 'a11y.circuitDescription.groupStringProperty' );
@@ -233,7 +262,8 @@ const CircuitConstructionKitCommonFluent = {
   lotsStringProperty: _.get( CircuitConstructionKitCommonStrings, 'lotsStringProperty' ),
   phaseShiftStringProperty: _.get( CircuitConstructionKitCommonStrings, 'phaseShiftStringProperty' ),
   _comment_0: new FluentComment( {"comment":"Household items (max 1 each)","associatedKey":"coin"} ),
-  _comment_1: new FluentComment( {"comment":"Household items (max 1 each, so no position needed)","associatedKey":"coin"} ),
+  _comment_1: new FluentComment( {"comment":"Household items (max 1 each, plurals unlikely but included for completeness)","associatedKey":"coin"} ),
+  _comment_2: new FluentComment( {"comment":"Household items (max 1 each, so no position needed)","associatedKey":"coin"} ),
   coinStringProperty: _.get( CircuitConstructionKitCommonStrings, 'coinStringProperty' ),
   dollarBillStringProperty: _.get( CircuitConstructionKitCommonStrings, 'dollarBillStringProperty' ),
   eraserStringProperty: _.get( CircuitConstructionKitCommonStrings, 'eraserStringProperty' ),
@@ -275,7 +305,7 @@ const CircuitConstructionKitCommonFluent = {
   inductanceUnitsStringProperty: _.get( CircuitConstructionKitCommonStrings, 'inductanceUnitsStringProperty' ),
   fuseValueStringProperty: _.get( CircuitConstructionKitCommonStrings, 'fuseValueStringProperty' ),
   resistanceOhmsSymbolStringProperty: _.get( CircuitConstructionKitCommonStrings, 'resistanceOhmsSymbolStringProperty' ),
-  _comment_2: new FluentComment( {"comment":"THESE ARE BUGGY BUT WE HAVE TO COORDINATE WITH i18n TOOLING TO FIX THEM","associatedKey":"capacitanceFaradsSymbol"} ),
+  _comment_3: new FluentComment( {"comment":"THESE ARE BUGGY BUT WE HAVE TO COORDINATE WITH i18n TOOLING TO FIX THEM","associatedKey":"capacitanceFaradsSymbol"} ),
   capacitanceFaradsSymbolStringProperty: _.get( CircuitConstructionKitCommonStrings, 'capacitanceFaradsSymbolStringProperty' ),
   inductanceHenriesSymbolStringProperty: _.get( CircuitConstructionKitCommonStrings, 'inductanceHenriesSymbolStringProperty' ),
   resistanceOhmsValuePatternStringProperty: _.get( CircuitConstructionKitCommonStrings, 'resistanceOhmsValuePatternStringProperty' ),
@@ -290,7 +320,7 @@ const CircuitConstructionKitCommonFluent = {
     toEditComponentStringProperty: _.get( CircuitConstructionKitCommonStrings, 'key.toEditComponentStringProperty' ),
     toChooseConnectionStringProperty: _.get( CircuitConstructionKitCommonStrings, 'key.toChooseConnectionStringProperty' )
   },
-  _comment_3: new FluentComment( {"comment":"TODO: Some of this text is PDOM only and should not appear in rosetta","associatedKey":"keyboardHelpDialog"} ),
+  _comment_4: new FluentComment( {"comment":"TODO: Some of this text is PDOM only and should not appear in rosetta","associatedKey":"keyboardHelpDialog"} ),
   keyboardHelpDialog: {
     addComponents: {
       headingStringProperty: _.get( CircuitConstructionKitCommonStrings, 'keyboardHelpDialog.addComponents.headingStringProperty' ),
@@ -348,7 +378,8 @@ const CircuitConstructionKitCommonFluent = {
         ammeterStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypeLabels_ammeter', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypeLabels.ammeterStringProperty' ) ),
         stopwatchStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypeLabels_stopwatch', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypeLabels.stopwatchStringProperty' ) ),
         _comment_0: new FluentComment( {"comment":"Household items (max 1 each)","associatedKey":"coin"} ),
-        _comment_1: new FluentComment( {"comment":"Household items (max 1 each, so no position needed)","associatedKey":"coin"} ),
+        _comment_1: new FluentComment( {"comment":"Household items (max 1 each, plurals unlikely but included for completeness)","associatedKey":"coin"} ),
+        _comment_2: new FluentComment( {"comment":"Household items (max 1 each, so no position needed)","associatedKey":"coin"} ),
         coinStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypeLabels_coin', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypeLabels.coinStringProperty' ) ),
         paperClipStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypeLabels_paperClip', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypeLabels.paperClipStringProperty' ) ),
         pencilStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypeLabels_pencil', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypeLabels.pencilStringProperty' ) ),
@@ -356,6 +387,48 @@ const CircuitConstructionKitCommonFluent = {
         handStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypeLabels_hand', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypeLabels.handStringProperty' ) ),
         dollarBillStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypeLabels_dollarBill', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypeLabels.dollarBillStringProperty' ) )
       },
+      _comment_0: new FluentComment( {"comment":"Plural forms for circuit component types (used in compressed connection descriptions)","associatedKey":"circuitComponentTypePlurals"} ),
+      circuitComponentTypePlurals: {
+        wireStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypePlurals_wire', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypePlurals.wireStringProperty' ) ),
+        batteryStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypePlurals_battery', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypePlurals.batteryStringProperty' ) ),
+        resistorStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypePlurals_resistor', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypePlurals.resistorStringProperty' ) ),
+        capacitorStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypePlurals_capacitor', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypePlurals.capacitorStringProperty' ) ),
+        inductorStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypePlurals_inductor', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypePlurals.inductorStringProperty' ) ),
+        lightBulbStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypePlurals_lightBulb', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypePlurals.lightBulbStringProperty' ) ),
+        acSourceStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypePlurals_acSource', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypePlurals.acSourceStringProperty' ) ),
+        fuseStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypePlurals_fuse', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypePlurals.fuseStringProperty' ) ),
+        switchStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypePlurals_switch', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypePlurals.switchStringProperty' ) ),
+        voltmeterStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypePlurals_voltmeter', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypePlurals.voltmeterStringProperty' ) ),
+        ammeterStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypePlurals_ammeter', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypePlurals.ammeterStringProperty' ) ),
+        stopwatchStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypePlurals_stopwatch', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypePlurals.stopwatchStringProperty' ) ),
+        _comment_0: new FluentComment( {"comment":"Household items (max 1 each)","associatedKey":"coin"} ),
+        _comment_1: new FluentComment( {"comment":"Household items (max 1 each, plurals unlikely but included for completeness)","associatedKey":"coin"} ),
+        _comment_2: new FluentComment( {"comment":"Household items (max 1 each, so no position needed)","associatedKey":"coin"} ),
+        coinStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypePlurals_coin', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypePlurals.coinStringProperty' ) ),
+        paperClipStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypePlurals_paperClip', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypePlurals.paperClipStringProperty' ) ),
+        pencilStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypePlurals_pencil', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypePlurals.pencilStringProperty' ) ),
+        eraserStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypePlurals_eraser', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypePlurals.eraserStringProperty' ) ),
+        handStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypePlurals_hand', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypePlurals.handStringProperty' ) ),
+        dollarBillStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypePlurals_dollarBill', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypePlurals.dollarBillStringProperty' ) )
+      },
+      _comment_1: new FluentComment( {"comment":"Terminal and connection prefixes for vertex descriptions","associatedKey":"terminalPrefix"} ),
+      terminalPrefix: new FluentPattern<{ componentName: FluentVariable, terminalType: 'positiveTerminal' | 'negativeTerminal' | 'side' | 'bottom' | 'none' | TReadOnlyProperty<'positiveTerminal' | 'negativeTerminal' | 'side' | 'bottom' | 'none'> }>( fluentSupport.bundleProperty, 'a11y_circuitDescription_terminalPrefix', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.terminalPrefixStringProperty' ), [{"name":"componentName"},{"name":"terminalType","variants":["positiveTerminal","negativeTerminal","side","bottom","none"]}] ),
+      _comment_2: new FluentComment( {"comment":"Brief name for a circuit element (type + position number)","associatedKey":"briefName"} ),
+      briefName: new FluentPattern<{ position: FluentVariable, typeLabel: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitDescription_briefName', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.briefNameStringProperty' ), [{"name":"position"},{"name":"typeLabel"}] ),
+      _comment_3: new FluentComment( {"comment":"Connection description patterns","associatedKey":"connectionDescription"} ),
+      connectionDescription: new FluentPattern<{ connectionLabel: FluentVariable, neighbors: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitDescription_connectionDescription', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.connectionDescriptionStringProperty' ), [{"name":"connectionLabel"},{"name":"neighbors"}] ),
+      _comment_4: new FluentComment( {"comment":"For compressed descriptions with 4+ connections","associatedKey":"compressedSingular"} ),
+      compressedSingular: new FluentPattern<{ article: FluentVariable, typeLabel: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitDescription_compressedSingular', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.compressedSingularStringProperty' ), [{"name":"article"},{"name":"typeLabel"}] ),
+      compressedPlural: new FluentPattern<{ count: FluentVariable, pluralLabel: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitDescription_compressedPlural', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.compressedPluralStringProperty' ), [{"name":"count"},{"name":"pluralLabel"}] ),
+      _comment_5: new FluentComment( {"comment":"List joining patterns","associatedKey":"listAnd"} ),
+      listAndStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_listAnd', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.listAndStringProperty' ) ),
+      listTwoItems: new FluentPattern<{ first: FluentVariable, second: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitDescription_listTwoItems', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.listTwoItemsStringProperty' ), [{"name":"first"},{"name":"second"}] ),
+      listFinalSeparator: new FluentPattern<{ last: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitDescription_listFinalSeparator', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.listFinalSeparatorStringProperty' ), [{"name":"last"}] ),
+      _comment_6: new FluentComment( {"comment":"Group patterns","associatedKey":"groupHeading"} ),
+      groupHeading: new FluentPattern<{ groupIndex: FluentVariable, totalGroups: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitDescription_groupHeading', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.groupHeadingStringProperty' ), [{"name":"groupIndex"},{"name":"totalGroups"}] ),
+      groupWithConnection: new FluentPattern<{ description: FluentVariable, groupIndex: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitDescription_groupWithConnection', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.groupWithConnectionStringProperty' ), [{"name":"description"},{"name":"groupIndex"}] ),
+      _comment_7: new FluentComment( {"comment":"Article selection (a vs an)","associatedKey":"article"} ),
+      article: new FluentPattern<{ startsWithVowel: 'true' | 'false' | TReadOnlyProperty<'true' | 'false'> }>( fluentSupport.bundleProperty, 'a11y_circuitDescription_article', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.articleStringProperty' ), [{"name":"startsWithVowel","variants":["true","false"]}] ),
       connectionStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_connection', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.connectionStringProperty' ) ),
       disconnectedStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_disconnected', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.disconnectedStringProperty' ) ),
       groupStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_group', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.groupStringProperty' ) ),

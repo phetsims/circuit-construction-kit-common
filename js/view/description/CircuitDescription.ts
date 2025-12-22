@@ -118,47 +118,46 @@ const getCircuitElementTypeLabel = ( type: CircuitElementType | string ): string
 
 /**
  * Returns the plural form for a circuit element type or description type.
- * Hard-coded for now; will eventually move to strings YAML.
  */
 const getPluralTypeLabel = ( type: CircuitElementType | string ): string => {
   switch( type ) {
     case 'wire':
-      return 'Wires';
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypePlurals.wireStringProperty.value;
     case 'battery':
-      return 'Batteries';
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypePlurals.batteryStringProperty.value;
     case 'resistor':
-      return 'Resistors';
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypePlurals.resistorStringProperty.value;
     case 'capacitor':
-      return 'Capacitors';
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypePlurals.capacitorStringProperty.value;
     case 'inductor':
-      return 'Inductors';
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypePlurals.inductorStringProperty.value;
     case 'lightBulb':
-      return 'Light Bulbs';
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypePlurals.lightBulbStringProperty.value;
     case 'acSource':
-      return 'AC Sources';
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypePlurals.acSourceStringProperty.value;
     case 'fuse':
-      return 'Fuses';
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypePlurals.fuseStringProperty.value;
     case 'switch':
-      return 'Switches';
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypePlurals.switchStringProperty.value;
     case 'voltmeter':
-      return 'Voltmeters';
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypePlurals.voltmeterStringProperty.value;
     case 'ammeter':
-      return 'Ammeters';
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypePlurals.ammeterStringProperty.value;
     case 'stopwatch':
-      return 'Stopwatches';
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypePlurals.stopwatchStringProperty.value;
     // Household items (max 1, so plurals unlikely but included for completeness)
     case 'coin':
-      return 'Coins';
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypePlurals.coinStringProperty.value;
     case 'paperClip':
-      return 'Paper Clips';
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypePlurals.paperClipStringProperty.value;
     case 'pencil':
-      return 'Pencils';
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypePlurals.pencilStringProperty.value;
     case 'eraser':
-      return 'Erasers';
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypePlurals.eraserStringProperty.value;
     case 'hand':
-      return 'Hands';
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypePlurals.handStringProperty.value;
     case 'dollarBill':
-      return 'Dollar Bills';
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypePlurals.dollarBillStringProperty.value;
     default:
       return type + 's';
   }
@@ -170,13 +169,16 @@ const getPluralTypeLabel = ( type: CircuitElementType | string ): string => {
  */
 const formatCircuitElementBriefName = ( circuitElement: CircuitElement, position: number, total: number ): string => {
   const descriptionType = getDescriptionType( circuitElement );
-  const baseLabel = getCircuitElementTypeLabel( descriptionType );
+  const typeLabel = getCircuitElementTypeLabel( descriptionType );
 
   // For single-max items (household items), don't show position numbers
   if ( isSingleMaxItem( circuitElement ) ) {
-    return baseLabel;
+    return typeLabel;
   }
-  return `${baseLabel} ${position}`;
+  return CircuitConstructionKitCommonFluent.a11y.circuitDescription.briefName.format( {
+    typeLabel: typeLabel,
+    position: position
+  } );
 };
 
 export default class CircuitDescription {
@@ -345,23 +347,35 @@ export default class CircuitDescription {
   }
 
   /**
-   * Returns the type-specific prefix for describing a vertex's connection to a circuit element.
-   * For example, "Positive Terminal of " for a battery's endVertex, or "Bottom of " for a light bulb's endVertex.
+   * Returns the terminal type for a vertex's connection to a circuit element.
+   * Used with the terminalPrefix pattern to create the full description.
    */
-  private static getTypeSpecificPrefix( vertex: Vertex, circuitElement: CircuitElement ): string {
+  private static getTerminalType( vertex: Vertex, circuitElement: CircuitElement ): 'positiveTerminal' | 'negativeTerminal' | 'side' | 'bottom' | 'none' {
     if ( circuitElement.type === 'battery' ) {
       const battery = circuitElement as Battery;
 
       // endVertex is the positive terminal (higher voltage)
-      return vertex === battery.endVertexProperty.value ? 'Positive Terminal of ' : 'Negative Terminal of ';
+      return vertex === battery.endVertexProperty.value ? 'positiveTerminal' : 'negativeTerminal';
     }
     else if ( circuitElement.type === 'lightBulb' ) {
       const lightBulb = circuitElement as LightBulb;
 
       // startVertex is the side, endVertex is the bottom
-      return vertex === lightBulb.endVertexProperty.value ? 'Side of ' : 'Bottom of ';
+      return vertex === lightBulb.endVertexProperty.value ? 'side' : 'bottom';
     }
-    return '';
+    return 'none';
+  }
+
+  /**
+   * Returns the formatted description for a vertex's connection to a circuit element,
+   * including the terminal type prefix (e.g., "Positive Terminal of Battery 1").
+   */
+  private static formatTerminalDescription( vertex: Vertex, circuitElement: CircuitElement, componentName: string ): string {
+    const terminalType = this.getTerminalType( vertex, circuitElement );
+    return CircuitConstructionKitCommonFluent.a11y.circuitDescription.terminalPrefix.format( {
+      terminalType: terminalType,
+      componentName: componentName
+    } );
   }
 
   /**
@@ -381,23 +395,29 @@ export default class CircuitDescription {
     const connectionLabel = `${CircuitConstructionKitCommonFluent.a11y.circuitDescription.connectionStringProperty.value} ${vertexIndex}`;
 
     if ( neighbors.length === 1 ) {
-      const prefix = this.getTypeSpecificPrefix( vertex, neighbors[ 0 ] );
+      const componentName = briefNames.get( neighbors[ 0 ] ) || '';
+      const terminalDescription = this.formatTerminalDescription( vertex, neighbors[ 0 ], componentName );
       vertex.completeDescription = null;
-      const briefName = briefNames.get( neighbors[ 0 ] ) || '';
 
       // For fully disconnected elements, use simplified format without "Connection X"
       if ( isFullyDisconnected ) {
-        return `${prefix}${briefName}`;
+        return terminalDescription;
       }
-      return `${connectionLabel}: ${prefix}${briefName}`;
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.connectionDescription.format( {
+        connectionLabel: connectionLabel,
+        neighbors: terminalDescription
+      } );
     }
     else if ( neighbors.length >= 4 ) {
       // Compute the full description with all details
       const neighborNames = neighbors.map( neighbor => {
-        const prefix = this.getTypeSpecificPrefix( vertex, neighbor );
-        return `${prefix}${briefNames.get( neighbor ) || ''}`;
+        const componentName = briefNames.get( neighbor ) || '';
+        return this.formatTerminalDescription( vertex, neighbor, componentName );
       } ).join( ', ' );
-      const fullDescription = `${connectionLabel}: ${neighborNames}`;
+      const fullDescription = CircuitConstructionKitCommonFluent.a11y.circuitDescription.connectionDescription.format( {
+        connectionLabel: connectionLabel,
+        neighbors: neighborNames
+      } );
 
       // Store complete description on vertex for accessibility
       vertex.completeDescription = fullDescription;
@@ -426,13 +446,22 @@ export default class CircuitDescription {
         if ( count !== undefined ) {
           if ( count === 1 ) {
             const typeLabel = getCircuitElementTypeLabel( type );
-            // Use article "a" or "an"
-            const article = /^[aeiou]/i.test( typeLabel ) ? 'an' : 'a';
-            typeDescriptions.push( `${article} ${typeLabel}` );
+            // Use article "a" or "an" based on whether the type label starts with a vowel
+            const startsWithVowel = /^[aeiou]/i.test( typeLabel ) ? 'true' : 'false';
+            const article = CircuitConstructionKitCommonFluent.a11y.circuitDescription.article.format( {
+              startsWithVowel: startsWithVowel
+            } );
+            typeDescriptions.push( CircuitConstructionKitCommonFluent.a11y.circuitDescription.compressedSingular.format( {
+              article: article,
+              typeLabel: typeLabel
+            } ) );
           }
           else {
             const pluralLabel = getPluralTypeLabel( type );
-            typeDescriptions.push( `${count} ${pluralLabel}` );
+            typeDescriptions.push( CircuitConstructionKitCommonFluent.a11y.circuitDescription.compressedPlural.format( {
+              count: count,
+              pluralLabel: pluralLabel
+            } ) );
           }
         }
       } );
@@ -443,22 +472,33 @@ export default class CircuitDescription {
         joinedTypes = typeDescriptions[ 0 ];
       }
       else if ( typeDescriptions.length === 2 ) {
-        joinedTypes = `${typeDescriptions[ 0 ]} and ${typeDescriptions[ 1 ]}`;
+        joinedTypes = CircuitConstructionKitCommonFluent.a11y.circuitDescription.listTwoItems.format( {
+          first: typeDescriptions[ 0 ],
+          second: typeDescriptions[ 1 ]
+        } );
       }
       else {
         const lastType = typeDescriptions.pop()!;
-        joinedTypes = `${typeDescriptions.join( ', ' )}, and ${lastType}`;
+        joinedTypes = typeDescriptions.join( ', ' ) + CircuitConstructionKitCommonFluent.a11y.circuitDescription.listFinalSeparator.format( {
+          last: lastType
+        } );
       }
 
-      return `${connectionLabel}: ${joinedTypes}`;
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.connectionDescription.format( {
+        connectionLabel: connectionLabel,
+        neighbors: joinedTypes
+      } );
     }
     else {
       const neighborNames = neighbors.map( neighbor => {
-        const prefix = this.getTypeSpecificPrefix( vertex, neighbor );
-        return `${prefix}${briefNames.get( neighbor ) || ''}`;
+        const componentName = briefNames.get( neighbor ) || '';
+        return this.formatTerminalDescription( vertex, neighbor, componentName );
       } ).join( ', ' );
       vertex.completeDescription = null;
-      return `${connectionLabel}: ${neighborNames}`;
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.connectionDescription.format( {
+        connectionLabel: connectionLabel,
+        neighbors: neighborNames
+      } );
     }
   }
 
@@ -532,7 +572,10 @@ export default class CircuitDescription {
           false
         );
         circuitNode.getVertexNode( vertex ).accessibleName = description;
-        circuitNode.getVertexNode( vertex ).attachmentName = `${CircuitConstructionKitCommonFluent.a11y.circuitDescription.groupStringProperty.value} ${groupIndex + 1}, ${description}`;
+        circuitNode.getVertexNode( vertex ).attachmentName = CircuitConstructionKitCommonFluent.a11y.circuitDescription.groupWithConnection.format( {
+          groupIndex: groupIndex + 1,
+          description: description
+        } );
       } );
 
       // Build PDOM order for this group
@@ -551,9 +594,10 @@ export default class CircuitDescription {
       // Create group node
       const groupNode = new Node( {
         tagName: 'div',
-
-        // TODO: Move the number to fluent/yaml, see https://github.com/phetsims/circuit-construction-kit-common/issues/1043
-        accessibleHeading: `${CircuitConstructionKitCommonFluent.a11y.circuitDescription.groupStringProperty.value} ${groupIndex + 1} of ${multiElementGroups.length}`,
+        accessibleHeading: CircuitConstructionKitCommonFluent.a11y.circuitDescription.groupHeading.format( {
+          groupIndex: groupIndex + 1,
+          totalGroups: multiElementGroups.length
+        } ),
         pdomOrder: uniquePDOMOrder
       } );
 
