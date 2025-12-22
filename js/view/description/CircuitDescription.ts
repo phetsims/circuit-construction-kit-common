@@ -352,20 +352,28 @@ export default class CircuitDescription {
    * Creates an accessible description for a vertex based on its connections.
    * Uses brief names for circuit elements to keep descriptions concise.
    * For vertices with 4+ connections, uses a compressed form grouping by type.
+   * @param isFullyDisconnected - true if this vertex belongs to a circuit element with both ends disconnected
    */
   private static createVertexDescription(
     vertex: Vertex,
     vertexIndex: number,
     totalVertices: number,
     neighbors: CircuitElement[],
-    briefNames: Map<CircuitElement, string>
+    briefNames: Map<CircuitElement, string>,
+    isFullyDisconnected: boolean
   ): string {
     const baseLabel = `${CircuitConstructionKitCommonFluent.a11y.circuitDescription.connectionPointStringProperty.value} ${vertexIndex} of ${totalVertices}`;
 
     if ( neighbors.length === 1 ) {
       const prefix = this.getTypeSpecificPrefix( vertex, neighbors[ 0 ] );
       vertex.completeDescription = null;
-      return `${baseLabel}, ${prefix}${briefNames.get( neighbors[ 0 ] ) || ''}`;
+      const briefName = briefNames.get( neighbors[ 0 ] ) || '';
+
+      // For fully disconnected elements, use simplified format without "Connection Point X of Y"
+      if ( isFullyDisconnected ) {
+        return `${prefix}${briefName}`;
+      }
+      return `${baseLabel}, ${prefix}${briefName}`;
     }
     else if ( neighbors.length >= 4 ) {
       // Compute the full description with all details
@@ -458,8 +466,8 @@ export default class CircuitDescription {
       const startVertexNode = circuitNode.getVertexNode( startVertex );
       const endVertexNode = circuitNode.getVertexNode( endVertex );
 
-      startVertexNode.accessibleName = CircuitDescription.createVertexDescription( startVertex, 1, 2, [ circuitElement ], briefNames );
-      endVertexNode.accessibleName = CircuitDescription.createVertexDescription( endVertex, 2, 2, [ circuitElement ], briefNames );
+      startVertexNode.accessibleName = CircuitDescription.createVertexDescription( startVertex, 1, 2, [ circuitElement ], briefNames, true );
+      endVertexNode.accessibleName = CircuitDescription.createVertexDescription( endVertex, 2, 2, [ circuitElement ], briefNames, true );
 
       startVertexNode.attachmentName = startVertexNode.accessibleName;
       endVertexNode.attachmentName = endVertexNode.accessibleName;
@@ -504,7 +512,8 @@ export default class CircuitDescription {
           vertexIndex + 1,
           group.vertices.length,
           neighbors,
-          allBriefNames
+          allBriefNames,
+          false
         );
         circuitNode.getVertexNode( vertex ).accessibleName = description;
         circuitNode.getVertexNode( vertex ).attachmentName = `Group ${groupIndex + 1}: ${description}`;
