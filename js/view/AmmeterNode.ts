@@ -32,6 +32,7 @@ import ammeterBody_png from '../../images/ammeterBody_png.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCUtils from '../CCKCUtils.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CCKCColors from './CCKCColors.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import type Ammeter from '../model/Ammeter.js';
 import ammeterReadoutTypeProperty from './ammeterReadoutTypeProperty.js';
@@ -52,6 +53,8 @@ const SCALE_FACTOR = 0.5;
 
 // unsigned measurements for the circles on the voltmeter body image, for where the probe wires connect
 const PROBE_CONNECTION_POINT_DY = 8;
+
+const HIGHLIGHT_CORNER_RADIUS = 8; // in view coordinates
 type SelfOptions = {
   isIcon?: boolean;
   visibleBoundsProperty?: Property<Bounds2> | null;
@@ -265,10 +268,23 @@ export default class AmmeterNode extends Node {
         shiftDragSpeed: CCKCConstants.SHIFT_KEYBOARD_DRAG_SPEED,
         tandem: Tandem.OPT_OUT
       } ) );
+
+      // Create highlight rectangle for selection mode. Created once and visibility is toggled.
+      // Erode by half the line width so the stroke stays within the probe's existing bounds and doesn't affect layout.
+      const probeHighlightNode = new Rectangle( 0, 0, 0, 0, HIGHLIGHT_CORNER_RADIUS, HIGHLIGHT_CORNER_RADIUS, {
+        stroke: CCKCColors.highlightStrokeProperty,
+        lineWidth: CCKCConstants.HIGHLIGHT_LINE_WIDTH,
+        pickable: false,
+        visible: false
+      } );
+      probeHighlightNode.setRectBounds( this.probeNode.localBounds.eroded( CCKCConstants.HIGHLIGHT_LINE_WIDTH / 2 ) );
+      this.probeNode.addChild( probeHighlightNode );
+
       this.probeNode.addInputListener( new AmmeterProbeNodeAttachmentKeyboardListener(
         this.probeNode,
         circuitNode!,
-        ammeter.probePositionProperty
+        ammeter.probePositionProperty,
+        probeHighlightNode
       ) );
 
       /**
