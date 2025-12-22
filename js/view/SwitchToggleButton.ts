@@ -97,15 +97,18 @@ export default class SwitchToggleButton extends CCKCRoundPushButton {
     // Update the icon when the switch state changes
     const updateIcon = ( isClosed: boolean ) => {
       if ( isClosed ) {
-        // Closed: rotating segment is horizontal, connecting pivot to contact
-        rotatingSegment.setLine( pivotX, 0, contactX, 0 );
-      }
-      else {
-        // Open: rotating segment is angled up from pivot
+
+        // The button allows you to open the switch: rotating segment is angled up from pivot
         const segmentLength = contactX - pivotX;
         const endX = pivotX + segmentLength * Math.cos( OPEN_ANGLE );
         const endY = segmentLength * Math.sin( OPEN_ANGLE );
         rotatingSegment.setLine( pivotX, 0, endX, endY );
+
+      }
+      else {
+
+        // The button allows you to close the switch: rotating segment is horizontal, connecting pivot to contact
+        rotatingSegment.setLine( pivotX, 0, contactX, 0 );
       }
     };
 
