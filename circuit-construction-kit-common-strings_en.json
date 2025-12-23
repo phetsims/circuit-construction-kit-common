@@ -527,6 +527,12 @@
       "editControlsHidden": {
         "value": "Edit controls hidden."
       },
+      "editPanelHeading": {
+        "value": "{ $componentType } Controls"
+      },
+      "editPanelHelpText": {
+        "value": "Use available controls to change, disconnect or remove selected { $componentType }."
+      },
       "connectedComponents": {
         "value": "{ $inGroup ->\n  [true] Connected: { $components }, in Group { $groupIndex }.\n  *[false] Connected: { $components }.\n}"
       },

@@ -214,6 +214,8 @@ type StringsType = {
       'junctionDefaultLabelStringProperty': LocalizedStringProperty;
       'selectedForEditingStringProperty': LocalizedStringProperty;
       'editControlsHiddenStringProperty': LocalizedStringProperty;
+      'editPanelHeadingStringProperty': LocalizedStringProperty;
+      'editPanelHelpTextStringProperty': LocalizedStringProperty;
       'connectedComponentsStringProperty': LocalizedStringProperty;
       'junctionSplitStringProperty': LocalizedStringProperty;
       'currentChangedSingleStringProperty': LocalizedStringProperty;

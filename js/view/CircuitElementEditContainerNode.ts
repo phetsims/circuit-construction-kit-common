@@ -15,6 +15,7 @@ import { roundToInterval } from '../../../dot/js/util/roundToInterval.js';
 import optionize, { type EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import AccessibleInteractiveOptions from '../../../scenery-phet/js/accessibility/AccessibleInteractiveOptions.js';
+import ParallelDOM from '../../../scenery/js/accessibility/pdom/ParallelDOM.js';
 import HBox from '../../../scenery/js/layout/nodes/HBox.js';
 import Node, { type NodeOptions } from '../../../scenery/js/nodes/Node.js';
 import Text from '../../../scenery/js/nodes/Text.js';
@@ -25,6 +26,7 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
+import CircuitDescriptionUtils from '../CircuitDescriptionUtils.js';
 import ACVoltage from '../model/ACVoltage.js';
 import Battery from '../model/Battery.js';
 import Capacitor from '../model/Capacitor.js';
@@ -553,6 +555,20 @@ export default class CircuitElementEditContainerNode extends Node {
         }
       }
       updatePosition();
+
+      if ( selectedCircuitElement instanceof CircuitElement ) {
+        const descriptionType = CircuitDescriptionUtils.getDescriptionType( selectedCircuitElement );
+        const componentTypeLabel = CircuitDescriptionUtils.getCircuitElementTypeLabel( descriptionType );
+
+        this.accessibleHeading = CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.editPanelHeading.format( {
+          componentType: componentTypeLabel
+        } );
+
+        this.accessibleHelpText = CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.editPanelHelpText.format( {
+          componentType: componentTypeLabel
+        } );
+        this.accessibleHelpTextBehavior = ParallelDOM.HELP_TEXT_BEFORE_CONTENT;
+      }
     } );
 
     visibleBoundsProperty.link( updatePosition );
