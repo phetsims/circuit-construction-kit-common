@@ -184,6 +184,7 @@ type StringsType = {
       'groupHeadingStringProperty': LocalizedStringProperty;
       'groupWithConnectionStringProperty': LocalizedStringProperty;
       'articleStringProperty': LocalizedStringProperty;
+      'connectionPointStringProperty': LocalizedStringProperty;
       'connectionStringProperty': LocalizedStringProperty;
       'disconnectedStringProperty': LocalizedStringProperty;
       'groupStringProperty': LocalizedStringProperty;

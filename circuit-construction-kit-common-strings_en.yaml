@@ -186,6 +186,7 @@ a11y:
       select_startsWithVowel:
         true:  an
         false: a
+    connectionPoint:              Connection Point
     connection:                   Connection
     disconnected:                 disconnected
     group:                        Group

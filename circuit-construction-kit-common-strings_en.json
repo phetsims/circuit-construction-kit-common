@@ -453,6 +453,9 @@
       "article": {
         "value": "{ $startsWithVowel ->\n  [true] an\n  *[false] a\n}"
       },
+      "connectionPoint": {
+        "value": "Connection Point"
+      },
       "connection": {
         "value": "Connection"
       },

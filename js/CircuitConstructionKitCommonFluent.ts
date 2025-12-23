@@ -158,6 +158,7 @@ addToMapIfDefined( 'a11y_circuitDescription_listFinalSeparator', 'a11y.circuitDe
 addToMapIfDefined( 'a11y_circuitDescription_groupHeading', 'a11y.circuitDescription.groupHeadingStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_groupWithConnection', 'a11y.circuitDescription.groupWithConnectionStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_article', 'a11y.circuitDescription.articleStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_connectionPoint', 'a11y.circuitDescription.connectionPointStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_connection', 'a11y.circuitDescription.connectionStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_disconnected', 'a11y.circuitDescription.disconnectedStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_group', 'a11y.circuitDescription.groupStringProperty' );
@@ -433,6 +434,7 @@ const CircuitConstructionKitCommonFluent = {
       groupWithConnection: new FluentPattern<{ description: FluentVariable, groupIndex: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitDescription_groupWithConnection', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.groupWithConnectionStringProperty' ), [{"name":"description"},{"name":"groupIndex"}] ),
       _comment_7: new FluentComment( {"comment":"Article selection (a vs an)","associatedKey":"article"} ),
       article: new FluentPattern<{ startsWithVowel: 'true' | 'false' | TReadOnlyProperty<'true' | 'false'> }>( fluentSupport.bundleProperty, 'a11y_circuitDescription_article', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.articleStringProperty' ), [{"name":"startsWithVowel","variants":["true","false"]}] ),
+      connectionPointStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_connectionPoint', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.connectionPointStringProperty' ) ),
       connectionStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_connection', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.connectionStringProperty' ) ),
       disconnectedStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_disconnected', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.disconnectedStringProperty' ) ),
       groupStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_group', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.groupStringProperty' ) ),

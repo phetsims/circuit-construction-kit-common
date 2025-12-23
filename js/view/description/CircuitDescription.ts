@@ -197,6 +197,7 @@ export default class CircuitDescription {
    * Uses brief names for circuit elements to keep descriptions concise.
    * For vertices with 4+ connections, uses a compressed form grouping by type.
    * @param isFullyDisconnected - true if this vertex belongs to a circuit element with both ends disconnected
+   * @param forAttachmentName - true to use short format "Connection X" for popup, false to use full format "Connection Point X of Y" for accessibleName
    */
   private static createVertexDescription(
     vertex: Vertex,
@@ -204,9 +205,13 @@ export default class CircuitDescription {
     totalVertices: number,
     neighbors: CircuitElement[],
     briefNames: Map<CircuitElement, string>,
-    isFullyDisconnected: boolean
+    isFullyDisconnected: boolean,
+    forAttachmentName = false
   ): string {
-    const connectionLabel = `${CircuitConstructionKitCommonFluent.a11y.circuitDescription.connectionStringProperty.value} ${vertexIndex}`;
+    // Use short format for attachment names in popup, full format for accessibleName
+    const connectionLabel = forAttachmentName ?
+                            `${CircuitConstructionKitCommonFluent.a11y.circuitDescription.connectionStringProperty.value} ${vertexIndex}` :
+                            `${CircuitConstructionKitCommonFluent.a11y.circuitDescription.connectionPointStringProperty.value} ${vertexIndex} of ${totalVertices}`;
 
     if ( neighbors.length === 1 ) {
       const componentName = briefNames.get( neighbors[ 0 ] ) || '';
@@ -336,8 +341,10 @@ export default class CircuitDescription {
       const startVertexNode = circuitNode.getVertexNode( startVertex );
       const endVertexNode = circuitNode.getVertexNode( endVertex );
 
-      startVertexNode.accessibleName = CircuitDescription.createVertexDescription( startVertex, 1, 2, [ circuitElement ], briefNames, true );
-      endVertexNode.accessibleName = CircuitDescription.createVertexDescription( endVertex, 2, 2, [ circuitElement ], briefNames, true );
+      // For fully disconnected elements, both formats are the same (just terminal description)
+      // since isFullyDisconnected=true skips the connection label
+      startVertexNode.accessibleName = CircuitDescription.createVertexDescription( startVertex, 1, 2, [ circuitElement ], briefNames, true, false );
+      endVertexNode.accessibleName = CircuitDescription.createVertexDescription( endVertex, 2, 2, [ circuitElement ], briefNames, true, false );
 
       startVertexNode.attachmentName = startVertexNode.accessibleName;
       endVertexNode.attachmentName = endVertexNode.accessibleName;
@@ -377,18 +384,33 @@ export default class CircuitDescription {
       // Assign accessible names to vertices using brief names
       group.vertices.forEach( ( vertex, vertexIndex ) => {
         const neighbors = circuit.getNeighborCircuitElements( vertex );
-        const description = CircuitDescription.createVertexDescription(
+
+        // Full format for accessibleName: "Connection Point X of Y, ..."
+        const accessibleNameDescription = CircuitDescription.createVertexDescription(
           vertex,
           vertexIndex + 1,
           group.vertices.length,
           neighbors,
           allBriefNames,
-          false
+          false,
+          false // forAttachmentName = false, use full format
         );
-        circuitNode.getVertexNode( vertex ).accessibleName = description;
+
+        // Short format for attachmentName in popup: "Connection X: ..."
+        const attachmentNameDescription = CircuitDescription.createVertexDescription(
+          vertex,
+          vertexIndex + 1,
+          group.vertices.length,
+          neighbors,
+          allBriefNames,
+          false,
+          true // forAttachmentName = true, use short format
+        );
+
+        circuitNode.getVertexNode( vertex ).accessibleName = accessibleNameDescription;
         circuitNode.getVertexNode( vertex ).attachmentName = CircuitConstructionKitCommonFluent.a11y.circuitDescription.groupWithConnection.format( {
           groupIndex: groupIndex + 1,
-          description: description
+          description: attachmentNameDescription
         } );
       } );
 
