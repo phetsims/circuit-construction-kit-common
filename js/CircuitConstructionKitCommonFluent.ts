@@ -178,6 +178,8 @@ addToMapIfDefined( 'a11y_constructionAreaStatus_helpTextCase1', 'a11y.constructi
 addToMapIfDefined( 'a11y_constructionAreaStatus_helpTextCase2', 'a11y.constructionAreaStatus.helpTextCase2StringProperty' );
 addToMapIfDefined( 'a11y_constructionAreaStatus_helpTextCase3', 'a11y.constructionAreaStatus.helpTextCase3StringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_junctionDefaultLabel', 'a11y.circuitContextResponses.junctionDefaultLabelStringProperty' );
+addToMapIfDefined( 'a11y_circuitContextResponses_selectedForEditing', 'a11y.circuitContextResponses.selectedForEditingStringProperty' );
+addToMapIfDefined( 'a11y_circuitContextResponses_editControlsHidden', 'a11y.circuitContextResponses.editControlsHiddenStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_connectedComponents', 'a11y.circuitContextResponses.connectedComponentsStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_junctionSplit', 'a11y.circuitContextResponses.junctionSplitStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_currentChangedSingle', 'a11y.circuitContextResponses.currentChangedSingleStringProperty' );
@@ -457,6 +459,8 @@ const CircuitConstructionKitCommonFluent = {
     },
     circuitContextResponses: {
       junctionDefaultLabel: new FluentPattern<{ index: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_junctionDefaultLabel', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.junctionDefaultLabelStringProperty' ), [{"name":"index"}] ),
+      selectedForEditingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_selectedForEditing', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.selectedForEditingStringProperty' ) ),
+      editControlsHiddenStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_editControlsHidden', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.editControlsHiddenStringProperty' ) ),
       connectedComponents: new FluentPattern<{ components: FluentVariable, groupIndex: FluentVariable, inGroup: 'true' | 'false' | TReadOnlyProperty<'true' | 'false'> }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_connectedComponents', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.connectedComponentsStringProperty' ), [{"name":"components"},{"name":"groupIndex"},{"name":"inGroup","variants":["true","false"]}] ),
       junctionSplit: new FluentPattern<{ connectionCount: number | 'one' | number | 'other' | TReadOnlyProperty<number | 'one' | number | 'other'>, junctionName: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_junctionSplit', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.junctionSplitStringProperty' ), [{"name":"connectionCount","variants":[{"type":"number","value":"one"},{"type":"number","value":"other"}]},{"name":"junctionName"}] ),
       currentChangedSingle: new FluentPattern<{ current: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_currentChangedSingle', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.currentChangedSingleStringProperty' ), [{"name":"current"}] ),

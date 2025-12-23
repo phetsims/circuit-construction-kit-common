@@ -521,6 +521,12 @@
       "junctionDefaultLabel": {
         "value": "Junction { $index }"
       },
+      "selectedForEditing": {
+        "value": "Selected for editing, controls visible."
+      },
+      "editControlsHidden": {
+        "value": "Edit controls hidden."
+      },
       "connectedComponents": {
         "value": "{ $inGroup ->\n  [true] Connected: { $components }, in Group { $groupIndex }.\n  *[false] Connected: { $components }.\n}"
       },

@@ -269,6 +269,8 @@ a11y:
                               Delete key. Check out Keyboard Shortcuts for more details.
   circuitContextResponses:
     junctionDefaultLabel: 'Junction { $index }'
+    selectedForEditing: Selected for editing, controls visible.
+    editControlsHidden: Edit controls hidden.
     connectedComponents:
       select_inGroup:
         true:  'Connected: { $components }, in Group { $groupIndex }.'

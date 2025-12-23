@@ -24,6 +24,7 @@ import Vector2 from '../../../dot/js/Vector2.js';
 import DisplayClickToDismissListener from '../../../joist/js/DisplayClickToDismissListener.js';
 import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import GrabReleaseCueNode from '../../../scenery-phet/js/accessibility/nodes/GrabReleaseCueNode.js';
+import isResettingAllProperty from '../../../scenery-phet/js/isResettingAllProperty.js';
 import type Focus from '../../../scenery/js/accessibility/Focus.js';
 import { pdomFocusProperty } from '../../../scenery/js/accessibility/pdomFocusProperty.js';
 import type SceneryEvent from '../../../scenery/js/input/SceneryEvent.js';
@@ -43,7 +44,7 @@ import Battery from '../model/Battery.js';
 import Capacitor from '../model/Capacitor.js';
 import type Circuit from '../model/Circuit.js';
 import type CircuitConstructionKitModel from '../model/CircuitConstructionKitModel.js';
-import type CircuitElement from '../model/CircuitElement.js';
+import CircuitElement from '../model/CircuitElement.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import CurrentSense from '../model/CurrentSense.js';
 import FixedCircuitElement from '../model/FixedCircuitElement.js';
@@ -619,12 +620,21 @@ export default class CircuitNode extends Node {
 
     circuit.descriptionChangeEmitter.addListener( () => this.updateCircuitDescription() );
 
-    circuit.selectionProperty.link( () => {
+    circuit.selectionProperty.link( ( selection, oldSelection ) => {
 
       // Selecting a circuit element puts its edit panel in the PDOM order right after the circuit element.
       // Use surgical update to avoid rebuilding the entire PDOM structure, which would cause focus loss
       // and reentrancy issues during keyboard drag operations.
       CircuitDescription.updateEditPanelPosition( this );
+
+      if ( !isResettingAllProperty.value && !isSettingPhetioStateProperty.value ) {
+        if ( selection instanceof CircuitElement ) {
+          this.addAccessibleContextResponse( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.selectedForEditingStringProperty.value );
+        }
+        else if ( oldSelection instanceof CircuitElement ) {
+          this.addAccessibleContextResponse( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.editControlsHiddenStringProperty.value );
+        }
+      }
     } );
 
     circuit.circuitContextAnnouncementEmitter.addListener( message => this.addAccessibleContextResponse( message ) );

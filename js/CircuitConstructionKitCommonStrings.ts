@@ -212,6 +212,8 @@ type StringsType = {
     };
     'circuitContextResponses': {
       'junctionDefaultLabelStringProperty': LocalizedStringProperty;
+      'selectedForEditingStringProperty': LocalizedStringProperty;
+      'editControlsHiddenStringProperty': LocalizedStringProperty;
       'connectedComponentsStringProperty': LocalizedStringProperty;
       'junctionSplitStringProperty': LocalizedStringProperty;
       'currentChangedSingleStringProperty': LocalizedStringProperty;
