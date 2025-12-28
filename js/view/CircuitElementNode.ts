@@ -70,7 +70,7 @@ export default abstract class CircuitElementNode extends Node {
         phetioInputEnabledPropertyInstrumented: true,
         useHitTestForSensors: false,
         ariaRole: 'application',
-        accessibleRoleDescription: 'edit pop-up button'
+        accessibleRoleDescription: 'edit component button'
       }, providedOptions );
     }
 
