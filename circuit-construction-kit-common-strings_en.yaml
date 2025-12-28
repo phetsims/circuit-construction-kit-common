@@ -191,9 +191,11 @@ a11y:
     disconnected:                 disconnected
     group:                        Group
     emptyConstructionAreaMessage: >-
-                                  Add Circuit Components. Once added, select a component or a lead or terminal with Space to pop up options for
-                                  editing or connecting. Remove components or disconnect junctions with Delete. Check out Keyboard Shortcuts for
-                                  more details.
+                                  Add Circuit Components as needed. Remember, you need at least 1 wire. Once added, open 
+                                  connection point options or open component edit panel with Space or Enter. Connected
+                                  components auto-organize into groups. Remove a selected component or disconnect a 
+                                  selected connection point with Delete key. Check out Keyboard Shortcuts for more 
+                                  details on editing and connecting components.
   screenSummary:
     playArea:        >-
                      A Construction Area creates a building space for components added from a Circuit Components carousel. Build and
@@ -270,10 +272,10 @@ a11y:
                               Delete key. Check out Keyboard Shortcuts for more details.
   circuitContextResponses:
     junctionDefaultLabel: 'Junction { $index }'
-    selectedForEditing: Selected for editing, controls visible.
-    editControlsHidden: Edit controls hidden.
-    editPanelHeading: '{ $componentType } Controls'
-    editPanelHelpText: 'Use available controls to change, disconnect or remove selected { $componentType }.'
+    selectedForEditing:   Selected for editing, controls visible.
+    editControlsHidden:   Edit controls hidden.
+    editPanelHeading:     '{ $componentType } Controls'
+    editPanelHelpText:    'Use available controls to change, disconnect or remove selected { $componentType }.'
     connectedComponents:
       select_inGroup:
         true:  'Connected: { $components }, in Group { $groupIndex }.'

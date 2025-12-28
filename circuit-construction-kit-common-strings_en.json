@@ -466,7 +466,7 @@
         "value": "Group"
       },
       "emptyConstructionAreaMessage": {
-        "value": "Add Circuit Components. Once added, select a component or a lead or terminal with Space to pop up options for editing or connecting. Remove components or disconnect junctions with Delete. Check out Keyboard Shortcuts for more details."
+        "value": "Add Circuit Components as needed. Remember, you need at least 1 wire. Once added, open  connection point options or open component edit panel with Space or Enter. Connected components auto-organize into groups. Remove a selected component or disconnect a  selected connection point with Delete key. Check out Keyboard Shortcuts for more  details on editing and connecting components."
       }
     },
     "screenSummary": {

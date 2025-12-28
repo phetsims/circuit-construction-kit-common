@@ -7,6 +7,7 @@
  */
 
 import type { TReadOnlyProperty } from '../../../../axon/js/TReadOnlyProperty.js';
+import ParallelDOM from '../../../../scenery/js/accessibility/pdom/ParallelDOM.js';
 import { getPDOMFocusedNode } from '../../../../scenery/js/accessibility/pdomFocusProperty.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
@@ -470,13 +471,14 @@ export default class CircuitDescription {
 
     const focusedElement = getPDOMFocusedNode();
 
+    circuitNode.constructionAreaContainer.accessibleParagraphBehavior = ParallelDOM.HELP_TEXT_BEFORE_CONTENT;
+    circuitNode.constructionAreaContainer.accessibleParagraph = CircuitConstructionKitCommonFluent.a11y.circuitDescription.emptyConstructionAreaMessageStringProperty.value;
+
     if ( !hasElements ) {
-      circuitNode.constructionAreaContainer.accessibleParagraph = CircuitConstructionKitCommonFluent.a11y.circuitDescription.emptyConstructionAreaMessageStringProperty.value;
+
       circuitNode.unconnectedCircuitElementsSection.visible = false;
     }
     else {
-
-      circuitNode.constructionAreaContainer.accessibleParagraph = null;
 
       // Avoid having the old PDOM element appearing twice as we rebuild things.
       // TODO: Maybe not all of these are necessary? See https://github.com/phetsims/circuit-construction-kit-common/issues/1081
