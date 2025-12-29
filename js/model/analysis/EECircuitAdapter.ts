@@ -215,15 +215,26 @@ export default class EECircuitAdapter {
     lines.push( 'PhET CCK Circuit (Transient)' );
 
     // Debug: log capacitor initial conditions
-    if ( this.capacitors.length > 0 ) {
-      console.log( '[SPICE] Generating netlist with capacitors:', this.capacitors.map( c => ( {
-        nodeId0: c.nodeId0,
-        nodeId1: c.nodeId1,
-        capacitance: c.capacitance,
-        phetInitialVoltage: c.initialVoltage,
-        spiceIC: -c.initialVoltage  // Negated for SPICE
-      } ) ) );
-    }
+    // if ( this.capacitors.length > 0 ) {
+    //   console.log( '[SPICE] Generating netlist with capacitors:', this.capacitors.map( c => ( {
+    //     nodeId0: c.nodeId0,
+    //     nodeId1: c.nodeId1,
+    //     capacitance: c.capacitance,
+    //     phetInitialVoltage: c.initialVoltage,
+    //     spiceIC: -c.initialVoltage  // Negated for SPICE
+    //   } ) ) );
+    // }
+
+    // Debug: log inductor initial conditions
+    // if ( this.inductors.length > 0 ) {
+    //   console.log( '[SPICE] Generating netlist with inductors:', this.inductors.map( l => ( {
+    //     nodeId0: l.nodeId0,
+    //     nodeId1: l.nodeId1,
+    //     inductance: l.inductance,
+    //     phetInitialCurrent: l.initialCurrent,
+    //     spiceIC: -l.initialCurrent  // Negated for SPICE
+    //   } ) ) );
+    // }
 
     // Add voltage sources as DC sources
     // For AC sources, the instantaneous voltage is passed in as the battery voltage
@@ -265,14 +276,17 @@ export default class EECircuitAdapter {
 
     // Add inductors with initial current conditions
     // SPICE syntax: L<name> <n+> <n-> <inductance> [IC=<initial_current>]
+    // Similar to capacitor voltage, we need to negate the initial current to convert
+    // from PhET convention to SPICE convention
     for ( let i = 0; i < this.inductors.length; i++ ) {
       const inductor = this.inductors[ i ];
       const name = `L${i + 1}`;
       this.inductorNameMap.set( name, inductor );
       const node1 = this.toSpiceNode( inductor.nodeId0 );
       const node2 = this.toSpiceNode( inductor.nodeId1 );
-      // Inductance in Henries - SPICE accepts scientific notation
-      lines.push( `${name} ${node1} ${node2} ${inductor.inductance} IC=${inductor.initialCurrent}` );
+      // Negate the initial current to convert from PhET convention to SPICE convention
+      const spiceIC = -inductor.initialCurrent;
+      lines.push( `${name} ${node1} ${node2} ${inductor.inductance} IC=${spiceIC}` );
     }
 
     // Transient analysis for exactly dt seconds
@@ -285,9 +299,9 @@ export default class EECircuitAdapter {
     const netlist = lines.join( '\n' );
 
     // Debug: log the netlist if it contains capacitors
-    if ( this.capacitors.length > 0 ) {
-      console.log( '[SPICE] Netlist:\n' + netlist );
-    }
+    // if ( this.capacitors.length > 0 ) {
+    //   console.log( '[SPICE] Netlist:\n' + netlist );
+    // }
 
     return netlist;
   }
@@ -398,13 +412,13 @@ export default class EECircuitAdapter {
         // Debug: log capacitor results
         const v0 = voltageMap.get( capacitor.nodeId0 ) ?? 0;
         const v1 = voltageMap.get( capacitor.nodeId1 ) ?? 0;
-        console.log( `[SPICE] Capacitor ${name} result:`, {
-          spiceCurrent: spiceCurrent,
-          v0: v0,
-          v1: v1,
-          voltageDrop: v0 - v1,
-          initialVoltage: capacitor.initialVoltage
-        } );
+        // console.log( `[SPICE] Capacitor ${name} result:`, {
+        //   spiceCurrent: spiceCurrent,
+        //   v0: v0,
+        //   v1: v1,
+        //   voltageDrop: v0 - v1,
+        //   initialVoltage: capacitor.initialVoltage
+        // } );
       }
       else {
         currentMap.set( capacitor, 0 );
@@ -412,12 +426,22 @@ export default class EECircuitAdapter {
     }
 
     // For inductors, get the current from SPICE output i(l1), i(l2), etc.
+    // SPICE current convention may differ from PhET - negate to match PhET's electron flow direction
     for ( const [ name, inductor ] of this.inductorNameMap ) {
       const entry = this.findDataEntry( result, `i(${name})` );
 
       if ( entry ) {
         const spiceCurrent = this.getLastValue( entry );
-        currentMap.set( inductor, spiceCurrent );
+        // Negate current to convert from SPICE convention to PhET convention
+        const phetCurrent = -spiceCurrent;
+        currentMap.set( inductor, phetCurrent );
+
+        // Debug: log inductor results
+        // console.log( `[SPICE] Inductor ${name} result:`, {
+        //   spiceCurrent,
+        //   phetCurrent,
+        //   initialCurrent: inductor.initialCurrent
+        // } );
       }
       else {
         currentMap.set( inductor, 0 );
