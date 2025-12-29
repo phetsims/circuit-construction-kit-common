@@ -13,6 +13,8 @@
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import EECircuitAdapter from './EECircuitAdapter.js';
 import type MNABattery from './mna/MNABattery.js';
+import type MNACapacitor from './mna/MNACapacitor.js';
+import type MNAInductor from './mna/MNAInductor.js';
 import type MNAResistor from './mna/MNAResistor.js';
 import type MNASolution from './mna/MNASolution.js';
 
@@ -41,7 +43,7 @@ export default class EEcircuitSolverManager {
   // Sequential solve queue (SPICE can only run one solve at a time)
   private solveQueue: Array<{
     adapter: EECircuitAdapter;
-    onSolved: ( solution: MNASolution ) => void;
+    onSolved: ( solution: MNASolution, adapter: EECircuitAdapter ) => void;
   }> = [];
 
   // Whether we're currently processing a solve
@@ -70,29 +72,39 @@ export default class EEcircuitSolverManager {
   /**
    * Request a circuit solve. When the solve completes, onSolved is called with the solution.
    * Solves are queued and processed sequentially.
+   *
+   * @param batteries - DC voltage sources (for AC sources, use the instantaneous voltage)
+   * @param resistors - Resistive elements
+   * @param capacitors - Capacitors with initial voltage state
+   * @param inductors - Inductors with initial current state
+   * @param dt - Timestep for transient analysis (in seconds)
+   * @param onSolved - Callback with solution and adapter (adapter needed to extract C/L state)
    */
   public requestSolve(
     batteries: MNABattery[],
     resistors: MNAResistor[],
-    onSolved: ( solution: MNASolution ) => void
+    capacitors: MNACapacitor[],
+    inductors: MNAInductor[],
+    dt: number,
+    onSolved: ( solution: MNASolution, adapter: EECircuitAdapter ) => void
   ): void {
     if ( !this.initialized || !this.eesim ) {
       console.warn( 'EEcircuitSolverManager.requestSolve called before initialization' );
       return;
     }
 
-    // Skip if no batteries
+    // Skip if no voltage sources (nothing to drive the circuit)
     if ( batteries.length === 0 ) {
       return;
     }
 
     // Check if the group forms a complete loop
-    if ( !this.hasCompletePath( batteries, resistors ) ) {
+    if ( !this.hasCompletePath( batteries, resistors, capacitors, inductors ) ) {
       return;
     }
 
     // Add to queue
-    const adapter = new EECircuitAdapter( batteries, resistors );
+    const adapter = new EECircuitAdapter( batteries, resistors, capacitors, inductors, dt );
     this.solveQueue.push( { adapter: adapter, onSolved: onSolved } );
 
     // Start processing if not already
@@ -111,7 +123,7 @@ export default class EEcircuitSolverManager {
     const { adapter, onSolved } = this.solveQueue.shift()!;
 
     this.solveAsync( adapter ).then( solution => {
-      onSolved( solution );
+      onSolved( solution, adapter );
       this.isProcessing = false;
       this.processQueue(); // Process next in queue
     } ).catch( error => {
@@ -125,7 +137,12 @@ export default class EEcircuitSolverManager {
    * Check if the circuit has at least one complete path (loop) that SPICE can solve.
    * This prevents sending unsolvable circuits to SPICE which would cause singularity errors.
    */
-  private hasCompletePath( batteries: MNABattery[], resistors: MNAResistor[] ): boolean {
+  private hasCompletePath(
+    batteries: MNABattery[],
+    resistors: MNAResistor[],
+    capacitors: MNACapacitor[],
+    inductors: MNAInductor[]
+  ): boolean {
 
     // Build adjacency list for the circuit graph
     const adjacency = new Map<string, Set<string>>();
@@ -147,6 +164,12 @@ export default class EEcircuitSolverManager {
     }
     for ( const resistor of resistors ) {
       addEdge( resistor.nodeId0, resistor.nodeId1 );
+    }
+    for ( const capacitor of capacitors ) {
+      addEdge( capacitor.nodeId0, capacitor.nodeId1 );
+    }
+    for ( const inductor of inductors ) {
+      addEdge( inductor.nodeId0, inductor.nodeId1 );
     }
 
     // For each battery, check if there's a path from one terminal back to the other

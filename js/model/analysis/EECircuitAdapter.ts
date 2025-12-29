@@ -2,19 +2,24 @@
 
 /**
  * EECircuitAdapter bridges PhET's Circuit model to the EEcircuit SPICE solver.
- * For the MVP, this handles DC (static) circuits only: batteries and resistors.
+ * Supports DC and AC circuits with batteries, resistors, capacitors, and inductors.
  *
  * This adapter:
  * 1. Converts circuit topology to a SPICE netlist
  * 2. Runs the EEcircuit solver
  * 3. Parses results back into a format compatible with MNASolution
  *
+ * For reactive components (capacitors, inductors), initial conditions are set
+ * from the previous timestep's state, and final state is extracted for the next solve.
+ *
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import type MNABattery from './mna/MNABattery.js';
+import type MNACapacitor from './mna/MNACapacitor.js';
 import type MNACircuitElement from './mna/MNACircuitElement.js';
+import type MNAInductor from './mna/MNAInductor.js';
 import type MNAResistor from './mna/MNAResistor.js';
 import MNASolution from './mna/MNASolution.js';
 
@@ -47,10 +52,17 @@ export default class EECircuitAdapter {
 
   private readonly batteries: MNABattery[];
   private readonly resistors: MNAResistor[];
+  private readonly capacitors: MNACapacitor[];
+  private readonly inductors: MNAInductor[];
+
+  // Timestep for transient analysis (in seconds)
+  private readonly dt: number;
 
   // Maps from netlist element names back to the original elements
   private readonly batteryNameMap: Map<string, MNABattery>;
   private readonly resistorNameMap: Map<string, MNAResistor>;
+  private readonly capacitorNameMap: Map<string, MNACapacitor>;
+  private readonly inductorNameMap: Map<string, MNAInductor>;
 
   // Node name mappings (PhET uses string indices like '41', '42', etc.)
   private readonly nodeSet: Set<string>;
@@ -61,16 +73,28 @@ export default class EECircuitAdapter {
   private readonly spiceToPhetNode: Map<number, string>;
   private readonly groundNodeId: string; // The PhET node ID chosen as ground
 
-  public constructor( batteries: MNABattery[], resistors: MNAResistor[] ) {
+  public constructor(
+    batteries: MNABattery[],
+    resistors: MNAResistor[],
+    capacitors: MNACapacitor[] = [],
+    inductors: MNAInductor[] = [],
+    dt = 1e-4  // Default to 0.1ms timestep
+  ) {
     this.batteries = batteries;
     this.resistors = resistors;
+    this.capacitors = capacitors;
+    this.inductors = inductors;
+    this.dt = dt;
+
     this.batteryNameMap = new Map();
     this.resistorNameMap = new Map();
+    this.capacitorNameMap = new Map();
+    this.inductorNameMap = new Map();
     this.nodeSet = new Set();
     this.phetToSpiceNode = new Map();
     this.spiceToPhetNode = new Map();
 
-    // Collect all nodes
+    // Collect all nodes from all element types
     for ( const battery of batteries ) {
       this.nodeSet.add( battery.nodeId0 );
       this.nodeSet.add( battery.nodeId1 );
@@ -78,6 +102,14 @@ export default class EECircuitAdapter {
     for ( const resistor of resistors ) {
       this.nodeSet.add( resistor.nodeId0 );
       this.nodeSet.add( resistor.nodeId1 );
+    }
+    for ( const capacitor of capacitors ) {
+      this.nodeSet.add( capacitor.nodeId0 );
+      this.nodeSet.add( capacitor.nodeId1 );
+    }
+    for ( const inductor of inductors ) {
+      this.nodeSet.add( inductor.nodeId0 );
+      this.nodeSet.add( inductor.nodeId1 );
     }
 
     // Create node mapping: pick the first node as ground (SPICE node 0)
@@ -168,8 +200,8 @@ export default class EECircuitAdapter {
   }
 
   /**
-   * Alternative: Generate a transient analysis netlist with very short time step
-   * to effectively get DC solution. This might be more compatible with EEcircuit's API.
+   * Generate a transient analysis netlist for the circuit.
+   * Supports batteries, resistors, capacitors, and inductors with initial conditions.
    *
    * PhET node IDs are mapped to SPICE node numbers (0, 1, 2, ...) with one node
    * designated as ground (0).
@@ -180,9 +212,21 @@ export default class EECircuitAdapter {
   public generateTransientNetlist(): string {
     const lines: string[] = [];
 
-    lines.push( 'PhET CCK DC Circuit (Transient)' );
+    lines.push( 'PhET CCK Circuit (Transient)' );
+
+    // Debug: log capacitor initial conditions
+    if ( this.capacitors.length > 0 ) {
+      console.log( '[SPICE] Generating netlist with capacitors:', this.capacitors.map( c => ( {
+        nodeId0: c.nodeId0,
+        nodeId1: c.nodeId1,
+        capacitance: c.capacitance,
+        phetInitialVoltage: c.initialVoltage,
+        spiceIC: -c.initialVoltage  // Negated for SPICE
+      } ) ) );
+    }
 
     // Add voltage sources as DC sources
+    // For AC sources, the instantaneous voltage is passed in as the battery voltage
     for ( let i = 0; i < this.batteries.length; i++ ) {
       const battery = this.batteries[ i ];
       const name = `V${i + 1}`;
@@ -203,12 +247,49 @@ export default class EECircuitAdapter {
       lines.push( `${name} ${node1} ${node2} ${resistance}` );
     }
 
-    // Short transient to reach steady state
+    // Add capacitors with initial voltage conditions
+    // SPICE syntax: C<name> <n+> <n-> <capacitance> [IC=<initial_voltage>]
+    // Note: SPICE IC is V(n+) - V(n-) in SPICE's convention (non-negated)
+    // PhET's mnaVoltageDrop is V(nodeId0) - V(nodeId1) in PhET's convention (negated)
+    // Since PhET negates SPICE voltages, we need to negate the IC to convert back to SPICE space
+    for ( let i = 0; i < this.capacitors.length; i++ ) {
+      const capacitor = this.capacitors[ i ];
+      const name = `C${i + 1}`;
+      this.capacitorNameMap.set( name, capacitor );
+      const node1 = this.toSpiceNode( capacitor.nodeId0 );
+      const node2 = this.toSpiceNode( capacitor.nodeId1 );
+      // Negate the initial voltage to convert from PhET convention to SPICE convention
+      const spiceIC = -capacitor.initialVoltage;
+      lines.push( `${name} ${node1} ${node2} ${capacitor.capacitance} IC=${spiceIC}` );
+    }
+
+    // Add inductors with initial current conditions
+    // SPICE syntax: L<name> <n+> <n-> <inductance> [IC=<initial_current>]
+    for ( let i = 0; i < this.inductors.length; i++ ) {
+      const inductor = this.inductors[ i ];
+      const name = `L${i + 1}`;
+      this.inductorNameMap.set( name, inductor );
+      const node1 = this.toSpiceNode( inductor.nodeId0 );
+      const node2 = this.toSpiceNode( inductor.nodeId1 );
+      // Inductance in Henries - SPICE accepts scientific notation
+      lines.push( `${name} ${node1} ${node2} ${inductor.inductance} IC=${inductor.initialCurrent}` );
+    }
+
+    // Transient analysis for exactly dt seconds
     // .tran <step> <stop> [start] [max_step]
-    lines.push( '.tran 1m 10m' );
+    // Use UIC (Use Initial Conditions) to start from specified IC values
+    const step = this.dt / 10;  // Use 10 internal steps for accuracy
+    lines.push( `.tran ${step} ${this.dt} UIC` );
     lines.push( '.END' );
 
-    return lines.join( '\n' );
+    const netlist = lines.join( '\n' );
+
+    // Debug: log the netlist if it contains capacitors
+    if ( this.capacitors.length > 0 ) {
+      console.log( '[SPICE] Netlist:\n' + netlist );
+    }
+
+    return netlist;
   }
 
   /**
@@ -243,7 +324,7 @@ export default class EECircuitAdapter {
    *
    * EEcircuit result format:
    * - data: Array of { name, type, values }
-   * - Variable names are like 'time', 'v(1)', 'v(2)', 'i(v1)'
+   * - Variable names are like 'time', 'v(1)', 'v(2)', 'i(v1)', 'i(c1)', 'i(l1)'
    *
    * SPICE results use SPICE node numbers (0, 1, 2, ...) which must be mapped
    * back to PhET node IDs.
@@ -266,7 +347,7 @@ export default class EECircuitAdapter {
       const entry = this.findDataEntry( result, `v(${spiceNodeNum})` );
 
       if ( entry ) {
-        // Get the last value (steady-state for DC circuits)
+        // Get the last value (final state after transient)
         // SPICE convention: node 0 is ground (0V), other nodes are relative to ground
         const spiceVoltage = this.getLastValue( entry );
 
@@ -274,9 +355,6 @@ export default class EECircuitAdapter {
         // SPICE: V(positive) > 0, V(negative) = 0 (ground)
         // PhET: Looking at MNACircuitTests, a 4V battery from node 0 to 1 gives V(0)=0, V(1)=-4
         // This means PhET's convention is V(node) = -(SPICE voltage at node)
-        // Actually, after reviewing the tests more carefully:
-        // - In PhET, the battery's positive terminal (nodeId1) gets the negative voltage
-        // - This is because PhET measures voltage drop across elements differently
         voltageMap.set( phetNode, -spiceVoltage );
       }
       else {
@@ -285,7 +363,7 @@ export default class EECircuitAdapter {
       }
     }
 
-    // Build current map for batteries (and zero-resistance elements)
+    // Build current map for batteries, capacitors, inductors, and zero-resistance elements
     const currentMap = new Map<MNACircuitElement, number>();
 
     // For batteries, current is reported as i(v1), i(v2), etc.
@@ -302,6 +380,47 @@ export default class EECircuitAdapter {
       }
       else {
         currentMap.set( battery, 0 );
+      }
+    }
+
+    // For capacitors, get the current from SPICE output i(c1), i(c2), etc.
+    // This is the instantaneous current at the end of the transient step
+    for ( const [ name, capacitor ] of this.capacitorNameMap ) {
+      const entry = this.findDataEntry( result, `i(${name})` );
+
+      if ( entry ) {
+        const spiceCurrent = this.getLastValue( entry );
+        // SPICE current convention: positive current flows from n+ to n-
+        // PhET convention: positive current flows from nodeId0 to nodeId1
+        // These should align since we put nodeId0 at n+ in the netlist
+        currentMap.set( capacitor, spiceCurrent );
+
+        // Debug: log capacitor results
+        const v0 = voltageMap.get( capacitor.nodeId0 ) ?? 0;
+        const v1 = voltageMap.get( capacitor.nodeId1 ) ?? 0;
+        console.log( `[SPICE] Capacitor ${name} result:`, {
+          spiceCurrent: spiceCurrent,
+          v0: v0,
+          v1: v1,
+          voltageDrop: v0 - v1,
+          initialVoltage: capacitor.initialVoltage
+        } );
+      }
+      else {
+        currentMap.set( capacitor, 0 );
+      }
+    }
+
+    // For inductors, get the current from SPICE output i(l1), i(l2), etc.
+    for ( const [ name, inductor ] of this.inductorNameMap ) {
+      const entry = this.findDataEntry( result, `i(${name})` );
+
+      if ( entry ) {
+        const spiceCurrent = this.getLastValue( entry );
+        currentMap.set( inductor, spiceCurrent );
+      }
+      else {
+        currentMap.set( inductor, 0 );
       }
     }
 
@@ -323,6 +442,26 @@ export default class EECircuitAdapter {
     }
 
     return new MNASolution( voltageMap, currentMap );
+  }
+
+  /**
+   * Get the final voltage across a capacitor from the solution.
+   * This is used to set the initial condition for the next timestep.
+   */
+  public getCapacitorVoltage( solution: MNASolution, capacitor: MNACapacitor ): number {
+    const v0 = solution.getNodeVoltage( capacitor.nodeId0 );
+    const v1 = solution.getNodeVoltage( capacitor.nodeId1 );
+    // Voltage drop from nodeId0 to nodeId1 (v0 - v1)
+    // PhET convention: positive voltage means nodeId0 is at higher potential
+    return ( v0 ?? 0 ) - ( v1 ?? 0 );
+  }
+
+  /**
+   * Get the final current through an inductor from the solution.
+   * This is used to set the initial condition for the next timestep.
+   */
+  public getInductorCurrent( solution: MNASolution, inductor: MNAInductor ): number {
+    return solution.getSolvedCurrent( inductor );
   }
 
   /**
@@ -377,8 +516,14 @@ export default class EECircuitAdapter {
   /**
    * Static factory method that creates an adapter and generates a netlist from MNA-style inputs.
    */
-  public static createNetlist( batteries: MNABattery[], resistors: MNAResistor[] ): string {
-    const adapter = new EECircuitAdapter( batteries, resistors );
+  public static createNetlist(
+    batteries: MNABattery[],
+    resistors: MNAResistor[],
+    capacitors: MNACapacitor[] = [],
+    inductors: MNAInductor[] = [],
+    dt = 1e-4
+  ): string {
+    const adapter = new EECircuitAdapter( batteries, resistors, capacitors, inductors, dt );
     return adapter.generateTransientNetlist();
   }
 }

@@ -32,9 +32,12 @@ import LTAInductor from './LTAInductor.js';
 import LTAResistiveBattery from './LTAResistiveBattery.js';
 import type LTAState from './LTAState.js';
 import MNABattery from './mna/MNABattery.js';
+import MNACapacitor from './mna/MNACapacitor.js';
+import MNAInductor from './mna/MNAInductor.js';
 import MNAResistor from './mna/MNAResistor.js';
 import type MNASolution from './mna/MNASolution.js';
 import TimestepSubdivisions from './TimestepSubdivisions.js';
+import type EECircuitAdapter from './EECircuitAdapter.js';
 
 // constants
 const TIMESTEP_SUBDIVISIONS = new TimestepSubdivisions<LTAState>();
@@ -50,7 +53,7 @@ export default class LinearTransientAnalysis {
 
     // Branch based on solver selection
     if ( CCKCQueryParameters.solver === 'eecircuit' ) {
-      this.solveWithEEcircuit( circuit );
+      this.solveWithEEcircuit( circuit, dt );
     }
     else {
       this.solveWithPhetMNA( circuit, dt );
@@ -59,13 +62,13 @@ export default class LinearTransientAnalysis {
 
   /**
    * Solve using EEcircuit SPICE solver (async with callbacks).
-   * Currently supports DC circuits only (batteries + resistors).
+   * Supports DC and AC circuits with batteries, resistors, capacitors, and inductors.
    *
    * IMPORTANT: SPICE cannot handle disconnected subcircuits in a single solve.
    * We use circuit.getGroups() to find connected components and solve each one separately.
    * When each solve completes, a callback applies results directly to circuit elements.
    */
-  private static solveWithEEcircuit( circuit: Circuit ): void {
+  private static solveWithEEcircuit( circuit: Circuit, dt: number ): void {
 
     // Use circuit.getGroups() to find connected components.
     // Each group is solved separately by SPICE to avoid singularity errors.
@@ -102,7 +105,7 @@ export default class LinearTransientAnalysis {
 
     // Request solve for each valid group (results applied via callback)
     for ( const group of groupsWithVoltageSources ) {
-      this.solveGroup( circuit, group );
+      this.solveGroup( circuit, group, dt );
     }
   }
 
@@ -110,12 +113,19 @@ export default class LinearTransientAnalysis {
    * Build MNA elements and request a solve for a single connected component (group).
    * When the solve completes, the callback applies results directly to circuit elements.
    */
-  private static solveGroup( circuit: Circuit, group: CircuitGroup ): void {
+  private static solveGroup( circuit: Circuit, group: CircuitGroup, dt: number ): void {
     const batteries: MNABattery[] = [];
     const resistors: MNAResistor[] = [];
+    const capacitors: MNACapacitor[] = [];
+    const inductors: MNAInductor[] = [];
+
     const batteryMap = new Map<string, VoltageSource>();
     const batteryMNAMap = new Map<string, MNABattery>();
     const resistorMap = new Map<string, CircuitElement>();
+    const capacitorMap = new Map<string, Capacitor>();
+    const capacitorMNAMap = new Map<string, MNACapacitor>();
+    const inductorMap = new Map<string, Inductor>();
+    const inductorMNAMap = new Map<string, MNAInductor>();
     const nonParticipants: CircuitElement[] = [];
 
     for ( const circuitElement of group.circuitElements ) {
@@ -130,6 +140,7 @@ export default class LinearTransientAnalysis {
       const nodeId1 = circuitElement.endVertexProperty.value.index + '';
 
       if ( circuitElement instanceof VoltageSource ) {
+        // For AC sources, voltageProperty already has the instantaneous value from ACVoltage.step()
         const battery = new MNABattery( nodeId0, nodeId1, circuitElement.voltageProperty.value );
         batteries.push( battery );
         const key = `${nodeId0}_${nodeId1}`;
@@ -148,9 +159,31 @@ export default class LinearTransientAnalysis {
         resistors.push( resistor );
         resistorMap.set( `${nodeId0}_${nodeId1}`, circuitElement );
       }
-      else if ( circuitElement instanceof Capacitor || circuitElement instanceof Inductor ) {
-        // Skip capacitors/inductors for DC-only MVP
-        nonParticipants.push( circuitElement );
+      else if ( circuitElement instanceof Capacitor ) {
+        // Use mnaVoltageDrop as the initial condition (from previous timestep)
+        const capacitor = new MNACapacitor(
+          nodeId0,
+          nodeId1,
+          circuitElement.capacitanceProperty.value,
+          circuitElement.mnaVoltageDrop
+        );
+        capacitors.push( capacitor );
+        const key = `${nodeId0}_${nodeId1}`;
+        capacitorMap.set( key, circuitElement );
+        capacitorMNAMap.set( key, capacitor );
+      }
+      else if ( circuitElement instanceof Inductor ) {
+        // Use mnaCurrent as the initial condition (from previous timestep)
+        const inductor = new MNAInductor(
+          nodeId0,
+          nodeId1,
+          circuitElement.inductanceProperty.value,
+          circuitElement.mnaCurrent
+        );
+        inductors.push( inductor );
+        const key = `${nodeId0}_${nodeId1}`;
+        inductorMap.set( key, circuitElement );
+        inductorMNAMap.set( key, inductor );
       }
     }
 
@@ -163,8 +196,17 @@ export default class LinearTransientAnalysis {
     EEcircuitSolverManager.instance.requestSolve(
       batteries,
       resistors,
-      ( solution: MNASolution ) => {
-        this.applyEEcircuitSolution( circuit, solution, batteryMap, batteryMNAMap, resistorMap, nonParticipants );
+      capacitors,
+      inductors,
+      dt,
+      ( solution: MNASolution, adapter: EECircuitAdapter ) => {
+        this.applyEEcircuitSolution(
+          circuit, solution, adapter,
+          batteryMap, batteryMNAMap, resistorMap,
+          capacitorMap, capacitorMNAMap,
+          inductorMap, inductorMNAMap,
+          nonParticipants
+        );
       }
     );
   }
@@ -175,9 +217,14 @@ export default class LinearTransientAnalysis {
   private static applyEEcircuitSolution(
     circuit: Circuit,
     solution: MNASolution,
+    adapter: EECircuitAdapter,
     batteryMap: Map<string, VoltageSource>,
     batteryMNAMap: Map<string, MNABattery>,
     resistorMap: Map<string, CircuitElement>,
+    capacitorMap: Map<string, Capacitor>,
+    capacitorMNAMap: Map<string, MNACapacitor>,
+    inductorMap: Map<string, Inductor>,
+    inductorMNAMap: Map<string, MNAInductor>,
     nonParticipants: CircuitElement[]
   ): void {
 
@@ -220,6 +267,60 @@ export default class LinearTransientAnalysis {
       // Note: sign convention - current flows from high to low potential
       const current = -( v1 - v0 ) / resistance;
       circuitElement.currentProperty.value = current;
+    }
+
+    // Apply currents and state to capacitors
+    for ( const [ key, capacitor ] of capacitorMap ) {
+      const mnaCapacitor = capacitorMNAMap.get( key );
+      if ( mnaCapacitor ) {
+        // Get current from SPICE solution
+        const current = solution.getSolvedCurrent( mnaCapacitor );
+        capacitor.currentProperty.value = current;
+
+        // Update state for next timestep
+        // mnaCurrent stores the instantaneous current for state continuity
+        capacitor.mnaCurrent = CCKCUtils.clampMagnitude( current );
+
+        // mnaVoltageDrop stores the voltage across the capacitor
+        // Get voltage from node voltages
+        const capVoltage = adapter.getCapacitorVoltage( solution, mnaCapacitor );
+        const prevVoltageDrop = capacitor.mnaVoltageDrop;
+        capacitor.mnaVoltageDrop = CCKCUtils.clampMagnitude( capVoltage );
+
+        // Debug: log state update
+        console.log( '[LTA] Capacitor state update:', {
+          prevVoltageDrop: prevVoltageDrop,
+          newVoltageDrop: capacitor.mnaVoltageDrop,
+          current: current,
+          initialVoltageUsed: mnaCapacitor.initialVoltage
+        } );
+      }
+      else {
+        capacitor.currentProperty.value = 0;
+      }
+    }
+
+    // Apply currents and state to inductors
+    for ( const [ key, inductor ] of inductorMap ) {
+      const mnaInductor = inductorMNAMap.get( key );
+      if ( mnaInductor ) {
+        // Get current from SPICE solution
+        const current = solution.getSolvedCurrent( mnaInductor );
+        inductor.currentProperty.value = current;
+
+        // Update state for next timestep
+        // mnaCurrent stores the instantaneous current for state continuity (initial condition for next step)
+        inductor.mnaCurrent = CCKCUtils.clampMagnitude( current );
+
+        // mnaVoltageDrop stores the voltage across the inductor
+        const [ nodeId0, nodeId1 ] = key.split( '_' );
+        const v0 = solution.getNodeVoltage( nodeId0 ) ?? 0;
+        const v1 = solution.getNodeVoltage( nodeId1 ) ?? 0;
+        inductor.mnaVoltageDrop = CCKCUtils.clampMagnitude( v0 - v1 );
+      }
+      else {
+        inductor.currentProperty.value = 0;
+      }
     }
 
     // Zero out non-participants
