@@ -25,6 +25,7 @@ import Switch from '../Switch.js';
 import type Vertex from '../Vertex.js';
 import VoltageSource from '../VoltageSource.js';
 import Wire from '../Wire.js';
+import type EECircuitAdapter from './EECircuitAdapter.js';
 import EEcircuitSolverManager from './EEcircuitSolverManager.js';
 import LTACapacitor from './LTACapacitor.js';
 import LTACircuit from './LTACircuit.js';
@@ -37,7 +38,6 @@ import MNAInductor from './mna/MNAInductor.js';
 import MNAResistor from './mna/MNAResistor.js';
 import type MNASolution from './mna/MNASolution.js';
 import TimestepSubdivisions from './TimestepSubdivisions.js';
-import type EECircuitAdapter from './EECircuitAdapter.js';
 
 // constants
 const TIMESTEP_SUBDIVISIONS = new TimestepSubdivisions<LTAState>();
@@ -284,16 +284,16 @@ export default class LinearTransientAnalysis {
         // mnaVoltageDrop stores the voltage across the capacitor
         // Get voltage from node voltages
         const capVoltage = adapter.getCapacitorVoltage( solution, mnaCapacitor );
-        const prevVoltageDrop = capacitor.mnaVoltageDrop;
+        // const prevVoltageDrop = capacitor.mnaVoltageDrop;
         capacitor.mnaVoltageDrop = CCKCUtils.clampMagnitude( capVoltage );
 
         // Debug: log state update
-        console.log( '[LTA] Capacitor state update:', {
-          prevVoltageDrop: prevVoltageDrop,
-          newVoltageDrop: capacitor.mnaVoltageDrop,
-          current: current,
-          initialVoltageUsed: mnaCapacitor.initialVoltage
-        } );
+        // console.log( '[LTA] Capacitor state update:', {
+        //   prevVoltageDrop: prevVoltageDrop,
+        //   newVoltageDrop: capacitor.mnaVoltageDrop,
+        //   current: current,
+        //   initialVoltageUsed: mnaCapacitor.initialVoltage
+        // } );
       }
       else {
         capacitor.currentProperty.value = 0;

@@ -410,8 +410,8 @@ export default class EECircuitAdapter {
         currentMap.set( capacitor, spiceCurrent );
 
         // Debug: log capacitor results
-        const v0 = voltageMap.get( capacitor.nodeId0 ) ?? 0;
-        const v1 = voltageMap.get( capacitor.nodeId1 ) ?? 0;
+        // const v0 = voltageMap.get( capacitor.nodeId0 ) ?? 0;
+        // const v1 = voltageMap.get( capacitor.nodeId1 ) ?? 0;
         // console.log( `[SPICE] Capacitor ${name} result:`, {
         //   spiceCurrent: spiceCurrent,
         //   v0: v0,
