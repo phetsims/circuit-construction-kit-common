@@ -1,7 +1,7 @@
 // Copyright 2025, University of Colorado Boulder
 
 /**
- * EEcircuitSolverManager is a singleton that manages async circuit solving with EEcircuit.
+ * EEcircuitSolverManager is a singleton that manages async circuit solving with ngspice WASM.
  *
  * Uses a simple callback-based pattern: when a solve completes, the callback is invoked
  * to apply results directly to circuit elements. Solves are processed sequentially
@@ -16,8 +16,11 @@ import type MNABattery from './mna/MNABattery.js';
 import type MNAResistor from './mna/MNAResistor.js';
 import type MNASolution from './mna/MNASolution.js';
 
-// Type for EEcircuit simulation (loaded globally via preload script)
-type EEcircuitSimulation = {
+// Import the PhET SPICE bundle (ngspice compiled to WASM)
+import { Simulation } from '../../../../sherpa/lib/spice/phet-spice-bundle.js';
+
+// Type for the SPICE simulation
+type SpiceSimulation = {
   start: () => Promise<void>;
   setNetList: ( netlist: string ) => void;
   runSim: () => Promise<unknown>;
@@ -29,8 +32,8 @@ export default class EEcircuitSolverManager {
   // Singleton instance
   public static readonly instance = new EEcircuitSolverManager();
 
-  // The EEcircuit simulation instance
-  private eesim: EEcircuitSimulation | null = null;
+  // The SPICE simulation instance
+  private eesim: SpiceSimulation | null = null;
 
   // Track if initialization has completed
   private initialized = false;
@@ -49,19 +52,19 @@ export default class EEcircuitSolverManager {
   }
 
   /**
-   * Initialize the EEcircuit simulation. Must be called once at sim startup.
+   * Initialize the SPICE simulation. Must be called once at sim startup.
    */
   public async initialize(): Promise<void> {
     if ( this.initialized ) {
       return;
     }
 
-    // EEcircuit is loaded as a preload script and attached to window
-    this.eesim = new ( window as unknown as { EEcircuit: { Simulation: new() => EEcircuitSimulation } } ).EEcircuit.Simulation();
+    // Instantiate the SPICE simulation from the bundled ngspice WASM
+    this.eesim = new Simulation() as SpiceSimulation;
     await this.eesim.start();
     this.initialized = true;
 
-    console.log( 'EEcircuitSolverManager initialized' );
+    console.log( 'EEcircuitSolverManager initialized (ngspice WASM)' );
   }
 
   /**
