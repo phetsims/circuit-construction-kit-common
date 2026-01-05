@@ -79,7 +79,7 @@ export default class VertexAttachmentKeyboardListener extends AttachmentKeyboard
         vertexNode.accessibleRoleDescription = 'movable';
       }
       else {
-        vertexNode.accessibleRoleDescription = 'listbox button';
+        vertexNode.accessibleRoleDescription = 'connection options button'; // see https://github.com/phetsims/circuit-construction-kit-common/issues/1083
       }
     } );
   }

@@ -89,7 +89,9 @@ export default class VertexNode extends Node {
 
       ...AccessibleDraggableOptions,
 
-      accessibleRoleDescription: 'listbox button' // see https://github.com/phetsims/circuit-construction-kit-common/issues/1079#issue-3649808690
+      // see https://github.com/phetsims/circuit-construction-kit-common/issues/1079#issue-3649808690
+      // and https://github.com/phetsims/circuit-construction-kit-common/issues/1083
+      accessibleRoleDescription: 'connection options button'
     } );
 
     const circuit = circuitNode.circuit;
