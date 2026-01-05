@@ -224,8 +224,8 @@ export default class CCKCConstants {
       pointerRoundingInterval: 0.01
     },
     capacitanceNumberControl: {
-      step: 0.1,
-      pageKeyboardStep: 0.25,
+      step: 0.01,
+      pageKeyboardStep: 0.02,
       shiftKeyboardStep: 0.01,
 
       pointerRoundingInterval: 0.01
