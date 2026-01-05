@@ -211,7 +211,7 @@ export default class CircuitElementEditContainerNode extends Node {
 
       // Adapter to take from {{named}} to {{value}} for usage in common code
       new PatternStringProperty( currentUnitsStringProperty, { current: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
-      createSingletonAdapterProperty( Fuse.DEFAULT_CURRENT_RATING, Fuse, circuit, ( c: Fuse ) => c.currentRatingProperty ),
+      createSingletonAdapterProperty( Fuse.DEFAULT_CURRENT_RATING, Fuse, circuit, fuse => fuse.currentRatingProperty ),
       Fuse.RANGE, circuit,
       1, {
         tandem: tandem.createTandem( 'fuseCurrentRatingControl' ),
@@ -226,7 +226,7 @@ export default class CircuitElementEditContainerNode extends Node {
 
     const capacitorEditControl = new CircuitElementNumberControl( capacitanceStringProperty,
       new PatternStringProperty( capacitanceUnitsStringProperty, { capacitance: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
-      createSingletonAdapterProperty( Capacitor.CAPACITANCE_DEFAULT, Capacitor, circuit, ( c: Capacitor ) => c.capacitanceProperty ),
+      createSingletonAdapterProperty( Capacitor.CAPACITANCE_DEFAULT, Capacitor, circuit, capacitor => capacitor.capacitanceProperty ),
       Capacitor.CAPACITANCE_RANGE, circuit, Capacitor.NUMBER_OF_DECIMAL_PLACES, {
         tandem: circuit.includeACElements ? tandem.createTandem( 'capacitanceNumberControl' ) : Tandem.OPT_OUT,
         delta: CCKCConstants.SLIDER_STEPS.capacitanceNumberControl.shiftKeyboardStep,
@@ -240,7 +240,7 @@ export default class CircuitElementEditContainerNode extends Node {
 
     const inductanceControl = new CircuitElementNumberControl( inductanceStringProperty,
       new PatternStringProperty( inductanceUnitsStringProperty, { inductance: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
-      createSingletonAdapterProperty( Inductor.INDUCTANCE_DEFAULT, Inductor, circuit, ( c: Inductor ) => c.inductanceProperty ),
+      createSingletonAdapterProperty( Inductor.INDUCTANCE_DEFAULT, Inductor, circuit, inductor => inductor.inductanceProperty ),
       Inductor.INDUCTANCE_RANGE, circuit, Inductor.INDUCTANCE_NUMBER_OF_DECIMAL_PLACES, {
         tandem: circuit.includeACElements ? tandem.createTandem( 'inductanceNumberControl' ) : Tandem.OPT_OUT,
         delta: CCKCConstants.SLIDER_STEPS.inductanceNumberControl.shiftKeyboardStep,
@@ -259,10 +259,10 @@ export default class CircuitElementEditContainerNode extends Node {
     const createResistanceNumberControl = ( tandemName: 'resistorResistanceNumberControl' | 'lightBulbResistanceNumberControl', CircuitElementType: GConstructor<LightBulb | Resistor> ) => {
       return new CircuitElementNumberControl( resistanceStringProperty,
         resistanceOhmsValueStringProperty,
-        createSingletonAdapterProperty( ResistorType.RESISTOR.defaultResistance, CircuitElementType, circuit, ( c: LightBulb | Resistor ) => c.resistanceProperty,
-          ( c: LightBulb | Resistor ) =>
-            ( c instanceof LightBulb && !c.isExtreme ) ||
-            ( c instanceof Resistor && c.resistorType !== ResistorType.EXTREME_RESISTOR )
+        createSingletonAdapterProperty( ResistorType.RESISTOR.defaultResistance, CircuitElementType, circuit, circuitElement => circuitElement.resistanceProperty,
+          circuitElement =>
+            ( circuitElement instanceof LightBulb && !circuitElement.isExtreme ) ||
+            ( circuitElement instanceof Resistor && circuitElement.resistorType !== ResistorType.EXTREME_RESISTOR )
         ),
         ResistorType.RESISTOR.range, circuit, Resistor.RESISTANCE_DECIMAL_PLACES, {
           tandem: tandem.createTandem( tandemName ),
@@ -279,10 +279,10 @@ export default class CircuitElementEditContainerNode extends Node {
     const createExtremeResistanceNumberControl = ( tandemName: 'extremeResistorResistanceNumberControl' | 'extremeLightBulbResistanceNumberControl', CircuitElementType: GConstructor<LightBulb | Resistor> ) => {
       return new CircuitElementNumberControl( resistanceStringProperty,
         resistanceOhmsValueStringProperty,
-        createSingletonAdapterProperty( ResistorType.EXTREME_RESISTOR.defaultResistance, CircuitElementType, circuit, ( c: LightBulb | Resistor ) => c.resistanceProperty,
-          ( c: LightBulb | Resistor ) =>
-            ( c instanceof LightBulb && c.isExtreme ) ||
-            ( c instanceof Resistor && c.resistorType === ResistorType.EXTREME_RESISTOR )
+        createSingletonAdapterProperty( ResistorType.EXTREME_RESISTOR.defaultResistance, CircuitElementType, circuit, circuitElement => circuitElement.resistanceProperty,
+          circuitElement =>
+            ( circuitElement instanceof LightBulb && circuitElement.isExtreme ) ||
+            ( circuitElement instanceof Resistor && circuitElement.resistorType === ResistorType.EXTREME_RESISTOR )
         ),
         ResistorType.EXTREME_RESISTOR.range, circuit, Resistor.HIGH_RESISTANCE_DECIMAL_PLACES, {
           tandem: circuit.includeLabElements ? tandem.createTandem( tandemName ) : Tandem.OPT_OUT,
@@ -305,7 +305,7 @@ export default class CircuitElementEditContainerNode extends Node {
     const voltageVoltsValueStringProperty = new PatternStringProperty( voltageVoltsValuePatternStringProperty, { voltage: SunConstants.VALUE_NAMED_PLACEHOLDER } );
     const batteryVoltageNumberControl = new CircuitElementNumberControl( voltageStringProperty,
       voltageVoltsValueStringProperty,
-      createSingletonAdapterProperty( Battery.VOLTAGE_DEFAULT, Battery, circuit, ( c: Battery ) => c.voltageProperty, ( c: Battery ) => c.batteryType === 'normal' ),
+      createSingletonAdapterProperty( Battery.VOLTAGE_DEFAULT, Battery, circuit, battery => battery.voltageProperty, battery => battery.batteryType === 'normal' ),
       Battery.VOLTAGE_RANGE,
       circuit,
       Battery.VOLTAGE_DECIMAL_PLACES, {
@@ -321,7 +321,7 @@ export default class CircuitElementEditContainerNode extends Node {
       } );
     const extremeBatteryVoltageNumberControl = new CircuitElementNumberControl( voltageStringProperty,
       voltageVoltsValueStringProperty,
-      createSingletonAdapterProperty( Battery.HIGH_VOLTAGE_DEFAULT, Battery, circuit, ( c: Battery ) => c.voltageProperty, ( c: Battery ) => c.batteryType === 'high-voltage' ),
+      createSingletonAdapterProperty( Battery.HIGH_VOLTAGE_DEFAULT, Battery, circuit, battery => battery.voltageProperty, battery => battery.batteryType === 'high-voltage' ),
       Battery.HIGH_VOLTAGE_RANGE,
       circuit,
       Battery.HIGH_VOLTAGE_DECIMAL_PLACES, {
@@ -336,7 +336,7 @@ export default class CircuitElementEditContainerNode extends Node {
         numberDisplayOptions: { decimalPlaces: Battery.HIGH_VOLTAGE_DECIMAL_PLACES }
       } );
 
-    const phaseShiftControl = new PhaseShiftControl( createSingletonAdapterProperty( 0, ACVoltage, circuit, ( c: ACVoltage ) => c.phaseProperty ), circuit, {
+    const phaseShiftControl = new PhaseShiftControl( createSingletonAdapterProperty( 0, ACVoltage, circuit, acVoltage => acVoltage.phaseProperty ), circuit, {
       tandem: circuit.includeACElements ? tandem.createTandem( 'phaseShiftControl' ) : Tandem.OPT_OUT
     } );
 
@@ -355,8 +355,8 @@ export default class CircuitElementEditContainerNode extends Node {
           pageKeyboardStep: CCKCConstants.SLIDER_STEPS.acVoltageControl.pageKeyboardStep,
           constrainValue: ( value: number ) => roundToInterval( value, CCKCConstants.SLIDER_STEPS.acVoltageControl.shiftKeyboardStep )
         },
-        getAdditionalVisibilityProperties: ( c: CircuitElement ) => {
-          return c instanceof ACVoltage ? [ c.isVoltageEditableProperty ] : [];
+        getAdditionalVisibilityProperties: circuitElement => {
+          return circuitElement instanceof ACVoltage ? [ circuitElement.isVoltageEditableProperty ] : [];
         }
       }
     );
@@ -376,8 +376,8 @@ export default class CircuitElementEditContainerNode extends Node {
           pageKeyboardStep: CCKCConstants.SLIDER_STEPS.frequencyControl.pageKeyboardStep,
           constrainValue: ( value: number ) => roundToInterval( value, CCKCConstants.SLIDER_STEPS.frequencyControl.shiftKeyboardStep )
         },
-        getAdditionalVisibilityProperties: ( c: CircuitElement ) => {
-          return c instanceof ACVoltage ? [ c.isFrequencyEditableProperty ] : [];
+        getAdditionalVisibilityProperties: circuitElement => {
+          return circuitElement instanceof ACVoltage ? [ circuitElement.isFrequencyEditableProperty ] : [];
         }
       }
     );
