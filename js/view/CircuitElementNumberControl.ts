@@ -13,6 +13,7 @@ import type { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import type Range from '../../../dot/js/Range.js';
 import { roundToInterval } from '../../../dot/js/util/roundToInterval.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import NumberControl, { type LayoutFunction } from '../../../scenery-phet/js/NumberControl.js';
 import { type NumberDisplayOptions } from '../../../scenery-phet/js/NumberDisplay.js';
@@ -80,19 +81,18 @@ export default class CircuitElementNumberControl extends HBox {
       getAdditionalVisibilityProperties: ( c: CircuitElement ) => {return [];}
     }, providedOptions );
 
-    const numberControl = new NumberControl( title, valueProperty, range, {
-      ...options,
-      sliderOptions: {
-        drag: event => {
+    affirm( options.sliderOptions.drag === undefined, 'expected undefined options.sliderOptions.drag' );
 
-          // when from mouse, round. HACK ALERT, see https://github.com/phetsims/circuit-construction-kit-common/issues/1103#issuecomment-3661150577
-          if ( !event.isFromPDOM() ) {
+    options.sliderOptions.drag = event => {
 
-            valueProperty.value = roundToInterval( valueProperty.value, options.pointerRoundingInterval );
-          }
-        }
+      // when from mouse, round. HACK ALERT, see https://github.com/phetsims/circuit-construction-kit-common/issues/1103#issuecomment-3661150577
+      if ( !event.isFromPDOM() ) {
+
+        valueProperty.value = roundToInterval( valueProperty.value, options.pointerRoundingInterval );
       }
-    } );
+    };
+
+    const numberControl = new NumberControl( title, valueProperty, range, options );
 
     super( { children: [ numberControl ] } );
 
