@@ -6,6 +6,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import type { TReadOnlyProperty } from '../../../../axon/js/TReadOnlyProperty.js';
 import ParallelDOM from '../../../../scenery/js/accessibility/pdom/ParallelDOM.js';
 import { getPDOMFocusedNode } from '../../../../scenery/js/accessibility/pdomFocusProperty.js';
@@ -29,6 +30,7 @@ import CircuitGroupDescription from './CircuitGroupDescription.js';
 // Track properties for each circuit element so we can dispose them when updating
 const positionedPropertiesMap = new WeakMap<CircuitElement, {
   showValuesAsStringProperty: TReadOnlyProperty<string>;
+  accessibleNameWithSelectionProperty: TReadOnlyProperty<string>;
 }>();
 
 // Constants for preferred ordering of circuit elements in groups
@@ -144,6 +146,7 @@ export default class CircuitDescription {
       const oldProperties = positionedPropertiesMap.get( circuitElement );
       if ( oldProperties ) {
         oldProperties.showValuesAsStringProperty.dispose();
+        oldProperties.accessibleNameWithSelectionProperty.dispose();
         positionedPropertiesMap.delete( circuitElement );
       }
 
@@ -170,9 +173,22 @@ export default class CircuitDescription {
         total: totalForType
       } );
 
+      // Create a property that adds ", selected" suffix when this element is selected
+      const selectionProperty = circuitNode.circuit.selectionProperty;
+      const accessibleNameWithSelectionProperty = new DerivedProperty(
+        [ selectionProperty ],
+        ( selection ): string => {
+          const isSelected = selection === circuitElement;
+
+          // TODO: move to yaml, see https://github.com/phetsims/circuit-construction-kit-common/issues/1151
+          return isSelected ? `${accessibleName}, selected` : String( accessibleName );
+        }
+      );
+
       // Store for disposal on next update
       positionedPropertiesMap.set( circuitElement, {
-        showValuesAsStringProperty: showValuesAsStringProperty
+        showValuesAsStringProperty: showValuesAsStringProperty,
+        accessibleNameWithSelectionProperty: accessibleNameWithSelectionProperty
       } );
 
       // Dispose the properties when the circuit element is disposed
@@ -180,12 +196,13 @@ export default class CircuitDescription {
         const props = positionedPropertiesMap.get( circuitElement );
         if ( props ) {
           props.showValuesAsStringProperty.dispose();
+          props.accessibleNameWithSelectionProperty.dispose();
           positionedPropertiesMap.delete( circuitElement );
         }
       } );
 
-      // Set the new property as the accessible name
-      circuitElementNode.accessibleName = accessibleName;
+      // Set the new property as the accessible name (includes ", selected" suffix when selected)
+      circuitElementNode.accessibleName = accessibleNameWithSelectionProperty;
 
       // Store brief name for junction descriptions (type + number, no values)
       briefNames.set( circuitElement, CircuitDescription.formatCircuitElementBriefName( circuitElement, indexForType ) );
