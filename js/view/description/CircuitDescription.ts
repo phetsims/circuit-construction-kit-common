@@ -169,7 +169,8 @@ export default class CircuitDescription {
         type: descriptionType as CircuitElementType,
         voltage: circuitElement instanceof Battery ? circuitElement.voltageProperty : 0,
         resistance: circuitElement instanceof Resistor ? circuitElement.resistanceProperty :
-                    circuitElement instanceof LightBulb ? circuitElement.resistanceProperty : 0,
+                    circuitElement instanceof LightBulb ? circuitElement.resistanceProperty :
+                    circuitElement instanceof Fuse ? circuitElement.resistanceProperty.derived( r => r * 1000 ) : 0,
         currentRating: circuitElement instanceof Fuse ? circuitElement.currentRatingProperty : 0,
         capacitance: circuitElement instanceof Capacitor ? circuitElement.capacitanceProperty : 0,
         inductance: circuitElement instanceof Inductor ? circuitElement.inductanceProperty : 0,

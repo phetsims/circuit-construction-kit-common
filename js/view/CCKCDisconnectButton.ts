@@ -72,7 +72,8 @@ export default class CCKCDisconnectButton extends CCKCRoundPushButton {
         type: circuit.selectionProperty.derived( selection => selection instanceof CircuitElement ? selection.type : 'wire' ),
         resistance: circuit.selectionProperty.derived( selection =>
           selection instanceof Resistor ? selection.resistanceProperty.value :
-          selection instanceof LightBulb ? selection.resistanceProperty.value : 0 ),
+          selection instanceof LightBulb ? selection.resistanceProperty.value :
+          selection instanceof Fuse ? selection.resistanceProperty.value * 1000 : 0 ),
         currentRating: circuit.selectionProperty.derived( selection =>
           selection instanceof Fuse ? selection.currentRatingProperty.value : 0 ),
         voltage: circuit.selectionProperty.derived( selection => selection instanceof Battery ? selection.voltageProperty.value : 0 ),
