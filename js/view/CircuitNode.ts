@@ -621,6 +621,9 @@ export default class CircuitNode extends Node {
     // For when batteries catch on fire
     circuit.circuitChangedEmitter.addListener( () => this.updateCircuitDescription() );
 
+    // Selecting a circuit element puts its edit panel in the PDOM order right after the circuit element.
+    circuit.selectionProperty.lazyLink( () => this.updateCircuitDescription() );
+
     // Set the state once after fully reconstructed, not at a partial intermediate state
     isSettingPhetioStateProperty.lazyLink( isSettingPhetioState => {
       if ( !isSettingPhetioState ) {
@@ -631,11 +634,6 @@ export default class CircuitNode extends Node {
     circuit.descriptionChangeEmitter.addListener( () => this.updateCircuitDescription() );
 
     circuit.selectionProperty.link( ( selection, oldSelection ) => {
-
-      // Selecting a circuit element puts its edit panel in the PDOM order right after the circuit element.
-      // Use surgical update to avoid rebuilding the entire PDOM structure, which would cause focus loss
-      // and reentrancy issues during keyboard drag operations.
-      CircuitDescription.updateEditPanelPosition( this );
 
       if ( !isResettingAllProperty.value && !isSettingPhetioStateProperty.value ) {
         if ( selection instanceof CircuitElement ) {
@@ -729,6 +727,10 @@ export default class CircuitNode extends Node {
     // Set the state once after fully reconstructed, not at a partial intermediate state
     if ( !isSettingPhetioStateProperty.value ) {
       CircuitDescription.updateCircuitNode( this );
+
+      // Use surgical update to avoid rebuilding the entire PDOM structure, which would cause focus loss
+      // and reentrancy issues during keyboard drag operations.
+      CircuitDescription.updateEditPanelPosition( this );
     }
   }
 
