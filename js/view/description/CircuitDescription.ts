@@ -21,6 +21,7 @@ import Capacitor from '../../model/Capacitor.js';
 import Circuit from '../../model/Circuit.js';
 import CircuitElement from '../../model/CircuitElement.js';
 import CircuitElementType from '../../model/CircuitElementType.js';
+import Fuse from '../../model/Fuse.js';
 import Inductor from '../../model/Inductor.js';
 import Resistor from '../../model/Resistor.js';
 import Switch from '../../model/Switch.js';
@@ -177,7 +178,9 @@ export default class CircuitDescription {
         hasInternalResistance: circuitElement instanceof VoltageSource ?
           circuitElement.internalResistanceProperty.derived( r => r > CCKCQueryParameters.batteryMinimumResistance ? 'true' : 'false' ) : 'false',
         isOnFire: circuitElement instanceof VoltageSource ?
-          circuitElement.isOnFireProperty.derived( v => v ? 'true' : 'false' ) : 'false'
+          circuitElement.isOnFireProperty.derived( v => v ? 'true' : 'false' ) : 'false',
+        isTripped: circuitElement instanceof Fuse ?
+          circuitElement.isTrippedProperty.derived( v => v ? 'true' : 'false' ) : 'false'
       } );
 
       // Create a property that adds ", selected" suffix when this element is selected

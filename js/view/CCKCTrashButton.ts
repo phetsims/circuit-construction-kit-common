@@ -16,6 +16,7 @@ import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonF
 import Battery from '../model/Battery.js';
 import Capacitor from '../model/Capacitor.js';
 import CircuitElement from '../model/CircuitElement.js';
+import Fuse from '../model/Fuse.js';
 import Inductor from '../model/Inductor.js';
 import Resistor from '../model/Resistor.js';
 import VoltageSource from '../model/VoltageSource.js';
@@ -45,7 +46,9 @@ export default class CCKCTrashButton extends CCKCRoundPushButton {
         hasInternalResistance: circuit.selectionProperty.derived( selection =>
           selection instanceof VoltageSource && selection.internalResistanceProperty.value > CCKCQueryParameters.batteryMinimumResistance ? 'true' : 'false' ),
         isOnFire: circuit.selectionProperty.derived( selection =>
-          selection instanceof VoltageSource ? ( selection.isOnFireProperty.value ? 'true' : 'false' ) : 'false' )
+          selection instanceof VoltageSource ? ( selection.isOnFireProperty.value ? 'true' : 'false' ) : 'false' ),
+        isTripped: circuit.selectionProperty.derived( selection =>
+          selection instanceof Fuse ? ( selection.isTrippedProperty.value ? 'true' : 'false' ) : 'false' )
       } ),
       touchAreaDilation: 5, // radius dilation for touch area
       content: new Path( trashAltRegularShape, {

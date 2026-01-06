@@ -529,10 +529,22 @@ a11y:
                     false: 'AC Voltage Source { $position } of { $total }, { $voltage } volts'
         fuse:
           select_displayMode:
-            name:          Fuse
-            value:         Fuse, { $resistance } milliohms ≤ currentRating amps
-            count:         Fuse { $position } of { $total }
-            countAndValue: Fuse { $position } of { $total }, { $resistance } milliohms ≤ currentRating amps
+            name:
+              select_isTripped:
+                true:  'Fuse, broken'
+                false: Fuse
+            value:
+              select_isTripped:
+                true:  'Fuse, { $resistance } milliohms ≤ currentRating amps, broken'
+                false: 'Fuse, { $resistance } milliohms ≤ currentRating amps'
+            count:
+              select_isTripped:
+                true:  'Fuse { $position } of { $total }, broken'
+                false: Fuse { $position } of { $total }
+            countAndValue:
+              select_isTripped:
+                true:  'Fuse { $position } of { $total }, { $resistance } milliohms ≤ currentRating amps, broken'
+                false: 'Fuse { $position } of { $total }, { $resistance } milliohms ≤ currentRating amps'
         switch:
           select_displayMode:
             name:
