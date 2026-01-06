@@ -489,6 +489,9 @@
       "disconnected": {
         "value": "disconnected"
       },
+      "accessibleNameWithSelected": {
+        "value": "{ $accessibleName }, selected"
+      },
       "group": {
         "value": "Group"
       },

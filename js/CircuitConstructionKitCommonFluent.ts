@@ -170,6 +170,7 @@ addToMapIfDefined( 'a11y_circuitDescription_article', 'a11y.circuitDescription.a
 addToMapIfDefined( 'a11y_circuitDescription_connectionPoint', 'a11y.circuitDescription.connectionPointStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_connection', 'a11y.circuitDescription.connectionStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_disconnected', 'a11y.circuitDescription.disconnectedStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_accessibleNameWithSelected', 'a11y.circuitDescription.accessibleNameWithSelectedStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_group', 'a11y.circuitDescription.groupStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_emptyConstructionAreaMessage', 'a11y.circuitDescription.emptyConstructionAreaMessageStringProperty' );
 addToMapIfDefined( 'a11y_circuitGroupDescription_unconnectedSummary', 'a11y.circuitGroupDescription.unconnectedSummaryStringProperty' );
@@ -466,6 +467,8 @@ const CircuitConstructionKitCommonFluent = {
       connectionPointStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_connectionPoint', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.connectionPointStringProperty' ) ),
       connectionStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_connection', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.connectionStringProperty' ) ),
       disconnectedStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_disconnected', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.disconnectedStringProperty' ) ),
+      _comment_9: new FluentComment( {"comment":"Suffix appended to accessible name when a circuit element is selected","associatedKey":"accessibleNameWithSelected"} ),
+      accessibleNameWithSelected: new FluentPattern<{ accessibleName: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitDescription_accessibleNameWithSelected', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.accessibleNameWithSelectedStringProperty' ), [{"name":"accessibleName"}] ),
       groupStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_group', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.groupStringProperty' ) ),
       emptyConstructionAreaMessageStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_emptyConstructionAreaMessage', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.emptyConstructionAreaMessageStringProperty' ) )
     },

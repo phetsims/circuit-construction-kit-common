@@ -179,9 +179,11 @@ export default class CircuitDescription {
         [ selectionProperty ],
         ( selection ): string => {
           const isSelected = selection === circuitElement;
-
-          // TODO: move to yaml, see https://github.com/phetsims/circuit-construction-kit-common/issues/1151
-          return isSelected ? `${accessibleName}, selected` : String( accessibleName );
+          return isSelected ?
+                 CircuitConstructionKitCommonFluent.a11y.circuitDescription.accessibleNameWithSelected.format( {
+                   accessibleName: accessibleName
+                 } ) :
+                 String( accessibleName );
         }
       );
 

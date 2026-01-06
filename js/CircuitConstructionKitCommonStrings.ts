@@ -196,6 +196,7 @@ type StringsType = {
       'connectionPointStringProperty': LocalizedStringProperty;
       'connectionStringProperty': LocalizedStringProperty;
       'disconnectedStringProperty': LocalizedStringProperty;
+      'accessibleNameWithSelectedStringProperty': LocalizedStringProperty;
       'groupStringProperty': LocalizedStringProperty;
       'emptyConstructionAreaMessageStringProperty': LocalizedStringProperty;
     };
