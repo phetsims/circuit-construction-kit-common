@@ -124,40 +124,40 @@ a11y:
 
     # TODO: Reuse same labels as outside a11y key?
     circuitComponentTypeLabels:
-      wire:       Wire
-      battery:    Battery
-      resistor:   Resistor
-      capacitor:  Capacitor
-      inductor:   Inductor
-      lightBulb:  Light Bulb
-      acSource:   AC Source
-      fuse:       Fuse
-      switch:     Switch
-      voltmeter:       Voltmeter
-      ammeter:         Ammeter
-      stopwatch:       Stopwatch
+      wire:             Wire
+      battery:          Battery
+      resistor:         Resistor
+      capacitor:        Capacitor
+      inductor:         Inductor
+      lightBulb:        Light Bulb
+      acSource:         AC Source
+      fuse:             Fuse
+      switch:           Switch
+      voltmeter:        Voltmeter
+      ammeter:          Ammeter
+      stopwatch:        Stopwatch
       # Extreme variants
       extremeBattery:   Extreme Battery
       extremeResistor:  Extreme Resistor
       extremeLightBulb: Extreme Bulb
       # Household items (max 1 each)
-      coin:       Coin
-      paperClip:  Paper Clip
-      pencil:     Pencil
-      eraser:     Eraser
-      hand:       Hand
-      dollarBill: Dollar Bill
+      coin:             Coin
+      paperClip:        Paper Clip
+      pencil:           Pencil
+      eraser:           Eraser
+      hand:             Hand
+      dollarBill:       Dollar Bill
     # Plural forms for circuit component types (used in compressed connection descriptions)
     circuitComponentTypePlurals:
-      wire:       Wires
-      battery:    Batteries
-      resistor:   Resistors
-      capacitor:  Capacitors
-      inductor:   Inductors
-      lightBulb:  Light Bulbs
-      acSource:   AC Sources
-      fuse:       Fuses
-      switch:     Switches
+      wire:             Wires
+      battery:          Batteries
+      resistor:         Resistors
+      capacitor:        Capacitors
+      inductor:         Inductors
+      lightBulb:        Light Bulbs
+      acSource:         AC Sources
+      fuse:             Fuses
+      switch:           Switches
       voltmeter:        Voltmeters
       ammeter:          Ammeters
       stopwatch:        Stopwatches
@@ -166,12 +166,12 @@ a11y:
       extremeResistor:  Extreme Resistors
       extremeLightBulb: Extreme Bulbs
       # Household items (max 1 each, plurals unlikely but included for completeness)
-      coin:       Coins
-      paperClip:  Paper Clips
-      pencil:     Pencils
-      eraser:     Erasers
-      hand:       Hands
-      dollarBill: Dollar Bills
+      coin:             Coins
+      paperClip:        Paper Clips
+      pencil:           Pencils
+      eraser:           Erasers
+      hand:             Hands
+      dollarBill:       Dollar Bills
     # Terminal and connection prefixes for vertex descriptions
     terminalPrefix:
       select_terminalType:
@@ -418,10 +418,31 @@ a11y:
             countAndValue: Resistor { $position } of { $total }, { $resistance } ohms
         battery:
           select_displayMode:
-            name:          Battery
-            value:         Battery, { $voltage } volts
-            count:         Battery { $position } of { $total }
-            countAndValue: Battery { $position } of { $total }, { $voltage } volts
+            name: Battery
+            value:
+              select_hasInternalResistance:
+                true:
+                  select_isOnFire:
+                    true:  'Battery, { $voltage } volts, { $internalResistance } ohms internal resistance, on fire'
+                    false: 'Battery, { $voltage } volts, { $internalResistance } ohms internal resistance'
+                false:
+                  select_isOnFire:
+                    true:  'Battery, { $voltage } volts, on fire'
+                    false: 'Battery, { $voltage } volts'
+            count:
+              select_isOnFire:
+                true:  'Battery { $position } of { $total }, on fire'
+                false: Battery { $position } of { $total }
+            countAndValue:
+              select_hasInternalResistance:
+                true:
+                  select_isOnFire:
+                    true:  'Battery { $position } of { $total }, { $voltage } volts, { $internalResistance } ohms internal resistance, on fire'
+                    false: 'Battery { $position } of { $total }, { $voltage } volts, { $internalResistance } ohms internal resistance'
+                false:
+                  select_isOnFire:
+                    true:  'Battery { $position } of { $total }, { $voltage } volts, on fire'
+                    false: 'Battery { $position } of { $total }, { $voltage } volts'
         lightBulb:
           select_displayMode:
             name:          Light Bulb
@@ -430,10 +451,31 @@ a11y:
             countAndValue: Light Bulb { $position } of { $total }, { $resistance } ohms
         extremeBattery:
           select_displayMode:
-            name:          Extreme Battery
-            value:         Extreme Battery, { $voltage } volts
-            count:         Extreme Battery { $position } of { $total }
-            countAndValue: Extreme Battery { $position } of { $total }, { $voltage } volts
+            name: Extreme Battery
+            value:
+              select_hasInternalResistance:
+                true:
+                  select_isOnFire:
+                    true:  'Extreme Battery, { $voltage } volts, { $internalResistance } ohms internal resistance, on fire'
+                    false: 'Extreme Battery, { $voltage } volts, { $internalResistance } ohms internal resistance'
+                false:
+                  select_isOnFire:
+                    true:  'Extreme Battery, { $voltage } volts, on fire'
+                    false: 'Extreme Battery, { $voltage } volts'
+            count:
+              select_isOnFire:
+                true:  'Extreme Battery { $position } of { $total }, on fire'
+                false: Extreme Battery { $position } of { $total }
+            countAndValue:
+              select_hasInternalResistance:
+                true:
+                  select_isOnFire:
+                    true:  'Extreme Battery { $position } of { $total }, { $voltage } volts, { $internalResistance } ohms internal resistance, on fire'
+                    false: 'Extreme Battery { $position } of { $total }, { $voltage } volts, { $internalResistance } ohms internal resistance'
+                false:
+                  select_isOnFire:
+                    true:  'Extreme Battery { $position } of { $total }, { $voltage } volts, on fire'
+                    false: 'Extreme Battery { $position } of { $total }, { $voltage } volts'
         extremeResistor:
           select_displayMode:
             name:          Extreme Resistor
@@ -460,10 +502,31 @@ a11y:
             countAndValue: Inductor { $position } of { $total }, { $inductance } henries
         acSource:
           select_displayMode:
-            name:          AC Voltage Source
-            value:         AC Voltage Source, { $voltage } volts
-            count:         AC Voltage Source { $position } of { $total }
-            countAndValue: AC Voltage Source { $position } of { $total }, { $voltage } volts
+            name: AC Voltage Source
+            value:
+              select_hasInternalResistance:
+                true:
+                  select_isOnFire:
+                    true:  'AC Voltage Source, { $voltage } volts, { $internalResistance } ohms internal resistance, on fire'
+                    false: 'AC Voltage Source, { $voltage } volts, { $internalResistance } ohms internal resistance'
+                false:
+                  select_isOnFire:
+                    true:  'AC Voltage Source, { $voltage } volts, on fire'
+                    false: 'AC Voltage Source, { $voltage } volts'
+            count:
+              select_isOnFire:
+                true:  'AC Voltage Source { $position } of { $total }, on fire'
+                false: AC Voltage Source { $position } of { $total }
+            countAndValue:
+              select_hasInternalResistance:
+                true:
+                  select_isOnFire:
+                    true:  'AC Voltage Source { $position } of { $total }, { $voltage } volts, { $internalResistance } ohms internal resistance, on fire'
+                    false: 'AC Voltage Source { $position } of { $total }, { $voltage } volts, { $internalResistance } ohms internal resistance'
+                false:
+                  select_isOnFire:
+                    true:  'AC Voltage Source { $position } of { $total }, { $voltage } volts, on fire'
+                    false: 'AC Voltage Source { $position } of { $total }, { $voltage } volts'
         fuse:
           select_displayMode:
             name:          Fuse

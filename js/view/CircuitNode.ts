@@ -615,6 +615,12 @@ export default class CircuitNode extends Node {
     circuit.showCurrentProperty.link( () => this.updateCircuitDescription() );
     circuit.hasCurrentFlowingProperty.link( () => this.updateCircuitDescription() );
 
+    // Update PDOM when battery internal resistance changes (affects accessible names for voltage sources)
+    circuit.sourceResistanceProperty.link( () => this.updateCircuitDescription() );
+
+    // For when batteries catch on fire
+    circuit.circuitChangedEmitter.addListener( () => this.updateCircuitDescription() );
+
     // Set the state once after fully reconstructed, not at a partial intermediate state
     isSettingPhetioStateProperty.lazyLink( isSettingPhetioState => {
       if ( !isSettingPhetioState ) {

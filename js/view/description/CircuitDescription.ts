@@ -11,10 +11,12 @@ import type { TReadOnlyProperty } from '../../../../axon/js/TReadOnlyProperty.js
 import ParallelDOM from '../../../../scenery/js/accessibility/pdom/ParallelDOM.js';
 import { getPDOMFocusedNode } from '../../../../scenery/js/accessibility/pdomFocusProperty.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
+import CCKCQueryParameters from '../../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../../CircuitConstructionKitCommonFluent.js';
 import CircuitDescriptionUtils from '../../CircuitDescriptionUtils.js';
 import Battery from '../../model/Battery.js';
+import VoltageSource from '../../model/VoltageSource.js';
 import Capacitor from '../../model/Capacitor.js';
 import Circuit from '../../model/Circuit.js';
 import CircuitElement from '../../model/CircuitElement.js';
@@ -170,7 +172,12 @@ export default class CircuitDescription {
         switchState: circuitElement instanceof Switch ? circuitElement.isClosedProperty.derived( value => value ? 'closed' : 'open' ) : 'open',
         hasPosition: shouldShowPosition ? 'true' : 'false',
         position: indexForType,
-        total: totalForType
+        total: totalForType,
+        internalResistance: circuitElement instanceof VoltageSource ? circuitElement.internalResistanceProperty : 0,
+        hasInternalResistance: circuitElement instanceof VoltageSource ?
+          circuitElement.internalResistanceProperty.derived( r => r > CCKCQueryParameters.batteryMinimumResistance ? 'true' : 'false' ) : 'false',
+        isOnFire: circuitElement instanceof VoltageSource ?
+          circuitElement.isOnFireProperty.derived( v => v ? 'true' : 'false' ) : 'false'
       } );
 
       // Create a property that adds ", selected" suffix when this element is selected

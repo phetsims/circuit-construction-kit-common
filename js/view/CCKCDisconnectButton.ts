@@ -13,6 +13,7 @@ import Vector2 from '../../../dot/js/Vector2.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import scissorsShape from '../../../sherpa/js/fontawesome-4/scissorsShape.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
+import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import Battery from '../model/Battery.js';
@@ -21,6 +22,7 @@ import type Circuit from '../model/Circuit.js';
 import CircuitElement from '../model/CircuitElement.js';
 import Inductor from '../model/Inductor.js';
 import Resistor from '../model/Resistor.js';
+import VoltageSource from '../model/VoltageSource.js';
 import CCKCRoundPushButton from './CCKCRoundPushButton.js';
 
 // Offset to move the disconnected element (in view coordinates)
@@ -74,7 +76,13 @@ export default class CCKCDisconnectButton extends CCKCRoundPushButton {
         hasPosition: 'false',
         position: 0,
         total: 0,
-        displayMode: 'name'
+        displayMode: 'name',
+        internalResistance: circuit.selectionProperty.derived( selection =>
+          selection instanceof VoltageSource ? selection.internalResistanceProperty.value : 0 ),
+        hasInternalResistance: circuit.selectionProperty.derived( selection =>
+          selection instanceof VoltageSource && selection.internalResistanceProperty.value > CCKCQueryParameters.batteryMinimumResistance ? 'true' : 'false' ),
+        isOnFire: circuit.selectionProperty.derived( selection =>
+          selection instanceof VoltageSource ? ( selection.isOnFireProperty.value ? 'true' : 'false' ) : 'false' )
       } ),
       touchAreaDilation: 5,
       content: scissorsIcon,

@@ -16,8 +16,13 @@ import optionize from '../../../phet-core/js/optionize.js';
 import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import type PickOptional from '../../../phet-core/js/types/PickOptional.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
+import BooleanIO from '../../../tandem/js/types/BooleanIO.js';
 import NumberIO from '../../../tandem/js/types/NumberIO.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+
+// Constants for fire display
+const FIRE_THRESHOLD = 15; // Beyond this number of amps, flammable CircuitElements catch on fire
+const FIRE_RESISTANCE_THRESHOLD = 1E-8; // Minimum resistance required for fire to display
 import type CircuitElementType from './CircuitElementType.js';
 import FixedCircuitElement, { type FixedCircuitElementOptions } from './FixedCircuitElement.js';
 import PowerDissipatedProperty from './PowerDissipatedProperty.js';
@@ -46,6 +51,9 @@ export default abstract class VoltageSource extends FixedCircuitElement {
   public initialOrientation: 'right' | 'left';
   private powerDissipatedProperty: PowerDissipatedProperty;
   private powerGeneratedProperty: TReadOnlyProperty<number>;
+
+  // Whether this voltage source is on fire (high current with sufficient resistance)
+  public readonly isOnFireProperty: TReadOnlyProperty<boolean>;
 
   /**
    * @param type
@@ -84,6 +92,15 @@ export default abstract class VoltageSource extends FixedCircuitElement {
         phetioFeatured: true
       } );
 
+    // Fire shows when |current| >= FIRE_THRESHOLD and the element has resistance >= FIRE_RESISTANCE_THRESHOLD
+    this.isOnFireProperty = new DerivedProperty(
+      [ this.currentProperty, this.internalResistanceProperty ],
+      ( current, resistance ) => Math.abs( current ) >= FIRE_THRESHOLD && resistance >= FIRE_RESISTANCE_THRESHOLD, {
+        tandem: tandem.createTandem( 'isOnFireProperty' ),
+        phetioValueType: BooleanIO,
+        phetioFeatured: true
+      } );
+
     this.initialOrientation = options.initialOrientation;
   }
 
@@ -94,6 +111,7 @@ export default abstract class VoltageSource extends FixedCircuitElement {
     this.voltageProperty.dispose();
     this.powerDissipatedProperty.dispose();
     this.powerGeneratedProperty.dispose();
+    this.isOnFireProperty.dispose();
     super.dispose();
   }
 

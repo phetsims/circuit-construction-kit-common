@@ -26,6 +26,7 @@ import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import type FixedCircuitElement from '../model/FixedCircuitElement.js';
 import Resistor from '../model/Resistor.js';
 import type Vertex from '../model/Vertex.js';
+import VoltageSource from '../model/VoltageSource.js';
 import CCKCColors from './CCKCColors.js';
 import type CCKCScreenView from './CCKCScreenView.js';
 import CircuitElementNode, { type CircuitElementNodeOptions } from './CircuitElementNode.js';
@@ -192,12 +193,23 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
         this.addChild( this.fireNode );
         if ( screenView ) {
 
-          // Show fire in batteries and resistors with resistance > 0
-          this.updateFireMultilink = Multilink.multilink( [
-            circuitElement.currentProperty,
-            ( circuitElement instanceof Resistor ) ? circuitElement.resistanceProperty : ONE_AMP_PROPERTY,
-            screenView.model.isValueDepictionEnabledProperty
-          ], this.updateFireVisible.bind( this ) );
+          // For voltage sources (batteries, AC sources), use the model's isOnFireProperty
+          if ( circuitElement instanceof VoltageSource ) {
+            this.updateFireMultilink = Multilink.multilink( [
+              circuitElement.isOnFireProperty,
+              screenView.model.isValueDepictionEnabledProperty
+            ], ( isOnFire, isValueDepictionEnabled ) => {
+              this.fireNode!.visible = isOnFire && isValueDepictionEnabled;
+            } );
+          }
+          else {
+            // For other flammable elements (e.g., Resistor), keep existing logic
+            this.updateFireMultilink = Multilink.multilink( [
+              circuitElement.currentProperty,
+              ( circuitElement instanceof Resistor ) ? circuitElement.resistanceProperty : ONE_AMP_PROPERTY,
+              screenView.model.isValueDepictionEnabledProperty
+            ], this.updateFireVisible.bind( this ) );
+          }
         }
         else {
           affirm( false, 'screenView should have been defined' );

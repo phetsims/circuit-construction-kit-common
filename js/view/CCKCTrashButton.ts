@@ -10,6 +10,7 @@ import Path from '../../../scenery/js/nodes/Path.js';
 import trashAltRegularShape from '../../../sherpa/js/fontawesome-5/trashAltRegularShape.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
+import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import Battery from '../model/Battery.js';
@@ -17,6 +18,7 @@ import Capacitor from '../model/Capacitor.js';
 import CircuitElement from '../model/CircuitElement.js';
 import Inductor from '../model/Inductor.js';
 import Resistor from '../model/Resistor.js';
+import VoltageSource from '../model/VoltageSource.js';
 import CCKCRoundPushButton from './CCKCRoundPushButton.js';
 import CircuitNode from './CircuitNode.js';
 
@@ -37,7 +39,13 @@ export default class CCKCTrashButton extends CCKCRoundPushButton {
         hasPosition: 'false',
         position: 0,
         total: 0,
-        displayMode: circuitNode.model.showValuesProperty.derived( showValues => showValues ? 'value' : 'name' )
+        displayMode: circuitNode.model.showValuesProperty.derived( showValues => showValues ? 'value' : 'name' ),
+        internalResistance: circuit.selectionProperty.derived( selection =>
+          selection instanceof VoltageSource ? selection.internalResistanceProperty.value : 0 ),
+        hasInternalResistance: circuit.selectionProperty.derived( selection =>
+          selection instanceof VoltageSource && selection.internalResistanceProperty.value > CCKCQueryParameters.batteryMinimumResistance ? 'true' : 'false' ),
+        isOnFire: circuit.selectionProperty.derived( selection =>
+          selection instanceof VoltageSource ? ( selection.isOnFireProperty.value ? 'true' : 'false' ) : 'false' )
       } ),
       touchAreaDilation: 5, // radius dilation for touch area
       content: new Path( trashAltRegularShape, {
