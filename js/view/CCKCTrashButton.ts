@@ -18,6 +18,7 @@ import Capacitor from '../model/Capacitor.js';
 import CircuitElement from '../model/CircuitElement.js';
 import Fuse from '../model/Fuse.js';
 import Inductor from '../model/Inductor.js';
+import LightBulb from '../model/LightBulb.js';
 import Resistor from '../model/Resistor.js';
 import VoltageSource from '../model/VoltageSource.js';
 import CCKCRoundPushButton from './CCKCRoundPushButton.js';
@@ -32,7 +33,11 @@ export default class CCKCTrashButton extends CCKCRoundPushButton {
     super( {
       accessibleName: CircuitConstructionKitCommonFluent.a11y.trashButton.accessibleName.createProperty( {
         type: circuit.selectionProperty.derived( selection => selection instanceof CircuitElement ? selection.type : 'wire' ),
-        resistance: circuit.selectionProperty.derived( selection => selection instanceof Resistor ? selection.resistanceProperty.value : 0 ),
+        resistance: circuit.selectionProperty.derived( selection =>
+          selection instanceof Resistor ? selection.resistanceProperty.value :
+          selection instanceof LightBulb ? selection.resistanceProperty.value : 0 ),
+        currentRating: circuit.selectionProperty.derived( selection =>
+          selection instanceof Fuse ? selection.currentRatingProperty.value : 0 ),
         voltage: circuit.selectionProperty.derived( selection => selection instanceof Battery ? selection.voltageProperty.value : 0 ),
         capacitance: circuit.selectionProperty.derived( selection => selection instanceof Capacitor ? selection.capacitanceProperty.value : 0 ),
         inductance: circuit.selectionProperty.derived( selection => selection instanceof Inductor ? selection.inductanceProperty.value : 0 ),

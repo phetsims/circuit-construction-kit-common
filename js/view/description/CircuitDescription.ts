@@ -23,6 +23,7 @@ import CircuitElement from '../../model/CircuitElement.js';
 import CircuitElementType from '../../model/CircuitElementType.js';
 import Fuse from '../../model/Fuse.js';
 import Inductor from '../../model/Inductor.js';
+import LightBulb from '../../model/LightBulb.js';
 import Resistor from '../../model/Resistor.js';
 import Switch from '../../model/Switch.js';
 import Vertex from '../../model/Vertex.js';
@@ -167,7 +168,9 @@ export default class CircuitDescription {
                      'name',
         type: descriptionType as CircuitElementType,
         voltage: circuitElement instanceof Battery ? circuitElement.voltageProperty : 0,
-        resistance: circuitElement instanceof Resistor ? circuitElement.resistanceProperty : 0,
+        resistance: circuitElement instanceof Resistor ? circuitElement.resistanceProperty :
+                    circuitElement instanceof LightBulb ? circuitElement.resistanceProperty : 0,
+        currentRating: circuitElement instanceof Fuse ? circuitElement.currentRatingProperty : 0,
         capacitance: circuitElement instanceof Capacitor ? circuitElement.capacitanceProperty : 0,
         inductance: circuitElement instanceof Inductor ? circuitElement.inductanceProperty : 0,
         switchState: circuitElement instanceof Switch ? circuitElement.isClosedProperty.derived( value => value ? 'closed' : 'open' ) : 'open',

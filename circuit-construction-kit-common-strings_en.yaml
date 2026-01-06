@@ -535,16 +535,16 @@ a11y:
                 false: Fuse
             value:
               select_isTripped:
-                true:  'Fuse, { $resistance } milliohms ≤ currentRating amps, broken'
-                false: 'Fuse, { $resistance } milliohms ≤ currentRating amps'
+                true:  'Fuse, { $currentRating } amps, broken'
+                false: 'Fuse, { $currentRating } amps'
             count:
               select_isTripped:
                 true:  'Fuse { $position } of { $total }, broken'
                 false: Fuse { $position } of { $total }
             countAndValue:
               select_isTripped:
-                true:  'Fuse { $position } of { $total }, { $resistance } milliohms ≤ currentRating amps, broken'
-                false: 'Fuse { $position } of { $total }, { $resistance } milliohms ≤ currentRating amps'
+                true:  'Fuse { $position } of { $total }, { $currentRating } amps, broken'
+                false: 'Fuse { $position } of { $total }, { $currentRating } amps'
         switch:
           select_displayMode:
             name:
