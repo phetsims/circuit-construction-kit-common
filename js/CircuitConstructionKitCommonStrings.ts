@@ -326,6 +326,9 @@ type StringsType = {
     'wireResistivityControl': {
       'ariaValueTextStringProperty': LocalizedStringProperty;
     };
+    'fuseCurrentRatingControl': {
+      'ariaValueTextStringProperty': LocalizedStringProperty;
+    };
     'circuitComponent': {
       'accessibleNameStringProperty': LocalizedStringProperty;
       'accessibleHelpTextStringProperty': LocalizedStringProperty;

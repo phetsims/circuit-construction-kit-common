@@ -407,6 +407,12 @@ a11y:
                    }
   wireResistivityControl:
     ariaValueText: '{ $resistivity } ohm-meters'
+  fuseCurrentRatingControl:
+    ariaValueText: >-
+      { $currentNumber ->
+        [one] { $currentFormatted } amp
+       *[other] { $currentFormatted } amps
+      }
   circuitComponent:
     accessibleName:
       select_type:

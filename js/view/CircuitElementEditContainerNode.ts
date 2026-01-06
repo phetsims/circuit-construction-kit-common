@@ -12,6 +12,7 @@ import PatternStringProperty from '../../../axon/js/PatternStringProperty.js';
 import Property from '../../../axon/js/Property.js';
 import type Bounds2 from '../../../dot/js/Bounds2.js';
 import { roundToInterval } from '../../../dot/js/util/roundToInterval.js';
+import { toFixed } from '../../../dot/js/util/toFixed.js';
 import optionize, { type EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import AccessibleInteractiveOptions from '../../../scenery-phet/js/accessibility/AccessibleInteractiveOptions.js';
@@ -129,7 +130,7 @@ export default class CircuitElementEditContainerNode extends Node {
     // Create reusable components that will get assembled into a panel for the selected circuit element
     const trashButton = new CCKCTrashButton( circuitNode, tandem.createTandem( 'trashButton' ) );
 
-    // Use the "nested node" pattern for gated visibilty
+    // Use the "nested node" pattern for gated visibility
     const trashButtonContainer = new Node( {
 
       // Ensure panel bounds reflow when the child is made invisible via phet-io
@@ -220,7 +221,12 @@ export default class CircuitElementEditContainerNode extends Node {
         sliderOptions: {
           keyboardStep: CCKCConstants.SLIDER_STEPS.fuseCurrentRatingControl.step,
           pageKeyboardStep: CCKCConstants.SLIDER_STEPS.fuseCurrentRatingControl.pageKeyboardStep,
-          constrainValue: ( value: number ) => roundToInterval( value, CCKCConstants.SLIDER_STEPS.fuseCurrentRatingControl.shiftKeyboardStep )
+          constrainValue: ( value: number ) => roundToInterval( value, CCKCConstants.SLIDER_STEPS.fuseCurrentRatingControl.shiftKeyboardStep ),
+          createAriaValueText: ( value: number ) =>
+            CircuitConstructionKitCommonFluent.a11y.fuseCurrentRatingControl.ariaValueText.format( {
+              currentNumber: value,
+              currentFormatted: toFixed( value, 1 )
+            } )
         }
       } );
 
