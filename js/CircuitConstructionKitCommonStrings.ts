@@ -86,6 +86,9 @@ type StringsType = {
   'magnitudeStringProperty': LocalizedStringProperty;
   'signedStringProperty': LocalizedStringProperty;
   'dataOutOfRangeStringProperty': LocalizedStringProperty;
+  'extremeBatteryStringProperty': LocalizedStringProperty;
+  'extremeBulbStringProperty': LocalizedStringProperty;
+  'extremeResistorStringProperty': LocalizedStringProperty;
   'key': {
     'toCutStringProperty': LocalizedStringProperty;
     'toEditComponentStringProperty': LocalizedStringProperty;

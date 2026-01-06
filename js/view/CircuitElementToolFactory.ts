@@ -62,13 +62,16 @@ const coinStringProperty = CircuitConstructionKitCommonFluent.coinStringProperty
 const dollarBillStringProperty = CircuitConstructionKitCommonFluent.dollarBillStringProperty;
 const eraserStringProperty = CircuitConstructionKitCommonFluent.eraserStringProperty;
 const fuseStringProperty = CircuitConstructionKitCommonFluent.fuseStringProperty;
-const handStringProperty = CircuitConstructionKitCommonFluent.handStringProperty;
 const lightBulbStringProperty = CircuitConstructionKitCommonFluent.lightBulbStringProperty;
 const paperClipStringProperty = CircuitConstructionKitCommonFluent.paperClipStringProperty;
 const pencilStringProperty = CircuitConstructionKitCommonFluent.pencilStringProperty;
 const resistorStringProperty = CircuitConstructionKitCommonFluent.resistorStringProperty;
 const switchStringProperty = CircuitConstructionKitCommonFluent.switchStringProperty;
 const wireStringProperty = CircuitConstructionKitCommonFluent.wireStringProperty;
+
+const extremeResistorStringProperty = CircuitConstructionKitCommonFluent.extremeResistorStringProperty;
+const extremeBatteryStringProperty = CircuitConstructionKitCommonFluent.extremeBatteryStringProperty;
+const extremeBulbStringProperty = CircuitConstructionKitCommonFluent.extremeBulbStringProperty;
 
 // constants
 const BATTERY_LENGTH = CCKCConstants.BATTERY_LENGTH;
@@ -123,6 +126,7 @@ export default class CircuitElementToolFactory {
 
   /**
    * Utility function that creates a CircuitElementToolNode
+   * @param circuitElementType
    * @param labelStringProperty
    * @param count
    * @param createIcon
@@ -424,7 +428,7 @@ export default class CircuitElementToolFactory {
     } );
   }
 
-  // Same docs as as for createPaperClipToolNode
+  // Same docs as for createPaperClipToolNode
   public createDollarBillToolNode( tandem: Tandem ): CircuitElementToolNode {
     return this.createResistorToolNode( tandem, this.circuit.householdObjectGroup, {
       count: 1,
@@ -458,28 +462,17 @@ export default class CircuitElementToolFactory {
   }
 
   // Same docs as for createPaperClipToolNode
-  public createHandToolNode( tandem: Tandem ): CircuitElementToolNode {
-    return this.createResistorToolNode( tandem, this.circuit.householdObjectGroup, {
-      count: 1,
-      resistorType: ResistorType.HAND,
-      tandemName: 'handToolNode',
-      labelStringProperty: handStringProperty,
-      lifelikeIconHeight: 30
-    } );
-  }
-
-  // Same docs as for createPaperClipToolNode
   public createExtremeResistorToolNode( tandem: Tandem ): CircuitElementToolNode {
     return this.createResistorToolNode( tandem, this.circuit.extremeResistorGroup!, {
       count: 4,
       resistorType: ResistorType.EXTREME_RESISTOR,
       tandemName: 'extremeResistorToolNode',
-      labelStringProperty: resistorStringProperty
+      labelStringProperty: extremeResistorStringProperty
     } );
   }
 
   public createExtremeBatteryToolNode( tandem: Tandem ): CircuitElementToolNode {
-    return this.createCircuitElementToolNode( 'battery', batteryStringProperty, 4,
+    return this.createCircuitElementToolNode( 'battery', extremeBatteryStringProperty, 4,
       ( tandem, viewTypeProperty ) => new BatteryNode( null, null,
         new Battery(
           new Vertex( Vector2.ZERO, this.circuit.selectionProperty ),
@@ -503,7 +496,7 @@ export default class CircuitElementToolFactory {
 
   public createExtremeBulbToolNode( tandem: Tandem ): CircuitElementToolNode {
     const vertexPair = LightBulb.createVertexPair( Vector2.ZERO, this.circuit, true );
-    return this.createCircuitElementToolNode( 'lightBulb', lightBulbStringProperty, 4,
+    return this.createCircuitElementToolNode( 'lightBulb', extremeBulbStringProperty, 4,
       ( tandem, viewTypeProperty ) => new CCKCLightBulbNode(
         null,
         null,
@@ -522,7 +515,7 @@ export default class CircuitElementToolFactory {
           isIcon: true
         } ),
       circuitElement => circuitElement instanceof LightBulb && circuitElement.isExtreme,
-      ( position: Vector2 ) => {
+      position => {
         const vertexPair = LightBulb.createVertexPair( position, this.circuit, false );
         return this.circuit.extremeLightBulbGroup!.createNextElement( vertexPair.startVertex, vertexPair.endVertex );
       }, {

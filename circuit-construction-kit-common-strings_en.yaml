@@ -77,6 +77,9 @@ ammeterReadout:                        Ammeter Readout
 magnitude:                             Magnitude
 signed:                                Signed
 dataOutOfRange:                        Data out of range
+extremeBattery:                        Extreme Battery
+extremeBulb:                           Extreme Bulb
+extremeResistor:                       Extreme Resistor
 
 key:
   toCut:              to <b>Cut</b>
@@ -118,6 +121,8 @@ keyboardHelpDialog:
 
 a11y:
   circuitDescription:
+
+    # TODO: Reuse same labels as outside a11y key?
     circuitComponentTypeLabels:
       wire:       Wire
       battery:    Battery

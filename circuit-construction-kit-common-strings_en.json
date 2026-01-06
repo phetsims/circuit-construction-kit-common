@@ -215,6 +215,15 @@
   "dataOutOfRange": {
     "value": "Data out of range"
   },
+  "extremeBattery": {
+    "value": "Extreme Battery"
+  },
+  "extremeBulb": {
+    "value": "Extreme Bulb"
+  },
+  "extremeResistor": {
+    "value": "Extreme Resistor"
+  },
   "key": {
     "toCut": {
       "value": "to <b>Cut</b>"
