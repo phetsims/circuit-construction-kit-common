@@ -219,8 +219,13 @@ export default class CircuitDescription {
       const terminalDescription = this.formatTerminalDescription( vertex, neighbors[ 0 ], componentName );
       vertex.completeDescription = null;
 
-      // For fully disconnected elements, use simplified format without "Connection X"
-      if ( isFullyDisconnected ) {
+      // Skip "Connection Point" prefix if:
+      // 1. Element is fully disconnected, OR
+      // 2. Terminal has a special name (battery terminals, light bulb terminals)
+      const terminalType = this.getTerminalType( vertex, neighbors[ 0 ] );
+      const hasSpecialTerminal = terminalType !== 'none';
+
+      if ( isFullyDisconnected || hasSpecialTerminal ) {
         return terminalDescription;
       }
       return CircuitConstructionKitCommonFluent.a11y.circuitDescription.connectionDescription.format( {
@@ -344,11 +349,11 @@ export default class CircuitDescription {
 
       // For fully disconnected elements, both formats are the same (just terminal description)
       // since isFullyDisconnected=true skips the connection label
-      startVertexNode.accessibleName = CircuitDescription.createVertexDescription( startVertex, 1, 2, [ circuitElement ], briefNames, true, false );
-      endVertexNode.accessibleName = CircuitDescription.createVertexDescription( endVertex, 2, 2, [ circuitElement ], briefNames, true, false );
+      startVertexNode.accessibleName = CircuitDescription.createVertexDescription( startVertex, 1, 2, [ circuitElement ], briefNames, false, false );
+      endVertexNode.accessibleName = CircuitDescription.createVertexDescription( endVertex, 2, 2, [ circuitElement ], briefNames, false, false );
 
-      startVertexNode.attachmentName = startVertexNode.accessibleName;
-      endVertexNode.attachmentName = endVertexNode.accessibleName;
+      startVertexNode.attachmentName = CircuitDescription.createVertexDescription( startVertex, 1, 2, [ circuitElement ], briefNames, true, true );
+      endVertexNode.attachmentName = CircuitDescription.createVertexDescription( endVertex, 2, 2, [ circuitElement ], briefNames, true, true );
 
       pdomOrder.push( circuitElementNode );
       pdomOrder.push( startVertexNode, endVertexNode );
