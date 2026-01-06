@@ -9,6 +9,7 @@
  */
 
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
+import { toFixed } from '../../../dot/js/util/toFixed.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import scissorsShape from '../../../sherpa/js/fontawesome-4/scissorsShape.js';
@@ -75,7 +76,7 @@ export default class CCKCDisconnectButton extends CCKCRoundPushButton {
           selection instanceof LightBulb ? selection.resistanceProperty.value :
           selection instanceof Fuse ? selection.resistanceProperty.value * 1000 : 0 ),
         currentRating: circuit.selectionProperty.derived( selection =>
-          selection instanceof Fuse ? selection.currentRatingProperty.value : 0 ),
+          selection instanceof Fuse ? toFixed( selection.currentRatingProperty.value, 1 ) : '0.0' ),
         voltage: circuit.selectionProperty.derived( selection => selection instanceof Battery ? selection.voltageProperty.value : 0 ),
         capacitance: circuit.selectionProperty.derived( selection => selection instanceof Capacitor ? selection.capacitanceProperty.value : 0 ),
         inductance: circuit.selectionProperty.derived( selection => selection instanceof Inductor ? selection.inductanceProperty.value : 0 ),

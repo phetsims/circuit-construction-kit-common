@@ -8,6 +8,7 @@
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import type { TReadOnlyProperty } from '../../../../axon/js/TReadOnlyProperty.js';
+import { toFixed } from '../../../../dot/js/util/toFixed.js';
 import ParallelDOM from '../../../../scenery/js/accessibility/pdom/ParallelDOM.js';
 import { getPDOMFocusedNode } from '../../../../scenery/js/accessibility/pdomFocusProperty.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
@@ -171,7 +172,7 @@ export default class CircuitDescription {
         resistance: circuitElement instanceof Resistor ? circuitElement.resistanceProperty :
                     circuitElement instanceof LightBulb ? circuitElement.resistanceProperty :
                     circuitElement instanceof Fuse ? circuitElement.resistanceProperty.derived( r => r * 1000 ) : 0,
-        currentRating: circuitElement instanceof Fuse ? circuitElement.currentRatingProperty : 0,
+        currentRating: circuitElement instanceof Fuse ? circuitElement.currentRatingProperty.derived( v => toFixed( v, 1 ) ) : '0.0',
         capacitance: circuitElement instanceof Capacitor ? circuitElement.capacitanceProperty : 0,
         inductance: circuitElement instanceof Inductor ? circuitElement.inductanceProperty : 0,
         switchState: circuitElement instanceof Switch ? circuitElement.isClosedProperty.derived( value => value ? 'closed' : 'open' ) : 'open',

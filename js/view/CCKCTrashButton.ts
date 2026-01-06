@@ -6,6 +6,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import { toFixed } from '../../../dot/js/util/toFixed.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import trashAltRegularShape from '../../../sherpa/js/fontawesome-5/trashAltRegularShape.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
@@ -38,7 +39,7 @@ export default class CCKCTrashButton extends CCKCRoundPushButton {
           selection instanceof LightBulb ? selection.resistanceProperty.value :
           selection instanceof Fuse ? selection.resistanceProperty.value * 1000 : 0 ),
         currentRating: circuit.selectionProperty.derived( selection =>
-          selection instanceof Fuse ? selection.currentRatingProperty.value : 0 ),
+          selection instanceof Fuse ? toFixed( selection.currentRatingProperty.value, 1 ) : '0.0' ),
         voltage: circuit.selectionProperty.derived( selection => selection instanceof Battery ? selection.voltageProperty.value : 0 ),
         capacitance: circuit.selectionProperty.derived( selection => selection instanceof Capacitor ? selection.capacitanceProperty.value : 0 ),
         inductance: circuit.selectionProperty.derived( selection => selection instanceof Inductor ? selection.inductanceProperty.value : 0 ),
