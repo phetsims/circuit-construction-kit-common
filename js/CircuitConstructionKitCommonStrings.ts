@@ -149,6 +149,9 @@ type StringsType = {
         'voltmeterStringProperty': LocalizedStringProperty;
         'ammeterStringProperty': LocalizedStringProperty;
         'stopwatchStringProperty': LocalizedStringProperty;
+        'extremeBatteryStringProperty': LocalizedStringProperty;
+        'extremeResistorStringProperty': LocalizedStringProperty;
+        'extremeLightBulbStringProperty': LocalizedStringProperty;
         'coinStringProperty': LocalizedStringProperty;
         'paperClipStringProperty': LocalizedStringProperty;
         'pencilStringProperty': LocalizedStringProperty;
@@ -169,6 +172,9 @@ type StringsType = {
         'voltmeterStringProperty': LocalizedStringProperty;
         'ammeterStringProperty': LocalizedStringProperty;
         'stopwatchStringProperty': LocalizedStringProperty;
+        'extremeBatteryStringProperty': LocalizedStringProperty;
+        'extremeResistorStringProperty': LocalizedStringProperty;
+        'extremeLightBulbStringProperty': LocalizedStringProperty;
         'coinStringProperty': LocalizedStringProperty;
         'paperClipStringProperty': LocalizedStringProperty;
         'pencilStringProperty': LocalizedStringProperty;

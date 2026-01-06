@@ -44,6 +44,13 @@ const CircuitDescriptionUtils = {
       if ( resistorType === ResistorType.ERASER ) { return 'eraser'; }
       if ( resistorType === ResistorType.HAND ) { return 'hand'; }
       if ( resistorType === ResistorType.DOLLAR_BILL ) { return 'dollarBill'; }
+      if ( resistorType === ResistorType.EXTREME_RESISTOR ) { return 'extremeResistor'; }
+    }
+    if ( circuitElement instanceof Battery && circuitElement.batteryType === 'high-voltage' ) {
+      return 'extremeBattery';
+    }
+    if ( circuitElement instanceof LightBulb && circuitElement.isExtreme ) {
+      return 'extremeLightBulb';
     }
     return circuitElement.type;
   },
@@ -86,6 +93,13 @@ const CircuitDescriptionUtils = {
         return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypeLabels.ammeterStringProperty.value;
       case 'stopwatch':
         return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypeLabels.stopwatchStringProperty.value;
+      // Extreme variants
+      case 'extremeBattery':
+        return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypeLabels.extremeBatteryStringProperty.value;
+      case 'extremeResistor':
+        return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypeLabels.extremeResistorStringProperty.value;
+      case 'extremeLightBulb':
+        return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypeLabels.extremeLightBulbStringProperty.value;
       // Household item types
       case 'coin':
         return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypeLabels.coinStringProperty.value;
@@ -133,6 +147,13 @@ const CircuitDescriptionUtils = {
         return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypePlurals.ammeterStringProperty.value;
       case 'stopwatch':
         return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypePlurals.stopwatchStringProperty.value;
+      // Extreme variants
+      case 'extremeBattery':
+        return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypePlurals.extremeBatteryStringProperty.value;
+      case 'extremeResistor':
+        return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypePlurals.extremeResistorStringProperty.value;
+      case 'extremeLightBulb':
+        return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypePlurals.extremeLightBulbStringProperty.value;
       // Household items (max 1, so plurals unlikely but included for completeness)
       case 'coin':
         return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypePlurals.coinStringProperty.value;

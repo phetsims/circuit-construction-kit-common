@@ -133,9 +133,13 @@ a11y:
       acSource:   AC Source
       fuse:       Fuse
       switch:     Switch
-      voltmeter:  Voltmeter
-      ammeter:    Ammeter
-      stopwatch:  Stopwatch
+      voltmeter:       Voltmeter
+      ammeter:         Ammeter
+      stopwatch:       Stopwatch
+      # Extreme variants
+      extremeBattery:   Extreme Battery
+      extremeResistor:  Extreme Resistor
+      extremeLightBulb: Extreme Bulb
       # Household items (max 1 each)
       coin:       Coin
       paperClip:  Paper Clip
@@ -154,9 +158,13 @@ a11y:
       acSource:   AC Sources
       fuse:       Fuses
       switch:     Switches
-      voltmeter:  Voltmeters
-      ammeter:    Ammeters
-      stopwatch:  Stopwatches
+      voltmeter:        Voltmeters
+      ammeter:          Ammeters
+      stopwatch:        Stopwatches
+      # Extreme variants
+      extremeBattery:   Extreme Batteries
+      extremeResistor:  Extreme Resistors
+      extremeLightBulb: Extreme Bulbs
       # Household items (max 1 each, plurals unlikely but included for completeness)
       coin:       Coins
       paperClip:  Paper Clips
@@ -398,6 +406,24 @@ a11y:
             value:         Light Bulb, { $resistance } ohms
             count:         Light Bulb { $position } of { $total }
             countAndValue: Light Bulb { $position } of { $total }, { $resistance } ohms
+        extremeBattery:
+          select_displayMode:
+            name:          Extreme Battery
+            value:         Extreme Battery, { $voltage } volts
+            count:         Extreme Battery { $position } of { $total }
+            countAndValue: Extreme Battery { $position } of { $total }, { $voltage } volts
+        extremeResistor:
+          select_displayMode:
+            name:          Extreme Resistor
+            value:         Extreme Resistor, { $resistance } ohms
+            count:         Extreme Resistor { $position } of { $total }
+            countAndValue: Extreme Resistor { $position } of { $total }, { $resistance } ohms
+        extremeLightBulb:
+          select_displayMode:
+            name:          Extreme Bulb
+            value:         Extreme Bulb, { $resistance } ohms
+            count:         Extreme Bulb { $position } of { $total }
+            countAndValue: Extreme Bulb { $position } of { $total }, { $resistance } ohms
         capacitor:
           select_displayMode:
             name:          Capacitor
