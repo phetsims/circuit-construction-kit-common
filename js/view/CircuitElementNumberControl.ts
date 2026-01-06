@@ -1,4 +1,4 @@
-// Copyright 2016-2025, University of Colorado Boulder
+// Copyright 2016-2026, University of Colorado Boulder
 
 /**
  * Shows controls for a single CircuitElement at the bottom of the screen and contained in a CircuitElementEditContainerNode.

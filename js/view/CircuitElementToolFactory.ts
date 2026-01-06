@@ -1,4 +1,4 @@
-// Copyright 2017-2025, University of Colorado Boulder
+// Copyright 2017-2026, University of Colorado Boulder
 
 /**
  * Creates CircuitElementToolNodes that can be used to create CircuitElements from the toolbox.  Exists for the life of

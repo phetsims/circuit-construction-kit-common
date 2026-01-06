@@ -1,4 +1,4 @@
-// Copyright 2025, University of Colorado Boulder
+// Copyright 2026, University of Colorado Boulder
 
 /**
  * CircuitGroupDescription provides summary descriptions for circuit groups and unconnected elements.
