@@ -219,7 +219,7 @@ export default class CCKCConstants {
     },
     frequencyControl: {
       step: 0.1,
-      pageKeyboardStep: 0.25,
+      pageKeyboardStep: 0.2,
       shiftKeyboardStep: 0.01,
       pointerRoundingInterval: 0.01
     },
