@@ -199,6 +199,12 @@ type StringsType = {
       'groupStringProperty': LocalizedStringProperty;
       'emptyConstructionAreaMessageStringProperty': LocalizedStringProperty;
     };
+    'circuitGroupDescription': {
+      'unconnectedSummaryStringProperty': LocalizedStringProperty;
+      'groupSummaryStringProperty': LocalizedStringProperty;
+      'connectionStatusStringProperty': LocalizedStringProperty;
+      'currentFlowStatusStringProperty': LocalizedStringProperty;
+    };
     'screenSummary': {
       'playAreaStringProperty': LocalizedStringProperty;
       'controlAreaStringProperty': LocalizedStringProperty;

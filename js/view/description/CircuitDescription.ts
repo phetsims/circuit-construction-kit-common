@@ -23,6 +23,7 @@ import Resistor from '../../model/Resistor.js';
 import Switch from '../../model/Switch.js';
 import Vertex from '../../model/Vertex.js';
 import CircuitNode from '../CircuitNode.js';
+import CircuitGroupDescription from './CircuitGroupDescription.js';
 
 
 // Track properties for each circuit element so we can dispose them when updating
@@ -433,14 +434,22 @@ export default class CircuitDescription {
       // Remove duplicates from PDOM order using native Set
       const uniquePDOMOrder = Array.from( new Set( groupPDOMOrder ) );
 
-      // Create group node
+      // Create a summary paragraph node to appear right after the heading
+      const groupSummary = CircuitGroupDescription.getGroupSummary( group, circuit );
+      const summaryNode = new Node( {
+        tagName: 'p',
+        innerContent: groupSummary
+      } );
+
+      // Create group node with summary node first in pdomOrder
       const groupNode = new Node( {
         tagName: 'div',
         accessibleHeading: CircuitConstructionKitCommonFluent.a11y.circuitDescription.groupHeading.format( {
           groupIndex: groupIndex + 1,
           totalGroups: multiElementGroups.length
         } ),
-        pdomOrder: uniquePDOMOrder
+        children: [ summaryNode ],
+        pdomOrder: [ summaryNode, ...uniquePDOMOrder ]
       } );
 
       circuitNode.groupsContainer.addChild( groupNode );
@@ -500,8 +509,24 @@ export default class CircuitDescription {
 
       // Update single circuit elements section and collect brief names
       const singleElementsResult = this.updateSingleCircuitElements( singleElementCircuits, circuitNode, circuit );
-      circuitNode.unconnectedCircuitElementsSection.pdomOrder = singleElementsResult.pdomOrder;
       circuitNode.unconnectedCircuitElementsSection.visible = singleElementsResult.pdomOrder.length > 0;
+
+      // Remove old summary node if it exists (it's the only direct child we add)
+      circuitNode.unconnectedCircuitElementsSection.removeAllChildren();
+
+      // Create summary node for unconnected section (appears right after heading)
+      if ( singleElementCircuits.length > 0 ) {
+        const unconnectedSummary = CircuitGroupDescription.getUnconnectedSectionSummary( singleElementCircuits );
+        const unconnectedSummaryNode = new Node( {
+          tagName: 'p',
+          innerContent: unconnectedSummary
+        } );
+        circuitNode.unconnectedCircuitElementsSection.addChild( unconnectedSummaryNode );
+        circuitNode.unconnectedCircuitElementsSection.pdomOrder = [ unconnectedSummaryNode, ...singleElementsResult.pdomOrder ];
+      }
+      else {
+        circuitNode.unconnectedCircuitElementsSection.pdomOrder = singleElementsResult.pdomOrder;
+      }
 
       // Update grouped circuit elements, passing the brief names map for use in junction descriptions
       const groupNodes = this.updateGroupedCircuitElements( multiElementGroups, circuitNode, circuit, singleElementsResult.briefNames );

@@ -204,11 +204,31 @@ a11y:
     disconnected:                 disconnected
     group:                        Group
     emptyConstructionAreaMessage: >-
-                                  Add Circuit Components as needed. Remember, you need at least 1 wire. Once added, open 
+                                  Add Circuit Components as needed. Remember, you need at least 1 wire. Once added, open
                                   connection point options or open component edit panel with Space or Enter. Connected
-                                  components auto-organize into groups. Remove a selected component or disconnect a 
-                                  selected connection point with Delete key. Check out Keyboard Shortcuts for more 
+                                  components auto-organize into groups. Remove a selected component or disconnect a
+                                  selected connection point with Delete key. Check out Keyboard Shortcuts for more
                                   details on editing and connecting components.
+  circuitGroupDescription:
+    # Unconnected section summary
+    unconnectedSummary:
+      select_count:
+        one:   '1 unconnected circuit component. { $componentList }.'
+        other: '{ $count } unconnected circuit components. { $componentList }.'
+    # Connected group summary
+    groupSummary: '{ $count } connected components: { $componentList }.'
+    # Connection status
+    connectionStatus:
+      select_allConnected:
+        true:  All connection points connected.
+        false: Some connection points not connected.
+    # Current flow status
+    currentFlowStatus:
+      select_flowLevel:
+        all:      Current is flowing through all circuit components.
+        some:     Current is flowing through some circuit components.
+        none:     Current is not flowing.
+        notShown: Current is not shown.
   screenSummary:
     playArea:        >-
                      A Construction Area creates a building space for components added from a Circuit Components carousel. Build and

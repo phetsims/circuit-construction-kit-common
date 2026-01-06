@@ -172,6 +172,10 @@ addToMapIfDefined( 'a11y_circuitDescription_connection', 'a11y.circuitDescriptio
 addToMapIfDefined( 'a11y_circuitDescription_disconnected', 'a11y.circuitDescription.disconnectedStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_group', 'a11y.circuitDescription.groupStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_emptyConstructionAreaMessage', 'a11y.circuitDescription.emptyConstructionAreaMessageStringProperty' );
+addToMapIfDefined( 'a11y_circuitGroupDescription_unconnectedSummary', 'a11y.circuitGroupDescription.unconnectedSummaryStringProperty' );
+addToMapIfDefined( 'a11y_circuitGroupDescription_groupSummary', 'a11y.circuitGroupDescription.groupSummaryStringProperty' );
+addToMapIfDefined( 'a11y_circuitGroupDescription_connectionStatus', 'a11y.circuitGroupDescription.connectionStatusStringProperty' );
+addToMapIfDefined( 'a11y_circuitGroupDescription_currentFlowStatus', 'a11y.circuitGroupDescription.currentFlowStatusStringProperty' );
 addToMapIfDefined( 'a11y_screenSummary_playArea', 'a11y.screenSummary.playAreaStringProperty' );
 addToMapIfDefined( 'a11y_screenSummary_controlArea', 'a11y.screenSummary.controlAreaStringProperty' );
 addToMapIfDefined( 'a11y_screenSummary_currentDetails', 'a11y.screenSummary.currentDetailsStringProperty' );
@@ -464,6 +468,16 @@ const CircuitConstructionKitCommonFluent = {
       disconnectedStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_disconnected', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.disconnectedStringProperty' ) ),
       groupStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_group', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.groupStringProperty' ) ),
       emptyConstructionAreaMessageStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_emptyConstructionAreaMessage', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.emptyConstructionAreaMessageStringProperty' ) )
+    },
+    circuitGroupDescription: {
+      _comment_0: new FluentComment( {"comment":"Unconnected section summary","associatedKey":"unconnectedSummary"} ),
+      unconnectedSummary: new FluentPattern<{ componentList: FluentVariable, count: number | 'one' | number | 'other' | TReadOnlyProperty<number | 'one' | number | 'other'> }>( fluentSupport.bundleProperty, 'a11y_circuitGroupDescription_unconnectedSummary', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitGroupDescription.unconnectedSummaryStringProperty' ), [{"name":"componentList"},{"name":"count","variants":[{"type":"number","value":"one"},{"type":"number","value":"other"}]}] ),
+      _comment_1: new FluentComment( {"comment":"Connected group summary","associatedKey":"groupSummary"} ),
+      groupSummary: new FluentPattern<{ componentList: FluentVariable, count: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitGroupDescription_groupSummary', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitGroupDescription.groupSummaryStringProperty' ), [{"name":"componentList"},{"name":"count"}] ),
+      _comment_2: new FluentComment( {"comment":"Connection status","associatedKey":"connectionStatus"} ),
+      connectionStatus: new FluentPattern<{ allConnected: 'true' | 'false' | TReadOnlyProperty<'true' | 'false'> }>( fluentSupport.bundleProperty, 'a11y_circuitGroupDescription_connectionStatus', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitGroupDescription.connectionStatusStringProperty' ), [{"name":"allConnected","variants":["true","false"]}] ),
+      _comment_3: new FluentComment( {"comment":"Current flow status","associatedKey":"currentFlowStatus"} ),
+      currentFlowStatus: new FluentPattern<{ flowLevel: 'all' | 'some' | 'none' | 'notShown' | TReadOnlyProperty<'all' | 'some' | 'none' | 'notShown'> }>( fluentSupport.bundleProperty, 'a11y_circuitGroupDescription_currentFlowStatus', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitGroupDescription.currentFlowStatusStringProperty' ), [{"name":"flowLevel","variants":["all","some","none","notShown"]}] )
     },
     screenSummary: {
       playAreaStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_screenSummary_playArea', _.get( CircuitConstructionKitCommonStrings, 'a11y.screenSummary.playAreaStringProperty' ) ),

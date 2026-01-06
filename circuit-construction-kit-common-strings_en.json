@@ -493,7 +493,21 @@
         "value": "Group"
       },
       "emptyConstructionAreaMessage": {
-        "value": "Add Circuit Components as needed. Remember, you need at least 1 wire. Once added, open  connection point options or open component edit panel with Space or Enter. Connected components auto-organize into groups. Remove a selected component or disconnect a  selected connection point with Delete key. Check out Keyboard Shortcuts for more  details on editing and connecting components."
+        "value": "Add Circuit Components as needed. Remember, you need at least 1 wire. Once added, open connection point options or open component edit panel with Space or Enter. Connected components auto-organize into groups. Remove a selected component or disconnect a selected connection point with Delete key. Check out Keyboard Shortcuts for more details on editing and connecting components."
+      }
+    },
+    "circuitGroupDescription": {
+      "unconnectedSummary": {
+        "value": "{ $count ->\n  [one] 1 unconnected circuit component. { $componentList }.\n  *[other] { $count } unconnected circuit components. { $componentList }.\n}"
+      },
+      "groupSummary": {
+        "value": "{ $count } connected components: { $componentList }."
+      },
+      "connectionStatus": {
+        "value": "{ $allConnected ->\n  [true] All connection points connected.\n  *[false] Some connection points not connected.\n}"
+      },
+      "currentFlowStatus": {
+        "value": "{ $flowLevel ->\n  [all] Current is flowing through all circuit components.\n  [some] Current is flowing through some circuit components.\n  [none] Current is not flowing.\n  *[notShown] Current is not shown.\n}"
       }
     },
     "screenSummary": {
