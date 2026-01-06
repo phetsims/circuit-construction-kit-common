@@ -423,8 +423,8 @@ a11y:
               select_hasInternalResistance:
                 true:
                   select_isOnFire:
-                    true:  'Battery, { $voltage } volts, { $internalResistance } ohms internal resistance, on fire'
-                    false: 'Battery, { $voltage } volts, { $internalResistance } ohms internal resistance'
+                    true:  'Battery, { $voltage } volts, { $internalResistance } ohms, on fire'
+                    false: 'Battery, { $voltage } volts, { $internalResistance } ohms'
                 false:
                   select_isOnFire:
                     true:  'Battery, { $voltage } volts, on fire'
@@ -437,8 +437,8 @@ a11y:
               select_hasInternalResistance:
                 true:
                   select_isOnFire:
-                    true:  'Battery { $position } of { $total }, { $voltage } volts, { $internalResistance } ohms internal resistance, on fire'
-                    false: 'Battery { $position } of { $total }, { $voltage } volts, { $internalResistance } ohms internal resistance'
+                    true:  'Battery { $position } of { $total }, { $voltage } volts, { $internalResistance } ohms, on fire'
+                    false: 'Battery { $position } of { $total }, { $voltage } volts, { $internalResistance } ohms'
                 false:
                   select_isOnFire:
                     true:  'Battery { $position } of { $total }, { $voltage } volts, on fire'
@@ -456,8 +456,8 @@ a11y:
               select_hasInternalResistance:
                 true:
                   select_isOnFire:
-                    true:  'Extreme Battery, { $voltage } volts, { $internalResistance } ohms internal resistance, on fire'
-                    false: 'Extreme Battery, { $voltage } volts, { $internalResistance } ohms internal resistance'
+                    true:  'Extreme Battery, { $voltage } volts, { $internalResistance } ohms, on fire'
+                    false: 'Extreme Battery, { $voltage } volts, { $internalResistance } ohms'
                 false:
                   select_isOnFire:
                     true:  'Extreme Battery, { $voltage } volts, on fire'
@@ -470,8 +470,8 @@ a11y:
               select_hasInternalResistance:
                 true:
                   select_isOnFire:
-                    true:  'Extreme Battery { $position } of { $total }, { $voltage } volts, { $internalResistance } ohms internal resistance, on fire'
-                    false: 'Extreme Battery { $position } of { $total }, { $voltage } volts, { $internalResistance } ohms internal resistance'
+                    true:  'Extreme Battery { $position } of { $total }, { $voltage } volts, { $internalResistance } ohms, on fire'
+                    false: 'Extreme Battery { $position } of { $total }, { $voltage } volts, { $internalResistance } ohms'
                 false:
                   select_isOnFire:
                     true:  'Extreme Battery { $position } of { $total }, { $voltage } volts, on fire'
@@ -507,8 +507,8 @@ a11y:
               select_hasInternalResistance:
                 true:
                   select_isOnFire:
-                    true:  'AC Voltage Source, { $voltage } volts, { $internalResistance } ohms internal resistance, on fire'
-                    false: 'AC Voltage Source, { $voltage } volts, { $internalResistance } ohms internal resistance'
+                    true:  'AC Voltage Source, { $voltage } volts, { $internalResistance } ohms, on fire'
+                    false: 'AC Voltage Source, { $voltage } volts, { $internalResistance } ohms'
                 false:
                   select_isOnFire:
                     true:  'AC Voltage Source, { $voltage } volts, on fire'
@@ -521,8 +521,8 @@ a11y:
               select_hasInternalResistance:
                 true:
                   select_isOnFire:
-                    true:  'AC Voltage Source { $position } of { $total }, { $voltage } volts, { $internalResistance } ohms internal resistance, on fire'
-                    false: 'AC Voltage Source { $position } of { $total }, { $voltage } volts, { $internalResistance } ohms internal resistance'
+                    true:  'AC Voltage Source { $position } of { $total }, { $voltage } volts, { $internalResistance } ohms, on fire'
+                    false: 'AC Voltage Source { $position } of { $total }, { $voltage } volts, { $internalResistance } ohms'
                 false:
                   select_isOnFire:
                     true:  'AC Voltage Source { $position } of { $total }, { $voltage } volts, on fire'
