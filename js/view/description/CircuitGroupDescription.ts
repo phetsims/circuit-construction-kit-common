@@ -98,12 +98,7 @@ export default class CircuitGroupDescription {
       if ( count !== undefined ) {
         if ( count === 1 ) {
           const typeLabel = CircuitDescriptionUtils.getCircuitElementTypeLabel( type );
-          // Use article "a" or "an"
-          const startsWithVowel = /^[aeiou]/i.test( typeLabel ) ? 'true' : 'false';
-          const article = CircuitConstructionKitCommonFluent.a11y.circuitDescription.article.format( {
-            startsWithVowel: startsWithVowel
-          } );
-          typeDescriptions.push( `${article} ${typeLabel}` );
+          typeDescriptions.push( `1 ${typeLabel}` );
         }
         else {
           const pluralLabel = CircuitDescriptionUtils.getPluralTypeLabel( type );
