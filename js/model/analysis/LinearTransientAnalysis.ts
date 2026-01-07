@@ -131,7 +131,7 @@ export default class LinearTransientAnalysis {
     for ( const circuitElement of group.circuitElements ) {
 
       // Skip non-traversable elements (like open switches)
-      if ( !circuitElement.isTraversibleProperty.value ) {
+      if ( !circuitElement.isTraversableProperty.value ) {
         nonParticipants.push( circuitElement );
         continue;
       }
@@ -363,7 +363,7 @@ export default class LinearTransientAnalysis {
 
       const sign = startVertex === circuitElement.startVertexProperty.value ? 1 : -1;
 
-      if ( !circuitElement.isTraversibleProperty.value ) {
+      if ( !circuitElement.isTraversableProperty.value ) {
         // no-op
       }
       else if ( circuitElement instanceof Resistor ||
@@ -391,7 +391,7 @@ export default class LinearTransientAnalysis {
       for ( const circuitElement of circuit.circuitElements ) {
         if ( circuitElement.containsVertex( vertex ) ) {
           const opposite = circuitElement.getOppositeVertex( vertex );
-          if ( !visited.includes( opposite ) && circuitElement.isTraversibleProperty.value ) {
+          if ( !visited.includes( opposite ) && circuitElement.isTraversableProperty.value ) {
             visitVoltage( vertex, circuitElement, opposite );
             dfs( opposite );
           }
