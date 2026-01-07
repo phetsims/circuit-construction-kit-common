@@ -18,8 +18,8 @@ import type MNAInductor from '../mna/MNAInductor.js';
 import type MNAResistor from '../mna/MNAResistor.js';
 import type MNASolution from '../mna/MNASolution.js';
 
-// Import the PhET SPICE bundle (ngspice compiled to WASM)
-import { Simulation } from '../../../../../sherpa/lib/spice/phet-spice-bundle.js';
+// Import the PhET SPICE simulation wrapper (ngspice compiled to WASM)
+import { Simulation } from './Simulation.js';
 
 // Type for the SPICE simulation
 type SpiceSimulation = {

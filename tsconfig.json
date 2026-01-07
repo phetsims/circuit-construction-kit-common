@@ -4,7 +4,9 @@
     "js/**/*",
     "images/**/*",
     "mipmaps/**/*",
-    "sounds/**/*"
+    "sounds/**/*",
+    "../sherpa/lib/ngspice-wasm-2025.js",
+    "../sherpa/lib/ngspice-emscripten-glue-2025.js"
   ],
   "references": [
     {
