@@ -496,7 +496,7 @@
         "value": "Group"
       },
       "emptyConstructionAreaMessage": {
-        "value": "Add Circuit Components as needed. Remember, you need at least 1 wire. Once added, open connection point options or open component edit panel with Space or Enter. Connected components auto-organize into groups. Remove a selected component or disconnect a selected connection point with Delete key. Check out Keyboard Shortcuts for more details on editing and connecting components."
+        "value": "Add Circuit Components as needed. Once added, open connection point options or open component edit panel with Space or Enter. Connected components auto-organize into groups. Remove a selected component or disconnect a selected connection point with Delete key. Check out Keyboard Shortcuts for more details on editing and connecting components."
       }
     },
     "circuitGroupDescription": {
