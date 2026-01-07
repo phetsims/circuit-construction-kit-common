@@ -16,7 +16,6 @@ import CCKCQueryParameters from '../../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../../CircuitConstructionKitCommonFluent.js';
 import CircuitDescriptionUtils from '../../CircuitDescriptionUtils.js';
-import VoltageSource from '../../model/VoltageSource.js';
 import Capacitor from '../../model/Capacitor.js';
 import Circuit from '../../model/Circuit.js';
 import CircuitElement from '../../model/CircuitElement.js';
@@ -27,6 +26,7 @@ import LightBulb from '../../model/LightBulb.js';
 import Resistor from '../../model/Resistor.js';
 import Switch from '../../model/Switch.js';
 import Vertex from '../../model/Vertex.js';
+import VoltageSource from '../../model/VoltageSource.js';
 import CircuitNode from '../CircuitNode.js';
 import CircuitGroupDescription from './CircuitGroupDescription.js';
 
@@ -109,8 +109,7 @@ export default class CircuitDescription {
     // Switch always shows state (regardless of showValues)
     if ( circuitElement instanceof Switch ) {
       const state = circuitElement.isClosedProperty.value ? 'closed' : 'open';
-      const stateStrings = CircuitConstructionKitCommonFluent.a11y.circuitComponent.switchStates;
-      parts.push( state === 'closed' ? stateStrings.closedStringProperty.value : stateStrings.openStringProperty.value );
+      parts.push( state === 'closed' ? CircuitConstructionKitCommonFluent.a11y.circuitComponent.switchStates.closedStringProperty.value : CircuitConstructionKitCommonFluent.a11y.circuitComponent.switchStates.openStringProperty.value );
     }
 
     // 4. Internal resistance (voltage sources only, if above threshold)
