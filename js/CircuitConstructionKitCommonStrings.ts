@@ -330,7 +330,25 @@ type StringsType = {
       'ariaValueTextStringProperty': LocalizedStringProperty;
     };
     'circuitComponent': {
-      'accessibleNameStringProperty': LocalizedStringProperty;
+      'separatorStringProperty': LocalizedStringProperty;
+      'nameWithPositionStringProperty': LocalizedStringProperty;
+      'values': {
+        'resistanceOhmsStringProperty': LocalizedStringProperty;
+        'resistanceMilliohmsStringProperty': LocalizedStringProperty;
+        'voltageVoltsStringProperty': LocalizedStringProperty;
+        'capacitanceFaradsStringProperty': LocalizedStringProperty;
+        'inductanceHenriesStringProperty': LocalizedStringProperty;
+        'currentRatingAmpsStringProperty': LocalizedStringProperty;
+        'infiniteOhmsStringProperty': LocalizedStringProperty;
+      };
+      'switchStates': {
+        'closedStringProperty': LocalizedStringProperty;
+        'openStringProperty': LocalizedStringProperty;
+      };
+      'modifiers': {
+        'onFireStringProperty': LocalizedStringProperty;
+        'brokenStringProperty': LocalizedStringProperty;
+      };
       'accessibleHelpTextStringProperty': LocalizedStringProperty;
     }
   }

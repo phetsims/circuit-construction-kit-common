@@ -389,16 +389,16 @@ a11y:
       accessibleHelpText:        Show the circuit components like they would look in a schematic circuit diagram.
       accessibleContextResponse: Circuit components displayed with schematic symbols.
   circuitComponentToolNode:
-    accessibleHelpText: Drag this tool to the circuit to create a new { a11y.circuitComponent.accessibleName }.
+    accessibleHelpText: Drag this tool to the circuit to create a new { $accessibleName }.
   reverseBatteryButton:
     accessibleName: Reverse Battery Direction
   switchToggleButton:
     openSwitch:  Open Switch
     closeSwitch: Close Switch
   disconnectButton:
-    accessibleName: Disconnect { a11y.circuitComponent.accessibleName }
+    accessibleName: Disconnect { $accessibleName }
   trashButton:
-    accessibleName: Delete { a11y.circuitComponent.accessibleName }
+    accessibleName: Delete { $accessibleName }
   sourceResistanceControl:
     ariaValueText: >-
                    { $resistance ->
@@ -414,188 +414,24 @@ a11y:
        *[other] { $currentFormatted } amps
       }
   circuitComponent:
-    accessibleName:
-      select_type:
-        resistor:
-          select_displayMode:
-            name:          Resistor
-            value:         Resistor, { $resistance } ohms
-            count:         Resistor { $position } of { $total }
-            countAndValue: Resistor { $position } of { $total }, { $resistance } ohms
-        battery:
-          select_displayMode:
-            name: Battery
-            value:
-              select_hasInternalResistance:
-                true:
-                  select_isOnFire:
-                    true:  'Battery, { $voltage } volts, { $internalResistance } ohms, on fire'
-                    false: 'Battery, { $voltage } volts, { $internalResistance } ohms'
-                false:
-                  select_isOnFire:
-                    true:  'Battery, { $voltage } volts, on fire'
-                    false: 'Battery, { $voltage } volts'
-            count:
-              select_isOnFire:
-                true:  'Battery { $position } of { $total }, on fire'
-                false: Battery { $position } of { $total }
-            countAndValue:
-              select_hasInternalResistance:
-                true:
-                  select_isOnFire:
-                    true:  'Battery { $position } of { $total }, { $voltage } volts, { $internalResistance } ohms, on fire'
-                    false: 'Battery { $position } of { $total }, { $voltage } volts, { $internalResistance } ohms'
-                false:
-                  select_isOnFire:
-                    true:  'Battery { $position } of { $total }, { $voltage } volts, on fire'
-                    false: 'Battery { $position } of { $total }, { $voltage } volts'
-        lightBulb:
-          select_displayMode:
-            name:          Light Bulb
-            value:         Light Bulb, { $resistance } ohms
-            count:         Light Bulb { $position } of { $total }
-            countAndValue: Light Bulb { $position } of { $total }, { $resistance } ohms
-        extremeBattery:
-          select_displayMode:
-            name: Extreme Battery
-            value:
-              select_hasInternalResistance:
-                true:
-                  select_isOnFire:
-                    true:  'Extreme Battery, { $voltage } volts, { $internalResistance } ohms, on fire'
-                    false: 'Extreme Battery, { $voltage } volts, { $internalResistance } ohms'
-                false:
-                  select_isOnFire:
-                    true:  'Extreme Battery, { $voltage } volts, on fire'
-                    false: 'Extreme Battery, { $voltage } volts'
-            count:
-              select_isOnFire:
-                true:  'Extreme Battery { $position } of { $total }, on fire'
-                false: Extreme Battery { $position } of { $total }
-            countAndValue:
-              select_hasInternalResistance:
-                true:
-                  select_isOnFire:
-                    true:  'Extreme Battery { $position } of { $total }, { $voltage } volts, { $internalResistance } ohms, on fire'
-                    false: 'Extreme Battery { $position } of { $total }, { $voltage } volts, { $internalResistance } ohms'
-                false:
-                  select_isOnFire:
-                    true:  'Extreme Battery { $position } of { $total }, { $voltage } volts, on fire'
-                    false: 'Extreme Battery { $position } of { $total }, { $voltage } volts'
-        extremeResistor:
-          select_displayMode:
-            name:          Extreme Resistor
-            value:         Extreme Resistor, { $resistance } ohms
-            count:         Extreme Resistor { $position } of { $total }
-            countAndValue: Extreme Resistor { $position } of { $total }, { $resistance } ohms
-        extremeLightBulb:
-          select_displayMode:
-            name:          Extreme Bulb
-            value:         Extreme Bulb, { $resistance } ohms
-            count:         Extreme Bulb { $position } of { $total }
-            countAndValue: Extreme Bulb { $position } of { $total }, { $resistance } ohms
-        capacitor:
-          select_displayMode:
-            name:          Capacitor
-            value:         Capacitor, { $capacitance } farads
-            count:         Capacitor { $position } of { $total }
-            countAndValue: Capacitor { $position } of { $total }, { $capacitance } farads
-        inductor:
-          select_displayMode:
-            name:          Inductor
-            value:         Inductor, { $inductance } henries
-            count:         Inductor { $position } of { $total }
-            countAndValue: Inductor { $position } of { $total }, { $inductance } henries
-        acSource:
-          select_displayMode:
-            name: AC Voltage Source
-            value:
-              select_hasInternalResistance:
-                true:
-                  select_isOnFire:
-                    true:  'AC Voltage Source, { $voltage } volts, { $internalResistance } ohms, on fire'
-                    false: 'AC Voltage Source, { $voltage } volts, { $internalResistance } ohms'
-                false:
-                  select_isOnFire:
-                    true:  'AC Voltage Source, { $voltage } volts, on fire'
-                    false: 'AC Voltage Source, { $voltage } volts'
-            count:
-              select_isOnFire:
-                true:  'AC Voltage Source { $position } of { $total }, on fire'
-                false: AC Voltage Source { $position } of { $total }
-            countAndValue:
-              select_hasInternalResistance:
-                true:
-                  select_isOnFire:
-                    true:  'AC Voltage Source { $position } of { $total }, { $voltage } volts, { $internalResistance } ohms, on fire'
-                    false: 'AC Voltage Source { $position } of { $total }, { $voltage } volts, { $internalResistance } ohms'
-                false:
-                  select_isOnFire:
-                    true:  'AC Voltage Source { $position } of { $total }, { $voltage } volts, on fire'
-                    false: 'AC Voltage Source { $position } of { $total }, { $voltage } volts'
-        fuse:
-          select_displayMode:
-            name:
-              select_isTripped:
-                true:  'Fuse, broken'
-                false: Fuse
-            value:
-              select_isTripped:
-                true:  'Fuse, infinite ohms ≤ { $currentRating } amps, broken'
-                false: 'Fuse, { $resistance } milliohms ≤ { $currentRating } amps'
-            count:
-              select_isTripped:
-                true:  'Fuse { $position } of { $total }, broken'
-                false: Fuse { $position } of { $total }
-            countAndValue:
-              select_isTripped:
-                true:  'Fuse { $position } of { $total }, infinite ohms ≤ { $currentRating } amps, broken'
-                false: 'Fuse { $position } of { $total }, { $resistance } milliohms ≤ { $currentRating } amps'
-        switch:
-          select_displayMode:
-            name:
-              select_switchState:
-                closed: 'Switch, closed'
-                open:   'Switch, open'
-            value:
-              select_switchState:
-                closed: 'Switch, closed'
-                open:   'Switch, open'
-            count:
-              select_switchState:
-                closed: 'Switch { $position } of { $total }, closed'
-                open:   'Switch { $position } of { $total }, open'
-            countAndValue:
-              select_switchState:
-                closed: 'Switch { $position } of { $total }, closed'
-                open:   'Switch { $position } of { $total }, open'
-        voltmeter:
-          select_hasPosition:
-            true:  'Voltmeter { $position } of { $total }'
-            false: 'Voltmeter'
-        ammeter:
-          select_hasPosition:
-            true:  'Ammeter { $position } of { $total }'
-            false: 'Ammeter'
-        stopwatch:
-          select_hasPosition:
-            true:  'Stopwatch { $position } of { $total }'
-            false: 'Stopwatch'
-        wire:
-          select_hasPosition:
-            true:  'Wire { $position } of { $total }'
-            false: 'Wire'
-        false:
-          select_hasPosition:
-            true:  'Wire { $position } of { $total }'
-            false: 'Wire'
-        # Household items (max 1 each, so no position needed)
-        coin:       Coin
-        paperClip:  Paper Clip
-        pencil:     Pencil
-        eraser:     Eraser
-        hand:       Hand
-        dollarBill: Dollar Bill
+    # Composable parts for building accessible names (DRY pattern)
+    # These are assembled in CircuitDescription.ts
+    separator: ', '
+    nameWithPosition: '{ $typeName } { $position } of { $total }'
+    values:
+      resistanceOhms: '{ $resistance } ohms'
+      resistanceMilliohms: '{ $resistance } milliohms'
+      voltageVolts: '{ $voltage } volts'
+      capacitanceFarads: '{ $capacitance } farads'
+      inductanceHenries: '{ $inductance } henries'
+      currentRatingAmps: '≤ { $currentRating } amps'
+      infiniteOhms: infinite ohms
+    switchStates:
+      closed: closed
+      open: open
+    modifiers:
+      onFire: on fire
+      broken: broken
     accessibleHelpText:
       select_type:
         switch:

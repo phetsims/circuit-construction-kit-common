@@ -9,24 +9,16 @@
  */
 
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
-import { toFixed } from '../../../dot/js/util/toFixed.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import scissorsShape from '../../../sherpa/js/fontawesome-4/scissorsShape.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
-import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
-import Battery from '../model/Battery.js';
-import Capacitor from '../model/Capacitor.js';
 import type Circuit from '../model/Circuit.js';
 import CircuitElement from '../model/CircuitElement.js';
-import Fuse from '../model/Fuse.js';
-import Inductor from '../model/Inductor.js';
-import LightBulb from '../model/LightBulb.js';
-import Resistor from '../model/Resistor.js';
-import VoltageSource from '../model/VoltageSource.js';
 import CCKCRoundPushButton from './CCKCRoundPushButton.js';
+import CircuitDescription from './description/CircuitDescription.js';
 
 // Offset to move the disconnected element (in view coordinates)
 const DISCONNECT_OFFSET = new Vector2( 50, 50 );
@@ -68,31 +60,20 @@ export default class CCKCDisconnectButton extends CCKCRoundPushButton {
     // Recompute when circuit topology changes (elements connected/disconnected)
     circuit.circuitChangedEmitter.addListener( () => enabledProperty.recomputeDerivation() );
 
+    // Build accessible name reactively from selection (showValues=false for disconnect button)
+    const accessibleNameProperty = new DerivedProperty(
+      [ circuit.selectionProperty ],
+      selection => {
+        if ( selection instanceof CircuitElement ) {
+          return CircuitDescription.buildAccessibleName( selection, false, 0, 0, false );
+        }
+        return '';
+      }
+    );
+
     super( {
       accessibleName: CircuitConstructionKitCommonFluent.a11y.disconnectButton.accessibleName.createProperty( {
-        type: circuit.selectionProperty.derived( selection => selection instanceof CircuitElement ? selection.type : 'wire' ),
-        resistance: circuit.selectionProperty.derived( selection =>
-          selection instanceof Resistor ? selection.resistanceProperty.value :
-          selection instanceof LightBulb ? selection.resistanceProperty.value :
-          selection instanceof Fuse ? selection.resistanceProperty.value * 1000 : 0 ),
-        currentRating: circuit.selectionProperty.derived( selection =>
-          selection instanceof Fuse ? toFixed( selection.currentRatingProperty.value, 1 ) : '0.0' ),
-        voltage: circuit.selectionProperty.derived( selection => selection instanceof Battery ? selection.voltageProperty.value : 0 ),
-        capacitance: circuit.selectionProperty.derived( selection => selection instanceof Capacitor ? selection.capacitanceProperty.value : 0 ),
-        inductance: circuit.selectionProperty.derived( selection => selection instanceof Inductor ? selection.inductanceProperty.value : 0 ),
-        switchState: 'open',
-        hasPosition: 'false',
-        position: 0,
-        total: 0,
-        displayMode: 'name',
-        internalResistance: circuit.selectionProperty.derived( selection =>
-          selection instanceof VoltageSource ? selection.internalResistanceProperty.value : 0 ),
-        hasInternalResistance: circuit.selectionProperty.derived( selection =>
-          selection instanceof VoltageSource && selection.internalResistanceProperty.value > CCKCQueryParameters.batteryMinimumResistance ? 'true' : 'false' ),
-        isOnFire: circuit.selectionProperty.derived( selection =>
-          selection instanceof VoltageSource ? ( selection.isOnFireProperty.value ? 'true' : 'false' ) : 'false' ),
-        isTripped: circuit.selectionProperty.derived( selection =>
-          selection instanceof Fuse ? ( selection.isTrippedProperty.value ? 'true' : 'false' ) : 'false' )
+        accessibleName: accessibleNameProperty
       } ),
       touchAreaDilation: 5,
       content: scissorsIcon,

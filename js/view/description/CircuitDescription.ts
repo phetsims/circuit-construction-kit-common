@@ -16,7 +16,6 @@ import CCKCQueryParameters from '../../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../../CircuitConstructionKitCommonFluent.js';
 import CircuitDescriptionUtils from '../../CircuitDescriptionUtils.js';
-import Battery from '../../model/Battery.js';
 import VoltageSource from '../../model/VoltageSource.js';
 import Capacitor from '../../model/Capacitor.js';
 import Circuit from '../../model/Circuit.js';
@@ -31,10 +30,8 @@ import Vertex from '../../model/Vertex.js';
 import CircuitNode from '../CircuitNode.js';
 import CircuitGroupDescription from './CircuitGroupDescription.js';
 
-
 // Track properties for each circuit element so we can dispose them when updating
 const positionedPropertiesMap = new WeakMap<CircuitElement, {
-  showValuesAsStringProperty: TReadOnlyProperty<string>;
   accessibleNameWithSelectionProperty: TReadOnlyProperty<string>;
 }>();
 
@@ -54,6 +51,86 @@ export default class CircuitDescription {
   public static getGroupIndex = CircuitDescriptionUtils.getGroupIndex;
   public static getTerminalType = CircuitDescriptionUtils.getTerminalType;
   public static formatTerminalDescription = CircuitDescriptionUtils.formatTerminalDescription;
+
+  /**
+   * Builds an accessible name string for a circuit element by composing parts with a separator.
+   * Order: type name + position (space-separated), then value, internal resistance, modifiers (comma-separated).
+   */
+  public static buildAccessibleName(
+    circuitElement: CircuitElement,
+    showValues: boolean,
+    position: number,
+    total: number,
+    shouldShowPosition: boolean
+  ): string {
+    const separator = CircuitConstructionKitCommonFluent.a11y.circuitComponent.separatorStringProperty.value;
+    const parts: string[] = [];
+
+    // 1. Type name + position (e.g., "Battery 1 of 2") or just type name
+    const descriptionType = CircuitDescription.getDescriptionType( circuitElement );
+    const typeName = CircuitDescription.getCircuitElementTypeLabel( descriptionType );
+    if ( shouldShowPosition ) {
+      parts.push( CircuitConstructionKitCommonFluent.a11y.circuitComponent.nameWithPosition.format( { typeName: typeName, position: position, total: total } ) );
+    }
+    else {
+      parts.push( typeName );
+    }
+
+    // 3. Value (depends on type)
+    if ( showValues ) {
+      if ( circuitElement instanceof Resistor || circuitElement instanceof LightBulb ) {
+        // Resistors, light bulbs (including extreme variants) show resistance in ohms
+        parts.push( CircuitConstructionKitCommonFluent.a11y.circuitComponent.values.resistanceOhms.format( { resistance: circuitElement.resistanceProperty.value } ) );
+      }
+      else if ( circuitElement instanceof VoltageSource ) {
+        // Batteries, extreme batteries, AC sources show voltage
+        parts.push( CircuitConstructionKitCommonFluent.a11y.circuitComponent.values.voltageVolts.format( { voltage: circuitElement.voltageProperty.value } ) );
+      }
+      else if ( circuitElement instanceof Capacitor ) {
+        parts.push( CircuitConstructionKitCommonFluent.a11y.circuitComponent.values.capacitanceFarads.format( { capacitance: circuitElement.capacitanceProperty.value } ) );
+      }
+      else if ( circuitElement instanceof Inductor ) {
+        parts.push( CircuitConstructionKitCommonFluent.a11y.circuitComponent.values.inductanceHenries.format( { inductance: circuitElement.inductanceProperty.value } ) );
+      }
+      else if ( circuitElement instanceof Fuse ) {
+        if ( circuitElement.isTrippedProperty.value ) {
+          // Tripped fuse shows infinite ohms
+          parts.push( CircuitConstructionKitCommonFluent.a11y.circuitComponent.values.infiniteOhmsStringProperty.value );
+        }
+        else {
+          // Non-tripped fuse shows milliohms
+          parts.push( CircuitConstructionKitCommonFluent.a11y.circuitComponent.values.resistanceMilliohms.format( { resistance: circuitElement.resistanceProperty.value * 1000 } ) );
+        }
+        // Fuse always shows current rating
+        parts.push( CircuitConstructionKitCommonFluent.a11y.circuitComponent.values.currentRatingAmps.format( { currentRating: toFixed( circuitElement.currentRatingProperty.value, 1 ) } ) );
+      }
+    }
+
+    // Switch always shows state (regardless of showValues)
+    if ( circuitElement instanceof Switch ) {
+      const state = circuitElement.isClosedProperty.value ? 'closed' : 'open';
+      const stateStrings = CircuitConstructionKitCommonFluent.a11y.circuitComponent.switchStates;
+      parts.push( state === 'closed' ? stateStrings.closedStringProperty.value : stateStrings.openStringProperty.value );
+    }
+
+    // 4. Internal resistance (voltage sources only, if above threshold)
+    if ( showValues && circuitElement instanceof VoltageSource ) {
+      const internalResistance = circuitElement.internalResistanceProperty.value;
+      if ( internalResistance > CCKCQueryParameters.batteryMinimumResistance ) {
+        parts.push( CircuitConstructionKitCommonFluent.a11y.circuitComponent.values.resistanceOhms.format( { resistance: internalResistance } ) );
+      }
+    }
+
+    // 5. Modifiers
+    if ( circuitElement instanceof VoltageSource && circuitElement.isOnFireProperty.value ) {
+      parts.push( CircuitConstructionKitCommonFluent.a11y.circuitComponent.modifiers.onFireStringProperty.value );
+    }
+    if ( circuitElement instanceof Fuse && circuitElement.isTrippedProperty.value ) {
+      parts.push( CircuitConstructionKitCommonFluent.a11y.circuitComponent.modifiers.brokenStringProperty.value );
+    }
+
+    return parts.join( separator );
+  }
 
   /**
    * Sorts circuit elements by the preferred type order, with unlisted types at the end.
@@ -150,43 +227,22 @@ export default class CircuitDescription {
       // Dispose any existing positioned properties for this element
       const oldProperties = positionedPropertiesMap.get( circuitElement );
       if ( oldProperties ) {
-        oldProperties.showValuesAsStringProperty.dispose();
         oldProperties.accessibleNameWithSelectionProperty.dispose();
         positionedPropertiesMap.delete( circuitElement );
       }
 
-      // Create a new Fluent property with position information
-      const showValuesProperty = circuitNode.model.showValuesProperty;
-      const showValuesAsStringProperty = showValuesProperty.derived( value => value ? 'true' : 'false' );
-
       // For single-max items (household items), don't show position info
       const shouldShowPosition = !CircuitDescription.isSingleMaxItem( circuitElement );
 
-      // Use type assertion since descriptionType is always a valid Fluent type key
-      const accessibleName = CircuitConstructionKitCommonFluent.a11y.circuitComponent.accessibleName.format( {
-        displayMode: showValuesProperty.value ? 'countAndValue' :
-                     !showValuesProperty.value ? 'count' :
-                     'name',
-        type: descriptionType as CircuitElementType,
-        voltage: circuitElement instanceof Battery ? circuitElement.voltageProperty : 0,
-        resistance: circuitElement instanceof Resistor ? circuitElement.resistanceProperty :
-                    circuitElement instanceof LightBulb ? circuitElement.resistanceProperty :
-                    circuitElement instanceof Fuse ? circuitElement.resistanceProperty.derived( r => r * 1000 ) : 0,
-        currentRating: circuitElement instanceof Fuse ? circuitElement.currentRatingProperty.derived( v => toFixed( v, 1 ) ) : '0.0',
-        capacitance: circuitElement instanceof Capacitor ? circuitElement.capacitanceProperty : 0,
-        inductance: circuitElement instanceof Inductor ? circuitElement.inductanceProperty : 0,
-        switchState: circuitElement instanceof Switch ? circuitElement.isClosedProperty.derived( value => value ? 'closed' : 'open' ) : 'open',
-        hasPosition: shouldShowPosition ? 'true' : 'false',
-        position: indexForType,
-        total: totalForType,
-        internalResistance: circuitElement instanceof VoltageSource ? circuitElement.internalResistanceProperty : 0,
-        hasInternalResistance: circuitElement instanceof VoltageSource ?
-          circuitElement.internalResistanceProperty.derived( r => r > CCKCQueryParameters.batteryMinimumResistance ? 'true' : 'false' ) : 'false',
-        isOnFire: circuitElement instanceof VoltageSource ?
-          circuitElement.isOnFireProperty.derived( v => v ? 'true' : 'false' ) : 'false',
-        isTripped: circuitElement instanceof Fuse ?
-          circuitElement.isTrippedProperty.derived( v => v ? 'true' : 'false' ) : 'false'
-      } );
+      // Build the accessible name using composable parts
+      const showValuesProperty = circuitNode.model.showValuesProperty;
+      const accessibleName = CircuitDescription.buildAccessibleName(
+        circuitElement,
+        showValuesProperty.value,
+        indexForType,
+        totalForType,
+        shouldShowPosition
+      );
 
       // Create a property that adds ", selected" suffix when this element is selected
       const selectionProperty = circuitNode.circuit.selectionProperty;
@@ -198,13 +254,12 @@ export default class CircuitDescription {
                  CircuitConstructionKitCommonFluent.a11y.circuitDescription.accessibleNameWithSelected.format( {
                    accessibleName: accessibleName
                  } ) :
-                 String( accessibleName );
+                 accessibleName;
         }
       );
 
       // Store for disposal on next update
       positionedPropertiesMap.set( circuitElement, {
-        showValuesAsStringProperty: showValuesAsStringProperty,
         accessibleNameWithSelectionProperty: accessibleNameWithSelectionProperty
       } );
 
@@ -212,7 +267,6 @@ export default class CircuitDescription {
       circuitElement.disposeEmitterCircuitElement.addListener( () => {
         const props = positionedPropertiesMap.get( circuitElement );
         if ( props ) {
-          props.showValuesAsStringProperty.dispose();
           props.accessibleNameWithSelectionProperty.dispose();
           positionedPropertiesMap.delete( circuitElement );
         }
