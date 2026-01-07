@@ -1,4 +1,4 @@
-// Copyright 2025, University of Colorado Boulder
+// Copyright 2025-2026, University of Colorado Boulder
 
 /**
  * CCKCDisconnectButton is a round push button with scissors icon that appears in the circuit element edit panel.

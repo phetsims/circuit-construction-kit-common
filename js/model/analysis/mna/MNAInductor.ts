@@ -1,4 +1,4 @@
-// Copyright 2025, University of Colorado Boulder
+// Copyright 2026, University of Colorado Boulder
 
 /**
  * Inductor element for SPICE-based circuit analysis.

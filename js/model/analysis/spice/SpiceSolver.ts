@@ -1,4 +1,4 @@
-// Copyright 2025, University of Colorado Boulder
+// Copyright 2026, University of Colorado Boulder
 
 /**
  * SpiceSolver is an interface for circuit solvers that use SPICE (e.g. ngspice WASM).

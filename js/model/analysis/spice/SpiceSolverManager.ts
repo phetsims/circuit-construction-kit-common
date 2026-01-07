@@ -1,4 +1,4 @@
-// Copyright 2025, University of Colorado Boulder
+// Copyright 2026, University of Colorado Boulder
 
 /**
  * EEcircuitSolverManager is a singleton that manages async circuit solving with ngspice WASM.
