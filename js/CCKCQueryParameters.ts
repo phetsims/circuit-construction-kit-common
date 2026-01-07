@@ -163,11 +163,10 @@ const CCKCQueryParameters = QueryStringMachine.getAll( {
     type: 'flag'
   },
 
-  // Select circuit solver: 'eecircuit' (SPICE via WebAssembly) or 'phet' (in-house MNA)
   solver: {
     type: 'string',
-    defaultValue: 'eecircuit',
-    validValues: [ 'eecircuit', 'phet' ]
+    defaultValue: 'phet',
+    validValues: [ 'spice', 'phet' ]
   }
 } );
 
