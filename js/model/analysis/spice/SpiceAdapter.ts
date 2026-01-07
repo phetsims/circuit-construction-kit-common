@@ -15,13 +15,13 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
-import type MNABattery from './mna/MNABattery.js';
-import type MNACapacitor from './mna/MNACapacitor.js';
-import type MNACircuitElement from './mna/MNACircuitElement.js';
-import type MNAInductor from './mna/MNAInductor.js';
-import type MNAResistor from './mna/MNAResistor.js';
-import MNASolution from './mna/MNASolution.js';
+import circuitConstructionKitCommon from '../../../circuitConstructionKitCommon.js';
+import type MNABattery from '../mna/MNABattery.js';
+import type MNACapacitor from '../mna/MNACapacitor.js';
+import type MNACircuitElement from '../mna/MNACircuitElement.js';
+import type MNAInductor from '../mna/MNAInductor.js';
+import type MNAResistor from '../mna/MNAResistor.js';
+import MNASolution from '../mna/MNASolution.js';
 
 // Type for EEcircuit result data entry
 type EEcircuitDataEntry = {
@@ -48,7 +48,7 @@ type EEcircuitSimulation = {
   getError: () => string[];
 };
 
-export default class EECircuitAdapter {
+export default class SpiceAdapter {
 
   private readonly batteries: MNABattery[];
   private readonly resistors: MNAResistor[];
@@ -547,9 +547,9 @@ export default class EECircuitAdapter {
     inductors: MNAInductor[] = [],
     dt = 1e-4
   ): string {
-    const adapter = new EECircuitAdapter( batteries, resistors, capacitors, inductors, dt );
+    const adapter = new SpiceAdapter( batteries, resistors, capacitors, inductors, dt );
     return adapter.generateTransientNetlist();
   }
 }
 
-circuitConstructionKitCommon.register( 'EECircuitAdapter', EECircuitAdapter );
+circuitConstructionKitCommon.register( 'SpiceAdapter', SpiceAdapter );

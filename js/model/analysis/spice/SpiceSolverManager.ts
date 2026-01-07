@@ -10,16 +10,16 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
-import EECircuitAdapter from './EECircuitAdapter.js';
-import type MNABattery from './mna/MNABattery.js';
-import type MNACapacitor from './mna/MNACapacitor.js';
-import type MNAInductor from './mna/MNAInductor.js';
-import type MNAResistor from './mna/MNAResistor.js';
-import type MNASolution from './mna/MNASolution.js';
+import circuitConstructionKitCommon from '../../../circuitConstructionKitCommon.js';
+import SpiceAdapter from './SpiceAdapter.js';
+import type MNABattery from '../mna/MNABattery.js';
+import type MNACapacitor from '../mna/MNACapacitor.js';
+import type MNAInductor from '../mna/MNAInductor.js';
+import type MNAResistor from '../mna/MNAResistor.js';
+import type MNASolution from '../mna/MNASolution.js';
 
 // Import the PhET SPICE bundle (ngspice compiled to WASM)
-import { Simulation } from '../../../../sherpa/lib/spice/phet-spice-bundle.js';
+import { Simulation } from '../../../../../sherpa/lib/spice/phet-spice-bundle.js';
 
 // Type for the SPICE simulation
 type SpiceSimulation = {
@@ -29,10 +29,10 @@ type SpiceSimulation = {
   getError: () => string[];
 };
 
-export default class EEcircuitSolverManager {
+export default class SpiceSolverManager {
 
   // Singleton instance
-  public static readonly instance = new EEcircuitSolverManager();
+  public static readonly instance = new SpiceSolverManager();
 
   // The SPICE simulation instance
   private eesim: SpiceSimulation | null = null;
@@ -42,8 +42,8 @@ export default class EEcircuitSolverManager {
 
   // Sequential solve queue (SPICE can only run one solve at a time)
   private solveQueue: Array<{
-    adapter: EECircuitAdapter;
-    onSolved: ( solution: MNASolution, adapter: EECircuitAdapter ) => void;
+    adapter: SpiceAdapter;
+    onSolved: ( solution: MNASolution, adapter: SpiceAdapter ) => void;
   }> = [];
 
   // Whether we're currently processing a solve
@@ -86,7 +86,7 @@ export default class EEcircuitSolverManager {
     capacitors: MNACapacitor[],
     inductors: MNAInductor[],
     dt: number,
-    onSolved: ( solution: MNASolution, adapter: EECircuitAdapter ) => void
+    onSolved: ( solution: MNASolution, adapter: SpiceAdapter ) => void
   ): void {
     if ( !this.initialized || !this.eesim ) {
       console.warn( 'EEcircuitSolverManager.requestSolve called before initialization' );
@@ -104,7 +104,7 @@ export default class EEcircuitSolverManager {
     }
 
     // Add to queue
-    const adapter = new EECircuitAdapter( batteries, resistors, capacitors, inductors, dt );
+    const adapter = new SpiceAdapter( batteries, resistors, capacitors, inductors, dt );
     this.solveQueue.push( { adapter: adapter, onSolved: onSolved } );
 
     // Start processing if not already
@@ -222,7 +222,7 @@ export default class EEcircuitSolverManager {
   /**
    * Internal async solve using EECircuitAdapter.
    */
-  private async solveAsync( adapter: EECircuitAdapter ): Promise<MNASolution> {
+  private async solveAsync( adapter: SpiceAdapter ): Promise<MNASolution> {
     const netlist = adapter.generateTransientNetlist();
 
     this.eesim!.setNetList( netlist );
@@ -238,4 +238,4 @@ export default class EEcircuitSolverManager {
   }
 }
 
-circuitConstructionKitCommon.register( 'EEcircuitSolverManager', EEcircuitSolverManager );
+circuitConstructionKitCommon.register( 'SpiceSolverManager', SpiceSolverManager );

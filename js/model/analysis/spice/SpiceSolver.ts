@@ -23,8 +23,8 @@ import Switch from '../../Switch.js';
 import type Vertex from '../../Vertex.js';
 import VoltageSource from '../../VoltageSource.js';
 import Wire from '../../Wire.js';
-import EECircuitAdapter from '../EECircuitAdapter.js';
-import EEcircuitSolverManager from '../EEcircuitSolverManager.js';
+import SpiceAdapter from '../spice/SpiceAdapter.js';
+import SpiceSolverManager from '../spice/SpiceSolverManager.js';
 import MNABattery from '../mna/MNABattery.js';
 import MNACapacitor from '../mna/MNACapacitor.js';
 import MNAInductor from '../mna/MNAInductor.js';
@@ -167,13 +167,13 @@ export default class SpiceSolver {
     }
 
     // Request solve with callback that applies results when complete
-    EEcircuitSolverManager.instance.requestSolve(
+    SpiceSolverManager.instance.requestSolve(
       batteries,
       resistors,
       capacitors,
       inductors,
       dt,
-      ( solution: MNASolution, adapter: EECircuitAdapter ) => {
+      ( solution: MNASolution, adapter: SpiceAdapter ) => {
         this.applyEEcircuitSolution(
           circuit, solution, adapter,
           batteryMap, batteryMNAMap, resistorMap,
@@ -191,7 +191,7 @@ export default class SpiceSolver {
   private static applyEEcircuitSolution(
     circuit: Circuit,
     solution: MNASolution,
-    adapter: EECircuitAdapter,
+    adapter: SpiceAdapter,
     batteryMap: Map<string, VoltageSource>,
     batteryMNAMap: Map<string, MNABattery>,
     resistorMap: Map<string, CircuitElement>,

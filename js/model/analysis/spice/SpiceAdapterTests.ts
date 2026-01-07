@@ -6,10 +6,10 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import MNABattery from './mna/MNABattery.js';
-import MNACircuit from './mna/MNACircuit.js';
-import MNAResistor from './mna/MNAResistor.js';
-import EECircuitAdapter from './EECircuitAdapter.js';
+import MNABattery from '../mna/MNABattery.js';
+import MNACircuit from '../mna/MNACircuit.js';
+import MNAResistor from '../mna/MNAResistor.js';
+import SpiceAdapter from './SpiceAdapter.js';
 
 QUnit.module( 'EECircuitAdapter' );
 
@@ -20,7 +20,7 @@ QUnit.test( 'netlist generation: simple battery and resistor', assert => {
   const battery = new MNABattery( '0', '1', 4.0 );
   const resistor = new MNAResistor( '1', '0', 2.0 );
 
-  const adapter = new EECircuitAdapter( [ battery ], [ resistor ] );
+  const adapter = new SpiceAdapter( [ battery ], [ resistor ] );
   const netlist = adapter.generateTransientNetlist();
 
   console.log( 'Generated netlist:\n', netlist );
@@ -45,7 +45,7 @@ QUnit.test( 'netlist generation: two batteries in series', assert => {
   const battery2 = new MNABattery( '1', '2', 4.0 );
   const resistor = new MNAResistor( '2', '0', 2.0 );
 
-  const adapter = new EECircuitAdapter( [ battery1, battery2 ], [ resistor ] );
+  const adapter = new SpiceAdapter( [ battery1, battery2 ], [ resistor ] );
   const netlist = adapter.generateTransientNetlist();
 
   console.log( 'Series batteries netlist:\n', netlist );
@@ -60,7 +60,7 @@ QUnit.test( 'netlist generation: resistors in parallel', assert => {
   const resistor1 = new MNAResistor( '1', '0', 5.0 );
   const resistor2 = new MNAResistor( '1', '0', 5.0 );
 
-  const adapter = new EECircuitAdapter( [ battery ], [ resistor1, resistor2 ] );
+  const adapter = new SpiceAdapter( [ battery ], [ resistor1, resistor2 ] );
   const netlist = adapter.generateTransientNetlist();
 
   console.log( 'Parallel resistors netlist:\n', netlist );
@@ -90,7 +90,7 @@ QUnit.test( 'compare MNA vs EECircuit netlist: simple circuit', assert => {
   assert.ok( approxEquals( current, 2 ), 'Battery current should be 2A' );
 
   // Generate netlist for same circuit
-  const netlist = EECircuitAdapter.createNetlist( [ battery ], [ resistor ] );
+  const netlist = SpiceAdapter.createNetlist( [ battery ], [ resistor ] );
   console.log( 'Netlist for EEcircuit:\n', netlist );
 
   // Note: SPICE conventions differ from PhET
@@ -123,7 +123,7 @@ QUnit.test( 'netlist generation: voltage divider', assert => {
   assert.ok( approxEquals( mnaSolution.getSolvedCurrent( battery ), 0.25 ), 'I=0.25A' );
 
   // Generate netlist
-  const netlist = EECircuitAdapter.createNetlist( [ battery ], [ resistor1, resistor2 ] );
+  const netlist = SpiceAdapter.createNetlist( [ battery ], [ resistor1, resistor2 ] );
   console.log( 'Voltage divider netlist:\n', netlist );
 
   // SPICE should give: V(0)=0, V(1)=5, V(2)=2.5
@@ -136,7 +136,7 @@ QUnit.test( 'netlist generation: disconnected components', assert => {
   const resistor1 = new MNAResistor( '1', '0', 4.0 );
   const resistor2 = new MNAResistor( '2', '3', 100.0 ); // Disconnected!
 
-  const adapter = new EECircuitAdapter( [ battery ], [ resistor1, resistor2 ] );
+  const adapter = new SpiceAdapter( [ battery ], [ resistor1, resistor2 ] );
   const netlist = adapter.generateTransientNetlist();
 
   console.log( 'Disconnected components netlist:\n', netlist );
@@ -152,7 +152,7 @@ QUnit.test( 'netlist format matches EEcircuit expectations', assert => {
   const battery = new MNABattery( '0', '1', 5.0 );
   const resistor = new MNAResistor( '1', '0', 1000.0 ); // 1k ohm
 
-  const adapter = new EECircuitAdapter( [ battery ], [ resistor ] );
+  const adapter = new SpiceAdapter( [ battery ], [ resistor ] );
   const netlist = adapter.generateTransientNetlist();
 
   // Should be similar to:
