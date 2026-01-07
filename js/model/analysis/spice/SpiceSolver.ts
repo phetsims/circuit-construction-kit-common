@@ -33,7 +33,6 @@ import MNASolution from '../mna/MNASolution.js';
 
 export default class SpiceSolver {
 
-
   /**
    * Solve using SPICE solver (async with callbacks).
    * Supports DC and AC circuits with batteries, resistors, capacitors, and inductors.
