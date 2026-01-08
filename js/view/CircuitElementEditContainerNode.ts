@@ -590,7 +590,7 @@ class EditPanel extends Panel {
 
   public constructor( children: Node[] ) {
     const hbox = new HBox( {
-      spacing: 25,
+      spacing: 20,
       align: 'bottom',
       children: children
     } );

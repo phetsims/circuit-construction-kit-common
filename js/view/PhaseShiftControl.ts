@@ -28,6 +28,7 @@ import CCKCColors from './CCKCColors.js';
 import CircuitElementNumberControl from './CircuitElementNumberControl.js';
 
 type PhaseShiftControlOptions = VBoxOptions & PickRequired<VBoxOptions, 'tandem'>;
+
 export default class PhaseShiftControl extends VBox {
 
   public constructor( phaseProperty: Property<number>, circuit: Circuit, providedOptions?: PhaseShiftControlOptions ) {
@@ -46,9 +47,9 @@ export default class PhaseShiftControl extends VBox {
       numberDisplayOptions: {
         align: 'center',
         decimalPlaces: 0,
-        xMargin: 10,
+        xMargin: 0,
         yMargin: 3,
-        minBackgroundWidth: 60,
+        minBackgroundWidth: 45,
         textOptions: {
           font: CCKCConstants.DEFAULT_FONT
         },
