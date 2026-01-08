@@ -165,10 +165,12 @@ export default class Circuit extends PhetioObject {
   public readonly vertexConnectedEmitter: TEmitter<[ Vertex, Vertex ]> = new Emitter( {
     parameters: [ { valueType: Vertex }, { valueType: Vertex } ]
   } );
-  public readonly vertexDisconnectedEmitter: TEmitter<[ CircuitElement[] ]> = new Emitter( {
+  public readonly vertexDisconnectedEmitter: TEmitter<[ CircuitElement[], Vertex ]> = new Emitter( {
     parameters: [ {
       name: 'circuitElements',
       phetioType: ArrayIO( ReferenceIO( CircuitElement.CircuitElementIO ) )
+    }, {
+      valueType: Vertex
     } ]
   } );
   public readonly circuitContextAnnouncementEmitter: TEmitter<[ string ]>;
@@ -731,9 +733,6 @@ export default class Circuit extends PhetioObject {
     // Only move interactive circuit elements
     neighborCircuitElements = neighborCircuitElements.filter( circuitElement => circuitElement.interactiveProperty.get() );
 
-    if ( neighborCircuitElements.length > 1 ) {
-      this.contextStateTracker.handleVertexSplit( vertex, neighborCircuitElements.length );
-    }
 
     /**
      * Function that identifies where vertices would go if pulled toward their neighbors
@@ -805,14 +804,15 @@ export default class Circuit extends PhetioObject {
       this.translateVertexGroup( newVertex, results[ i ] );
     } );
 
+    // Emit before disposing the vertex so listeners can use vertex information
+    if ( neighborCircuitElements.length > 1 ) {
+      this.vertexDisconnectedEmitter.emit( neighborCircuitElements.slice(), vertex );
+    }
+
     if ( !vertex.blackBoxInterfaceProperty.get() ) {
       this.vertexGroup.disposeElement( vertex );
     }
     this.markDirty();
-
-    if ( neighborCircuitElements.length > 1 ) {
-      this.vertexDisconnectedEmitter.emit( neighborCircuitElements.slice() );
-    }
 
     return newVertices;
   }

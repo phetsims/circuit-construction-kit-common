@@ -258,6 +258,8 @@ type StringsType = {
       'fuseRepairedNoChangeStringProperty': LocalizedStringProperty;
       'batteryReversedStringProperty': LocalizedStringProperty;
       'batteryReversedNoChangeStringProperty': LocalizedStringProperty;
+      'vertexDisconnectedStringProperty': LocalizedStringProperty;
+      'vertexDisconnectedNoChangeStringProperty': LocalizedStringProperty;
     };
     'sensorToolbox': {
       'accessibleHeadingStringProperty': LocalizedStringProperty;

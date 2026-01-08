@@ -386,6 +386,9 @@ a11y:
     # NEW: Battery reversed responses
     batteryReversed: 'Battery reversed. { $currentPhrase }'
     batteryReversedNoChange: 'Battery reversed.'
+    # NEW: Vertex disconnection responses
+    vertexDisconnected: 'Disconnected { $elementList }. { $currentPhrase }'
+    vertexDisconnectedNoChange: 'Disconnected { $elementList }.'
   sensorToolbox:
     accessibleHeading: Sensor Toolbox
     ammeter:

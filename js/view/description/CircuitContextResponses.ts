@@ -567,6 +567,96 @@ export default class CircuitContextResponses {
 
     return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.batteryReversedNoChangeStringProperty.value;
   }
+
+  /**
+   * Create a response for when vertices are disconnected (split).
+   * @param disconnectedElements - The circuit elements that were connected to the split vertex
+   * @param splitVertex - The vertex that was split
+   */
+  public createDisconnectionResponse( disconnectedElements: CircuitElement[], splitVertex: Vertex ): string | null {
+    if ( disconnectedElements.length === 0 ) {
+      return null;
+    }
+
+    // Build descriptions for each disconnected element
+    const elementDescriptions: string[] = [];
+    for ( const element of disconnectedElements ) {
+      const position = CircuitDescriptionUtils.getElementPosition( this.circuit, element );
+      const briefName = CircuitDescriptionUtils.formatCircuitElementBriefName( element, position );
+
+      // Determine which terminal was at the split vertex
+      const terminalDescription = CircuitDescriptionUtils.formatTerminalDescription( splitVertex, element, briefName );
+      elementDescriptions.push( terminalDescription );
+    }
+
+    const elementList = elementDescriptions.join( ', ' );
+
+    // Check if any of the disconnected elements were in a multi-element group
+    // Use the first element to find the group (they were all in the same group before split)
+    const groupIndex = CircuitDescriptionUtils.getGroupIndex( this.circuit, disconnectedElements[ 0 ] );
+
+    // If no group (all now disconnected), just announce the disconnection
+    if ( groupIndex === null ) {
+      return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.vertexDisconnectedNoChange.format( {
+        elementList: elementList
+      } );
+    }
+
+    // Get the group and analyze current changes
+    const groups = this.circuit.getGroups();
+    const multiElementGroups = groups.filter( group => group.circuitElements.length > 1 );
+    const group = multiElementGroups[ groupIndex - 1 ];
+
+    if ( !group ) {
+      return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.vertexDisconnectedNoChange.format( {
+        elementList: elementList
+      } );
+    }
+
+    const currentState = this.getGroupState( group );
+    const previousState = this.previousGroupStates?.get( groupIndex );
+
+    // Build the current phrase based on what changed
+    let currentPhrase: string | null = null;
+
+    if ( previousState ) {
+      const currentChange = this.analyzeCurrentChange( previousState.currentMagnitudes, currentState.currentMagnitudes );
+      const brightnessChange = this.analyzeBrightnessChange( previousState.brightnessValues, currentState.brightnessValues );
+
+      const parts: string[] = [];
+
+      if ( currentChange.hasChange ) {
+        parts.push( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.currentChangePhrase.format( {
+          scope: currentChange.scope,
+          direction: currentChange.direction,
+          groupIndex: groupIndex
+        } ) );
+      }
+
+      if ( brightnessChange.hasChange ) {
+        parts.push( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.lightBulbChangePhrase.format( {
+          scope: brightnessChange.scope,
+          direction: brightnessChange.direction
+        } ) );
+      }
+
+      if ( parts.length > 0 ) {
+        currentPhrase = parts.join( ' ' );
+      }
+    }
+
+    // Return appropriate response based on whether there were current/brightness changes
+    if ( currentPhrase ) {
+      return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.vertexDisconnected.format( {
+        elementList: elementList,
+        currentPhrase: currentPhrase
+      } );
+    }
+
+    return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.vertexDisconnectedNoChange.format( {
+      elementList: elementList
+    } );
+  }
 }
 
 circuitConstructionKitCommon.register( 'CircuitContextResponses', CircuitContextResponses );

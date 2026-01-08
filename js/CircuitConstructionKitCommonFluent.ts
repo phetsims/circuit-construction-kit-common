@@ -222,6 +222,8 @@ addToMapIfDefined( 'a11y_circuitContextResponses_fuseRepaired', 'a11y.circuitCon
 addToMapIfDefined( 'a11y_circuitContextResponses_fuseRepairedNoChange', 'a11y.circuitContextResponses.fuseRepairedNoChangeStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_batteryReversed', 'a11y.circuitContextResponses.batteryReversedStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_batteryReversedNoChange', 'a11y.circuitContextResponses.batteryReversedNoChangeStringProperty' );
+addToMapIfDefined( 'a11y_circuitContextResponses_vertexDisconnected', 'a11y.circuitContextResponses.vertexDisconnectedStringProperty' );
+addToMapIfDefined( 'a11y_circuitContextResponses_vertexDisconnectedNoChange', 'a11y.circuitContextResponses.vertexDisconnectedNoChangeStringProperty' );
 addToMapIfDefined( 'a11y_sensorToolbox_accessibleHeading', 'a11y.sensorToolbox.accessibleHeadingStringProperty' );
 addToMapIfDefined( 'a11y_sensorToolbox_ammeter_accessibleName', 'a11y.sensorToolbox.ammeter.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_sensorToolbox_voltmeter_accessibleName', 'a11y.sensorToolbox.voltmeter.accessibleNameStringProperty' );
@@ -570,7 +572,10 @@ const CircuitConstructionKitCommonFluent = {
       fuseRepairedNoChangeStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_fuseRepairedNoChange', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.fuseRepairedNoChangeStringProperty' ) ),
       _comment_9: new FluentComment( {"comment":"NEW: Battery reversed responses","associatedKey":"batteryReversed"} ),
       batteryReversed: new FluentPattern<{ currentPhrase: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_batteryReversed', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.batteryReversedStringProperty' ), [{"name":"currentPhrase"}] ),
-      batteryReversedNoChangeStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_batteryReversedNoChange', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.batteryReversedNoChangeStringProperty' ) )
+      batteryReversedNoChangeStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_batteryReversedNoChange', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.batteryReversedNoChangeStringProperty' ) ),
+      _comment_10: new FluentComment( {"comment":"NEW: Vertex disconnection responses","associatedKey":"vertexDisconnected"} ),
+      vertexDisconnected: new FluentPattern<{ currentPhrase: FluentVariable, elementList: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_vertexDisconnected', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.vertexDisconnectedStringProperty' ), [{"name":"currentPhrase"},{"name":"elementList"}] ),
+      vertexDisconnectedNoChange: new FluentPattern<{ elementList: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_vertexDisconnectedNoChange', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.vertexDisconnectedNoChangeStringProperty' ), [{"name":"elementList"}] )
     },
     sensorToolbox: {
       accessibleHeadingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_sensorToolbox_accessibleHeading', _.get( CircuitConstructionKitCommonStrings, 'a11y.sensorToolbox.accessibleHeadingStringProperty' ) ),

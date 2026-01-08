@@ -551,7 +551,7 @@ export default class CircuitNode extends Node {
 
     // Make sure no vertices got nudged out of bounds during a cut, see https://github.com/phetsims/circuit-construction-kit-dc/issues/138
     // Also hide the delete cue permanently once the user performs a cut operation.
-    circuit.vertexDisconnectedEmitter.addListener( () => {
+    circuit.vertexDisconnectedEmitter.addListener( ( circuitElements, splitVertex ) => {
       moveVerticesInBounds( this.visibleBoundsInCircuitCoordinateFrameProperty.value );
 
       // Once the user has cut a vertex, they understand the pattern, so hide the delete cue permanently.
@@ -620,7 +620,18 @@ export default class CircuitNode extends Node {
       }
     } );
 
-    // After physics solve, process pending connection, switch toggle, and fuse state change announcements
+    // Handle vertex disconnection context responses
+    let pendingDisconnection: { elements: CircuitElement[]; splitVertex: Vertex } | null = null;
+
+    circuit.vertexDisconnectedEmitter.addListener( ( disconnectedElements, splitVertex ) => {
+      if ( !isResettingAllProperty.value && !isSettingPhetioStateProperty.value ) {
+        // Capture state before the circuit solves
+        circuitContextResponses.captureState();
+        pendingDisconnection = { elements: disconnectedElements, splitVertex: splitVertex };
+      }
+    } );
+
+    // After physics solve, process pending connection, switch toggle, fuse state change, and disconnection announcements
     circuit.circuitChangedEmitter.addListener( () => {
       if ( pendingConnection && !isResettingAllProperty.value && !isSettingPhetioStateProperty.value ) {
         const response = circuitContextResponses.createConnectionResponse(
@@ -653,6 +664,17 @@ export default class CircuitNode extends Node {
           this.addAccessibleContextResponse( response );
         }
         pendingFuseStateChange = null;
+      }
+
+      if ( pendingDisconnection && !isResettingAllProperty.value && !isSettingPhetioStateProperty.value ) {
+        const response = circuitContextResponses.createDisconnectionResponse(
+          pendingDisconnection.elements,
+          pendingDisconnection.splitVertex
+        );
+        if ( response ) {
+          this.addAccessibleContextResponse( response );
+        }
+        pendingDisconnection = null;
       }
     } );
 

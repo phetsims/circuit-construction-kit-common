@@ -44,11 +44,6 @@ type PendingContextEvent =
   groupIndex: number | null; // Group index if joining an existing group
 }
   | {
-  type: 'vertex-split';
-  vertexLabel: string;
-  createdVertexCount: number;
-}
-  | {
   type: 'element-removed';
   elementName: string;
 };
@@ -117,18 +112,6 @@ export default class CircuitContextStateTracker {
       vertex: vertex,
       wasInExistingGroup: wasInExistingGroup,
       groupIndex: groupIndex
-    } );
-  }
-
-  public handleVertexSplit( vertex: Vertex, createdVertexCount: number ): void {
-    if ( createdVertexCount <= 1 ) {
-      return;
-    }
-    this.captureCircuitContextState();
-    this.pendingContextEvents.push( {
-      type: 'vertex-split',
-      vertexLabel: this.getVertexLabel( vertex ),
-      createdVertexCount: createdVertexCount
     } );
   }
 
@@ -249,13 +232,7 @@ export default class CircuitContextStateTracker {
           } ) );
         }
       }
-      else if ( event.type === 'vertex-split' ) {
-        sentences.push( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.junctionSplit.format( {
-          junctionName: event.vertexLabel,
-          connectionCount: event.createdVertexCount
-        } ) );
-      }
-      else {
+      else if ( event.type === 'element-removed' ) {
         sentences.push( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.componentRemoved.format( {
           componentName: event.elementName
         } ) );
