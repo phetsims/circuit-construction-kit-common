@@ -168,11 +168,12 @@ export default class CircuitContextResponses {
   /**
    * Analyze how current has changed between two states.
    * Uses a very small tolerance to detect any real change.
+   * Detects 'stopped' as a special case when current was flowing and is now zero.
    */
   private analyzeCurrentChange(
     oldCurrents: number[],
     newCurrents: number[]
-  ): { hasChange: boolean; scope: 'some' | 'all'; direction: 'increased' | 'decreased' | 'changed' } {
+  ): { hasChange: boolean; scope: 'some' | 'all'; direction: 'increased' | 'decreased' | 'changed' | 'stopped' } {
 
     // Count how many elements had current changes
     let increasedCount = 0;
@@ -199,9 +200,16 @@ export default class CircuitContextResponses {
 
     const scope: 'some' | 'all' = changedCount === count ? 'all' : 'some';
 
+    // Check if current has stopped: was flowing before, now all below threshold
+    const wasFlowing = oldCurrents.some( current => current > CURRENT_THRESHOLD );
+    const nowStopped = newCurrents.every( current => current <= CURRENT_THRESHOLD );
+
     // Determine direction
-    let direction: 'increased' | 'decreased' | 'changed';
-    if ( increasedCount > 0 && decreasedCount === 0 ) {
+    let direction: 'increased' | 'decreased' | 'changed' | 'stopped';
+    if ( wasFlowing && nowStopped ) {
+      direction = 'stopped';
+    }
+    else if ( increasedCount > 0 && decreasedCount === 0 ) {
       direction = 'increased';
     }
     else if ( decreasedCount > 0 && increasedCount === 0 ) {
