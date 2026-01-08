@@ -1,4 +1,4 @@
-// Copyright 2025, University of Colorado Boulder
+// Copyright 2026, University of Colorado Boulder
 
 /**
  * SpiceLoader initializes the ngspice WASM engine by combining the WASM binary
