@@ -118,10 +118,10 @@ export default class ACVoltage extends VoltageSource {
    * @param time - total elapsed time
    * @param dt - delta between last frame and current frame
    */
-  public override step( time: number, dt: number, circuit: Circuit ): void {
-    super.step( time, dt, circuit );
+  public step( time: number, dt: number, circuit: Circuit ): void {
     this.time = time;
     this.voltageProperty.value = -this.maximumVoltageProperty.value * Math.sin( 2 * Math.PI * this.frequencyProperty.value * time + this.phaseProperty.value * Math.PI / 180 );
+    circuit.dirty = true;
   }
 }
 

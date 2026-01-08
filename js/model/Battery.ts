@@ -15,7 +15,6 @@ import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import type BatteryType from './BatteryType.js';
-import type Circuit from './Circuit.js';
 import type Vertex from './Vertex.js';
 import VoltageSource, { type VoltageSourceOptions } from './VoltageSource.js';
 
@@ -56,10 +55,6 @@ export default class Battery extends VoltageSource {
       tandem: tandem.createTandem( 'isReversibleProperty' ),
       phetioFeatured: true
     } );
-  }
-
-  public override step( time: number, dt: number, circuit: Circuit ): void {
-    // nothing to do
   }
 
   public override dispose(): void {

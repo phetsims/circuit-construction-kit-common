@@ -80,13 +80,13 @@ export default class Wire extends CircuitElement {
 
     this.resistivityProperty = resistivityProperty;
     this.lengthProperty = new NumberProperty( 0 );
-    this.updateListener = () => this.update();
+    this.updateListener = () => this.update( null );
     this.vertexMovedEmitter.addListener( this.updateListener );
 
     // When resistivity changes, update the resistance
     this.resistivityProperty.link( this.updateListener );
 
-    this.update(); // initialize state
+    this.update( null ); // initialize state
   }
 
   /**
@@ -95,26 +95,30 @@ export default class Wire extends CircuitElement {
    * @param dt - seconds since last step
    * @param circuit
    */
-  public override step( time: number, dt: number, circuit: Circuit ): void {
-    super.step( time, dt, circuit );
-    this.update();
+  public step( time: number, dt: number, circuit: Circuit ): void {
+    this.update( circuit );
   }
 
   /**
    * Batch changes so that the length doesn't change incrementally when both vertices move one at a time.
    */
-  private update(): void {
+  private update( circuit: Circuit | null ): void {
     const startPosition = this.startPositionProperty.get();
     const endPosition = this.endPositionProperty.get();
     const distanceBetweenVertices = startPosition.distance( endPosition ); // same as view coordinates
     const modelLength = distanceBetweenVertices * METERS_PER_VIEW_COORDINATE;
     this.lengthProperty.set( modelLength );
 
-    // R = rho * L / A.  Resistance = resistivity * Length / cross sectional area.
+    // R = rho * L / A.  Resistance = resistivity * Length / cross-sectional area.
     const resistance = this.resistivityProperty.get() * modelLength / CCKCConstants.WIRE_CROSS_SECTIONAL_AREA;
 
     const clampedResistance = Math.max( CCKCConstants.MINIMUM_WIRE_RESISTANCE, resistance );
     affirm( !isNaN( clampedResistance ), 'wire resistance should not be NaN' );
+    if ( this.resistanceProperty.value !== clampedResistance ) {
+      if ( circuit ) {
+        circuit.dirty = true;
+      }
+    }
     this.resistanceProperty.set( clampedResistance );
 
     // Update the charge path length, but don't let it go less than a threshold, see https://github.com/phetsims/circuit-construction-kit-common/issues/405

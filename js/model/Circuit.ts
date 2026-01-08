@@ -1007,11 +1007,11 @@ export default class Circuit extends PhetioObject {
     // Move forward time
     this.timeProperty.value += dt;
 
-    const stepElements = this.circuitElements.filter( element => element.step );
+    const stepElements = this.circuitElements.filter( element => element instanceof ACVoltage || element instanceof Fuse || element instanceof Wire );
     const dynamicElements = this.circuitElements.filter( element => element instanceof DynamicCircuitElement );
     stepElements.forEach( element => element.step( this.timeProperty.value, dt, this ) );
 
-    if ( this.dirty || stepElements.length > 0 || dynamicElements.length > 0 ) {
+    if ( this.dirty || dynamicElements.length > 0 ) {
       LinearTransientAnalysis.solveModifiedNodalAnalysis( this, dt );
       this.dirty = false;
 

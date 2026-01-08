@@ -103,8 +103,10 @@ export default class Fuse extends FixedCircuitElement {
    * @param dt - delta between last frame and current frame
    * @param circuit
    */
-  public override step( time: number, dt: number, circuit: Circuit ): void {
-    super.step( time, dt, circuit );
+  public step( time: number, dt: number, circuit: Circuit ): void {
+
+    // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/1162 only mark dirty if a salient value changed
+    circuit.dirty = true;
 
     // When the current exceeds the max, trip the fuse.  This cannot be modeled as a property link because it
     // creates a reentrant property loop which doesn't update the reset fuse button properly
