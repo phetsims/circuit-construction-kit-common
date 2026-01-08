@@ -363,6 +363,9 @@
         "extremeLightBulb": {
           "value": "Extreme Bulb"
         },
+        "realLightBulb": {
+          "value": "Real Bulb"
+        },
         "coin": {
           "value": "Coin"
         },
@@ -427,6 +430,9 @@
         },
         "extremeLightBulb": {
           "value": "Extreme Bulbs"
+        },
+        "realLightBulb": {
+          "value": "Real Bulbs"
         },
         "coin": {
           "value": "Coins"

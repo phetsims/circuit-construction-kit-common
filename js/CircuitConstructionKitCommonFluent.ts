@@ -5,7 +5,7 @@
 /* eslint-disable */
 /* @formatter:off */
 
-import {TReadOnlyProperty} from '../../axon/js/TReadOnlyProperty.js';
+import { TReadOnlyProperty } from '../../axon/js/TReadOnlyProperty.js';
 import FluentLibrary from '../../chipper/js/browser-and-node/FluentLibrary.js';
 import FluentComment from '../../chipper/js/browser/FluentComment.js';
 import FluentConstant from '../../chipper/js/browser/FluentConstant.js';
@@ -129,6 +129,7 @@ addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_stopwatch
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_extremeBattery', 'a11y.circuitDescription.circuitComponentTypeLabels.extremeBatteryStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_extremeResistor', 'a11y.circuitDescription.circuitComponentTypeLabels.extremeResistorStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_extremeLightBulb', 'a11y.circuitDescription.circuitComponentTypeLabels.extremeLightBulbStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_realLightBulb', 'a11y.circuitDescription.circuitComponentTypeLabels.realLightBulbStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_coin', 'a11y.circuitDescription.circuitComponentTypeLabels.coinStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_paperClip', 'a11y.circuitDescription.circuitComponentTypeLabels.paperClipStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_pencil', 'a11y.circuitDescription.circuitComponentTypeLabels.pencilStringProperty' );
@@ -150,6 +151,7 @@ addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypePlurals_stopwatc
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypePlurals_extremeBattery', 'a11y.circuitDescription.circuitComponentTypePlurals.extremeBatteryStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypePlurals_extremeResistor', 'a11y.circuitDescription.circuitComponentTypePlurals.extremeResistorStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypePlurals_extremeLightBulb', 'a11y.circuitDescription.circuitComponentTypePlurals.extremeLightBulbStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypePlurals_realLightBulb', 'a11y.circuitDescription.circuitComponentTypePlurals.realLightBulbStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypePlurals_coin', 'a11y.circuitDescription.circuitComponentTypePlurals.coinStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypePlurals_paperClip', 'a11y.circuitDescription.circuitComponentTypePlurals.paperClipStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypePlurals_pencil', 'a11y.circuitDescription.circuitComponentTypePlurals.pencilStringProperty' );
@@ -419,6 +421,7 @@ const CircuitConstructionKitCommonFluent = {
         extremeBatteryStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypeLabels_extremeBattery', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypeLabels.extremeBatteryStringProperty' ) ),
         extremeResistorStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypeLabels_extremeResistor', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypeLabels.extremeResistorStringProperty' ) ),
         extremeLightBulbStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypeLabels_extremeLightBulb', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypeLabels.extremeLightBulbStringProperty' ) ),
+        realLightBulbStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypeLabels_realLightBulb', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypeLabels.realLightBulbStringProperty' ) ),
         _comment_2: new FluentComment( {"comment":"Household items (max 1 each)","associatedKey":"coin"} ),
         _comment_3: new FluentComment( {"comment":"Household items (max 1 each, plurals unlikely but included for completeness)","associatedKey":"coin"} ),
         coinStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypeLabels_coin', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypeLabels.coinStringProperty' ) ),
@@ -447,6 +450,7 @@ const CircuitConstructionKitCommonFluent = {
         extremeBatteryStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypePlurals_extremeBattery', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypePlurals.extremeBatteryStringProperty' ) ),
         extremeResistorStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypePlurals_extremeResistor', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypePlurals.extremeResistorStringProperty' ) ),
         extremeLightBulbStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypePlurals_extremeLightBulb', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypePlurals.extremeLightBulbStringProperty' ) ),
+        realLightBulbStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypePlurals_realLightBulb', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypePlurals.realLightBulbStringProperty' ) ),
         _comment_2: new FluentComment( {"comment":"Household items (max 1 each)","associatedKey":"coin"} ),
         _comment_3: new FluentComment( {"comment":"Household items (max 1 each, plurals unlikely but included for completeness)","associatedKey":"coin"} ),
         coinStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypePlurals_coin', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypePlurals.coinStringProperty' ) ),

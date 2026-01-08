@@ -52,6 +52,9 @@ const CircuitDescriptionUtils = {
     if ( circuitElement instanceof LightBulb && circuitElement.isExtreme ) {
       return 'extremeLightBulb';
     }
+    if ( circuitElement instanceof LightBulb && circuitElement.isReal ) {
+      return 'realLightBulb';
+    }
     return circuitElement.type;
   },
 
@@ -100,6 +103,8 @@ const CircuitDescriptionUtils = {
         return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypeLabels.extremeResistorStringProperty.value;
       case 'extremeLightBulb':
         return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypeLabels.extremeLightBulbStringProperty.value;
+      case 'realLightBulb':
+        return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypeLabels.realLightBulbStringProperty.value;
       // Household item types
       case 'coin':
         return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypeLabels.coinStringProperty.value;
@@ -154,6 +159,8 @@ const CircuitDescriptionUtils = {
         return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypePlurals.extremeResistorStringProperty.value;
       case 'extremeLightBulb':
         return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypePlurals.extremeLightBulbStringProperty.value;
+      case 'realLightBulb':
+        return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypePlurals.realLightBulbStringProperty.value;
       // Household items (max 1, so plurals unlikely but included for completeness)
       case 'coin':
         return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypePlurals.coinStringProperty.value;

@@ -140,6 +140,7 @@ a11y:
       extremeBattery:   Extreme Battery
       extremeResistor:  Extreme Resistor
       extremeLightBulb: Extreme Bulb
+      realLightBulb:    Real Bulb
       # Household items (max 1 each)
       coin:             Coin
       paperClip:        Paper Clip
@@ -165,6 +166,7 @@ a11y:
       extremeBattery:   Extreme Batteries
       extremeResistor:  Extreme Resistors
       extremeLightBulb: Extreme Bulbs
+      realLightBulb:    Real Bulbs
       # Household items (max 1 each, plurals unlikely but included for completeness)
       coin:             Coins
       paperClip:        Paper Clips

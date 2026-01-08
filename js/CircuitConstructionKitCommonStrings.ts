@@ -152,6 +152,7 @@ type StringsType = {
         'extremeBatteryStringProperty': LocalizedStringProperty;
         'extremeResistorStringProperty': LocalizedStringProperty;
         'extremeLightBulbStringProperty': LocalizedStringProperty;
+        'realLightBulbStringProperty': LocalizedStringProperty;
         'coinStringProperty': LocalizedStringProperty;
         'paperClipStringProperty': LocalizedStringProperty;
         'pencilStringProperty': LocalizedStringProperty;
@@ -175,6 +176,7 @@ type StringsType = {
         'extremeBatteryStringProperty': LocalizedStringProperty;
         'extremeResistorStringProperty': LocalizedStringProperty;
         'extremeLightBulbStringProperty': LocalizedStringProperty;
+        'realLightBulbStringProperty': LocalizedStringProperty;
         'coinStringProperty': LocalizedStringProperty;
         'paperClipStringProperty': LocalizedStringProperty;
         'pencilStringProperty': LocalizedStringProperty;
