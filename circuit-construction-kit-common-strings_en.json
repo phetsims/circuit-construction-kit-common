@@ -521,7 +521,7 @@
     },
     "screenSummary": {
       "playArea": {
-        "value": "A Construction Area creates a building space for components added from a Circuit Components carousel. Build and navigate your circuits there. A Voltmeter and Ammeter can be found in the Measurement Tools toolbox. Display Options provide ways to add and remove visual information from components in the Construction Area."
+        "value": "A Construction Area creates a building space for components added from a Circuit Components toolbox. Build and navigate your circuits there. A Voltmeter and Ammeter can be found in the Measurement Tools toolbox. Display Options provide ways to add and remove visual information from components in the Construction Area."
       },
       "controlArea": {
         "value": "There's an option to choose between a Lifelike View or a Schematic View for any components and circuits, and you can Reset All to clear everything and start over."
