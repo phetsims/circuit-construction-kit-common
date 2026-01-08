@@ -137,46 +137,10 @@ export default class CircuitContextStateTracker {
   }
 
   private registerCircuitElement( circuitElement: CircuitElement ): void {
+    // NOTE: Resistance and voltage change announcements are now handled by CircuitContextResponses
+    // via createContextResponseAlert on the sliders in CircuitElementEditContainerNode.
+    // This method is kept for potential future use but currently does not attach any listeners.
     const disposers: Array<() => void> = [];
-
-    const handleBatteryChange = ( newValue: number, oldValue: number | null ) => {
-      if ( oldValue === null || oldValue === undefined || newValue === oldValue ) {
-        return;
-      }
-      const snapshotCreated = this.captureCircuitContextState();
-      if ( snapshotCreated ) {
-        const state = this.circuitElementAnnouncementStates?.get( circuitElement );
-        if ( state ) {
-          state.voltage = oldValue;
-        }
-      }
-    };
-
-    const handleResistanceChange = ( newValue: number, oldValue: number | null ) => {
-      if ( oldValue === null || oldValue === undefined || newValue === oldValue ) {
-        return;
-      }
-      const snapshotCreated = this.captureCircuitContextState();
-      if ( snapshotCreated ) {
-        const state = this.circuitElementAnnouncementStates?.get( circuitElement );
-        if ( state ) {
-          state.resistance = oldValue;
-        }
-      }
-    };
-
-    if ( circuitElement instanceof Battery ) {
-      circuitElement.voltageProperty.lazyLink( handleBatteryChange );
-      disposers.push( () => circuitElement.voltageProperty.unlink( handleBatteryChange ) );
-    }
-    if ( circuitElement instanceof Resistor ) {
-      circuitElement.resistanceProperty.lazyLink( handleResistanceChange );
-      disposers.push( () => circuitElement.resistanceProperty.unlink( handleResistanceChange ) );
-    }
-    if ( circuitElement instanceof LightBulb ) {
-      circuitElement.resistanceProperty.lazyLink( handleResistanceChange );
-      disposers.push( () => circuitElement.resistanceProperty.unlink( handleResistanceChange ) );
-    }
 
     if ( disposers.length > 0 ) {
       this.circuitElementStateCaptureDisposers.set( circuitElement, () => disposers.forEach( disposer => disposer() ) );

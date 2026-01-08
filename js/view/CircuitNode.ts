@@ -70,6 +70,7 @@ import CircuitElementEditContainerNode from './CircuitElementEditContainerNode.j
 import CircuitElementNode from './CircuitElementNode.js';
 import CutButton from './CutButton.js';
 import DeleteCueNode from './DeleteCueNode.js';
+import CircuitContextResponses from './description/CircuitContextResponses.js';
 import CircuitDescription from './description/CircuitDescription.js';
 import ConstructionAreaStatusNode from './description/ConstructionAreaStatusNode.js';
 import FuseNode from './FuseNode.js';
@@ -556,6 +557,29 @@ export default class CircuitNode extends Node {
       // Once the user has cut a vertex, they understand the pattern, so hide the delete cue permanently.
       this.anyVertexCut = true;
       this.deleteCueNode.visible = false;
+    } );
+
+    // Handle vertex connection context responses
+    const circuitContextResponses = new CircuitContextResponses( circuit );
+    let pendingConnection: { targetVertex: Vertex; oldVertex: Vertex } | null = null;
+
+    circuit.vertexConnectedEmitter.addListener( ( targetVertex, oldVertex ) => {
+      // Store the connection info to process after physics solve
+      pendingConnection = { targetVertex: targetVertex, oldVertex: oldVertex };
+    } );
+
+    // After physics solve, process pending connection announcements
+    circuit.circuitChangedEmitter.addListener( () => {
+      if ( pendingConnection && !isResettingAllProperty.value && !isSettingPhetioStateProperty.value ) {
+        const response = circuitContextResponses.createConnectionResponse(
+          pendingConnection.targetVertex,
+          pendingConnection.oldVertex
+        );
+        if ( response ) {
+          this.addAccessibleContextResponse( response );
+        }
+        pendingConnection = null;
+      }
     } );
 
     // When a charge is added, add the corresponding ChargeNode (removed it its dispose call)

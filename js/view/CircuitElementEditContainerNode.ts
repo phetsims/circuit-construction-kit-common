@@ -55,6 +55,7 @@ import FuseRepairButton from './FuseRepairButton.js';
 import PhaseShiftControl from './PhaseShiftControl.js';
 import SwitchReadoutNode from './SwitchReadoutNode.js';
 import SwitchToggleButton from './SwitchToggleButton.js';
+import CircuitContextResponses from './description/CircuitContextResponses.js';
 
 const capacitanceStringProperty = CircuitConstructionKitCommonFluent.capacitanceStringProperty;
 const capacitanceUnitsStringProperty = CircuitConstructionKitCommonFluent.capacitanceUnitsStringProperty;
@@ -119,6 +120,8 @@ export default class CircuitElementEditContainerNode extends Node {
                       providedOptions?: CircuitElementEditContainerNodeOptions ) {
 
     const circuit = circuitNode.circuit;
+    const circuitContextResponses = new CircuitContextResponses( circuit );
+
     super( AccessibleInteractiveOptions );
 
     this.focusable = false;
@@ -277,7 +280,17 @@ export default class CircuitElementEditContainerNode extends Node {
           sliderOptions: {
             keyboardStep: CCKCConstants.SLIDER_STEPS.resistorAndLightBulbResistanceNumberControl.step,
             pageKeyboardStep: CCKCConstants.SLIDER_STEPS.resistorAndLightBulbResistanceNumberControl.pageKeyboardStep,
-            constrainValue: ( value: number ) => roundToInterval( value, CCKCConstants.SLIDER_STEPS.resistorAndLightBulbResistanceNumberControl.shiftKeyboardStep )
+            constrainValue: ( value: number ) => roundToInterval( value, CCKCConstants.SLIDER_STEPS.resistorAndLightBulbResistanceNumberControl.shiftKeyboardStep ),
+            startDrag: () => circuitContextResponses.captureState(),
+            endDrag: () => {
+              const selection = circuit.selectionProperty.value;
+              if ( selection instanceof CircuitElement && !isSettingPhetioStateProperty.value ) {
+                const response = circuitContextResponses.createValueChangeResponse( selection );
+                if ( response ) {
+                  circuit.circuitContextAnnouncementEmitter.emit( response );
+                }
+              }
+            }
           },
           numberDisplayOptions: { decimalPlaces: Resistor.RESISTANCE_DECIMAL_PLACES }
         } );
@@ -297,7 +310,17 @@ export default class CircuitElementEditContainerNode extends Node {
           sliderOptions: {
             keyboardStep: CCKCConstants.SLIDER_STEPS.extremeResistorAndLightBulbResistanceNumberControl.step,
             pageKeyboardStep: CCKCConstants.SLIDER_STEPS.extremeResistorAndLightBulbResistanceNumberControl.pageKeyboardStep,
-            constrainValue: ( value: number ) => roundToInterval( value, CCKCConstants.SLIDER_STEPS.extremeResistorAndLightBulbResistanceNumberControl.shiftKeyboardStep )
+            constrainValue: ( value: number ) => roundToInterval( value, CCKCConstants.SLIDER_STEPS.extremeResistorAndLightBulbResistanceNumberControl.shiftKeyboardStep ),
+            startDrag: () => circuitContextResponses.captureState(),
+            endDrag: () => {
+              const selection = circuit.selectionProperty.value;
+              if ( selection instanceof CircuitElement && !isSettingPhetioStateProperty.value ) {
+                const response = circuitContextResponses.createValueChangeResponse( selection );
+                if ( response ) {
+                  circuit.circuitContextAnnouncementEmitter.emit( response );
+                }
+              }
+            }
           },
           numberDisplayOptions: { decimalPlaces: Resistor.HIGH_RESISTANCE_DECIMAL_PLACES }
         } );
@@ -321,7 +344,17 @@ export default class CircuitElementEditContainerNode extends Node {
         sliderOptions: {
           keyboardStep: CCKCConstants.SLIDER_STEPS.batteryVoltageNumberControl.step,
           pageKeyboardStep: CCKCConstants.SLIDER_STEPS.batteryVoltageNumberControl.pageKeyboardStep,
-          constrainValue: ( value: number ) => roundToInterval( value, CCKCConstants.SLIDER_STEPS.batteryVoltageNumberControl.shiftKeyboardStep )
+          constrainValue: ( value: number ) => roundToInterval( value, CCKCConstants.SLIDER_STEPS.batteryVoltageNumberControl.shiftKeyboardStep ),
+          startDrag: () => circuitContextResponses.captureState(),
+          endDrag: () => {
+            const selection = circuit.selectionProperty.value;
+            if ( selection instanceof CircuitElement && !isSettingPhetioStateProperty.value ) {
+              const response = circuitContextResponses.createValueChangeResponse( selection );
+              if ( response ) {
+                circuit.circuitContextAnnouncementEmitter.emit( response );
+              }
+            }
+          }
         },
         numberDisplayOptions: { decimalPlaces: Battery.VOLTAGE_DECIMAL_PLACES }
       } );
@@ -337,7 +370,17 @@ export default class CircuitElementEditContainerNode extends Node {
         sliderOptions: {
           keyboardStep: CCKCConstants.SLIDER_STEPS.extremeBatteryVoltageNumberControl.step,
           pageKeyboardStep: CCKCConstants.SLIDER_STEPS.extremeBatteryVoltageNumberControl.pageKeyboardStep,
-          constrainValue: ( value: number ) => roundToInterval( value, CCKCConstants.SLIDER_STEPS.extremeBatteryVoltageNumberControl.shiftKeyboardStep )
+          constrainValue: ( value: number ) => roundToInterval( value, CCKCConstants.SLIDER_STEPS.extremeBatteryVoltageNumberControl.shiftKeyboardStep ),
+          startDrag: () => circuitContextResponses.captureState(),
+          endDrag: () => {
+            const selection = circuit.selectionProperty.value;
+            if ( selection instanceof CircuitElement && !isSettingPhetioStateProperty.value ) {
+              const response = circuitContextResponses.createValueChangeResponse( selection );
+              if ( response ) {
+                circuit.circuitContextAnnouncementEmitter.emit( response );
+              }
+            }
+          }
         },
         numberDisplayOptions: { decimalPlaces: Battery.HIGH_VOLTAGE_DECIMAL_PLACES }
       } );

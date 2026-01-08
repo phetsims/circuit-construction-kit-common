@@ -336,6 +336,41 @@ a11y:
         battery:   '{ $componentName } voltage changed from { $oldValue } to { $newValue } volts.'
         resistor:  '{ $componentName } resistance changed from { $oldValue } to { $newValue } ohms.'
         lightBulb: '{ $componentName } resistance changed from { $oldValue } to { $newValue } ohms.'
+    # NEW: When connected element changes but no current/brightness changes
+    noChangesInGroup:
+      select_hasLightBulbs:
+        true:  'No changes in current or light bulb brightness in Group { $groupIndex }.'
+        false: 'No changes in current in Group { $groupIndex }.'
+    # NEW: Current change patterns with scope (some/all) and direction
+    currentChangePhrase:
+      select_scope:
+        some:
+          select_direction:
+            changed:   'Current through some Group { $groupIndex } circuit elements changed.'
+            increased: 'Current through some Group { $groupIndex } circuit elements increased.'
+            decreased: 'Current through some Group { $groupIndex } circuit elements decreased.'
+        all:
+          select_direction:
+            changed:   'Current through all Group { $groupIndex } circuit elements changed.'
+            increased: 'Current through all Group { $groupIndex } circuit elements increased.'
+            decreased: 'Current through all Group { $groupIndex } circuit elements decreased.'
+    # NEW: Light bulb brightness change patterns
+    lightBulbChangePhrase:
+      select_scope:
+        some:
+          select_direction:
+            brighter: 'Some light bulbs got brighter.'
+            dimmer:   'Some light bulbs got dimmer.'
+            changed:  'Some light bulbs changed brightness.'
+        all:
+          select_direction:
+            brighter: 'All light bulbs got brighter.'
+            dimmer:   'All light bulbs got dimmer.'
+            changed:  'All light bulbs changed brightness.'
+    # NEW: Vertex connection with current flow
+    vertexConnectedWithCurrent: 'Connected { $element1 } to { $element2 }. { $currentPhrase }'
+    # NEW: Simple vertex connection (when no current flows)
+    vertexConnectedSimple: 'Connected { $element1 } to { $element2 }.'
   sensorToolbox:
     accessibleHeading: Sensor Toolbox
     ammeter:

@@ -243,6 +243,11 @@ type StringsType = {
       'componentRemovedStringProperty': LocalizedStringProperty;
       'lightBulbStateStringProperty': LocalizedStringProperty;
       'componentValueChangeStringProperty': LocalizedStringProperty;
+      'noChangesInGroupStringProperty': LocalizedStringProperty;
+      'currentChangePhraseStringProperty': LocalizedStringProperty;
+      'lightBulbChangePhraseStringProperty': LocalizedStringProperty;
+      'vertexConnectedWithCurrentStringProperty': LocalizedStringProperty;
+      'vertexConnectedSimpleStringProperty': LocalizedStringProperty;
     };
     'sensorToolbox': {
       'accessibleHeadingStringProperty': LocalizedStringProperty;

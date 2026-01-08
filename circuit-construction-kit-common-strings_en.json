@@ -609,6 +609,21 @@
       },
       "componentValueChange": {
         "value": "{ $type ->\n  [battery] { $componentName } voltage changed from { $oldValue } to { $newValue } volts.\n  [resistor] { $componentName } resistance changed from { $oldValue } to { $newValue } ohms.\n  *[lightBulb] { $componentName } resistance changed from { $oldValue } to { $newValue } ohms.\n}"
+      },
+      "noChangesInGroup": {
+        "value": "{ $hasLightBulbs ->\n  [true] No changes in current or light bulb brightness in Group { $groupIndex }.\n  *[false] No changes in current in Group { $groupIndex }.\n}"
+      },
+      "currentChangePhrase": {
+        "value": "{ $scope ->\n  [some] { $direction ->\n           [changed] Current through some Group { $groupIndex } circuit elements changed.\n           [increased] Current through some Group { $groupIndex } circuit elements increased.\n           *[decreased] Current through some Group { $groupIndex } circuit elements decreased.\n         }\n  *[all] { $direction ->\n           [changed] Current through all Group { $groupIndex } circuit elements changed.\n           [increased] Current through all Group { $groupIndex } circuit elements increased.\n           *[decreased] Current through all Group { $groupIndex } circuit elements decreased.\n         }\n}"
+      },
+      "lightBulbChangePhrase": {
+        "value": "{ $scope ->\n  [some] { $direction ->\n           [brighter] Some light bulbs got brighter.\n           [dimmer] Some light bulbs got dimmer.\n           *[changed] Some light bulbs changed brightness.\n         }\n  *[all] { $direction ->\n           [brighter] All light bulbs got brighter.\n           [dimmer] All light bulbs got dimmer.\n           *[changed] All light bulbs changed brightness.\n         }\n}"
+      },
+      "vertexConnectedWithCurrent": {
+        "value": "Connected { $element1 } to { $element2 }. { $currentPhrase }"
+      },
+      "vertexConnectedSimple": {
+        "value": "Connected { $element1 } to { $element2 }."
       }
     },
     "sensorToolbox": {
