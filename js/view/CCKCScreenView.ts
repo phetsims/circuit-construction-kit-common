@@ -332,14 +332,16 @@ export default class CCKCScreenView extends ScreenView {
     );
     this.addChild( chargeSpeedThrottlingReadoutNode );
 
-    // The center between the left toolbox and the right control panels
-    const playAreaCenterXProperty = new NumberProperty( 0 );
+    // Properties for positioning the edit panel between the zoom button group and time control
+    const zoomButtonGroupRightProperty = new NumberProperty( 0 );
+    const timeControlLeftProperty = new NumberProperty( 0 );
 
     const circuitElementEditContainerNode = new CircuitElementEditContainerNode(
       this.circuitNode,
       this.visibleBoundsProperty,
       model.modeProperty,
-      playAreaCenterXProperty,
+      zoomButtonGroupRightProperty,
+      timeControlLeftProperty,
       tandem.createTandem( 'circuitElementEditContainerNode' ), {
         showPhaseShiftControl: options.showPhaseShiftControl
       }
@@ -400,7 +402,7 @@ export default class CCKCScreenView extends ScreenView {
     this.addChild( zoomButtonGroup );
 
     Multilink.multilink(
-      [ this.visibleBoundsProperty, toolboxContainer.localBoundsProperty ],
+      [ this.visibleBoundsProperty, toolboxContainer.localBoundsProperty, controlPanelVBox.localBoundsProperty ],
       ( visibleBounds: Bounds2 ) => {
         toolboxContainer.left = visibleBounds.left + HORIZONTAL_MARGIN;
         toolboxContainer.top = visibleBounds.top + VERTICAL_MARGIN;
@@ -430,14 +432,17 @@ export default class CCKCScreenView extends ScreenView {
         }
         zoomButtonGroup.bottom = visibleBounds.bottom - VERTICAL_MARGIN;
 
-        // Center some things between the panels, but gracefully accommodate when phet-io has made them disappear
-        const leftEdge = this.circuitElementToolbox.bounds.isEmpty() ? visibleBounds.left : this.circuitElementToolbox.right;
+        // Update the properties for positioning the edit panel between zoom buttons and time control
+        zoomButtonGroupRightProperty.value = zoomButtonGroup.right;
+
+        // Use time control left edge if available, otherwise fall back to control panel left edge
         const rightEdge = controlPanelVBox.bounds.isEmpty() ? visibleBounds.right : controlPanelVBox.left;
+        timeControlLeftProperty.value = timeControlNode && timeControlNode.bounds.isFinite() ? timeControlNode.left : rightEdge;
 
-        playAreaCenterXProperty.value = ( leftEdge + rightEdge ) / 2;
-
+        // Center charge speed readout between the panels
+        const leftEdge = this.circuitElementToolbox.bounds.isEmpty() ? visibleBounds.left : this.circuitElementToolbox.right;
         chargeSpeedThrottlingReadoutNode.mutate( {
-          centerX: playAreaCenterXProperty.value,
+          centerX: ( leftEdge + rightEdge ) / 2,
           bottom: visibleBounds.bottom - 100 // so it doesn't overlap the component controls
         } );
       } );

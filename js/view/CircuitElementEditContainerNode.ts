@@ -72,9 +72,9 @@ const voltageStringProperty = CircuitConstructionKitCommonFluent.voltageStringPr
 const voltageVoltsValuePatternStringProperty = CircuitConstructionKitCommonFluent.voltageVoltsValuePatternStringProperty;
 
 // constants
-const GET_LAYOUT_POSITION = ( visibleBounds: Bounds2, centerX: number ) => {
+const GET_LAYOUT_POSITION = ( visibleBounds: Bounds2, leftX: number, rightX: number ) => {
   return {
-    centerX: centerX,
+    centerX: ( leftX + rightX ) / 2,
     bottom: visibleBounds.bottom - CCKCConstants.HORIZONTAL_MARGIN
   };
 };
@@ -116,7 +116,8 @@ type CircuitElementEditContainerNodeOptions = SelfOptions & NodeOptions;
 
 export default class CircuitElementEditContainerNode extends Node {
 
-  public constructor( circuitNode: CircuitNode, visibleBoundsProperty: Property<Bounds2>, modeProperty: EnumerationProperty<InteractionMode>, playAreaCenterXProperty: Property<number>, tandem: Tandem,
+  public constructor( circuitNode: CircuitNode, visibleBoundsProperty: Property<Bounds2>, modeProperty: EnumerationProperty<InteractionMode>,
+                      zoomButtonGroupRightProperty: Property<number>, timeControlLeftProperty: Property<number>, tandem: Tandem,
                       providedOptions?: CircuitElementEditContainerNodeOptions ) {
 
     const circuit = circuitNode.circuit;
@@ -477,7 +478,7 @@ export default class CircuitElementEditContainerNode extends Node {
     const updatePosition = () => {
 
       // Layout, but only if we have something to display (otherwise bounds fail out)
-      this.bounds.isValid() && this.mutate( GET_LAYOUT_POSITION( visibleBoundsProperty.get(), playAreaCenterXProperty.value ) );
+      this.bounds.isValid() && this.mutate( GET_LAYOUT_POSITION( visibleBoundsProperty.get(), zoomButtonGroupRightProperty.value, timeControlLeftProperty.value ) );
     };
 
     // When the selected element changes, update the displayed controls
@@ -631,6 +632,8 @@ export default class CircuitElementEditContainerNode extends Node {
     } );
 
     visibleBoundsProperty.link( updatePosition );
+    zoomButtonGroupRightProperty.link( updatePosition );
+    timeControlLeftProperty.link( updatePosition );
     this.localBoundsProperty.link( updatePosition );
   }
 }
