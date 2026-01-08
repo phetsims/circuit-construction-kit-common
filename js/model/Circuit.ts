@@ -162,8 +162,8 @@ export default class Circuit extends PhetioObject {
   private readonly groups: PhetioGroup<IntentionalAny, IntentionalAny>[];
   public readonly includeACElements: boolean;
   public readonly includeLabElements: boolean;
-  public readonly vertexConnectedEmitter: TEmitter<[ Vertex, Vertex ]> = new Emitter( {
-    parameters: [ { valueType: Vertex }, { valueType: Vertex } ]
+  public readonly vertexConnectedEmitter: TEmitter<[ Vertex, Vertex, CircuitElement[] ]> = new Emitter( {
+    parameters: [ { valueType: Vertex }, { valueType: Vertex }, { isValidValue: Array.isArray } ]
   } );
   public readonly vertexDisconnectedEmitter: TEmitter<[ CircuitElement[], Vertex ]> = new Emitter( {
     parameters: [ {
@@ -955,7 +955,8 @@ export default class Circuit extends PhetioObject {
     }
     else {
 
-      this.contextStateTracker.handleVertexMerged( targetVertex );
+      // Capture elements connected to oldVertex BEFORE they get moved
+      const oldVertexElements = this.getNeighborCircuitElements( oldVertex );
 
       this.circuitElements.forEach( circuitElement => {
         if ( circuitElement.containsVertex( oldVertex ) ) {
@@ -988,7 +989,7 @@ export default class Circuit extends PhetioObject {
       // Make sure the solder is displayed in the correct z-order
       targetVertex.relayerEmitter.emit();
 
-      this.vertexConnectedEmitter.emit( targetVertex, oldVertex );
+      this.vertexConnectedEmitter.emit( targetVertex, oldVertex, oldVertexElements );
 
     }
   }

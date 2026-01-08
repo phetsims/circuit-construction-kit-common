@@ -36,14 +36,7 @@ type VertexAnnouncementState = {
   connectionCount: number;
 };
 
-type PendingContextEvent =
-  | {
-  type: 'vertices-joined';
-  vertex: Vertex;
-  wasInExistingGroup: boolean; // True if vertex was already in a multi-element group before merge
-  groupIndex: number | null; // Group index if joining an existing group
-}
-  | {
+type PendingContextEvent = {
   type: 'element-removed';
   elementName: string;
 };
@@ -86,32 +79,6 @@ export default class CircuitContextStateTracker {
     this.pendingContextEvents.push( {
       type: 'element-removed',
       elementName: this.getElementDisplayName( circuitElement )
-    } );
-  }
-
-  public handleVertexMerged( vertex: Vertex ): void {
-    this.captureCircuitContextState();
-
-    // Check if we're joining an existing group (more than 2 elements means it was already a group)
-    const groups = this.circuit.getGroups();
-    const currentGroup = groups.find( g => g.vertices.includes( vertex ) );
-    const groupSize = currentGroup ? currentGroup.circuitElements.length : 0;
-
-    // If group has more than 2 elements, we joined an existing group
-    const wasInExistingGroup = groupSize > 2;
-
-    // Get the group index if joining an existing group
-    let groupIndex: number | null = null;
-    if ( wasInExistingGroup && currentGroup ) {
-      const multiElementGroups = groups.filter( g => g.circuitElements.length > 1 );
-      groupIndex = multiElementGroups.indexOf( currentGroup ) + 1;
-    }
-
-    this.pendingContextEvents.push( {
-      type: 'vertices-joined',
-      vertex: vertex,
-      wasInExistingGroup: wasInExistingGroup,
-      groupIndex: groupIndex
     } );
   }
 
@@ -222,17 +189,7 @@ export default class CircuitContextStateTracker {
     const currentElementStates = this.circuitElementAnnouncementStates ? this.collectCircuitElementAnnouncementStates() : null;
 
     this.pendingContextEvents.forEach( event => {
-      if ( event.type === 'vertices-joined' ) {
-        const connectedComponents = this.getConnectedComponentDescriptions( event.vertex );
-        if ( connectedComponents.length > 0 ) {
-          sentences.push( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.connectedComponents.format( {
-            components: connectedComponents.join( ', ' ),
-            inGroup: event.wasInExistingGroup ? 'true' : 'false',
-            groupIndex: event.groupIndex || 0
-          } ) );
-        }
-      }
-      else if ( event.type === 'element-removed' ) {
+      if ( event.type === 'element-removed' ) {
         sentences.push( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.componentRemoved.format( {
           componentName: event.elementName
         } ) );
@@ -298,29 +255,6 @@ export default class CircuitContextStateTracker {
     this.pendingContextEvents.length = 0;
   }
 
-  /**
-   * Returns rich descriptions for each circuit element connected to the vertex.
-   * Each description includes the element's brief name (e.g., "Wire 1") and terminal info
-   * (e.g., "Negative Terminal of Battery 2").
-   */
-  private getConnectedComponentDescriptions( vertex: Vertex ): string[] {
-    const connectedElements = this.circuit.getNeighborCircuitElements( vertex );
-    const descriptions: string[] = [];
-
-    connectedElements.forEach( element => {
-      // Get the position of this element among elements of the same type
-      const position = CircuitDescriptionUtils.getElementPosition( this.circuit, element );
-      const briefName = CircuitDescriptionUtils.formatCircuitElementBriefName( element, position );
-
-      // Get the terminal description for this vertex connection
-      const terminalDescription = CircuitDescriptionUtils.formatTerminalDescription( vertex, element, briefName );
-
-      descriptions.push( terminalDescription );
-    } );
-
-    return descriptions;
-  }
-
   private getElementDisplayName( circuitElement: CircuitElement ): string {
     const label = circuitElement.labelStringProperty.value.trim();
     if ( label.length > 0 ) {
@@ -329,16 +263,6 @@ export default class CircuitContextStateTracker {
     // Use CircuitDescriptionUtils to get the proper type label (handles household items correctly)
     const position = CircuitDescriptionUtils.getElementPosition( this.circuit, circuitElement );
     return CircuitDescriptionUtils.formatCircuitElementBriefName( circuitElement, position );
-  }
-
-  private getVertexLabel( vertex: Vertex ): string {
-    const label = vertex.labelStringProperty.value.trim();
-    if ( label.length > 0 ) {
-      return label;
-    }
-    return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.junctionDefaultLabel.format( {
-      index: vertex.index + 1
-    } );
   }
 
   private formatValue( value: number, decimalPlaces: number ): string {

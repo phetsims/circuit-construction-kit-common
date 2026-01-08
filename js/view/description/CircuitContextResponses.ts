@@ -276,29 +276,43 @@ export default class CircuitContextResponses {
 
   /**
    * Create a response for when vertices are connected.
+   * @param targetVertex - The vertex that remains after the merge
+   * @param oldVertex - The vertex that was removed (already disposed when this is called)
+   * @param oldVertexElements - The elements that were connected to oldVertex BEFORE the merge
    */
-  public createConnectionResponse( targetVertex: Vertex, oldVertex: Vertex ): string | null {
-    // Get the elements connected to each vertex before the merge
-    const targetElements = this.circuit.getNeighborCircuitElements( targetVertex );
+  public createConnectionResponse(
+    targetVertex: Vertex,
+    oldVertex: Vertex,
+    oldVertexElements: CircuitElement[]
+  ): string | null {
+    // Get elements still connected to targetVertex (excludes the ones that came from oldVertex)
+    // Note: After merge, targetVertex has ALL elements, so we need to exclude oldVertexElements
+    const allTargetElements = this.circuit.getNeighborCircuitElements( targetVertex );
+    const originalTargetElements = allTargetElements.filter( e => !oldVertexElements.includes( e ) );
 
     // Build element descriptions
-    const element1Description = this.getVertexElementDescription( targetVertex, targetElements );
-    const element2Description = this.getVertexElementDescription( oldVertex, [] );
+    // element1: from the original target vertex
+    // element2: from the old vertex (now moved to target)
+    const element1Description = this.getElementDescriptionFromList( targetVertex, originalTargetElements );
+    const element2Description = this.getElementDescriptionFromList( oldVertex, oldVertexElements );
 
     if ( !element1Description || !element2Description ) {
       return null;
     }
 
-    // Check if current is now flowing in the connected group
-    const groupIndex = this.findGroupIndexForVertex( targetVertex );
-    const currentPhrase = this.buildCurrentPhraseIfFlowing( groupIndex );
+    // Only include current information if "Show Current" is checked
+    if ( this.circuit.showCurrentProperty.value ) {
+      // Check if current is now flowing in the connected group
+      const groupIndex = this.findGroupIndexForVertex( targetVertex );
+      const currentPhrase = this.buildCurrentPhraseIfFlowing( groupIndex );
 
-    if ( currentPhrase ) {
-      return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.vertexConnectedWithCurrent.format( {
-        element1: element1Description,
-        element2: element2Description,
-        currentPhrase: currentPhrase
-      } );
+      if ( currentPhrase ) {
+        return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.vertexConnectedWithCurrent.format( {
+          element1: element1Description,
+          element2: element2Description,
+          currentPhrase: currentPhrase
+        } );
+      }
     }
 
     return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.vertexConnectedSimple.format( {
@@ -308,19 +322,13 @@ export default class CircuitContextResponses {
   }
 
   /**
-   * Get a description for a vertex based on its connected elements.
+   * Get description for a vertex using a provided list of elements.
    */
-  private getVertexElementDescription( vertex: Vertex, elements: CircuitElement[] ): string | null {
+  private getElementDescriptionFromList( vertex: Vertex, elements: CircuitElement[] ): string | null {
     if ( elements.length === 0 ) {
-      // Get elements connected to this vertex
-      const connectedElements = this.circuit.getNeighborCircuitElements( vertex );
-      if ( connectedElements.length === 0 ) {
-        return null;
-      }
-      elements = connectedElements;
+      return null;
     }
 
-    // Use the first element for description
     const element = elements[ 0 ];
     const position = CircuitDescriptionUtils.getElementPosition( this.circuit, element );
     const briefName = CircuitDescriptionUtils.formatCircuitElementBriefName( element, position );
