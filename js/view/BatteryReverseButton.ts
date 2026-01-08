@@ -13,11 +13,13 @@ import Path from '../../../scenery/js/nodes/Path.js';
 import Color from '../../../scenery/js/util/Color.js';
 import syncAltSolidString from '../../../sherpa/js/fontawesome-5/syncAltSolidString.js';
 import { type RoundPushButtonOptions } from '../../../sun/js/buttons/RoundPushButton.js';
+import isSettingPhetioStateProperty from '../../../tandem/js/isSettingPhetioStateProperty.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import Battery from '../model/Battery.js';
 import type Circuit from '../model/Circuit.js';
 import CCKCRoundPushButton from './CCKCRoundPushButton.js';
+import CircuitContextResponses from './description/CircuitContextResponses.js';
 
 // constants
 const ARROW_ICON_SCALE = 0.035;
@@ -28,6 +30,8 @@ type ReverseBatteryButtonOptions = SelfOptions & RoundPushButtonOptions;
 export default class BatteryReverseButton extends CCKCRoundPushButton {
 
   public constructor( circuit: Circuit, providedOptions?: ReverseBatteryButtonOptions ) {
+
+    const circuitContextResponses = new CircuitContextResponses( circuit );
 
     // This SVG data was exported from assets/flip_battery_icon.ai, which was created by @arouinfar.  Using illustrator,
     // save the AI file as SVG, then inspect the file to get the path declaration.
@@ -68,9 +72,25 @@ export default class BatteryReverseButton extends CCKCRoundPushButton {
         const battery = circuit.selectionProperty.value;
 
         if ( battery instanceof Battery ) {
+
+          // Capture state before flipping
+          circuitContextResponses.captureState();
+
           circuit.flip( battery );
           circuit.componentEditedEmitter.emit();
           circuit.descriptionChangeEmitter.emit();
+
+          // Announce context response after circuit solves
+          if ( !isSettingPhetioStateProperty.value ) {
+            const announceOnceAfterSolve = () => {
+              circuit.circuitChangedEmitter.removeListener( announceOnceAfterSolve );
+              const response = circuitContextResponses.createBatteryReversedResponse( battery );
+              if ( response ) {
+                circuit.circuitContextAnnouncementEmitter.emit( response );
+              }
+            };
+            circuit.circuitChangedEmitter.addListener( announceOnceAfterSolve );
+          }
         }
         else {
           affirm( false, 'selected circuit element should have been a battery' );

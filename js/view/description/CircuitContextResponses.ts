@@ -363,6 +363,210 @@ export default class CircuitContextResponses {
       groupIndex: groupIndex
     } );
   }
+
+  /**
+   * Create a response for when a switch is opened or closed.
+   * @param switchElement - The switch that was toggled
+   * @param isClosed - The new state of the switch (true = closed, false = open)
+   */
+  public createSwitchToggleResponse( switchElement: CircuitElement, isClosed: boolean ): string | null {
+    // Get the group index for this switch
+    const groupIndex = CircuitDescriptionUtils.getGroupIndex( this.circuit, switchElement );
+
+    // If disconnected (single-element group), just announce the state change
+    if ( groupIndex === null ) {
+      return isClosed ?
+             CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.switchClosedNoChangeStringProperty.value :
+             CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.switchOpenedNoChangeStringProperty.value;
+    }
+
+    // Get the group and analyze current changes
+    const groups = this.circuit.getGroups();
+    const multiElementGroups = groups.filter( group => group.circuitElements.length > 1 );
+    const group = multiElementGroups[ groupIndex - 1 ];
+
+    if ( !group ) {
+      return isClosed ?
+             CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.switchClosedNoChangeStringProperty.value :
+             CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.switchOpenedNoChangeStringProperty.value;
+    }
+
+    const currentState = this.getGroupState( group );
+    const previousState = this.previousGroupStates?.get( groupIndex );
+
+    // Build the current phrase based on what changed
+    let currentPhrase: string | null = null;
+
+    if ( previousState ) {
+      const currentChange = this.analyzeCurrentChange( previousState.currentMagnitudes, currentState.currentMagnitudes );
+      const brightnessChange = this.analyzeBrightnessChange( previousState.brightnessValues, currentState.brightnessValues );
+
+      const parts: string[] = [];
+
+      if ( currentChange.hasChange ) {
+        parts.push( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.currentChangePhrase.format( {
+          scope: currentChange.scope,
+          direction: currentChange.direction,
+          groupIndex: groupIndex
+        } ) );
+      }
+
+      if ( brightnessChange.hasChange ) {
+        parts.push( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.lightBulbChangePhrase.format( {
+          scope: brightnessChange.scope,
+          direction: brightnessChange.direction
+        } ) );
+      }
+
+      if ( parts.length > 0 ) {
+        currentPhrase = parts.join( ' ' );
+      }
+    }
+
+    // Return appropriate response based on whether there were current/brightness changes
+    if ( currentPhrase ) {
+      return isClosed ?
+             CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.switchClosed.format( { currentPhrase: currentPhrase } ) :
+             CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.switchOpened.format( { currentPhrase: currentPhrase } );
+    }
+
+    return isClosed ?
+           CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.switchClosedNoChangeStringProperty.value :
+           CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.switchOpenedNoChangeStringProperty.value;
+  }
+
+  /**
+   * Create a response for when a fuse trips or is repaired.
+   * @param fuseElement - The fuse that changed state
+   * @param isTripped - The new state of the fuse (true = tripped/blown, false = repaired)
+   */
+  public createFuseStateChangeResponse( fuseElement: CircuitElement, isTripped: boolean ): string | null {
+    // Get the group index for this fuse
+    const groupIndex = CircuitDescriptionUtils.getGroupIndex( this.circuit, fuseElement );
+
+    // If disconnected (single-element group), just announce the state change
+    if ( groupIndex === null ) {
+      return isTripped ?
+             CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.fuseTrippedNoChangeStringProperty.value :
+             CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.fuseRepairedNoChangeStringProperty.value;
+    }
+
+    // Get the group and analyze current changes
+    const groups = this.circuit.getGroups();
+    const multiElementGroups = groups.filter( group => group.circuitElements.length > 1 );
+    const group = multiElementGroups[ groupIndex - 1 ];
+
+    if ( !group ) {
+      return isTripped ?
+             CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.fuseTrippedNoChangeStringProperty.value :
+             CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.fuseRepairedNoChangeStringProperty.value;
+    }
+
+    const currentState = this.getGroupState( group );
+    const previousState = this.previousGroupStates?.get( groupIndex );
+
+    // Build the current phrase based on what changed
+    let currentPhrase: string | null = null;
+
+    if ( previousState ) {
+      const currentChange = this.analyzeCurrentChange( previousState.currentMagnitudes, currentState.currentMagnitudes );
+      const brightnessChange = this.analyzeBrightnessChange( previousState.brightnessValues, currentState.brightnessValues );
+
+      const parts: string[] = [];
+
+      if ( currentChange.hasChange ) {
+        parts.push( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.currentChangePhrase.format( {
+          scope: currentChange.scope,
+          direction: currentChange.direction,
+          groupIndex: groupIndex
+        } ) );
+      }
+
+      if ( brightnessChange.hasChange ) {
+        parts.push( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.lightBulbChangePhrase.format( {
+          scope: brightnessChange.scope,
+          direction: brightnessChange.direction
+        } ) );
+      }
+
+      if ( parts.length > 0 ) {
+        currentPhrase = parts.join( ' ' );
+      }
+    }
+
+    // Return appropriate response based on whether there were current/brightness changes
+    if ( currentPhrase ) {
+      return isTripped ?
+             CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.fuseTripped.format( { currentPhrase: currentPhrase } ) :
+             CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.fuseRepaired.format( { currentPhrase: currentPhrase } );
+    }
+
+    return isTripped ?
+           CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.fuseTrippedNoChangeStringProperty.value :
+           CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.fuseRepairedNoChangeStringProperty.value;
+  }
+
+  /**
+   * Create a response for when a battery is reversed.
+   * @param batteryElement - The battery that was reversed
+   */
+  public createBatteryReversedResponse( batteryElement: CircuitElement ): string | null {
+    // Get the group index for this battery
+    const groupIndex = CircuitDescriptionUtils.getGroupIndex( this.circuit, batteryElement );
+
+    // If disconnected (single-element group), just announce the state change
+    if ( groupIndex === null ) {
+      return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.batteryReversedNoChangeStringProperty.value;
+    }
+
+    // Get the group and analyze current changes
+    const groups = this.circuit.getGroups();
+    const multiElementGroups = groups.filter( group => group.circuitElements.length > 1 );
+    const group = multiElementGroups[ groupIndex - 1 ];
+
+    if ( !group ) {
+      return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.batteryReversedNoChangeStringProperty.value;
+    }
+
+    const currentState = this.getGroupState( group );
+    const previousState = this.previousGroupStates?.get( groupIndex );
+
+    // Build the current phrase based on what changed
+    let currentPhrase: string | null = null;
+
+    if ( previousState ) {
+      const currentChange = this.analyzeCurrentChange( previousState.currentMagnitudes, currentState.currentMagnitudes );
+      const brightnessChange = this.analyzeBrightnessChange( previousState.brightnessValues, currentState.brightnessValues );
+
+      const parts: string[] = [];
+
+      if ( currentChange.hasChange ) {
+        parts.push( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.currentChangePhrase.format( {
+          scope: currentChange.scope,
+          direction: currentChange.direction,
+          groupIndex: groupIndex
+        } ) );
+      }
+
+      if ( brightnessChange.hasChange ) {
+        parts.push( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.lightBulbChangePhrase.format( {
+          scope: brightnessChange.scope,
+          direction: brightnessChange.direction
+        } ) );
+      }
+
+      if ( parts.length > 0 ) {
+        currentPhrase = parts.join( ' ' );
+      }
+    }
+
+    // Return appropriate response based on whether there were current/brightness changes
+    if ( currentPhrase ) {
+      return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.batteryReversed.format( { currentPhrase: currentPhrase } );
+    }
+
+    return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.batteryReversedNoChangeStringProperty.value;
+  }
 }
 
 circuitConstructionKitCommon.register( 'CircuitContextResponses', CircuitContextResponses );

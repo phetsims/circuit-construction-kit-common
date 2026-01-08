@@ -229,7 +229,17 @@ export default class CircuitElementEditContainerNode extends Node {
             CircuitConstructionKitCommonFluent.a11y.fuseCurrentRatingControl.ariaValueText.format( {
               currentNumber: value,
               currentFormatted: toFixed( value, 1 )
-            } )
+            } ),
+          startDrag: () => circuitContextResponses.captureState(),
+          endDrag: () => {
+            const selection = circuit.selectionProperty.value;
+            if ( selection instanceof CircuitElement && !isSettingPhetioStateProperty.value ) {
+              const response = circuitContextResponses.createValueChangeResponse( selection );
+              if ( response ) {
+                circuit.circuitContextAnnouncementEmitter.emit( response );
+              }
+            }
+          }
         }
       } );
 

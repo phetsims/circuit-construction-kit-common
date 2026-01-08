@@ -568,7 +568,59 @@ export default class CircuitNode extends Node {
       pendingConnection = { targetVertex: targetVertex, oldVertex: oldVertex };
     } );
 
-    // After physics solve, process pending connection announcements
+    // Handle switch toggle context responses
+    let pendingSwitchToggle: { switchElement: Switch; isClosed: boolean } | null = null;
+
+    // Listen for switch toggle events on any switch
+    const switchToggleListener = ( isClosed: boolean, switchElement: Switch ) => {
+      if ( !isResettingAllProperty.value && !isSettingPhetioStateProperty.value ) {
+        // Capture state before the circuit solves
+        circuitContextResponses.captureState();
+        pendingSwitchToggle = { switchElement: switchElement, isClosed: isClosed };
+      }
+    };
+
+    // Register listener on each switch when it's added to the circuit
+    circuit.circuitElements.addItemAddedListener( circuitElement => {
+      if ( circuitElement instanceof Switch ) {
+        const switchElement = circuitElement;
+        const listener = ( isClosed: boolean ) => switchToggleListener( isClosed, switchElement );
+        switchElement.isClosedProperty.lazyLink( listener );
+
+        // Remove listener when switch is disposed
+        switchElement.disposeEmitterCircuitElement.addListener( () => {
+          switchElement.isClosedProperty.unlink( listener );
+        } );
+      }
+    } );
+
+    // Handle fuse tripped/repaired context responses
+    let pendingFuseStateChange: { fuseElement: Fuse; isTripped: boolean } | null = null;
+
+    // Listen for fuse state changes on any fuse
+    const fuseStateChangeListener = ( isTripped: boolean, fuseElement: Fuse ) => {
+      if ( !isResettingAllProperty.value && !isSettingPhetioStateProperty.value ) {
+        // Capture state before the circuit solves
+        circuitContextResponses.captureState();
+        pendingFuseStateChange = { fuseElement: fuseElement, isTripped: isTripped };
+      }
+    };
+
+    // Register listener on each fuse when it's added to the circuit
+    circuit.circuitElements.addItemAddedListener( circuitElement => {
+      if ( circuitElement instanceof Fuse ) {
+        const fuseElement = circuitElement;
+        const listener = ( isTripped: boolean ) => fuseStateChangeListener( isTripped, fuseElement );
+        fuseElement.isTrippedProperty.lazyLink( listener );
+
+        // Remove listener when fuse is disposed
+        fuseElement.disposeEmitterCircuitElement.addListener( () => {
+          fuseElement.isTrippedProperty.unlink( listener );
+        } );
+      }
+    } );
+
+    // After physics solve, process pending connection, switch toggle, and fuse state change announcements
     circuit.circuitChangedEmitter.addListener( () => {
       if ( pendingConnection && !isResettingAllProperty.value && !isSettingPhetioStateProperty.value ) {
         const response = circuitContextResponses.createConnectionResponse(
@@ -579,6 +631,28 @@ export default class CircuitNode extends Node {
           this.addAccessibleContextResponse( response );
         }
         pendingConnection = null;
+      }
+
+      if ( pendingSwitchToggle && !isResettingAllProperty.value && !isSettingPhetioStateProperty.value ) {
+        const response = circuitContextResponses.createSwitchToggleResponse(
+          pendingSwitchToggle.switchElement,
+          pendingSwitchToggle.isClosed
+        );
+        if ( response ) {
+          this.addAccessibleContextResponse( response );
+        }
+        pendingSwitchToggle = null;
+      }
+
+      if ( pendingFuseStateChange && !isResettingAllProperty.value && !isSettingPhetioStateProperty.value ) {
+        const response = circuitContextResponses.createFuseStateChangeResponse(
+          pendingFuseStateChange.fuseElement,
+          pendingFuseStateChange.isTripped
+        );
+        if ( response ) {
+          this.addAccessibleContextResponse( response );
+        }
+        pendingFuseStateChange = null;
       }
     } );
 

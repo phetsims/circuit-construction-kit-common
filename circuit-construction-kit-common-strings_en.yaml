@@ -371,6 +371,21 @@ a11y:
     vertexConnectedWithCurrent: 'Connected { $element1 } to { $element2 }. { $currentPhrase }'
     # NEW: Simple vertex connection (when no current flows)
     vertexConnectedSimple: 'Connected { $element1 } to { $element2 }.'
+    # NEW: Switch toggle responses
+    switchOpened: 'Switch opened. { $currentPhrase }'
+    switchClosed: 'Switch closed. { $currentPhrase }'
+    # Current phrases for switch (when disconnected or no change)
+    switchOpenedNoChange: 'Switch opened.'
+    switchClosedNoChange: 'Switch closed.'
+    # NEW: Fuse tripped responses
+    fuseTripped: 'Fuse tripped. { $currentPhrase }'
+    fuseTrippedNoChange: 'Fuse tripped.'
+    # NEW: Fuse repaired responses
+    fuseRepaired: 'Fuse repaired. { $currentPhrase }'
+    fuseRepairedNoChange: 'Fuse repaired.'
+    # NEW: Battery reversed responses
+    batteryReversed: 'Battery reversed. { $currentPhrase }'
+    batteryReversedNoChange: 'Battery reversed.'
   sensorToolbox:
     accessibleHeading: Sensor Toolbox
     ammeter:

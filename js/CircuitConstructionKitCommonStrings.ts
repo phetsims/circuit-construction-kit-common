@@ -248,6 +248,16 @@ type StringsType = {
       'lightBulbChangePhraseStringProperty': LocalizedStringProperty;
       'vertexConnectedWithCurrentStringProperty': LocalizedStringProperty;
       'vertexConnectedSimpleStringProperty': LocalizedStringProperty;
+      'switchOpenedStringProperty': LocalizedStringProperty;
+      'switchClosedStringProperty': LocalizedStringProperty;
+      'switchOpenedNoChangeStringProperty': LocalizedStringProperty;
+      'switchClosedNoChangeStringProperty': LocalizedStringProperty;
+      'fuseTrippedStringProperty': LocalizedStringProperty;
+      'fuseTrippedNoChangeStringProperty': LocalizedStringProperty;
+      'fuseRepairedStringProperty': LocalizedStringProperty;
+      'fuseRepairedNoChangeStringProperty': LocalizedStringProperty;
+      'batteryReversedStringProperty': LocalizedStringProperty;
+      'batteryReversedNoChangeStringProperty': LocalizedStringProperty;
     };
     'sensorToolbox': {
       'accessibleHeadingStringProperty': LocalizedStringProperty;

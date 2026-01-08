@@ -212,6 +212,16 @@ addToMapIfDefined( 'a11y_circuitContextResponses_currentChangePhrase', 'a11y.cir
 addToMapIfDefined( 'a11y_circuitContextResponses_lightBulbChangePhrase', 'a11y.circuitContextResponses.lightBulbChangePhraseStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_vertexConnectedWithCurrent', 'a11y.circuitContextResponses.vertexConnectedWithCurrentStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_vertexConnectedSimple', 'a11y.circuitContextResponses.vertexConnectedSimpleStringProperty' );
+addToMapIfDefined( 'a11y_circuitContextResponses_switchOpened', 'a11y.circuitContextResponses.switchOpenedStringProperty' );
+addToMapIfDefined( 'a11y_circuitContextResponses_switchClosed', 'a11y.circuitContextResponses.switchClosedStringProperty' );
+addToMapIfDefined( 'a11y_circuitContextResponses_switchOpenedNoChange', 'a11y.circuitContextResponses.switchOpenedNoChangeStringProperty' );
+addToMapIfDefined( 'a11y_circuitContextResponses_switchClosedNoChange', 'a11y.circuitContextResponses.switchClosedNoChangeStringProperty' );
+addToMapIfDefined( 'a11y_circuitContextResponses_fuseTripped', 'a11y.circuitContextResponses.fuseTrippedStringProperty' );
+addToMapIfDefined( 'a11y_circuitContextResponses_fuseTrippedNoChange', 'a11y.circuitContextResponses.fuseTrippedNoChangeStringProperty' );
+addToMapIfDefined( 'a11y_circuitContextResponses_fuseRepaired', 'a11y.circuitContextResponses.fuseRepairedStringProperty' );
+addToMapIfDefined( 'a11y_circuitContextResponses_fuseRepairedNoChange', 'a11y.circuitContextResponses.fuseRepairedNoChangeStringProperty' );
+addToMapIfDefined( 'a11y_circuitContextResponses_batteryReversed', 'a11y.circuitContextResponses.batteryReversedStringProperty' );
+addToMapIfDefined( 'a11y_circuitContextResponses_batteryReversedNoChange', 'a11y.circuitContextResponses.batteryReversedNoChangeStringProperty' );
 addToMapIfDefined( 'a11y_sensorToolbox_accessibleHeading', 'a11y.sensorToolbox.accessibleHeadingStringProperty' );
 addToMapIfDefined( 'a11y_sensorToolbox_ammeter_accessibleName', 'a11y.sensorToolbox.ammeter.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_sensorToolbox_voltmeter_accessibleName', 'a11y.sensorToolbox.voltmeter.accessibleNameStringProperty' );
@@ -545,7 +555,22 @@ const CircuitConstructionKitCommonFluent = {
       _comment_3: new FluentComment( {"comment":"NEW: Vertex connection with current flow","associatedKey":"vertexConnectedWithCurrent"} ),
       vertexConnectedWithCurrent: new FluentPattern<{ currentPhrase: FluentVariable, element1: FluentVariable, element2: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_vertexConnectedWithCurrent', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.vertexConnectedWithCurrentStringProperty' ), [{"name":"currentPhrase"},{"name":"element1"},{"name":"element2"}] ),
       _comment_4: new FluentComment( {"comment":"NEW: Simple vertex connection (when no current flows)","associatedKey":"vertexConnectedSimple"} ),
-      vertexConnectedSimple: new FluentPattern<{ element1: FluentVariable, element2: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_vertexConnectedSimple', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.vertexConnectedSimpleStringProperty' ), [{"name":"element1"},{"name":"element2"}] )
+      vertexConnectedSimple: new FluentPattern<{ element1: FluentVariable, element2: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_vertexConnectedSimple', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.vertexConnectedSimpleStringProperty' ), [{"name":"element1"},{"name":"element2"}] ),
+      _comment_5: new FluentComment( {"comment":"NEW: Switch toggle responses","associatedKey":"switchOpened"} ),
+      switchOpened: new FluentPattern<{ currentPhrase: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_switchOpened', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.switchOpenedStringProperty' ), [{"name":"currentPhrase"}] ),
+      switchClosed: new FluentPattern<{ currentPhrase: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_switchClosed', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.switchClosedStringProperty' ), [{"name":"currentPhrase"}] ),
+      _comment_6: new FluentComment( {"comment":"Current phrases for switch (when disconnected or no change)","associatedKey":"switchOpenedNoChange"} ),
+      switchOpenedNoChangeStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_switchOpenedNoChange', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.switchOpenedNoChangeStringProperty' ) ),
+      switchClosedNoChangeStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_switchClosedNoChange', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.switchClosedNoChangeStringProperty' ) ),
+      _comment_7: new FluentComment( {"comment":"NEW: Fuse tripped responses","associatedKey":"fuseTripped"} ),
+      fuseTripped: new FluentPattern<{ currentPhrase: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_fuseTripped', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.fuseTrippedStringProperty' ), [{"name":"currentPhrase"}] ),
+      fuseTrippedNoChangeStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_fuseTrippedNoChange', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.fuseTrippedNoChangeStringProperty' ) ),
+      _comment_8: new FluentComment( {"comment":"NEW: Fuse repaired responses","associatedKey":"fuseRepaired"} ),
+      fuseRepaired: new FluentPattern<{ currentPhrase: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_fuseRepaired', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.fuseRepairedStringProperty' ), [{"name":"currentPhrase"}] ),
+      fuseRepairedNoChangeStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_fuseRepairedNoChange', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.fuseRepairedNoChangeStringProperty' ) ),
+      _comment_9: new FluentComment( {"comment":"NEW: Battery reversed responses","associatedKey":"batteryReversed"} ),
+      batteryReversed: new FluentPattern<{ currentPhrase: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_batteryReversed', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.batteryReversedStringProperty' ), [{"name":"currentPhrase"}] ),
+      batteryReversedNoChangeStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_batteryReversedNoChange', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.batteryReversedNoChangeStringProperty' ) )
     },
     sensorToolbox: {
       accessibleHeadingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_sensorToolbox_accessibleHeading', _.get( CircuitConstructionKitCommonStrings, 'a11y.sensorToolbox.accessibleHeadingStringProperty' ) ),

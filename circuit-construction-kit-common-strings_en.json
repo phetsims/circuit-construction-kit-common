@@ -624,6 +624,36 @@
       },
       "vertexConnectedSimple": {
         "value": "Connected { $element1 } to { $element2 }."
+      },
+      "switchOpened": {
+        "value": "Switch opened. { $currentPhrase }"
+      },
+      "switchClosed": {
+        "value": "Switch closed. { $currentPhrase }"
+      },
+      "switchOpenedNoChange": {
+        "value": "Switch opened."
+      },
+      "switchClosedNoChange": {
+        "value": "Switch closed."
+      },
+      "fuseTripped": {
+        "value": "Fuse tripped. { $currentPhrase }"
+      },
+      "fuseTrippedNoChange": {
+        "value": "Fuse tripped."
+      },
+      "fuseRepaired": {
+        "value": "Fuse repaired. { $currentPhrase }"
+      },
+      "fuseRepairedNoChange": {
+        "value": "Fuse repaired."
+      },
+      "batteryReversed": {
+        "value": "Battery reversed. { $currentPhrase }"
+      },
+      "batteryReversedNoChange": {
+        "value": "Battery reversed."
       }
     },
     "sensorToolbox": {
