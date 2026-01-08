@@ -136,8 +136,16 @@ export default class CircuitContextResponses {
     // Check if there are light bulbs in the group
     const hasLightBulbs = currentState.brightnessValues.length > 0;
 
-    // CASE 2: Connected but no changes
-    if ( !currentChange.hasChange && !brightnessChange.hasChange ) {
+    // Only report current changes if "Show Current" is checked
+    const showCurrent = this.circuit.showCurrentProperty.value;
+    const hasReportableCurrentChange = showCurrent && currentChange.hasChange;
+
+    // CASE 2: Connected but no reportable changes
+    if ( !hasReportableCurrentChange && !brightnessChange.hasChange ) {
+      // If show current is off and there are no light bulbs, say nothing
+      if ( !showCurrent && !hasLightBulbs ) {
+        return null;
+      }
       return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.noChangesInGroup.format( {
         groupIndex: groupIndex,
         hasLightBulbs: hasLightBulbs ? 'true' : 'false'
@@ -147,7 +155,7 @@ export default class CircuitContextResponses {
     // CASE 3: Connected with changes - build response
     const parts: string[] = [];
 
-    if ( currentChange.hasChange ) {
+    if ( hasReportableCurrentChange ) {
       parts.push( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.currentChangePhrase.format( {
         scope: currentChange.scope,
         direction: currentChange.direction,
@@ -162,7 +170,7 @@ export default class CircuitContextResponses {
       } ) );
     }
 
-    return parts.join( ' ' );
+    return parts.length > 0 ? parts.join( ' ' ) : null;
   }
 
   /**
@@ -410,16 +418,19 @@ export default class CircuitContextResponses {
     const currentState = this.getGroupState( group );
     const previousState = this.previousGroupStates?.get( groupIndex );
 
-    // Build the current phrase based on what changed
-    let currentPhrase: string | null = null;
+    // Build the change phrase based on what changed
+    let changePhrase: string | null = null;
 
     if ( previousState ) {
       const currentChange = this.analyzeCurrentChange( previousState.currentMagnitudes, currentState.currentMagnitudes );
       const brightnessChange = this.analyzeBrightnessChange( previousState.brightnessValues, currentState.brightnessValues );
 
+      // Only report current changes if "Show Current" is checked
+      const showCurrent = this.circuit.showCurrentProperty.value;
+
       const parts: string[] = [];
 
-      if ( currentChange.hasChange ) {
+      if ( showCurrent && currentChange.hasChange ) {
         parts.push( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.currentChangePhrase.format( {
           scope: currentChange.scope,
           direction: currentChange.direction,
@@ -435,15 +446,15 @@ export default class CircuitContextResponses {
       }
 
       if ( parts.length > 0 ) {
-        currentPhrase = parts.join( ' ' );
+        changePhrase = parts.join( ' ' );
       }
     }
 
     // Return appropriate response based on whether there were current/brightness changes
-    if ( currentPhrase ) {
+    if ( changePhrase ) {
       return isClosed ?
-             CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.switchClosed.format( { currentPhrase: currentPhrase } ) :
-             CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.switchOpened.format( { currentPhrase: currentPhrase } );
+             CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.switchClosed.format( { currentPhrase: changePhrase } ) :
+             CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.switchOpened.format( { currentPhrase: changePhrase } );
     }
 
     return isClosed ?
@@ -481,16 +492,19 @@ export default class CircuitContextResponses {
     const currentState = this.getGroupState( group );
     const previousState = this.previousGroupStates?.get( groupIndex );
 
-    // Build the current phrase based on what changed
-    let currentPhrase: string | null = null;
+    // Build the change phrase based on what changed
+    let changePhrase: string | null = null;
 
     if ( previousState ) {
       const currentChange = this.analyzeCurrentChange( previousState.currentMagnitudes, currentState.currentMagnitudes );
       const brightnessChange = this.analyzeBrightnessChange( previousState.brightnessValues, currentState.brightnessValues );
 
+      // Only report current changes if "Show Current" is checked
+      const showCurrent = this.circuit.showCurrentProperty.value;
+
       const parts: string[] = [];
 
-      if ( currentChange.hasChange ) {
+      if ( showCurrent && currentChange.hasChange ) {
         parts.push( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.currentChangePhrase.format( {
           scope: currentChange.scope,
           direction: currentChange.direction,
@@ -506,15 +520,15 @@ export default class CircuitContextResponses {
       }
 
       if ( parts.length > 0 ) {
-        currentPhrase = parts.join( ' ' );
+        changePhrase = parts.join( ' ' );
       }
     }
 
     // Return appropriate response based on whether there were current/brightness changes
-    if ( currentPhrase ) {
+    if ( changePhrase ) {
       return isTripped ?
-             CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.fuseTripped.format( { currentPhrase: currentPhrase } ) :
-             CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.fuseRepaired.format( { currentPhrase: currentPhrase } );
+             CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.fuseTripped.format( { currentPhrase: changePhrase } ) :
+             CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.fuseRepaired.format( { currentPhrase: changePhrase } );
     }
 
     return isTripped ?
@@ -547,16 +561,19 @@ export default class CircuitContextResponses {
     const currentState = this.getGroupState( group );
     const previousState = this.previousGroupStates?.get( groupIndex );
 
-    // Build the current phrase based on what changed
-    let currentPhrase: string | null = null;
+    // Build the change phrase based on what changed
+    let changePhrase: string | null = null;
 
     if ( previousState ) {
       const currentChange = this.analyzeCurrentChange( previousState.currentMagnitudes, currentState.currentMagnitudes );
       const brightnessChange = this.analyzeBrightnessChange( previousState.brightnessValues, currentState.brightnessValues );
 
+      // Only report current changes if "Show Current" is checked
+      const showCurrent = this.circuit.showCurrentProperty.value;
+
       const parts: string[] = [];
 
-      if ( currentChange.hasChange ) {
+      if ( showCurrent && currentChange.hasChange ) {
         parts.push( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.currentChangePhrase.format( {
           scope: currentChange.scope,
           direction: currentChange.direction,
@@ -572,13 +589,13 @@ export default class CircuitContextResponses {
       }
 
       if ( parts.length > 0 ) {
-        currentPhrase = parts.join( ' ' );
+        changePhrase = parts.join( ' ' );
       }
     }
 
     // Return appropriate response based on whether there were current/brightness changes
-    if ( currentPhrase ) {
-      return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.batteryReversed.format( { currentPhrase: currentPhrase } );
+    if ( changePhrase ) {
+      return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.batteryReversed.format( { currentPhrase: changePhrase } );
     }
 
     return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.batteryReversedNoChangeStringProperty.value;
@@ -632,16 +649,19 @@ export default class CircuitContextResponses {
     const currentState = this.getGroupState( group );
     const previousState = this.previousGroupStates?.get( groupIndex );
 
-    // Build the current phrase based on what changed
-    let currentPhrase: string | null = null;
+    // Build the change phrase based on what changed
+    let changePhrase: string | null = null;
 
     if ( previousState ) {
       const currentChange = this.analyzeCurrentChange( previousState.currentMagnitudes, currentState.currentMagnitudes );
       const brightnessChange = this.analyzeBrightnessChange( previousState.brightnessValues, currentState.brightnessValues );
 
+      // Only report current changes if "Show Current" is checked
+      const showCurrent = this.circuit.showCurrentProperty.value;
+
       const parts: string[] = [];
 
-      if ( currentChange.hasChange ) {
+      if ( showCurrent && currentChange.hasChange ) {
         parts.push( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.currentChangePhrase.format( {
           scope: currentChange.scope,
           direction: currentChange.direction,
@@ -657,15 +677,15 @@ export default class CircuitContextResponses {
       }
 
       if ( parts.length > 0 ) {
-        currentPhrase = parts.join( ' ' );
+        changePhrase = parts.join( ' ' );
       }
     }
 
     // Return appropriate response based on whether there were current/brightness changes
-    if ( currentPhrase ) {
+    if ( changePhrase ) {
       return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.vertexDisconnected.format( {
         elementList: elementList,
-        currentPhrase: currentPhrase
+        currentPhrase: changePhrase
       } );
     }
 
