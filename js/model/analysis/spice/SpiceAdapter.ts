@@ -1,12 +1,12 @@
 // Copyright 2026, University of Colorado Boulder
 
 /**
- * EECircuitAdapter bridges PhET's Circuit model to the EEcircuit SPICE solver.
+ * SpiceAdapter bridges PhET's Circuit model to the Spice SPICE solver.
  * Supports DC and AC circuits with batteries, resistors, capacitors, and inductors.
  *
  * This adapter:
  * 1. Converts circuit topology to a SPICE netlist
- * 2. Runs the EEcircuit solver
+ * 2. Runs the Spice solver
  * 3. Parses results back into a format compatible with MNASolution
  *
  * For reactive components (capacitors, inductors), initial conditions are set
@@ -23,28 +23,28 @@ import type MNAInductor from '../mna/MNAInductor.js';
 import type MNAResistor from '../mna/MNAResistor.js';
 import MNASolution from '../mna/MNASolution.js';
 
-// Type for EEcircuit result data entry
-type EEcircuitDataEntry = {
+// Type for Spice result data entry
+type SpiceDataEntry = {
   name: string;
   type: 'voltage' | 'current' | 'time' | 'frequency' | 'notype';
   values: number[] | Array<{ real: number; img: number }>;
 };
 
-// The result format from EEcircuit's runSim()
-type EEcircuitResult = {
+// The result format from Spice's runSim()
+type SpiceResult = {
   header: string;
   numVariables: number;
   variableNames: string[];
   numPoints: number;
   dataType: 'real' | 'complex';
-  data: EEcircuitDataEntry[];
+  data: SpiceDataEntry[];
 };
 
-// Type for EEcircuit simulation (loaded globally)
-type EEcircuitSimulation = {
+// Type for Spice simulation (loaded globally)
+type SpiceSimulation = {
   start: () => Promise<void>;
   setNetList: ( netlist: string ) => void;
-  runSim: () => Promise<EEcircuitResult>;
+  runSim: () => Promise<SpiceResult>;
   getError: () => string[];
 };
 
@@ -307,10 +307,10 @@ export default class SpiceAdapter {
   }
 
   /**
-   * Helper to get the last value from an EEcircuit data entry.
+   * Helper to get the last value from a Spice data entry.
    * Handles both real and complex data types.
    */
-  private getLastValue( entry: EEcircuitDataEntry ): number {
+  private getLastValue( entry: SpiceDataEntry ): number {
     if ( entry.values.length === 0 ) {
       return 0;
     }
@@ -328,30 +328,30 @@ export default class SpiceAdapter {
   /**
    * Helper to find a data entry by name (case-insensitive).
    */
-  private findDataEntry( result: EEcircuitResult, name: string ): EEcircuitDataEntry | undefined {
+  private findDataEntry( result: SpiceResult, name: string ): SpiceDataEntry | undefined {
     const lowerName = name.toLowerCase();
     return result.data.find( entry => entry.name.toLowerCase() === lowerName );
   }
 
   /**
-   * Parses EEcircuit results into an MNASolution.
+   * Parses Spice results into an MNASolution.
    *
-   * EEcircuit result format:
+   * Spice result format:
    * - data: Array of { name, type, values }
    * - Variable names are like 'time', 'v(1)', 'v(2)', 'i(v1)', 'i(c1)', 'i(l1)'
    *
    * SPICE results use SPICE node numbers (0, 1, 2, ...) which must be mapped
    * back to PhET node IDs.
    *
-   * @param result - The result from EEcircuit's runSim()
+   * @param result - The result from Spice's runSim()
    * @returns MNASolution compatible with PhET's existing code
    */
-  public parseResult( result: EEcircuitResult ): MNASolution {
+  public parseResult( result: SpiceResult ): MNASolution {
 
     // Build voltage map for all nodes
     const voltageMap = new Map<string, number>();
 
-    // EEcircuit returns data as an array of { name, type, values }
+    // Spice returns data as an array of { name, type, values }
     // Variable names are like 'v(1)', 'v(2)' for node voltages (using SPICE node numbers)
     for ( const phetNode of this.nodeSet ) {
       // Convert PhET node ID to SPICE node number
@@ -489,19 +489,19 @@ export default class SpiceAdapter {
   }
 
   /**
-   * Solves the circuit using EEcircuit and returns an MNASolution.
+   * Solves the circuit using Spice and returns an MNASolution.
    *
-   * @param eesim - The EEcircuit simulation instance (from window.EEcircuit.Simulation)
+   * @param spicesim - The Spice simulation instance
    */
-  public async solve( eesim: EEcircuitSimulation ): Promise<MNASolution> {
+  public async solve( spicesim: SpiceSimulation ): Promise<MNASolution> {
     const netlist = this.generateTransientNetlist();
 
-    // console.log( 'EECircuitAdapter netlist:', netlist );
+    // console.log( 'SpiceAdapter netlist:', netlist );
 
-    eesim.setNetList( netlist );
-    const result = await eesim.runSim();
+    spicesim.setNetList( netlist );
+    const result = await spicesim.runSim();
 
-    // console.log( 'EECircuitAdapter result:', result );
+    // console.log( 'SpiceAdapter result:', result );
 
     return this.parseResult( result );
   }
@@ -510,7 +510,7 @@ export default class SpiceAdapter {
    * Synchronous solve method that matches MNACircuit.solve() signature.
    * This is for testing/comparison purposes. In production, use the async solve() method.
    *
-   * Note: This currently just runs the standard MNA solve - the async EEcircuit integration
+   * Note: This currently just runs the standard MNA solve - the async Spice integration
    * will need to be handled at a higher level in the call stack.
    */
   public solveSync(): MNASolution {
@@ -522,7 +522,7 @@ export default class SpiceAdapter {
     const currentMap = new Map<MNACircuitElement, number>();
 
     // This is a simplified placeholder that won't work for complex circuits
-    // The real solution requires the async EEcircuit call
+    // The real solution requires the async Spice call
 
     // Set ground to 0
     for ( const node of this.nodeSet ) {

@@ -4,7 +4,7 @@
  * PhET Minimal SPICE Engine
  * A focused wrapper around ngspice WASM for Circuit Construction Kit.
  *
- * Provides the same interface as EEcircuit's Simulation class:
+ * Provides the same interface as the Spice Simulation class:
  *   - start() -> Promise<void>
  *   - setNetList(string) -> void
  *   - runSim() -> Promise<Result>

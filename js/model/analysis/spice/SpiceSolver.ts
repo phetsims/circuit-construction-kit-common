@@ -173,7 +173,7 @@ export default class SpiceSolver {
       inductors,
       dt,
       ( solution: MNASolution, adapter: SpiceAdapter ) => {
-        this.applyEEcircuitSolution(
+        this.applySpiceSolution(
           circuit, solution, adapter,
           batteryMap, batteryMNAMap, resistorMap,
           capacitorMap, capacitorMNAMap,
@@ -185,9 +185,9 @@ export default class SpiceSolver {
   }
 
   /**
-   * Apply EEcircuit solution back to the circuit elements.
+   * Apply Spice solution back to the circuit elements.
    */
-  private static applyEEcircuitSolution(
+  private static applySpiceSolution(
     circuit: Circuit,
     solution: MNASolution,
     adapter: SpiceAdapter,
@@ -310,7 +310,7 @@ export default class SpiceSolver {
       const voltage = solution.getNodeVoltage( nodeId );
 
       if ( typeof voltage === 'number' && !isNaN( voltage ) ) {
-        // EEcircuit uses standard SPICE convention, PhET negates
+        // Spice uses standard SPICE convention, PhET negates
         vertex.voltageProperty.value = voltage;
         solvedVertices.push( vertex );
       }

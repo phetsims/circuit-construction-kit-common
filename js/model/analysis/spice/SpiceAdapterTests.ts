@@ -1,7 +1,7 @@
 // Copyright 2026, University of Colorado Boulder
 
 /**
- * Tests for EECircuitAdapter - verifies netlist generation and result parsing.
+ * Tests for SpiceAdapter - verifies netlist generation and result parsing.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -11,7 +11,7 @@ import MNACircuit from '../mna/MNACircuit.js';
 import MNAResistor from '../mna/MNAResistor.js';
 import SpiceAdapter from './SpiceAdapter.js';
 
-QUnit.module( 'EECircuitAdapter' );
+QUnit.module( 'SpiceAdapter' );
 
 // Helper to check approximate equality
 const approxEquals = ( a: number, b: number, tolerance = 1e-6 ): boolean => Math.abs( a - b ) < tolerance;
@@ -70,8 +70,8 @@ QUnit.test( 'netlist generation: resistors in parallel', assert => {
   assert.ok( netlist.includes( 'R2' ), 'should have R2' );
 } );
 
-QUnit.test( 'compare MNA vs EECircuit netlist: simple circuit', assert => {
-  // This test generates the netlist and compares what MNA produces vs what we'd send to EEcircuit
+QUnit.test( 'compare MNA vs Spice netlist: simple circuit', assert => {
+  // This test generates the netlist and compares what MNA produces vs what we'd send to Spice
   const battery = new MNABattery( '0', '1', 4.0 );
   const resistor = new MNAResistor( '1', '0', 2.0 );
 
@@ -91,12 +91,12 @@ QUnit.test( 'compare MNA vs EECircuit netlist: simple circuit', assert => {
 
   // Generate netlist for same circuit
   const netlist = SpiceAdapter.createNetlist( [ battery ], [ resistor ] );
-  console.log( 'Netlist for EEcircuit:\n', netlist );
+  console.log( 'Netlist for Spice:\n', netlist );
 
   // Note: SPICE conventions differ from PhET
   // SPICE: V(node) is absolute, ground is node 0
   // PhET: Uses relative voltages with different sign convention
-  // EEcircuit should return: V(0)=0, V(1)=4 (standard SPICE)
+  // Spice should return: V(0)=0, V(1)=4 (standard SPICE)
   // We'll need to convert when parsing results
 
   assert.ok( true, 'Netlist generated successfully' );
@@ -145,8 +145,8 @@ QUnit.test( 'netlist generation: disconnected components', assert => {
   assert.ok( netlist.includes( 'R2 2 3' ), 'disconnected resistor should be included' );
 } );
 
-QUnit.test( 'netlist format matches EEcircuit expectations', assert => {
-  // Verify the netlist format matches what we know works in EEcircuit
+QUnit.test( 'netlist format matches Spice expectations', assert => {
+  // Verify the netlist format matches what we know works in Spice
   // Based on the working example in circuit-construction-kit-dc-main.ts
 
   const battery = new MNABattery( '0', '1', 5.0 );
@@ -165,6 +165,6 @@ QUnit.test( 'netlist format matches EEcircuit expectations', assert => {
   assert.ok( lines[ 0 ].includes( 'PhET' ), 'first line should be title' );
   assert.ok( lines[ lines.length - 1 ].trim() === '.END', 'last line should be .END' );
 
-  console.log( 'EEcircuit-compatible netlist:\n', netlist );
+  console.log( 'Spice-compatible netlist:\n', netlist );
   assert.ok( true, 'Netlist format verified' );
 } );

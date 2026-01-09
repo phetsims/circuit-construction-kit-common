@@ -1,7 +1,7 @@
 // Copyright 2026, University of Colorado Boulder
 
 /**
- * EEcircuitSolverManager is a singleton that manages async circuit solving with ngspice WASM.
+ * SpiceSolverManager is a singleton that manages async circuit solving with ngspice WASM.
  *
  * Uses a simple callback-based pattern: when a solve completes, the callback is invoked
  * to apply results directly to circuit elements. Solves are processed sequentially
@@ -66,7 +66,7 @@ export default class SpiceSolverManager {
     await this.eesim.start();
     this.initialized = true;
 
-    console.log( 'EEcircuitSolverManager initialized (ngspice WASM)' );
+    console.log( 'SpiceSolverManager initialized (ngspice WASM)' );
   }
 
   /**
@@ -89,7 +89,7 @@ export default class SpiceSolverManager {
     onSolved: ( solution: MNASolution, adapter: SpiceAdapter ) => void
   ): void {
     if ( !this.initialized || !this.eesim ) {
-      console.warn( 'EEcircuitSolverManager.requestSolve called before initialization' );
+      console.warn( 'SpiceSolverManager.requestSolve called before initialization' );
       return;
     }
 
@@ -127,7 +127,7 @@ export default class SpiceSolverManager {
       this.isProcessing = false;
       this.processQueue(); // Process next in queue
     } ).catch( error => {
-      console.warn( 'EEcircuit solve failed:', error );
+      console.warn( 'Spice solve failed:', error );
       this.isProcessing = false;
       this.processQueue(); // Continue with next even if one fails
     } );
@@ -220,7 +220,7 @@ export default class SpiceSolverManager {
   }
 
   /**
-   * Internal async solve using EECircuitAdapter.
+   * Internal async solve using SpiceAdapter.
    */
   private async solveAsync( adapter: SpiceAdapter ): Promise<MNASolution> {
     const netlist = adapter.generateTransientNetlist();
@@ -231,7 +231,7 @@ export default class SpiceSolverManager {
     // Check for errors
     const errors = this.eesim!.getError();
     if ( errors && errors.length > 0 ) {
-      console.warn( 'EEcircuit errors:', errors );
+      console.warn( 'Spice errors:', errors );
     }
 
     return adapter.parseResult( result as Parameters<typeof adapter.parseResult>[0] );

@@ -1,6 +1,6 @@
-# EEcircuit Multi-Group Solving and Callback Pattern
+# Spice Multi-Group Solving and Callback Pattern
 
-This document explains how Circuit Construction Kit handles multiple disconnected circuit groups and asynchronous SPICE solving with EEcircuit.
+This document explains how Circuit Construction Kit handles multiple disconnected circuit groups and asynchronous SPICE solving with Spice.
 
 ## The Problem: Disconnected Circuits
 
@@ -25,7 +25,7 @@ We use `circuit.getGroups()` to identify connected components (groups) and solve
 3. **Solve each group independently**: Each group gets its own SPICE solve with its own ground reference (the first node in that group becomes node 0).
 
 ```typescript
-// In LinearTransientAnalysis.solveWithEEcircuit()
+// In LinearTransientAnalysis.solveWithSpice()
 const groups = circuit.getGroups();
 const groupsWithVoltageSources = groups.filter( group =>
   group.circuitElements.some( element => element instanceof VoltageSource )
@@ -38,7 +38,7 @@ for ( const group of groupsWithVoltageSources ) {
 
 ## Async Pattern: Callback-Based Direct Application
 
-Since `Circuit.step()` is synchronous but EEcircuit's SPICE solver is asynchronous, we use a simple callback pattern:
+Since `Circuit.step()` is synchronous but Spice's SPICE solver is asynchronous, we use a simple callback pattern:
 
 1. **Request solve with callback**: Pass a callback function that will apply results when the solve completes
 2. **Queue processing**: Solves are processed sequentially (SPICE limitation)
@@ -57,7 +57,7 @@ Frame N:
 
 ### Implementation
 
-**`EEcircuitSolverManager`** manages the async solving:
+**`SpiceSolverManager`** manages the async solving:
 
 ```typescript
 public requestSolve(
@@ -69,7 +69,7 @@ public requestSolve(
   if (!this.hasCompletePath(batteries, resistors)) return;
 
   // Add to queue
-  const adapter = new EECircuitAdapter(batteries, resistors);
+  const adapter = new SpiceAdapter(batteries, resistors);
   this.solveQueue.push({ adapter, onSolved });
 
   // Process queue
@@ -93,11 +93,11 @@ private processQueue(): void {
 **`LinearTransientAnalysis`** uses the callback to apply results:
 
 ```typescript
-EEcircuitSolverManager.instance.requestSolve(
+SpiceSolverManager.instance.requestSolve(
   batteries,
   resistors,
   (solution: MNASolution) => {
-    this.applyEEcircuitSolution(circuit, solution, batteryMap, ...);
+    this.applySpiceSolution(circuit, solution, batteryMap, ...);
   }
 );
 ```
@@ -127,16 +127,16 @@ This prevents sending unsolvable circuits to SPICE and avoids crashes.
 
 ## Files Involved
 
-- **`EEcircuitSolverManager.ts`**: Singleton managing async solves with callback queue
+- **`SpiceSolverManager.ts`**: Singleton managing async solves with callback queue
 - **`LinearTransientAnalysis.ts`**: Orchestrates per-group solving and provides callbacks to apply results
-- **`EECircuitAdapter.ts`**: Converts PhET circuit model to SPICE netlist and parses results back
+- **`SpiceAdapter.ts`**: Converts PhET circuit model to SPICE netlist and parses results back
 - **`Circuit.ts`**: Provides `getGroups()` for connected component detection
 
 ## Architecture Summary
 
 | Component | Responsibility |
 |-----------|---------------|
-| `EEcircuitSolverManager` | Queue management, async solve execution |
+| `SpiceSolverManager` | Queue management, async solve execution |
 | `LinearTransientAnalysis` | Build MNA elements, provide result callbacks |
-| `EECircuitAdapter` | Netlist generation, result parsing |
+| `SpiceAdapter` | Netlist generation, result parsing |
 | Callback closure | Captures context, applies results to circuit |

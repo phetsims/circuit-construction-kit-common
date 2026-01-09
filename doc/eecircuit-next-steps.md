@@ -1,12 +1,12 @@
-# EEcircuit Integration: Next Steps
+# Spice Integration: Next Steps
 
-This document outlines how to extend the EEcircuit (Ngspice WASM) integration beyond the current DC-only implementation to support reactive components and special elements.
+This document outlines how to extend the Spice (Ngspice WASM) integration beyond the current DC-only implementation to support reactive components and special elements.
 
 ## Current State (Completed)
 
 - DC circuits with batteries and resistors working
-- Async buffered solver pattern in `EEcircuitSolverManager`
-- Query parameter `?solver=eecircuit` (default) vs `?solver=phet`
+- Async buffered solver pattern in `SpiceSolverManager`
+- Query parameter `?solver=spice` (default) vs `?solver=phet`
 - Sign conventions verified and working
 - Maps stored with cached solution for correct element lookup
 
@@ -19,7 +19,7 @@ C1 <node1> <node2> <capacitance>
 
 ### Implementation Approach
 
-1. **Add capacitors to netlist generation** in `EECircuitAdapter.generateTransientNetlist()`:
+1. **Add capacitors to netlist generation** in `SpiceAdapter.generateTransientNetlist()`:
    ```typescript
    for ( const capacitor of this.capacitors ) {
      lines.push( `C${i} ${capacitor.nodeId0} ${capacitor.nodeId1} ${capacitor.capacitance}` );
@@ -39,7 +39,7 @@ C1 <node1> <node2> <capacitance>
 
 ### Challenges
 - PhET's current approach uses companion models (resistor approximation per timestep)
-- EEcircuit handles the differential equations natively
+- Spice handles the differential equations natively
 - Need to sync PhET's `dt` stepping with SPICE transient time
 
 ## Phase 3: Inductors
@@ -90,7 +90,7 @@ Current PhET approach: Iterative solver that updates resistance based on power d
 ```
 R1 <n1> <n2> R='expression'
 ```
-Ngspice supports behavioral modeling, but syntax compatibility with EEcircuit needs verification.
+Ngspice supports behavioral modeling, but syntax compatibility with Spice needs verification.
 
 **Option B: Iterative Approach**
 1. Solve with current resistance
@@ -163,7 +163,7 @@ May need bidirectional sync when user manipulates components.
 
 ### Performance
 
-Current WASM-based EEcircuit is fast for simple circuits. Monitor:
+Current WASM-based Spice is fast for simple circuits. Monitor:
 - Solve time vs circuit complexity
 - Memory usage for long transient simulations
 - Impact of increased netlist size
@@ -172,8 +172,8 @@ Consider circuit complexity limits or solver timeout.
 
 ## Testing Strategy
 
-1. **Unit tests**: Extend `EECircuitAdapterTests.ts` for each new component type
-2. **Comparison tests**: Run same circuit with `?solver=phet` and `?solver=eecircuit`, compare results
+1. **Unit tests**: Extend `SpiceAdapterTests.ts` for each new component type
+2. **Comparison tests**: Run same circuit with `?solver=phet` and `?solver=spice`, compare results
 3. **Transient validation**: Compare capacitor charging curves against analytical solutions
 4. **Edge cases**: Open circuits, short circuits, zero-value components
 
@@ -181,9 +181,9 @@ Consider circuit complexity limits or solver timeout.
 
 | File | Changes Needed |
 |------|----------------|
-| `EECircuitAdapter.ts` | Add capacitor/inductor netlist generation |
-| `EEcircuitSolverManager.ts` | Handle transient state, timing parameters |
-| `LinearTransientAnalysis.ts` | Route reactive components to EEcircuit |
+| `SpiceAdapter.ts` | Add capacitor/inductor netlist generation |
+| `SpiceSolverManager.ts` | Handle transient state, timing parameters |
+| `LinearTransientAnalysis.ts` | Route reactive components to Spice |
 | `LTACapacitor.ts` | May need modification or bypass |
 | `LTAInductor.ts` | May need modification or bypass |
 | `CCKCQueryParameters.ts` | Possibly add solver tuning parameters |
@@ -198,7 +198,7 @@ Consider circuit complexity limits or solver timeout.
 
 ## Success Criteria
 
-- All existing PhET circuit behaviors reproduced with EEcircuit
+- All existing PhET circuit behaviors reproduced with Spice
 - Performance equal or better than current MNA solver
 - Transient simulations show physically accurate dynamics
 - Seamless fallback to PhET solver via query parameter

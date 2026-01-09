@@ -1,4 +1,4 @@
-# Prompt: Integrate EEcircuit into PhET’s Circuit Construction Kit (MVP with State Pivoting)
+# Prompt: Integrate Spice into PhET’s Circuit Construction Kit (MVP with State Pivoting)
 
 You are an expert in:
 - Web-based physics simulations
@@ -6,7 +6,7 @@ You are an expert in:
 - WebAssembly (WASM), JavaScript/TypeScript
 - Performance optimization in browser environments
 
-Your task is to help integrate **EEcircuit** into the PhET **Circuit Construction Kit** codebase as a replacement candidate for our in-house Modified Nodal Analysis (MNA) engine.
+Your task is to help integrate **Spice** into the PhET **Circuit Construction Kit** codebase as a replacement candidate for our in-house Modified Nodal Analysis (MNA) engine.
 
 ---
 
@@ -29,13 +29,13 @@ We want to move to an **industry-standard, robust solver** that supports **trans
 
 ---
 
-## Target Engine: EEcircuit
+## Target Engine: Spice
 
 We want to use this project as the core circuit solver:
 
-- **EEcircuit repository:** https://github.com/eelab-dev/EEcircuit
+- **Spice repository:** https://github.com/eelab-dev/Spice
 
-EEcircuit is a browser-based circuit simulator that uses **Ngspice compiled to WebAssembly** and runs entirely client-side. It already supports SPICE-style netlists and transient analysis. We want to integrate its core functionality into PhET, not necessarily adopt its UI.
+Spice is a browser-based circuit simulator that uses **Ngspice compiled to WebAssembly** and runs entirely client-side. It already supports SPICE-style netlists and transient analysis. We want to integrate its core functionality into PhET, not necessarily adopt its UI.
 
 ---
 
@@ -72,7 +72,7 @@ Please assume the following constraints and requirements:
 
 5. **Download Size / Runtime Constraints**
   - PhET sims are used widely in classrooms, often on lower-end devices and flaky networks.
-  - **MVP goal:** Demonstrate that integrating EEcircuit:
+  - **MVP goal:** Demonstrate that integrating Spice:
     - Does **not** introduce “too many MB” of additional download (we want it reasonably small).
     - Does **not** cause unacceptable startup or runtime overhead.
   - We need to be conscious of:
@@ -96,9 +96,9 @@ Please assume the following constraints and requirements:
 
 ## What We Need You to Do (MVP Scope)
 
-### 1. Understand and Extract EEcircuit’s Core
+### 1. Understand and Extract Spice’s Core
 
-- Analyze the EEcircuit repo:
+- Analyze the Spice repo:
   - How it compiles and loads Ngspice into the browser (WASM).
   - How it passes netlists and retrieves simulation results.
   - How it manages transient analysis and time-stepping.
@@ -107,11 +107,11 @@ Please assume the following constraints and requirements:
   - API to send a netlist and control simulations
   - API to get voltages/currents over time
 
-### 2. Integrate EEcircuit into a Minimal PhET-like Harness
+### 2. Integrate Spice into a Minimal PhET-like Harness
 
 - Assume a **JavaScript/TypeScript, HTML5** PhET-style environment.
 - Create a **minimal test harness** in JS/TS that:
-  1. **Loads the EEcircuit/Ngspice WASM** module.
+  1. **Loads the Spice/Ngspice WASM** module.
   2. **Creates a simple RC circuit** via a netlist:
     - One battery (with possible internal resistance)
     - One resistor
@@ -122,7 +122,7 @@ Please assume the following constraints and requirements:
   4. Provides a way to **sample the current voltage/current** at regular time intervals, so that our UI could animate current flow and capacitor charge.
 
 - Please provide:
-  - Clear explanation of how to call into EEcircuit/Ngspice from JS/TS.
+  - Clear explanation of how to call into Spice/Ngspice from JS/TS.
   - Example code snippets (TypeScript or ES6) showing:
     - WASM module init
     - Netlist creation
@@ -143,12 +143,12 @@ We need a **proof-of-concept implementation** of the “pivot” behavior:
     - The new transient responds to the changed battery.
 
 - Technically, we need a way to:
-  - Extract state at `t_now` from EEcircuit/Ngspice (initial conditions for capacitors/inductors).
+  - Extract state at `t_now` from Spice/Ngspice (initial conditions for capacitors/inductors).
   - Re-initialize or reconfigure the circuit (e.g., new netlist or parameter change).
   - Re-run transient analysis starting from those initial conditions, not from a blank state.
 
 - Your job:
-  - Investigate how EEcircuit/Ngspice can:
+  - Investigate how Spice/Ngspice can:
     - Save/keep internal state.
     - Accept new initial conditions for capacitors/inductors.
     - Allow parameter changes while reusing or re-deriving state.
@@ -166,14 +166,14 @@ We need a **proof-of-concept implementation** of the “pivot” behavior:
   - Simple R-only circuit (Ohm’s law).
 - You do **not** need a full test framework; small code snippets and explanation are fine.
 - The goal is to verify:
-  - EEcircuit’s transient results are credible for our educational scenarios.
+  - Spice’s transient results are credible for our educational scenarios.
   - There are no obvious numerical pathologies for these basic cases.
 
 ### 5. Size and Performance Evaluation (MVP Level)
 
 - Provide:
   - A rough estimate of:
-    - Additional download size for EEcircuit (WASM + JS glue).
+    - Additional download size for Spice (WASM + JS glue).
   - A qualitative assessment of:
     - Initialization time
     - Runtime performance for small circuits
@@ -188,13 +188,13 @@ We need a **proof-of-concept implementation** of the “pivot” behavior:
 Please output:
 
 1. **High-level architecture description**
-  - How EEcircuit is integrated into a PhET-style JS/TS codebase.
+  - How Spice is integrated into a PhET-style JS/TS codebase.
   - How netlists are generated and sent to the solver.
   - How results are returned and made available to the UI.
 
 2. **Code-level integration plan**
   - Step-by-step instructions for:
-    - Cloning/building EEcircuit.
+    - Cloning/building Spice.
     - Integrating its WASM module into our build system.
     - Initializing and calling the solver from JS/TS.
 
@@ -208,7 +208,7 @@ Please output:
 
 4. **Notes on current limitations and assumptions**
   - Anything about:
-    - What EEcircuit/Ngspice makes easy or hard.
+    - What Spice/Ngspice makes easy or hard.
     - Constraints on how often we can pivot.
     - Limitations on circuit complexity for interactive use.
 
@@ -216,7 +216,7 @@ Please output:
    Draft a **“Future Work” section** that addresses:
 
   - Replacing PhET’s in-house MNA engine:
-    - The long-term plan is to have PhET **output netlists** directly for EEcircuit/Ngspice instead of using the custom solver.
+    - The long-term plan is to have PhET **output netlists** directly for Spice/Ngspice instead of using the custom solver.
   - Netlist generation:
     - Design how PhET’s internal circuit representation should map to SPICE netlists.
     - Consider supporting:
