@@ -359,13 +359,8 @@ export default class CircuitDescription {
         if ( count !== undefined ) {
           if ( count === 1 ) {
             const typeLabel = CircuitDescription.getCircuitElementTypeLabel( type );
-            // Use article "a" or "an" based on whether the type label starts with a vowel
-            const startsWithVowel = /^[aeiou]/i.test( typeLabel ) ? 'true' : 'false';
-            const article = CircuitConstructionKitCommonFluent.a11y.circuitDescription.article.format( {
-              startsWithVowel: startsWithVowel
-            } );
             typeDescriptions.push( CircuitConstructionKitCommonFluent.a11y.circuitDescription.compressedSingular.format( {
-              article: article,
+              count: 1,
               typeLabel: typeLabel
             } ) );
           }

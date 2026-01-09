@@ -190,7 +190,7 @@ a11y:
     # Connection description patterns
     connectionDescription:        '{ $connectionLabel }: { $neighbors }'
     # For compressed descriptions with 4+ connections
-    compressedSingular:           '{ $article } { $typeLabel }'
+    compressedSingular:           '{ $count } { $typeLabel }'
     compressedPlural:             '{ $count } { $pluralLabel }'
     # List joining patterns
     listAnd:                      and
@@ -199,11 +199,6 @@ a11y:
     # Group patterns
     groupHeading:                 'Group { $groupIndex } of { $totalGroups }'
     groupWithConnection:          'Group { $groupIndex }, { $description }'
-    # Article selection (a vs an)
-    article:
-      select_startsWithVowel:
-        true:  an
-        false: a
     connectionPoint:              Connection Point
     connection:                   Connection
     disconnected:                 disconnected

@@ -472,7 +472,7 @@
         "value": "{ $connectionLabel }: { $neighbors }"
       },
       "compressedSingular": {
-        "value": "{ $article } { $typeLabel }"
+        "value": "{ $count } { $typeLabel }"
       },
       "compressedPlural": {
         "value": "{ $count } { $pluralLabel }"
@@ -491,9 +491,6 @@
       },
       "groupWithConnection": {
         "value": "Group { $groupIndex }, { $description }"
-      },
-      "article": {
-        "value": "{ $startsWithVowel ->\n  [true] an\n  *[false] a\n}"
       },
       "connectionPoint": {
         "value": "Connection Point"
