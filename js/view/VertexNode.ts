@@ -11,6 +11,8 @@ import type Vector2 from '../../../dot/js/Vector2.js';
 import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
 import AccessibleDraggableOptions from '../../../scenery-phet/js/accessibility/grab-drag/AccessibleDraggableOptions.js';
+import HighlightFromNode from '../../../scenery/js/accessibility/HighlightFromNode.js';
+import InteractiveHighlighting from '../../../scenery/js/accessibility/voicing/InteractiveHighlighting.js';
 import VBox from '../../../scenery/js/layout/nodes/VBox.js';
 import Circle, { type CircleOptions } from '../../../scenery/js/nodes/Circle.js';
 import Node from '../../../scenery/js/nodes/Node.js';
@@ -48,7 +50,7 @@ const BLACK_CIRCLE_NODE = new Node( {
   }, CIRCLE_OPTIONS ) ) ]
 } );
 
-export default class VertexNode extends Node {
+export default class VertexNode extends InteractiveHighlighting( Node ) {
   private readonly circuit: Circuit;
   private readonly vertexCutButtonContainer: Node;
   private readonly circuitNode: CircuitNode;
@@ -166,6 +168,9 @@ export default class VertexNode extends Node {
       lineWidth: CCKCConstants.HIGHLIGHT_LINE_WIDTH,
       pickable: false
     } );
+
+    // Interactive highlight for mouse/touch hover feedback
+    this.setInteractiveHighlight( new HighlightFromNode( this ) );
 
     // Shows up as red when disconnected or black when connected.  When unattachable, the dotted line disappears (black
     // box study)
