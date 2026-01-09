@@ -21,6 +21,7 @@ import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
 import SoundKeyboardDragListener from '../../../scenery-phet/js/SoundKeyboardDragListener.js';
 import WireNode from '../../../scenery-phet/js/WireNode.js';
 import HighlightFromNode from '../../../scenery/js/accessibility/HighlightFromNode.js';
+import InteractiveHighlighting from '../../../scenery/js/accessibility/voicing/InteractiveHighlighting.js';
 import DragListener from '../../../scenery/js/listeners/DragListener.js';
 import { type PressListenerEvent } from '../../../scenery/js/listeners/PressListener.js';
 import Image from '../../../scenery/js/nodes/Image.js';
@@ -68,7 +69,7 @@ type SelfOptions = {
 };
 type VoltmeterNodeOptions = SelfOptions & NodeOptions;
 
-export default class VoltmeterNode extends Node {
+export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
   private readonly circuitNode: CircuitNode | null;
   public readonly voltmeter: Voltmeter;
   private readonly redProbeNode: Rectangle;
@@ -408,6 +409,10 @@ export default class VoltmeterNode extends Node {
       this.touchArea = this.bounds.copy();
       this.mouseArea = this.bounds.copy();
       this.cursor = 'pointer';
+      this.setInteractiveHighlight( new HighlightFromNode( this ) );
+    }
+    else {
+      this.interactiveHighlightEnabled = false;
     }
 
     this.addLinkedElement( voltmeter, {

@@ -21,6 +21,7 @@ import ProbeNode from '../../../scenery-phet/js/ProbeNode.js';
 import SoundKeyboardDragListener from '../../../scenery-phet/js/SoundKeyboardDragListener.js';
 import WireNode from '../../../scenery-phet/js/WireNode.js';
 import HighlightFromNode from '../../../scenery/js/accessibility/HighlightFromNode.js';
+import InteractiveHighlighting from '../../../scenery/js/accessibility/voicing/InteractiveHighlighting.js';
 import DragListener from '../../../scenery/js/listeners/DragListener.js';
 import { type PressListenerEvent } from '../../../scenery/js/listeners/PressListener.js';
 import Image from '../../../scenery/js/nodes/Image.js';
@@ -61,7 +62,7 @@ type SelfOptions = {
 };
 type AmmeterNodeOptions = SelfOptions & NodeOptions;
 
-export default class AmmeterNode extends Node {
+export default class AmmeterNode extends InteractiveHighlighting( Node ) {
   private readonly probeNode: ProbeNode;
 
   // the model associated with this view
@@ -295,6 +296,10 @@ export default class AmmeterNode extends Node {
       this.touchArea = this.bounds.copy();
       this.mouseArea = this.bounds.copy();
       this.cursor = 'pointer';
+      this.setInteractiveHighlight( new HighlightFromNode( this ) );
+    }
+    else {
+      this.interactiveHighlightEnabled = false;
     }
 
     this.addLinkedElement( ammeter, {
