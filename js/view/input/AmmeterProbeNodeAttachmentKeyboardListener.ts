@@ -11,7 +11,6 @@ import type { TReadOnlyProperty } from '../../../../axon/js/TReadOnlyProperty.js
 import Vector2 from '../../../../dot/js/Vector2.js';
 import type Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
-import multiSelectionSoundPlayerFactory from '../../../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../../CircuitConstructionKitCommonFluent.js';
 import CircuitElement from '../../model/CircuitElement.js';
@@ -64,22 +63,16 @@ export default class AmmeterProbeNodeAttachmentKeyboardListener extends Attachme
       },
       getInitialPosition: () => probeNode.center.copy(),
       getHighlightPosition: selectedCircuitElement => selectedCircuitElement ?
-                              Vector2.average( [
-                                selectedCircuitElement.startVertexProperty.value.positionProperty.value,
-                                selectedCircuitElement.endVertexProperty.value.positionProperty.value
-                              ] ) :
-                              probeNode.center.copy(),
+                                                      Vector2.average( [
+                                                        selectedCircuitElement.startVertexProperty.value.positionProperty.value,
+                                                        selectedCircuitElement.endVertexProperty.value.positionProperty.value
+                                                      ] ) :
+                                                      probeNode.center.copy(),
       applySelection: ( _selection, targetPosition ) => {
         const centerOffset = probeNode.center.minus( probeNode.centerTop );
         const verticalFudge = -5; // pixels to move the probe so its center visually aligns with the target
         const dropPosition = targetPosition.copy().minus( centerOffset ).plusXY( 0, -verticalFudge );
         probePositionProperty.value = dropPosition;
-      },
-      onItemFocused: ( value, index ) => {
-        if ( value instanceof CircuitElement || value === null ) {
-          const soundPlayer = multiSelectionSoundPlayerFactory.getSelectionSoundPlayer( index );
-          soundPlayer.play();
-        }
       },
       onOpen: () => {
         circuitNode.showProbeSelectionHighlight( probeNode );

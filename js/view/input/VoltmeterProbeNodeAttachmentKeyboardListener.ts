@@ -9,7 +9,6 @@
 import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import type Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
-import multiSelectionSoundPlayerFactory from '../../../../tambo/js/multiSelectionSoundPlayerFactory.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import Vertex from '../../model/Vertex.js';
 import type CircuitNode from '../CircuitNode.js';
@@ -38,12 +37,6 @@ export default class VoltmeterProbeNodeAttachmentKeyboardListener extends Attach
       getHighlightPosition: selectedVertex => selectedVertex ? selectedVertex.positionProperty.value : probePositionProperty.value,
       applySelection: ( _selection, targetPosition ) => {
         probePositionProperty.value = targetPosition.copy();
-      },
-      onItemFocused: ( value, index ) => {
-        if ( value instanceof Vertex || value === null ) {
-          const soundPlayer = multiSelectionSoundPlayerFactory.getSelectionSoundPlayer( index );
-          soundPlayer.play();
-        }
       },
       onOpen: () => {
         circuitNode.showProbeSelectionHighlight( probeNode );
