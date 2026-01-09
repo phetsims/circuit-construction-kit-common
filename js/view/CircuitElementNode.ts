@@ -11,6 +11,7 @@ import { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import type Vector2 from '../../../dot/js/Vector2.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import AccessibleDraggableOptions from '../../../scenery-phet/js/accessibility/grab-drag/AccessibleDraggableOptions.js';
+import InteractiveHighlighting from '../../../scenery/js/accessibility/voicing/InteractiveHighlighting.js';
 import KeyboardListener from '../../../scenery/js/listeners/KeyboardListener.js';
 import { type PressListenerEvent } from '../../../scenery/js/listeners/PressListener.js';
 import Node, { type NodeOptions } from '../../../scenery/js/nodes/Node.js';
@@ -29,7 +30,7 @@ type SelfOptions = {
 
 export type CircuitElementNodeOptions = SelfOptions & NodeOptions;
 
-export default abstract class CircuitElementNode extends Node {
+export default abstract class CircuitElementNode extends InteractiveHighlighting( Node ) {
   private readonly useHitTestForSensors: boolean;
   private readonly circuit: Circuit | null;
   public readonly circuitElement: CircuitElement;
@@ -97,6 +98,11 @@ export default abstract class CircuitElementNode extends Node {
     // the circuit which the element can be removed from or null for icons
     this.circuit = circuit;
     this.circuitElement = circuitElement;
+
+    // Icons don't need interactive highlighting - subclasses set up their own highlights for non-icons
+    if ( !circuit ) {
+      this.interactiveHighlightEnabled = false;
+    }
 
     // Make it easy to get back to circuitElements
     this.addLinkedElement( circuitElement, {

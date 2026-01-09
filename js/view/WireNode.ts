@@ -168,6 +168,7 @@ export default class WireNode extends CircuitElementNode {
   private readonly lineNode: Node;
   private readonly highlightNode: Path;
   private readonly focusHighlightPath: Path | null;
+  private readonly interactiveHighlightPath: HighlightPath | null;
   public readonly dragListener: CircuitNodeDragListener | null;
   private readonly disposeWireNode: () => void;
 
@@ -201,6 +202,9 @@ export default class WireNode extends CircuitElementNode {
       lineWidth: CCKCConstants.HIGHLIGHT_LINE_WIDTH,
       pickable: false
     } ) : null;
+
+    // Interactive highlight for mouse/touch hover feedback - uses HighlightPath for proper styling
+    const interactiveHighlightPath = circuitNode ? new HighlightPath( null ) : null;
 
     // The node that displays the main line (for both schematic and lifelike).  This does not include
     // the rounded caps for the lifelike view
@@ -238,6 +242,7 @@ export default class WireNode extends CircuitElementNode {
     this.lineNode = lineNode;
     this.highlightNode = highlightNode;
     this.focusHighlightPath = focusHighlightPath;
+    this.interactiveHighlightPath = interactiveHighlightPath;
 
     /**
      * When the view type changes (lifelike vs schematic), update the node
@@ -285,6 +290,7 @@ export default class WireNode extends CircuitElementNode {
 
       circuitNode.circuit.selectionProperty.link( markAsDirty );
       this.focusHighlight = focusHighlightPath;
+      this.setInteractiveHighlight( interactiveHighlightPath );
     }
     else {
       this.dragListener = null;
@@ -393,6 +399,7 @@ export default class WireNode extends CircuitElementNode {
       }
     }
     this.focusHighlightPath && ( this.focusHighlightPath.shape = getHighlightStrokedShape( this.wire, FOCUS_STROKE_LINE_STYLES ) );
+    this.interactiveHighlightPath && ( this.interactiveHighlightPath.setShape( getHighlightStrokedShape( this.wire, FOCUS_STROKE_LINE_STYLES ) ) );
     this.touchArea = getTouchArea( this.wire );
     this.mouseArea = this.touchArea;
   }

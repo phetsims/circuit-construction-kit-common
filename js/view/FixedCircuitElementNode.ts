@@ -14,6 +14,7 @@ import Matrix3 from '../../../dot/js/Matrix3.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import optionize from '../../../phet-core/js/optionize.js';
+import HighlightFromNode from '../../../scenery/js/accessibility/HighlightFromNode.js';
 import HighlightPath from '../../../scenery/js/accessibility/HighlightPath.js';
 import Image from '../../../scenery/js/nodes/Image.js';
 import Node from '../../../scenery/js/nodes/Node.js';
@@ -142,6 +143,9 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
 
       this.myFocusHighlight = new FixedCircuitElementHighlightNode( this, HighlightPath.INNER_FOCUS_COLOR, 6 );
       this.focusHighlight = this.myFocusHighlight;
+
+      // Interactive highlight for mouse/touch hover feedback
+      this.setInteractiveHighlight( new HighlightFromNode( this.contentNode ) );
     }
     else {
       this.highlightNode = null;
