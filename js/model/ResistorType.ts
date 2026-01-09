@@ -1,4 +1,4 @@
-// Copyright 2021-2025, University of Colorado Boulder
+// Copyright 2021-2026, University of Colorado Boulder
 
 // We originally had the resistance of the eraser and dollar as 1E9 ohms, but that led to erratic behavior as the circuit
 // was adjusted, see https://github.com/phetsims/circuit-construction-kit-common/issues/1032

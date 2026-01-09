@@ -1,4 +1,4 @@
-// Copyright 2015-2025, University of Colorado Boulder
+// Copyright 2015-2026, University of Colorado Boulder
 
 /**
  * Node that represents a single scene or screen, with a circuit, toolbox, sensors, etc. Exists for the life of the sim
