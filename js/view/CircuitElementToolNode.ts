@@ -42,6 +42,10 @@ type SelfOptions = {
 
   additionalProperty?: ReadOnlyProperty<boolean>;
   ghostOpacity?: number;
+
+  // When true, keyboard-created elements appear to the left of the tool icon instead of the right.
+  // Useful for toolboxes on the right side of the screen.
+  keyboardCreateToLeft?: boolean;
 };
 export type CircuitElementToolNodeOptions = SelfOptions & VBoxOptions;
 
@@ -98,6 +102,8 @@ export default class CircuitElementToolNode extends VBox {
 
       ghostOpacity: 0.4,
 
+      keyboardCreateToLeft: false,
+
       tagName: 'button',
       accessibleName: CircuitConstructionKitCommonFluent.a11y.circuitComponentToolbox.toolAccessibleName.createProperty( {
         componentName: labelStringProperty
@@ -132,7 +138,11 @@ export default class CircuitElementToolNode extends VBox {
       fireOnClick: true,
       fire: () => {
 
-        let center = globalToCircuitNodePoint( this.globalBounds.rightCenter ).plusXY( 100, 0 );
+        // Position the element to the left or right of the tool icon depending on the option.
+        // Toolboxes on the right side of the screen should create elements to the left.
+        let center = options.keyboardCreateToLeft ?
+                     globalToCircuitNodePoint( this.globalBounds.leftCenter ).plusXY( -300, 0 ) : // tool is far from edge of panel
+                     globalToCircuitNodePoint( this.globalBounds.rightCenter ).plusXY( 100, 0 ); // tool is close to edge of panel
 
         // Bounds for random positioning if nearby search fails
         const minX = -512;
@@ -155,9 +165,11 @@ export default class CircuitElementToolNode extends VBox {
             if ( center.distance( otherCenter ) < 150 ) {
               hasCollision = true;
 
-              // For the first several attempts, try shifting right (nearby search)
-              if ( count <= NEARBY_SEARCH_ATTEMPTS && center.x + 150 <= maxX ) {
-                center = center.plusXY( 150, 0 );
+              // For the first several attempts, try shifting in the preferred direction (nearby search)
+              const shiftDirection = options.keyboardCreateToLeft ? -150 : 150;
+              const inBounds = options.keyboardCreateToLeft ? center.x - 150 >= minX : center.x + 150 <= maxX;
+              if ( count <= NEARBY_SEARCH_ATTEMPTS && inBounds ) {
+                center = center.plusXY( shiftDirection, 0 );
               }
               else {
                 // After nearby search fails or goes out of bounds, try random positions within bounds

@@ -232,6 +232,7 @@ export default class SensorToolbox extends CCKCPanel {
         touchAreaExpansionBottom: 0,
         tandem: circuit.includeLabElements ? tandem.createTandem( 'seriesAmmeterToolNode' ) : Tandem.OPT_OUT,
         ghostOpacity: 0,
+        keyboardCreateToLeft: true, // Sensor toolbox is on the right side of the screen
         visiblePropertyOptions: {
           phetioFeatured: true
         }
