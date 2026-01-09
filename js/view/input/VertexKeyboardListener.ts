@@ -58,16 +58,6 @@ export default class VertexKeyboardListener extends SoundKeyboardDragListener {
         // The vertex can only connect to something if it was actually moved.
         circuitNode.endDrag( vertex, dragged );
 
-        // Only show on a tap, not on every drag.
-        if (
-          !vertex.isDisposed &&
-          vertex.interactiveProperty.get() &&
-          latestPoint!.distance( initialPoint! ) < CCKCConstants.TAP_THRESHOLD
-        ) {
-
-          vertex.selectionProperty.value = vertex;
-        }
-        
         dragged = false;
       },
 
