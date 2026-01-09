@@ -62,6 +62,10 @@ const CONTROL_POINT_X = 30;
 const CONTROL_POINT_Y1 = 15;
 const CONTROL_POINT_Y2 = 60;
 
+// Local classes with InteractiveHighlighting for the draggable components
+class InteractiveHighlightingRectangle extends InteractiveHighlighting( Rectangle ) {}
+class InteractiveHighlightingImage extends InteractiveHighlighting( Image ) {}
+
 type SelfOptions = {
   visibleBoundsProperty?: ReadOnlyProperty<Bounds2> | null;
   showResultsProperty?: ReadOnlyProperty<boolean>;
@@ -72,8 +76,8 @@ type VoltmeterNodeOptions = SelfOptions & NodeOptions;
 export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
   private readonly circuitNode: CircuitNode | null;
   public readonly voltmeter: Voltmeter;
-  private readonly redProbeNode: Rectangle;
-  private readonly blackProbeNode: Rectangle;
+  private readonly redProbeNode: Rectangle | InteractiveHighlightingRectangle;
+  private readonly blackProbeNode: Rectangle | InteractiveHighlightingRectangle;
 
   // so events can be forwarded from the toolbox
   private readonly dragHandler: DragListener | null;
@@ -111,10 +115,11 @@ export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
     }, providedOptions );
 
     /**
-     * Creates a probe node with the specified configuration.
+     * Creates a probe node with the specified configuration. Uses InteractiveHighlightingRectangle for
+     * non-icons to support mouse/touch hover highlights.
      */
-    const createProbeNode = ( color: Color, image: ImageableImage, rotation: number, imageX: number, imageY: number ): Rectangle => {
-      return new Rectangle( -2, -2, 4, 4, { // the hit area
+    const createProbeNode = ( color: Color, image: ImageableImage, rotation: number, imageX: number, imageY: number ): Rectangle | InteractiveHighlightingRectangle => {
+      const options = {
         fill: CCKCQueryParameters.showVoltmeterSamplePoints ? color : null,
         cursor: 'pointer',
         children: [ new Image( image, {
@@ -127,7 +132,15 @@ export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
           y: imageY
         } ) ],
         ...( isIcon ? {} : AccessibleDraggableOptions )
-      } );
+      };
+
+      // Use InteractiveHighlightingRectangle for non-icons to get hover highlights
+      if ( isIcon ) {
+        return new Rectangle( -2, -2, 4, 4, options );
+      }
+      else {
+        return new InteractiveHighlightingRectangle( -2, -2, 4, 4, options );
+      }
     };
 
     const blackProbeNode = createProbeNode( Color.BLACK, probeBlack_png, PROBE_ANGLE, -9.5, -5 );
@@ -154,11 +167,18 @@ export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
         centerY: voltmeterBody_png[ 0 ].height / 2
       } );
 
-    const bodyNode = new Image( voltmeterBody_png, {
-      scale: SCALE,
-      cursor: 'pointer',
-      children: [ probeTextNode ]
-    } );
+    // Use InteractiveHighlightingImage for non-icons to get hover highlights on the body
+    const bodyNode = isIcon ?
+                     new Image( voltmeterBody_png, {
+                       scale: SCALE,
+                       cursor: 'pointer',
+                       children: [ probeTextNode ]
+                     } ) :
+                     new InteractiveHighlightingImage( voltmeterBody_png, {
+                       scale: SCALE,
+                       cursor: 'pointer',
+                       children: [ probeTextNode ]
+                     } );
 
     /**
      * Creates a Vector2Property with a new Vector2 at the specified position.
@@ -405,6 +425,8 @@ export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
     }
 
     // When rendered as an icon, the touch area should span the bounds (no gaps between probes and body)
+    // and the VoltmeterNode itself gets the interactive highlight. For non-icons, the body and probes
+    // have their own interactive highlights via InteractiveHighlightingImage/Rectangle.
     if ( isIcon ) {
       this.touchArea = this.bounds.copy();
       this.mouseArea = this.bounds.copy();
@@ -412,6 +434,7 @@ export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
       this.setInteractiveHighlight( new HighlightFromNode( this ) );
     }
     else {
+      // Disable on the parent VoltmeterNode since children handle their own highlights
       this.interactiveHighlightEnabled = false;
     }
 

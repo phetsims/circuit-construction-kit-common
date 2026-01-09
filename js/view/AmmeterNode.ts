@@ -53,6 +53,11 @@ const SCALE_FACTOR = 0.5;
 
 // unsigned measurements for the circles on the voltmeter body image, for where the probe wires connect
 const PROBE_CONNECTION_POINT_DY = 8;
+
+// Local classes with InteractiveHighlighting for the draggable components
+class InteractiveHighlightingImage extends InteractiveHighlighting( Image ) {}
+class InteractiveHighlightingProbeNode extends InteractiveHighlighting( ProbeNode ) {}
+
 type SelfOptions = {
   isIcon?: boolean;
   visibleBoundsProperty?: Property<Bounds2> | null;
@@ -63,7 +68,7 @@ type SelfOptions = {
 type AmmeterNodeOptions = SelfOptions & NodeOptions;
 
 export default class AmmeterNode extends InteractiveHighlighting( Node ) {
-  private readonly probeNode: ProbeNode;
+  private readonly probeNode: ProbeNode | InteractiveHighlightingProbeNode;
 
   // the model associated with this view
   public readonly ammeter: Ammeter;
@@ -139,13 +144,20 @@ export default class AmmeterNode extends InteractiveHighlighting( Node ) {
         centerY: ammeterBody_png.height / 2 + 7 // adjust for the top notch design
       } );
 
-    const bodyNode = new Image( ammeterBody_png, {
-      scale: SCALE_FACTOR,
-      cursor: 'pointer',
-      children: [ probeTextNode ]
-    } );
+    // Use InteractiveHighlightingImage for non-icons to get hover highlights on the body
+    const bodyNode = options.isIcon ?
+                     new Image( ammeterBody_png, {
+                       scale: SCALE_FACTOR,
+                       cursor: 'pointer',
+                       children: [ probeTextNode ]
+                     } ) :
+                     new InteractiveHighlightingImage( ammeterBody_png, {
+                       scale: SCALE_FACTOR,
+                       cursor: 'pointer',
+                       children: [ probeTextNode ]
+                     } );
 
-    const probeNode = new ProbeNode( {
+    const probeOptions = {
       cursor: 'pointer',
       sensorTypeFunction: ProbeNode.crosshairs(),
       scale: SCALE_FACTOR,
@@ -161,8 +173,13 @@ export default class AmmeterNode extends InteractiveHighlighting( Node ) {
           fill: '#e79547' // Match the orange of the ammeter image
         } )
       ],
-      ...( options.isIcon ? [] : AccessibleDraggableOptions )
-    } );
+      ...( options.isIcon ? {} : AccessibleDraggableOptions )
+    };
+
+    // Use InteractiveHighlightingProbeNode for non-icons to get hover highlights on the probe
+    const probeNode = options.isIcon ?
+                      new ProbeNode( probeOptions ) :
+                      new InteractiveHighlightingProbeNode( probeOptions );
 
     affirm( !options.hasOwnProperty( 'children' ), 'children will be supplied by AmmeterNode' );
 
@@ -292,6 +309,8 @@ export default class AmmeterNode extends InteractiveHighlighting( Node ) {
     }
 
     // When rendered as an icon, the touch area should span the bounds (no gaps between probes and body)
+    // and the AmmeterNode itself gets the interactive highlight. For non-icons, the body and probe
+    // have their own interactive highlights via InteractiveHighlightingImage/ProbeNode.
     if ( options.isIcon ) {
       this.touchArea = this.bounds.copy();
       this.mouseArea = this.bounds.copy();
@@ -299,6 +318,7 @@ export default class AmmeterNode extends InteractiveHighlighting( Node ) {
       this.setInteractiveHighlight( new HighlightFromNode( this ) );
     }
     else {
+      // Disable on the parent AmmeterNode since children handle their own highlights
       this.interactiveHighlightEnabled = false;
     }
 
