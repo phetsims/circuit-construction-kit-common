@@ -692,11 +692,13 @@
       }
     },
     "circuitComponentToolbox": {
-      "accessibleHeading": {
-        "value": "Circuit Component Toolbox"
-      },
-      "accessibleHelpText": {
-        "value": "Look for components in carousel and add them to Construction Area. Once added, return to  Construction Area and look for components and their connection points to edit or choose options  for connecting."
+      "carousel": {
+        "accessibleName": {
+          "value": "Circuit Component Toolbox"
+        },
+        "accessibleHelpText": {
+          "value": "Look for components in carousel and add them to Construction Area. Once added, return to  Construction Area and look for components and their connection points to edit or choose options  for connecting."
+        }
       },
       "toolAccessibleName": {
         "value": "Add { $componentName }"

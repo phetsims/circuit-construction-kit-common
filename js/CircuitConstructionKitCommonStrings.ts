@@ -277,8 +277,10 @@ type StringsType = {
       }
     };
     'circuitComponentToolbox': {
-      'accessibleHeadingStringProperty': LocalizedStringProperty;
-      'accessibleHelpTextStringProperty': LocalizedStringProperty;
+      'carousel': {
+        'accessibleNameStringProperty': LocalizedStringProperty;
+        'accessibleHelpTextStringProperty': LocalizedStringProperty;
+      };
       'toolAccessibleNameStringProperty': LocalizedStringProperty;
     };
     'advancedAccordionBox': {

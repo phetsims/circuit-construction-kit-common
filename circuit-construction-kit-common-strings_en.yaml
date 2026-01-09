@@ -311,11 +311,11 @@ a11y:
                               Look for components and hit Space to pop up options for editing. Remove selected component with
                               Delete key. Check out Keyboard Shortcuts for more details.
   circuitContextResponses:
-    junctionDefaultLabel: 'Junction { $index }'
-    selectedForEditing:   Selected for editing, controls visible.
-    editControlsHidden:   Edit controls hidden.
-    editPanelHeading:     '{ $componentType } Controls'
-    editPanelHelpText:    'Use available controls to change, disconnect or remove selected { $componentType }.'
+    junctionDefaultLabel:       'Junction { $index }'
+    selectedForEditing:         Selected for editing, controls visible.
+    editControlsHidden:         Edit controls hidden.
+    editPanelHeading:           '{ $componentType } Controls'
+    editPanelHelpText:          'Use available controls to change, disconnect or remove selected { $componentType }.'
     connectedComponents:
       select_inGroup:
         true:  'Connected: { $components }, in Group { $groupIndex }.'
@@ -324,10 +324,10 @@ a11y:
       select_connectionCount:
         one:   '{ $junctionName } split into one new connection.'
         other: '{ $junctionName } split into { $connectionCount } new connections.'
-    currentChangedSingle: 'Current changed to { $current } amps.'
-    currentMultiple:      'Currents flowing at different speeds.'
-    currentStopped:       'Current stopped flowing.'
-    componentRemoved:     '{ $componentName } removed.'
+    currentChangedSingle:       'Current changed to { $current } amps.'
+    currentMultiple:            'Currents flowing at different speeds.'
+    currentStopped:             'Current stopped flowing.'
+    componentRemoved:           '{ $componentName } removed.'
     lightBulbState:
       select_state:
         off:    '{ $componentName } is now off.'
@@ -375,24 +375,24 @@ a11y:
     # NEW: Vertex connection with current flow
     vertexConnectedWithCurrent: 'Connected { $element1 } to { $element2 }. { $currentPhrase }'
     # NEW: Simple vertex connection (when no current flows)
-    vertexConnectedSimple: 'Connected { $element1 } to { $element2 }.'
+    vertexConnectedSimple:      'Connected { $element1 } to { $element2 }.'
     # NEW: Switch toggle responses
-    switchOpened: 'Switch opened. { $currentPhrase }'
-    switchClosed: 'Switch closed. { $currentPhrase }'
+    switchOpened:               'Switch opened. { $currentPhrase }'
+    switchClosed:               'Switch closed. { $currentPhrase }'
     # Current phrases for switch (when disconnected or no change)
-    switchOpenedNoChange: 'Switch opened.'
-    switchClosedNoChange: 'Switch closed.'
+    switchOpenedNoChange:       'Switch opened.'
+    switchClosedNoChange:       'Switch closed.'
     # NEW: Fuse tripped responses
-    fuseTripped: 'Fuse tripped. { $currentPhrase }'
-    fuseTrippedNoChange: 'Fuse tripped.'
+    fuseTripped:                'Fuse tripped. { $currentPhrase }'
+    fuseTrippedNoChange:        'Fuse tripped.'
     # NEW: Fuse repaired responses
-    fuseRepaired: 'Fuse repaired. { $currentPhrase }'
-    fuseRepairedNoChange: 'Fuse repaired.'
+    fuseRepaired:               'Fuse repaired. { $currentPhrase }'
+    fuseRepairedNoChange:       'Fuse repaired.'
     # NEW: Battery reversed responses
-    batteryReversed: 'Battery reversed. { $currentPhrase }'
-    batteryReversedNoChange: 'Battery reversed.'
+    batteryReversed:            'Battery reversed. { $currentPhrase }'
+    batteryReversedNoChange:    'Battery reversed.'
     # NEW: Vertex disconnection responses
-    vertexDisconnected: 'Disconnected { $elementList }. { $currentPhrase }'
+    vertexDisconnected:         'Disconnected { $elementList }. { $currentPhrase }'
     vertexDisconnectedNoChange: 'Disconnected { $elementList }.'
   sensorToolbox:
     accessibleHeading: Sensor Toolbox
@@ -403,11 +403,12 @@ a11y:
     seriesAmmeter:
       accessibleName: Series Ammeter
   circuitComponentToolbox:
-    accessibleHeading:  Circuit Component Toolbox
-    accessibleHelpText: >-
-                        Look for components in carousel and add them to Construction Area. Once added, return to 
-                        Construction Area and look for components and their connection points to edit or choose options 
-                        for connecting.
+    carousel:
+      accessibleName:     Circuit Component Toolbox
+      accessibleHelpText: >-
+                          Look for components in carousel and add them to Construction Area. Once added, return to 
+                          Construction Area and look for components and their connection points to edit or choose options 
+                          for connecting.
     toolAccessibleName: 'Add { $componentName }'
   advancedAccordionBox:
     accessibleName: Advanced Settings
@@ -469,26 +470,26 @@ a11y:
     ariaValueText: '{ $resistivity } ohm-meters'
   fuseCurrentRatingControl:
     ariaValueText: >-
-      { $currentNumber ->
-        [one] { $currentFormatted } amp
-       *[other] { $currentFormatted } amps
-      }
+                   { $currentNumber ->
+                     [one] { $currentFormatted } amp
+                    *[other] { $currentFormatted } amps
+                   }
   circuitComponent:
     # Composable parts for building accessible names (DRY pattern)
     # These are assembled in CircuitDescription.ts
-    separator: ', '
+    separator:        ', '
     nameWithPosition: '{ $typeName } { $position } of { $total }'
     values:
-      resistanceOhms: '{ $resistance } ohms'
+      resistanceOhms:      '{ $resistance } ohms'
       resistanceMilliohms: '{ $resistance } milliohms'
-      voltageVolts: '{ $voltage } volts'
-      capacitanceFarads: '{ $capacitance } farads'
-      inductanceHenries: '{ $inductance } henries'
-      currentRatingAmps: '≤ { $currentRating } amps'
-      infiniteOhms: infinite ohms
+      voltageVolts:        '{ $voltage } volts'
+      capacitanceFarads:   '{ $capacitance } farads'
+      inductanceHenries:   '{ $inductance } henries'
+      currentRatingAmps:   '≤ { $currentRating } amps'
+      infiniteOhms:        infinite ohms
     switchStates:
       closed: closed
-      open: open
+      open:   open
     modifiers:
       onFire: on fire
       broken: broken

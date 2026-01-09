@@ -231,8 +231,8 @@ addToMapIfDefined( 'a11y_sensorToolbox_accessibleHeading', 'a11y.sensorToolbox.a
 addToMapIfDefined( 'a11y_sensorToolbox_ammeter_accessibleName', 'a11y.sensorToolbox.ammeter.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_sensorToolbox_voltmeter_accessibleName', 'a11y.sensorToolbox.voltmeter.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_sensorToolbox_seriesAmmeter_accessibleName', 'a11y.sensorToolbox.seriesAmmeter.accessibleNameStringProperty' );
-addToMapIfDefined( 'a11y_circuitComponentToolbox_accessibleHeading', 'a11y.circuitComponentToolbox.accessibleHeadingStringProperty' );
-addToMapIfDefined( 'a11y_circuitComponentToolbox_accessibleHelpText', 'a11y.circuitComponentToolbox.accessibleHelpTextStringProperty' );
+addToMapIfDefined( 'a11y_circuitComponentToolbox_carousel_accessibleName', 'a11y.circuitComponentToolbox.carousel.accessibleNameStringProperty' );
+addToMapIfDefined( 'a11y_circuitComponentToolbox_carousel_accessibleHelpText', 'a11y.circuitComponentToolbox.carousel.accessibleHelpTextStringProperty' );
 addToMapIfDefined( 'a11y_circuitComponentToolbox_toolAccessibleName', 'a11y.circuitComponentToolbox.toolAccessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_advancedAccordionBox_accessibleName', 'a11y.advancedAccordionBox.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_advancedAccordionBox_addRealBulbsCheckbox_accessibleContextResponseChecked', 'a11y.advancedAccordionBox.addRealBulbsCheckbox.accessibleContextResponseCheckedStringProperty' );
@@ -596,8 +596,10 @@ const CircuitConstructionKitCommonFluent = {
       }
     },
     circuitComponentToolbox: {
-      accessibleHeadingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitComponentToolbox_accessibleHeading', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitComponentToolbox.accessibleHeadingStringProperty' ) ),
-      accessibleHelpTextStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitComponentToolbox_accessibleHelpText', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitComponentToolbox.accessibleHelpTextStringProperty' ) ),
+      carousel: {
+        accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitComponentToolbox_carousel_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitComponentToolbox.carousel.accessibleNameStringProperty' ) ),
+        accessibleHelpTextStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitComponentToolbox_carousel_accessibleHelpText', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitComponentToolbox.carousel.accessibleHelpTextStringProperty' ) )
+      },
       toolAccessibleName: new FluentPattern<{ componentName: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitComponentToolbox_toolAccessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitComponentToolbox.toolAccessibleNameStringProperty' ), [{"name":"componentName"}] )
     },
     advancedAccordionBox: {

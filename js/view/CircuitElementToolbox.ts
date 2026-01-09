@@ -8,7 +8,7 @@
  */
 
 import type Property from '../../../axon/js/Property.js';
-import optionize from '../../../phet-core/js/optionize.js';
+import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import HBox, { type HBoxOptions } from '../../../scenery/js/layout/nodes/HBox.js';
 import Color from '../../../scenery/js/util/Color.js';
 import Carousel, { type CarouselItem, type CarouselOptions } from '../../../sun/js/Carousel.js';
@@ -59,7 +59,10 @@ export default class CircuitElementToolbox extends HBox {
     }, providedOptions );
 
     // create the carousel
-    const carousel = new Carousel( circuitElementToolItems, providedOptions.carouselOptions );
+    const carousel = new Carousel( circuitElementToolItems, combineOptions<CarouselOptions>( {}, providedOptions.carouselOptions, {
+      accessibleName: CircuitConstructionKitCommonFluent.a11y.circuitComponentToolbox.carousel.accessibleNameStringProperty,
+      accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.circuitComponentToolbox.carousel.accessibleHelpTextStringProperty
+    } ) );
     carousel.mutate( { scale: providedOptions.carouselScale } );
 
     const pageControl = new PageControl( carousel.pageNumberProperty, carousel.numberOfPagesProperty, {
@@ -71,12 +74,11 @@ export default class CircuitElementToolbox extends HBox {
       tandem: tandem.createTandem( 'pageControl' )
     } );
 
+    carousel.insertPageControl( pageControl );
+
     super( {
       spacing: 5,
       children: [ pageControl, carousel ],
-      tagName: 'div',
-      accessibleHeading: CircuitConstructionKitCommonFluent.a11y.circuitComponentToolbox.accessibleHeadingStringProperty,
-      accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.circuitComponentToolbox.accessibleHelpTextStringProperty,
       tandem: tandem,
       visiblePropertyOptions: {
         phetioFeatured: true
