@@ -1462,7 +1462,7 @@ export default class Circuit extends PhetioObject {
   /**
    * If anything is keyboard dragging, connectivity is disabled.
    */
-  private isKeyboardDragging(): boolean {
+  public isKeyboardDragging(): boolean {
 
     const vertexArray = this.vertexGroup.getArray();
     for ( let i = 0; i < vertexArray.length; i++ ) {

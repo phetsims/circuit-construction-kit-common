@@ -846,7 +846,8 @@ export default class CircuitNode extends Node {
   private updateCircuitDescription(): void {
 
     // Set the state once after fully reconstructed, not at a partial intermediate state
-    if ( !isSettingPhetioStateProperty.value ) {
+    // Skip during keyboard drag to avoid PDOM rebuild interrupting smooth drag motion
+    if ( !isSettingPhetioStateProperty.value && !this.circuit.isKeyboardDragging() ) {
       CircuitDescription.updateCircuitNode( this );
 
       // Use surgical update to avoid rebuilding the entire PDOM structure, which would cause focus loss
