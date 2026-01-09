@@ -17,6 +17,7 @@ import Vector2 from '../../../dot/js/Vector2.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import Grayscale from '../../../scenery/js/filters/Grayscale.js';
 import VBox, { type VBoxOptions } from '../../../scenery/js/layout/nodes/VBox.js';
+import InteractiveHighlighting from '../../../scenery/js/accessibility/voicing/InteractiveHighlighting.js';
 import DragListener from '../../../scenery/js/listeners/DragListener.js';
 import KeyboardListener from '../../../scenery/js/listeners/KeyboardListener.js';
 import { type PressListenerEvent } from '../../../scenery/js/listeners/PressListener.js';
@@ -49,7 +50,7 @@ type SelfOptions = {
 };
 export type CircuitElementToolNodeOptions = SelfOptions & VBoxOptions;
 
-export default class CircuitElementToolNode extends VBox {
+export default class CircuitElementToolNode extends InteractiveHighlighting( VBox ) {
 
   /**
    * @param circuitElementType - the type of circuit element this tool creates
