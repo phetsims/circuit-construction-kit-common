@@ -464,12 +464,17 @@ export default class CircuitElementToolFactory {
 
   // Same docs as for createPaperClipToolNode
   public createThinPencilToolNode( tandem: Tandem ): CircuitElementToolNode {
+
+    // The thin pencil image is 36px tall while the regular pencil is 49px tall. Both images are 209px wide.
+    // Scale the lifelikeIconHeight proportionally so both pencil icons have the same width in the carousel.
+    const thinPencilLifelikeIconHeight = 12 * 36 / 49;
+
     return this.createResistorToolNode( tandem, this.circuit.householdObjectGroup, {
       count: 1,
       resistorType: ResistorType.THIN_PENCIL,
       tandemName: 'thinPencilToolNode',
       labelStringProperty: thinPencilStringProperty,
-      lifelikeIconHeight: 12
+      lifelikeIconHeight: thinPencilLifelikeIconHeight
     } );
   }
 
