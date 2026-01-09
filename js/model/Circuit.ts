@@ -1484,6 +1484,30 @@ export default class Circuit extends PhetioObject {
   }
 
   /**
+   * Returns true if any vertex is being dragged by mouse/touch or keyboard.
+   */
+  public isDragging(): boolean {
+
+    const vertexArray = this.vertexGroup.getArray();
+    for ( let i = 0; i < vertexArray.length; i++ ) {
+      const v = vertexArray[ i ];
+      if ( v.isDragged || v.isKeyboardDragging ) {
+        return true;
+      }
+    }
+
+    const circuitElementArray = this.circuitElements;
+    for ( let i = 0; i < circuitElementArray.length; i++ ) {
+      const circuitElement = circuitElementArray[ i ];
+      if ( circuitElement.isKeyboardDragging ) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  /**
    * A vertex has been dragged, is it a candidate for joining with other vertices?  If so, return the candidate
    * vertex.  Otherwise, return null.
    * @param vertex - the dragged vertex
