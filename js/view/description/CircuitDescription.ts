@@ -300,7 +300,7 @@ export default class CircuitDescription {
     neighbors: CircuitElement[],
     briefNames: Map<CircuitElement, string>,
     isFullyDisconnected: boolean,
-    forAttachmentName = false
+    forAttachmentName: boolean
   ): string {
     // Use short format for attachment names in popup, full format for accessibleName
     const connectionLabel = forAttachmentName ?
