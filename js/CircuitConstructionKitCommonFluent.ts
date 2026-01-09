@@ -53,6 +53,7 @@ addToMapIfDefined( 'coin', 'coinStringProperty' );
 addToMapIfDefined( 'dollarBill', 'dollarBillStringProperty' );
 addToMapIfDefined( 'eraser', 'eraserStringProperty' );
 addToMapIfDefined( 'pencil', 'pencilStringProperty' );
+addToMapIfDefined( 'thinPencil', 'thinPencilStringProperty' );
 addToMapIfDefined( 'hand', 'handStringProperty' );
 addToMapIfDefined( 'dog', 'dogStringProperty' );
 addToMapIfDefined( 'paperClip', 'paperClipStringProperty' );
@@ -133,6 +134,7 @@ addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_realLight
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_coin', 'a11y.circuitDescription.circuitComponentTypeLabels.coinStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_paperClip', 'a11y.circuitDescription.circuitComponentTypeLabels.paperClipStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_pencil', 'a11y.circuitDescription.circuitComponentTypeLabels.pencilStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_thinPencil', 'a11y.circuitDescription.circuitComponentTypeLabels.thinPencilStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_eraser', 'a11y.circuitDescription.circuitComponentTypeLabels.eraserStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_hand', 'a11y.circuitDescription.circuitComponentTypeLabels.handStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_dollarBill', 'a11y.circuitDescription.circuitComponentTypeLabels.dollarBillStringProperty' );
@@ -155,6 +157,7 @@ addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypePlurals_realLigh
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypePlurals_coin', 'a11y.circuitDescription.circuitComponentTypePlurals.coinStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypePlurals_paperClip', 'a11y.circuitDescription.circuitComponentTypePlurals.paperClipStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypePlurals_pencil', 'a11y.circuitDescription.circuitComponentTypePlurals.pencilStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypePlurals_thinPencil', 'a11y.circuitDescription.circuitComponentTypePlurals.thinPencilStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypePlurals_eraser', 'a11y.circuitDescription.circuitComponentTypePlurals.eraserStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypePlurals_hand', 'a11y.circuitDescription.circuitComponentTypePlurals.handStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypePlurals_dollarBill', 'a11y.circuitDescription.circuitComponentTypePlurals.dollarBillStringProperty' );
@@ -318,6 +321,7 @@ const CircuitConstructionKitCommonFluent = {
   dollarBillStringProperty: _.get( CircuitConstructionKitCommonStrings, 'dollarBillStringProperty' ),
   eraserStringProperty: _.get( CircuitConstructionKitCommonStrings, 'eraserStringProperty' ),
   pencilStringProperty: _.get( CircuitConstructionKitCommonStrings, 'pencilStringProperty' ),
+  thinPencilStringProperty: _.get( CircuitConstructionKitCommonStrings, 'thinPencilStringProperty' ),
   handStringProperty: _.get( CircuitConstructionKitCommonStrings, 'handStringProperty' ),
   dogStringProperty: _.get( CircuitConstructionKitCommonStrings, 'dogStringProperty' ),
   paperClipStringProperty: _.get( CircuitConstructionKitCommonStrings, 'paperClipStringProperty' ),
@@ -444,6 +448,7 @@ const CircuitConstructionKitCommonFluent = {
         coinStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypeLabels_coin', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypeLabels.coinStringProperty' ) ),
         paperClipStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypeLabels_paperClip', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypeLabels.paperClipStringProperty' ) ),
         pencilStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypeLabels_pencil', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypeLabels.pencilStringProperty' ) ),
+        thinPencilStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypeLabels_thinPencil', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypeLabels.thinPencilStringProperty' ) ),
         eraserStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypeLabels_eraser', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypeLabels.eraserStringProperty' ) ),
         handStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypeLabels_hand', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypeLabels.handStringProperty' ) ),
         dollarBillStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypeLabels_dollarBill', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypeLabels.dollarBillStringProperty' ) )
@@ -473,6 +478,7 @@ const CircuitConstructionKitCommonFluent = {
         coinStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypePlurals_coin', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypePlurals.coinStringProperty' ) ),
         paperClipStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypePlurals_paperClip', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypePlurals.paperClipStringProperty' ) ),
         pencilStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypePlurals_pencil', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypePlurals.pencilStringProperty' ) ),
+        thinPencilStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypePlurals_thinPencil', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypePlurals.thinPencilStringProperty' ) ),
         eraserStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypePlurals_eraser', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypePlurals.eraserStringProperty' ) ),
         handStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypePlurals_hand', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypePlurals.handStringProperty' ) ),
         dollarBillStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypePlurals_dollarBill', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypePlurals.dollarBillStringProperty' ) )

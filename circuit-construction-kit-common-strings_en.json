@@ -77,6 +77,9 @@
   "pencil": {
     "value": "Pencil"
   },
+  "thinPencil": {
+    "value": "Thin Pencil"
+  },
   "hand": {
     "value": "Hand"
   },
@@ -375,6 +378,9 @@
         "pencil": {
           "value": "Pencil"
         },
+        "thinPencil": {
+          "value": "Thin Pencil"
+        },
         "eraser": {
           "value": "Eraser"
         },
@@ -442,6 +448,9 @@
         },
         "pencil": {
           "value": "Pencils"
+        },
+        "thinPencil": {
+          "value": "Thin Pencils"
         },
         "eraser": {
           "value": "Erasers"

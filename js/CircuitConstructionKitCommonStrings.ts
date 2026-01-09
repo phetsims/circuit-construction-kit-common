@@ -40,6 +40,7 @@ type StringsType = {
   'dollarBillStringProperty': LocalizedStringProperty;
   'eraserStringProperty': LocalizedStringProperty;
   'pencilStringProperty': LocalizedStringProperty;
+  'thinPencilStringProperty': LocalizedStringProperty;
   'handStringProperty': LocalizedStringProperty;
   'dogStringProperty': LocalizedStringProperty;
   'paperClipStringProperty': LocalizedStringProperty;
@@ -156,6 +157,7 @@ type StringsType = {
         'coinStringProperty': LocalizedStringProperty;
         'paperClipStringProperty': LocalizedStringProperty;
         'pencilStringProperty': LocalizedStringProperty;
+        'thinPencilStringProperty': LocalizedStringProperty;
         'eraserStringProperty': LocalizedStringProperty;
         'handStringProperty': LocalizedStringProperty;
         'dollarBillStringProperty': LocalizedStringProperty;
@@ -180,6 +182,7 @@ type StringsType = {
         'coinStringProperty': LocalizedStringProperty;
         'paperClipStringProperty': LocalizedStringProperty;
         'pencilStringProperty': LocalizedStringProperty;
+        'thinPencilStringProperty': LocalizedStringProperty;
         'eraserStringProperty': LocalizedStringProperty;
         'handStringProperty': LocalizedStringProperty;
         'dollarBillStringProperty': LocalizedStringProperty;

@@ -23,6 +23,7 @@ const HOUSEHOLD_RESISTOR_TYPES = [
   ResistorType.COIN,
   ResistorType.PAPER_CLIP,
   ResistorType.PENCIL,
+  ResistorType.THIN_PENCIL,
   ResistorType.ERASER,
   ResistorType.HAND,
   ResistorType.DOLLAR_BILL
@@ -41,6 +42,7 @@ const CircuitDescriptionUtils = {
       if ( resistorType === ResistorType.COIN ) { return 'coin'; }
       if ( resistorType === ResistorType.PAPER_CLIP ) { return 'paperClip'; }
       if ( resistorType === ResistorType.PENCIL ) { return 'pencil'; }
+      if ( resistorType === ResistorType.THIN_PENCIL ) { return 'thinPencil'; }
       if ( resistorType === ResistorType.ERASER ) { return 'eraser'; }
       if ( resistorType === ResistorType.HAND ) { return 'hand'; }
       if ( resistorType === ResistorType.DOLLAR_BILL ) { return 'dollarBill'; }
@@ -112,6 +114,8 @@ const CircuitDescriptionUtils = {
         return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypeLabels.paperClipStringProperty.value;
       case 'pencil':
         return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypeLabels.pencilStringProperty.value;
+      case 'thinPencil':
+        return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypeLabels.thinPencilStringProperty.value;
       case 'eraser':
         return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypeLabels.eraserStringProperty.value;
       case 'hand':
@@ -168,6 +172,8 @@ const CircuitDescriptionUtils = {
         return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypePlurals.paperClipStringProperty.value;
       case 'pencil':
         return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypePlurals.pencilStringProperty.value;
+      case 'thinPencil':
+        return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypePlurals.thinPencilStringProperty.value;
       case 'eraser':
         return CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypePlurals.eraserStringProperty.value;
       case 'hand':

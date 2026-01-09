@@ -26,6 +26,7 @@ coin:                                  Coin
 dollarBill:                            Dollar Bill
 eraser:                                Eraser
 pencil:                                Pencil
+thinPencil:                            Thin Pencil
 hand:                                  Hand
 dog:                                   Dog
 paperClip:                             Paper Clip
@@ -145,6 +146,7 @@ a11y:
       coin:             Coin
       paperClip:        Paper Clip
       pencil:           Pencil
+      thinPencil:       Thin Pencil
       eraser:           Eraser
       hand:             Hand
       dollarBill:       Dollar Bill
@@ -171,6 +173,7 @@ a11y:
       coin:             Coins
       paperClip:        Paper Clips
       pencil:           Pencils
+      thinPencil:       Thin Pencils
       eraser:           Erasers
       hand:             Hands
       dollarBill:       Dollar Bills

@@ -65,6 +65,7 @@ const fuseStringProperty = CircuitConstructionKitCommonFluent.fuseStringProperty
 const lightBulbStringProperty = CircuitConstructionKitCommonFluent.lightBulbStringProperty;
 const paperClipStringProperty = CircuitConstructionKitCommonFluent.paperClipStringProperty;
 const pencilStringProperty = CircuitConstructionKitCommonFluent.pencilStringProperty;
+const thinPencilStringProperty = CircuitConstructionKitCommonFluent.thinPencilStringProperty;
 const resistorStringProperty = CircuitConstructionKitCommonFluent.resistorStringProperty;
 const switchStringProperty = CircuitConstructionKitCommonFluent.switchStringProperty;
 const wireStringProperty = CircuitConstructionKitCommonFluent.wireStringProperty;
@@ -457,6 +458,17 @@ export default class CircuitElementToolFactory {
       resistorType: ResistorType.PENCIL,
       tandemName: 'pencilToolNode',
       labelStringProperty: pencilStringProperty,
+      lifelikeIconHeight: 12
+    } );
+  }
+
+  // Same docs as for createPaperClipToolNode
+  public createThinPencilToolNode( tandem: Tandem ): CircuitElementToolNode {
+    return this.createResistorToolNode( tandem, this.circuit.householdObjectGroup, {
+      count: 1,
+      resistorType: ResistorType.THIN_PENCIL,
+      tandemName: 'thinPencilToolNode',
+      labelStringProperty: thinPencilStringProperty,
       lifelikeIconHeight: 12
     } );
   }

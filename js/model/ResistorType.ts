@@ -24,6 +24,7 @@ export default class ResistorType extends EnumerationValue {
   public static readonly COIN = ResistorType.fixed( 0, true, CCKCConstants.COIN_LENGTH );
   public static readonly PAPER_CLIP = ResistorType.fixed( 0, true, CCKCConstants.PAPER_CLIP_LENGTH );
   public static readonly PENCIL = ResistorType.fixed( 25, false, CCKCConstants.PENCIL_LENGTH );
+  public static readonly THIN_PENCIL = ResistorType.fixed( 50, false, CCKCConstants.PENCIL_LENGTH );
   public static readonly ERASER = ResistorType.fixed( LARGE_RESISTANCE, false, CCKCConstants.ERASER_LENGTH );
   public static readonly HAND = ResistorType.fixed( 100000, false, CCKCConstants.HAND_LENGTH, 15 );
   public static readonly DOLLAR_BILL = ResistorType.fixed( LARGE_RESISTANCE, false, CCKCConstants.DOLLAR_BILL_LENGTH );
