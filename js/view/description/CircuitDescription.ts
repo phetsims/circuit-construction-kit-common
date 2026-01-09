@@ -285,6 +285,11 @@ export default class CircuitDescription {
    * Creates an accessible description for a vertex based on its connections.
    * Uses brief names for circuit elements to keep descriptions concise.
    * For vertices with 4+ connections, uses a compressed form grouping by type.
+   * @param vertex
+   * @param vertexIndex
+   * @param totalVertices
+   * @param neighbors
+   * @param briefNames
    * @param isFullyDisconnected - true if this vertex belongs to a circuit element with both ends disconnected
    * @param forAttachmentName - true to use short format "Connection X" for popup, false to use full format "Connection Point X of Y" for accessibleName
    */
@@ -327,13 +332,12 @@ export default class CircuitDescription {
         const componentName = briefNames.get( neighbor ) || '';
         return this.formatTerminalDescription( vertex, neighbor, componentName );
       } ).join( ', ' );
-      const fullDescription = CircuitConstructionKitCommonFluent.a11y.circuitDescription.connectionDescription.format( {
+
+      // Store complete description on vertex for accessibility
+      vertex.completeDescription = CircuitConstructionKitCommonFluent.a11y.circuitDescription.connectionDescription.format( {
         connectionLabel: connectionLabel,
         neighbors: neighborNames
       } );
-
-      // Store complete description on vertex for accessibility
-      vertex.completeDescription = fullDescription;
 
       // Create compressed form by counting description types (uses specific names for household items)
       const typeCounts = new Map<string, number>();
@@ -421,8 +425,7 @@ export default class CircuitDescription {
    */
   private static updateSingleCircuitElements(
     singleElementCircuits: CircuitElement[],
-    circuitNode: CircuitNode,
-    circuit: Circuit
+    circuitNode: CircuitNode
   ): { pdomOrder: Node[]; briefNames: Map<CircuitElement, string> } {
     const pdomOrder: Node[] = [];
 
@@ -595,7 +598,7 @@ export default class CircuitDescription {
       }
 
       // Update single circuit elements section and collect brief names
-      const singleElementsResult = this.updateSingleCircuitElements( singleElementCircuits, circuitNode, circuit );
+      const singleElementsResult = this.updateSingleCircuitElements( singleElementCircuits, circuitNode );
       circuitNode.unconnectedCircuitElementsSection.visible = singleElementsResult.pdomOrder.length > 0;
 
       // Remove old summary node if it exists (it's the only direct child we add)
