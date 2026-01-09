@@ -312,13 +312,9 @@ export default class CircuitDescription {
       const terminalDescription = this.formatTerminalDescription( vertex, neighbors[ 0 ], componentName );
       vertex.completeDescription = null;
 
-      // Skip "Connection Point" prefix if:
-      // 1. Element is fully disconnected, OR
-      // 2. Terminal has a special name (battery terminals, light bulb terminals)
-      const terminalType = this.getTerminalType( vertex, neighbors[ 0 ] );
-      const hasSpecialTerminal = terminalType !== 'none';
-
-      if ( isFullyDisconnected || hasSpecialTerminal ) {
+      // Skip "Connection Point" prefix only if element is fully disconnected.
+      // Battery and light bulb terminals still get the prefix (e.g., "Connection Point 1 of 2: Negative Terminal of Battery 1")
+      if ( isFullyDisconnected ) {
         return terminalDescription;
       }
       return CircuitConstructionKitCommonFluent.a11y.circuitDescription.connectionDescription.format( {
