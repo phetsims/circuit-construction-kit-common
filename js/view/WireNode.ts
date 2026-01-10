@@ -1,4 +1,4 @@
-// Copyright 2015-2025, University of Colorado Boulder
+// Copyright 2015-2026, University of Colorado Boulder
 
 /**
  * The node for a wire, which can be stretched out by dragging its vertices.
