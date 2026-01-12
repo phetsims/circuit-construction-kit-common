@@ -26,6 +26,7 @@ import VBox from '../../../scenery/js/layout/nodes/VBox.js';
 import KeyboardListener from '../../../scenery/js/listeners/KeyboardListener.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import { type CarouselItem } from '../../../sun/js/Carousel.js';
+import sharedSoundPlayers from '../../../tambo/js/sharedSoundPlayers.js';
 import phetioStateSetEmitter from '../../../tandem/js/phetioStateSetEmitter.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -555,6 +556,9 @@ export default class CCKCScreenView extends ScreenView {
             // Only permit deletion if the circuit element is marked as disposable
             if ( circuitElement.isDisposableProperty.value ) {
               this.circuitNode.circuit.disposeCircuitElement( circuitElement );
+
+              // Play the "whoosh" eraser sound when using the keyboard to delete a Circuit Element, like we do in the CCKCTrashButton
+              sharedSoundPlayers.get( 'erase' ).play();
 
               // Move focus to another circuit element
               if ( this.circuitNode.circuit.circuitElements.length > 0 ) {
