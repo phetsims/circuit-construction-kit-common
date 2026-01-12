@@ -564,8 +564,12 @@ export default class CircuitNode extends Node {
     let pendingConnection: { targetVertex: Vertex; oldVertex: Vertex; oldVertexElements: CircuitElement[] } | null = null;
 
     circuit.vertexConnectedEmitter.addListener( ( targetVertex, oldVertex, oldVertexElements ) => {
-      // Store the connection info to process after physics solve
-      pendingConnection = { targetVertex: targetVertex, oldVertex: oldVertex, oldVertexElements: oldVertexElements };
+      if ( !isResettingAllProperty.value && !isSettingPhetioStateProperty.value ) {
+        // Capture state before the circuit solves
+        circuitContextResponses.captureState();
+        // Store the connection info to process after physics solve
+        pendingConnection = { targetVertex: targetVertex, oldVertex: oldVertex, oldVertexElements: oldVertexElements };
+      }
     } );
 
     // Handle switch toggle context responses

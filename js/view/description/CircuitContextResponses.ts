@@ -322,19 +322,68 @@ export default class CircuitContextResponses {
       return null;
     }
 
-    // Only include current information if "Show Current" is checked
-    if ( this.circuit.showCurrentProperty.value ) {
-      // Check if current is now flowing in the connected group
-      const groupIndex = this.findGroupIndexForVertex( targetVertex );
-      const currentPhrase = this.buildCurrentPhraseIfFlowing( groupIndex );
+    // Get the group index for the connected vertex
+    const groupIndex = this.findGroupIndexForVertex( targetVertex );
 
-      if ( currentPhrase ) {
-        return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.vertexConnectedWithCurrent.format( {
-          element1: element1Description,
-          element2: element2Description,
-          currentPhrase: currentPhrase
-        } );
+    // Build change phrase if we have a group
+    let changePhrase: string | null = null;
+
+    if ( groupIndex !== null ) {
+      const groups = this.circuit.getGroups();
+      const multiElementGroups = groups.filter( group => group.circuitElements.length > 1 );
+      const group = multiElementGroups[ groupIndex - 1 ];
+
+      if ( group ) {
+        const currentState = this.getGroupState( group );
+        const previousState = this.previousGroupStates?.get( groupIndex );
+
+        if ( previousState ) {
+          // We have previous state - compare to detect changes
+          const currentChange = this.analyzeCurrentChange( previousState.currentMagnitudes, currentState.currentMagnitudes );
+          const brightnessChange = this.analyzeBrightnessChange( previousState.brightnessValues, currentState.brightnessValues );
+          const showCurrent = this.circuit.showCurrentProperty.value;
+
+          changePhrase = this.buildGroupChangePhrase( groupIndex, currentChange, brightnessChange, showCurrent );
+        }
+        else {
+          // No previous state (elements weren't in a multi-element group before)
+          // Check if current is now flowing and/or light bulbs are now lit
+          const hasCurrentFlowing = currentState.currentMagnitudes.some( current => current > CURRENT_THRESHOLD );
+          const hasLitBulbs = currentState.brightnessValues.some( brightness => brightness > 0 );
+          const showCurrent = this.circuit.showCurrentProperty.value;
+
+          // Build a change phrase based on what's happening now
+          const parts: string[] = [];
+
+          if ( showCurrent && hasCurrentFlowing ) {
+            parts.push( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.currentChangePhrase.format( {
+              scope: 'all',
+              direction: 'changed',
+              groupIndex: groupIndex
+            } ) );
+          }
+
+          if ( hasLitBulbs ) {
+            parts.push( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.lightBulbChangePhrase.format( {
+              scope: currentState.brightnessValues.length === 1 ? 'all' : 'all',
+              direction: 'brighter',
+              groupIndex: groupIndex
+            } ) );
+          }
+
+          if ( parts.length > 0 ) {
+            changePhrase = parts.join( ' ' );
+          }
+        }
       }
+    }
+
+    if ( changePhrase ) {
+      return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.vertexConnectedWithCurrent.format( {
+        element1: element1Description,
+        element2: element2Description,
+        currentPhrase: changePhrase
+      } );
     }
 
     return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.vertexConnectedSimple.format( {
@@ -367,39 +416,6 @@ export default class CircuitContextResponses {
       return null;
     }
     return CircuitDescriptionUtils.getGroupIndex( this.circuit, elements[ 0 ] );
-  }
-
-  /**
-   * Build a current phrase if current is flowing in the group.
-   */
-  private buildCurrentPhraseIfFlowing( groupIndex: number | null ): string | null {
-    if ( groupIndex === null ) {
-      return null;
-    }
-
-    const groups = this.circuit.getGroups();
-    const multiElementGroups = groups.filter( group => group.circuitElements.length > 1 );
-    const group = multiElementGroups[ groupIndex - 1 ];
-
-    if ( !group ) {
-      return null;
-    }
-
-    // Check if any element in the group has current flowing
-    const hasCurrentFlowing = group.circuitElements.some(
-      element => Math.abs( element.currentProperty.value ) > CURRENT_THRESHOLD
-    );
-
-    if ( !hasCurrentFlowing ) {
-      return null;
-    }
-
-    // Current is flowing - return phrase
-    return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.currentChangePhrase.format( {
-      scope: 'all',
-      direction: 'changed',
-      groupIndex: groupIndex
-    } );
   }
 
   /**
