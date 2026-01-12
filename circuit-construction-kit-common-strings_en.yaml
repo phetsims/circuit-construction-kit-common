@@ -355,12 +355,14 @@ a11y:
             increased: 'Current through some Group { $groupIndex } circuit elements increased.'
             decreased: 'Current through some Group { $groupIndex } circuit elements decreased.'
             stopped:   'Current through some Group { $groupIndex } circuit elements stopped.'
+            reversed:  'Current through some Group { $groupIndex } circuit elements reversed.'
         all:
           select_direction:
             changed:   'Current through all Group { $groupIndex } circuit elements changed.'
             increased: 'Current through all Group { $groupIndex } circuit elements increased.'
             decreased: 'Current through all Group { $groupIndex } circuit elements decreased.'
             stopped:   'Current through Group { $groupIndex } stopped.'
+            reversed:  'Current through all Group { $groupIndex } circuit elements reversed.'
     # NEW: Light bulb brightness change patterns
     lightBulbChangePhrase:
       select_scope:

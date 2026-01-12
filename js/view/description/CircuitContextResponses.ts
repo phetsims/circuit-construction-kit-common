@@ -25,12 +25,11 @@ const LIGHT_BULB_MAXIMUM_POWER = 2000;
 // Current threshold for considering current as "flowing" (for vertex connection responses)
 const CURRENT_THRESHOLD = 1e-4;
 
-// Tolerance for comparing values - very small to catch any real change
-// while avoiding floating-point noise
-const VALUE_EQUALITY_TOLERANCE = 1e-10;
+// Tolerance for comparing values - avoids announcing floating-point noise
+const VALUE_EQUALITY_TOLERANCE = 1e-4;
 
 type GroupState = {
-  currentMagnitudes: number[]; // Current magnitude for each circuit element in the group
+  currentValues: number[]; // Signed current for each circuit element in the group
   brightnessValues: number[]; // Brightness value (0-1) for each light bulb in the group
 };
 
@@ -75,15 +74,13 @@ export default class CircuitContextResponses {
    * Get the state for a single group.
    */
   private getGroupState( group: CircuitGroup ): GroupState {
-    const currentMagnitudes = group.circuitElements.map(
-      element => Math.abs( element.currentProperty.value )
-    );
+    const currentValues = group.circuitElements.map( element => element.currentProperty.value );
 
     const lightBulbs = group.circuitElements.filter( ( element ): element is LightBulb => element instanceof LightBulb );
     const brightnessValues = lightBulbs.map( bulb => this.computeLightBulbBrightness( bulb ) );
 
     return {
-      currentMagnitudes: currentMagnitudes,
+      currentValues: currentValues,
       brightnessValues: brightnessValues
     };
   }
@@ -130,7 +127,7 @@ export default class CircuitContextResponses {
       return null;
     }
 
-    const currentChange = this.analyzeCurrentChange( previousState.currentMagnitudes, currentState.currentMagnitudes );
+    const currentChange = this.analyzeCurrentChange( previousState.currentValues, currentState.currentValues );
     const brightnessChange = this.analyzeBrightnessChange( previousState.brightnessValues, currentState.brightnessValues );
 
     // Check if there are light bulbs in the group
@@ -165,19 +162,35 @@ export default class CircuitContextResponses {
   private analyzeCurrentChange(
     oldCurrents: number[],
     newCurrents: number[]
-  ): { hasChange: boolean; scope: 'some' | 'all'; direction: 'increased' | 'decreased' | 'changed' | 'stopped' } {
+  ): { hasChange: boolean; scope: 'some' | 'all'; direction: 'increased' | 'decreased' | 'changed' | 'stopped' | 'reversed' } {
 
     // Count how many elements had current changes
     let increasedCount = 0;
     let decreasedCount = 0;
     let changedCount = 0;
+    let reversedCount = 0;
 
     const count = Math.min( oldCurrents.length, newCurrents.length );
     for ( let i = 0; i < count; i++ ) {
-      const diff = newCurrents[ i ] - oldCurrents[ i ];
-      if ( Math.abs( diff ) > VALUE_EQUALITY_TOLERANCE ) {
+      const oldValue = oldCurrents[ i ];
+      const newValue = newCurrents[ i ];
+      const oldMagnitude = Math.abs( oldValue );
+      const newMagnitude = Math.abs( newValue );
+      const magnitudeDiff = newMagnitude - oldMagnitude;
+      const magnitudeChanged = Math.abs( magnitudeDiff ) > VALUE_EQUALITY_TOLERANCE;
+      const signChanged = Math.sign( oldValue ) !== Math.sign( newValue );
+      const signFlipWithSameMagnitude = !magnitudeChanged &&
+                                        oldMagnitude > VALUE_EQUALITY_TOLERANCE &&
+                                        newMagnitude > VALUE_EQUALITY_TOLERANCE &&
+                                        signChanged;
+
+      if ( signFlipWithSameMagnitude ) {
         changedCount++;
-        if ( diff > 0 ) {
+        reversedCount++;
+      }
+      else if ( magnitudeChanged ) {
+        changedCount++;
+        if ( magnitudeDiff > 0 ) {
           increasedCount++;
         }
         else {
@@ -193,18 +206,21 @@ export default class CircuitContextResponses {
     const scope: 'some' | 'all' = changedCount === count ? 'all' : 'some';
 
     // Check if current has stopped: was flowing before, now all below threshold
-    const wasFlowing = oldCurrents.some( current => current > CURRENT_THRESHOLD );
-    const nowStopped = newCurrents.every( current => current <= CURRENT_THRESHOLD );
+    const wasFlowing = oldCurrents.some( current => Math.abs( current ) > CURRENT_THRESHOLD );
+    const nowStopped = newCurrents.every( current => Math.abs( current ) <= CURRENT_THRESHOLD );
 
     // Determine direction
-    let direction: 'increased' | 'decreased' | 'changed' | 'stopped';
+    let direction: 'increased' | 'decreased' | 'changed' | 'stopped' | 'reversed';
     if ( wasFlowing && nowStopped ) {
       direction = 'stopped';
     }
-    else if ( increasedCount > 0 && decreasedCount === 0 ) {
+    else if ( reversedCount === count && count > 0 ) {
+      direction = 'reversed';
+    }
+    else if ( increasedCount > 0 && decreasedCount === 0 && reversedCount === 0 ) {
       direction = 'increased';
     }
-    else if ( decreasedCount > 0 && increasedCount === 0 ) {
+    else if ( decreasedCount > 0 && increasedCount === 0 && reversedCount === 0 ) {
       direction = 'decreased';
     }
     else {
@@ -272,7 +288,7 @@ export default class CircuitContextResponses {
    */
   private buildGroupChangePhrase(
     groupIndex: number,
-    currentChange: { hasChange: boolean; scope: 'some' | 'all'; direction: 'increased' | 'decreased' | 'changed' | 'stopped' },
+    currentChange: { hasChange: boolean; scope: 'some' | 'all'; direction: 'increased' | 'decreased' | 'changed' | 'stopped' | 'reversed' },
     brightnessChange: { hasChange: boolean; scope: 'some' | 'all'; direction: 'brighter' | 'dimmer' | 'changed' },
     includeCurrentChange: boolean
   ): string | null {
@@ -340,7 +356,7 @@ export default class CircuitContextResponses {
 
         if ( previousState ) {
           // We have previous state - compare to detect changes
-          const currentChange = this.analyzeCurrentChange( previousState.currentMagnitudes, currentState.currentMagnitudes );
+          const currentChange = this.analyzeCurrentChange( previousState.currentValues, currentState.currentValues );
           const brightnessChange = this.analyzeBrightnessChange( previousState.brightnessValues, currentState.brightnessValues );
           const showCurrent = this.circuit.showCurrentProperty.value;
 
@@ -349,7 +365,7 @@ export default class CircuitContextResponses {
         else {
           // No previous state (elements weren't in a multi-element group before)
           // Check if current is now flowing and/or light bulbs are now lit
-          const hasCurrentFlowing = currentState.currentMagnitudes.some( current => current > CURRENT_THRESHOLD );
+          const hasCurrentFlowing = currentState.currentValues.some( current => Math.abs( current ) > CURRENT_THRESHOLD );
           const hasLitBulbs = currentState.brightnessValues.some( brightness => brightness > 0 );
           const showCurrent = this.circuit.showCurrentProperty.value;
 
@@ -465,7 +481,7 @@ export default class CircuitContextResponses {
     let changePhrase: string | null = null;
 
     if ( previousState ) {
-      const currentChange = this.analyzeCurrentChange( previousState.currentMagnitudes, currentState.currentMagnitudes );
+      const currentChange = this.analyzeCurrentChange( previousState.currentValues, currentState.currentValues );
       const brightnessChange = this.analyzeBrightnessChange( previousState.brightnessValues, currentState.brightnessValues );
       const showCurrent = this.circuit.showCurrentProperty.value;
 
@@ -518,7 +534,7 @@ export default class CircuitContextResponses {
     let changePhrase: string | null = null;
 
     if ( previousState ) {
-      const currentChange = this.analyzeCurrentChange( previousState.currentMagnitudes, currentState.currentMagnitudes );
+      const currentChange = this.analyzeCurrentChange( previousState.currentValues, currentState.currentValues );
       const brightnessChange = this.analyzeBrightnessChange( previousState.brightnessValues, currentState.brightnessValues );
       const showCurrent = this.circuit.showCurrentProperty.value;
 
@@ -566,7 +582,13 @@ export default class CircuitContextResponses {
     let changePhrase: string | null = null;
 
     if ( previousState ) {
-      const currentChange = this.analyzeCurrentChange( previousState.currentMagnitudes, currentState.currentMagnitudes );
+      const adjustedCurrentValues = currentState.currentValues.slice();
+      const batteryIndex = group.circuitElements.indexOf( batteryElement );
+      if ( batteryIndex >= 0 ) {
+        adjustedCurrentValues[ batteryIndex ] *= -1;
+      }
+
+      const currentChange = this.analyzeCurrentChange( previousState.currentValues, adjustedCurrentValues );
       const brightnessChange = this.analyzeBrightnessChange( previousState.brightnessValues, currentState.brightnessValues );
       const showCurrent = this.circuit.showCurrentProperty.value;
 
@@ -633,7 +655,7 @@ export default class CircuitContextResponses {
     let changePhrase: string | null = null;
 
     if ( previousState ) {
-      const currentChange = this.analyzeCurrentChange( previousState.currentMagnitudes, currentState.currentMagnitudes );
+      const currentChange = this.analyzeCurrentChange( previousState.currentValues, currentState.currentValues );
       const brightnessChange = this.analyzeBrightnessChange( previousState.brightnessValues, currentState.brightnessValues );
       const showCurrent = this.circuit.showCurrentProperty.value;
 
