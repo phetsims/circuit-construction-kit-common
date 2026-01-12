@@ -104,9 +104,6 @@ export default class CapacitorCircuitElementNode extends FixedCircuitElementNode
     const plateBounds = new Bounds3( 0, 0, 0, thickness, CapacitorConstants.PLATE_HEIGHT, thickness );
     const plateSeparationProperty = new NumberProperty( 0.004 );
 
-    // TODO (AC): See https://github.com/phetsims/circuit-construction-kit-common/issues/632 Can we instead create a Capacitor?
-    // This is definitely a case where Typescript would be unhappy, and if this is needed, then it should be explicitly
-    // documented in CapacitorNode.
     const circuit = {
       maxPlateCharge: 2.6562e-12,
       capacitor: {
