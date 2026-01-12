@@ -9,6 +9,7 @@
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import trashAltRegularShape from '../../../sherpa/js/fontawesome-5/trashAltRegularShape.js';
+import sharedSoundPlayers from '../../../tambo/js/sharedSoundPlayers.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -58,7 +59,9 @@ export default class CCKCTrashButton extends CCKCRoundPushButton {
       isDisposable: false,
       tandem: tandem,
       phetioVisiblePropertyInstrumented: false,
-      phetioEnabledPropertyInstrumented: false
+      phetioEnabledPropertyInstrumented: false,
+
+      soundPlayer: sharedSoundPlayers.get( 'erase' )
     } );
   }
 }
