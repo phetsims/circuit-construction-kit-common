@@ -246,6 +246,7 @@ type StringsType = {
       'lightBulbStateStringProperty': LocalizedStringProperty;
       'componentValueChangeStringProperty': LocalizedStringProperty;
       'noChangesInGroupStringProperty': LocalizedStringProperty;
+      'groupPrefixStringProperty': LocalizedStringProperty;
       'currentChangePhraseStringProperty': LocalizedStringProperty;
       'lightBulbChangePhraseStringProperty': LocalizedStringProperty;
       'vertexConnectedWithCurrentStringProperty': LocalizedStringProperty;

@@ -152,25 +152,8 @@ export default class CircuitContextResponses {
       } );
     }
 
-    // CASE 3: Connected with changes - build response
-    const parts: string[] = [];
-
-    if ( hasReportableCurrentChange ) {
-      parts.push( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.currentChangePhrase.format( {
-        scope: currentChange.scope,
-        direction: currentChange.direction,
-        groupIndex: groupIndex
-      } ) );
-    }
-
-    if ( brightnessChange.hasChange ) {
-      parts.push( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.lightBulbChangePhrase.format( {
-        scope: brightnessChange.scope,
-        direction: brightnessChange.direction
-      } ) );
-    }
-
-    return parts.length > 0 ? parts.join( ' ' ) : null;
+    // CASE 3: Connected with changes - build response with group prefix
+    return this.buildGroupChangePhrase( groupIndex, currentChange, brightnessChange, showCurrent );
   }
 
   /**
@@ -283,6 +266,42 @@ export default class CircuitContextResponses {
   }
 
   /**
+   * Build the combined current and brightness change phrase with group prefix.
+   * Returns null if there are no changes to report.
+   */
+  private buildGroupChangePhrase(
+    groupIndex: number,
+    currentChange: { hasChange: boolean; scope: 'some' | 'all'; direction: 'increased' | 'decreased' | 'changed' | 'stopped' },
+    brightnessChange: { hasChange: boolean; scope: 'some' | 'all'; direction: 'brighter' | 'dimmer' | 'changed' },
+    includeCurrentChange: boolean
+  ): string | null {
+    const parts: string[] = [];
+
+    if ( includeCurrentChange && currentChange.hasChange ) {
+      parts.push( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.currentChangePhrase.format( {
+        scope: currentChange.scope,
+        direction: currentChange.direction
+      } ) );
+    }
+
+    if ( brightnessChange.hasChange ) {
+      parts.push( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.lightBulbChangePhrase.format( {
+        scope: brightnessChange.scope,
+        direction: brightnessChange.direction
+      } ) );
+    }
+
+    if ( parts.length > 0 ) {
+      const groupPrefix = CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.groupPrefix.format( {
+        groupIndex: groupIndex
+      } );
+      return `${groupPrefix} ${parts.join( ' ' )}`;
+    }
+
+    return null;
+  }
+
+  /**
    * Create a response for when vertices are connected.
    * @param targetVertex - The vertex that remains after the merge
    * @param oldVertex - The vertex that was removed (already disposed when this is called)
@@ -380,12 +399,15 @@ export default class CircuitContextResponses {
       return null;
     }
 
-    // Current is flowing - return a simple phrase
-    return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.currentChangePhrase.format( {
-      scope: 'all',
-      direction: 'changed',
+    // Current is flowing - return phrase with group prefix
+    const groupPrefix = CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.groupPrefix.format( {
       groupIndex: groupIndex
     } );
+    const currentPhrase = CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.currentChangePhrase.format( {
+      scope: 'all',
+      direction: 'changed'
+    } );
+    return `${groupPrefix} ${currentPhrase}`;
   }
 
   /**
@@ -424,30 +446,9 @@ export default class CircuitContextResponses {
     if ( previousState ) {
       const currentChange = this.analyzeCurrentChange( previousState.currentMagnitudes, currentState.currentMagnitudes );
       const brightnessChange = this.analyzeBrightnessChange( previousState.brightnessValues, currentState.brightnessValues );
-
-      // Only report current changes if "Show Current" is checked
       const showCurrent = this.circuit.showCurrentProperty.value;
 
-      const parts: string[] = [];
-
-      if ( showCurrent && currentChange.hasChange ) {
-        parts.push( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.currentChangePhrase.format( {
-          scope: currentChange.scope,
-          direction: currentChange.direction,
-          groupIndex: groupIndex
-        } ) );
-      }
-
-      if ( brightnessChange.hasChange ) {
-        parts.push( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.lightBulbChangePhrase.format( {
-          scope: brightnessChange.scope,
-          direction: brightnessChange.direction
-        } ) );
-      }
-
-      if ( parts.length > 0 ) {
-        changePhrase = parts.join( ' ' );
-      }
+      changePhrase = this.buildGroupChangePhrase( groupIndex, currentChange, brightnessChange, showCurrent );
     }
 
     // Return appropriate response based on whether there were current/brightness changes
@@ -498,30 +499,9 @@ export default class CircuitContextResponses {
     if ( previousState ) {
       const currentChange = this.analyzeCurrentChange( previousState.currentMagnitudes, currentState.currentMagnitudes );
       const brightnessChange = this.analyzeBrightnessChange( previousState.brightnessValues, currentState.brightnessValues );
-
-      // Only report current changes if "Show Current" is checked
       const showCurrent = this.circuit.showCurrentProperty.value;
 
-      const parts: string[] = [];
-
-      if ( showCurrent && currentChange.hasChange ) {
-        parts.push( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.currentChangePhrase.format( {
-          scope: currentChange.scope,
-          direction: currentChange.direction,
-          groupIndex: groupIndex
-        } ) );
-      }
-
-      if ( brightnessChange.hasChange ) {
-        parts.push( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.lightBulbChangePhrase.format( {
-          scope: brightnessChange.scope,
-          direction: brightnessChange.direction
-        } ) );
-      }
-
-      if ( parts.length > 0 ) {
-        changePhrase = parts.join( ' ' );
-      }
+      changePhrase = this.buildGroupChangePhrase( groupIndex, currentChange, brightnessChange, showCurrent );
     }
 
     // Return appropriate response based on whether there were current/brightness changes
@@ -567,30 +547,9 @@ export default class CircuitContextResponses {
     if ( previousState ) {
       const currentChange = this.analyzeCurrentChange( previousState.currentMagnitudes, currentState.currentMagnitudes );
       const brightnessChange = this.analyzeBrightnessChange( previousState.brightnessValues, currentState.brightnessValues );
-
-      // Only report current changes if "Show Current" is checked
       const showCurrent = this.circuit.showCurrentProperty.value;
 
-      const parts: string[] = [];
-
-      if ( showCurrent && currentChange.hasChange ) {
-        parts.push( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.currentChangePhrase.format( {
-          scope: currentChange.scope,
-          direction: currentChange.direction,
-          groupIndex: groupIndex
-        } ) );
-      }
-
-      if ( brightnessChange.hasChange ) {
-        parts.push( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.lightBulbChangePhrase.format( {
-          scope: brightnessChange.scope,
-          direction: brightnessChange.direction
-        } ) );
-      }
-
-      if ( parts.length > 0 ) {
-        changePhrase = parts.join( ' ' );
-      }
+      changePhrase = this.buildGroupChangePhrase( groupIndex, currentChange, brightnessChange, showCurrent );
     }
 
     // Return appropriate response based on whether there were current/brightness changes
@@ -655,30 +614,9 @@ export default class CircuitContextResponses {
     if ( previousState ) {
       const currentChange = this.analyzeCurrentChange( previousState.currentMagnitudes, currentState.currentMagnitudes );
       const brightnessChange = this.analyzeBrightnessChange( previousState.brightnessValues, currentState.brightnessValues );
-
-      // Only report current changes if "Show Current" is checked
       const showCurrent = this.circuit.showCurrentProperty.value;
 
-      const parts: string[] = [];
-
-      if ( showCurrent && currentChange.hasChange ) {
-        parts.push( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.currentChangePhrase.format( {
-          scope: currentChange.scope,
-          direction: currentChange.direction,
-          groupIndex: groupIndex
-        } ) );
-      }
-
-      if ( brightnessChange.hasChange ) {
-        parts.push( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.lightBulbChangePhrase.format( {
-          scope: brightnessChange.scope,
-          direction: brightnessChange.direction
-        } ) );
-      }
-
-      if ( parts.length > 0 ) {
-        changePhrase = parts.join( ' ' );
-      }
+      changePhrase = this.buildGroupChangePhrase( groupIndex, currentChange, brightnessChange, showCurrent );
     }
 
     // Return appropriate response based on whether there were current/brightness changes

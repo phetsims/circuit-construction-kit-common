@@ -619,8 +619,11 @@
       "noChangesInGroup": {
         "value": "{ $hasLightBulbs ->\n  [true] No changes in current or light bulb brightness in Group { $groupIndex }.\n  *[false] No changes in current in Group { $groupIndex }.\n}"
       },
+      "groupPrefix": {
+        "value": "In Group { $groupIndex }:"
+      },
       "currentChangePhrase": {
-        "value": "{ $scope ->\n  [some] { $direction ->\n           [changed] Current through some Group { $groupIndex } circuit elements changed.\n           [increased] Current through some Group { $groupIndex } circuit elements increased.\n           [decreased] Current through some Group { $groupIndex } circuit elements decreased.\n           *[stopped] Current through some Group { $groupIndex } circuit elements stopped.\n         }\n  *[all] { $direction ->\n           [changed] Current through all Group { $groupIndex } circuit elements changed.\n           [increased] Current through all Group { $groupIndex } circuit elements increased.\n           [decreased] Current through all Group { $groupIndex } circuit elements decreased.\n           *[stopped] Current through Group { $groupIndex } stopped.\n         }\n}"
+        "value": "{ $scope ->\n  [some] { $direction ->\n           [changed] Current through some circuit elements changed.\n           [increased] Current through some circuit elements increased.\n           [decreased] Current through some circuit elements decreased.\n           *[stopped] Current through some circuit elements stopped.\n         }\n  *[all] { $direction ->\n           [changed] Current through all circuit elements changed.\n           [increased] Current through all circuit elements increased.\n           [decreased] Current through all circuit elements decreased.\n           *[stopped] Current stopped.\n         }\n}"
       },
       "lightBulbChangePhrase": {
         "value": "{ $scope ->\n  [some] { $direction ->\n           [brighter] Some light bulbs got brighter.\n           [dimmer] Some light bulbs got dimmer.\n           *[changed] Some light bulbs changed brightness.\n         }\n  *[all] { $direction ->\n           [brighter] All light bulbs got brighter.\n           [dimmer] All light bulbs got dimmer.\n           *[changed] All light bulbs changed brightness.\n         }\n}"

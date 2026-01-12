@@ -339,21 +339,23 @@ a11y:
       select_hasLightBulbs:
         true:  'No changes in current or light bulb brightness in Group { $groupIndex }.'
         false: 'No changes in current in Group { $groupIndex }.'
+    # NEW: Group prefix for context responses (used to prefix current/brightness change phrases)
+    groupPrefix: 'In Group { $groupIndex }:'
     # NEW: Current change patterns with scope (some/all) and direction
     currentChangePhrase:
       select_scope:
         some:
           select_direction:
-            changed:   'Current through some Group { $groupIndex } circuit elements changed.'
-            increased: 'Current through some Group { $groupIndex } circuit elements increased.'
-            decreased: 'Current through some Group { $groupIndex } circuit elements decreased.'
-            stopped:   'Current through some Group { $groupIndex } circuit elements stopped.'
+            changed:   Current through some circuit elements changed.
+            increased: Current through some circuit elements increased.
+            decreased: Current through some circuit elements decreased.
+            stopped:   Current through some circuit elements stopped.
         all:
           select_direction:
-            changed:   'Current through all Group { $groupIndex } circuit elements changed.'
-            increased: 'Current through all Group { $groupIndex } circuit elements increased.'
-            decreased: 'Current through all Group { $groupIndex } circuit elements decreased.'
-            stopped:   'Current through Group { $groupIndex } stopped.'
+            changed:   Current through all circuit elements changed.
+            increased: Current through all circuit elements increased.
+            decreased: Current through all circuit elements decreased.
+            stopped:   Current stopped.
     # NEW: Light bulb brightness change patterns
     lightBulbChangePhrase:
       select_scope:
