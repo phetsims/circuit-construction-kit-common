@@ -85,7 +85,7 @@ export default class ValueNode extends Panel {
   public constructor( sourceResistanceProperty: Property<number>, circuitElement: CircuitElement, showValuesProperty: Property<boolean>, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem ) {
 
     const contentNode = new VBox( {
-      maxWidth: 130
+      maxWidth: 95
     } );
 
     let readoutValueNode: Node | null;
