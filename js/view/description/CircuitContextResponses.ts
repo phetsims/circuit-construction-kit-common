@@ -266,7 +266,7 @@ export default class CircuitContextResponses {
   }
 
   /**
-   * Build the combined current and brightness change phrase with group prefix.
+   * Build the combined current and brightness change phrase.
    * Returns null if there are no changes to report.
    */
   private buildGroupChangePhrase(
@@ -280,25 +280,20 @@ export default class CircuitContextResponses {
     if ( includeCurrentChange && currentChange.hasChange ) {
       parts.push( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.currentChangePhrase.format( {
         scope: currentChange.scope,
-        direction: currentChange.direction
+        direction: currentChange.direction,
+        groupIndex: groupIndex
       } ) );
     }
 
     if ( brightnessChange.hasChange ) {
       parts.push( CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.lightBulbChangePhrase.format( {
         scope: brightnessChange.scope,
-        direction: brightnessChange.direction
+        direction: brightnessChange.direction,
+        groupIndex: groupIndex
       } ) );
     }
 
-    if ( parts.length > 0 ) {
-      const groupPrefix = CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.groupPrefix.format( {
-        groupIndex: groupIndex
-      } );
-      return `${groupPrefix} ${parts.join( ' ' )}`;
-    }
-
-    return null;
+    return parts.length > 0 ? parts.join( ' ' ) : null;
   }
 
   /**
@@ -399,15 +394,12 @@ export default class CircuitContextResponses {
       return null;
     }
 
-    // Current is flowing - return phrase with group prefix
-    const groupPrefix = CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.groupPrefix.format( {
+    // Current is flowing - return phrase
+    return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.currentChangePhrase.format( {
+      scope: 'all',
+      direction: 'changed',
       groupIndex: groupIndex
     } );
-    const currentPhrase = CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.currentChangePhrase.format( {
-      scope: 'all',
-      direction: 'changed'
-    } );
-    return `${groupPrefix} ${currentPhrase}`;
   }
 
   /**
