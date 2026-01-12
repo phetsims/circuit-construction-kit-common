@@ -335,10 +335,17 @@ a11y:
         resistor:  '{ $componentName } resistance changed from { $oldValue } to { $newValue } ohms.'
         lightBulb: '{ $componentName } resistance changed from { $oldValue } to { $newValue } ohms.'
     # NEW: When connected element changes but no current/brightness changes
+    # Note: When showCurrent=false and hasLightBulbs=false, code returns null before calling this
     noChangesInGroup:
-      select_hasLightBulbs:
-        true:  'No changes in current or light bulb brightness in Group { $groupIndex }.'
-        false: 'No changes in current in Group { $groupIndex }.'
+      select_showCurrent:
+        true:
+          select_hasLightBulbs:
+            true:  'No changes in current or light bulb brightness in Group { $groupIndex }.'
+            false: 'No changes in current in Group { $groupIndex }.'
+        false:
+          select_hasLightBulbs:
+            true:  'No changes in light bulb brightness in Group { $groupIndex }.'
+            false: 'No changes in Group { $groupIndex }.'
     # NEW: Current change patterns with scope (some/all) and direction
     currentChangePhrase:
       select_scope:

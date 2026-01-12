@@ -148,6 +148,7 @@ export default class CircuitContextResponses {
       }
       return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.noChangesInGroup.format( {
         groupIndex: groupIndex,
+        showCurrent: showCurrent ? 'true' : 'false',
         hasLightBulbs: hasLightBulbs ? 'true' : 'false'
       } );
     }
