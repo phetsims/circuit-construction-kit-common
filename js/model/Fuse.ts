@@ -41,6 +41,10 @@ export default class Fuse extends FixedCircuitElement {
   // in step instead of as a DerivedProperty to avoid a re-entrant loop, see https://github.com/phetsims/circuit-construction-kit-common/issues/480#issuecomment-483430822
   public readonly resistanceProperty: NumberProperty;
   private timeCurrentRatingExceeded: number;
+
+  // Track previous resistance to only mark circuit dirty when it changes
+  private previousResistance: number;
+
   public readonly isRepairableProperty: BooleanProperty;
 
   public readonly isTraversableProperty: TReadOnlyProperty<boolean>;
@@ -72,6 +76,8 @@ export default class Fuse extends FixedCircuitElement {
 
     // time in seconds the current rating has been exceeded
     this.timeCurrentRatingExceeded = 0;
+
+    this.previousResistance = this.resistanceProperty.value;
 
     this.isRepairableProperty = new BooleanProperty( true, {
       tandem: tandem.createTandem( 'isRepairableProperty' ),
@@ -105,12 +111,9 @@ export default class Fuse extends FixedCircuitElement {
    */
   public step( time: number, dt: number, circuit: Circuit ): void {
 
-    // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/1162 only mark dirty if a salient value changed
-    circuit.dirty = true;
-
-    // When the current exceeds the max, trip the fuse.  This cannot be modeled as a property link because it
-    // creates a reentrant property loop which doesn't update the reset fuse button properly
-    // Account for roundoff error in the circuit solve step
+    // When the current exceeds the max, trip the fuse. This cannot be modeled as a property link because it
+    // creates a reentrant property loop which doesn't update the reset fuse button properly.
+    // Account for roundoff error in the circuit solve step.
     const currentRatingExceeded = Math.abs( this.currentProperty.value ) > this.currentRatingProperty.value + 1E-6;
 
     // If not exceeded, the fuse "cools off" right away.
@@ -127,8 +130,18 @@ export default class Fuse extends FixedCircuitElement {
     }
 
     // The resistance varies inversely with the current rating, with 20.0 A at 3 mΩ.
-    this.resistanceProperty.value = this.isTrippedProperty.value ? CCKCConstants.MAX_RESISTANCE :
-                                    1 / this.currentRatingProperty.value * 0.06;
+    const newResistance = this.isTrippedProperty.value ? CCKCConstants.MAX_RESISTANCE :
+                          1 / this.currentRatingProperty.value * 0.06;
+
+    // Only mark dirty when resistance actually changes to avoid unnecessary circuit solving.
+    // This captures all salient changes: isTripped changes cause resistance changes,
+    // currentRating changes cause resistance changes. The solver only relies on resistance values.
+    if ( newResistance !== this.previousResistance ) {
+      circuit.dirty = true;
+      this.previousResistance = newResistance;
+    }
+
+    this.resistanceProperty.value = newResistance;
   }
 
   /**
