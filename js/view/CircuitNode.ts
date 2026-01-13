@@ -291,6 +291,13 @@ export default class CircuitNode extends Node {
     this.solderNodes = {};
     this.vertexNodes = {};
 
+    circuit.circuitElements.addItemAddedListener( () => {
+
+      if ( !isSettingPhetioStateProperty.value ) {
+        sharedSoundPlayers.get( 'grab' ).play();
+      }
+    } );
+
     /**
      * For each CircuitElement type, do the following:
      * (a) Add nodes for pre-existing model elements
@@ -329,12 +336,6 @@ export default class CircuitNode extends Node {
         }
       };
       circuit.circuitElements.addItemAddedListener( addCircuitElement );
-      circuit.circuitElements.addItemAddedListener( () => {
-
-        if ( !isSettingPhetioStateProperty.value ) {
-          sharedSoundPlayers.get( 'grab' ).play();
-        }
-      } );
       circuit.circuitElements.forEach( addCircuitElement );
       circuit.circuitElements.addItemRemovedListener( circuitElement => {
         if ( predicate( circuitElement ) ) {

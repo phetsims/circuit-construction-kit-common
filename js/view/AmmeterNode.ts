@@ -28,6 +28,7 @@ import Image from '../../../scenery/js/nodes/Image.js';
 import Node, { type NodeOptions } from '../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
 import Color from '../../../scenery/js/util/Color.js';
+import sharedSoundPlayers from '../../../tambo/js/sharedSoundPlayers.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import ammeterBody_png from '../../images/ammeterBody_png.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -56,6 +57,7 @@ const PROBE_CONNECTION_POINT_DY = 8;
 
 // Local classes with InteractiveHighlighting for the draggable components
 class InteractiveHighlightingImage extends InteractiveHighlighting( Image ) {}
+
 class InteractiveHighlightingProbeNode extends InteractiveHighlighting( ProbeNode ) {}
 
 type SelfOptions = {
@@ -231,20 +233,31 @@ export default class AmmeterNode extends InteractiveHighlighting( Node ) {
         positionProperty: ammeter.probePositionProperty,
         useParentOffset: true,
         tandem: tandemForChildren.createTandem( 'probeDragHandler' ),
-        start: () => this.moveToFront(),
-        dragBoundsProperty: erodedDragBoundsProperty
+        start: () => {
+          sharedSoundPlayers.get( 'grab' ).play();
+          this.moveToFront();
+        },
+        dragBoundsProperty: erodedDragBoundsProperty,
+        end: () => {
+          sharedSoundPlayers.get( 'release' ).play();
+        }
       } );
 
       this.dragHandler = new DragListener( {
         useParentOffset: true,
         positionProperty: ammeter.bodyPositionProperty,
         tandem: tandemForChildren.createTandem( 'dragListener' ),
-        start: () => this.moveToFront(),
+        start: () => {
+          sharedSoundPlayers.get( 'grab' ).play();
+          this.moveToFront();
+        },
         end: function() {
           ammeter.droppedEmitter.emit( bodyNode.globalBounds );
 
           // After dropping in the play area the probes move independently of the body
           ammeter.isDraggingProbesWithBodyProperty.set( false );
+
+          sharedSoundPlayers.get( 'release' ).play();
         },
 
         // adds support for zoomed coordinate frame, see

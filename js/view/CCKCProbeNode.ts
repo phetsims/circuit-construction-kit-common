@@ -14,6 +14,7 @@ import optionize from '../../../phet-core/js/optionize.js';
 import ProbeNode, { type ProbeNodeOptions } from '../../../scenery-phet/js/ProbeNode.js';
 import DragListener from '../../../scenery/js/listeners/DragListener.js';
 import type Node from '../../../scenery/js/nodes/Node.js';
+import sharedSoundPlayers from '../../../tambo/js/sharedSoundPlayers.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 type SelfOptions = {
