@@ -16,6 +16,7 @@ import Path from '../../../scenery/js/nodes/Path.js';
 import { type RoundPushButtonOptions } from '../../../sun/js/buttons/RoundPushButton.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import type Circuit from '../model/Circuit.js';
 import type CircuitElement from '../model/CircuitElement.js';
 import Fuse from '../model/Fuse.js';
@@ -45,6 +46,7 @@ export default class FuseRepairButton extends CCKCRoundPushButton {
       enabledPropertyOptions: { tandem: Tandem.OPT_OUT },
       touchAreaDilation: 5, // radius dilation for touch area
       content: icon,
+      accessibleName: CircuitConstructionKitCommonFluent.a11y.fuseRepairButton.accessibleNameStringProperty,
       listener: () => {
         const fuse = circuit.selectionProperty.value;
 

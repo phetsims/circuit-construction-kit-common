@@ -816,6 +816,11 @@
         "value": "Delete { $accessibleName }"
       }
     },
+    "fuseRepairButton": {
+      "accessibleName": {
+        "value": "Repair Fuse"
+      }
+    },
     "sourceResistanceControl": {
       "ariaValueText": {
         "value": "{ $resistance ->\n  [one] { $resistance } ohm\n *[other] { $resistance } ohms\n}"

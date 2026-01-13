@@ -475,6 +475,8 @@ a11y:
     accessibleName: Disconnect { $accessibleName }
   trashButton:
     accessibleName: Delete { $accessibleName }
+  fuseRepairButton:
+    accessibleName: Repair Fuse
   sourceResistanceControl:
     ariaValueText: >-
                    { $resistance ->

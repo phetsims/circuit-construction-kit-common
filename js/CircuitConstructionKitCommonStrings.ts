@@ -343,6 +343,9 @@ type StringsType = {
     'trashButton': {
       'accessibleNameStringProperty': LocalizedStringProperty;
     };
+    'fuseRepairButton': {
+      'accessibleNameStringProperty': LocalizedStringProperty;
+    };
     'sourceResistanceControl': {
       'ariaValueTextStringProperty': LocalizedStringProperty;
     };
