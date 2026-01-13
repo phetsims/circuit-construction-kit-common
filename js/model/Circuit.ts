@@ -186,6 +186,7 @@ export default class Circuit extends PhetioObject {
   public readonly hasCurrentFlowingProperty: BooleanProperty;
 
   public readonly descriptionChangeEmitter = new Emitter();
+  public disconnecting = 0;
 
   public constructor( viewTypeProperty: Property<CircuitElementViewType>, addRealBulbsProperty: Property<boolean>, tandem: Tandem,
                       providedOptions: CircuitOptions ) {
@@ -341,8 +342,11 @@ export default class Circuit extends PhetioObject {
       const filtered = this.vertexGroup.filter( candidateVertex => vertex === candidateVertex );
       affirm( filtered.length === 1, 'should only have one copy of each vertex' );
 
-      // If the use dragged another circuit element, then previous selection should be cleared.
-      this.selectionProperty.value = null;
+      // If the use dragged another circuit element, then previous selection should be cleared. But do not swap circuit element => null => circuit element when using the CCKCDisconnectButton
+      if ( this.disconnecting === 0 ) {
+
+        this.selectionProperty.value = null;
+      }
     } );
 
     this.stepActions = [];

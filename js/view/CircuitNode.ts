@@ -38,6 +38,7 @@ import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
+import CircuitDescriptionUtils from '../CircuitDescriptionUtils.js';
 import ACVoltage from '../model/ACVoltage.js';
 import AmmeterConnection from '../model/AmmeterConnection.js';
 import Battery from '../model/Battery.js';
@@ -71,7 +72,6 @@ import CircuitElementNode from './CircuitElementNode.js';
 import CutButton from './CutButton.js';
 import DeleteCueNode from './DeleteCueNode.js';
 import CircuitContextResponses from './description/CircuitContextResponses.js';
-import CircuitDescriptionUtils from '../CircuitDescriptionUtils.js';
 import CircuitDescription from './description/CircuitDescription.js';
 import ConstructionAreaStatusNode from './description/ConstructionAreaStatusNode.js';
 import FuseNode from './FuseNode.js';
@@ -150,6 +150,9 @@ export default class CircuitNode extends Node {
 
   // Prepare for element removal - must be called BEFORE disposing a circuit element for proper announcements
   public prepareForElementRemoval: ( circuitElement: CircuitElement ) => void;
+
+  // Prepare for disconnection - must be called BEFORE disconnecting a circuit element for proper announcements
+  public prepareForDisconnection: ( circuitElement: CircuitElement ) => void;
 
   // Map to find CircuitElement=>CircuitElementNode. key is CircuitElement.id, value is CircuitElementNode
   private readonly circuitElementNodeMap: Record<number, CircuitElementNode>;
@@ -652,6 +655,21 @@ export default class CircuitNode extends Node {
       }
     };
 
+    // Handle disconnect button context responses
+    let pendingDisconnectButton: { groupIndex: number | null } | null = null;
+
+    /**
+     * Call this BEFORE disconnecting a circuit element to capture context for announcements.
+     */
+    this.prepareForDisconnection = ( circuitElement: CircuitElement ) => {
+      if ( !isResettingAllProperty.value && !isSettingPhetioStateProperty.value ) {
+        circuitContextResponses.captureState();
+        const groupIndex = CircuitDescriptionUtils.getGroupIndex( circuit, circuitElement );
+        console.log( 'prepareForDisconnection: groupIndex =', groupIndex );
+        pendingDisconnectButton = { groupIndex: groupIndex };
+      }
+    };
+
     // After physics solve, process pending connection, switch toggle, fuse state change, and disconnection announcements
     circuit.circuitChangedEmitter.addListener( () => {
       if ( pendingConnection && !isResettingAllProperty.value && !isSettingPhetioStateProperty.value ) {
@@ -707,6 +725,24 @@ export default class CircuitNode extends Node {
           this.addAccessibleContextResponse( response );
         }
         pendingElementRemoval = null;
+      }
+
+      // Note: pendingDisconnectButton is processed separately below because the disconnect button
+      // manually emits circuitChangedEmitter before the physics solve, so we need to wait.
+    } );
+
+    // Process disconnect button response after physics solve (not in circuitChangedEmitter handler)
+    // The disconnect button manually emits circuitChangedEmitter for solder node updates, but the
+    // circuit hasn't been re-solved yet at that point. We use stepEmitter to ensure the solve has happened.
+    this.model.stepEmitter.addListener( () => {
+      if ( pendingDisconnectButton && !isResettingAllProperty.value && !isSettingPhetioStateProperty.value ) {
+        const response = circuitContextResponses.createDisconnectButtonResponse(
+          pendingDisconnectButton.groupIndex
+        );
+        if ( response ) {
+          this.addAccessibleContextResponse( response );
+        }
+        pendingDisconnectButton = null;
       }
     } );
 

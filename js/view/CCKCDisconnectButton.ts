@@ -18,9 +18,9 @@ import type Tandem from '../../../tandem/js/Tandem.js';
 import cut_mp3 from '../../sounds/cut_mp3.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
-import type Circuit from '../model/Circuit.js';
 import CircuitElement from '../model/CircuitElement.js';
 import CCKCRoundPushButton from './CCKCRoundPushButton.js';
+import type CircuitNode from './CircuitNode.js';
 import CircuitDescription from './description/CircuitDescription.js';
 
 // Offset to move the disconnected element (in view coordinates)
@@ -31,7 +31,9 @@ soundManager.addSoundGenerator( cutSoundPlayer );
 
 export default class CCKCDisconnectButton extends CCKCRoundPushButton {
 
-  public constructor( circuit: Circuit, tandem: Tandem ) {
+  public constructor( circuitNode: CircuitNode, tandem: Tandem ) {
+
+    const circuit = circuitNode.circuit;
 
     const scissorsIcon = new Path( scissorsShape, {
       fill: 'black',
@@ -92,11 +94,16 @@ export default class CCKCDisconnectButton extends CCKCRoundPushButton {
 
     // Add listener after super() so we can reference 'this' for focus restoration
     this.addListener( () => {
+
+      circuit.disconnecting++;
       const circuitElement = circuit.selectionProperty.value;
       if ( circuitElement instanceof CircuitElement ) {
 
         // Only permit disconnection when not being dragged
         if ( !circuitElement.startVertexProperty.value.isDragged && !circuitElement.endVertexProperty.value.isDragged ) {
+
+          // Capture context before disconnection so the group index is available for announcements
+          circuitNode.prepareForDisconnection( circuitElement );
 
           const startVertex = circuitElement.startVertexProperty.value;
           const endVertex = circuitElement.endVertexProperty.value;
@@ -138,6 +145,8 @@ export default class CCKCDisconnectButton extends CCKCRoundPushButton {
           this.focus();
         }
       }
+
+      circuit.disconnecting--;
     } );
   }
 }

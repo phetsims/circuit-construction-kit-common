@@ -142,7 +142,7 @@ export default class CircuitElementEditContainerNode extends Node {
       children: [ trashButton ]
     } );
 
-    const disconnectButton = new CCKCDisconnectButton( circuit, tandem.createTandem( 'disconnectButton' ) );
+    const disconnectButton = new CCKCDisconnectButton( circuitNode, tandem.createTandem( 'disconnectButton' ) );
 
     const disconnectButtonContainer = new Node( {
       excludeInvisibleChildrenFromBounds: true,

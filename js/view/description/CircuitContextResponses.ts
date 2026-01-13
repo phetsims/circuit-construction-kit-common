@@ -647,6 +647,63 @@ export default class CircuitContextResponses {
   }
 
   /**
+   * Create a response for when the disconnect button is pressed.
+   * @param groupIndex - The group index the element was in before disconnection (captured before the action)
+   */
+  public createDisconnectButtonResponse( groupIndex: number | null ): string | null {
+
+    // If element was not in a multi-element group, just say "Disconnected."
+    if ( groupIndex === null ) {
+      return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.vertexDisconnectedNoChangeStringProperty.value;
+    }
+
+    // Get the group's current state (after disconnection)
+    const groups = this.circuit.getGroups();
+    const multiElementGroups = groups.filter( group => group.circuitElements.length > 1 );
+    const group = multiElementGroups[ groupIndex - 1 ];
+
+    // If the group no longer exists, check if current stopped
+    if ( !group ) {
+      const previousState = this.previousGroupStates?.get( groupIndex );
+      if ( previousState ) {
+        const wasFlowing = previousState.currentValues.some( current => Math.abs( current ) > CURRENT_THRESHOLD );
+        if ( wasFlowing ) {
+          const stoppedPhrase = CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.currentChangePhrase.format( {
+            scope: 'all',
+            direction: 'stopped',
+            groupIndex: groupIndex
+          } );
+          return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.vertexDisconnected.format( {
+            currentPhrase: stoppedPhrase
+          } );
+        }
+      }
+      return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.vertexDisconnectedNoChangeStringProperty.value;
+    }
+
+    const currentState = this.getGroupState( group );
+    const previousState = this.previousGroupStates?.get( groupIndex );
+
+    if ( !previousState ) {
+      return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.vertexDisconnectedNoChangeStringProperty.value;
+    }
+
+    const currentChange = this.analyzeCurrentChange( previousState.currentValues, currentState.currentValues );
+    const brightnessChange = this.analyzeBrightnessChange( previousState.brightnessValues, currentState.brightnessValues );
+    const showCurrent = this.circuit.showCurrentProperty.value;
+
+    const changePhrase = this.buildGroupChangePhrase( groupIndex, currentChange, brightnessChange, showCurrent );
+
+    if ( changePhrase ) {
+      return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.vertexDisconnected.format( {
+        currentPhrase: changePhrase
+      } );
+    }
+
+    return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.vertexDisconnectedNoChangeStringProperty.value;
+  }
+
+  /**
    * Create a response for when vertices are disconnected (split).
    * @param disconnectedElements - The circuit elements that were connected to the split vertex
    * @param splitVertex - The vertex that was split
