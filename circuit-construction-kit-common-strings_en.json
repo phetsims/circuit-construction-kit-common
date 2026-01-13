@@ -643,11 +643,11 @@
       "switchClosedNoChange": {
         "value": "Switch closed."
       },
-      "fuseTripped": {
-        "value": "Fuse tripped. { $currentPhrase }"
+      "fuseBroken": {
+        "value": "Fuse broken. { $currentPhrase }"
       },
-      "fuseTrippedNoChange": {
-        "value": "Fuse tripped."
+      "fuseBrokenNoChange": {
+        "value": "Fuse broken."
       },
       "fuseRepaired": {
         "value": "Fuse repaired. { $currentPhrase }"

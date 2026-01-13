@@ -513,7 +513,7 @@ export default class CircuitContextResponses {
     // If disconnected (single-element group), just announce the state change
     if ( groupIndex === null ) {
       return isTripped ?
-             CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.fuseTrippedNoChangeStringProperty.value :
+             CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.fuseBrokenNoChangeStringProperty.value :
              CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.fuseRepairedNoChangeStringProperty.value;
     }
 
@@ -524,7 +524,7 @@ export default class CircuitContextResponses {
 
     if ( !group ) {
       return isTripped ?
-             CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.fuseTrippedNoChangeStringProperty.value :
+             CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.fuseBrokenNoChangeStringProperty.value :
              CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.fuseRepairedNoChangeStringProperty.value;
     }
 
@@ -545,12 +545,12 @@ export default class CircuitContextResponses {
     // Return appropriate response based on whether there were current/brightness changes
     if ( changePhrase ) {
       return isTripped ?
-             CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.fuseTripped.format( { currentPhrase: changePhrase } ) :
+             CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.fuseBroken.format( { currentPhrase: changePhrase } ) :
              CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.fuseRepaired.format( { currentPhrase: changePhrase } );
     }
 
     return isTripped ?
-           CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.fuseTrippedNoChangeStringProperty.value :
+           CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.fuseBrokenNoChangeStringProperty.value :
            CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.fuseRepairedNoChangeStringProperty.value;
   }
 

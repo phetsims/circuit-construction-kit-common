@@ -394,9 +394,9 @@ a11y:
     switchOpenedNoChange:       'Switch opened.'
     switchClosedNoChange:       'Switch closed.'
 
-    # Fuse tripped responses
-    fuseTripped:                'Fuse tripped. { $currentPhrase }'
-    fuseTrippedNoChange:        'Fuse tripped.'
+    # Fuse broken responses
+    fuseBroken:                 'Fuse broken. { $currentPhrase }'
+    fuseBrokenNoChange:         'Fuse broken.'
 
     # Fuse repaired responses
     fuseRepaired:               'Fuse repaired. { $currentPhrase }'

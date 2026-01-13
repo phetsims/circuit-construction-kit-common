@@ -218,8 +218,8 @@ addToMapIfDefined( 'a11y_circuitContextResponses_switchOpened', 'a11y.circuitCon
 addToMapIfDefined( 'a11y_circuitContextResponses_switchClosed', 'a11y.circuitContextResponses.switchClosedStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_switchOpenedNoChange', 'a11y.circuitContextResponses.switchOpenedNoChangeStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_switchClosedNoChange', 'a11y.circuitContextResponses.switchClosedNoChangeStringProperty' );
-addToMapIfDefined( 'a11y_circuitContextResponses_fuseTripped', 'a11y.circuitContextResponses.fuseTrippedStringProperty' );
-addToMapIfDefined( 'a11y_circuitContextResponses_fuseTrippedNoChange', 'a11y.circuitContextResponses.fuseTrippedNoChangeStringProperty' );
+addToMapIfDefined( 'a11y_circuitContextResponses_fuseBroken', 'a11y.circuitContextResponses.fuseBrokenStringProperty' );
+addToMapIfDefined( 'a11y_circuitContextResponses_fuseBrokenNoChange', 'a11y.circuitContextResponses.fuseBrokenNoChangeStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_fuseRepaired', 'a11y.circuitContextResponses.fuseRepairedStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_fuseRepairedNoChange', 'a11y.circuitContextResponses.fuseRepairedNoChangeStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_batteryReversed', 'a11y.circuitContextResponses.batteryReversedStringProperty' );
@@ -568,9 +568,9 @@ const CircuitConstructionKitCommonFluent = {
       _comment_7: new FluentComment( {"comment":"Current phrases for switch (when disconnected or no change)","associatedKey":"switchOpenedNoChange"} ),
       switchOpenedNoChangeStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_switchOpenedNoChange', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.switchOpenedNoChangeStringProperty' ) ),
       switchClosedNoChangeStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_switchClosedNoChange', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.switchClosedNoChangeStringProperty' ) ),
-      _comment_8: new FluentComment( {"comment":"Fuse tripped responses","associatedKey":"fuseTripped"} ),
-      fuseTripped: new FluentPattern<{ currentPhrase: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_fuseTripped', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.fuseTrippedStringProperty' ), [{"name":"currentPhrase"}] ),
-      fuseTrippedNoChangeStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_fuseTrippedNoChange', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.fuseTrippedNoChangeStringProperty' ) ),
+      _comment_8: new FluentComment( {"comment":"Fuse broken responses","associatedKey":"fuseBroken"} ),
+      fuseBroken: new FluentPattern<{ currentPhrase: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_fuseBroken', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.fuseBrokenStringProperty' ), [{"name":"currentPhrase"}] ),
+      fuseBrokenNoChangeStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_fuseBrokenNoChange', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.fuseBrokenNoChangeStringProperty' ) ),
       _comment_9: new FluentComment( {"comment":"Fuse repaired responses","associatedKey":"fuseRepaired"} ),
       fuseRepaired: new FluentPattern<{ currentPhrase: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_fuseRepaired', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.fuseRepairedStringProperty' ), [{"name":"currentPhrase"}] ),
       fuseRepairedNoChangeStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_fuseRepairedNoChange', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.fuseRepairedNoChangeStringProperty' ) ),

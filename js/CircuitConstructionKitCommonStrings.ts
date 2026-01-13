@@ -254,8 +254,8 @@ type StringsType = {
       'switchClosedStringProperty': LocalizedStringProperty;
       'switchOpenedNoChangeStringProperty': LocalizedStringProperty;
       'switchClosedNoChangeStringProperty': LocalizedStringProperty;
-      'fuseTrippedStringProperty': LocalizedStringProperty;
-      'fuseTrippedNoChangeStringProperty': LocalizedStringProperty;
+      'fuseBrokenStringProperty': LocalizedStringProperty;
+      'fuseBrokenNoChangeStringProperty': LocalizedStringProperty;
       'fuseRepairedStringProperty': LocalizedStringProperty;
       'fuseRepairedNoChangeStringProperty': LocalizedStringProperty;
       'batteryReversedStringProperty': LocalizedStringProperty;
