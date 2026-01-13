@@ -51,6 +51,10 @@ export default class SourceResistanceControl extends VBox {
     const range = CCKCConstants.BATTERY_RESISTANCE_RANGE;
     const midpoint = ( range.max + range.min ) / 2;
     const sliderSteps = CCKCConstants.SLIDER_STEPS.sourceResistanceControl;
+
+    // Tick marks are at every integer from min to max (11 positions, 10 intervals).
+    // numberOfMiddleThresholds = 9 creates 10 intervals so clicks align with tick marks.
+    const numberOfTickIntervals = roundSymmetric( range.max - range.min );
     const slider = new HSlider( sourceResistanceProperty, range, {
       trackSize: CCKCConstants.SLIDER_TRACK_SIZE,
       thumbSize: CCKCConstants.THUMB_SIZE,
@@ -66,7 +70,11 @@ export default class SourceResistanceControl extends VBox {
 
       accessibleName: batteryResistanceControlString,
 
-      createAriaValueText: ( value: number ) => CircuitConstructionKitCommonFluent.a11y.sourceResistanceControl.ariaValueText.format( { resistance: value } )
+      createAriaValueText: ( value: number ) => CircuitConstructionKitCommonFluent.a11y.sourceResistanceControl.ariaValueText.format( { resistance: value } ),
+
+      valueChangeSoundGeneratorOptions: {
+        numberOfMiddleThresholds: numberOfTickIntervals - 1
+      }
     } );
     slider.addMajorTick( range.min, createLabel( CircuitConstructionKitCommonFluent.tinyStringProperty, tandem.createTandem( 'tinyLabelText' ) ) );
     slider.addMajorTick( midpoint );
