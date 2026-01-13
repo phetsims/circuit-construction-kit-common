@@ -1,4 +1,4 @@
-// Copyright 2017-2025, University of Colorado Boulder
+// Copyright 2017-2026, University of Colorado Boulder
 
 /**
  * When enabled, shows the readout above circuit elements, such as "9.0 V" for a 9 volt battery.
