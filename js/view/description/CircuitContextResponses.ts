@@ -411,6 +411,7 @@ export default class CircuitContextResponses {
 
   /**
    * Get description for a vertex using a provided list of elements.
+   * Returns a comma-separated list of terminal descriptions for ALL connected elements.
    * @param originalVertex - The vertex to describe (may have been merged away)
    * @param elements - The circuit elements connected to this vertex
    * @param mergedToVertex - If provided, the vertex that originalVertex was merged into
@@ -420,20 +421,25 @@ export default class CircuitContextResponses {
       return null;
     }
 
-    const element = elements[ 0 ];
-    const position = CircuitDescriptionUtils.getElementPosition( this.circuit, element );
-    const briefName = CircuitDescriptionUtils.formatCircuitElementBriefName( element, position );
+    const descriptions: string[] = [];
 
-    // If this vertex was merged into another vertex, we need to determine which terminal
-    // the original vertex was at by checking which terminal now points to the merged-to vertex
-    let vertexForTerminal = originalVertex;
-    if ( mergedToVertex && originalVertex !== element.startVertexProperty.value &&
-         originalVertex !== element.endVertexProperty.value ) {
-      // The original vertex was replaced - use the merged-to vertex instead
-      vertexForTerminal = mergedToVertex;
+    for ( const element of elements ) {
+      const position = CircuitDescriptionUtils.getElementPosition( this.circuit, element );
+      const briefName = CircuitDescriptionUtils.formatCircuitElementBriefName( element, position );
+
+      // If this vertex was merged into another vertex, we need to determine which terminal
+      // the original vertex was at by checking which terminal now points to the merged-to vertex
+      let vertexForTerminal = originalVertex;
+      if ( mergedToVertex && originalVertex !== element.startVertexProperty.value &&
+           originalVertex !== element.endVertexProperty.value ) {
+        // The original vertex was replaced - use the merged-to vertex instead
+        vertexForTerminal = mergedToVertex;
+      }
+
+      descriptions.push( CircuitDescriptionUtils.formatTerminalDescription( vertexForTerminal, element, briefName ) );
     }
 
-    return CircuitDescriptionUtils.formatTerminalDescription( vertexForTerminal, element, briefName );
+    return descriptions.join( ', ' );
   }
 
   /**
