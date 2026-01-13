@@ -888,9 +888,6 @@
         },
         "percent": {
           "value": "brightness { $percent }%"
-        },
-        "percentFull": {
-          "value": "brightness 100%."
         }
       },
       "accessibleHelpText": {

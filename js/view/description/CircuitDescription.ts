@@ -101,9 +101,6 @@ export default class CircuitDescription {
       if ( brightness <= LIGHT_BULB_OFF_THRESHOLD ) {
         parts.push( CircuitConstructionKitCommonFluent.a11y.circuitComponent.brightness.offStringProperty.value );
       }
-      else if ( brightness >= 1 ) {
-        parts.push( CircuitConstructionKitCommonFluent.a11y.circuitComponent.brightness.percentFullStringProperty.value );
-      }
       else {
         const percentString = toFixed( brightness * 100, 1 );
         parts.push( CircuitConstructionKitCommonFluent.a11y.circuitComponent.brightness.percent.format( { percent: percentString } ) );
