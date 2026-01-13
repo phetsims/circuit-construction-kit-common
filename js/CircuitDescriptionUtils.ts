@@ -2,7 +2,6 @@
 
 /**
  * Shared utility functions for circuit element descriptions.
- * These are used by both model (CircuitContextStateTracker) and view (CircuitDescription) code.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */

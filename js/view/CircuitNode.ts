@@ -71,6 +71,7 @@ import CircuitElementNode from './CircuitElementNode.js';
 import CutButton from './CutButton.js';
 import DeleteCueNode from './DeleteCueNode.js';
 import CircuitContextResponses from './description/CircuitContextResponses.js';
+import CircuitDescriptionUtils from '../CircuitDescriptionUtils.js';
 import CircuitDescription from './description/CircuitDescription.js';
 import ConstructionAreaStatusNode from './description/ConstructionAreaStatusNode.js';
 import FuseNode from './FuseNode.js';
@@ -146,6 +147,9 @@ export default class CircuitNode extends Node {
 
   // the Circuit model depicted by this view
   public readonly circuit: Circuit;
+
+  // Prepare for element removal - must be called BEFORE disposing a circuit element for proper announcements
+  public prepareForElementRemoval: ( circuitElement: CircuitElement ) => void;
 
   // Map to find CircuitElement=>CircuitElementNode. key is CircuitElement.id, value is CircuitElementNode
   private readonly circuitElementNodeMap: Record<number, CircuitElementNode>;
@@ -635,6 +639,19 @@ export default class CircuitNode extends Node {
       }
     } );
 
+    // Handle element removal context responses (used by trash button)
+    let pendingElementRemoval: { groupIndex: number | null } | null = null;
+
+    /**
+     * Call this BEFORE disposing a circuit element to capture context for announcements.
+     */
+    this.prepareForElementRemoval = ( circuitElement: CircuitElement ) => {
+      if ( !isResettingAllProperty.value && !isSettingPhetioStateProperty.value ) {
+        circuitContextResponses.captureState();
+        pendingElementRemoval = { groupIndex: CircuitDescriptionUtils.getGroupIndex( circuit, circuitElement ) };
+      }
+    };
+
     // After physics solve, process pending connection, switch toggle, fuse state change, and disconnection announcements
     circuit.circuitChangedEmitter.addListener( () => {
       if ( pendingConnection && !isResettingAllProperty.value && !isSettingPhetioStateProperty.value ) {
@@ -680,6 +697,16 @@ export default class CircuitNode extends Node {
           this.addAccessibleContextResponse( response );
         }
         pendingDisconnection = null;
+      }
+
+      if ( pendingElementRemoval && !isResettingAllProperty.value && !isSettingPhetioStateProperty.value ) {
+        const response = circuitContextResponses.createElementRemovedResponse(
+          pendingElementRemoval.groupIndex
+        );
+        if ( response ) {
+          this.addAccessibleContextResponse( response );
+        }
+        pendingElementRemoval = null;
       }
     } );
 

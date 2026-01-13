@@ -42,7 +42,6 @@ import Battery from './Battery.js';
 import Capacitor from './Capacitor.js';
 import Charge from './Charge.js';
 import ChargeAnimator from './ChargeAnimator.js';
-import CircuitContextStateTracker from './CircuitContextStateTracker.js';
 import CircuitElement from './CircuitElement.js';
 import type CircuitElementViewType from './CircuitElementViewType.js';
 import CircuitGroup from './CircuitGroup.js';
@@ -173,8 +172,12 @@ export default class Circuit extends PhetioObject {
       valueType: Vertex
     } ]
   } );
-  public readonly circuitContextAnnouncementEmitter: TEmitter<[ string ]>;
-  private readonly contextStateTracker: CircuitContextStateTracker;
+  public readonly circuitContextAnnouncementEmitter: TEmitter<[ string ]> = new Emitter( {
+    parameters: [ {
+      name: 'announcement',
+      valueType: 'string'
+    } ]
+  } );
 
   // Circuit elements in PDOM order, for keyboard navigation. Set by CircuitDescription.updateCircuitNode.
   public circuitElementsInPDOMOrder: CircuitElement[] = [];
@@ -276,7 +279,6 @@ export default class Circuit extends PhetioObject {
       }
       this.markDirty();
       circuitElement.currentSenseProperty.lazyLink( emitCircuitChanged );
-      this.contextStateTracker.handleElementAdded( circuitElement );
     } );
     this.circuitElements.addItemRemovedListener( circuitElement => {
 
@@ -293,7 +295,6 @@ export default class Circuit extends PhetioObject {
       this.charges.removeAll( this.getChargesInCircuitElement( circuitElement ) );
       circuitElement.currentSenseProperty.unlink( emitCircuitChanged );
       this.markDirty();
-      this.contextStateTracker.handleElementRemoved( circuitElement );
     } );
 
     // When a Charge is removed from the list, dispose it
@@ -302,8 +303,6 @@ export default class Circuit extends PhetioObject {
     this.circuitChangedEmitter = new Emitter();
     this.vertexDroppedEmitter = new Emitter( { parameters: [ { valueType: Vertex } ] } );
     this.componentEditedEmitter = new Emitter();
-    this.contextStateTracker = new CircuitContextStateTracker( this );
-    this.circuitContextAnnouncementEmitter = this.contextStateTracker.contextAnnouncementEmitter;
 
     this.selectionProperty = new Property<CircuitElement | Vertex | null>( null, {
       tandem: tandem.createTandem( 'selectionProperty' ),
@@ -1046,7 +1045,6 @@ export default class Circuit extends PhetioObject {
     // Move the charges.  Do this after the circuit has been solved so the conventional current will have the correct
     // current values.
     this.chargeAnimator.step( dt );
-    this.contextStateTracker.handleStepCompleted();
   }
 
   /**
@@ -1796,7 +1794,6 @@ export default class Circuit extends PhetioObject {
    */
   public reset(): void {
     this.clear();
-    this.contextStateTracker.clearPendingContextAnnouncements();
     this.showCurrentProperty.reset();
     this.currentTypeProperty.reset();
     this.wireResistivityProperty.reset();

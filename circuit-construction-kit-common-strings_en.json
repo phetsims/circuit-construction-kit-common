@@ -608,7 +608,7 @@
         "value": "Current stopped flowing."
       },
       "componentRemoved": {
-        "value": "{ $componentName } removed."
+        "value": "Removed."
       },
       "lightBulbState": {
         "value": "{ $state ->\n  [off] { $componentName } is now off.\n  [dim] { $componentName } glows dimly.\n  [steady] { $componentName } glows steadily.\n  *[bright] { $componentName } shines brightly.\n}"

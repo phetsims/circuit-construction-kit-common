@@ -588,6 +588,65 @@ export default class CircuitContextResponses {
   }
 
   /**
+   * Create a response for when a circuit element is removed via the trash button.
+   * @param groupIndex - The group index the element was in before removal (captured before disposal)
+   */
+  public createElementRemovedResponse( groupIndex: number | null ): string | null {
+    // Start with "Removed."
+    const removedString = CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.componentRemovedStringProperty.value;
+
+    // If element was not in a multi-element group, just say "Removed."
+    if ( groupIndex === null ) {
+      return removedString;
+    }
+
+    // Get the group's current state (after removal)
+    const groups = this.circuit.getGroups();
+    const multiElementGroups = groups.filter( group => group.circuitElements.length > 1 );
+    const group = multiElementGroups[ groupIndex - 1 ];
+
+    // If the group no longer exists (element removal broke the circuit), just say "Removed."
+    if ( !group ) {
+      // Check if current stopped in the previous state
+      const previousState = this.previousGroupStates?.get( groupIndex );
+      if ( previousState ) {
+        const wasFlowing = previousState.currentValues.some( current => Math.abs( current ) > CURRENT_THRESHOLD );
+        if ( wasFlowing ) {
+          // Current was flowing but now the group doesn't exist - current stopped
+          const stoppedPhrase = CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.currentChangePhrase.format( {
+            scope: 'all',
+            direction: 'stopped',
+            groupIndex: groupIndex
+          } );
+          return `${removedString} ${stoppedPhrase}`;
+        }
+      }
+      return removedString;
+    }
+
+    const currentState = this.getGroupState( group );
+    const previousState = this.previousGroupStates?.get( groupIndex );
+
+    // If we don't have previous state, just say "Removed."
+    if ( !previousState ) {
+      return removedString;
+    }
+
+    // Analyze changes
+    const currentChange = this.analyzeCurrentChange( previousState.currentValues, currentState.currentValues );
+    const brightnessChange = this.analyzeBrightnessChange( previousState.brightnessValues, currentState.brightnessValues );
+    const showCurrent = this.circuit.showCurrentProperty.value;
+
+    const changePhrase = this.buildGroupChangePhrase( groupIndex, currentChange, brightnessChange, showCurrent );
+
+    if ( changePhrase ) {
+      return `${removedString} ${changePhrase}`;
+    }
+
+    return removedString;
+  }
+
+  /**
    * Create a response for when vertices are disconnected (split).
    * @param disconnectedElements - The circuit elements that were connected to the split vertex
    * @param splitVertex - The vertex that was split

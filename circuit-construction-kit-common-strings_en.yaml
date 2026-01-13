@@ -322,7 +322,7 @@ a11y:
     currentChangedSingle:       'Current changed to { $current } amps.'
     currentMultiple:            'Currents flowing at different speeds.'
     currentStopped:             'Current stopped flowing.'
-    componentRemoved:           '{ $componentName } removed.'
+    componentRemoved:           Removed.
     lightBulbState:
       select_state:
         off:    '{ $componentName } is now off.'

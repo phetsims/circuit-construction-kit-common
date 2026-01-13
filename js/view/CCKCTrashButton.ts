@@ -52,6 +52,9 @@ export default class CCKCTrashButton extends CCKCRoundPushButton {
 
           // Only permit deletion when not being dragged, see https://github.com/phetsims/circuit-construction-kit-common/issues/414
           if ( !circuitElement.startVertexProperty.value.isDragged && !circuitElement.endVertexProperty.value.isDragged ) {
+
+            // Capture context before removal so the group index is available for announcements
+            circuitNode.prepareForElementRemoval( circuitElement );
             circuit.disposeCircuitElement( circuitElement );
           }
         }
