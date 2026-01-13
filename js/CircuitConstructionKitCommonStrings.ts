@@ -378,8 +378,7 @@ type StringsType = {
       'brightness': {
         'offStringProperty': LocalizedStringProperty;
         'percentStringProperty': LocalizedStringProperty;
-      };
-      'accessibleHelpTextStringProperty': LocalizedStringProperty;
+      }
     }
   }
 };

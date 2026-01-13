@@ -513,9 +513,3 @@ a11y:
     brightness:
       off:     'off'
       percent: 'brightness { $percent }%'
-    accessibleHelpText:
-      select_type:
-        switch:
-          select_switchState:
-            closed: 'This switch is closed. Press Space or Enter to open the switch.'
-            open:   'This switch is open. Press Space or Enter to close the switch.'

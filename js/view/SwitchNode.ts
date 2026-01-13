@@ -20,7 +20,6 @@ import LinearGradient from '../../../scenery/js/util/LinearGradient.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import type Switch from '../model/Switch.js';
 import type CCKCScreenView from './CCKCScreenView.js';
@@ -189,14 +188,6 @@ export default class SwitchNode extends FixedCircuitElementNode {
       tandem,
       providedOptions
     );
-
-    // Set accessible help text based on switch state
-    const switchAccessibleHelpTextProperty = CircuitConstructionKitCommonFluent.a11y.circuitComponent.accessibleHelpText.createProperty( {
-      type: 'switch',
-      switchState: circuitSwitch.isClosedProperty.derived( isClosed => isClosed ? 'closed' : 'open' )
-    } );
-    this.accessibleHelpText = switchAccessibleHelpTextProperty;
-    this.addDisposable( switchAccessibleHelpTextProperty );
 
     this.circuitSwitch = circuitSwitch;
 
