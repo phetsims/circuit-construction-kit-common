@@ -8,6 +8,7 @@
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import type { TReadOnlyProperty } from '../../../../axon/js/TReadOnlyProperty.js';
+import { clamp } from '../../../../dot/js/util/clamp.js';
 import { toFixed } from '../../../../dot/js/util/toFixed.js';
 import ParallelDOM from '../../../../scenery/js/accessibility/pdom/ParallelDOM.js';
 import { getPDOMFocusedNode } from '../../../../scenery/js/accessibility/pdomFocusProperty.js';
@@ -37,6 +38,24 @@ const positionedPropertiesMap = new WeakMap<CircuitElement, {
 
 // Constants for preferred ordering of circuit elements in groups
 const GROUPED_CIRCUIT_ELEMENT_TYPE_ORDER: CircuitElementType[] = [ 'battery', 'resistor', 'lightBulb', 'wire' ];
+
+// Constants for brightness calculation (same as in CCKCLightBulbNode and CircuitContextResponses)
+const LIGHT_BULB_BRIGHTNESS_MULTIPLIER = 0.35;
+const LIGHT_BULB_MAXIMUM_POWER = 2000;
+const LIGHT_BULB_OFF_THRESHOLD = 0.05;
+
+/**
+ * Computes the brightness of a light bulb from its current and resistance.
+ * Returns a value from 0 to 1.
+ */
+const computeLightBulbBrightness = ( lightBulb: LightBulb ): number => {
+  const current = lightBulb.currentProperty.value;
+  const resistance = lightBulb.resistanceProperty.value;
+  const power = Math.abs( current * current * resistance );
+  const numerator = Math.log( 1 + power * LIGHT_BULB_BRIGHTNESS_MULTIPLIER );
+  const denominator = Math.log( 1 + LIGHT_BULB_MAXIMUM_POWER * LIGHT_BULB_BRIGHTNESS_MULTIPLIER );
+  return clamp( denominator === 0 ? 0 : numerator / denominator, 0, 1 );
+};
 
 export default class CircuitDescription {
   private static myGroupNodes: Node[] | null = null;
@@ -74,6 +93,21 @@ export default class CircuitDescription {
     }
     else {
       parts.push( typeName );
+    }
+
+    // 2. Brightness (light bulbs only, always shown regardless of showValues)
+    if ( circuitElement instanceof LightBulb ) {
+      const brightness = computeLightBulbBrightness( circuitElement );
+      if ( brightness <= LIGHT_BULB_OFF_THRESHOLD ) {
+        parts.push( CircuitConstructionKitCommonFluent.a11y.circuitComponent.brightness.offStringProperty.value );
+      }
+      else if ( brightness >= 1 ) {
+        parts.push( CircuitConstructionKitCommonFluent.a11y.circuitComponent.brightness.percentFullStringProperty.value );
+      }
+      else {
+        const percentString = toFixed( brightness * 100, 1 );
+        parts.push( CircuitConstructionKitCommonFluent.a11y.circuitComponent.brightness.percent.format( { percent: percentString } ) );
+      }
     }
 
     // 3. Value (depends on type)

@@ -882,6 +882,17 @@
           "value": "broken"
         }
       },
+      "brightness": {
+        "off": {
+          "value": "off"
+        },
+        "percent": {
+          "value": "brightness { $percent }%"
+        },
+        "percentFull": {
+          "value": "brightness 100%."
+        }
+      },
       "accessibleHelpText": {
         "value": "{ $type ->\n  *[switch] { $switchState ->\n              [closed] This switch is closed. Press Space or Enter to open the switch.\n              *[open] This switch is open. Press Space or Enter to close the switch.\n            }\n}"
       }

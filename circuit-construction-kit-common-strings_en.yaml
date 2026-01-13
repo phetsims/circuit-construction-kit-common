@@ -510,6 +510,10 @@ a11y:
     modifiers:
       onFire: on fire
       broken: broken
+    brightness:
+      off:         'off'
+      percent:     'brightness { $percent }%'
+      percentFull: 'brightness 100%.'
     accessibleHelpText:
       select_type:
         switch:

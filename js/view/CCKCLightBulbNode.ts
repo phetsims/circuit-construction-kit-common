@@ -20,7 +20,6 @@ import Image from '../../../scenery/js/nodes/Image.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import Color from '../../../scenery/js/util/Color.js';
-import isSettingPhetioStateProperty from '../../../tandem/js/isSettingPhetioStateProperty.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import lightBulbFrontReal_png from '../../images/lightBulbFrontReal_png.js';
 import lightBulbMiddle_png from '../../mipmaps/lightBulbMiddle_png.js';
@@ -60,28 +59,6 @@ const toBrightness = ( multiplier: number, power: number ) => {
   return Math.log( 1 + power * multiplier ) * maximumBrightness / Math.log( 1 + maximumPower * multiplier );
 };
 
-type BrightnessState = 'off' | 'dim' | 'steady' | 'bright';
-
-const BRIGHTNESS_STATE_RESPONSES: Record<BrightnessState, string> = {
-  off: 'The bulb is no longer shining.',
-  dim: 'The bulb is lit and shining dimly.',
-  steady: 'The bulb is shining steadily.',
-  bright: 'The bulb is shining brightly.'
-};
-
-const getBrightnessState = ( brightness: number ): BrightnessState => {
-  if ( brightness <= 0.05 ) {
-    return 'off';
-  }
-  else if ( brightness <= 0.4 ) {
-    return 'dim';
-  }
-  else if ( brightness <= 0.75 ) {
-    return 'steady';
-  }
-  return 'bright';
-};
-
 export default class CCKCLightBulbNode extends FixedCircuitElementNode {
   private readonly rayNodeContainer: Node;
   private readonly disposeCircuitConstructionKitLightBulbNode: () => void;
@@ -105,8 +82,6 @@ export default class CCKCLightBulbNode extends FixedCircuitElementNode {
     }, providedOptions );
 
     const brightnessProperty = new NumberProperty( 0 );
-    let lastAnnouncedState: BrightnessState | null = null;
-    let lastAnnouncedTrend: 'increase' | 'decrease' | null = null;
     const updateBrightness = Multilink.multilink(
       [ lightBulb.currentProperty, showResultsProperty, lightBulb.resistanceProperty ],
       ( current, running, resistance ) => {
@@ -242,32 +217,6 @@ export default class CCKCLightBulbNode extends FixedCircuitElementNode {
       tandem,
       filledOptions
     );
-
-    if ( !filledOptions.isIcon ) {
-      brightnessProperty.lazyLink( ( newBrightness, oldBrightness ) => {
-        if ( isSettingPhetioStateProperty.value ) {
-          return;
-        }
-
-        const previousBrightness = oldBrightness ?? newBrightness;
-        const nextState = getBrightnessState( newBrightness );
-
-        if ( nextState !== lastAnnouncedState ) {
-          this.addAccessibleContextResponse( BRIGHTNESS_STATE_RESPONSES[ nextState ] );
-          lastAnnouncedState = nextState;
-          lastAnnouncedTrend = null;
-        }
-        else if ( Math.abs( newBrightness - previousBrightness ) >= 0.15 ) {
-          const trend = newBrightness > previousBrightness ? 'increase' : 'decrease';
-          if ( trend !== lastAnnouncedTrend ) {
-            const trendResponse = trend === 'increase' ? 'The bulb\'s brightness increased.' :
-                                  'The bulb\'s brightness reduced.';
-            this.addAccessibleContextResponse( trendResponse );
-            lastAnnouncedTrend = trend;
-          }
-        }
-      }, { disposer: this } );
-    }
 
     // node that contains the light rays so they can be easily positioned
     this.rayNodeContainer = new Node( {

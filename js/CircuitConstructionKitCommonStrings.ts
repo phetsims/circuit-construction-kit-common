@@ -375,6 +375,11 @@ type StringsType = {
         'onFireStringProperty': LocalizedStringProperty;
         'brokenStringProperty': LocalizedStringProperty;
       };
+      'brightness': {
+        'offStringProperty': LocalizedStringProperty;
+        'percentStringProperty': LocalizedStringProperty;
+        'percentFullStringProperty': LocalizedStringProperty;
+      };
       'accessibleHelpTextStringProperty': LocalizedStringProperty;
     }
   }
