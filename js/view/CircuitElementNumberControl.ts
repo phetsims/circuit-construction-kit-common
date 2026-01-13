@@ -12,6 +12,7 @@ import type ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
 import type { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import type Range from '../../../dot/js/Range.js';
+import { roundSymmetric } from '../../../dot/js/util/roundSymmetric.js';
 import { roundToInterval } from '../../../dot/js/util/roundToInterval.js';
 import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import optionize from '../../../phet-core/js/optionize.js';
@@ -92,7 +93,16 @@ export default class CircuitElementNumberControl extends HBox {
       }
     };
 
-    const numberControl = new NumberControl( title, valueProperty, range, options );
+    // Calculate numberOfMiddleThresholds based on range and keyboardStep for continuous slider sounds.
+    const keyboardStep = options.sliderOptions.keyboardStep;
+    const numberOfMiddleThresholds = keyboardStep ? roundSymmetric( range.getLength() / keyboardStep ) : 5;
+
+    const numberControl = new NumberControl( title, valueProperty, range, {
+      ...options,
+      valueChangeSoundGeneratorOptions: {
+        numberOfMiddleThresholds: numberOfMiddleThresholds
+      }
+    } );
 
     super( { children: [ numberControl ] } );
 
