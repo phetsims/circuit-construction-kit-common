@@ -159,10 +159,6 @@ const CCKCQueryParameters = QueryStringMachine.getAll( {
     defaultValue: true
   },
 
-  codap: {
-    type: 'flag'
-  },
-
   solver: {
     type: 'string',
     defaultValue: 'phet',
