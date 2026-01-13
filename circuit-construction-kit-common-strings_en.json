@@ -662,10 +662,10 @@
         "value": "Battery reversed."
       },
       "vertexDisconnected": {
-        "value": "Disconnected { $elementList }. { $currentPhrase }"
+        "value": "Disconnected. { $currentPhrase }"
       },
       "vertexDisconnectedNoChange": {
-        "value": "Disconnected { $elementList }."
+        "value": "Disconnected."
       }
     },
     "sensorToolbox": {

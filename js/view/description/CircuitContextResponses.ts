@@ -625,17 +625,13 @@ export default class CircuitContextResponses {
       elementDescriptions.push( terminalDescription );
     }
 
-    const elementList = elementDescriptions.join( ', ' );
-
     // Check if any of the disconnected elements were in a multi-element group
     // Use the first element to find the group (they were all in the same group before split)
     const groupIndex = CircuitDescriptionUtils.getGroupIndex( this.circuit, disconnectedElements[ 0 ] );
 
     // If no group (all now disconnected), just announce the disconnection
     if ( groupIndex === null ) {
-      return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.vertexDisconnectedNoChange.format( {
-        elementList: elementList
-      } );
+      return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.vertexDisconnectedNoChangeStringProperty.value;
     }
 
     // Get the group and analyze current changes
@@ -644,9 +640,7 @@ export default class CircuitContextResponses {
     const group = multiElementGroups[ groupIndex - 1 ];
 
     if ( !group ) {
-      return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.vertexDisconnectedNoChange.format( {
-        elementList: elementList
-      } );
+      return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.vertexDisconnectedNoChangeStringProperty.value;
     }
 
     const currentState = this.getGroupState( group );
@@ -666,14 +660,11 @@ export default class CircuitContextResponses {
     // Return appropriate response based on whether there were current/brightness changes
     if ( changePhrase ) {
       return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.vertexDisconnected.format( {
-        elementList: elementList,
         currentPhrase: changePhrase
       } );
     }
 
-    return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.vertexDisconnectedNoChange.format( {
-      elementList: elementList
-    } );
+    return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.vertexDisconnectedNoChangeStringProperty.value;
   }
 }
 
