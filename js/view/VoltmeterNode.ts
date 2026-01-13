@@ -29,6 +29,7 @@ import { ImageableImage } from '../../../scenery/js/nodes/Imageable.js';
 import Node, { type NodeOptions } from '../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
 import Color from '../../../scenery/js/util/Color.js';
+import sharedSoundPlayers from '../../../tambo/js/sharedSoundPlayers.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import probeBlack_png from '../../mipmaps/probeBlack_png.js';
 import probeRed_png from '../../mipmaps/probeRed_png.js';
@@ -64,6 +65,7 @@ const CONTROL_POINT_Y2 = 60;
 
 // Local classes with InteractiveHighlighting for the draggable components
 class InteractiveHighlightingRectangle extends InteractiveHighlighting( Rectangle ) {}
+
 class InteractiveHighlightingImage extends InteractiveHighlighting( Image ) {}
 
 type SelfOptions = {
@@ -284,7 +286,13 @@ export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
 
         const probeDragListener = new DragListener( {
           positionProperty: positionProperty,
-          start: () => this.moveToFront(),
+          start: () => {
+            this.moveToFront();
+            sharedSoundPlayers.get( 'grab' ).play();
+          },
+          end: () => {
+            sharedSoundPlayers.get( 'release' ).play();
+          },
           tandem: tandem.createTandem( 'probeDragListener' ),
           dragBoundsProperty: dragBoundsProperty
         } );
@@ -335,8 +343,10 @@ export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
         dragBoundsProperty: erodedBoundsProperty,
         start: event => {
           this.moveToFront();
+          sharedSoundPlayers.get( 'grab' ).play();
         },
         end: () => {
+          sharedSoundPlayers.get( 'release' ).play();
           voltmeter.droppedEmitter.emit( bodyNode.globalBounds );
 
           // After dropping in the play area the probes move independently of the body
