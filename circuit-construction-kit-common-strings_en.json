@@ -626,10 +626,10 @@
         "value": "{ $scope ->\n  [some] { $direction ->\n           [brighter] Some Group { $groupIndex } light bulbs got brighter.\n           [dimmer] Some Group { $groupIndex } light bulbs got dimmer.\n           *[changed] Some Group { $groupIndex } light bulbs changed brightness.\n         }\n  *[all] { $direction ->\n           [brighter] All Group { $groupIndex } light bulbs got brighter.\n           [dimmer] All Group { $groupIndex } light bulbs got dimmer.\n           *[changed] All Group { $groupIndex } light bulbs changed brightness.\n         }\n}"
       },
       "vertexConnectedWithCurrent": {
-        "value": "Connected { $element1 } to { $element2 }. { $currentPhrase }"
+        "value": "Connected. { $currentPhrase }"
       },
       "vertexConnectedSimple": {
-        "value": "Connected { $element1 } to { $element2 }."
+        "value": "Connected"
       },
       "switchOpened": {
         "value": "Switch opened. { $currentPhrase }"

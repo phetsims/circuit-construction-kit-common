@@ -397,16 +397,11 @@ export default class CircuitContextResponses {
 
     if ( changePhrase ) {
       return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.vertexConnectedWithCurrent.format( {
-        element1: element1Description,
-        element2: element2Description,
         currentPhrase: changePhrase
       } );
     }
 
-    return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.vertexConnectedSimple.format( {
-      element1: element1Description,
-      element2: element2Description
-    } );
+    return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.vertexConnectedSimpleStringProperty.value;
   }
 
   /**

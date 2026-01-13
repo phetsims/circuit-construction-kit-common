@@ -381,10 +381,10 @@ a11y:
             changed:  'All Group { $groupIndex } light bulbs changed brightness.'
 
     # Vertex connection with current flow
-    vertexConnectedWithCurrent: 'Connected { $element1 } to { $element2 }. { $currentPhrase }'
+    vertexConnectedWithCurrent: 'Connected. { $currentPhrase }'
 
     # Simple vertex connection (when no current flows)
-    vertexConnectedSimple:      'Connected { $element1 } to { $element2 }.'
+    vertexConnectedSimple:      'Connected'
 
     # Switch toggle responses
     switchOpened:               'Switch opened. { $currentPhrase }'
