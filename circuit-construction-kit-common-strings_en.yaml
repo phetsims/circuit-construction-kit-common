@@ -334,7 +334,8 @@ a11y:
         battery:   '{ $componentName } voltage changed from { $oldValue } to { $newValue } volts.'
         resistor:  '{ $componentName } resistance changed from { $oldValue } to { $newValue } ohms.'
         lightBulb: '{ $componentName } resistance changed from { $oldValue } to { $newValue } ohms.'
-    # NEW: When connected element changes but no current/brightness changes
+
+    # When connected element changes but no current/brightness changes
     # Note: When showCurrent=false and hasLightBulbs=false, code returns null before calling this
     noChangesInGroup:
       select_showCurrent:
@@ -346,7 +347,8 @@ a11y:
           select_hasLightBulbs:
             true:  'No changes in light bulb brightness in Group { $groupIndex }.'
             false: 'No changes in Group { $groupIndex }.'
-    # NEW: Current change patterns with scope (some/all) and direction
+
+    # Current change patterns with scope (some/all) and direction
     currentChangePhrase:
       select_scope:
         some:
@@ -363,7 +365,8 @@ a11y:
             decreased: 'Current through all Group { $groupIndex } circuit elements decreased.'
             stopped:   'Current through Group { $groupIndex } stopped.'
             reversed:  'Current through all Group { $groupIndex } circuit elements reversed.'
-    # NEW: Light bulb brightness change patterns
+
+    # Light bulb brightness change patterns
     lightBulbChangePhrase:
       select_scope:
         some:
@@ -376,26 +379,34 @@ a11y:
             brighter: 'All Group { $groupIndex } light bulbs got brighter.'
             dimmer:   'All Group { $groupIndex } light bulbs got dimmer.'
             changed:  'All Group { $groupIndex } light bulbs changed brightness.'
-    # NEW: Vertex connection with current flow
+
+    # Vertex connection with current flow
     vertexConnectedWithCurrent: 'Connected { $element1 } to { $element2 }. { $currentPhrase }'
-    # NEW: Simple vertex connection (when no current flows)
+
+    # Simple vertex connection (when no current flows)
     vertexConnectedSimple:      'Connected { $element1 } to { $element2 }.'
-    # NEW: Switch toggle responses
+
+    # Switch toggle responses
     switchOpened:               'Switch opened. { $currentPhrase }'
     switchClosed:               'Switch closed. { $currentPhrase }'
+
     # Current phrases for switch (when disconnected or no change)
     switchOpenedNoChange:       'Switch opened.'
     switchClosedNoChange:       'Switch closed.'
-    # NEW: Fuse tripped responses
+
+    # Fuse tripped responses
     fuseTripped:                'Fuse tripped. { $currentPhrase }'
     fuseTrippedNoChange:        'Fuse tripped.'
-    # NEW: Fuse repaired responses
+
+    # Fuse repaired responses
     fuseRepaired:               'Fuse repaired. { $currentPhrase }'
     fuseRepairedNoChange:       'Fuse repaired.'
-    # NEW: Battery reversed responses
+
+    # Battery reversed responses
     batteryReversed:            'Battery reversed. { $currentPhrase }'
     batteryReversedNoChange:    'Battery reversed.'
-    # NEW: Vertex disconnection responses
+
+    # Vertex disconnection responses
     vertexDisconnected:         'Disconnected { $elementList }. { $currentPhrase }'
     vertexDisconnectedNoChange: 'Disconnected { $elementList }.'
   sensorToolbox:
