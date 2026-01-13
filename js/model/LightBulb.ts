@@ -11,6 +11,7 @@ import NumberProperty from '../../../axon/js/NumberProperty.js';
 import type Property from '../../../axon/js/Property.js';
 import type Matrix3 from '../../../dot/js/Matrix3.js';
 import Range from '../../../dot/js/Range.js';
+import { clamp } from '../../../dot/js/util/clamp.js';
 import { linear } from '../../../dot/js/util/linear.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
@@ -54,6 +55,10 @@ const SCHEMATIC_SAMPLE_POINTS = [
   new Vector2( 0.89, 0.34 ),                                            // top right
   new Vector2( 0.89, 1.474 )                                            // bottom right
 ];
+
+// Constants for brightness calculation
+const BRIGHTNESS_MULTIPLIER = 0.35;
+const BRIGHTNESS_MAXIMUM_POWER = 2000;
 
 type SelfOptions = {
   isExtreme?: boolean;
@@ -248,6 +253,24 @@ export default class LightBulb extends FixedCircuitElement {
   }
 
   public static readonly REAL_BULB_COLD_RESISTANCE = 10;
+
+  // Brightness thresholds for categorizing light bulb state
+  public static readonly BRIGHTNESS_OFF_THRESHOLD = 0.05;
+  public static readonly BRIGHTNESS_DIM_THRESHOLD = 0.4;
+  public static readonly BRIGHTNESS_STEADY_THRESHOLD = 0.75;
+
+  /**
+   * Computes the brightness of a light bulb from its current and resistance.
+   * Returns a value from 0 to 1.
+   */
+  public static computeBrightness( lightBulb: LightBulb ): number {
+    const current = lightBulb.currentProperty.value;
+    const resistance = lightBulb.resistanceProperty.value;
+    const power = Math.abs( current * current * resistance );
+    const numerator = Math.log( 1 + power * BRIGHTNESS_MULTIPLIER );
+    const denominator = Math.log( 1 + BRIGHTNESS_MAXIMUM_POWER * BRIGHTNESS_MULTIPLIER );
+    return clamp( denominator === 0 ? 0 : numerator / denominator, 0, 1 );
+  }
 }
 
 const samplePoints = LightBulb.createSamplePoints( Vector2.ZERO );

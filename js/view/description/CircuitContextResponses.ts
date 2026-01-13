@@ -8,7 +8,6 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import { clamp } from '../../../../dot/js/util/clamp.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../../CircuitConstructionKitCommonFluent.js';
 import CircuitDescriptionUtils from '../../CircuitDescriptionUtils.js';
@@ -17,10 +16,6 @@ import CircuitElement from '../../model/CircuitElement.js';
 import type CircuitGroup from '../../model/CircuitGroup.js';
 import LightBulb from '../../model/LightBulb.js';
 import type Vertex from '../../model/Vertex.js';
-
-// Brightness calculation constants (from CircuitContextStateTracker)
-const LIGHT_BULB_BRIGHTNESS_MULTIPLIER = 0.35;
-const LIGHT_BULB_MAXIMUM_POWER = 2000;
 
 // Current threshold for considering current as "flowing" (for vertex connection responses)
 const CURRENT_THRESHOLD = 1e-4;
@@ -77,24 +72,12 @@ export default class CircuitContextResponses {
     const currentValues = group.circuitElements.map( element => element.currentProperty.value );
 
     const lightBulbs = group.circuitElements.filter( ( element ): element is LightBulb => element instanceof LightBulb );
-    const brightnessValues = lightBulbs.map( bulb => this.computeLightBulbBrightness( bulb ) );
+    const brightnessValues = lightBulbs.map( bulb => LightBulb.computeBrightness( bulb ) );
 
     return {
       currentValues: currentValues,
       brightnessValues: brightnessValues
     };
-  }
-
-  /**
-   * Compute normalized brightness (0-1) for a light bulb.
-   */
-  private computeLightBulbBrightness( lightBulb: LightBulb ): number {
-    const current = lightBulb.currentProperty.value;
-    const resistance = lightBulb.resistanceProperty.value;
-    const power = Math.abs( current * current * resistance );
-    const numerator = Math.log( 1 + power * LIGHT_BULB_BRIGHTNESS_MULTIPLIER );
-    const denominator = Math.log( 1 + LIGHT_BULB_MAXIMUM_POWER * LIGHT_BULB_BRIGHTNESS_MULTIPLIER );
-    return clamp( denominator === 0 ? 0 : numerator / denominator, 0, 1 );
   }
 
   /**

@@ -10,7 +10,6 @@
 
 import Emitter from '../../../axon/js/Emitter.js';
 import type TEmitter from '../../../axon/js/TEmitter.js';
-import { clamp } from '../../../dot/js/util/clamp.js';
 import { toFixed } from '../../../dot/js/util/toFixed.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
@@ -43,11 +42,6 @@ type PendingContextEvent = {
 
 const CURRENT_PRESENT_THRESHOLD = 1E-4;
 const CURRENT_EQUALITY_TOLERANCE = 1E-3;
-const LIGHT_BULB_BRIGHTNESS_MULTIPLIER = 0.35;
-const LIGHT_BULB_MAXIMUM_POWER = 2000;
-const LIGHT_BULB_OFF_THRESHOLD = 0.05;
-const LIGHT_BULB_DIM_THRESHOLD = 0.4;
-const LIGHT_BULB_STEADY_THRESHOLD = 0.75;
 
 export default class CircuitContextStateTracker {
   public readonly contextAnnouncementEmitter: TEmitter<[ string ]>;
@@ -158,26 +152,17 @@ export default class CircuitContextStateTracker {
   }
 
   private getLightBulbAnnouncementState( lightBulb: LightBulb ): LightBulbAnnouncementState {
-    const brightness = this.computeLightBulbBrightness( lightBulb );
-    if ( brightness <= LIGHT_BULB_OFF_THRESHOLD ) {
+    const brightness = LightBulb.computeBrightness( lightBulb );
+    if ( brightness <= LightBulb.BRIGHTNESS_OFF_THRESHOLD ) {
       return 'off';
     }
-    if ( brightness <= LIGHT_BULB_DIM_THRESHOLD ) {
+    if ( brightness <= LightBulb.BRIGHTNESS_DIM_THRESHOLD ) {
       return 'dim';
     }
-    if ( brightness <= LIGHT_BULB_STEADY_THRESHOLD ) {
+    if ( brightness <= LightBulb.BRIGHTNESS_STEADY_THRESHOLD ) {
       return 'steady';
     }
     return 'bright';
-  }
-
-  private computeLightBulbBrightness( lightBulb: LightBulb ): number {
-    const current = lightBulb.currentProperty.value;
-    const resistance = lightBulb.resistanceProperty.value;
-    const power = Math.abs( current * current * resistance );
-    const numerator = Math.log( 1 + power * LIGHT_BULB_BRIGHTNESS_MULTIPLIER );
-    const denominator = Math.log( 1 + LIGHT_BULB_MAXIMUM_POWER * LIGHT_BULB_BRIGHTNESS_MULTIPLIER );
-    return clamp( denominator === 0 ? 0 : numerator / denominator, 0, 1 );
   }
 
   private processPendingContextAnnouncements(): void {

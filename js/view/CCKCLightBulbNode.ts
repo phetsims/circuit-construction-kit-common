@@ -11,7 +11,6 @@ import Multilink from '../../../axon/js/Multilink.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import type Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
-import { clamp } from '../../../dot/js/util/clamp.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Shape from '../../../kite/js/Shape.js';
 import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
@@ -46,19 +45,6 @@ const LEAD_Y = -73;
 // The "blip" in the filament that looks like an upside down "u" semicircle
 const INNER_RADIUS = 5;
 
-/**
- * Determine the brightness for a given power
- * @param multiplier - steepness of the function
- * @param power - the power through the light bulb
- */
-const toBrightness = ( multiplier: number, power: number ) => {
-  const maximumBrightness = 1;
-
-  // power at which the brightness becomes 1
-  const maximumPower = 2000;
-  return Math.log( 1 + power * multiplier ) * maximumBrightness / Math.log( 1 + maximumPower * multiplier );
-};
-
 export default class CCKCLightBulbNode extends FixedCircuitElementNode {
   private readonly rayNodeContainer: Node;
   private readonly disposeCircuitConstructionKitLightBulbNode: () => void;
@@ -84,10 +70,8 @@ export default class CCKCLightBulbNode extends FixedCircuitElementNode {
     const brightnessProperty = new NumberProperty( 0 );
     const updateBrightness = Multilink.multilink(
       [ lightBulb.currentProperty, showResultsProperty, lightBulb.resistanceProperty ],
-      ( current, running, resistance ) => {
-        const power = Math.abs( current * current * resistance );
-
-        let brightness = toBrightness( 0.35, power );
+      () => {
+        let brightness = LightBulb.computeBrightness( lightBulb );
 
         // Workaround for SCENERY_PHET/LightBulbNode which shows highlight even for current = 1E-16, so clamp it off
         // see https://github.com/phetsims/scenery-phet/issues/225
@@ -95,7 +79,7 @@ export default class CCKCLightBulbNode extends FixedCircuitElementNode {
           brightness = 0;
         }
 
-        brightnessProperty.value = clamp( brightness, 0, 1 );
+        brightnessProperty.value = brightness;
       } );
     let lightBulbNode: CustomLightBulbNode | Image = new CustomLightBulbNode( brightnessProperty, {
       isReal: lightBulb.isReal
