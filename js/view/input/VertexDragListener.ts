@@ -8,6 +8,7 @@
 
 import Vector2 from '../../../../dot/js/Vector2.js';
 import type SceneryEvent from '../../../../scenery/js/input/SceneryEvent.js';
+import sharedSoundPlayers from '../../../../tambo/js/sharedSoundPlayers.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import CCKCConstants from '../../CCKCConstants.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
@@ -32,6 +33,7 @@ export default class VertexDragListener extends CircuitNodeDragListener {
     super( circuitNode, [ () => vertex ], {
       tandem: tandem,
       start: ( event: SceneryEvent ) => {
+        sharedSoundPlayers.get( 'grab' ).play();
         initialPoint = event.pointer.point;
         latestPoint = event.pointer.point.copy();
         circuitNode.startDragVertex( event.pointer.point, vertex, vertex );
@@ -43,6 +45,8 @@ export default class VertexDragListener extends CircuitNodeDragListener {
         circuitNode.dragVertex( event.pointer.point, vertex, true );
       },
       end: () => {
+
+        sharedSoundPlayers.get( 'release' ).play();
 
         // The vertex can only connect to something if it was actually moved.
         circuitNode.endDrag( vertex, dragged );

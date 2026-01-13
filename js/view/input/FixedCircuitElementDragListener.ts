@@ -8,6 +8,7 @@
 
 import Vector2 from '../../../../dot/js/Vector2.js';
 import type SceneryEvent from '../../../../scenery/js/input/SceneryEvent.js';
+import sharedSoundPlayers from '../../../../tambo/js/sharedSoundPlayers.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import CCKCScreenView from '../CCKCScreenView.js';
@@ -33,6 +34,7 @@ export default class FixedCircuitElementDragListener extends CircuitNodeDragList
 
     super( circuitNode, [ () => circuitElement.endVertexProperty.get() ], {
       start: ( event: SceneryEvent ) => {
+        sharedSoundPlayers.get( 'grab' ).play();
         circuitElementNode.moveToFront();
         if ( event.pointer && event.pointer.point ) {
           initialPoint = event.pointer.point.copy();
@@ -56,9 +58,11 @@ export default class FixedCircuitElementDragListener extends CircuitNodeDragList
           dragged = true;
         }
       },
-      end: () =>
+      end: () => {
+        sharedSoundPlayers.get( 'release' ).play();
         circuitElementNode.endDrag( circuitElementNode.contentNode, [ circuitElement.endVertexProperty.get() ], screenView, circuitNode,
-          initialPoint!, latestPoint!, dragged, true ),
+          initialPoint!, latestPoint!, dragged, true );
+      },
       tandem: tandem
     } );
   }

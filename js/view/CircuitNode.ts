@@ -31,7 +31,6 @@ import type SceneryEvent from '../../../scenery/js/input/SceneryEvent.js';
 import Circle from '../../../scenery/js/nodes/Circle.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
-import sharedSoundPlayers from '../../../tambo/js/sharedSoundPlayers.js';
 import isSettingPhetioStateProperty from '../../../tandem/js/isSettingPhetioStateProperty.js';
 import PhetioGroup from '../../../tandem/js/PhetioGroup.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -290,13 +289,6 @@ export default class CircuitNode extends Node {
     this.circuitElementNodeMap = {};
     this.solderNodes = {};
     this.vertexNodes = {};
-
-    circuit.circuitElements.addItemAddedListener( () => {
-
-      if ( !isSettingPhetioStateProperty.value ) {
-        sharedSoundPlayers.get( 'grab' ).play();
-      }
-    } );
 
     /**
      * For each CircuitElement type, do the following:

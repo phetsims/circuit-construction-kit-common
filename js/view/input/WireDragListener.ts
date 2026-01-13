@@ -8,6 +8,7 @@
 
 import Vector2 from '../../../../dot/js/Vector2.js';
 import type SceneryEvent from '../../../../scenery/js/input/SceneryEvent.js';
+import sharedSoundPlayers from '../../../../tambo/js/sharedSoundPlayers.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import CCKCScreenView from '../CCKCScreenView.js';
@@ -41,6 +42,8 @@ export default class WireDragListener extends CircuitNodeDragListener {
         start: ( event: SceneryEvent ) => {
           if ( wire.interactiveProperty.get() ) {
 
+            sharedSoundPlayers.get( 'grab' ).play();
+
             // Start drag by starting a drag on start and end vertices
             circuitNode.startDragVertex( event.pointer.point, wire.startVertexProperty.get(), wire );
             circuitNode.startDragVertex( event.pointer.point, wire.endVertexProperty.get(), wire );
@@ -61,6 +64,7 @@ export default class WireDragListener extends CircuitNodeDragListener {
           }
         },
         end: () => {
+          sharedSoundPlayers.get( 'release' ).play();
           wireNode.endDrag( wireNode, [
             wire.startVertexProperty.get(),
             wire.endVertexProperty.get()
