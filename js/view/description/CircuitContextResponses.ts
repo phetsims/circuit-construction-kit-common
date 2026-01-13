@@ -588,76 +588,20 @@ export default class CircuitContextResponses {
   }
 
   /**
-   * Create a response for when a circuit element is removed via the trash button.
-   * @param groupIndex - The group index the element was in before removal (captured before disposal)
+   * Common logic for building action responses (removal, disconnect) with group state changes.
+   * @param groupIndex - The group index the element was in before the action
+   * @param baseString - The fallback string when there's no change to report
+   * @param formatWithChange - Callback to format the response when there IS a change
    */
-  public createElementRemovedResponse( groupIndex: number | null ): string | null {
-    // Start with "Removed."
-    const removedString = CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.componentRemovedStringProperty.value;
-
-    // If element was not in a multi-element group, just say "Removed."
+  private buildActionResponseWithGroupChanges(
+    groupIndex: number | null,
+    baseString: string,
+    formatWithChange: ( changePhrase: string ) => string
+  ): string {
     if ( groupIndex === null ) {
-      return removedString;
+      return baseString;
     }
 
-    // Get the group's current state (after removal)
-    const groups = this.circuit.getGroups();
-    const multiElementGroups = groups.filter( group => group.circuitElements.length > 1 );
-    const group = multiElementGroups[ groupIndex - 1 ];
-
-    // If the group no longer exists (element removal broke the circuit), just say "Removed."
-    if ( !group ) {
-      // Check if current stopped in the previous state
-      const previousState = this.previousGroupStates?.get( groupIndex );
-      if ( previousState ) {
-        const wasFlowing = previousState.currentValues.some( current => Math.abs( current ) > CURRENT_THRESHOLD );
-        if ( wasFlowing ) {
-          // Current was flowing but now the group doesn't exist - current stopped
-          const stoppedPhrase = CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.currentChangePhrase.format( {
-            scope: 'all',
-            direction: 'stopped',
-            groupIndex: groupIndex
-          } );
-          return `${removedString} ${stoppedPhrase}`;
-        }
-      }
-      return removedString;
-    }
-
-    const currentState = this.getGroupState( group );
-    const previousState = this.previousGroupStates?.get( groupIndex );
-
-    // If we don't have previous state, just say "Removed."
-    if ( !previousState ) {
-      return removedString;
-    }
-
-    // Analyze changes
-    const currentChange = this.analyzeCurrentChange( previousState.currentValues, currentState.currentValues );
-    const brightnessChange = this.analyzeBrightnessChange( previousState.brightnessValues, currentState.brightnessValues );
-    const showCurrent = this.circuit.showCurrentProperty.value;
-
-    const changePhrase = this.buildGroupChangePhrase( groupIndex, currentChange, brightnessChange, showCurrent );
-
-    if ( changePhrase ) {
-      return `${removedString} ${changePhrase}`;
-    }
-
-    return removedString;
-  }
-
-  /**
-   * Create a response for when the disconnect button is pressed.
-   * @param groupIndex - The group index the element was in before disconnection (captured before the action)
-   */
-  public createDisconnectButtonResponse( groupIndex: number | null ): string | null {
-
-    // If element was not in a multi-element group, just say "Disconnected."
-    if ( groupIndex === null ) {
-      return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.vertexDisconnectedNoChangeStringProperty.value;
-    }
-
-    // Get the group's current state (after disconnection)
     const groups = this.circuit.getGroups();
     const multiElementGroups = groups.filter( group => group.circuitElements.length > 1 );
     const group = multiElementGroups[ groupIndex - 1 ];
@@ -673,19 +617,17 @@ export default class CircuitContextResponses {
             direction: 'stopped',
             groupIndex: groupIndex
           } );
-          return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.vertexDisconnected.format( {
-            currentPhrase: stoppedPhrase
-          } );
+          return formatWithChange( stoppedPhrase );
         }
       }
-      return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.vertexDisconnectedNoChangeStringProperty.value;
+      return baseString;
     }
 
     const currentState = this.getGroupState( group );
     const previousState = this.previousGroupStates?.get( groupIndex );
 
     if ( !previousState ) {
-      return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.vertexDisconnectedNoChangeStringProperty.value;
+      return baseString;
     }
 
     const currentChange = this.analyzeCurrentChange( previousState.currentValues, currentState.currentValues );
@@ -695,12 +637,40 @@ export default class CircuitContextResponses {
     const changePhrase = this.buildGroupChangePhrase( groupIndex, currentChange, brightnessChange, showCurrent );
 
     if ( changePhrase ) {
-      return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.vertexDisconnected.format( {
-        currentPhrase: changePhrase
-      } );
+      return formatWithChange( changePhrase );
     }
 
-    return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.vertexDisconnectedNoChangeStringProperty.value;
+    return baseString;
+  }
+
+  /**
+   * Create a response for when a circuit element is removed via the trash button.
+   * @param groupIndex - The group index the element was in before removal (captured before disposal)
+   */
+  public createElementRemovedResponse( groupIndex: number | null ): string | null {
+    const removedString = CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.componentRemovedStringProperty.value;
+
+    return this.buildActionResponseWithGroupChanges(
+      groupIndex,
+      removedString,
+      changePhrase => `${removedString} ${changePhrase}`
+    );
+  }
+
+  /**
+   * Create a response for when the disconnect button is pressed.
+   * @param groupIndex - The group index the element was in before disconnection (captured before the action)
+   */
+  public createDisconnectButtonResponse( groupIndex: number | null ): string | null {
+    const baseString = CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.vertexDisconnectedNoChangeStringProperty.value;
+
+    return this.buildActionResponseWithGroupChanges(
+      groupIndex,
+      baseString,
+      changePhrase => CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.vertexDisconnected.format( {
+        currentPhrase: changePhrase
+      } )
+    );
   }
 
   /**
