@@ -52,9 +52,9 @@ export default class SourceResistanceControl extends VBox {
     const midpoint = ( range.max + range.min ) / 2;
     const sliderSteps = CCKCConstants.SLIDER_STEPS.sourceResistanceControl;
 
-    // Tick marks are at every integer from min to max (11 positions, 10 intervals).
-    // numberOfMiddleThresholds = 9 creates 10 intervals so clicks align with tick marks.
-    const numberOfTickIntervals = roundSymmetric( range.max - range.min );
+    // Tick marks are at every integer from min (~0) to max (10).
+    // Use interThresholdDelta: 1 with constrainValue that rounds to integers,
+    // so sounds align with tick marks despite range.min being 0.0001.
     const slider = new HSlider( sourceResistanceProperty, range, {
       trackSize: CCKCConstants.SLIDER_TRACK_SIZE,
       thumbSize: CCKCConstants.THUMB_SIZE,
@@ -73,7 +73,8 @@ export default class SourceResistanceControl extends VBox {
       createAriaValueText: ( value: number ) => CircuitConstructionKitCommonFluent.a11y.sourceResistanceControl.ariaValueText.format( { resistance: value } ),
 
       valueChangeSoundGeneratorOptions: {
-        numberOfMiddleThresholds: numberOfTickIntervals - 1
+        interThresholdDelta: 1,
+        constrainValue: value => roundSymmetric( value )
       }
     } );
     slider.addMajorTick( range.min, createLabel( CircuitConstructionKitCommonFluent.tinyStringProperty, tandem.createTandem( 'tinyLabelText' ) ) );
