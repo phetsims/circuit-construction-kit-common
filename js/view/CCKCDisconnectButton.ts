@@ -12,7 +12,10 @@ import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import scissorsShape from '../../../sherpa/js/fontawesome-4/scissorsShape.js';
+import SoundClip from '../../../tambo/js/sound-generators/SoundClip.js';
+import soundManager from '../../../tambo/js/soundManager.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
+import cut_mp3 from '../../sounds/cut_mp3.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import type Circuit from '../model/Circuit.js';
@@ -22,6 +25,9 @@ import CircuitDescription from './description/CircuitDescription.js';
 
 // Offset to move the disconnected element (in view coordinates)
 const DISCONNECT_OFFSET = new Vector2( 50, 50 );
+
+const cutSoundPlayer = new SoundClip( cut_mp3 );
+soundManager.addSoundGenerator( cutSoundPlayer );
 
 export default class CCKCDisconnectButton extends CCKCRoundPushButton {
 
@@ -80,7 +86,8 @@ export default class CCKCDisconnectButton extends CCKCRoundPushButton {
       enabledProperty: enabledProperty,
       isDisposable: false,
       tandem: tandem,
-      phetioVisiblePropertyInstrumented: false
+      phetioVisiblePropertyInstrumented: false,
+      soundPlayer: cutSoundPlayer
     } );
 
     // Add listener after super() so we can reference 'this' for focus restoration

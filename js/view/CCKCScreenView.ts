@@ -27,8 +27,11 @@ import KeyboardListener from '../../../scenery/js/listeners/KeyboardListener.js'
 import Node from '../../../scenery/js/nodes/Node.js';
 import { type CarouselItem } from '../../../sun/js/Carousel.js';
 import sharedSoundPlayers from '../../../tambo/js/sharedSoundPlayers.js';
+import SoundClip from '../../../tambo/js/sound-generators/SoundClip.js';
+import soundManager from '../../../tambo/js/soundManager.js';
 import phetioStateSetEmitter from '../../../tandem/js/phetioStateSetEmitter.js';
 import Tandem from '../../../tandem/js/Tandem.js';
+import cut_mp3 from '../../sounds/cut_mp3.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import CCKCUtils from '../CCKCUtils.js';
@@ -64,6 +67,9 @@ const VERTICAL_MARGIN = CCKCConstants.VERTICAL_MARGIN;
 
 // Match margins with the carousel page control and spacing
 const HORIZONTAL_MARGIN = CCKCConstants.HORIZONTAL_MARGIN;
+
+const cutSoundPlayer = new SoundClip( cut_mp3 );
+soundManager.addSoundGenerator( cutSoundPlayer );
 
 // Group for aligning the content in the panels and accordion boxes.  This is a class variable instead of an
 // instance variable so the control panels will have the same width across all screens,
@@ -538,6 +544,7 @@ export default class CCKCScreenView extends ScreenView {
         if ( nodeToDelete instanceof VertexNode ) {
           if ( nodeToDelete.vertex.isCuttableProperty.value ) {
             const newVertices = this.circuitNode.circuit.cutVertex( nodeToDelete.vertex );
+            cutSoundPlayer.play(); // Same sound as CutButton
 
             if ( newVertices.length > 0 ) {
 

@@ -13,13 +13,19 @@ import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import scissorsShape from '../../../sherpa/js/fontawesome-4/scissorsShape.js';
 import RoundPushButton from '../../../sun/js/buttons/RoundPushButton.js';
+import SoundClip from '../../../tambo/js/sound-generators/SoundClip.js';
+import soundManager from '../../../tambo/js/soundManager.js';
 import Tandem from '../../../tandem/js/Tandem.js';
+import cut_mp3 from '../../sounds/cut_mp3.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import type Circuit from '../model/Circuit.js';
 import type Vertex from '../model/Vertex.js';
 
 // How far in view coordinates the cut button appears from the vertex node
 const DISTANCE_TO_CUT_BUTTON = 70;
+
+const cutSoundPlayer = new SoundClip( cut_mp3 );
+soundManager.addSoundGenerator( cutSoundPlayer );
 
 export default class CutButton extends RoundPushButton {
 
@@ -42,6 +48,7 @@ export default class CutButton extends RoundPushButton {
         phetioReadOnly: true,
         phetioFeatured: false
       },
+      soundPlayer: cutSoundPlayer,
       focusable: false // Delete with delete/backspace on the element rather than focusing this button itself
     } );
 
