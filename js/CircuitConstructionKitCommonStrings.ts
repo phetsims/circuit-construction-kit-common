@@ -357,6 +357,7 @@ type StringsType = {
     };
     'voltmeterNode': {
       'accessibleHeadingStringProperty': LocalizedStringProperty;
+      'accessibleHeadingNumberedStringProperty': LocalizedStringProperty;
       'accessibleParagraphStringProperty': LocalizedStringProperty;
       'body': {
         'accessibleNameStringProperty': LocalizedStringProperty;

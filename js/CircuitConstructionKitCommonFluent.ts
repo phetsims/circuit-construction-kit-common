@@ -265,6 +265,7 @@ addToMapIfDefined( 'a11y_sourceResistanceControl_ariaValueText', 'a11y.sourceRes
 addToMapIfDefined( 'a11y_wireResistivityControl_ariaValueText', 'a11y.wireResistivityControl.ariaValueTextStringProperty' );
 addToMapIfDefined( 'a11y_fuseCurrentRatingControl_ariaValueText', 'a11y.fuseCurrentRatingControl.ariaValueTextStringProperty' );
 addToMapIfDefined( 'a11y_voltmeterNode_accessibleHeading', 'a11y.voltmeterNode.accessibleHeadingStringProperty' );
+addToMapIfDefined( 'a11y_voltmeterNode_accessibleHeadingNumbered', 'a11y.voltmeterNode.accessibleHeadingNumberedStringProperty' );
 addToMapIfDefined( 'a11y_voltmeterNode_accessibleParagraph', 'a11y.voltmeterNode.accessibleParagraphStringProperty' );
 addToMapIfDefined( 'a11y_voltmeterNode_body_accessibleName', 'a11y.voltmeterNode.body.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_voltmeterNode_blackProbe_accessibleName', 'a11y.voltmeterNode.blackProbe.accessibleNameStringProperty' );
@@ -683,6 +684,7 @@ const CircuitConstructionKitCommonFluent = {
     },
     voltmeterNode: {
       accessibleHeadingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_voltmeterNode_accessibleHeading', _.get( CircuitConstructionKitCommonStrings, 'a11y.voltmeterNode.accessibleHeadingStringProperty' ) ),
+      accessibleHeadingNumbered: new FluentPattern<{ position: FluentVariable, total: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_voltmeterNode_accessibleHeadingNumbered', _.get( CircuitConstructionKitCommonStrings, 'a11y.voltmeterNode.accessibleHeadingNumberedStringProperty' ), [{"name":"position"},{"name":"total"}] ),
       accessibleParagraphStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_voltmeterNode_accessibleParagraph', _.get( CircuitConstructionKitCommonStrings, 'a11y.voltmeterNode.accessibleParagraphStringProperty' ) ),
       body: {
         accessibleName: new FluentPattern<{ reading: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_voltmeterNode_body_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.voltmeterNode.body.accessibleNameStringProperty' ), [{"name":"reading"}] )

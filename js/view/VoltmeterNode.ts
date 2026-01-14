@@ -92,6 +92,26 @@ export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
     isIcon: boolean,
     providedOptions?: VoltmeterNodeOptions ) {
 
+    // Create a dynamic heading that shows "Voltmeter" when only one is active,
+    // or "Voltmeter X of 2" when both are active
+    const numberedHeadingProperty = model ? CircuitConstructionKitCommonFluent.a11y.voltmeterNode.accessibleHeadingNumbered.createProperty( {
+      position: voltmeter.phetioIndex,
+      total: model.voltmeters.length
+    } ) : null;
+
+    const accessibleHeadingProperty = model ? new DerivedStringProperty(
+      [
+        model.voltmeters[ 0 ].isActiveProperty,
+        model.voltmeters[ 1 ].isActiveProperty,
+        CircuitConstructionKitCommonFluent.a11y.voltmeterNode.accessibleHeadingStringProperty,
+        numberedHeadingProperty!
+      ],
+      ( isActive0, isActive1, simpleHeading, numberedHeading ) => {
+        const activeCount = ( isActive0 ? 1 : 0 ) + ( isActive1 ? 1 : 0 );
+        return activeCount > 1 ? numberedHeading : simpleHeading;
+      }
+    ) : CircuitConstructionKitCommonFluent.a11y.voltmeterNode.accessibleHeadingStringProperty;
+
     const options = optionize<VoltmeterNodeOptions, SelfOptions, NodeOptions>()( {
 
       tandem: Tandem.REQUIRED,
@@ -112,7 +132,7 @@ export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
 
       tagName: isIcon ? null : 'div',
 
-      accessibleHeading: CircuitConstructionKitCommonFluent.a11y.voltmeterNode.accessibleHeadingStringProperty,
+      accessibleHeading: accessibleHeadingProperty,
 
       accessibleParagraph: CircuitConstructionKitCommonFluent.a11y.voltmeterNode.accessibleParagraphStringProperty
 

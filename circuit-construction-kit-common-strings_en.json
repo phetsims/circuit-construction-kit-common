@@ -840,6 +840,9 @@
       "accessibleHeading": {
         "value": "Voltmeter"
       },
+      "accessibleHeadingNumbered": {
+        "value": "Voltmeter { $position } of { $total }"
+      },
       "accessibleParagraph": {
         "value": "Use the voltmeter probes to measure voltage between two points in the circuit."
       },
