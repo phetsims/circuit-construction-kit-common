@@ -148,6 +148,11 @@ export default abstract class CircuitElement extends PhetioObject {
 
   public readonly focusEmitter = new Emitter();
 
+  /**
+   * Whether this circuit element is currently being dragged via keyboard arrow keys.
+   * When true, normal connectivity rules are suspended to prevent unwanted connections
+   * of elements being dragged "in tow". Set by keyboard listeners in view/input/.
+   */
   public isKeyboardDragging = false;
 
   // Track whether the user has activated the circuit element via keyboard (space/enter), to hide the grab cue after first use

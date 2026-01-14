@@ -76,7 +76,9 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
   private readonly updateHighlightVisibility: ( ( circuitElement: CircuitElement | Vertex | null ) => void ) | null;
   private readonly updateFireMultilink: UnknownMultilink | null;
   private readonly keyboardListener: FixedCircuitElementKeyboardListener | null;
-  protected readonly myFocusHighlight: FixedCircuitElementHighlightNode | null = null;
+
+  // Focus highlight for the circuit element body, updated when the element transforms
+  protected readonly bodyFocusHighlight: FixedCircuitElementHighlightNode | null = null;
 
   /**
    * @param screenView - the main screen view, null for isIcon
@@ -141,8 +143,8 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
       // Update the highlight bounds after it is created
       this.viewPropertyListener( viewTypeProperty.value );
 
-      this.myFocusHighlight = new FixedCircuitElementHighlightNode( this, HighlightPath.INNER_FOCUS_COLOR, 6 );
-      this.focusHighlight = this.myFocusHighlight;
+      this.bodyFocusHighlight = new FixedCircuitElementHighlightNode( this, HighlightPath.INNER_FOCUS_COLOR, 6 );
+      this.focusHighlight = this.bodyFocusHighlight;
 
       // Interactive highlight for mouse/touch hover feedback
       this.setInteractiveHighlight( new HighlightFromNode( this.contentNode ) );
@@ -242,7 +244,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
     // Update the dimensions of the highlight.  For Switches, retain the original bounds (big enough to encapsulate
     // both schematic and lifelike open and closed).
     ( this.circuitElement.isSizeChangedOnViewChange && this.highlightNode ) && this.highlightNode.recomputeBounds( this );
-    ( this.circuitElement.isSizeChangedOnViewChange && this.myFocusHighlight ) && this.myFocusHighlight.recomputeBounds( this );
+    ( this.circuitElement.isSizeChangedOnViewChange && this.bodyFocusHighlight ) && this.bodyFocusHighlight.recomputeBounds( this );
   }
 
   /**
@@ -276,8 +278,8 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
       this.highlightNode.setMatrix( matrix );
     }
 
-    if ( this.myFocusHighlight ) {
-      this.myFocusHighlight.setMatrix( matrix );
+    if ( this.bodyFocusHighlight ) {
+      this.bodyFocusHighlight.setMatrix( matrix );
     }
 
     // Update the fire transform

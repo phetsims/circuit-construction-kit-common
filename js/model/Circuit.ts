@@ -161,9 +161,24 @@ export default class Circuit extends PhetioObject {
   private readonly groups: PhetioGroup<IntentionalAny, IntentionalAny>[];
   public readonly includeACElements: boolean;
   public readonly includeLabElements: boolean;
+
+  /**
+   * Emits when two vertices are connected together after a circuit element is moved/dropped.
+   * Used by CircuitNode to capture state before circuit solves for accessibility announcements.
+   * @param targetVertex - The vertex being connected to
+   * @param oldVertex - The vertex that was disconnected
+   * @param oldVertexElements - Circuit elements that were connected to the old vertex
+   */
   public readonly vertexConnectedEmitter: TEmitter<[ Vertex, Vertex, CircuitElement[] ]> = new Emitter( {
     parameters: [ { valueType: Vertex }, { valueType: Vertex }, { isValidValue: Array.isArray } ]
   } );
+
+  /**
+   * Emits when a vertex is being disconnected/split from circuit elements.
+   * Used to move vertices in bounds after cut operations and generate accessibility announcements.
+   * @param circuitElements - The neighboring elements that were connected to the vertex
+   * @param splitVertex - The vertex being disconnected
+   */
   public readonly vertexDisconnectedEmitter: TEmitter<[ CircuitElement[], Vertex ]> = new Emitter( {
     parameters: [ {
       name: 'circuitElements',
@@ -172,6 +187,12 @@ export default class Circuit extends PhetioObject {
       valueType: Vertex
     } ]
   } );
+
+  /**
+   * Broadcasts accessibility announcement strings to be read aloud by screen readers.
+   * Used for announcing battery reversals, value changes, and other circuit manipulations.
+   * @param announcement - The string to be announced
+   */
   public readonly circuitContextAnnouncementEmitter: TEmitter<[ string ]> = new Emitter( {
     parameters: [ {
       name: 'announcement',
@@ -185,7 +206,17 @@ export default class Circuit extends PhetioObject {
   // Whether any circuit element has current flowing through it, updated in step(), used for description
   public readonly hasCurrentFlowingProperty: BooleanProperty;
 
+  /**
+   * Emits when the PDOM circuit description needs to be updated.
+   * Triggers CircuitNode.updateCircuitDescription() to refresh accessibility state.
+   */
   public readonly descriptionChangeEmitter = new Emitter();
+
+  /**
+   * Counter tracking when a disconnect operation is in progress. Incremented by CCKCDisconnectButton
+   * when starting a disconnect, decremented when complete. Prevents selection clearing in addCircuitElement()
+   * during programmatic disconnect operations.
+   */
   public disconnecting = 0;
 
   public constructor( viewTypeProperty: Property<CircuitElementViewType>, addRealBulbsProperty: Property<boolean>, tandem: Tandem,
@@ -1247,6 +1278,8 @@ export default class Circuit extends PhetioObject {
    * A SeriesAmmeter shows a reading when both its start and end vertices are connected to other circuit elements.
    */
   private updateSeriesAmmeterReadouts(): void {
+
+    // Skip if series ammeters are not enabled for this circuit
     if ( !this.seriesAmmeterGroup ) {
       return;
     }

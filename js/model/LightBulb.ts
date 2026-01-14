@@ -56,10 +56,6 @@ const SCHEMATIC_SAMPLE_POINTS = [
   new Vector2( 0.89, 1.474 )                                            // bottom right
 ];
 
-// Constants for brightness calculation
-const BRIGHTNESS_MULTIPLIER = 0.35;
-const BRIGHTNESS_MAXIMUM_POWER = 2000;
-
 type SelfOptions = {
   isExtreme?: boolean;
   isReal?: boolean;
@@ -254,10 +250,12 @@ export default class LightBulb extends FixedCircuitElement {
 
   public static readonly REAL_BULB_COLD_RESISTANCE = 10;
 
-  // Brightness thresholds for categorizing light bulb state
-  public static readonly BRIGHTNESS_OFF_THRESHOLD = 0.05;
-  public static readonly BRIGHTNESS_DIM_THRESHOLD = 0.4;
-  public static readonly BRIGHTNESS_STEADY_THRESHOLD = 0.75;
+// Constants for brightness calculation
+  private static readonly BRIGHTNESS_MULTIPLIER = 0.35;
+  private static readonly BRIGHTNESS_MAXIMUM_POWER = 2000;
+
+  // Brightness thresholds for categorizing light bulb state - less than 1% rounded down
+  public static readonly BRIGHTNESS_OFF_THRESHOLD = 0.006;
 
   /**
    * Computes the brightness of a light bulb from its current and resistance.
@@ -267,8 +265,8 @@ export default class LightBulb extends FixedCircuitElement {
     const current = lightBulb.currentProperty.value;
     const resistance = lightBulb.resistanceProperty.value;
     const power = Math.abs( current * current * resistance );
-    const numerator = Math.log( 1 + power * BRIGHTNESS_MULTIPLIER );
-    const denominator = Math.log( 1 + BRIGHTNESS_MAXIMUM_POWER * BRIGHTNESS_MULTIPLIER );
+    const numerator = Math.log( 1 + power * LightBulb.BRIGHTNESS_MULTIPLIER );
+    const denominator = Math.log( 1 + LightBulb.BRIGHTNESS_MAXIMUM_POWER * LightBulb.BRIGHTNESS_MULTIPLIER );
     return clamp( denominator === 0 ? 0 : numerator / denominator, 0, 1 );
   }
 }
