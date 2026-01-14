@@ -836,6 +836,33 @@
         "value": "{ $currentNumber ->\n  [one] { $currentFormatted } amp\n *[other] { $currentFormatted } amps\n}"
       }
     },
+    "ammeterNode": {
+      "accessibleHeading": {
+        "value": "Non-Contact Ammeter"
+      },
+      "accessibleHeadingNumbered": {
+        "value": "Non-Contact Ammeter { $position } of { $total }"
+      },
+      "accessibleParagraph": {
+        "value": "Use the ammeter probe to measure current through a wire in the circuit."
+      },
+      "body": {
+        "accessibleName": {
+          "value": "Non-Contact Ammeter: { $reading }"
+        }
+      },
+      "probe": {
+        "accessibleName": {
+          "value": "Ammeter Probe"
+        }
+      },
+      "noReading": {
+        "value": "no reading"
+      },
+      "currentAmps": {
+        "value": "{ $current } amps"
+      }
+    },
     "voltmeterNode": {
       "accessibleHeading": {
         "value": "Voltmeter"

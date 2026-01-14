@@ -491,6 +491,16 @@ a11y:
                      [one] { $currentFormatted } amp
                     *[other] { $currentFormatted } amps
                    }
+  ammeterNode:
+    accessibleHeading:         Non-Contact Ammeter
+    accessibleHeadingNumbered: 'Non-Contact Ammeter { $position } of { $total }'
+    accessibleParagraph:       Use the ammeter probe to measure current through a wire in the circuit.
+    body:
+      accessibleName: 'Non-Contact Ammeter: { $reading }'
+    probe:
+      accessibleName: Ammeter Probe
+    noReading:                 no reading
+    currentAmps:               '{ $current } amps'
   voltmeterNode:
     accessibleHeading:         Voltmeter
     accessibleHeadingNumbered: 'Voltmeter { $position } of { $total }'

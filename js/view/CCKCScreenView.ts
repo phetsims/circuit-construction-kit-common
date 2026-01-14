@@ -176,7 +176,7 @@ export default class CCKCScreenView extends ScreenView {
     } );
 
     const ammeterNodes = model.ammeters.map( ammeter => {
-      const ammeterNode = new AmmeterNode( ammeter, this.circuitNode, {
+      const ammeterNode = new AmmeterNode( ammeter, model, this.circuitNode, {
         tandem: model.isShowNoncontactAmmeters ? meterNodesTandem.createTandem( `ammeterNode${ammeter.phetioIndex}` ) : Tandem.OPT_OUT,
         phetioFeatured: true,
         showResultsProperty: model.isValueDepictionEnabledProperty,

@@ -36,6 +36,7 @@ import CCKCUtils from '../CCKCUtils.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import type Ammeter from '../model/Ammeter.js';
+import type CircuitConstructionKitModel from '../model/CircuitConstructionKitModel.js';
 import ammeterReadoutTypeProperty from './ammeterReadoutTypeProperty.js';
 import type CircuitNode from './CircuitNode.js';
 import AmmeterProbeNodeAttachmentKeyboardListener from './input/AmmeterProbeNodeAttachmentKeyboardListener.js';
@@ -80,10 +81,32 @@ export default class AmmeterNode extends InteractiveHighlighting( Node ) {
 
   /**
    * @param ammeter
+   * @param model - the model, or null if rendering an icon
    * @param circuitNode - for getting the currents, or null if rendering an icon
    * @param [providedOptions]
    */
-  public constructor( ammeter: Ammeter, circuitNode: CircuitNode | null, providedOptions?: AmmeterNodeOptions ) {
+  public constructor( ammeter: Ammeter, model: CircuitConstructionKitModel | null, circuitNode: CircuitNode | null, providedOptions?: AmmeterNodeOptions ) {
+
+    // Create a dynamic heading that shows "Non-Contact Ammeter" when only one is active,
+    // or "Non-Contact Ammeter X of 2" when both are active
+    const numberedHeadingProperty = model ? CircuitConstructionKitCommonFluent.a11y.ammeterNode.accessibleHeadingNumbered.createProperty( {
+      position: ammeter.phetioIndex,
+      total: model.ammeters.length
+    } ) : null;
+
+    const accessibleHeadingProperty = model ? new DerivedStringProperty(
+      [
+        model.ammeters[ 0 ].isActiveProperty,
+        model.ammeters[ 1 ].isActiveProperty,
+        CircuitConstructionKitCommonFluent.a11y.ammeterNode.accessibleHeadingStringProperty,
+        numberedHeadingProperty!
+      ],
+      ( isActive0, isActive1, simpleHeading, numberedHeading ) => {
+        const activeCount = ( isActive0 ? 1 : 0 ) + ( isActive1 ? 1 : 0 );
+        return activeCount > 1 ? numberedHeading : simpleHeading;
+      }
+    ) : CircuitConstructionKitCommonFluent.a11y.ammeterNode.accessibleHeadingStringProperty;
+
     const options = optionize<AmmeterNodeOptions, SelfOptions, NodeOptions>()( {
 
       // true if it will be used as a toolbox icon
@@ -102,7 +125,13 @@ export default class AmmeterNode extends InteractiveHighlighting( Node ) {
 
       phetioVisiblePropertyInstrumented: false,
 
-      tandem: Tandem.REQUIRED
+      tandem: Tandem.REQUIRED,
+
+      tagName: providedOptions?.isIcon ? null : 'div',
+
+      accessibleHeading: accessibleHeadingProperty,
+
+      accessibleParagraph: CircuitConstructionKitCommonFluent.a11y.ammeterNode.accessibleParagraphStringProperty
     }, providedOptions );
     const tandem = options.tandem;
 
@@ -146,6 +175,19 @@ export default class AmmeterNode extends InteractiveHighlighting( Node ) {
         centerY: ammeterBody_png.height / 2 + 7 // adjust for the top notch design
       } );
 
+    // Create a property for the reading text (e.g., "1.5 amps" or "no reading")
+    const readingTextProperty = new DerivedStringProperty(
+      [
+        ammeter.currentProperty,
+        CircuitConstructionKitCommonFluent.a11y.ammeterNode.currentAmps.createProperty( {
+          current: currentReadoutProperty
+        } ),
+        CircuitConstructionKitCommonFluent.a11y.ammeterNode.noReadingStringProperty
+      ],
+      ( current, currentAmpsText, noReading ) =>
+        current === null ? noReading : currentAmpsText
+    );
+
     // Use InteractiveHighlightingImage for non-icons to get hover highlights on the body
     const bodyNode = options.isIcon ?
                      new Image( ammeterBody_png, {
@@ -156,7 +198,11 @@ export default class AmmeterNode extends InteractiveHighlighting( Node ) {
                      new InteractiveHighlightingImage( ammeterBody_png, {
                        scale: SCALE_FACTOR,
                        cursor: 'pointer',
-                       children: [ probeTextNode ]
+                       children: [ probeTextNode ],
+
+                       accessibleName: CircuitConstructionKitCommonFluent.a11y.ammeterNode.body.accessibleName.createProperty( { reading: readingTextProperty } ),
+                       focusable: true,
+                       ...AccessibleDraggableOptions
                      } );
 
     const probeOptions = {
@@ -175,7 +221,10 @@ export default class AmmeterNode extends InteractiveHighlighting( Node ) {
           fill: '#e79547' // Match the orange of the ammeter image
         } )
       ],
-      ...( options.isIcon ? {} : AccessibleDraggableOptions )
+      ...( options.isIcon ? {} : {
+        accessibleName: CircuitConstructionKitCommonFluent.a11y.ammeterNode.probe.accessibleNameStringProperty,
+        ...AccessibleDraggableOptions
+      } )
     };
 
     // Use InteractiveHighlightingProbeNode for non-icons to get hover highlights on the probe
