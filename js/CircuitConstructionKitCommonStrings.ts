@@ -265,13 +265,13 @@ type StringsType = {
     };
     'sensorToolbox': {
       'accessibleHeadingStringProperty': LocalizedStringProperty;
-      'ammeter': {
+      'nonContactAmmeter': {
         'accessibleNameStringProperty': LocalizedStringProperty;
       };
       'voltmeter': {
         'accessibleNameStringProperty': LocalizedStringProperty;
       };
-      'seriesAmmeter': {
+      'ammeter': {
         'accessibleNameStringProperty': LocalizedStringProperty;
       }
     };

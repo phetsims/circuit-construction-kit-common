@@ -672,9 +672,9 @@
       "accessibleHeading": {
         "value": "Sensor Toolbox"
       },
-      "ammeter": {
+      "nonContactAmmeter": {
         "accessibleName": {
-          "value": "Ammeter"
+          "value": "Non-Contact Ammeter"
         }
       },
       "voltmeter": {
@@ -682,9 +682,9 @@
           "value": "Voltmeter"
         }
       },
-      "seriesAmmeter": {
+      "ammeter": {
         "accessibleName": {
-          "value": "Series Ammeter"
+          "value": "Ammeter"
         }
       }
     },

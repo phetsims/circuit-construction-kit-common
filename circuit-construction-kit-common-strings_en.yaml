@@ -411,12 +411,12 @@ a11y:
     vertexDisconnectedNoChange: 'Disconnected.'
   sensorToolbox:
     accessibleHeading: Sensor Toolbox
-    ammeter:
-      accessibleName: Ammeter
+    nonContactAmmeter:
+      accessibleName: Non-Contact Ammeter
     voltmeter:
       accessibleName: Voltmeter
-    seriesAmmeter:
-      accessibleName: Series Ammeter
+    ammeter:
+      accessibleName: Ammeter
   circuitComponentToolbox:
     carousel:
       accessibleName:     Circuit Component Toolbox

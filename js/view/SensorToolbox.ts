@@ -237,7 +237,7 @@ export default class SensorToolbox extends CCKCPanel {
           phetioFeatured: true
         }
       } );
-    seriesAmmeterToolNode.accessibleName = CircuitConstructionKitCommonFluent.a11y.sensorToolbox.seriesAmmeter.accessibleNameStringProperty;
+    seriesAmmeterToolNode.accessibleName = CircuitConstructionKitCommonFluent.a11y.sensorToolbox.ammeter.accessibleNameStringProperty;
     const allSeriesAmmetersInPlayAreaProperty = new DerivedProperty( [ circuit.circuitElements.lengthProperty ], ( () => {
       return circuit.circuitElements.count( circuitElement => circuitElement instanceof SeriesAmmeter ) === MAX_SERIES_AMMETERS;
     } ) );
@@ -327,7 +327,7 @@ export default class SensorToolbox extends CCKCPanel {
 
     if ( options.showNoncontactAmmeters ) {
       const ammeterKeyboardListenerTarget = options.showSeriesAmmeters ? ammeterToolIcon : ammeterToolNode;
-      ammeterKeyboardListenerTarget.accessibleName = CircuitConstructionKitCommonFluent.a11y.sensorToolbox.ammeter.accessibleNameStringProperty;
+      ammeterKeyboardListenerTarget.accessibleName = CircuitConstructionKitCommonFluent.a11y.sensorToolbox.nonContactAmmeter.accessibleNameStringProperty;
       ammeterKeyboardListenerTarget.addInputListener( new KeyboardListener( {
         fireOnClick: true,
         fire: () => {
