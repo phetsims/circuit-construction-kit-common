@@ -250,7 +250,7 @@ export default class LightBulb extends FixedCircuitElement {
 
   public static readonly REAL_BULB_COLD_RESISTANCE = 10;
 
-// Constants for brightness calculation
+  // Constants for brightness calculation
   private static readonly BRIGHTNESS_MULTIPLIER = 0.35;
   private static readonly BRIGHTNESS_MAXIMUM_POWER = 2000;
 
