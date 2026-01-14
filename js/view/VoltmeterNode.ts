@@ -13,6 +13,7 @@ import DerivedStringProperty from '../../../axon/js/DerivedStringProperty.js';
 import Multilink from '../../../axon/js/Multilink.js';
 import type ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
 import type Bounds2 from '../../../dot/js/Bounds2.js';
+import { toFixed } from '../../../dot/js/util/toFixed.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
 import optionize from '../../../phet-core/js/optionize.js';
@@ -196,11 +197,21 @@ export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
         centerY: voltmeterBody_png[ 0 ].height / 2
       } );
 
-    // Create a property for the reading text (e.g., "9.0 volts" or "no reading")
+    // Create a property for the reading text (e.g., "9.00 volts" or "no reading")
+    // Format the voltage value directly to avoid including the unit symbol from CCKCUtils.createVoltageReadout
     const readingTextProperty = new DerivedStringProperty(
-      [ voltmeter.voltageProperty, CircuitConstructionKitCommonFluent.voltageVoltsValuePatternStringProperty, CircuitConstructionKitCommonFluent.a11y.voltmeterNode.noReadingStringProperty ],
-      ( voltage, voltagePattern, noReading ) =>
-        voltage === null ? noReading : voltagePattern.replace( '{{voltage}}', CCKCUtils.createVoltageReadout( voltage ) )
+      [
+        voltmeter.voltageProperty,
+        CircuitConstructionKitCommonFluent.a11y.voltmeterNode.voltageVolts.createProperty( {
+          voltage: new DerivedStringProperty(
+            [ voltmeter.voltageProperty ],
+            voltage => voltage === null ? '' : toFixed( voltage, 2 )
+          )
+        } ),
+        CircuitConstructionKitCommonFluent.a11y.voltmeterNode.noReadingStringProperty
+      ],
+      ( voltage, voltageVoltsText, noReading ) =>
+        voltage === null ? noReading : voltageVoltsText
     );
 
     // Use InteractiveHighlightingImage for non-icons to get hover highlights on the body

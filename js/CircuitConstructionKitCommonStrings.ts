@@ -383,6 +383,7 @@ type StringsType = {
         'accessibleNameStringProperty': LocalizedStringProperty;
       };
       'noReadingStringProperty': LocalizedStringProperty;
+      'voltageVoltsStringProperty': LocalizedStringProperty;
     };
     'circuitComponent': {
       'separatorStringProperty': LocalizedStringProperty;

@@ -279,6 +279,7 @@ addToMapIfDefined( 'a11y_voltmeterNode_body_accessibleName', 'a11y.voltmeterNode
 addToMapIfDefined( 'a11y_voltmeterNode_blackProbe_accessibleName', 'a11y.voltmeterNode.blackProbe.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_voltmeterNode_redProbe_accessibleName', 'a11y.voltmeterNode.redProbe.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_voltmeterNode_noReading', 'a11y.voltmeterNode.noReadingStringProperty' );
+addToMapIfDefined( 'a11y_voltmeterNode_voltageVolts', 'a11y.voltmeterNode.voltageVoltsStringProperty' );
 addToMapIfDefined( 'a11y_circuitComponent_separator', 'a11y.circuitComponent.separatorStringProperty' );
 addToMapIfDefined( 'a11y_circuitComponent_nameWithPosition', 'a11y.circuitComponent.nameWithPositionStringProperty' );
 addToMapIfDefined( 'a11y_circuitComponent_values_resistanceOhms', 'a11y.circuitComponent.values.resistanceOhmsStringProperty' );
@@ -717,7 +718,8 @@ const CircuitConstructionKitCommonFluent = {
       redProbe: {
         accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_voltmeterNode_redProbe_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.voltmeterNode.redProbe.accessibleNameStringProperty' ) )
       },
-      noReadingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_voltmeterNode_noReading', _.get( CircuitConstructionKitCommonStrings, 'a11y.voltmeterNode.noReadingStringProperty' ) )
+      noReadingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_voltmeterNode_noReading', _.get( CircuitConstructionKitCommonStrings, 'a11y.voltmeterNode.noReadingStringProperty' ) ),
+      voltageVolts: new FluentPattern<{ voltage: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_voltmeterNode_voltageVolts', _.get( CircuitConstructionKitCommonStrings, 'a11y.voltmeterNode.voltageVoltsStringProperty' ), [{"name":"voltage"}] )
     },
     circuitComponent: {
       _comment_0: new FluentComment( {"comment":"Composable parts for building accessible names (DRY pattern)","associatedKey":"separator"} ),

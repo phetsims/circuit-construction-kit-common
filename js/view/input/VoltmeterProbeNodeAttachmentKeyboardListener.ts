@@ -6,10 +6,10 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import { toFixed } from '../../../../dot/js/util/toFixed.js';
 import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import type Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
-import CCKCUtils from '../../CCKCUtils.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../../CircuitConstructionKitCommonFluent.js';
 import Vertex from '../../model/Vertex.js';
@@ -58,9 +58,9 @@ export default class VoltmeterProbeNodeAttachmentKeyboardListener extends Attach
         const voltage = voltmeter.voltageProperty.value;
         const contextResponse = voltage === null ?
                                 CircuitConstructionKitCommonFluent.a11y.voltmeterNode.noReadingStringProperty :
-                                CircuitConstructionKitCommonFluent.voltageVoltsValuePatternStringProperty.value.replace(
-                                  '{{voltage}}', CCKCUtils.createVoltageReadout( voltage )
-                                );
+                                CircuitConstructionKitCommonFluent.a11y.voltmeterNode.voltageVolts.format( {
+                                  voltage: toFixed( voltage, 2 )
+                                } );
         probeNode.addAccessibleContextResponse( contextResponse );
       }
     } );

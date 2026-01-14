@@ -893,6 +893,9 @@
       },
       "noReading": {
         "value": "no reading"
+      },
+      "voltageVolts": {
+        "value": "{ $voltage } volts"
       }
     },
     "circuitComponent": {

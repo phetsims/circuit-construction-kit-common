@@ -513,6 +513,7 @@ a11y:
     redProbe:
       accessibleName: Red Probe
     noReading:                 no reading
+    voltageVolts:              '{ $voltage } volts'
   circuitComponent:
     # Composable parts for building accessible names (DRY pattern)
     # These are assembled in CircuitDescription.ts
