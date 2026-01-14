@@ -12,6 +12,7 @@ import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import DerivedStringProperty from '../../../axon/js/DerivedStringProperty.js';
 import type Property from '../../../axon/js/Property.js';
 import type Bounds2 from '../../../dot/js/Bounds2.js';
+import { toFixed } from '../../../dot/js/util/toFixed.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
 import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
@@ -21,13 +22,13 @@ import ProbeNode from '../../../scenery-phet/js/ProbeNode.js';
 import SoundKeyboardDragListener from '../../../scenery-phet/js/SoundKeyboardDragListener.js';
 import WireNode from '../../../scenery-phet/js/WireNode.js';
 import HighlightFromNode from '../../../scenery/js/accessibility/HighlightFromNode.js';
+import ParallelDOM from '../../../scenery/js/accessibility/pdom/ParallelDOM.js';
 import InteractiveHighlighting from '../../../scenery/js/accessibility/voicing/InteractiveHighlighting.js';
 import DragListener from '../../../scenery/js/listeners/DragListener.js';
 import { type PressListenerEvent } from '../../../scenery/js/listeners/PressListener.js';
 import Image from '../../../scenery/js/nodes/Image.js';
 import Node, { type NodeOptions } from '../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
-import ParallelDOM from '../../../scenery/js/accessibility/pdom/ParallelDOM.js';
 import Color from '../../../scenery/js/util/Color.js';
 import sharedSoundPlayers from '../../../tambo/js/sharedSoundPlayers.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -176,12 +177,14 @@ export default class AmmeterNode extends InteractiveHighlighting( Node ) {
         centerY: ammeterBody_png.height / 2 + 7 // adjust for the top notch design
       } );
 
-    // Create a property for the reading text (e.g., "1.5 amps" or "no reading")
+    // Create a property for the reading text (e.g., "0.00 amps" or "no reading")
+    // Format the current value directly to avoid including the unit symbol from currentReadoutProperty
     const readingTextProperty = new DerivedStringProperty(
       [
         ammeter.currentProperty,
         CircuitConstructionKitCommonFluent.a11y.ammeterNode.currentAmps.createProperty( {
-          current: currentReadoutProperty
+          current: new DerivedStringProperty( [ ammeter.currentProperty ], current => current === null ? '' : toFixed( Math.abs( current ), 2 )
+          )
         } ),
         CircuitConstructionKitCommonFluent.a11y.ammeterNode.noReadingStringProperty
       ],
