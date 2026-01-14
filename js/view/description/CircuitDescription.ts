@@ -27,7 +27,9 @@ import Resistor from '../../model/Resistor.js';
 import Switch from '../../model/Switch.js';
 import Vertex from '../../model/Vertex.js';
 import VoltageSource from '../../model/VoltageSource.js';
+import AmmeterNode from '../AmmeterNode.js';
 import CircuitNode from '../CircuitNode.js';
+import VoltmeterNode from '../VoltmeterNode.js';
 import CircuitGroupDescription from './CircuitGroupDescription.js';
 
 // Track properties for each circuit element so we can dispose them when updating
@@ -583,9 +585,20 @@ export default class CircuitDescription {
     circuitNode.constructionAreaContainer.accessibleParagraphBehavior = ParallelDOM.HELP_TEXT_BEFORE_CONTENT;
     circuitNode.constructionAreaContainer.accessibleParagraph = CircuitConstructionKitCommonFluent.a11y.circuitDescription.emptyConstructionAreaMessageStringProperty.value;
 
+    // Get sensors from sensorLayer (voltmeters before ammeters)
+    const voltmeterNodes = circuitNode.sensorLayer.children.filter( child => child instanceof VoltmeterNode );
+    const ammeterNodes = circuitNode.sensorLayer.children.filter( child => child instanceof AmmeterNode );
+
     if ( !hasElements ) {
 
       circuitNode.unconnectedCircuitElementsSection.visible = false;
+
+      // Even with no circuit elements, sensors should still be in Construction Area
+      circuitNode.constructionAreaContainer.pdomOrder = [
+        circuitNode.constructionAreaStatusNode,
+        ...voltmeterNodes,
+        ...ammeterNodes
+      ];
     }
     else {
 
@@ -637,10 +650,13 @@ export default class CircuitDescription {
       } );
       this.myGroupNodes = groupNodes;
 
+      // Add sensors to PDOM order (voltmeters before ammeters)
+      constructionAreaPDOMOrder.push( ...voltmeterNodes, ...ammeterNodes );
+
       circuitNode.constructionAreaContainer.pdomOrder = constructionAreaPDOMOrder;
     }
 
-    // Build main PDOM order
+    // Build main PDOM order (only constructionAreaContainer, sensorLayer children are handled above)
     pdomOrder.push( circuitNode.constructionAreaContainer );
 
     // Set the final PDOM order
