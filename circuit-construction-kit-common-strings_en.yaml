@@ -410,8 +410,8 @@ a11y:
     vertexDisconnected:         'Disconnected. { $currentPhrase }'
     vertexDisconnectedNoChange: 'Disconnected.'
   sensorToolbox:
-    accessibleHeading:    Sensor Toolbox
-    accessibleHelpText:   Drag a voltmeter or ammeter from the toolbox to measure voltage or current in your circuit.
+    accessibleHeading:  Sensor Toolbox
+    accessibleHelpText: Use a voltmeter or ammeter from the toolbox to measure voltage or current in your circuit.
     nonContactAmmeter:
       accessibleName: Non-Contact Ammeter
     voltmeter:
@@ -495,7 +495,7 @@ a11y:
   ammeterNode:
     accessibleHeading:         Non-Contact Ammeter
     accessibleHeadingNumbered: 'Non-Contact Ammeter { $position } of { $total }'
-    accessibleHelpText:        Use the ammeter probe to measure current through a wire in the circuit.
+    accessibleHelpText:        Measure current in the circuit.
     body:
       accessibleName: 'Non-Contact Ammeter: { $reading }'
     probe:
@@ -505,7 +505,7 @@ a11y:
   voltmeterNode:
     accessibleHeading:         Voltmeter
     accessibleHeadingNumbered: 'Voltmeter { $position } of { $total }'
-    accessibleHelpText:        Use the voltmeter probes to measure voltage between two points in the circuit.
+    accessibleHelpText:        Measure voltage between two points in the circuit.
     body:
       accessibleName: 'Voltmeter: { $reading }'
     blackProbe:

@@ -673,7 +673,7 @@
         "value": "Sensor Toolbox"
       },
       "accessibleHelpText": {
-        "value": "Drag a voltmeter or ammeter from the toolbox to measure voltage or current in your circuit."
+        "value": "Use a voltmeter or ammeter from the toolbox to measure voltage or current in your circuit."
       },
       "nonContactAmmeter": {
         "accessibleName": {
@@ -847,7 +847,7 @@
         "value": "Non-Contact Ammeter { $position } of { $total }"
       },
       "accessibleHelpText": {
-        "value": "Use the ammeter probe to measure current through a wire in the circuit."
+        "value": "Measure current in the circuit."
       },
       "body": {
         "accessibleName": {
@@ -874,7 +874,7 @@
         "value": "Voltmeter { $position } of { $total }"
       },
       "accessibleHelpText": {
-        "value": "Use the voltmeter probes to measure voltage between two points in the circuit."
+        "value": "Measure voltage between two points in the circuit."
       },
       "body": {
         "accessibleName": {
