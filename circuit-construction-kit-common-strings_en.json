@@ -836,6 +836,29 @@
         "value": "{ $currentNumber ->\n  [one] { $currentFormatted } amp\n *[other] { $currentFormatted } amps\n}"
       }
     },
+    "voltmeterNode": {
+      "accessibleHeading": {
+        "value": "Voltmeter"
+      },
+      "accessibleParagraph": {
+        "value": "Use the voltmeter probes to measure voltage between two points in the circuit."
+      },
+      "body": {
+        "accessibleName": {
+          "value": "Voltmeter: no reading"
+        }
+      },
+      "blackProbe": {
+        "accessibleName": {
+          "value": "Black Probe"
+        }
+      },
+      "redProbe": {
+        "accessibleName": {
+          "value": "Red Probe"
+        }
+      }
+    },
     "circuitComponent": {
       "separator": {
         "value": ", "

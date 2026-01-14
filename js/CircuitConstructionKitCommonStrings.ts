@@ -355,6 +355,19 @@ type StringsType = {
     'fuseCurrentRatingControl': {
       'ariaValueTextStringProperty': LocalizedStringProperty;
     };
+    'voltmeterNode': {
+      'accessibleHeadingStringProperty': LocalizedStringProperty;
+      'accessibleParagraphStringProperty': LocalizedStringProperty;
+      'body': {
+        'accessibleNameStringProperty': LocalizedStringProperty;
+      };
+      'blackProbe': {
+        'accessibleNameStringProperty': LocalizedStringProperty;
+      };
+      'redProbe': {
+        'accessibleNameStringProperty': LocalizedStringProperty;
+      }
+    };
     'circuitComponent': {
       'separatorStringProperty': LocalizedStringProperty;
       'nameWithPositionStringProperty': LocalizedStringProperty;

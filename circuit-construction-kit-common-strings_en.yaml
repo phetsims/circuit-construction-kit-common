@@ -491,6 +491,15 @@ a11y:
                      [one] { $currentFormatted } amp
                     *[other] { $currentFormatted } amps
                    }
+  voltmeterNode:
+    accessibleHeading:   Voltmeter
+    accessibleParagraph: Use the voltmeter probes to measure voltage between two points in the circuit.
+    body:
+      accessibleName: 'Voltmeter: no reading'
+    blackProbe:
+      accessibleName: Black Probe
+    redProbe:
+      accessibleName: Red Probe
   circuitComponent:
     # Composable parts for building accessible names (DRY pattern)
     # These are assembled in CircuitDescription.ts

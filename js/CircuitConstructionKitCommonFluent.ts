@@ -264,6 +264,11 @@ addToMapIfDefined( 'a11y_fuseRepairButton_accessibleName', 'a11y.fuseRepairButto
 addToMapIfDefined( 'a11y_sourceResistanceControl_ariaValueText', 'a11y.sourceResistanceControl.ariaValueTextStringProperty' );
 addToMapIfDefined( 'a11y_wireResistivityControl_ariaValueText', 'a11y.wireResistivityControl.ariaValueTextStringProperty' );
 addToMapIfDefined( 'a11y_fuseCurrentRatingControl_ariaValueText', 'a11y.fuseCurrentRatingControl.ariaValueTextStringProperty' );
+addToMapIfDefined( 'a11y_voltmeterNode_accessibleHeading', 'a11y.voltmeterNode.accessibleHeadingStringProperty' );
+addToMapIfDefined( 'a11y_voltmeterNode_accessibleParagraph', 'a11y.voltmeterNode.accessibleParagraphStringProperty' );
+addToMapIfDefined( 'a11y_voltmeterNode_body_accessibleName', 'a11y.voltmeterNode.body.accessibleNameStringProperty' );
+addToMapIfDefined( 'a11y_voltmeterNode_blackProbe_accessibleName', 'a11y.voltmeterNode.blackProbe.accessibleNameStringProperty' );
+addToMapIfDefined( 'a11y_voltmeterNode_redProbe_accessibleName', 'a11y.voltmeterNode.redProbe.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_circuitComponent_separator', 'a11y.circuitComponent.separatorStringProperty' );
 addToMapIfDefined( 'a11y_circuitComponent_nameWithPosition', 'a11y.circuitComponent.nameWithPositionStringProperty' );
 addToMapIfDefined( 'a11y_circuitComponent_values_resistanceOhms', 'a11y.circuitComponent.values.resistanceOhmsStringProperty' );
@@ -674,6 +679,19 @@ const CircuitConstructionKitCommonFluent = {
     },
     fuseCurrentRatingControl: {
       ariaValueText: new FluentPattern<{ currentFormatted: FluentVariable, currentNumber: number | 'one' | number | 'other' | TReadOnlyProperty<number | 'one' | number | 'other'> }>( fluentSupport.bundleProperty, 'a11y_fuseCurrentRatingControl_ariaValueText', _.get( CircuitConstructionKitCommonStrings, 'a11y.fuseCurrentRatingControl.ariaValueTextStringProperty' ), [{"name":"currentFormatted"},{"name":"currentNumber","variants":[{"type":"number","value":"one"},{"type":"number","value":"other"}]}] )
+    },
+    voltmeterNode: {
+      accessibleHeadingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_voltmeterNode_accessibleHeading', _.get( CircuitConstructionKitCommonStrings, 'a11y.voltmeterNode.accessibleHeadingStringProperty' ) ),
+      accessibleParagraphStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_voltmeterNode_accessibleParagraph', _.get( CircuitConstructionKitCommonStrings, 'a11y.voltmeterNode.accessibleParagraphStringProperty' ) ),
+      body: {
+        accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_voltmeterNode_body_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.voltmeterNode.body.accessibleNameStringProperty' ) )
+      },
+      blackProbe: {
+        accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_voltmeterNode_blackProbe_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.voltmeterNode.blackProbe.accessibleNameStringProperty' ) )
+      },
+      redProbe: {
+        accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_voltmeterNode_redProbe_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.voltmeterNode.redProbe.accessibleNameStringProperty' ) )
+      }
     },
     circuitComponent: {
       _comment_0: new FluentComment( {"comment":"Composable parts for building accessible names (DRY pattern)","associatedKey":"separator"} ),

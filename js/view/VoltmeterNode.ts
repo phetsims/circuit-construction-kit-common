@@ -112,11 +112,9 @@ export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
 
       tagName: isIcon ? null : 'div',
 
-      // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/1161 move to yaml file
-      accessibleHeading: 'My Voltmeter',
+      accessibleHeading: CircuitConstructionKitCommonFluent.a11y.voltmeterNode.accessibleHeadingStringProperty,
 
-      // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/1161 move to yaml file
-      accessibleParagraph: 'Voltmeter Accessible Paragraph'
+      accessibleParagraph: CircuitConstructionKitCommonFluent.a11y.voltmeterNode.accessibleParagraphStringProperty
 
     }, providedOptions );
 
@@ -124,7 +122,7 @@ export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
      * Creates a probe node with the specified configuration. Uses InteractiveHighlightingRectangle for
      * non-icons to support mouse/touch hover highlights.
      */
-    const createProbeNode = ( color: Color, image: ImageableImage, rotation: number, imageX: number, imageY: number, accessibleName: string ): Rectangle | InteractiveHighlightingRectangle => {
+    const createProbeNode = ( color: Color, image: ImageableImage, rotation: number, imageX: number, imageY: number, accessibleName: ReadOnlyProperty<string> ): Rectangle | InteractiveHighlightingRectangle => {
       const options = {
         fill: CCKCQueryParameters.showVoltmeterSamplePoints ? color : null,
         cursor: 'pointer',
@@ -150,11 +148,9 @@ export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
       }
     };
 
-    // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/1161 move to yaml file
-    const blackProbeNode = createProbeNode( Color.BLACK, probeBlack_png, PROBE_ANGLE, -9.5, -5, 'Black Probe' );
+    const blackProbeNode = createProbeNode( Color.BLACK, probeBlack_png, PROBE_ANGLE, -9.5, -5, CircuitConstructionKitCommonFluent.a11y.voltmeterNode.blackProbe.accessibleNameStringProperty );
 
-    // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/1161 move to yaml file
-    const redProbeNode = createProbeNode( Color.RED, probeRed_png, -PROBE_ANGLE, -11, +4, 'Red Probe' );
+    const redProbeNode = createProbeNode( Color.RED, probeRed_png, -PROBE_ANGLE, -11, +4, CircuitConstructionKitCommonFluent.a11y.voltmeterNode.redProbe.accessibleNameStringProperty );
 
     // Displays the voltage reading
     const voltageReadoutProperty = new DerivedStringProperty( [
@@ -189,8 +185,7 @@ export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
                        cursor: 'pointer',
                        children: [ probeTextNode ],
 
-                       // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/1161 move to yaml file
-                       accessibleName: 'Voltmeter: no reading',
+                       accessibleName: CircuitConstructionKitCommonFluent.a11y.voltmeterNode.body.accessibleNameStringProperty,
                        focusable: true,
                        ...AccessibleDraggableOptions
                      } );
