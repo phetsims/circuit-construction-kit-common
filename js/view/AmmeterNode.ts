@@ -27,6 +27,7 @@ import { type PressListenerEvent } from '../../../scenery/js/listeners/PressList
 import Image from '../../../scenery/js/nodes/Image.js';
 import Node, { type NodeOptions } from '../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
+import ParallelDOM from '../../../scenery/js/accessibility/pdom/ParallelDOM.js';
 import Color from '../../../scenery/js/util/Color.js';
 import sharedSoundPlayers from '../../../tambo/js/sharedSoundPlayers.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -131,7 +132,8 @@ export default class AmmeterNode extends InteractiveHighlighting( Node ) {
 
       accessibleHeading: accessibleHeadingProperty,
 
-      accessibleParagraph: CircuitConstructionKitCommonFluent.a11y.ammeterNode.accessibleParagraphStringProperty
+      accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.ammeterNode.accessibleHelpTextStringProperty,
+      accessibleHelpTextBehavior: ParallelDOM.HELP_TEXT_BEFORE_CONTENT
     }, providedOptions );
     const tandem = options.tandem;
 

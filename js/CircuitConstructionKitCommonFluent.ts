@@ -266,14 +266,14 @@ addToMapIfDefined( 'a11y_wireResistivityControl_ariaValueText', 'a11y.wireResist
 addToMapIfDefined( 'a11y_fuseCurrentRatingControl_ariaValueText', 'a11y.fuseCurrentRatingControl.ariaValueTextStringProperty' );
 addToMapIfDefined( 'a11y_ammeterNode_accessibleHeading', 'a11y.ammeterNode.accessibleHeadingStringProperty' );
 addToMapIfDefined( 'a11y_ammeterNode_accessibleHeadingNumbered', 'a11y.ammeterNode.accessibleHeadingNumberedStringProperty' );
-addToMapIfDefined( 'a11y_ammeterNode_accessibleParagraph', 'a11y.ammeterNode.accessibleParagraphStringProperty' );
+addToMapIfDefined( 'a11y_ammeterNode_accessibleHelpText', 'a11y.ammeterNode.accessibleHelpTextStringProperty' );
 addToMapIfDefined( 'a11y_ammeterNode_body_accessibleName', 'a11y.ammeterNode.body.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_ammeterNode_probe_accessibleName', 'a11y.ammeterNode.probe.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_ammeterNode_noReading', 'a11y.ammeterNode.noReadingStringProperty' );
 addToMapIfDefined( 'a11y_ammeterNode_currentAmps', 'a11y.ammeterNode.currentAmpsStringProperty' );
 addToMapIfDefined( 'a11y_voltmeterNode_accessibleHeading', 'a11y.voltmeterNode.accessibleHeadingStringProperty' );
 addToMapIfDefined( 'a11y_voltmeterNode_accessibleHeadingNumbered', 'a11y.voltmeterNode.accessibleHeadingNumberedStringProperty' );
-addToMapIfDefined( 'a11y_voltmeterNode_accessibleParagraph', 'a11y.voltmeterNode.accessibleParagraphStringProperty' );
+addToMapIfDefined( 'a11y_voltmeterNode_accessibleHelpText', 'a11y.voltmeterNode.accessibleHelpTextStringProperty' );
 addToMapIfDefined( 'a11y_voltmeterNode_body_accessibleName', 'a11y.voltmeterNode.body.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_voltmeterNode_blackProbe_accessibleName', 'a11y.voltmeterNode.blackProbe.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_voltmeterNode_redProbe_accessibleName', 'a11y.voltmeterNode.redProbe.accessibleNameStringProperty' );
@@ -692,7 +692,7 @@ const CircuitConstructionKitCommonFluent = {
     ammeterNode: {
       accessibleHeadingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_ammeterNode_accessibleHeading', _.get( CircuitConstructionKitCommonStrings, 'a11y.ammeterNode.accessibleHeadingStringProperty' ) ),
       accessibleHeadingNumbered: new FluentPattern<{ position: FluentVariable, total: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_ammeterNode_accessibleHeadingNumbered', _.get( CircuitConstructionKitCommonStrings, 'a11y.ammeterNode.accessibleHeadingNumberedStringProperty' ), [{"name":"position"},{"name":"total"}] ),
-      accessibleParagraphStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_ammeterNode_accessibleParagraph', _.get( CircuitConstructionKitCommonStrings, 'a11y.ammeterNode.accessibleParagraphStringProperty' ) ),
+      accessibleHelpTextStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_ammeterNode_accessibleHelpText', _.get( CircuitConstructionKitCommonStrings, 'a11y.ammeterNode.accessibleHelpTextStringProperty' ) ),
       body: {
         accessibleName: new FluentPattern<{ reading: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_ammeterNode_body_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.ammeterNode.body.accessibleNameStringProperty' ), [{"name":"reading"}] )
       },
@@ -705,7 +705,7 @@ const CircuitConstructionKitCommonFluent = {
     voltmeterNode: {
       accessibleHeadingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_voltmeterNode_accessibleHeading', _.get( CircuitConstructionKitCommonStrings, 'a11y.voltmeterNode.accessibleHeadingStringProperty' ) ),
       accessibleHeadingNumbered: new FluentPattern<{ position: FluentVariable, total: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_voltmeterNode_accessibleHeadingNumbered', _.get( CircuitConstructionKitCommonStrings, 'a11y.voltmeterNode.accessibleHeadingNumberedStringProperty' ), [{"name":"position"},{"name":"total"}] ),
-      accessibleParagraphStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_voltmeterNode_accessibleParagraph', _.get( CircuitConstructionKitCommonStrings, 'a11y.voltmeterNode.accessibleParagraphStringProperty' ) ),
+      accessibleHelpTextStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_voltmeterNode_accessibleHelpText', _.get( CircuitConstructionKitCommonStrings, 'a11y.voltmeterNode.accessibleHelpTextStringProperty' ) ),
       body: {
         accessibleName: new FluentPattern<{ reading: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_voltmeterNode_body_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.voltmeterNode.body.accessibleNameStringProperty' ), [{"name":"reading"}] )
       },

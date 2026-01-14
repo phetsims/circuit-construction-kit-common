@@ -358,7 +358,7 @@ type StringsType = {
     'ammeterNode': {
       'accessibleHeadingStringProperty': LocalizedStringProperty;
       'accessibleHeadingNumberedStringProperty': LocalizedStringProperty;
-      'accessibleParagraphStringProperty': LocalizedStringProperty;
+      'accessibleHelpTextStringProperty': LocalizedStringProperty;
       'body': {
         'accessibleNameStringProperty': LocalizedStringProperty;
       };
@@ -371,7 +371,7 @@ type StringsType = {
     'voltmeterNode': {
       'accessibleHeadingStringProperty': LocalizedStringProperty;
       'accessibleHeadingNumberedStringProperty': LocalizedStringProperty;
-      'accessibleParagraphStringProperty': LocalizedStringProperty;
+      'accessibleHelpTextStringProperty': LocalizedStringProperty;
       'body': {
         'accessibleNameStringProperty': LocalizedStringProperty;
       };

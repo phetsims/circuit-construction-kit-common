@@ -843,7 +843,7 @@
       "accessibleHeadingNumbered": {
         "value": "Non-Contact Ammeter { $position } of { $total }"
       },
-      "accessibleParagraph": {
+      "accessibleHelpText": {
         "value": "Use the ammeter probe to measure current through a wire in the circuit."
       },
       "body": {
@@ -870,7 +870,7 @@
       "accessibleHeadingNumbered": {
         "value": "Voltmeter { $position } of { $total }"
       },
-      "accessibleParagraph": {
+      "accessibleHelpText": {
         "value": "Use the voltmeter probes to measure voltage between two points in the circuit."
       },
       "body": {
