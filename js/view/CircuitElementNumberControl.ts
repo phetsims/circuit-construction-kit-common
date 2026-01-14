@@ -89,7 +89,7 @@ export default class CircuitElementNumberControl extends HBox {
       // when from mouse, round. HACK ALERT, see https://github.com/phetsims/circuit-construction-kit-common/issues/1103#issuecomment-3661150577
       if ( !event.isFromPDOM() ) {
 
-        valueProperty.value = roundToInterval( valueProperty.value, options.pointerRoundingInterval );
+        valueProperty.value = range.constrainValue( roundToInterval( valueProperty.value, options.pointerRoundingInterval ) );
       }
     };
 
