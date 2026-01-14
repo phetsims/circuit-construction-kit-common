@@ -845,7 +845,7 @@
       },
       "body": {
         "accessibleName": {
-          "value": "Voltmeter: no reading"
+          "value": "Voltmeter: { $reading }"
         }
       },
       "blackProbe": {
@@ -857,6 +857,9 @@
         "accessibleName": {
           "value": "Red Probe"
         }
+      },
+      "noReading": {
+        "value": "no reading"
       }
     },
     "circuitComponent": {

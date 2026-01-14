@@ -173,6 +173,13 @@ export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
         centerY: voltmeterBody_png[ 0 ].height / 2
       } );
 
+    // Create a property for the reading text (e.g., "9.0 volts" or "no reading")
+    const readingTextProperty = new DerivedStringProperty(
+      [ voltmeter.voltageProperty, CircuitConstructionKitCommonFluent.voltageVoltsValuePatternStringProperty, CircuitConstructionKitCommonFluent.a11y.voltmeterNode.noReadingStringProperty ],
+      ( voltage, voltagePattern, noReading ) =>
+        voltage === null ? noReading : voltagePattern.replace( '{{voltage}}', CCKCUtils.createVoltageReadout( voltage ) )
+    );
+
     // Use InteractiveHighlightingImage for non-icons to get hover highlights on the body
     const bodyNode = isIcon ?
                      new Image( voltmeterBody_png, {
@@ -185,7 +192,7 @@ export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
                        cursor: 'pointer',
                        children: [ probeTextNode ],
 
-                       accessibleName: CircuitConstructionKitCommonFluent.a11y.voltmeterNode.body.accessibleNameStringProperty,
+                       accessibleName: CircuitConstructionKitCommonFluent.a11y.voltmeterNode.body.accessibleName.createProperty( { reading: readingTextProperty } ),
                        focusable: true,
                        ...AccessibleDraggableOptions
                      } );

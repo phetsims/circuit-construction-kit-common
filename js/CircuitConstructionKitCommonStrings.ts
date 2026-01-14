@@ -366,7 +366,8 @@ type StringsType = {
       };
       'redProbe': {
         'accessibleNameStringProperty': LocalizedStringProperty;
-      }
+      };
+      'noReadingStringProperty': LocalizedStringProperty;
     };
     'circuitComponent': {
       'separatorStringProperty': LocalizedStringProperty;
