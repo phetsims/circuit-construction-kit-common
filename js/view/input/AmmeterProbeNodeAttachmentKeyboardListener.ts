@@ -22,45 +22,47 @@ export default class AmmeterProbeNodeAttachmentKeyboardListener extends Attachme
   public constructor( probeNode: Node, circuitNode: CircuitNode, probePositionProperty: TProperty<Vector2> ) {
     const circuit = circuitNode.circuit;
 
+    const getItems = () => {
+      const circuitElements = CircuitDescription.getOrderedCircuitElements( circuit );
+
+      return circuitElements.map( circuitElement => {
+        return {
+          value: circuitElement as CircuitElement | null,
+          createNode: () => {
+            const accessibleNameOrProperty = circuitNode.getCircuitElementNode( circuitElement ).accessibleName;
+
+            // Get the string value from either the property or directly
+            let displayText: string;
+            if ( typeof accessibleNameOrProperty === 'string' ) {
+              displayText = accessibleNameOrProperty;
+            }
+            else if ( accessibleNameOrProperty && typeof ( accessibleNameOrProperty as TReadOnlyProperty<string> ).value === 'string' ) {
+              displayText = ( accessibleNameOrProperty as TReadOnlyProperty<string> ).value;
+            }
+            else {
+              displayText = circuitElement.type;
+            }
+
+            // Remove "of N" pattern (e.g., "Battery 1 of 2" -> "Battery 1")
+            displayText = displayText.replace( / of \d+/g, '' );
+
+            // Add group prefix if the element is in a multi-element group
+            const groupIndex = CircuitDescription.getGroupIndex( circuit, circuitElement );
+            if ( groupIndex !== null ) {
+              const groupLabel = CircuitConstructionKitCommonFluent.a11y.circuitDescription.groupStringProperty.value;
+              displayText = `${groupLabel} ${groupIndex}, ${displayText}`;
+            }
+
+            return new Text( displayText );
+          }
+        };
+      } );
+    };
+
     super( {
       triggerNode: probeNode,
       circuitNode: circuitNode,
-      getItems: () => {
-        const circuitElements = CircuitDescription.getOrderedCircuitElements( circuit );
-
-        return circuitElements.map( circuitElement => {
-          return {
-            value: circuitElement as CircuitElement | null,
-            createNode: () => {
-              const accessibleNameOrProperty = circuitNode.getCircuitElementNode( circuitElement ).accessibleName;
-
-              // Get the string value from either the property or directly
-              let displayText: string;
-              if ( typeof accessibleNameOrProperty === 'string' ) {
-                displayText = accessibleNameOrProperty;
-              }
-              else if ( accessibleNameOrProperty && typeof ( accessibleNameOrProperty as TReadOnlyProperty<string> ).value === 'string' ) {
-                displayText = ( accessibleNameOrProperty as TReadOnlyProperty<string> ).value;
-              }
-              else {
-                displayText = circuitElement.type;
-              }
-
-              // Remove "of N" pattern (e.g., "Battery 1 of 2" -> "Battery 1")
-              displayText = displayText.replace( / of \d+/g, '' );
-
-              // Add group prefix if the element is in a multi-element group
-              const groupIndex = CircuitDescription.getGroupIndex( circuit, circuitElement );
-              if ( groupIndex !== null ) {
-                const groupLabel = CircuitConstructionKitCommonFluent.a11y.circuitDescription.groupStringProperty.value;
-                displayText = `${groupLabel} ${groupIndex}, ${displayText}`;
-              }
-
-              return new Text( displayText );
-            }
-          };
-        } );
-      },
+      getItems: getItems,
       getInitialPosition: () => probeNode.center.copy(),
       getHighlightPosition: selectedCircuitElement => selectedCircuitElement ?
                                                       Vector2.average( [
@@ -82,6 +84,18 @@ export default class AmmeterProbeNodeAttachmentKeyboardListener extends Attachme
       },
       onCancel: () => {
         circuitNode.hideProbeSelectionHighlight();
+      }
+    } );
+
+    // Change the accessible role description based on whether there are any attachment options
+    circuit.circuitChangedEmitter.addListener( () => {
+      const items = getItems();
+
+      if ( items.length === 0 ) {
+        probeNode.accessibleRoleDescription = 'movable';
+      }
+      else {
+        probeNode.accessibleRoleDescription = 'measurement options button';
       }
     } );
   }

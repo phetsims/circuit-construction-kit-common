@@ -206,6 +206,7 @@ export default class AmmeterNode extends InteractiveHighlighting( Node ) {
                        children: [ probeTextNode ],
 
                        accessibleName: CircuitConstructionKitCommonFluent.a11y.ammeterNode.body.accessibleName.createProperty( { reading: readingTextProperty } ),
+                       accessibleRoleDescription: 'movable',
                        focusable: true,
                        ...AccessibleDraggableOptions
                      } );

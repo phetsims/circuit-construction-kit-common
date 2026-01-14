@@ -20,19 +20,21 @@ export default class VoltmeterProbeNodeAttachmentKeyboardListener extends Attach
   public constructor( probeNode: Node, circuitNode: CircuitNode, probePositionProperty: Vector2Property ) {
     const circuit = circuitNode.circuit;
 
+    const getItems = () => {
+      const vertices = CircuitDescription.getOrderedVertices( circuit );
+
+      return vertices.map( vertex => {
+        return {
+          value: vertex as Vertex | null,
+          createNode: () => new Text( circuitNode.getVertexNode( vertex ).attachmentName )
+        };
+      } );
+    };
+
     super( {
       triggerNode: probeNode,
       circuitNode: circuitNode,
-      getItems: () => {
-        const vertices = CircuitDescription.getOrderedVertices( circuit );
-
-        return vertices.map( vertex => {
-          return {
-            value: vertex as Vertex | null,
-            createNode: () => new Text( circuitNode.getVertexNode( vertex ).attachmentName )
-          };
-        } );
-      },
+      getItems: getItems,
       getInitialPosition: () => probePositionProperty.value.copy(),
       getHighlightPosition: selectedVertex => selectedVertex ? selectedVertex.positionProperty.value : probePositionProperty.value,
       applySelection: ( _selection, targetPosition ) => {
@@ -46,6 +48,18 @@ export default class VoltmeterProbeNodeAttachmentKeyboardListener extends Attach
       },
       onCancel: () => {
         circuitNode.hideProbeSelectionHighlight();
+      }
+    } );
+
+    // Change the accessible role description based on whether there are any attachment options
+    circuit.circuitChangedEmitter.addListener( () => {
+      const items = getItems();
+
+      if ( items.length === 0 ) {
+        probeNode.accessibleRoleDescription = 'movable';
+      }
+      else {
+        probeNode.accessibleRoleDescription = 'measurement options button';
       }
     } );
   }

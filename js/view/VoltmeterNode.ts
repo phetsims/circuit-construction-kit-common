@@ -216,6 +216,7 @@ export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
                        children: [ probeTextNode ],
 
                        accessibleName: CircuitConstructionKitCommonFluent.a11y.voltmeterNode.body.accessibleName.createProperty( { reading: readingTextProperty } ),
+                       accessibleRoleDescription: 'movable',
                        focusable: true,
                        ...AccessibleDraggableOptions
                      } );
