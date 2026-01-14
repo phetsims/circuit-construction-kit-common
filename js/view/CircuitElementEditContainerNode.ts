@@ -13,14 +13,11 @@ import Property from '../../../axon/js/Property.js';
 import type Bounds2 from '../../../dot/js/Bounds2.js';
 import { roundToInterval } from '../../../dot/js/util/roundToInterval.js';
 import { toFixed } from '../../../dot/js/util/toFixed.js';
-import optionize, { type EmptySelfOptions } from '../../../phet-core/js/optionize.js';
-import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
+import optionize from '../../../phet-core/js/optionize.js';
 import AccessibleInteractiveOptions from '../../../scenery-phet/js/accessibility/AccessibleInteractiveOptions.js';
 import ParallelDOM from '../../../scenery/js/accessibility/pdom/ParallelDOM.js';
-import HBox from '../../../scenery/js/layout/nodes/HBox.js';
 import Node, { type NodeOptions } from '../../../scenery/js/nodes/Node.js';
 import Text from '../../../scenery/js/nodes/Text.js';
-import Panel from '../../../sun/js/Panel.js';
 import SunConstants from '../../../sun/js/SunConstants.js';
 import isSettingPhetioStateProperty from '../../../tandem/js/isSettingPhetioStateProperty.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -31,7 +28,6 @@ import CircuitDescriptionUtils from '../CircuitDescriptionUtils.js';
 import ACVoltage from '../model/ACVoltage.js';
 import Battery from '../model/Battery.js';
 import Capacitor from '../model/Capacitor.js';
-import type Circuit from '../model/Circuit.js';
 import CircuitElement from '../model/CircuitElement.js';
 import FixedCircuitElement from '../model/FixedCircuitElement.js';
 import Fuse from '../model/Fuse.js';
@@ -51,62 +47,20 @@ import CCKCTrashButton from './CCKCTrashButton.js';
 import CircuitElementNumberControl from './CircuitElementNumberControl.js';
 import CircuitNode from './CircuitNode.js';
 import ClearDynamicsButton from './ClearDynamicsButton.js';
+import createSingletonAdapterProperty, { type GConstructor } from './createSingletonAdapterProperty.js';
+import EditPanel from './EditPanel.js';
 import FuseRepairButton from './FuseRepairButton.js';
 import PhaseShiftControl from './PhaseShiftControl.js';
 import SwitchReadoutNode from './SwitchReadoutNode.js';
 import SwitchToggleButton from './SwitchToggleButton.js';
 import CircuitContextResponses from './description/CircuitContextResponses.js';
 
-const capacitanceStringProperty = CircuitConstructionKitCommonFluent.capacitanceStringProperty;
-const capacitanceUnitsStringProperty = CircuitConstructionKitCommonFluent.capacitanceUnitsStringProperty;
-const currentRatingStringProperty = CircuitConstructionKitCommonFluent.currentRatingStringProperty;
-const currentUnitsStringProperty = CircuitConstructionKitCommonFluent.currentUnitsStringProperty;
-const frequencyHzValuePatternStringProperty = CircuitConstructionKitCommonFluent.frequencyHzValuePatternStringProperty;
-const frequencyStringProperty = CircuitConstructionKitCommonFluent.frequencyStringProperty;
-const inductanceStringProperty = CircuitConstructionKitCommonFluent.inductanceStringProperty;
-const inductanceUnitsStringProperty = CircuitConstructionKitCommonFluent.inductanceUnitsStringProperty;
-const resistanceOhmsValuePatternStringProperty = CircuitConstructionKitCommonFluent.resistanceOhmsValuePatternStringProperty;
-const resistanceStringProperty = CircuitConstructionKitCommonFluent.resistanceStringProperty;
-const tapCircuitElementToEditStringProperty = CircuitConstructionKitCommonFluent.tapCircuitElementToEditStringProperty;
-const voltageStringProperty = CircuitConstructionKitCommonFluent.voltageStringProperty;
-const voltageVoltsValuePatternStringProperty = CircuitConstructionKitCommonFluent.voltageVoltsValuePatternStringProperty;
-
-// constants
+// Layout helper for positioning the edit panel at the bottom of the screen
 const GET_LAYOUT_POSITION = ( visibleBounds: Bounds2, leftX: number, rightX: number ) => {
   return {
     centerX: ( leftX + rightX ) / 2,
     bottom: visibleBounds.bottom - CCKCConstants.HORIZONTAL_MARGIN
   };
-};
-
-// So we can pass classes as types for instanceof checks, I've been using https://www.typescriptlang.org/docs/handbook/mixins.html
-// as a reference for how to create this type
-type GConstructor<T = EmptySelfOptions> = new ( ...args: IntentionalAny[] ) => T;
-
-// a singleton adapter property allows for the same EditContainerNode to be repurposed for different circuit components of the same type
-// this is because we want to have a single control for editing any component of that type
-const createSingletonAdapterProperty = <T extends CircuitElement, ValueType>(
-  initialValue: ValueType,
-  CircuitElementType: GConstructor<T>,
-  circuit: Circuit,
-  getter: ( circuitElement: T ) => Property<ValueType>,
-  predicate: ( element: T ) => boolean = () => true ) => {
-
-  // Cannot use DynamicProperty.derivedProperty since the selected circuit element isn't always the right subtype of CircuitElement
-  const singletonAdapterProperty = new Property<ValueType>( initialValue, {} );
-  singletonAdapterProperty.link( value => {
-    if ( circuit.selectionProperty.value && circuit.selectionProperty.value instanceof CircuitElementType ) {
-      getter( circuit.selectionProperty.value ).value = value;
-    }
-  } );
-
-  // When the value in the model changes, say from PhET-iO, we propagate it back to the control
-  const modelListener = ( value: ValueType ) => singletonAdapterProperty.set( value );
-  circuit.selectionProperty.link( ( newCircuitElement, oldCircuitElement ) => {
-    oldCircuitElement instanceof CircuitElementType && predicate( oldCircuitElement ) && getter( oldCircuitElement ).unlink( modelListener );
-    newCircuitElement instanceof CircuitElementType && predicate( newCircuitElement ) && getter( newCircuitElement ).link( modelListener );
-  } );
-  return singletonAdapterProperty;
 };
 
 type SelfOptions = {
@@ -131,13 +85,28 @@ export default class CircuitElementEditContainerNode extends Node {
       showPhaseShiftControl: false
     }, providedOptions );
 
-    // Create reusable components that will get assembled into a panel for the selected circuit element
+    // Helper to create drag handlers that emit context responses for accessibility
+    const createContextResponseDragHandlers = () => ( {
+      startDrag: () => circuitContextResponses.captureState(),
+      endDrag: () => {
+        const selection = circuit.selectionProperty.value;
+        if ( selection instanceof CircuitElement && !isSettingPhetioStateProperty.value ) {
+          const response = circuitContextResponses.createValueChangeResponse( selection );
+          if ( response ) {
+            circuit.circuitContextAnnouncementEmitter.emit( response );
+          }
+        }
+      }
+    } );
+
+    //------------------------------------------------------------------------------------------------------------------
+    // Reusable buttons
+    //------------------------------------------------------------------------------------------------------------------
+
     const trashButton = new CCKCTrashButton( circuitNode, tandem.createTandem( 'trashButton' ) );
 
     // Use the "nested node" pattern for gated visibility
     const trashButtonContainer = new Node( {
-
-      // Ensure panel bounds reflow when the child is made invisible via phet-io
       excludeInvisibleChildrenFromBounds: true,
       children: [ trashButton ]
     } );
@@ -151,8 +120,6 @@ export default class CircuitElementEditContainerNode extends Node {
 
     const fuseRepairButton = new FuseRepairButton( circuit, {
       tandem: tandem.createTandem( 'fuseRepairButton' ),
-
-      // NOTE: This only works if the trash button was originally smaller
       maxHeight: trashButton.height
     } );
 
@@ -163,7 +130,7 @@ export default class CircuitElementEditContainerNode extends Node {
 
     const isRepairableListener = ( isRepairable: boolean ) => fuseRepairButtonContainer.setVisible( isRepairable );
 
-    // This is reused across all instances.  The button itself can be hidden by PhET-iO customization, but the parent
+    // This is reused across all instances. The button itself can be hidden by PhET-iO customization, but the parent
     // node is another gate for the visibility.
     circuit.selectionProperty.link( ( newCircuitElement: CircuitElement | Vertex | null, oldCircuitElement: CircuitElement | Vertex | null ) => {
       oldCircuitElement instanceof Fuse && oldCircuitElement.isRepairableProperty.unlink( isRepairableListener );
@@ -172,18 +139,18 @@ export default class CircuitElementEditContainerNode extends Node {
 
     const clearDynamicsButton = new ClearDynamicsButton( circuit, {
       tandem: circuit.includeACElements ? tandem.createTandem( 'clearButton' ) : Tandem.OPT_OUT,
-      // NOTE: This only works if the trash button was originally smaller
+      // NOTE: This only works if the button was originally smaller
       maxHeight: trashButton.height
     } );
 
     const batteryReverseButton = new BatteryReverseButton( circuit, {
       tandem: tandem.createTandem( 'batteryReverseButton' ),
 
-      // NOTE: This only works if the trash button was originally smaller
+      // NOTE: This only works if the button was originally smaller
       maxHeight: trashButton.height
     } );
 
-    // This is reused across all batteries.  The button itself can be hidden by PhET-iO customization, but the parent
+    // This is reused across all batteries. The button itself can be hidden by PhET-iO customization, but the parent
     // node is another gate for the visibility.
     const batteryReverseContainerNode = new Node( {
       excludeInvisibleChildrenFromBounds: true,
@@ -211,11 +178,13 @@ export default class CircuitElementEditContainerNode extends Node {
       oldCircuitElement instanceof CircuitElement && oldCircuitElement.isDisposableProperty.unlink( listener );
     } );
 
-    // For PhET-iO, NumberControls are created statically on startup and switch between which CircuitElement it controls.
-    const fuseCurrentRatingControl = new CircuitElementNumberControl( currentRatingStringProperty,
+    //------------------------------------------------------------------------------------------------------------------
+    // Number controls - Fuse
+    //------------------------------------------------------------------------------------------------------------------
 
-      // Adapter to take from {{named}} to {{value}} for usage in common code
-      new PatternStringProperty( currentUnitsStringProperty, { current: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
+    const fuseCurrentRatingControl = new CircuitElementNumberControl(
+      CircuitConstructionKitCommonFluent.currentRatingStringProperty,
+      new PatternStringProperty( CircuitConstructionKitCommonFluent.currentUnitsStringProperty, { current: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
       createSingletonAdapterProperty( Fuse.DEFAULT_CURRENT_RATING, Fuse, circuit, fuse => fuse.currentRatingProperty ),
       Fuse.RANGE, circuit,
       1, {
@@ -231,21 +200,17 @@ export default class CircuitElementEditContainerNode extends Node {
               currentNumber: value,
               currentFormatted: toFixed( value, 1 )
             } ),
-          startDrag: () => circuitContextResponses.captureState(),
-          endDrag: () => {
-            const selection = circuit.selectionProperty.value;
-            if ( selection instanceof CircuitElement && !isSettingPhetioStateProperty.value ) {
-              const response = circuitContextResponses.createValueChangeResponse( selection );
-              if ( response ) {
-                circuit.circuitContextAnnouncementEmitter.emit( response );
-              }
-            }
-          }
+          ...createContextResponseDragHandlers()
         }
       } );
 
-    const capacitorEditControl = new CircuitElementNumberControl( capacitanceStringProperty,
-      new PatternStringProperty( capacitanceUnitsStringProperty, { capacitance: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
+    //------------------------------------------------------------------------------------------------------------------
+    // Number controls - Capacitor and Inductor
+    //------------------------------------------------------------------------------------------------------------------
+
+    const capacitorEditControl = new CircuitElementNumberControl(
+      CircuitConstructionKitCommonFluent.capacitanceStringProperty,
+      new PatternStringProperty( CircuitConstructionKitCommonFluent.capacitanceUnitsStringProperty, { capacitance: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
       createSingletonAdapterProperty( Capacitor.CAPACITANCE_DEFAULT, Capacitor, circuit, capacitor => capacitor.capacitanceProperty ),
       Capacitor.CAPACITANCE_RANGE, circuit, Capacitor.NUMBER_OF_DECIMAL_PLACES, {
         tandem: circuit.includeACElements ? tandem.createTandem( 'capacitanceNumberControl' ) : Tandem.OPT_OUT,
@@ -258,8 +223,9 @@ export default class CircuitElementEditContainerNode extends Node {
         }
       } );
 
-    const inductanceControl = new CircuitElementNumberControl( inductanceStringProperty,
-      new PatternStringProperty( inductanceUnitsStringProperty, { inductance: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
+    const inductanceControl = new CircuitElementNumberControl(
+      CircuitConstructionKitCommonFluent.inductanceStringProperty,
+      new PatternStringProperty( CircuitConstructionKitCommonFluent.inductanceUnitsStringProperty, { inductance: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
       createSingletonAdapterProperty( Inductor.INDUCTANCE_DEFAULT, Inductor, circuit, inductor => inductor.inductanceProperty ),
       Inductor.INDUCTANCE_RANGE, circuit, Inductor.INDUCTANCE_NUMBER_OF_DECIMAL_PLACES, {
         tandem: circuit.includeACElements ? tandem.createTandem( 'inductanceNumberControl' ) : Tandem.OPT_OUT,
@@ -272,12 +238,18 @@ export default class CircuitElementEditContainerNode extends Node {
         }
       } );
 
-    type GConstructor<T> = new ( ...args: IntentionalAny[] ) => T;
+    //------------------------------------------------------------------------------------------------------------------
+    // Number controls - Resistance (Resistor and LightBulb, normal and extreme)
+    //------------------------------------------------------------------------------------------------------------------
 
-    const resistanceOhmsValueStringProperty = new PatternStringProperty( resistanceOhmsValuePatternStringProperty, { resistance: SunConstants.VALUE_NAMED_PLACEHOLDER } );
+    const resistanceOhmsValueStringProperty = new PatternStringProperty(
+      CircuitConstructionKitCommonFluent.resistanceOhmsValuePatternStringProperty,
+      { resistance: SunConstants.VALUE_NAMED_PLACEHOLDER }
+    );
 
     const createResistanceNumberControl = ( tandemName: 'resistorResistanceNumberControl' | 'lightBulbResistanceNumberControl', CircuitElementType: GConstructor<LightBulb | Resistor> ) => {
-      return new CircuitElementNumberControl( resistanceStringProperty,
+      return new CircuitElementNumberControl(
+        CircuitConstructionKitCommonFluent.resistanceStringProperty,
         resistanceOhmsValueStringProperty,
         createSingletonAdapterProperty( ResistorType.RESISTOR.defaultResistance, CircuitElementType, circuit, circuitElement => circuitElement.resistanceProperty,
           circuitElement =>
@@ -292,22 +264,15 @@ export default class CircuitElementEditContainerNode extends Node {
             keyboardStep: CCKCConstants.SLIDER_STEPS.resistorAndLightBulbResistanceNumberControl.step,
             pageKeyboardStep: CCKCConstants.SLIDER_STEPS.resistorAndLightBulbResistanceNumberControl.pageKeyboardStep,
             constrainValue: ( value: number ) => roundToInterval( value, CCKCConstants.SLIDER_STEPS.resistorAndLightBulbResistanceNumberControl.shiftKeyboardStep ),
-            startDrag: () => circuitContextResponses.captureState(),
-            endDrag: () => {
-              const selection = circuit.selectionProperty.value;
-              if ( selection instanceof CircuitElement && !isSettingPhetioStateProperty.value ) {
-                const response = circuitContextResponses.createValueChangeResponse( selection );
-                if ( response ) {
-                  circuit.circuitContextAnnouncementEmitter.emit( response );
-                }
-              }
-            }
+            ...createContextResponseDragHandlers()
           },
           numberDisplayOptions: { decimalPlaces: Resistor.RESISTANCE_DECIMAL_PLACES }
         } );
     };
+
     const createExtremeResistanceNumberControl = ( tandemName: 'extremeResistorResistanceNumberControl' | 'extremeLightBulbResistanceNumberControl', CircuitElementType: GConstructor<LightBulb | Resistor> ) => {
-      return new CircuitElementNumberControl( resistanceStringProperty,
+      return new CircuitElementNumberControl(
+        CircuitConstructionKitCommonFluent.resistanceStringProperty,
         resistanceOhmsValueStringProperty,
         createSingletonAdapterProperty( ResistorType.EXTREME_RESISTOR.defaultResistance, CircuitElementType, circuit, circuitElement => circuitElement.resistanceProperty,
           circuitElement =>
@@ -322,16 +287,7 @@ export default class CircuitElementEditContainerNode extends Node {
             keyboardStep: CCKCConstants.SLIDER_STEPS.extremeResistorAndLightBulbResistanceNumberControl.step,
             pageKeyboardStep: CCKCConstants.SLIDER_STEPS.extremeResistorAndLightBulbResistanceNumberControl.pageKeyboardStep,
             constrainValue: ( value: number ) => roundToInterval( value, CCKCConstants.SLIDER_STEPS.extremeResistorAndLightBulbResistanceNumberControl.shiftKeyboardStep ),
-            startDrag: () => circuitContextResponses.captureState(),
-            endDrag: () => {
-              const selection = circuit.selectionProperty.value;
-              if ( selection instanceof CircuitElement && !isSettingPhetioStateProperty.value ) {
-                const response = circuitContextResponses.createValueChangeResponse( selection );
-                if ( response ) {
-                  circuit.circuitContextAnnouncementEmitter.emit( response );
-                }
-              }
-            }
+            ...createContextResponseDragHandlers()
           },
           numberDisplayOptions: { decimalPlaces: Resistor.HIGH_RESISTANCE_DECIMAL_PLACES }
         } );
@@ -342,8 +298,17 @@ export default class CircuitElementEditContainerNode extends Node {
     const extremeResistorResistanceNumberControl = createExtremeResistanceNumberControl( 'extremeResistorResistanceNumberControl', Resistor );
     const extremeLightBulbResistanceNumberControl = createExtremeResistanceNumberControl( 'extremeLightBulbResistanceNumberControl', LightBulb );
 
-    const voltageVoltsValueStringProperty = new PatternStringProperty( voltageVoltsValuePatternStringProperty, { voltage: SunConstants.VALUE_NAMED_PLACEHOLDER } );
-    const batteryVoltageNumberControl = new CircuitElementNumberControl( voltageStringProperty,
+    //------------------------------------------------------------------------------------------------------------------
+    // Number controls - Voltage (Battery, normal and extreme)
+    //------------------------------------------------------------------------------------------------------------------
+
+    const voltageVoltsValueStringProperty = new PatternStringProperty(
+      CircuitConstructionKitCommonFluent.voltageVoltsValuePatternStringProperty,
+      { voltage: SunConstants.VALUE_NAMED_PLACEHOLDER }
+    );
+
+    const batteryVoltageNumberControl = new CircuitElementNumberControl(
+      CircuitConstructionKitCommonFluent.voltageStringProperty,
       voltageVoltsValueStringProperty,
       createSingletonAdapterProperty( Battery.VOLTAGE_DEFAULT, Battery, circuit, battery => battery.voltageProperty, battery => battery.batteryType === 'normal' ),
       Battery.VOLTAGE_RANGE,
@@ -356,20 +321,13 @@ export default class CircuitElementEditContainerNode extends Node {
           keyboardStep: CCKCConstants.SLIDER_STEPS.batteryVoltageNumberControl.step,
           pageKeyboardStep: CCKCConstants.SLIDER_STEPS.batteryVoltageNumberControl.pageKeyboardStep,
           constrainValue: ( value: number ) => roundToInterval( value, CCKCConstants.SLIDER_STEPS.batteryVoltageNumberControl.shiftKeyboardStep ),
-          startDrag: () => circuitContextResponses.captureState(),
-          endDrag: () => {
-            const selection = circuit.selectionProperty.value;
-            if ( selection instanceof CircuitElement && !isSettingPhetioStateProperty.value ) {
-              const response = circuitContextResponses.createValueChangeResponse( selection );
-              if ( response ) {
-                circuit.circuitContextAnnouncementEmitter.emit( response );
-              }
-            }
-          }
+          ...createContextResponseDragHandlers()
         },
         numberDisplayOptions: { decimalPlaces: Battery.VOLTAGE_DECIMAL_PLACES }
       } );
-    const extremeBatteryVoltageNumberControl = new CircuitElementNumberControl( voltageStringProperty,
+
+    const extremeBatteryVoltageNumberControl = new CircuitElementNumberControl(
+      CircuitConstructionKitCommonFluent.voltageStringProperty,
       voltageVoltsValueStringProperty,
       createSingletonAdapterProperty( Battery.HIGH_VOLTAGE_DEFAULT, Battery, circuit, battery => battery.voltageProperty, battery => battery.batteryType === 'high-voltage' ),
       Battery.HIGH_VOLTAGE_RANGE,
@@ -382,26 +340,23 @@ export default class CircuitElementEditContainerNode extends Node {
           keyboardStep: CCKCConstants.SLIDER_STEPS.extremeBatteryVoltageNumberControl.step,
           pageKeyboardStep: CCKCConstants.SLIDER_STEPS.extremeBatteryVoltageNumberControl.pageKeyboardStep,
           constrainValue: ( value: number ) => roundToInterval( value, CCKCConstants.SLIDER_STEPS.extremeBatteryVoltageNumberControl.shiftKeyboardStep ),
-          startDrag: () => circuitContextResponses.captureState(),
-          endDrag: () => {
-            const selection = circuit.selectionProperty.value;
-            if ( selection instanceof CircuitElement && !isSettingPhetioStateProperty.value ) {
-              const response = circuitContextResponses.createValueChangeResponse( selection );
-              if ( response ) {
-                circuit.circuitContextAnnouncementEmitter.emit( response );
-              }
-            }
-          }
+          ...createContextResponseDragHandlers()
         },
         numberDisplayOptions: { decimalPlaces: Battery.HIGH_VOLTAGE_DECIMAL_PLACES }
       } );
 
-    const phaseShiftControl = new PhaseShiftControl( createSingletonAdapterProperty( 0, ACVoltage, circuit, acVoltage => acVoltage.phaseProperty ), circuit, {
-      tandem: circuit.includeACElements ? tandem.createTandem( 'phaseShiftControl' ) : Tandem.OPT_OUT
-    } );
+    //------------------------------------------------------------------------------------------------------------------
+    // Number controls - AC Voltage (voltage, frequency, phase)
+    //------------------------------------------------------------------------------------------------------------------
+
+    const phaseShiftControl = new PhaseShiftControl(
+      createSingletonAdapterProperty( 0, ACVoltage, circuit, acVoltage => acVoltage.phaseProperty ),
+      circuit, {
+        tandem: circuit.includeACElements ? tandem.createTandem( 'phaseShiftControl' ) : Tandem.OPT_OUT
+      } );
 
     const acVoltageControl = new CircuitElementNumberControl(
-      voltageStringProperty,
+      CircuitConstructionKitCommonFluent.voltageStringProperty,
       voltageVoltsValueStringProperty,
       createSingletonAdapterProperty( 9, ACVoltage, circuit, circuitElement => circuitElement.maximumVoltageProperty ),
       ACVoltage.MAX_VOLTAGE_RANGE,
@@ -422,8 +377,8 @@ export default class CircuitElementEditContainerNode extends Node {
     );
 
     const acFrequencyControl = new CircuitElementNumberControl(
-      frequencyStringProperty,
-      new PatternStringProperty( frequencyHzValuePatternStringProperty, { frequency: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
+      CircuitConstructionKitCommonFluent.frequencyStringProperty,
+      new PatternStringProperty( CircuitConstructionKitCommonFluent.frequencyHzValuePatternStringProperty, { frequency: SunConstants.VALUE_NAMED_PLACEHOLDER } ),
       createSingletonAdapterProperty( ACVoltage.DEFAULT_FREQUENCY, ACVoltage, circuit, circuitElement => circuitElement.frequencyProperty ),
       ACVoltage.FREQUENCY_RANGE,
       circuit,
@@ -442,7 +397,11 @@ export default class CircuitElementEditContainerNode extends Node {
       }
     );
 
-    const tapInstructionText = new Text( tapCircuitElementToEditStringProperty, {
+    //------------------------------------------------------------------------------------------------------------------
+    // Tap instruction text
+    //------------------------------------------------------------------------------------------------------------------
+
+    const tapInstructionText = new Text( CircuitConstructionKitCommonFluent.tapCircuitElementToEditStringProperty, {
       fontSize: 24,
       maxWidth: 300,
       fill: CCKCColors.textFillProperty,
@@ -475,8 +434,11 @@ export default class CircuitElementEditContainerNode extends Node {
     circuit.vertexGroup.elementDisposedEmitter.addListener( updateInstructionTextVisible );
     modeProperty.link( updateInstructionTextVisible );
 
-    const updatePosition = () => {
+    //------------------------------------------------------------------------------------------------------------------
+    // Position and selection handling
+    //------------------------------------------------------------------------------------------------------------------
 
+    const updatePosition = () => {
       // Layout, but only if we have something to display (otherwise bounds fail out)
       this.bounds.isValid() && this.mutate( GET_LAYOUT_POSITION( visibleBoundsProperty.get(), zoomButtonGroupRightProperty.value, timeControlLeftProperty.value ) );
     };
@@ -506,9 +468,8 @@ export default class CircuitElementEditContainerNode extends Node {
             trashButtonContainer
           ] );
         }
-
-        // Real bulb has no resistance control
         else if ( selectedCircuitElement instanceof LightBulb && !selectedCircuitElement.isReal ) {
+          // Real bulb has no resistance control
           editNode = new EditPanel( [
               selectedCircuitElement.isExtreme ? extremeLightBulbResistanceNumberControl : lightBulbResistanceNumberControl,
               disconnectButtonContainer,
@@ -635,35 +596,6 @@ export default class CircuitElementEditContainerNode extends Node {
     zoomButtonGroupRightProperty.link( updatePosition );
     timeControlLeftProperty.link( updatePosition );
     this.localBoundsProperty.link( updatePosition );
-  }
-}
-
-/**
- * Panel to facilitate in visual layout of the controls.
- */
-class EditPanel extends Panel {
-  private readonly hbox: HBox;
-
-  public constructor( children: Node[] ) {
-    const hbox = new HBox( {
-      spacing: 20,
-      align: 'bottom',
-      children: children
-    } );
-    super( hbox, {
-      fill: CCKCColors.editPanelFillProperty,
-      stroke: null,
-      xMargin: 10,
-      yMargin: 10,
-      cornerRadius: 10,
-      align: 'center'
-    } );
-    this.hbox = hbox;
-  }
-
-  public override dispose(): void {
-    this.hbox.dispose();
-    super.dispose();
   }
 }
 
