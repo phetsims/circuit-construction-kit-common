@@ -111,8 +111,12 @@ export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
       phetioVisiblePropertyInstrumented: false,
 
       tagName: isIcon ? null : 'div',
-      focusable: !isIcon,
-      ...( isIcon ? [] : AccessibleDraggableOptions )
+
+      // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/1161 move to yaml file
+      accessibleHeading: 'My Voltmeter',
+
+      // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/1161 move to yaml file
+      accessibleParagraph: 'Voltmeter Accessible Paragraph'
 
     }, providedOptions );
 
@@ -120,10 +124,11 @@ export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
      * Creates a probe node with the specified configuration. Uses InteractiveHighlightingRectangle for
      * non-icons to support mouse/touch hover highlights.
      */
-    const createProbeNode = ( color: Color, image: ImageableImage, rotation: number, imageX: number, imageY: number ): Rectangle | InteractiveHighlightingRectangle => {
+    const createProbeNode = ( color: Color, image: ImageableImage, rotation: number, imageX: number, imageY: number, accessibleName: string ): Rectangle | InteractiveHighlightingRectangle => {
       const options = {
         fill: CCKCQueryParameters.showVoltmeterSamplePoints ? color : null,
         cursor: 'pointer',
+        accessibleName: accessibleName,
         children: [ new Image( image, {
           scale: PROBE_SCALE,
           rotation: rotation,
@@ -145,8 +150,11 @@ export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
       }
     };
 
-    const blackProbeNode = createProbeNode( Color.BLACK, probeBlack_png, PROBE_ANGLE, -9.5, -5 );
-    const redProbeNode = createProbeNode( Color.RED, probeRed_png, -PROBE_ANGLE, -11, +4 );
+    // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/1161 move to yaml file
+    const blackProbeNode = createProbeNode( Color.BLACK, probeBlack_png, PROBE_ANGLE, -9.5, -5, 'Black Probe' );
+
+    // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/1161 move to yaml file
+    const redProbeNode = createProbeNode( Color.RED, probeRed_png, -PROBE_ANGLE, -11, +4, 'Red Probe' );
 
     // Displays the voltage reading
     const voltageReadoutProperty = new DerivedStringProperty( [
@@ -179,7 +187,12 @@ export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
                      new InteractiveHighlightingImage( voltmeterBody_png, {
                        scale: SCALE,
                        cursor: 'pointer',
-                       children: [ probeTextNode ]
+                       children: [ probeTextNode ],
+
+                       // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/1161 move to yaml file
+                       accessibleName: 'Voltmeter: no reading',
+                       focusable: true,
+                       ...AccessibleDraggableOptions
                      } );
 
     /**
@@ -254,11 +267,11 @@ export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
 
     super( options );
 
-    super.addChild( bodyNode );
-    super.addChild( blackWireNode );
-    super.addChild( blackProbeNode );
-    super.addChild( redWireNode );
-    super.addChild( redProbeNode );
+    this.addChild( bodyNode );
+    this.addChild( blackWireNode );
+    this.addChild( blackProbeNode );
+    this.addChild( redWireNode );
+    this.addChild( redProbeNode );
 
     this.circuitNode = circuitNode;
 
@@ -270,7 +283,7 @@ export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
     if ( !isIcon ) {
 
       // Focus highlight should only surround the body, not the probes
-      this.focusHighlight = new HighlightFromNode( bodyNode );
+      bodyNode.focusHighlight = new HighlightFromNode( bodyNode );
 
       // Show the voltmeter when icon dragged out of the toolbox
       voltmeter.isActiveProperty.linkAttribute( this, 'visible' );
@@ -364,7 +377,7 @@ export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
       } );
       bodyNode.addInputListener( this.dragHandler );
 
-      this.addInputListener( new SoundKeyboardDragListener( {
+      bodyNode.addInputListener( new SoundKeyboardDragListener( {
         tandem: Tandem.OPT_OUT,
 
         positionProperty: voltmeter.bodyPositionProperty,
