@@ -140,10 +140,6 @@ export default class AmmeterNode extends InteractiveHighlighting( Node ) {
     }, providedOptions );
     const tandem = options.tandem;
 
-    if ( !options.isIcon ) {
-      Object.assign( options, AccessibleDraggableOptions );
-    }
-
     // if the AmmeterNode is an icon, do not instrument the details of the children
     const tandemForChildren = options.isIcon ? Tandem.OPT_OUT : tandem;
 
@@ -274,7 +270,7 @@ export default class AmmeterNode extends InteractiveHighlighting( Node ) {
     if ( !options.isIcon ) {
 
       // Focus highlight should only surround the body, not the probe
-      this.focusHighlight = new HighlightFromNode( bodyNode );
+      bodyNode.focusHighlight = new HighlightFromNode( bodyNode );
 
       // Show the ammeter in the play area when dragged from toolbox
       ammeter.isActiveProperty.linkAttribute( this, 'visible' );
@@ -322,7 +318,7 @@ export default class AmmeterNode extends InteractiveHighlighting( Node ) {
         dragBoundsProperty: erodedDragBoundsProperty
       } );
       bodyNode.addInputListener( this.dragHandler );
-      this.addInputListener( new SoundKeyboardDragListener( {
+      bodyNode.addInputListener( new SoundKeyboardDragListener( {
         tandem: Tandem.OPT_OUT,
         positionProperty: ammeter.bodyPositionProperty,
         dragBoundsProperty: erodedDragBoundsProperty,
