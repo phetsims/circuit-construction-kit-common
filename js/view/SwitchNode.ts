@@ -113,8 +113,16 @@ const createNode = function( viewType: CircuitElementViewType, fill: Gradient | 
     x: SWITCH_LENGTH * SWITCH_START
   } );
 
+  // Invisible hit area that covers the full switch bounds including the gap when open.
+  // This ensures clicking in the gap area when the switch is open will still toggle it.
+  const hitAreaRectangle = new Rectangle( 0, -10, SWITCH_LENGTH, 20, {
+    fill: null,
+    stroke: null,
+    pickable: true
+  } );
+
   const node = new Node( {
-    children: [ leftSegmentNode, rotatingSegmentNode, rightSegmentNode, lifelikeHinge ]
+    children: [ hitAreaRectangle, leftSegmentNode, rotatingSegmentNode, rightSegmentNode, lifelikeHinge ]
   } ) as SegmentedNode;
 
   if ( viewType === CircuitElementViewType.SCHEMATIC ) {
