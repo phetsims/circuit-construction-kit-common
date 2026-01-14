@@ -410,7 +410,8 @@ a11y:
     vertexDisconnected:         'Disconnected. { $currentPhrase }'
     vertexDisconnectedNoChange: 'Disconnected.'
   sensorToolbox:
-    accessibleHeading: Sensor Toolbox
+    accessibleHeading:    Sensor Toolbox
+    accessibleHelpText:   Drag a voltmeter or ammeter from the toolbox to measure voltage or current in your circuit.
     nonContactAmmeter:
       accessibleName: Non-Contact Ammeter
     voltmeter:

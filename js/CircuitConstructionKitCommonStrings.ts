@@ -265,6 +265,7 @@ type StringsType = {
     };
     'sensorToolbox': {
       'accessibleHeadingStringProperty': LocalizedStringProperty;
+      'accessibleHelpTextStringProperty': LocalizedStringProperty;
       'nonContactAmmeter': {
         'accessibleNameStringProperty': LocalizedStringProperty;
       };

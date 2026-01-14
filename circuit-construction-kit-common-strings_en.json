@@ -672,6 +672,9 @@
       "accessibleHeading": {
         "value": "Sensor Toolbox"
       },
+      "accessibleHelpText": {
+        "value": "Drag a voltmeter or ammeter from the toolbox to measure voltage or current in your circuit."
+      },
       "nonContactAmmeter": {
         "accessibleName": {
           "value": "Non-Contact Ammeter"

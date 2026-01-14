@@ -131,12 +131,13 @@ export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
       // Instrumentation is handled in Meter.isActiveProperty
       phetioVisiblePropertyInstrumented: false,
 
-      tagName: isIcon ? null : 'div',
-
-      accessibleHeading: accessibleHeadingProperty,
-
-      accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.voltmeterNode.accessibleHelpTextStringProperty,
-      accessibleHelpTextBehavior: ParallelDOM.HELP_TEXT_BEFORE_CONTENT
+      // Only add PDOM structure for non-icons (icons are just toolbox buttons)
+      ...( isIcon ? {} : {
+        tagName: 'div',
+        accessibleHeading: accessibleHeadingProperty,
+        accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.voltmeterNode.accessibleHelpTextStringProperty,
+        accessibleHelpTextBehavior: ParallelDOM.HELP_TEXT_BEFORE_CONTENT
+      } )
 
     }, providedOptions );
 

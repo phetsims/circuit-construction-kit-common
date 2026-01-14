@@ -27,6 +27,7 @@ import { type PressListenerEvent } from '../../../scenery/js/listeners/PressList
 import Node from '../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
 import Text from '../../../scenery/js/nodes/Text.js';
+import ParallelDOM from '../../../scenery/js/accessibility/pdom/ParallelDOM.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -414,6 +415,8 @@ export default class SensorToolbox extends CCKCPanel {
 
     super( new VBox( {
       accessibleHeading: CircuitConstructionKitCommonFluent.a11y.sensorToolbox.accessibleHeadingStringProperty,
+      accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.sensorToolbox.accessibleHelpTextStringProperty,
+      accessibleHelpTextBehavior: ParallelDOM.HELP_TEXT_BEFORE_CONTENT,
       spacing: 5,
       children: rows
     } ), tandem, {

@@ -108,6 +108,8 @@ export default class AmmeterNode extends InteractiveHighlighting( Node ) {
       }
     ) : CircuitConstructionKitCommonFluent.a11y.ammeterNode.accessibleHeadingStringProperty;
 
+    const isIcon = providedOptions?.isIcon ?? false;
+
     const options = optionize<AmmeterNodeOptions, SelfOptions, NodeOptions>()( {
 
       // true if it will be used as a toolbox icon
@@ -128,12 +130,13 @@ export default class AmmeterNode extends InteractiveHighlighting( Node ) {
 
       tandem: Tandem.REQUIRED,
 
-      tagName: providedOptions?.isIcon ? null : 'div',
-
-      accessibleHeading: accessibleHeadingProperty,
-
-      accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.ammeterNode.accessibleHelpTextStringProperty,
-      accessibleHelpTextBehavior: ParallelDOM.HELP_TEXT_BEFORE_CONTENT
+      // Only add PDOM structure for non-icons (icons are just toolbox buttons)
+      ...( isIcon ? {} : {
+        tagName: 'div',
+        accessibleHeading: accessibleHeadingProperty,
+        accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.ammeterNode.accessibleHelpTextStringProperty,
+        accessibleHelpTextBehavior: ParallelDOM.HELP_TEXT_BEFORE_CONTENT
+      } )
     }, providedOptions );
     const tandem = options.tandem;
 
