@@ -47,6 +47,9 @@ export type AttachmentKeyboardListenerOptions<T> = {
   onClose?: () => void;
   onCancel?: () => void;
 
+  // invoked after a successful selection is applied (not cancelled)
+  onSelectionApplied?: ( selection: T | null ) => void;
+
   // invoked when a list item receives focus
   onItemFocused?: ( value: T | null, index: number ) => void;
 
@@ -118,6 +121,7 @@ export default class AttachmentKeyboardListener<T> extends KeyboardListener<OneK
 
             options.circuitNode.hideAttachmentHighlight();
             options.onClose?.();
+            options.onSelectionApplied?.( selectionProperty.value );
 
             animationFrameTimer.runOnNextTick( () => {
               comboBox.dispose();

@@ -8,18 +8,20 @@
 
 import type TProperty from '../../../../axon/js/TProperty.js';
 import type { TReadOnlyProperty } from '../../../../axon/js/TReadOnlyProperty.js';
+import { toFixed } from '../../../../dot/js/util/toFixed.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import type Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../../CircuitConstructionKitCommonFluent.js';
+import type Ammeter from '../../model/Ammeter.js';
 import CircuitElement from '../../model/CircuitElement.js';
 import type CircuitNode from '../CircuitNode.js';
 import CircuitDescription from '../description/CircuitDescription.js';
 import AttachmentKeyboardListener from './AttachmentKeyboardListener.js';
 
 export default class AmmeterProbeNodeAttachmentKeyboardListener extends AttachmentKeyboardListener<CircuitElement> {
-  public constructor( probeNode: Node, circuitNode: CircuitNode, probePositionProperty: TProperty<Vector2> ) {
+  public constructor( probeNode: Node, circuitNode: CircuitNode, probePositionProperty: TProperty<Vector2>, ammeter: Ammeter ) {
     const circuit = circuitNode.circuit;
 
     const getItems = () => {
@@ -84,6 +86,17 @@ export default class AmmeterProbeNodeAttachmentKeyboardListener extends Attachme
       },
       onCancel: () => {
         circuitNode.hideProbeSelectionHighlight();
+      },
+      onSelectionApplied: () => {
+
+        // Announce the current reading after the probe is moved
+        const current = ammeter.currentProperty.value;
+        const contextResponse = current === null ?
+                                CircuitConstructionKitCommonFluent.a11y.ammeterNode.noReadingStringProperty :
+                                CircuitConstructionKitCommonFluent.a11y.ammeterNode.currentAmps.format( {
+                                  current: toFixed( Math.abs( current ), 2 )
+                                } );
+        probeNode.addAccessibleContextResponse( contextResponse );
       }
     } );
 

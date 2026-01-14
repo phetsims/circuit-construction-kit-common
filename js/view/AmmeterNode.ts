@@ -354,7 +354,8 @@ export default class AmmeterNode extends InteractiveHighlighting( Node ) {
       this.probeNode.addInputListener( new AmmeterProbeNodeAttachmentKeyboardListener(
         this.probeNode,
         circuitNode!,
-        ammeter.probePositionProperty
+        ammeter.probePositionProperty,
+        ammeter
       ) );
 
       /**
