@@ -182,7 +182,7 @@ export default class Circuit extends PhetioObject {
   // Circuit elements in PDOM order, for keyboard navigation. Set by CircuitDescription.updateCircuitNode.
   public circuitElementsInPDOMOrder: CircuitElement[] = [];
 
-  // Whether any circuit element has current flowing through it, updated in step()
+  // Whether any circuit element has current flowing through it, updated in step(), used for description
   public readonly hasCurrentFlowingProperty: BooleanProperty;
 
   public readonly descriptionChangeEmitter = new Emitter();

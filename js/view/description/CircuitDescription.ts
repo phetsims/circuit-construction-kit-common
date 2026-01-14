@@ -83,7 +83,9 @@ export default class CircuitDescription {
         parts.push( CircuitConstructionKitCommonFluent.a11y.circuitComponent.brightness.offStringProperty.value );
       }
       else {
-        const percentString = toFixed( brightness * 100, 1 );
+
+        // Round to nearest percent
+        const percentString = toFixed( brightness * 100, 0 );
         parts.push( CircuitConstructionKitCommonFluent.a11y.circuitComponent.brightness.percent.format( { percent: percentString } ) );
       }
     }
