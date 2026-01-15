@@ -22,7 +22,7 @@ function base64ToArrayBuffer( base64: string ): Uint8Array {
 
 // Create blob URL for WASM
 const wasmBytes = base64ToArrayBuffer( NGSPICE_WASM_BASE64 );
-const wasmBlob = new Blob( [ wasmBytes ], { type: 'application/wasm' } );
+const wasmBlob = new Blob( [ wasmBytes as BlobPart ], { type: 'application/wasm' } );
 const wasmUrl = URL.createObjectURL( wasmBlob );
 
 type ModuleArg = {
