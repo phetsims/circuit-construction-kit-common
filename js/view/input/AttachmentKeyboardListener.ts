@@ -1,4 +1,4 @@
-// Copyright 2025, University of Colorado Boulder
+// Copyright 2025-2026, University of Colorado Boulder
 
 /**
  * Shared keyboard listener that presents a ComboBox for attaching probes or vertices to targets.

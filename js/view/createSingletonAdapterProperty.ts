@@ -1,4 +1,4 @@
-// Copyright 2016-2026, University of Colorado Boulder
+// Copyright 2026, University of Colorado Boulder
 
 /**
  * Creates a singleton adapter property that allows the same control (e.g., NumberControl) to be repurposed

@@ -1,4 +1,4 @@
-// Copyright 2016-2026, University of Colorado Boulder
+// Copyright 2026, University of Colorado Boulder
 
 /**
  * Panel to facilitate visual layout of the controls in the CircuitElementEditContainerNode.
