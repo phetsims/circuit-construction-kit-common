@@ -522,7 +522,7 @@
         "value": "{ $allConnected ->\n  [true] All connection points connected.\n  *[false] Some connection points not connected.\n}"
       },
       "currentFlowStatus": {
-        "value": "{ $flowLevel ->\n  [all] Current is flowing through all circuit components.\n  [some] Current is flowing through some circuit components.\n  [none] Current is not flowing.\n  *[notShown] Current is not shown.\n}"
+        "value": "{ $flowLevel ->\n  [all] { $rateCount ->\n          [one] Current is flowing through all circuit components at the same rate.\n          *[other] Current is flowing through all circuit components at { $rateCount } different rates.\n        }\n  [some] { $rateCount ->\n           [one] Current is flowing through some circuit components at the same rate.\n           *[other] Current is flowing through some circuit components at { $rateCount } different rates.\n         }\n  [none] Current is not flowing.\n  *[notShown] Current is not shown.\n}"
       }
     },
     "screenSummary": {

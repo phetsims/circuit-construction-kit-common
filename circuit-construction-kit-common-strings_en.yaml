@@ -224,11 +224,17 @@ a11y:
       select_allConnected:
         true:  All connection points connected.
         false: Some connection points not connected.
-    # Current flow status
+    # Current flow status - includes rate information when current is flowing
     currentFlowStatus:
       select_flowLevel:
-        all:      Current is flowing through all circuit components.
-        some:     Current is flowing through some circuit components.
+        all:
+          select_rateCount:
+            one:   Current is flowing through all circuit components at the same rate.
+            other: 'Current is flowing through all circuit components at { $rateCount } different rates.'
+        some:
+          select_rateCount:
+            one:   Current is flowing through some circuit components at the same rate.
+            other: 'Current is flowing through some circuit components at { $rateCount } different rates.'
         none:     Current is not flowing.
         notShown: Current is not shown.
   screenSummary:

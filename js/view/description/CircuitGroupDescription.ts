@@ -59,11 +59,12 @@ export default class CircuitGroupDescription {
       allConnected: allConnected ? 'true' : 'false'
     } );
 
-    // Current flow status
+    // Current flow status with rate information
     const showCurrent = circuit.showCurrentProperty.value;
-    const flowLevel = this.getCurrentFlowStatus( elements, showCurrent );
+    const { flowLevel, rateCount } = this.getCurrentFlowStatus( elements, showCurrent );
     const currentStatus = CircuitConstructionKitCommonFluent.a11y.circuitGroupDescription.currentFlowStatus.format( {
-      flowLevel: flowLevel
+      flowLevel: flowLevel,
+      rateCount: rateCount
     } );
 
     return `${groupSummary} ${connectionStatus} ${currentStatus}`;
@@ -139,26 +140,44 @@ export default class CircuitGroupDescription {
 
   /**
    * Determines the current flow status for a group of elements.
+   * Returns both the flow level (all/some/none/notShown) and the count of distinct non-zero current rates.
+   * A current value of 0 does not count toward the rate count.
    */
   private static getCurrentFlowStatus(
     elements: CircuitElement[],
     showCurrent: boolean
-  ): 'all' | 'some' | 'none' | 'notShown' {
+  ): { flowLevel: 'all' | 'some' | 'none' | 'notShown'; rateCount: number } {
     if ( !showCurrent ) {
-      return 'notShown';
+      return { flowLevel: 'notShown', rateCount: 0 };
     }
 
     const elementsWithCurrent = elements.filter( element =>
       Math.abs( element.currentProperty.value ) > 1e-10
     );
 
+    // Count distinct non-zero current magnitudes using tolerance-based comparison
+    // to avoid roundoff/numerical noise. Only elements with non-zero current are compared.
+    const CURRENT_TOLERANCE = 1e-4;
+    const distinctCurrentMagnitudes: number[] = [];
+    elementsWithCurrent.forEach( element => {
+      const magnitude = Math.abs( element.currentProperty.value );
+      // Check if this magnitude is distinct from all previously seen magnitudes
+      const isDistinct = !distinctCurrentMagnitudes.some(
+        existingMagnitude => Math.abs( magnitude - existingMagnitude ) < CURRENT_TOLERANCE
+      );
+      if ( isDistinct ) {
+        distinctCurrentMagnitudes.push( magnitude );
+      }
+    } );
+    const rateCount = distinctCurrentMagnitudes.length;
+
     if ( elementsWithCurrent.length === elements.length ) {
-      return 'all';
+      return { flowLevel: 'all', rateCount: rateCount };
     }
     else if ( elementsWithCurrent.length > 0 ) {
-      return 'some';
+      return { flowLevel: 'some', rateCount: rateCount };
     }
-    return 'none';
+    return { flowLevel: 'none', rateCount: 0 };
   }
 }
 
