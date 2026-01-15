@@ -15,8 +15,8 @@ import type Range from '../../../dot/js/Range.js';
 import { roundSymmetric } from '../../../dot/js/util/roundSymmetric.js';
 import { roundToInterval } from '../../../dot/js/util/roundToInterval.js';
 import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
-import optionize from '../../../phet-core/js/optionize.js';
-import NumberControl, { type LayoutFunction } from '../../../scenery-phet/js/NumberControl.js';
+import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
+import NumberControl, { type LayoutFunction, NumberControlOptions } from '../../../scenery-phet/js/NumberControl.js';
 import { type NumberDisplayOptions } from '../../../scenery-phet/js/NumberDisplay.js';
 import HBox, { type HBoxOptions } from '../../../scenery/js/layout/nodes/HBox.js';
 import { type TextOptions } from '../../../scenery/js/nodes/Text.js';
@@ -97,12 +97,11 @@ export default class CircuitElementNumberControl extends HBox {
     const keyboardStep = options.sliderOptions.keyboardStep;
     const numberOfMiddleThresholds = keyboardStep ? roundSymmetric( range.getLength() / keyboardStep ) : 5;
 
-    const numberControl = new NumberControl( title, valueProperty, range, {
-      ...options,
+    const numberControl = new NumberControl( title, valueProperty, range, combineOptions<NumberControlOptions>( {
       valueChangeSoundGeneratorOptions: {
         numberOfMiddleThresholds: numberOfMiddleThresholds
       }
-    } );
+    }, options ) );
 
     super( { children: [ numberControl ] } );
 

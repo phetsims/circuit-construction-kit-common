@@ -16,7 +16,7 @@ import type Bounds2 from '../../../dot/js/Bounds2.js';
 import { toFixed } from '../../../dot/js/util/toFixed.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
-import optionize from '../../../phet-core/js/optionize.js';
+import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import AccessibleDraggableOptions from '../../../scenery-phet/js/accessibility/grab-drag/AccessibleDraggableOptions.js';
 import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
 import SoundKeyboardDragListener from '../../../scenery-phet/js/SoundKeyboardDragListener.js';
@@ -130,24 +130,23 @@ export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
       showPhetioIndex: false,
 
       // Instrumentation is handled in Meter.isActiveProperty
-      phetioVisiblePropertyInstrumented: false,
-
-      // Only add PDOM structure for non-icons (icons are just toolbox buttons)
-      ...( isIcon ? {} : {
-        tagName: 'div',
-        accessibleHeading: accessibleHeadingProperty,
-        accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.voltmeterNode.accessibleHelpTextStringProperty,
-        accessibleHelpTextBehavior: ParallelDOM.HELP_TEXT_BEFORE_CONTENT
-      } )
-
+      phetioVisiblePropertyInstrumented: false
     }, providedOptions );
+
+    // Only add PDOM structure for non-icons (icons are just toolbox buttons)
+    if ( !isIcon ) {
+      options.tagName = 'div';
+      options.accessibleHeading = accessibleHeadingProperty;
+      options.accessibleHelpText = CircuitConstructionKitCommonFluent.a11y.voltmeterNode.accessibleHelpTextStringProperty;
+      options.accessibleHelpTextBehavior = ParallelDOM.HELP_TEXT_BEFORE_CONTENT;
+    }
 
     /**
      * Creates a probe node with the specified configuration. Uses InteractiveHighlightingRectangle for
      * non-icons to support mouse/touch hover highlights.
      */
     const createProbeNode = ( color: Color, image: ImageableImage, rotation: number, imageX: number, imageY: number, accessibleName: ReadOnlyProperty<string> ): Rectangle | InteractiveHighlightingRectangle => {
-      const options = {
+      const baseProbeOptions = {
         fill: CCKCQueryParameters.showVoltmeterSamplePoints ? color : null,
         cursor: 'pointer',
         accessibleName: accessibleName,
@@ -159,16 +158,17 @@ export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
           // CircuitConstructionKitModel. Will need to change if PROBE_ANGLE changes
           x: imageX,
           y: imageY
-        } ) ],
-        ...( isIcon ? {} : AccessibleDraggableOptions )
+        } ) ]
       };
+
+      const probeNodeOptions = isIcon ? baseProbeOptions : combineOptions<NodeOptions>( baseProbeOptions, AccessibleDraggableOptions );
 
       // Use InteractiveHighlightingRectangle for non-icons to get hover highlights
       if ( isIcon ) {
-        return new Rectangle( -2, -2, 4, 4, options );
+        return new Rectangle( -2, -2, 4, 4, probeNodeOptions );
       }
       else {
-        return new InteractiveHighlightingRectangle( -2, -2, 4, 4, options );
+        return new InteractiveHighlightingRectangle( -2, -2, 4, 4, probeNodeOptions );
       }
     };
 
@@ -221,16 +221,15 @@ export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
                        cursor: 'pointer',
                        children: [ probeTextNode ]
                      } ) :
-                     new InteractiveHighlightingImage( voltmeterBody_png, {
+                     new InteractiveHighlightingImage( voltmeterBody_png, combineOptions<NodeOptions>( {
                        scale: SCALE,
                        cursor: 'pointer',
                        children: [ probeTextNode ],
 
                        accessibleName: CircuitConstructionKitCommonFluent.a11y.voltmeterNode.body.accessibleName.createProperty( { reading: readingTextProperty } ),
                        accessibleRoleDescription: 'movable',
-                       focusable: true,
-                       ...AccessibleDraggableOptions
-                     } );
+                       focusable: true
+                     }, AccessibleDraggableOptions ) );
 
     /**
      * Creates a Vector2Property with a new Vector2 at the specified position.

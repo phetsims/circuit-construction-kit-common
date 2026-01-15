@@ -16,7 +16,7 @@ import { toFixed } from '../../../dot/js/util/toFixed.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
 import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
-import optionize from '../../../phet-core/js/optionize.js';
+import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import AccessibleDraggableOptions from '../../../scenery-phet/js/accessibility/grab-drag/AccessibleDraggableOptions.js';
 import ProbeNode from '../../../scenery-phet/js/ProbeNode.js';
 import SoundKeyboardDragListener from '../../../scenery-phet/js/SoundKeyboardDragListener.js';
@@ -129,16 +129,16 @@ export default class AmmeterNode extends InteractiveHighlighting( Node ) {
 
       phetioVisiblePropertyInstrumented: false,
 
-      tandem: Tandem.REQUIRED,
-
-      // Only add PDOM structure for non-icons (icons are just toolbox buttons)
-      ...( isIcon ? {} : {
-        tagName: 'div',
-        accessibleHeading: accessibleHeadingProperty,
-        accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.ammeterNode.accessibleHelpTextStringProperty,
-        accessibleHelpTextBehavior: ParallelDOM.HELP_TEXT_BEFORE_CONTENT
-      } )
+      tandem: Tandem.REQUIRED
     }, providedOptions );
+
+    // Only add PDOM structure for non-icons (icons are just toolbox buttons)
+    if ( !isIcon ) {
+      options.tagName = 'div';
+      options.accessibleHeading = accessibleHeadingProperty;
+      options.accessibleHelpText = CircuitConstructionKitCommonFluent.a11y.ammeterNode.accessibleHelpTextStringProperty;
+      options.accessibleHelpTextBehavior = ParallelDOM.HELP_TEXT_BEFORE_CONTENT;
+    }
     const tandem = options.tandem;
 
     // if the AmmeterNode is an icon, do not instrument the details of the children
@@ -199,18 +199,17 @@ export default class AmmeterNode extends InteractiveHighlighting( Node ) {
                        cursor: 'pointer',
                        children: [ probeTextNode ]
                      } ) :
-                     new InteractiveHighlightingImage( ammeterBody_png, {
+                     new InteractiveHighlightingImage( ammeterBody_png, combineOptions<NodeOptions>( {
                        scale: SCALE_FACTOR,
                        cursor: 'pointer',
                        children: [ probeTextNode ],
 
                        accessibleName: CircuitConstructionKitCommonFluent.a11y.ammeterNode.body.accessibleName.createProperty( { reading: readingTextProperty } ),
                        accessibleRoleDescription: 'movable',
-                       focusable: true,
-                       ...AccessibleDraggableOptions
-                     } );
+                       focusable: true
+                     }, AccessibleDraggableOptions ) );
 
-    const probeOptions = {
+    const baseProbeOptions = {
       cursor: 'pointer',
       sensorTypeFunction: ProbeNode.crosshairs(),
       scale: SCALE_FACTOR,
@@ -225,12 +224,12 @@ export default class AmmeterNode extends InteractiveHighlighting( Node ) {
           centerX: 0,
           fill: '#e79547' // Match the orange of the ammeter image
         } )
-      ],
-      ...( options.isIcon ? {} : {
-        accessibleName: CircuitConstructionKitCommonFluent.a11y.ammeterNode.probe.accessibleNameStringProperty,
-        ...AccessibleDraggableOptions
-      } )
+      ]
     };
+
+    const probeOptions = options.isIcon ? baseProbeOptions : combineOptions<NodeOptions>( baseProbeOptions, AccessibleDraggableOptions, {
+      accessibleName: CircuitConstructionKitCommonFluent.a11y.ammeterNode.probe.accessibleNameStringProperty
+    } );
 
     // Use InteractiveHighlightingProbeNode for non-icons to get hover highlights on the probe
     const probeNode = options.isIcon ?

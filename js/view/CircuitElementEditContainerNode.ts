@@ -13,11 +13,12 @@ import Property from '../../../axon/js/Property.js';
 import type Bounds2 from '../../../dot/js/Bounds2.js';
 import { roundToInterval } from '../../../dot/js/util/roundToInterval.js';
 import { toFixed } from '../../../dot/js/util/toFixed.js';
-import optionize from '../../../phet-core/js/optionize.js';
+import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import AccessibleInteractiveOptions from '../../../scenery-phet/js/accessibility/AccessibleInteractiveOptions.js';
 import ParallelDOM from '../../../scenery/js/accessibility/pdom/ParallelDOM.js';
 import Node, { type NodeOptions } from '../../../scenery/js/nodes/Node.js';
 import Text from '../../../scenery/js/nodes/Text.js';
+import { SliderOptions } from '../../../sun/js/Slider.js';
 import SunConstants from '../../../sun/js/SunConstants.js';
 import isSettingPhetioStateProperty from '../../../tandem/js/isSettingPhetioStateProperty.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -48,12 +49,12 @@ import CircuitElementNumberControl from './CircuitElementNumberControl.js';
 import CircuitNode from './CircuitNode.js';
 import ClearDynamicsButton from './ClearDynamicsButton.js';
 import createSingletonAdapterProperty, { type GConstructor } from './createSingletonAdapterProperty.js';
+import CircuitContextResponses from './description/CircuitContextResponses.js';
 import EditPanel from './EditPanel.js';
 import FuseRepairButton from './FuseRepairButton.js';
 import PhaseShiftControl from './PhaseShiftControl.js';
 import SwitchReadoutNode from './SwitchReadoutNode.js';
 import SwitchToggleButton from './SwitchToggleButton.js';
-import CircuitContextResponses from './description/CircuitContextResponses.js';
 
 // Layout helper for positioning the edit panel at the bottom of the screen
 const GET_LAYOUT_POSITION = ( visibleBounds: Bounds2, leftX: number, rightX: number ) => {
@@ -191,7 +192,7 @@ export default class CircuitElementEditContainerNode extends Node {
         tandem: tandem.createTandem( 'fuseCurrentRatingControl' ),
         delta: CCKCConstants.SLIDER_STEPS.fuseCurrentRatingControl.shiftKeyboardStep,
         pointerRoundingInterval: CCKCConstants.SLIDER_STEPS.fuseCurrentRatingControl.pointerRoundingInterval,
-        sliderOptions: {
+        sliderOptions: combineOptions<SliderOptions>( {
           keyboardStep: CCKCConstants.SLIDER_STEPS.fuseCurrentRatingControl.step,
           pageKeyboardStep: CCKCConstants.SLIDER_STEPS.fuseCurrentRatingControl.pageKeyboardStep,
           constrainValue: ( value: number ) => roundToInterval( value, CCKCConstants.SLIDER_STEPS.fuseCurrentRatingControl.shiftKeyboardStep ),
@@ -199,9 +200,8 @@ export default class CircuitElementEditContainerNode extends Node {
             CircuitConstructionKitCommonFluent.a11y.fuseCurrentRatingControl.ariaValueText.format( {
               currentNumber: value,
               currentFormatted: toFixed( value, 1 )
-            } ),
-          ...createContextResponseDragHandlers()
-        }
+            } )
+        }, createContextResponseDragHandlers() )
       } );
 
     //------------------------------------------------------------------------------------------------------------------
@@ -260,12 +260,11 @@ export default class CircuitElementEditContainerNode extends Node {
           tandem: tandem.createTandem( tandemName ),
           delta: CCKCConstants.SLIDER_STEPS.resistorAndLightBulbResistanceNumberControl.shiftKeyboardStep,
           pointerRoundingInterval: CCKCConstants.SLIDER_STEPS.resistorAndLightBulbResistanceNumberControl.pointerRoundingInterval,
-          sliderOptions: {
+          sliderOptions: combineOptions<SliderOptions>( {
             keyboardStep: CCKCConstants.SLIDER_STEPS.resistorAndLightBulbResistanceNumberControl.step,
             pageKeyboardStep: CCKCConstants.SLIDER_STEPS.resistorAndLightBulbResistanceNumberControl.pageKeyboardStep,
-            constrainValue: ( value: number ) => roundToInterval( value, CCKCConstants.SLIDER_STEPS.resistorAndLightBulbResistanceNumberControl.shiftKeyboardStep ),
-            ...createContextResponseDragHandlers()
-          },
+            constrainValue: ( value: number ) => roundToInterval( value, CCKCConstants.SLIDER_STEPS.resistorAndLightBulbResistanceNumberControl.shiftKeyboardStep )
+          }, createContextResponseDragHandlers() ),
           numberDisplayOptions: { decimalPlaces: Resistor.RESISTANCE_DECIMAL_PLACES }
         } );
     };
@@ -283,12 +282,11 @@ export default class CircuitElementEditContainerNode extends Node {
           tandem: circuit.includeLabElements ? tandem.createTandem( tandemName ) : Tandem.OPT_OUT,
           delta: CCKCConstants.SLIDER_STEPS.extremeResistorAndLightBulbResistanceNumberControl.shiftKeyboardStep,
           pointerRoundingInterval: CCKCConstants.SLIDER_STEPS.extremeResistorAndLightBulbResistanceNumberControl.pointerRoundingInterval,
-          sliderOptions: {
+          sliderOptions: combineOptions<SliderOptions>( {
             keyboardStep: CCKCConstants.SLIDER_STEPS.extremeResistorAndLightBulbResistanceNumberControl.step,
             pageKeyboardStep: CCKCConstants.SLIDER_STEPS.extremeResistorAndLightBulbResistanceNumberControl.pageKeyboardStep,
-            constrainValue: ( value: number ) => roundToInterval( value, CCKCConstants.SLIDER_STEPS.extremeResistorAndLightBulbResistanceNumberControl.shiftKeyboardStep ),
-            ...createContextResponseDragHandlers()
-          },
+            constrainValue: ( value: number ) => roundToInterval( value, CCKCConstants.SLIDER_STEPS.extremeResistorAndLightBulbResistanceNumberControl.shiftKeyboardStep )
+          }, createContextResponseDragHandlers() ),
           numberDisplayOptions: { decimalPlaces: Resistor.HIGH_RESISTANCE_DECIMAL_PLACES }
         } );
     };
@@ -317,12 +315,11 @@ export default class CircuitElementEditContainerNode extends Node {
         tandem: tandem.createTandem( 'batteryVoltageNumberControl' ),
         delta: CCKCConstants.SLIDER_STEPS.batteryVoltageNumberControl.shiftKeyboardStep,
         pointerRoundingInterval: CCKCConstants.SLIDER_STEPS.batteryVoltageNumberControl.pointerRoundingInterval,
-        sliderOptions: {
+        sliderOptions: combineOptions<SliderOptions>( {
           keyboardStep: CCKCConstants.SLIDER_STEPS.batteryVoltageNumberControl.step,
           pageKeyboardStep: CCKCConstants.SLIDER_STEPS.batteryVoltageNumberControl.pageKeyboardStep,
-          constrainValue: ( value: number ) => roundToInterval( value, CCKCConstants.SLIDER_STEPS.batteryVoltageNumberControl.shiftKeyboardStep ),
-          ...createContextResponseDragHandlers()
-        },
+          constrainValue: ( value: number ) => roundToInterval( value, CCKCConstants.SLIDER_STEPS.batteryVoltageNumberControl.shiftKeyboardStep )
+        }, createContextResponseDragHandlers() ),
         numberDisplayOptions: { decimalPlaces: Battery.VOLTAGE_DECIMAL_PLACES }
       } );
 
@@ -336,12 +333,11 @@ export default class CircuitElementEditContainerNode extends Node {
         tandem: circuit.includeLabElements ? tandem.createTandem( 'extremeBatteryVoltageNumberControl' ) : Tandem.OPT_OUT,
         delta: CCKCConstants.SLIDER_STEPS.extremeBatteryVoltageNumberControl.shiftKeyboardStep,
         pointerRoundingInterval: CCKCConstants.SLIDER_STEPS.extremeBatteryVoltageNumberControl.pointerRoundingInterval,
-        sliderOptions: {
+        sliderOptions: combineOptions<SliderOptions>( {
           keyboardStep: CCKCConstants.SLIDER_STEPS.extremeBatteryVoltageNumberControl.step,
           pageKeyboardStep: CCKCConstants.SLIDER_STEPS.extremeBatteryVoltageNumberControl.pageKeyboardStep,
-          constrainValue: ( value: number ) => roundToInterval( value, CCKCConstants.SLIDER_STEPS.extremeBatteryVoltageNumberControl.shiftKeyboardStep ),
-          ...createContextResponseDragHandlers()
-        },
+          constrainValue: ( value: number ) => roundToInterval( value, CCKCConstants.SLIDER_STEPS.extremeBatteryVoltageNumberControl.shiftKeyboardStep )
+        }, createContextResponseDragHandlers() ),
         numberDisplayOptions: { decimalPlaces: Battery.HIGH_VOLTAGE_DECIMAL_PLACES }
       } );
 

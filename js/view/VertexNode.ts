@@ -15,7 +15,7 @@ import HighlightFromNode from '../../../scenery/js/accessibility/HighlightFromNo
 import InteractiveHighlighting from '../../../scenery/js/accessibility/voicing/InteractiveHighlighting.js';
 import VBox from '../../../scenery/js/layout/nodes/VBox.js';
 import Circle, { type CircleOptions } from '../../../scenery/js/nodes/Circle.js';
-import Node from '../../../scenery/js/nodes/Node.js';
+import Node, { type NodeOptions } from '../../../scenery/js/nodes/Node.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import Color from '../../../scenery/js/util/Color.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -78,7 +78,7 @@ export default class VertexNode extends InteractiveHighlighting( Node ) {
    */
   public constructor( circuitNode: CircuitNode, vertex: Vertex, tandem: Tandem ) {
 
-    super( {
+    super( combineOptions<NodeOptions>( {
       tandem: tandem,
       cursor: 'pointer',
 
@@ -87,14 +87,13 @@ export default class VertexNode extends InteractiveHighlighting( Node ) {
       focusable: true,
       phetioDynamicElement: true,
       phetioVisiblePropertyInstrumented: false,
-      accessibleName: null, // Set by CircuitDescription.ts
-
-      ...AccessibleDraggableOptions,
+      accessibleName: null // Set by CircuitDescription.ts
+    }, AccessibleDraggableOptions, {
 
       // see https://github.com/phetsims/circuit-construction-kit-common/issues/1079#issue-3649808690
       // and https://github.com/phetsims/circuit-construction-kit-common/issues/1083
       accessibleRoleDescription: 'connection options button'
-    } );
+    } ) );
 
     const circuit = circuitNode.circuit;
 
