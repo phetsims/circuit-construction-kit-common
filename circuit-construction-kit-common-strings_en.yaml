@@ -373,11 +373,13 @@ a11y:
           select_direction:
             brighter: 'Some Group { $groupIndex } light bulbs got brighter.'
             dimmer:   'Some Group { $groupIndex } light bulbs got dimmer.'
+            off:      'Some Group { $groupIndex } light bulbs turned off.'
             changed:  'Some Group { $groupIndex } light bulbs changed brightness.'
         all:
           select_direction:
             brighter: 'All Group { $groupIndex } light bulbs got brighter.'
             dimmer:   'All Group { $groupIndex } light bulbs got dimmer.'
+            off:      'All Group { $groupIndex } light bulbs turned off.'
             changed:  'All Group { $groupIndex } light bulbs changed brightness.'
 
     # Vertex connection with current flow

@@ -216,11 +216,12 @@ export default class CircuitContextResponses {
   /**
    * Analyze how light bulb brightness has changed between two states.
    * Uses actual brightness values (0-1) to detect any change.
+   * Detects 'off' as a special case when bulbs that were lit are now off.
    */
   private analyzeBrightnessChange(
     oldValues: number[],
     newValues: number[]
-  ): { hasChange: boolean; scope: 'some' | 'all'; direction: 'brighter' | 'dimmer' | 'changed' } {
+  ): { hasChange: boolean; scope: 'some' | 'all'; direction: 'brighter' | 'dimmer' | 'off' | 'changed' } {
 
     if ( oldValues.length === 0 || newValues.length === 0 ) {
       return { hasChange: false, scope: 'all', direction: 'changed' };
@@ -228,11 +229,14 @@ export default class CircuitContextResponses {
 
     let brighterCount = 0;
     let dimmerCount = 0;
+    let turnedOffCount = 0;
     let changedCount = 0;
 
     const count = Math.min( oldValues.length, newValues.length );
     for ( let i = 0; i < count; i++ ) {
-      const diff = newValues[ i ] - oldValues[ i ];
+      const oldValue = oldValues[ i ];
+      const newValue = newValues[ i ];
+      const diff = newValue - oldValue;
       if ( Math.abs( diff ) > VALUE_EQUALITY_TOLERANCE ) {
         changedCount++;
         if ( diff > 0 ) {
@@ -240,6 +244,10 @@ export default class CircuitContextResponses {
         }
         else {
           dimmerCount++;
+          // Check if bulb turned off: was lit (> tolerance) and now off (<= tolerance)
+          if ( oldValue > VALUE_EQUALITY_TOLERANCE && newValue <= VALUE_EQUALITY_TOLERANCE ) {
+            turnedOffCount++;
+          }
         }
       }
     }
@@ -251,12 +259,18 @@ export default class CircuitContextResponses {
     const scope: 'some' | 'all' = changedCount === count ? 'all' : 'some';
 
     // Determine direction
-    let direction: 'brighter' | 'dimmer' | 'changed';
+    let direction: 'brighter' | 'dimmer' | 'off' | 'changed';
     if ( brighterCount > 0 && dimmerCount === 0 ) {
       direction = 'brighter';
     }
     else if ( dimmerCount > 0 && brighterCount === 0 ) {
-      direction = 'dimmer';
+      // If all dimmed bulbs turned off, use 'off' instead of 'dimmer'
+      if ( turnedOffCount === dimmerCount ) {
+        direction = 'off';
+      }
+      else {
+        direction = 'dimmer';
+      }
     }
     else {
       direction = 'changed';
@@ -272,7 +286,7 @@ export default class CircuitContextResponses {
   private buildGroupChangePhrase(
     groupIndex: number,
     currentChange: { hasChange: boolean; scope: 'some' | 'all'; direction: 'increased' | 'decreased' | 'changed' | 'stopped' | 'reversed' },
-    brightnessChange: { hasChange: boolean; scope: 'some' | 'all'; direction: 'brighter' | 'dimmer' | 'changed' },
+    brightnessChange: { hasChange: boolean; scope: 'some' | 'all'; direction: 'brighter' | 'dimmer' | 'off' | 'changed' },
     includeCurrentChange: boolean
   ): string | null {
     const parts: string[] = [];
