@@ -9,7 +9,6 @@
 
 import affirm from '../../../../perennial-alias/js/browser-and-node/affirm.js';
 import CCKCConstants from '../../CCKCConstants.js';
-import CCKCQueryParameters from '../../CCKCQueryParameters.js';
 import CCKCUtils from '../../CCKCUtils.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import Capacitor from '../Capacitor.js';
@@ -31,7 +30,6 @@ import LTAResistiveBattery from './LTAResistiveBattery.js';
 import type LTAState from './LTAState.js';
 import MNAResistor from './mna/MNAResistor.js';
 import TimestepSubdivisions from './TimestepSubdivisions.js';
-import SpiceSolver from './spice/SpiceSolver.js';
 
 // constants
 const TIMESTEP_SUBDIVISIONS = new TimestepSubdivisions<LTAState>();
@@ -46,12 +44,12 @@ export default class LinearTransientAnalysis {
   public static solveModifiedNodalAnalysis( circuit: Circuit, dt: number ): void {
 
     // Branch based on solver selection
-    if ( CCKCQueryParameters.solver === 'spice' ) {
-      SpiceSolver.solveWithSpice( circuit, dt );
-    }
-    else {
+    // if ( CCKCQueryParameters.solver === 'spice' ) {
+    //   SpiceSolver.solveWithSpice( circuit, dt );
+    // }
+    // else {
       this.solveWithPhetMNA( circuit, dt );
-    }
+    // }
   }
 
   /**
