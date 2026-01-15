@@ -296,15 +296,6 @@ a11y:
                                 [one] { $count } connection
                                *[other] { $count } connections
                               }
-    helpTextCase1:            >-
-                              Add Circuit Components. You need a wire and at least 2 additional components to build a circuit.
-                              Check out Keyboard Shortcuts for more details.
-    helpTextCase2:            >-
-                              Look for leads and terminals on any component and hit Space to pop up options for making a junction.
-                              Disconnect junctions or remove components with Delete key. Check out Keyboard Shortcuts for more details.
-    helpTextCase3:            >-
-                              Look for components and hit Space to pop up options for editing. Remove selected component with
-                              Delete key. Check out Keyboard Shortcuts for more details.
   circuitContextResponses:
     junctionDefaultLabel:       'Junction { $index }'
     selectedForEditing:         Selected for editing, controls visible.

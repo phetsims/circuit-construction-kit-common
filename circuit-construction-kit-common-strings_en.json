@@ -565,15 +565,6 @@
       },
       "connectionCount": {
         "value": "{ $count ->\n  [zero] { $count } connections\n  [one] { $count } connection\n *[other] { $count } connections\n}"
-      },
-      "helpTextCase1": {
-        "value": "Add Circuit Components. You need a wire and at least 2 additional components to build a circuit. Check out Keyboard Shortcuts for more details."
-      },
-      "helpTextCase2": {
-        "value": "Look for leads and terminals on any component and hit Space to pop up options for making a junction. Disconnect junctions or remove components with Delete key. Check out Keyboard Shortcuts for more details."
-      },
-      "helpTextCase3": {
-        "value": "Look for components and hit Space to pop up options for editing. Remove selected component with Delete key. Check out Keyboard Shortcuts for more details."
       }
     },
     "circuitContextResponses": {

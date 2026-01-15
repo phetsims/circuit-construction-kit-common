@@ -227,9 +227,6 @@ type StringsType = {
       'wireCountStringProperty': LocalizedStringProperty;
       'additionalComponentCountStringProperty': LocalizedStringProperty;
       'connectionCountStringProperty': LocalizedStringProperty;
-      'helpTextCase1StringProperty': LocalizedStringProperty;
-      'helpTextCase2StringProperty': LocalizedStringProperty;
-      'helpTextCase3StringProperty': LocalizedStringProperty;
     };
     'circuitContextResponses': {
       'junctionDefaultLabelStringProperty': LocalizedStringProperty;

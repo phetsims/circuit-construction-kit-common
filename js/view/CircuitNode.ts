@@ -73,7 +73,6 @@ import CutButton from './CutButton.js';
 import DeleteCueNode from './DeleteCueNode.js';
 import CircuitContextResponses from './description/CircuitContextResponses.js';
 import CircuitDescription from './description/CircuitDescription.js';
-import ConstructionAreaStatusNode from './description/ConstructionAreaStatusNode.js';
 import FuseNode from './FuseNode.js';
 import InductorNode from './InductorNode.js';
 import ResistorNode from './ResistorNode.js';
