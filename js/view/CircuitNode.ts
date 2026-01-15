@@ -829,6 +829,10 @@ export default class CircuitNode extends Node {
 
     circuit.circuitContextAnnouncementEmitter.addListener( message => this.addAccessibleContextResponse( message ) );
 
+    // The sensor descriptions are nested under the construction area, so when they become enabled and disabled, we must update that pdomOrder
+    screenView.model.voltmeters.forEach( voltmeter => voltmeter.isActiveProperty.link( () => this.updateCircuitDescription() ) );
+    screenView.model.ammeters.forEach( ammeter => ammeter.isActiveProperty.link( () => this.updateCircuitDescription() ) );
+
     // Initialize the grab/release cue nodes
     this.vertexGrabReleaseCueNode = new GrabReleaseCueNode( {
       visible: false,

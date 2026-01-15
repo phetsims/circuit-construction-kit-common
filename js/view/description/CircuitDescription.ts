@@ -585,9 +585,16 @@ export default class CircuitDescription {
     circuitNode.constructionAreaContainer.accessibleParagraphBehavior = ParallelDOM.HELP_TEXT_BEFORE_CONTENT;
     circuitNode.constructionAreaContainer.accessibleParagraph = CircuitConstructionKitCommonFluent.a11y.circuitDescription.emptyConstructionAreaMessageStringProperty.value;
 
-    // Get sensors from sensorLayer (voltmeters before ammeters)
-    const voltmeterNodes = circuitNode.sensorLayer.children.filter( child => child instanceof VoltmeterNode );
-    const ammeterNodes = circuitNode.sensorLayer.children.filter( child => child instanceof AmmeterNode );
+    // Get sensors from sensorLayer (voltmeters before ammeters), sorted by phetioIndex
+    // to ensure consistent PDOM order regardless of scenery z-ordering
+    const voltmeterNodes = circuitNode.sensorLayer.children
+      .filter( child => child instanceof VoltmeterNode )
+      .sort( ( a, b ) => a.voltmeter.phetioIndex - b.voltmeter.phetioIndex );
+
+    console.log( voltmeterNodes.map( voltmeterNode => voltmeterNode.voltmeter.phetioIndex ) );
+    const ammeterNodes = circuitNode.sensorLayer.children
+      .filter( child => child instanceof AmmeterNode )
+      .sort( ( a, b ) => a.ammeter.phetioIndex - b.ammeter.phetioIndex );
 
     if ( !hasElements ) {
 
