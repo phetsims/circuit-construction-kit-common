@@ -350,21 +350,30 @@ export default class CircuitContextResponses {
       if ( group ) {
         const currentState = this.getGroupState( group );
         const previousState = this.previousGroupStates?.get( groupIndex );
+        const showCurrent = this.circuit.showCurrentProperty.value;
+        const hasLightBulbs = currentState.brightnessValues.length > 0;
 
         if ( previousState ) {
           // We have previous state - compare to detect changes
           const currentChange = this.analyzeCurrentChange( previousState.currentValues, currentState.currentValues );
           const brightnessChange = this.analyzeBrightnessChange( previousState.brightnessValues, currentState.brightnessValues );
-          const showCurrent = this.circuit.showCurrentProperty.value;
 
           changePhrase = this.buildGroupChangePhrase( groupIndex, currentChange, brightnessChange, showCurrent );
+
+          // No changes detected - announce "no changes" if there's something meaningful to report
+          if ( !changePhrase && ( showCurrent || hasLightBulbs ) ) {
+            changePhrase = CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.noChangesInGroup.format( {
+              groupIndex: groupIndex,
+              showCurrent: showCurrent ? 'true' : 'false',
+              hasLightBulbs: hasLightBulbs ? 'true' : 'false'
+            } );
+          }
         }
         else {
           // No previous state (elements weren't in a multi-element group before)
           // Check if current is now flowing and/or light bulbs are now lit
           const hasCurrentFlowing = currentState.currentValues.some( current => Math.abs( current ) > CURRENT_THRESHOLD );
           const hasLitBulbs = currentState.brightnessValues.some( brightness => brightness > 0 );
-          const showCurrent = this.circuit.showCurrentProperty.value;
 
           // Build a change phrase based on what's happening now
           const parts: string[] = [];
@@ -387,6 +396,14 @@ export default class CircuitContextResponses {
 
           if ( parts.length > 0 ) {
             changePhrase = parts.join( ' ' );
+          }
+          // No activity in newly formed group - announce "no changes" if there's something meaningful to report
+          else if ( showCurrent || hasLightBulbs ) {
+            changePhrase = CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.noChangesInGroup.format( {
+              groupIndex: groupIndex,
+              showCurrent: showCurrent ? 'true' : 'false',
+              hasLightBulbs: hasLightBulbs ? 'true' : 'false'
+            } );
           }
         }
       }
@@ -478,10 +495,12 @@ export default class CircuitContextResponses {
     // Build the change phrase based on what changed
     let changePhrase: string | null = null;
 
+    const showCurrent = this.circuit.showCurrentProperty.value;
+    const hasLightBulbs = currentState.brightnessValues.length > 0;
+
     if ( previousState ) {
       const currentChange = this.analyzeCurrentChange( previousState.currentValues, currentState.currentValues );
       const brightnessChange = this.analyzeBrightnessChange( previousState.brightnessValues, currentState.brightnessValues );
-      const showCurrent = this.circuit.showCurrentProperty.value;
 
       changePhrase = this.buildGroupChangePhrase( groupIndex, currentChange, brightnessChange, showCurrent );
     }
@@ -491,6 +510,18 @@ export default class CircuitContextResponses {
       return isClosed ?
              CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.switchClosed.format( { currentPhrase: changePhrase } ) :
              CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.switchOpened.format( { currentPhrase: changePhrase } );
+    }
+
+    // No changes detected - announce "no changes" if there's something meaningful to report
+    if ( previousState && ( showCurrent || hasLightBulbs ) ) {
+      const noChangesPhrase = CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.noChangesInGroup.format( {
+        groupIndex: groupIndex,
+        showCurrent: showCurrent ? 'true' : 'false',
+        hasLightBulbs: hasLightBulbs ? 'true' : 'false'
+      } );
+      return isClosed ?
+             CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.switchClosed.format( { currentPhrase: noChangesPhrase } ) :
+             CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.switchOpened.format( { currentPhrase: noChangesPhrase } );
     }
 
     return isClosed ?
@@ -527,6 +558,8 @@ export default class CircuitContextResponses {
 
     const currentState = this.getGroupState( group );
     const previousState = this.previousGroupStates?.get( groupIndex );
+    const showCurrent = this.circuit.showCurrentProperty.value;
+    const hasLightBulbs = currentState.brightnessValues.length > 0;
 
     // Build the change phrase based on what changed
     let changePhrase: string | null = null;
@@ -534,7 +567,6 @@ export default class CircuitContextResponses {
     if ( previousState ) {
       const currentChange = this.analyzeCurrentChange( previousState.currentValues, currentState.currentValues );
       const brightnessChange = this.analyzeBrightnessChange( previousState.brightnessValues, currentState.brightnessValues );
-      const showCurrent = this.circuit.showCurrentProperty.value;
 
       changePhrase = this.buildGroupChangePhrase( groupIndex, currentChange, brightnessChange, showCurrent );
     }
@@ -544,6 +576,18 @@ export default class CircuitContextResponses {
       return isTripped ?
              CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.fuseBroken.format( { currentPhrase: changePhrase } ) :
              CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.fuseRepaired.format( { currentPhrase: changePhrase } );
+    }
+
+    // No changes detected - announce "no changes" if there's something meaningful to report
+    if ( previousState && ( showCurrent || hasLightBulbs ) ) {
+      const noChangesPhrase = CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.noChangesInGroup.format( {
+        groupIndex: groupIndex,
+        showCurrent: showCurrent ? 'true' : 'false',
+        hasLightBulbs: hasLightBulbs ? 'true' : 'false'
+      } );
+      return isTripped ?
+             CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.fuseBroken.format( { currentPhrase: noChangesPhrase } ) :
+             CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.fuseRepaired.format( { currentPhrase: noChangesPhrase } );
     }
 
     return isTripped ?
@@ -575,6 +619,8 @@ export default class CircuitContextResponses {
 
     const currentState = this.getGroupState( group );
     const previousState = this.previousGroupStates?.get( groupIndex );
+    const showCurrent = this.circuit.showCurrentProperty.value;
+    const hasLightBulbs = currentState.brightnessValues.length > 0;
 
     // Build the change phrase based on what changed
     let changePhrase: string | null = null;
@@ -588,7 +634,6 @@ export default class CircuitContextResponses {
 
       const currentChange = this.analyzeCurrentChange( previousState.currentValues, adjustedCurrentValues );
       const brightnessChange = this.analyzeBrightnessChange( previousState.brightnessValues, currentState.brightnessValues );
-      const showCurrent = this.circuit.showCurrentProperty.value;
 
       changePhrase = this.buildGroupChangePhrase( groupIndex, currentChange, brightnessChange, showCurrent );
     }
@@ -596,6 +641,16 @@ export default class CircuitContextResponses {
     // Return appropriate response based on whether there were current/brightness changes
     if ( changePhrase ) {
       return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.batteryReversed.format( { currentPhrase: changePhrase } );
+    }
+
+    // No changes detected - announce "no changes" if there's something meaningful to report
+    if ( previousState && ( showCurrent || hasLightBulbs ) ) {
+      const noChangesPhrase = CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.noChangesInGroup.format( {
+        groupIndex: groupIndex,
+        showCurrent: showCurrent ? 'true' : 'false',
+        hasLightBulbs: hasLightBulbs ? 'true' : 'false'
+      } );
+      return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.batteryReversed.format( { currentPhrase: noChangesPhrase } );
     }
 
     return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.batteryReversedNoChangeStringProperty.value;
@@ -739,6 +794,8 @@ export default class CircuitContextResponses {
 
     const currentState = this.getGroupState( group );
     const previousState = this.previousGroupStates?.get( groupIndex );
+    const showCurrent = this.circuit.showCurrentProperty.value;
+    const hasLightBulbs = currentState.brightnessValues.length > 0;
 
     // Build the change phrase based on what changed
     let changePhrase: string | null = null;
@@ -746,7 +803,6 @@ export default class CircuitContextResponses {
     if ( previousState ) {
       const currentChange = this.analyzeCurrentChange( previousState.currentValues, currentState.currentValues );
       const brightnessChange = this.analyzeBrightnessChange( previousState.brightnessValues, currentState.brightnessValues );
-      const showCurrent = this.circuit.showCurrentProperty.value;
 
       changePhrase = this.buildGroupChangePhrase( groupIndex, currentChange, brightnessChange, showCurrent );
     }
@@ -755,6 +811,18 @@ export default class CircuitContextResponses {
     if ( changePhrase ) {
       return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.vertexDisconnected.format( {
         currentPhrase: changePhrase
+      } );
+    }
+
+    // No changes detected - announce "no changes" if there's something meaningful to report
+    if ( previousState && ( showCurrent || hasLightBulbs ) ) {
+      const noChangesPhrase = CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.noChangesInGroup.format( {
+        groupIndex: groupIndex,
+        showCurrent: showCurrent ? 'true' : 'false',
+        hasLightBulbs: hasLightBulbs ? 'true' : 'false'
+      } );
+      return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.vertexDisconnected.format( {
+        currentPhrase: noChangesPhrase
       } );
     }
 
