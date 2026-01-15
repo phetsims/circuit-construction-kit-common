@@ -34,6 +34,7 @@ import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
 import isSettingPhetioStateProperty from '../../../tandem/js/isSettingPhetioStateProperty.js';
 import PhetioGroup from '../../../tandem/js/PhetioGroup.js';
 import Tandem from '../../../tandem/js/Tandem.js';
+import Utterance from '../../../utterance-queue/js/Utterance.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -603,15 +604,21 @@ export default class CircuitNode extends Node {
       }
     } );
 
-    // Handle fuse tripped/repaired context responses
-    let pendingFuseStateChange: { fuseElement: Fuse; isTripped: boolean } | null = null;
+    // Handle fuse tripped/repaired context responses. Use an array to queue multiple state changes
+    // that may occur before the circuit solves (e.g., repair then immediate re-break).
+    const pendingFuseStateChanges: { fuseElement: Fuse; isTripped: boolean }[] = [];
+
+    // Use separate Utterances for fuse repaired vs broken so both can be queued without
+    // one replacing the other. See https://github.com/phetsims/scenery/issues/1729
+    const fuseRepairedUtterance = new Utterance();
+    const fuseBrokenUtterance = new Utterance();
 
     // Listen for fuse state changes on any fuse
     const fuseStateChangeListener = ( isTripped: boolean, fuseElement: Fuse ) => {
       if ( !isResettingAllProperty.value && !isSettingPhetioStateProperty.value ) {
         // Capture state before the circuit solves
         circuitContextResponses.captureState();
-        pendingFuseStateChange = { fuseElement: fuseElement, isTripped: isTripped };
+        pendingFuseStateChanges.push( { fuseElement: fuseElement, isTripped: isTripped } );
       }
     };
 
@@ -693,15 +700,18 @@ export default class CircuitNode extends Node {
         pendingSwitchToggle = null;
       }
 
-      if ( pendingFuseStateChange && !isResettingAllProperty.value && !isSettingPhetioStateProperty.value ) {
+      // Process all pending fuse state changes (there may be multiple if repair + immediate re-break)
+      while ( pendingFuseStateChanges.length > 0 && !isResettingAllProperty.value && !isSettingPhetioStateProperty.value ) {
+        const pendingChange = pendingFuseStateChanges.shift()!;
         const response = circuitContextResponses.createFuseStateChangeResponse(
-          pendingFuseStateChange.fuseElement,
-          pendingFuseStateChange.isTripped
+          pendingChange.fuseElement,
+          pendingChange.isTripped
         );
         if ( response ) {
-          this.addAccessibleContextResponse( response );
+          const utterance = pendingChange.isTripped ? fuseBrokenUtterance : fuseRepairedUtterance;
+          utterance.alert = response;
+          this.addAccessibleContextResponse( utterance, { alertBehavior: 'queue' } );
         }
-        pendingFuseStateChange = null;
       }
 
       if ( pendingDisconnection && !isResettingAllProperty.value && !isSettingPhetioStateProperty.value ) {
