@@ -279,7 +279,6 @@ export default class CCKCScreenView extends ScreenView {
       tandem.createTandem( 'displayOptionsPanel' )
     );
 
-    // TODO: This is showing as nested under the display options panel in the a11y view, how to give its own heading? See https://github.com/phetsims/circuit-construction-kit-common/issues/1039
     this.advancedAccordionBox = options.showAdvancedControls ? new AdvancedAccordionBox(
       model.circuit,
       CONTROL_PANEL_ALIGN_GROUP,
