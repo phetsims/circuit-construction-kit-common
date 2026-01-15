@@ -166,7 +166,6 @@ export default class CircuitNode extends Node {
   public readonly unconnectedCircuitElementsSection: Node;
   public readonly groupsContainer: Node;
   public readonly constructionAreaContainer: Node;
-  public readonly constructionAreaStatusNode: ConstructionAreaStatusNode;
 
   // Cue nodes to show the user how to grab vertices and circuit elements
   private readonly vertexGrabReleaseCueNode: GrabReleaseCueNode;
@@ -785,10 +784,6 @@ export default class CircuitNode extends Node {
 
     this.groupsContainer = new Node( {} );
 
-    // Status node shows counts of wires, components, and connections with contextual help
-    this.constructionAreaStatusNode = new ConstructionAreaStatusNode( circuit );
-
-    this.constructionAreaContainer.addChild( this.constructionAreaStatusNode );
     this.constructionAreaContainer.addChild( this.unconnectedCircuitElementsSection );
     this.constructionAreaContainer.addChild( this.groupsContainer );
 

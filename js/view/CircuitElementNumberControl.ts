@@ -109,7 +109,7 @@ export default class CircuitElementNumberControl extends HBox {
     // can be made invisible by phet-io customization (to hide all instances), and individual circuit elements
     // change the visibility of the parent.
 
-    // Combine all property gates via AND
+    // Combine all property gates via AND.
     const listener = ( ...isEditable: boolean[] ) => this.setVisible( !isEditable.includes( false ) );
 
     let multilink: UnknownMultilink | null = null;
