@@ -654,7 +654,18 @@ export default class CircuitContextResponses {
       return formatWithChange( changePhrase );
     }
 
-    return baseString;
+    // No changes detected - announce "no changes" if there's something meaningful to report
+    const hasLightBulbs = currentState.brightnessValues.length > 0;
+    if ( !showCurrent && !hasLightBulbs ) {
+      return baseString;
+    }
+
+    const noChangesPhrase = CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.noChangesInGroup.format( {
+      groupIndex: groupIndex,
+      showCurrent: showCurrent ? 'true' : 'false',
+      hasLightBulbs: hasLightBulbs ? 'true' : 'false'
+    } );
+    return formatWithChange( noChangesPhrase );
   }
 
   /**
