@@ -96,32 +96,12 @@ type StringsType = {
     'toChooseConnectionStringProperty': LocalizedStringProperty;
   };
   'keyboardHelpDialog': {
-    'addComponents': {
+    'circuitComponentsAndTools': {
       'headingStringProperty': LocalizedStringProperty;
-      'createComponent': {
-        'labelStringProperty': LocalizedStringProperty;
-        'labelInnerContentStringProperty': LocalizedStringProperty;
-      }
-    };
-    'connectComponents': {
-      'headingStringProperty': LocalizedStringProperty;
-      'grabJunction': {
-        'labelStringProperty': LocalizedStringProperty;
-        'labelInnerContentStringProperty': LocalizedStringProperty;
-      };
-      'selectTarget': {
-        'labelStringProperty': LocalizedStringProperty;
-        'labelInnerContentStringProperty': LocalizedStringProperty;
-      };
-      'attachJunction': {
-        'labelStringProperty': LocalizedStringProperty;
-        'labelInnerContentStringProperty': LocalizedStringProperty;
-      }
-    };
-    'editCircuitComponents': {
-      'headingStringProperty': LocalizedStringProperty;
-      'editCircuitComponentStringProperty': LocalizedStringProperty;
-      'deleteCircuitComponentStringProperty': LocalizedStringProperty;
+      'removeFromToolboxStringProperty': LocalizedStringProperty;
+      'returnToToolboxStringProperty': LocalizedStringProperty;
+      'editComponentStringProperty': LocalizedStringProperty;
+      'cutConnectionsStringProperty': LocalizedStringProperty;
     };
     'focus': {
       'headingStringProperty': LocalizedStringProperty;
@@ -136,6 +116,14 @@ type StringsType = {
     }
   };
   'a11y': {
+    'keyboardHelpDialog': {
+      'circuitComponentsAndTools': {
+        'removeFromToolboxDescriptionStringProperty': LocalizedStringProperty;
+        'returnToToolboxDescriptionStringProperty': LocalizedStringProperty;
+        'editComponentDescriptionStringProperty': LocalizedStringProperty;
+        'cutConnectionsDescriptionStringProperty': LocalizedStringProperty;
+      }
+    };
     'circuitDescription': {
       'circuitComponentTypeLabels': {
         'wireStringProperty': LocalizedStringProperty;

@@ -89,38 +89,30 @@ key:
 
 # TODO: Some of this text is PDOM only and should not appear in rosetta
 keyboardHelpDialog:
-  addComponents:
-    heading: Add Circuit Components
-    createComponent:
-      label:             Add focused tool to construction area
-      labelInnerContent: Press Space or Enter to drop the selected component into the circuit.
-  connectComponents:
-    heading: Connect Components
-    grabJunction:
-      label:             Grab highlighted junction
-      labelInnerContent: Press Space or Enter to begin connecting from the focused junction.
-    selectTarget:
-      label:             Move grabbed junction
-      labelInnerContent: Use arrow keys to move grabbed junction to different attachment choices.
-    attachJunction:
-      label:             Attach junctions
-      labelInnerContent: Press Space or Enter again to complete the connection, or to detach.
-  editCircuitComponents:
-    heading:                Edit Circuit Components
-    editCircuitComponent:   Edit circuit component
-    deleteCircuitComponent: Delete or cut circuit component
+  circuitComponentsAndTools:
+    heading:          Circuit Components and Measurement Tools
+    removeFromToolbox: Remove from toolbox
+    returnToToolbox:   Return to toolbox
+    editComponent:     Edit component
+    cutConnections:    Cut connections
   focus:
     heading:               From Anywhere in Screen
     focusToolbox:          Jump to Circuit Component Toolbox
-    focusConstructionArea: Jump to construction area
+    focusConstructionArea: Jump to Construction Area
   # For connecting junctions or attaching a voltmeter probe or ammeter probe
   chooseConnection:
-    heading:          Choose a Connection
-    thingSingular:    connection
-    thingPlural:      connections
-    cancelConnection: 4. Cancel connection
+    heading:          Choose Connection or Measurement
+    thingSingular:    option
+    thingPlural:      options
+    cancelConnection: Cancel
 
 a11y:
+  keyboardHelpDialog:
+    circuitComponentsAndTools:
+      removeFromToolboxDescription: Press Space or Enter to remove a circuit component from the toolbox.
+      returnToToolboxDescription:   Press Delete or Backspace to return a circuit component to the toolbox.
+      editComponentDescription:     Press Space or Enter to edit a selected circuit component.
+      cutConnectionsDescription:    Press Delete or Backspace to cut connections at the selected vertex.
   circuitDescription:
 
     # TODO: Reuse same labels as outside a11y key?

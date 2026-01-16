@@ -95,19 +95,11 @@ addToMapIfDefined( 'extremeResistor', 'extremeResistorStringProperty' );
 addToMapIfDefined( 'key_toCut', 'key.toCutStringProperty' );
 addToMapIfDefined( 'key_toEditComponent', 'key.toEditComponentStringProperty' );
 addToMapIfDefined( 'key_toChooseConnection', 'key.toChooseConnectionStringProperty' );
-addToMapIfDefined( 'keyboardHelpDialog_addComponents_heading', 'keyboardHelpDialog.addComponents.headingStringProperty' );
-addToMapIfDefined( 'keyboardHelpDialog_addComponents_createComponent_label', 'keyboardHelpDialog.addComponents.createComponent.labelStringProperty' );
-addToMapIfDefined( 'keyboardHelpDialog_addComponents_createComponent_labelInnerContent', 'keyboardHelpDialog.addComponents.createComponent.labelInnerContentStringProperty' );
-addToMapIfDefined( 'keyboardHelpDialog_connectComponents_heading', 'keyboardHelpDialog.connectComponents.headingStringProperty' );
-addToMapIfDefined( 'keyboardHelpDialog_connectComponents_grabJunction_label', 'keyboardHelpDialog.connectComponents.grabJunction.labelStringProperty' );
-addToMapIfDefined( 'keyboardHelpDialog_connectComponents_grabJunction_labelInnerContent', 'keyboardHelpDialog.connectComponents.grabJunction.labelInnerContentStringProperty' );
-addToMapIfDefined( 'keyboardHelpDialog_connectComponents_selectTarget_label', 'keyboardHelpDialog.connectComponents.selectTarget.labelStringProperty' );
-addToMapIfDefined( 'keyboardHelpDialog_connectComponents_selectTarget_labelInnerContent', 'keyboardHelpDialog.connectComponents.selectTarget.labelInnerContentStringProperty' );
-addToMapIfDefined( 'keyboardHelpDialog_connectComponents_attachJunction_label', 'keyboardHelpDialog.connectComponents.attachJunction.labelStringProperty' );
-addToMapIfDefined( 'keyboardHelpDialog_connectComponents_attachJunction_labelInnerContent', 'keyboardHelpDialog.connectComponents.attachJunction.labelInnerContentStringProperty' );
-addToMapIfDefined( 'keyboardHelpDialog_editCircuitComponents_heading', 'keyboardHelpDialog.editCircuitComponents.headingStringProperty' );
-addToMapIfDefined( 'keyboardHelpDialog_editCircuitComponents_editCircuitComponent', 'keyboardHelpDialog.editCircuitComponents.editCircuitComponentStringProperty' );
-addToMapIfDefined( 'keyboardHelpDialog_editCircuitComponents_deleteCircuitComponent', 'keyboardHelpDialog.editCircuitComponents.deleteCircuitComponentStringProperty' );
+addToMapIfDefined( 'keyboardHelpDialog_circuitComponentsAndTools_heading', 'keyboardHelpDialog.circuitComponentsAndTools.headingStringProperty' );
+addToMapIfDefined( 'keyboardHelpDialog_circuitComponentsAndTools_removeFromToolbox', 'keyboardHelpDialog.circuitComponentsAndTools.removeFromToolboxStringProperty' );
+addToMapIfDefined( 'keyboardHelpDialog_circuitComponentsAndTools_returnToToolbox', 'keyboardHelpDialog.circuitComponentsAndTools.returnToToolboxStringProperty' );
+addToMapIfDefined( 'keyboardHelpDialog_circuitComponentsAndTools_editComponent', 'keyboardHelpDialog.circuitComponentsAndTools.editComponentStringProperty' );
+addToMapIfDefined( 'keyboardHelpDialog_circuitComponentsAndTools_cutConnections', 'keyboardHelpDialog.circuitComponentsAndTools.cutConnectionsStringProperty' );
 addToMapIfDefined( 'keyboardHelpDialog_focus_heading', 'keyboardHelpDialog.focus.headingStringProperty' );
 addToMapIfDefined( 'keyboardHelpDialog_focus_focusToolbox', 'keyboardHelpDialog.focus.focusToolboxStringProperty' );
 addToMapIfDefined( 'keyboardHelpDialog_focus_focusConstructionArea', 'keyboardHelpDialog.focus.focusConstructionAreaStringProperty' );
@@ -115,6 +107,10 @@ addToMapIfDefined( 'keyboardHelpDialog_chooseConnection_heading', 'keyboardHelpD
 addToMapIfDefined( 'keyboardHelpDialog_chooseConnection_thingSingular', 'keyboardHelpDialog.chooseConnection.thingSingularStringProperty' );
 addToMapIfDefined( 'keyboardHelpDialog_chooseConnection_thingPlural', 'keyboardHelpDialog.chooseConnection.thingPluralStringProperty' );
 addToMapIfDefined( 'keyboardHelpDialog_chooseConnection_cancelConnection', 'keyboardHelpDialog.chooseConnection.cancelConnectionStringProperty' );
+addToMapIfDefined( 'a11y_keyboardHelpDialog_circuitComponentsAndTools_removeFromToolboxDescription', 'a11y.keyboardHelpDialog.circuitComponentsAndTools.removeFromToolboxDescriptionStringProperty' );
+addToMapIfDefined( 'a11y_keyboardHelpDialog_circuitComponentsAndTools_returnToToolboxDescription', 'a11y.keyboardHelpDialog.circuitComponentsAndTools.returnToToolboxDescriptionStringProperty' );
+addToMapIfDefined( 'a11y_keyboardHelpDialog_circuitComponentsAndTools_editComponentDescription', 'a11y.keyboardHelpDialog.circuitComponentsAndTools.editComponentDescriptionStringProperty' );
+addToMapIfDefined( 'a11y_keyboardHelpDialog_circuitComponentsAndTools_cutConnectionsDescription', 'a11y.keyboardHelpDialog.circuitComponentsAndTools.cutConnectionsDescriptionStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_wire', 'a11y.circuitDescription.circuitComponentTypeLabels.wireStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_battery', 'a11y.circuitDescription.circuitComponentTypeLabels.batteryStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_resistor', 'a11y.circuitDescription.circuitComponentTypeLabels.resistorStringProperty' );
@@ -398,32 +394,12 @@ const CircuitConstructionKitCommonFluent = {
   },
   _comment_5: new FluentComment( {"comment":"TODO: Some of this text is PDOM only and should not appear in rosetta","associatedKey":"keyboardHelpDialog"} ),
   keyboardHelpDialog: {
-    addComponents: {
-      headingStringProperty: _.get( CircuitConstructionKitCommonStrings, 'keyboardHelpDialog.addComponents.headingStringProperty' ),
-      createComponent: {
-        labelStringProperty: _.get( CircuitConstructionKitCommonStrings, 'keyboardHelpDialog.addComponents.createComponent.labelStringProperty' ),
-        labelInnerContentStringProperty: _.get( CircuitConstructionKitCommonStrings, 'keyboardHelpDialog.addComponents.createComponent.labelInnerContentStringProperty' )
-      }
-    },
-    connectComponents: {
-      headingStringProperty: _.get( CircuitConstructionKitCommonStrings, 'keyboardHelpDialog.connectComponents.headingStringProperty' ),
-      grabJunction: {
-        labelStringProperty: _.get( CircuitConstructionKitCommonStrings, 'keyboardHelpDialog.connectComponents.grabJunction.labelStringProperty' ),
-        labelInnerContentStringProperty: _.get( CircuitConstructionKitCommonStrings, 'keyboardHelpDialog.connectComponents.grabJunction.labelInnerContentStringProperty' )
-      },
-      selectTarget: {
-        labelStringProperty: _.get( CircuitConstructionKitCommonStrings, 'keyboardHelpDialog.connectComponents.selectTarget.labelStringProperty' ),
-        labelInnerContentStringProperty: _.get( CircuitConstructionKitCommonStrings, 'keyboardHelpDialog.connectComponents.selectTarget.labelInnerContentStringProperty' )
-      },
-      attachJunction: {
-        labelStringProperty: _.get( CircuitConstructionKitCommonStrings, 'keyboardHelpDialog.connectComponents.attachJunction.labelStringProperty' ),
-        labelInnerContentStringProperty: _.get( CircuitConstructionKitCommonStrings, 'keyboardHelpDialog.connectComponents.attachJunction.labelInnerContentStringProperty' )
-      }
-    },
-    editCircuitComponents: {
-      headingStringProperty: _.get( CircuitConstructionKitCommonStrings, 'keyboardHelpDialog.editCircuitComponents.headingStringProperty' ),
-      editCircuitComponentStringProperty: _.get( CircuitConstructionKitCommonStrings, 'keyboardHelpDialog.editCircuitComponents.editCircuitComponentStringProperty' ),
-      deleteCircuitComponentStringProperty: _.get( CircuitConstructionKitCommonStrings, 'keyboardHelpDialog.editCircuitComponents.deleteCircuitComponentStringProperty' )
+    circuitComponentsAndTools: {
+      headingStringProperty: _.get( CircuitConstructionKitCommonStrings, 'keyboardHelpDialog.circuitComponentsAndTools.headingStringProperty' ),
+      removeFromToolboxStringProperty: _.get( CircuitConstructionKitCommonStrings, 'keyboardHelpDialog.circuitComponentsAndTools.removeFromToolboxStringProperty' ),
+      returnToToolboxStringProperty: _.get( CircuitConstructionKitCommonStrings, 'keyboardHelpDialog.circuitComponentsAndTools.returnToToolboxStringProperty' ),
+      editComponentStringProperty: _.get( CircuitConstructionKitCommonStrings, 'keyboardHelpDialog.circuitComponentsAndTools.editComponentStringProperty' ),
+      cutConnectionsStringProperty: _.get( CircuitConstructionKitCommonStrings, 'keyboardHelpDialog.circuitComponentsAndTools.cutConnectionsStringProperty' )
     },
     focus: {
       headingStringProperty: _.get( CircuitConstructionKitCommonStrings, 'keyboardHelpDialog.focus.headingStringProperty' ),
@@ -439,6 +415,15 @@ const CircuitConstructionKitCommonFluent = {
     }
   },
   a11y: {
+    _comment_0: new FluentComment( {"comment":"TODO: Some of this text is PDOM only and should not appear in rosetta","associatedKey":"keyboardHelpDialog"} ),
+    keyboardHelpDialog: {
+      circuitComponentsAndTools: {
+        removeFromToolboxDescriptionStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_circuitComponentsAndTools_removeFromToolboxDescription', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.circuitComponentsAndTools.removeFromToolboxDescriptionStringProperty' ) ),
+        returnToToolboxDescriptionStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_circuitComponentsAndTools_returnToToolboxDescription', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.circuitComponentsAndTools.returnToToolboxDescriptionStringProperty' ) ),
+        editComponentDescriptionStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_circuitComponentsAndTools_editComponentDescription', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.circuitComponentsAndTools.editComponentDescriptionStringProperty' ) ),
+        cutConnectionsDescriptionStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_circuitComponentsAndTools_cutConnectionsDescription', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.circuitComponentsAndTools.cutConnectionsDescriptionStringProperty' ) )
+      }
+    },
     circuitDescription: {
       _comment_0: new FluentComment( {"comment":"TODO: Reuse same labels as outside a11y key?","associatedKey":"circuitComponentTypeLabels"} ),
       circuitComponentTypeLabels: {

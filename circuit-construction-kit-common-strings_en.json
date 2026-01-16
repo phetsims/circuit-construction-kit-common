@@ -239,57 +239,21 @@
     }
   },
   "keyboardHelpDialog": {
-    "addComponents": {
+    "circuitComponentsAndTools": {
       "heading": {
-        "value": "Add Circuit Components"
+        "value": "Circuit Components and Measurement Tools"
       },
-      "createComponent": {
-        "label": {
-          "value": "Add focused tool to construction area"
-        },
-        "labelInnerContent": {
-          "value": "Press Space or Enter to drop the selected component into the circuit."
-        }
-      }
-    },
-    "connectComponents": {
-      "heading": {
-        "value": "Connect Components"
+      "removeFromToolbox": {
+        "value": "Remove from toolbox"
       },
-      "grabJunction": {
-        "label": {
-          "value": "Grab highlighted junction"
-        },
-        "labelInnerContent": {
-          "value": "Press Space or Enter to begin connecting from the focused junction."
-        }
+      "returnToToolbox": {
+        "value": "Return to toolbox"
       },
-      "selectTarget": {
-        "label": {
-          "value": "Move grabbed junction"
-        },
-        "labelInnerContent": {
-          "value": "Use arrow keys to move grabbed junction to different attachment choices."
-        }
+      "editComponent": {
+        "value": "Edit component"
       },
-      "attachJunction": {
-        "label": {
-          "value": "Attach junctions"
-        },
-        "labelInnerContent": {
-          "value": "Press Space or Enter again to complete the connection, or to detach."
-        }
-      }
-    },
-    "editCircuitComponents": {
-      "heading": {
-        "value": "Edit Circuit Components"
-      },
-      "editCircuitComponent": {
-        "value": "Edit circuit component"
-      },
-      "deleteCircuitComponent": {
-        "value": "Delete or cut circuit component"
+      "cutConnections": {
+        "value": "Cut connections"
       }
     },
     "focus": {
@@ -300,25 +264,41 @@
         "value": "Jump to Circuit Component Toolbox"
       },
       "focusConstructionArea": {
-        "value": "Jump to construction area"
+        "value": "Jump to Construction Area"
       }
     },
     "chooseConnection": {
       "heading": {
-        "value": "Choose a Connection"
+        "value": "Choose Connection or Measurement"
       },
       "thingSingular": {
-        "value": "connection"
+        "value": "option"
       },
       "thingPlural": {
-        "value": "connections"
+        "value": "options"
       },
       "cancelConnection": {
-        "value": "4. Cancel connection"
+        "value": "Cancel"
       }
     }
   },
   "a11y": {
+    "keyboardHelpDialog": {
+      "circuitComponentsAndTools": {
+        "removeFromToolboxDescription": {
+          "value": "Press Space or Enter to remove a circuit component from the toolbox."
+        },
+        "returnToToolboxDescription": {
+          "value": "Press Delete or Backspace to return a circuit component to the toolbox."
+        },
+        "editComponentDescription": {
+          "value": "Press Space or Enter to edit a selected circuit component."
+        },
+        "cutConnectionsDescription": {
+          "value": "Press Delete or Backspace to cut connections at the selected vertex."
+        }
+      }
+    },
     "circuitDescription": {
       "circuitComponentTypeLabels": {
         "wire": {
