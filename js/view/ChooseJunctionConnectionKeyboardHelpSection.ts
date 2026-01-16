@@ -8,12 +8,12 @@
  */
 
 import PatternStringProperty from '../../../axon/js/PatternStringProperty.js';
-import Tandem from '../../../tandem/js/Tandem.js';
 import KeyboardHelpIconFactory from '../../../scenery-phet/js/keyboard/help/KeyboardHelpIconFactory.js';
 import KeyboardHelpSection from '../../../scenery-phet/js/keyboard/help/KeyboardHelpSection.js';
 import KeyboardHelpSectionRow from '../../../scenery-phet/js/keyboard/help/KeyboardHelpSectionRow.js';
-import SceneryPhetFluent from '../../../scenery-phet/js/SceneryPhetFluent.js';
 import TextKeyNode from '../../../scenery-phet/js/keyboard/TextKeyNode.js';
+import SceneryPhetFluent from '../../../scenery-phet/js/SceneryPhetFluent.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 
@@ -65,7 +65,7 @@ export default class ChooseJunctionConnectionKeyboardHelpSection extends Keyboar
     const cancelConnection = KeyboardHelpSectionRow.labelWithIcon(
       CircuitConstructionKitCommonFluent.keyboardHelpDialog.chooseConnection.cancelConnectionStringProperty,
       escapeKeyNode, {
-        labelInnerContent: SceneryPhetFluent.a11y.keyboardHelpDialog.comboBox.closeWithoutChangingDescriptionStringProperty
+        labelInnerContent: CircuitConstructionKitCommonFluent.a11y.keyboardHelpDialog.cancelWithEscapeStringProperty
       } );
 
     const rows = [ popUpList, moveThrough, chooseNew, cancelConnection ];

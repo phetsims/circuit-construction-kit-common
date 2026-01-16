@@ -91,7 +91,7 @@ keyboardCues:
 # Visible labels in keyboard shortcuts dialog
 keyboardHelpDialog:
   circuitComponentsAndTools:
-    heading:          Circuit Components and Measurement Tools
+    heading:           Circuit Components and Measurement Tools
     removeFromToolbox: Remove from toolbox
     returnToToolbox:   Return to toolbox
     editComponent:     Edit component
@@ -105,9 +105,11 @@ keyboardHelpDialog:
     heading:          Choose Connection or Measurement
     thingSingular:    option
     thingPlural:      options
-    cancelConnection: Cancel
+    cancelConnection: 4. Cancel
 
 a11y:
+  keyboardHelpDialog:
+    cancelWithEscape: Cancel with Escape key.
   circuitDescription:
 
     # TODO: Reuse same labels as outside a11y key?

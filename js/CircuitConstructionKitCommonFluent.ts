@@ -107,6 +107,7 @@ addToMapIfDefined( 'keyboardHelpDialog_chooseConnection_heading', 'keyboardHelpD
 addToMapIfDefined( 'keyboardHelpDialog_chooseConnection_thingSingular', 'keyboardHelpDialog.chooseConnection.thingSingularStringProperty' );
 addToMapIfDefined( 'keyboardHelpDialog_chooseConnection_thingPlural', 'keyboardHelpDialog.chooseConnection.thingPluralStringProperty' );
 addToMapIfDefined( 'keyboardHelpDialog_chooseConnection_cancelConnection', 'keyboardHelpDialog.chooseConnection.cancelConnectionStringProperty' );
+addToMapIfDefined( 'a11y_keyboardHelpDialog_cancelWithEscape', 'a11y.keyboardHelpDialog.cancelWithEscapeStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_wire', 'a11y.circuitDescription.circuitComponentTypeLabels.wireStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_battery', 'a11y.circuitDescription.circuitComponentTypeLabels.batteryStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_resistor', 'a11y.circuitDescription.circuitComponentTypeLabels.resistorStringProperty' );
@@ -412,6 +413,10 @@ const CircuitConstructionKitCommonFluent = {
     }
   },
   a11y: {
+    _comment_0: new FluentComment( {"comment":"Visible labels in keyboard shortcuts dialog","associatedKey":"keyboardHelpDialog"} ),
+    keyboardHelpDialog: {
+      cancelWithEscapeStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_cancelWithEscape', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.cancelWithEscapeStringProperty' ) )
+    },
     circuitDescription: {
       _comment_0: new FluentComment( {"comment":"TODO: Reuse same labels as outside a11y key?","associatedKey":"circuitComponentTypeLabels"} ),
       circuitComponentTypeLabels: {

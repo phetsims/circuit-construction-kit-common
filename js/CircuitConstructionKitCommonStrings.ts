@@ -116,6 +116,9 @@ type StringsType = {
     }
   };
   'a11y': {
+    'keyboardHelpDialog': {
+      'cancelWithEscapeStringProperty': LocalizedStringProperty;
+    };
     'circuitDescription': {
       'circuitComponentTypeLabels': {
         'wireStringProperty': LocalizedStringProperty;

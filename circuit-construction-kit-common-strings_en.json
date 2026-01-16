@@ -278,11 +278,16 @@
         "value": "options"
       },
       "cancelConnection": {
-        "value": "Cancel"
+        "value": "4. Cancel"
       }
     }
   },
   "a11y": {
+    "keyboardHelpDialog": {
+      "cancelWithEscape": {
+        "value": "Cancel with Escape key."
+      }
+    },
     "circuitDescription": {
       "circuitComponentTypeLabels": {
         "wire": {
