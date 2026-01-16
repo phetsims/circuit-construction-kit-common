@@ -1,4 +1,4 @@
-// Copyright 2017-2025, University of Colorado Boulder
+// Copyright 2017-2026, University of Colorado Boulder
 
 /**
  * The panel that appears in the bottom left which can be used to zoom in and out on the circuit. Exists for the life

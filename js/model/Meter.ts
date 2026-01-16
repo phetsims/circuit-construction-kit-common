@@ -1,4 +1,4 @@
-// Copyright 2016-2025, University of Colorado Boulder
+// Copyright 2016-2026, University of Colorado Boulder
 
 /**
  * Base class for Ammeter and Voltmeter.  Meters for the life of the sim and hence do not need a dispose implementation.
