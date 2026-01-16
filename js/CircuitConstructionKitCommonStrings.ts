@@ -116,14 +116,6 @@ type StringsType = {
     }
   };
   'a11y': {
-    'keyboardHelpDialog': {
-      'circuitComponentsAndTools': {
-        'removeFromToolboxDescriptionStringProperty': LocalizedStringProperty;
-        'returnToToolboxDescriptionStringProperty': LocalizedStringProperty;
-        'editComponentDescriptionStringProperty': LocalizedStringProperty;
-        'cutConnectionsDescriptionStringProperty': LocalizedStringProperty;
-      }
-    };
     'circuitDescription': {
       'circuitComponentTypeLabels': {
         'wireStringProperty': LocalizedStringProperty;

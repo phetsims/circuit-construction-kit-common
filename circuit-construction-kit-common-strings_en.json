@@ -283,22 +283,6 @@
     }
   },
   "a11y": {
-    "keyboardHelpDialog": {
-      "circuitComponentsAndTools": {
-        "removeFromToolboxDescription": {
-          "value": "Press Space or { $enterOrReturn } to remove a circuit component from the toolbox."
-        },
-        "returnToToolboxDescription": {
-          "value": "Press Delete or Backspace to return a circuit component to the toolbox."
-        },
-        "editComponentDescription": {
-          "value": "Press Space or { $enterOrReturn } to edit a selected circuit component."
-        },
-        "cutConnectionsDescription": {
-          "value": "Press Delete or Backspace to cut connections at the selected vertex."
-        }
-      }
-    },
     "circuitDescription": {
       "circuitComponentTypeLabels": {
         "wire": {

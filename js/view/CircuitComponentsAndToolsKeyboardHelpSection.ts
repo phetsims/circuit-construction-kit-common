@@ -7,10 +7,9 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import KeyboardHelpIconFactory from '../../../scenery-phet/js/keyboard/help/KeyboardHelpIconFactory.js';
+import HotkeyData from '../../../scenery/js/input/HotkeyData.js';
 import KeyboardHelpSection from '../../../scenery-phet/js/keyboard/help/KeyboardHelpSection.js';
 import KeyboardHelpSectionRow from '../../../scenery-phet/js/keyboard/help/KeyboardHelpSectionRow.js';
-import TextKeyNode from '../../../scenery-phet/js/keyboard/TextKeyNode.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 
@@ -19,42 +18,36 @@ export default class CircuitComponentsAndToolsKeyboardHelpSection extends Keyboa
   public constructor() {
 
     // Remove from toolbox [Space] or [Enter]
-    const removeFromToolboxRow = KeyboardHelpSectionRow.labelWithIcon(
-      CircuitConstructionKitCommonFluent.keyboardHelpDialog.circuitComponentsAndTools.removeFromToolboxStringProperty,
-      KeyboardHelpIconFactory.spaceOrEnter(), {
-        labelInnerContent: CircuitConstructionKitCommonFluent.a11y.keyboardHelpDialog.circuitComponentsAndTools.removeFromToolboxDescription.createProperty( {
-          enterOrReturn: TextKeyNode.getEnterKeyString()
-        } )
-      }
-    );
+    const removeFromToolboxHotkeyData = new HotkeyData( {
+      repoName: circuitConstructionKitCommon.name,
+      keys: [ 'space', 'enter' ],
+      keyboardHelpDialogLabelStringProperty: CircuitConstructionKitCommonFluent.keyboardHelpDialog.circuitComponentsAndTools.removeFromToolboxStringProperty
+    } );
+    const removeFromToolboxRow = KeyboardHelpSectionRow.fromHotkeyData( removeFromToolboxHotkeyData );
 
     // Return to toolbox [Delete] or [Backspace]
-    const deleteOrBackspaceIcon1 = KeyboardHelpIconFactory.iconOrIcon( TextKeyNode.delete(), TextKeyNode.backspace() );
-    const returnToToolboxRow = KeyboardHelpSectionRow.labelWithIcon(
-      CircuitConstructionKitCommonFluent.keyboardHelpDialog.circuitComponentsAndTools.returnToToolboxStringProperty,
-      deleteOrBackspaceIcon1, {
-        labelInnerContent: CircuitConstructionKitCommonFluent.a11y.keyboardHelpDialog.circuitComponentsAndTools.returnToToolboxDescriptionStringProperty
-      }
-    );
+    const returnToToolboxHotkeyData = new HotkeyData( {
+      repoName: circuitConstructionKitCommon.name,
+      keys: [ 'delete', 'backspace' ],
+      keyboardHelpDialogLabelStringProperty: CircuitConstructionKitCommonFluent.keyboardHelpDialog.circuitComponentsAndTools.returnToToolboxStringProperty
+    } );
+    const returnToToolboxRow = KeyboardHelpSectionRow.fromHotkeyData( returnToToolboxHotkeyData );
 
     // Edit component [Space] or [Enter]
-    const editComponentRow = KeyboardHelpSectionRow.labelWithIcon(
-      CircuitConstructionKitCommonFluent.keyboardHelpDialog.circuitComponentsAndTools.editComponentStringProperty,
-      KeyboardHelpIconFactory.spaceOrEnter(), {
-        labelInnerContent: CircuitConstructionKitCommonFluent.a11y.keyboardHelpDialog.circuitComponentsAndTools.editComponentDescription.createProperty( {
-          enterOrReturn: TextKeyNode.getEnterKeyString()
-        } )
-      }
-    );
+    const editComponentHotkeyData = new HotkeyData( {
+      repoName: circuitConstructionKitCommon.name,
+      keys: [ 'space', 'enter' ],
+      keyboardHelpDialogLabelStringProperty: CircuitConstructionKitCommonFluent.keyboardHelpDialog.circuitComponentsAndTools.editComponentStringProperty
+    } );
+    const editComponentRow = KeyboardHelpSectionRow.fromHotkeyData( editComponentHotkeyData );
 
     // Cut connections [Delete] or [Backspace]
-    const deleteOrBackspaceIcon2 = KeyboardHelpIconFactory.iconOrIcon( TextKeyNode.delete(), TextKeyNode.backspace() );
-    const cutConnectionsRow = KeyboardHelpSectionRow.labelWithIcon(
-      CircuitConstructionKitCommonFluent.keyboardHelpDialog.circuitComponentsAndTools.cutConnectionsStringProperty,
-      deleteOrBackspaceIcon2, {
-        labelInnerContent: CircuitConstructionKitCommonFluent.a11y.keyboardHelpDialog.circuitComponentsAndTools.cutConnectionsDescriptionStringProperty
-      }
-    );
+    const cutConnectionsHotkeyData = new HotkeyData( {
+      repoName: circuitConstructionKitCommon.name,
+      keys: [ 'delete', 'backspace' ],
+      keyboardHelpDialogLabelStringProperty: CircuitConstructionKitCommonFluent.keyboardHelpDialog.circuitComponentsAndTools.cutConnectionsStringProperty
+    } );
+    const cutConnectionsRow = KeyboardHelpSectionRow.fromHotkeyData( cutConnectionsHotkeyData );
 
     super( CircuitConstructionKitCommonFluent.keyboardHelpDialog.circuitComponentsAndTools.headingStringProperty, [
       removeFromToolboxRow,

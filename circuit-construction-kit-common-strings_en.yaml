@@ -108,12 +108,6 @@ keyboardHelpDialog:
     cancelConnection: Cancel
 
 a11y:
-  keyboardHelpDialog:
-    circuitComponentsAndTools:
-      removeFromToolboxDescription: Press Space or { $enterOrReturn } to remove a circuit component from the toolbox.
-      returnToToolboxDescription:   Press Delete or Backspace to return a circuit component to the toolbox.
-      editComponentDescription:     Press Space or { $enterOrReturn } to edit a selected circuit component.
-      cutConnectionsDescription:    Press Delete or Backspace to cut connections at the selected vertex.
   circuitDescription:
 
     # TODO: Reuse same labels as outside a11y key?

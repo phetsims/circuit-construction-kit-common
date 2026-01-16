@@ -107,10 +107,6 @@ addToMapIfDefined( 'keyboardHelpDialog_chooseConnection_heading', 'keyboardHelpD
 addToMapIfDefined( 'keyboardHelpDialog_chooseConnection_thingSingular', 'keyboardHelpDialog.chooseConnection.thingSingularStringProperty' );
 addToMapIfDefined( 'keyboardHelpDialog_chooseConnection_thingPlural', 'keyboardHelpDialog.chooseConnection.thingPluralStringProperty' );
 addToMapIfDefined( 'keyboardHelpDialog_chooseConnection_cancelConnection', 'keyboardHelpDialog.chooseConnection.cancelConnectionStringProperty' );
-addToMapIfDefined( 'a11y_keyboardHelpDialog_circuitComponentsAndTools_removeFromToolboxDescription', 'a11y.keyboardHelpDialog.circuitComponentsAndTools.removeFromToolboxDescriptionStringProperty' );
-addToMapIfDefined( 'a11y_keyboardHelpDialog_circuitComponentsAndTools_returnToToolboxDescription', 'a11y.keyboardHelpDialog.circuitComponentsAndTools.returnToToolboxDescriptionStringProperty' );
-addToMapIfDefined( 'a11y_keyboardHelpDialog_circuitComponentsAndTools_editComponentDescription', 'a11y.keyboardHelpDialog.circuitComponentsAndTools.editComponentDescriptionStringProperty' );
-addToMapIfDefined( 'a11y_keyboardHelpDialog_circuitComponentsAndTools_cutConnectionsDescription', 'a11y.keyboardHelpDialog.circuitComponentsAndTools.cutConnectionsDescriptionStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_wire', 'a11y.circuitDescription.circuitComponentTypeLabels.wireStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_battery', 'a11y.circuitDescription.circuitComponentTypeLabels.batteryStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypeLabels_resistor', 'a11y.circuitDescription.circuitComponentTypeLabels.resistorStringProperty' );
@@ -416,15 +412,6 @@ const CircuitConstructionKitCommonFluent = {
     }
   },
   a11y: {
-    _comment_0: new FluentComment( {"comment":"Visible labels in keyboard shortcuts dialog","associatedKey":"keyboardHelpDialog"} ),
-    keyboardHelpDialog: {
-      circuitComponentsAndTools: {
-        removeFromToolboxDescription: new FluentPattern<{ enterOrReturn: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_circuitComponentsAndTools_removeFromToolboxDescription', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.circuitComponentsAndTools.removeFromToolboxDescriptionStringProperty' ), [{"name":"enterOrReturn"}] ),
-        returnToToolboxDescriptionStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_circuitComponentsAndTools_returnToToolboxDescription', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.circuitComponentsAndTools.returnToToolboxDescriptionStringProperty' ) ),
-        editComponentDescription: new FluentPattern<{ enterOrReturn: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_circuitComponentsAndTools_editComponentDescription', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.circuitComponentsAndTools.editComponentDescriptionStringProperty' ), [{"name":"enterOrReturn"}] ),
-        cutConnectionsDescriptionStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_circuitComponentsAndTools_cutConnectionsDescription', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.circuitComponentsAndTools.cutConnectionsDescriptionStringProperty' ) )
-      }
-    },
     circuitDescription: {
       _comment_0: new FluentComment( {"comment":"TODO: Reuse same labels as outside a11y key?","associatedKey":"circuitComponentTypeLabels"} ),
       circuitComponentTypeLabels: {
