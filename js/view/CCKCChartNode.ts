@@ -83,6 +83,8 @@ export default class CCKCChartNode extends Node {
   private readonly zoomLevelProperty: NumberProperty;
   protected readonly updatePen: () => void;
 
+  public bodyNode: Node;
+
   /**
    * @param circuitNode
    * @param timeProperty
@@ -344,6 +346,8 @@ export default class CCKCChartNode extends Node {
         spanNode
       ]
     } );
+
+    this.bodyNode = chartNode;
 
     // Forbid overlap between the horizontal axis label and the span node
     const padding = 5;

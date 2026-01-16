@@ -81,6 +81,8 @@ export default class AmmeterNode extends InteractiveHighlighting( Node ) {
   // so events can be forwarded from the toolbox
   private readonly dragHandler: DragListener | null;
 
+  public readonly bodyNode: Node;
+
   /**
    * @param ammeter
    * @param model - the model, or null if rendering an icon
@@ -242,6 +244,7 @@ export default class AmmeterNode extends InteractiveHighlighting( Node ) {
 
     super( options );
 
+    this.bodyNode = bodyNode;
     this.probeNode = probeNode;
     this.ammeter = ammeter;
 

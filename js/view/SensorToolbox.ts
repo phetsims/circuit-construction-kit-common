@@ -156,7 +156,7 @@ export default class SensorToolbox extends CCKCPanel {
         }
 
         meterModel.isActiveProperty.value = true;
-        meterNode.focus();
+        meterNode.bodyNode.focus();
       }
     };
 

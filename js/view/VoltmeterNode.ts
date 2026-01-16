@@ -80,6 +80,7 @@ type VoltmeterNodeOptions = SelfOptions & NodeOptions;
 export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
   private readonly circuitNode: CircuitNode | null;
   public readonly voltmeter: Voltmeter;
+  public readonly bodyNode: Node;
   private readonly redProbeNode: Rectangle | InteractiveHighlightingRectangle;
   private readonly blackProbeNode: Rectangle | InteractiveHighlightingRectangle;
 
@@ -311,6 +312,7 @@ export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
 
     this.circuitNode = circuitNode;
 
+    this.bodyNode = bodyNode;
     this.voltmeter = voltmeter;
     this.redProbeNode = redProbeNode;
     this.blackProbeNode = blackProbeNode;
