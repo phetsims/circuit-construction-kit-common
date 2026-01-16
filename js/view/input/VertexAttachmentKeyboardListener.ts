@@ -71,17 +71,28 @@ export default class VertexAttachmentKeyboardListener extends AttachmentKeyboard
       }
     } );
 
-    // Change the accessible role description based on whether there are any attachable vertices, see https://github.com/phetsims/circuit-construction-kit-common/issues/1129#issuecomment-3666436903
-    circuit.circuitChangedEmitter.addListener( () => {
+    // Change the accessible role description based on whether there are any attachable vertices.
+    // Only listen to topology changes (not position/property changes) for performance.
+    // See https://github.com/phetsims/circuit-construction-kit-common/issues/1129#issuecomment-3666436903
+    const updateRoleDescription = () => {
       const items = getItems();
+      vertexNode.accessibleRoleDescription = items.length === 0 ? 'movable' : 'connection options button'; // see https://github.com/phetsims/circuit-construction-kit-common/issues/1083
+    };
 
-      if ( items.length === 0 ) {
-        vertexNode.accessibleRoleDescription = 'movable';
-      }
-      else {
-        vertexNode.accessibleRoleDescription = 'connection options button'; // see https://github.com/phetsims/circuit-construction-kit-common/issues/1083
-      }
+    // Listen ONLY to topology changes (not position/property changes). Whenever a circuit element is created/disposed, it changes
+    // the vertex count, and whenever a circuit element is cut/connected, it creates or disposes vertices. So this is sufficient to
+    // keep the role description up to date.
+    circuit.vertexGroup.elementCreatedEmitter.addListener( updateRoleDescription );
+    circuit.vertexGroup.elementDisposedEmitter.addListener( updateRoleDescription );
+
+    // Clean up when vertex is disposed (fixes existing memory leak)
+    vertex.disposeEmitter.addListener( () => {
+      circuit.vertexGroup.elementCreatedEmitter.removeListener( updateRoleDescription );
+      circuit.vertexGroup.elementDisposedEmitter.removeListener( updateRoleDescription );
     } );
+
+    // Initial computation
+    updateRoleDescription();
   }
 }
 
