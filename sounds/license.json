@@ -1,4 +1,12 @@
 {
+  "breakFuse.mp3": {
+    "text": [
+      "Copyright 2021 University of Colorado Boulder"
+    ],
+    "projectURL": "https://phet.colorado.edu",
+    "license": "contact phethelp@colorado.edu",
+    "notes": "created by Ashton Morris (PhET Interactive Simulations). Copied from https://github.com/phetsims/greenhouse-effect/blob/main/sounds/breakApart.mp3 in 2026"
+  },
   "cut.mp3": {
     "text": [
       "Copyright 2024 University of Colorado Boulder"
@@ -6,5 +14,13 @@
     "projectURL": "https://phet.colorado.edu",
     "license": "contact phethelp@colorado.edu",
     "notes": "created by Ashton Morris (PhET Interactive Simulations). Copied from mean-share-and-balance/sounds/shareFractionalizeSound.mp3 on Jan 13, 2025"
+  },
+  "repairFuse.mp3": {
+    "text": [
+      "Created by Kenney in 2020 and released as Creative Commons CC0"
+    ],
+    "projectURL": "https://phet.colorado.edu",
+    "license": "Creative Commons CC0",
+    "notes": "created by Kenney in 2020, available at https://kenney.nl/assets/interface-sounds"
   }
 }

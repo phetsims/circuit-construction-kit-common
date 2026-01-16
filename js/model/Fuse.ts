@@ -15,7 +15,10 @@ import { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import Range from '../../../dot/js/Range.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
+import SoundClip from '../../../tambo/js/sound-generators/SoundClip.js';
+import soundManager from '../../../tambo/js/soundManager.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
+import breakFuse_mp3 from '../../sounds/breakFuse_mp3.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import type Circuit from './Circuit.js';
@@ -28,6 +31,11 @@ type SelfOptions = {
 };
 
 type FuseOptions = SelfOptions & FixedCircuitElementOptions;
+
+const breakFuseSoundClip = new SoundClip( breakFuse_mp3 );
+// const repairFuseSoundClip = new SoundClip( repairFuse_mp3 );
+soundManager.addSoundGenerator( breakFuseSoundClip );
+// soundManager.addSoundGenerator( repairFuseSoundClip );
 
 export default class Fuse extends FixedCircuitElement {
 
@@ -84,8 +92,15 @@ export default class Fuse extends FixedCircuitElement {
       phetioFeatured: true
     } );
 
-    this.isTrippedProperty.lazyLink( () => {
+    this.isTrippedProperty.lazyLink( isTripped => {
       circuit && circuit.componentEditedEmitter.emit();
+
+      if ( isTripped ) {
+        breakFuseSoundClip.play();
+      }
+      // else {
+      //   repairFuseSoundClip.play();
+      // }
     } );
   }
 

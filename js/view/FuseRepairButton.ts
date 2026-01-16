@@ -14,7 +14,10 @@ import Circle from '../../../scenery/js/nodes/Circle.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import { type RoundPushButtonOptions } from '../../../sun/js/buttons/RoundPushButton.js';
+import SoundClip from '../../../tambo/js/sound-generators/SoundClip.js';
+import soundManager from '../../../tambo/js/soundManager.js';
 import Tandem from '../../../tandem/js/Tandem.js';
+import repairFuse_mp3 from '../../sounds/repairFuse_mp3.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import type Circuit from '../model/Circuit.js';
@@ -25,6 +28,9 @@ import CCKCRoundPushButton from './CCKCRoundPushButton.js';
 
 type SelfOptions = EmptySelfOptions;
 type RepairFuseButtonOptions = SelfOptions & RoundPushButtonOptions;
+
+const repairFuseSoundClip = new SoundClip( repairFuse_mp3 );
+soundManager.addSoundGenerator( repairFuseSoundClip );
 
 export default class FuseRepairButton extends CCKCRoundPushButton {
 
@@ -55,7 +61,8 @@ export default class FuseRepairButton extends CCKCRoundPushButton {
         fuse.resetFuse();
         circuit.componentEditedEmitter.emit();
       },
-      isDisposable: false
+      isDisposable: false,
+      soundPlayer: repairFuseSoundClip
     }, providedOptions );
 
     super( options );
