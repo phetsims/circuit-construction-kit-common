@@ -236,6 +236,9 @@
     },
     "toChooseConnection": {
       "value": "to <b>Choose Connection</b>"
+    },
+    "toChooseMeasurement": {
+      "value": "to <b>Choose Measurement</b>"
     }
   },
   "keyboardHelpDialog": {

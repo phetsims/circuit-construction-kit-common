@@ -84,9 +84,10 @@ extremeResistor:                       Extreme Resistor
 
 # Visible keyboard cues shown on circuit components during interaction
 keyboardCues:
-  toCut:              to <b>Cut</b>
-  toEditComponent:    to <b>Edit Component</b>
-  toChooseConnection: to <b>Choose Connection</b>
+  toCut:                to <b>Cut</b>
+  toEditComponent:      to <b>Edit Component</b>
+  toChooseConnection:   to <b>Choose Connection</b>
+  toChooseMeasurement:  to <b>Choose Measurement</b>
 
 # Visible labels in keyboard shortcuts dialog
 keyboardHelpDialog:

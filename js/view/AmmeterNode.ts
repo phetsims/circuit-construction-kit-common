@@ -73,7 +73,7 @@ type SelfOptions = {
 type AmmeterNodeOptions = SelfOptions & NodeOptions;
 
 export default class AmmeterNode extends InteractiveHighlighting( Node ) {
-  private readonly probeNode: ProbeNode | InteractiveHighlightingProbeNode;
+  public readonly probeNode: ProbeNode | InteractiveHighlightingProbeNode;
 
   // the model associated with this view
   public readonly ammeter: Ammeter;

@@ -94,6 +94,7 @@ type StringsType = {
     'toCutStringProperty': LocalizedStringProperty;
     'toEditComponentStringProperty': LocalizedStringProperty;
     'toChooseConnectionStringProperty': LocalizedStringProperty;
+    'toChooseMeasurementStringProperty': LocalizedStringProperty;
   };
   'keyboardHelpDialog': {
     'circuitComponentsAndTools': {

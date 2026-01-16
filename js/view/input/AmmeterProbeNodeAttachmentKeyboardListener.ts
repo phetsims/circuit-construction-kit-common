@@ -79,6 +79,7 @@ export default class AmmeterProbeNodeAttachmentKeyboardListener extends Attachme
         probePositionProperty.value = dropPosition;
       },
       onOpen: () => {
+        ammeter.hasBeenKeyboardActivated = true;
         circuitNode.showProbeSelectionHighlight( probeNode );
       },
       onClose: () => {

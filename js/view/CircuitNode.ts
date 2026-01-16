@@ -54,6 +54,7 @@ import FixedCircuitElement from '../model/FixedCircuitElement.js';
 import Fuse from '../model/Fuse.js';
 import Inductor from '../model/Inductor.js';
 import LightBulb from '../model/LightBulb.js';
+import type Meter from '../model/Meter.js';
 import Resistor from '../model/Resistor.js';
 import ResistorType from '../model/ResistorType.js';
 import SeriesAmmeter from '../model/SeriesAmmeter.js';
@@ -62,6 +63,7 @@ import type Vertex from '../model/Vertex.js';
 import VoltageConnection from '../model/VoltageConnection.js';
 import Wire from '../model/Wire.js';
 import ACVoltageNode from './ACVoltageNode.js';
+import AmmeterNode from './AmmeterNode.js';
 import BatteryNode from './BatteryNode.js';
 import CapacitorCircuitElementNode from './CapacitorCircuitElementNode.js';
 import CCKCColors from './CCKCColors.js';
@@ -83,6 +85,7 @@ import SolderNode from './SolderNode.js';
 import SwitchNode from './SwitchNode.js';
 import ValueNode from './ValueNode.js';
 import VertexNode from './VertexNode.js';
+import VoltmeterNode from './VoltmeterNode.js';
 import WireNode from './WireNode.js';
 
 // constants
@@ -172,6 +175,7 @@ export default class CircuitNode extends Node {
   // Cue nodes to show the user how to grab vertices and circuit elements
   private readonly vertexGrabReleaseCueNode: GrabReleaseCueNode;
   private readonly circuitElementGrabReleaseCueNode: GrabReleaseCueNode;
+  private readonly probeGrabReleaseCueNode: GrabReleaseCueNode;
 
   // Cue node to show the user how to cut a vertex with the delete key
   public readonly deleteCueNode: DeleteCueNode;
@@ -180,6 +184,7 @@ export default class CircuitNode extends Node {
   // Once the user activates any element, they understand the pattern and we hide cues for all.
   private anyVertexActivated = false;
   private anyCircuitElementActivated = false;
+  private anyProbeActivated = false;
 
   // Track whether any vertex has been cut. Once the user cuts a vertex, hide the delete cue permanently.
   private anyVertexCut = false;
@@ -856,9 +861,14 @@ export default class CircuitNode extends Node {
       visible: false,
       stringProperty: CircuitConstructionKitCommonFluent.keyboardCues.toEditComponentStringProperty
     } );
+    this.probeGrabReleaseCueNode = new GrabReleaseCueNode( {
+      visible: false,
+      stringProperty: CircuitConstructionKitCommonFluent.keyboardCues.toChooseMeasurementStringProperty
+    } );
 
     this.highlightLayer.addChild( this.vertexGrabReleaseCueNode );
     this.highlightLayer.addChild( this.circuitElementGrabReleaseCueNode );
+    this.highlightLayer.addChild( this.probeGrabReleaseCueNode );
 
     // Initialize the delete cue node (shown below the cut button when a vertex is selected)
     this.deleteCueNode = new DeleteCueNode( {
@@ -872,6 +882,7 @@ export default class CircuitNode extends Node {
       // Hide all cues first
       this.vertexGrabReleaseCueNode.visible = false;
       this.circuitElementGrabReleaseCueNode.visible = false;
+      this.probeGrabReleaseCueNode.visible = false;
       this.deleteCueNode.visible = false;
 
       if ( focus ) {
@@ -887,6 +898,13 @@ export default class CircuitNode extends Node {
         else if ( focusedNode instanceof CircuitElementNode && !this.anyCircuitElementActivated ) {
           this.updateCircuitElementCuePosition( focusedNode );
           this.circuitElementGrabReleaseCueNode.visible = true;
+        }
+
+        // Show the probe cue if no probe has been activated and there are measurement options
+        const probeInfo = this.getProbeInfo( focusedNode );
+        if ( probeInfo && !this.anyProbeActivated && probeInfo.hasItems ) {
+          this.updateProbeCuePosition( focusedNode );
+          this.probeGrabReleaseCueNode.visible = true;
         }
 
         // Show the delete cue for cuttable vertices (vertices with multiple connections)
@@ -916,9 +934,39 @@ export default class CircuitNode extends Node {
     this.deleteCueNode.centerBottom = vertexPosition.plusXY( 0, -30 );
   }
 
+  /**
+   * Returns info about a probe node if the focused node is a meter probe, null otherwise.
+   */
+  private getProbeInfo( focusedNode: Node ): { meter: Meter; hasItems: boolean } | null {
+
+    // Search sensorLayer for VoltmeterNode/AmmeterNode instances and check their probes
+    for ( const child of this.sensorLayer.children ) {
+      if ( child instanceof VoltmeterNode ) {
+        if ( focusedNode === child.redProbeNode || focusedNode === child.blackProbeNode ) {
+          const hasItems = CircuitDescription.getOrderedVertices( this.circuit ).length > 0;
+          return { meter: child.voltmeter, hasItems: hasItems };
+        }
+      }
+      else if ( child instanceof AmmeterNode ) {
+        if ( focusedNode === child.probeNode ) {
+          const hasItems = CircuitDescription.getOrderedCircuitElements( this.circuit ).length > 0;
+          return { meter: child.ammeter, hasItems: hasItems };
+        }
+      }
+    }
+    return null;
+  }
+
+  private updateProbeCuePosition( probeNode: Node ): void {
+    const globalBounds = probeNode.getGlobalBounds();
+    const localBounds = this.globalToLocalBounds( globalBounds );
+    this.probeGrabReleaseCueNode.centerTop = new Vector2( localBounds.centerX, localBounds.maxY + 10 );
+  }
+
   public reset(): void {
     this.anyVertexActivated = false;
     this.anyCircuitElementActivated = false;
+    this.anyProbeActivated = false;
     this.anyVertexCut = false;
   }
 
@@ -1066,6 +1114,18 @@ export default class CircuitNode extends Node {
         }
         else {
           this.updateCircuitElementCuePosition( focusedNode );
+        }
+      }
+
+      // Update probe cue position and track activation
+      if ( this.probeGrabReleaseCueNode.visible ) {
+        const probeInfo = this.getProbeInfo( focusedNode );
+        if ( probeInfo && probeInfo.meter.hasBeenKeyboardActivated ) {
+          this.anyProbeActivated = true;
+          this.probeGrabReleaseCueNode.visible = false;
+        }
+        else {
+          this.updateProbeCuePosition( focusedNode );
         }
       }
 

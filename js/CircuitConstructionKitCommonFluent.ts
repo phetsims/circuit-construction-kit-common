@@ -95,6 +95,7 @@ addToMapIfDefined( 'extremeResistor', 'extremeResistorStringProperty' );
 addToMapIfDefined( 'keyboardCues_toCut', 'keyboardCues.toCutStringProperty' );
 addToMapIfDefined( 'keyboardCues_toEditComponent', 'keyboardCues.toEditComponentStringProperty' );
 addToMapIfDefined( 'keyboardCues_toChooseConnection', 'keyboardCues.toChooseConnectionStringProperty' );
+addToMapIfDefined( 'keyboardCues_toChooseMeasurement', 'keyboardCues.toChooseMeasurementStringProperty' );
 addToMapIfDefined( 'keyboardHelpDialog_circuitComponentsAndTools_heading', 'keyboardHelpDialog.circuitComponentsAndTools.headingStringProperty' );
 addToMapIfDefined( 'keyboardHelpDialog_circuitComponentsAndTools_removeFromToolbox', 'keyboardHelpDialog.circuitComponentsAndTools.removeFromToolboxStringProperty' );
 addToMapIfDefined( 'keyboardHelpDialog_circuitComponentsAndTools_returnToToolbox', 'keyboardHelpDialog.circuitComponentsAndTools.returnToToolboxStringProperty' );
@@ -388,7 +389,8 @@ const CircuitConstructionKitCommonFluent = {
   keyboardCues: {
     toCutStringProperty: _.get( CircuitConstructionKitCommonStrings, 'keyboardCues.toCutStringProperty' ),
     toEditComponentStringProperty: _.get( CircuitConstructionKitCommonStrings, 'keyboardCues.toEditComponentStringProperty' ),
-    toChooseConnectionStringProperty: _.get( CircuitConstructionKitCommonStrings, 'keyboardCues.toChooseConnectionStringProperty' )
+    toChooseConnectionStringProperty: _.get( CircuitConstructionKitCommonStrings, 'keyboardCues.toChooseConnectionStringProperty' ),
+    toChooseMeasurementStringProperty: _.get( CircuitConstructionKitCommonStrings, 'keyboardCues.toChooseMeasurementStringProperty' )
   },
   _comment_6: new FluentComment( {"comment":"Visible labels in keyboard shortcuts dialog","associatedKey":"keyboardHelpDialog"} ),
   keyboardHelpDialog: {

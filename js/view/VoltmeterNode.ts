@@ -81,8 +81,8 @@ export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
   private readonly circuitNode: CircuitNode | null;
   public readonly voltmeter: Voltmeter;
   public readonly bodyNode: Node;
-  private readonly redProbeNode: Rectangle | InteractiveHighlightingRectangle;
-  private readonly blackProbeNode: Rectangle | InteractiveHighlightingRectangle;
+  public readonly redProbeNode: Rectangle | InteractiveHighlightingRectangle;
+  public readonly blackProbeNode: Rectangle | InteractiveHighlightingRectangle;
 
   // so events can be forwarded from the toolbox
   private readonly dragHandler: DragListener | null;
