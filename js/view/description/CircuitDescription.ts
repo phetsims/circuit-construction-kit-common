@@ -591,7 +591,6 @@ export default class CircuitDescription {
       .filter( child => child instanceof VoltmeterNode )
       .sort( ( a, b ) => a.voltmeter.phetioIndex - b.voltmeter.phetioIndex );
 
-    console.log( voltmeterNodes.map( voltmeterNode => voltmeterNode.voltmeter.phetioIndex ) );
     const ammeterNodes = circuitNode.sensorLayer.children
       .filter( child => child instanceof AmmeterNode )
       .sort( ( a, b ) => a.ammeter.phetioIndex - b.ammeter.phetioIndex );

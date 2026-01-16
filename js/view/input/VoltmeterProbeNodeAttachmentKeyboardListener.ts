@@ -65,17 +65,27 @@ export default class VoltmeterProbeNodeAttachmentKeyboardListener extends Attach
       }
     } );
 
-    // Change the accessible role description based on whether there are any attachment options
-    circuit.circuitChangedEmitter.addListener( () => {
+    // Change the accessible role description based on whether there are any attachment options.
+    // Only listen to topology changes (not position/property changes) for performance.
+    const updateRoleDescription = () => {
       const items = getItems();
+      probeNode.accessibleRoleDescription = items.length === 0 ? 'movable' : 'measurement options button';
+    };
 
-      if ( items.length === 0 ) {
-        probeNode.accessibleRoleDescription = 'movable';
-      }
-      else {
-        probeNode.accessibleRoleDescription = 'measurement options button';
-      }
+    // Listen ONLY to topology changes (not position/property changes). Whenever a circuit element is created/disposed, it changes
+    // the vertex count, and whenever a circuit element is cut/connected, it creates or disposes vertices. So this is sufficient to
+    // keep the role description up to date.
+    circuit.vertexGroup.elementCreatedEmitter.addListener( updateRoleDescription );
+    circuit.vertexGroup.elementDisposedEmitter.addListener( updateRoleDescription );
+
+    // Clean up when voltmeter is disposed
+    voltmeter.disposeEmitter.addListener( () => {
+      circuit.vertexGroup.elementCreatedEmitter.removeListener( updateRoleDescription );
+      circuit.vertexGroup.elementDisposedEmitter.removeListener( updateRoleDescription );
     } );
+
+    // Initial computation
+    updateRoleDescription();
   }
 }
 
