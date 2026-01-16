@@ -540,3 +540,4 @@ a11y:
       accessibleName: Zoom In
     zoomOut:
       accessibleName: Zoom Out
+    zoomLevelResponse: 'Zoom level { $level } of { $max }.'

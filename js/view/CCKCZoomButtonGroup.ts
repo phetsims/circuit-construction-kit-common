@@ -7,11 +7,13 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import type NumberProperty from '../../../axon/js/NumberProperty.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
 import MagnifyingGlassZoomButtonGroup, { type MagnifyingGlassZoomButtonGroupOptions } from '../../../scenery-phet/js/MagnifyingGlassZoomButtonGroup.js';
 import PhetColorScheme from '../../../scenery-phet/js/PhetColorScheme.js';
 import RectangularButton from '../../../sun/js/buttons/RectangularButton.js';
+import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 
@@ -23,6 +25,19 @@ type ZoomButtonGroupOptions = MagnifyingGlassZoomButtonGroupOptions;
 export default class CCKCZoomButtonGroup extends MagnifyingGlassZoomButtonGroup {
 
   public constructor( selectedZoomProperty: NumberProperty, providedOptions?: ZoomButtonGroupOptions ) {
+
+    const maxZoomLevel = CCKCConstants.ZOOM_SCALES.length;
+
+    // Create a reactive Property for the 1-indexed zoom level (for user-facing display)
+    const oneIndexedZoomLevelProperty = new DerivedProperty( [ selectedZoomProperty ], level => level + 1 );
+
+    // Create a reactive Property that announces the current zoom level
+    const zoomLevelResponseProperty = CircuitConstructionKitCommonFluent.a11y.zoomButtonGroup.zoomLevelResponse.createProperty( {
+      level: oneIndexedZoomLevelProperty,
+      max: maxZoomLevel
+    } );
+    zoomLevelResponseProperty.debug( 'zoomLevelResponseProperty in CCKCZoomButtonGroup' );
+
     providedOptions = combineOptions<ZoomButtonGroupOptions>( {
       spacing: BUTTON_SPACING,
       buttonOptions: {
@@ -31,10 +46,12 @@ export default class CCKCZoomButtonGroup extends MagnifyingGlassZoomButtonGroup 
         phetioReadOnly: true
       },
       zoomInButtonOptions: {
-        accessibleName: CircuitConstructionKitCommonFluent.a11y.zoomButtonGroup.zoomIn.accessibleNameStringProperty
+        accessibleName: CircuitConstructionKitCommonFluent.a11y.zoomButtonGroup.zoomIn.accessibleNameStringProperty,
+        accessibleContextResponse: zoomLevelResponseProperty
       },
       zoomOutButtonOptions: {
-        accessibleName: CircuitConstructionKitCommonFluent.a11y.zoomButtonGroup.zoomOut.accessibleNameStringProperty
+        accessibleName: CircuitConstructionKitCommonFluent.a11y.zoomButtonGroup.zoomOut.accessibleNameStringProperty,
+        accessibleContextResponse: zoomLevelResponseProperty
       },
       magnifyingGlassNodeOptions: {
         scale: 0.7

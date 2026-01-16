@@ -413,7 +413,8 @@ type StringsType = {
       };
       'zoomOut': {
         'accessibleNameStringProperty': LocalizedStringProperty;
-      }
+      };
+      'zoomLevelResponseStringProperty': LocalizedStringProperty;
     }
   }
 };

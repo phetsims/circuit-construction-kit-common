@@ -954,6 +954,9 @@
         "accessibleName": {
           "value": "Zoom Out"
         }
+      },
+      "zoomLevelResponse": {
+        "value": "Zoom level { $level } of { $max }."
       }
     }
   }

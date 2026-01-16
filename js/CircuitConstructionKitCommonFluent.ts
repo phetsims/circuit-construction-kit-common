@@ -294,6 +294,7 @@ addToMapIfDefined( 'a11y_circuitComponent_brightness_off', 'a11y.circuitComponen
 addToMapIfDefined( 'a11y_circuitComponent_brightness_percent', 'a11y.circuitComponent.brightness.percentStringProperty' );
 addToMapIfDefined( 'a11y_zoomButtonGroup_zoomIn_accessibleName', 'a11y.zoomButtonGroup.zoomIn.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_zoomButtonGroup_zoomOut_accessibleName', 'a11y.zoomButtonGroup.zoomOut.accessibleNameStringProperty' );
+addToMapIfDefined( 'a11y_zoomButtonGroup_zoomLevelResponse', 'a11y.zoomButtonGroup.zoomLevelResponseStringProperty' );
 
 // A function that creates contents for a new Fluent file, which will be needed if any string changes.
 const createFluentFile = (): string => {
@@ -750,7 +751,8 @@ const CircuitConstructionKitCommonFluent = {
       },
       zoomOut: {
         accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_zoomButtonGroup_zoomOut_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.zoomButtonGroup.zoomOut.accessibleNameStringProperty' ) )
-      }
+      },
+      zoomLevelResponse: new FluentPattern<{ level: FluentVariable, max: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_zoomButtonGroup_zoomLevelResponse', _.get( CircuitConstructionKitCommonStrings, 'a11y.zoomButtonGroup.zoomLevelResponseStringProperty' ), [{"name":"level"},{"name":"max"}] )
     }
   }
 };
