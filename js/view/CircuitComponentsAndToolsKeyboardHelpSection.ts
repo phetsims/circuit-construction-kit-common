@@ -18,44 +18,45 @@ export default class CircuitComponentsAndToolsKeyboardHelpSection extends Keyboa
 
   public constructor() {
 
-    const strings = CircuitConstructionKitCommonFluent.keyboardHelpDialog.circuitComponentsAndTools;
-    const a11yStrings = CircuitConstructionKitCommonFluent.a11y.keyboardHelpDialog.circuitComponentsAndTools;
-
     // Remove from toolbox [Space] or [Enter]
     const removeFromToolboxRow = KeyboardHelpSectionRow.labelWithIcon(
-      strings.removeFromToolboxStringProperty,
+      CircuitConstructionKitCommonFluent.keyboardHelpDialog.circuitComponentsAndTools.removeFromToolboxStringProperty,
       KeyboardHelpIconFactory.spaceOrEnter(), {
-        labelInnerContent: a11yStrings.removeFromToolboxDescriptionStringProperty
+        labelInnerContent: CircuitConstructionKitCommonFluent.a11y.keyboardHelpDialog.circuitComponentsAndTools.removeFromToolboxDescription.createProperty( {
+          enterOrReturn: TextKeyNode.getEnterKeyString()
+        } )
       }
     );
 
     // Return to toolbox [Delete] or [Backspace]
     const deleteOrBackspaceIcon1 = KeyboardHelpIconFactory.iconOrIcon( TextKeyNode.delete(), TextKeyNode.backspace() );
     const returnToToolboxRow = KeyboardHelpSectionRow.labelWithIcon(
-      strings.returnToToolboxStringProperty,
+      CircuitConstructionKitCommonFluent.keyboardHelpDialog.circuitComponentsAndTools.returnToToolboxStringProperty,
       deleteOrBackspaceIcon1, {
-        labelInnerContent: a11yStrings.returnToToolboxDescriptionStringProperty
+        labelInnerContent: CircuitConstructionKitCommonFluent.a11y.keyboardHelpDialog.circuitComponentsAndTools.returnToToolboxDescriptionStringProperty
       }
     );
 
     // Edit component [Space] or [Enter]
     const editComponentRow = KeyboardHelpSectionRow.labelWithIcon(
-      strings.editComponentStringProperty,
+      CircuitConstructionKitCommonFluent.keyboardHelpDialog.circuitComponentsAndTools.editComponentStringProperty,
       KeyboardHelpIconFactory.spaceOrEnter(), {
-        labelInnerContent: a11yStrings.editComponentDescriptionStringProperty
+        labelInnerContent: CircuitConstructionKitCommonFluent.a11y.keyboardHelpDialog.circuitComponentsAndTools.editComponentDescription.createProperty( {
+          enterOrReturn: TextKeyNode.getEnterKeyString()
+        } )
       }
     );
 
     // Cut connections [Delete] or [Backspace]
     const deleteOrBackspaceIcon2 = KeyboardHelpIconFactory.iconOrIcon( TextKeyNode.delete(), TextKeyNode.backspace() );
     const cutConnectionsRow = KeyboardHelpSectionRow.labelWithIcon(
-      strings.cutConnectionsStringProperty,
+      CircuitConstructionKitCommonFluent.keyboardHelpDialog.circuitComponentsAndTools.cutConnectionsStringProperty,
       deleteOrBackspaceIcon2, {
-        labelInnerContent: a11yStrings.cutConnectionsDescriptionStringProperty
+        labelInnerContent: CircuitConstructionKitCommonFluent.a11y.keyboardHelpDialog.circuitComponentsAndTools.cutConnectionsDescriptionStringProperty
       }
     );
 
-    super( strings.headingStringProperty, [
+    super( CircuitConstructionKitCommonFluent.keyboardHelpDialog.circuitComponentsAndTools.headingStringProperty, [
       removeFromToolboxRow,
       returnToToolboxRow,
       editComponentRow,

@@ -36,7 +36,6 @@ export default class CCKCZoomButtonGroup extends MagnifyingGlassZoomButtonGroup 
       level: oneIndexedZoomLevelProperty,
       max: maxZoomLevel
     } );
-    zoomLevelResponseProperty.debug( 'zoomLevelResponseProperty in CCKCZoomButtonGroup' );
 
     providedOptions = combineOptions<ZoomButtonGroupOptions>( {
       spacing: BUTTON_SPACING,

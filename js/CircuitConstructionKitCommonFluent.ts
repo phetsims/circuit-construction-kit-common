@@ -418,9 +418,9 @@ const CircuitConstructionKitCommonFluent = {
     _comment_0: new FluentComment( {"comment":"TODO: Some of this text is PDOM only and should not appear in rosetta","associatedKey":"keyboardHelpDialog"} ),
     keyboardHelpDialog: {
       circuitComponentsAndTools: {
-        removeFromToolboxDescriptionStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_circuitComponentsAndTools_removeFromToolboxDescription', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.circuitComponentsAndTools.removeFromToolboxDescriptionStringProperty' ) ),
+        removeFromToolboxDescription: new FluentPattern<{ enterOrReturn: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_circuitComponentsAndTools_removeFromToolboxDescription', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.circuitComponentsAndTools.removeFromToolboxDescriptionStringProperty' ), [{"name":"enterOrReturn"}] ),
         returnToToolboxDescriptionStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_circuitComponentsAndTools_returnToToolboxDescription', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.circuitComponentsAndTools.returnToToolboxDescriptionStringProperty' ) ),
-        editComponentDescriptionStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_circuitComponentsAndTools_editComponentDescription', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.circuitComponentsAndTools.editComponentDescriptionStringProperty' ) ),
+        editComponentDescription: new FluentPattern<{ enterOrReturn: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_circuitComponentsAndTools_editComponentDescription', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.circuitComponentsAndTools.editComponentDescriptionStringProperty' ), [{"name":"enterOrReturn"}] ),
         cutConnectionsDescriptionStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_circuitComponentsAndTools_cutConnectionsDescription', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.circuitComponentsAndTools.cutConnectionsDescriptionStringProperty' ) )
       }
     },
