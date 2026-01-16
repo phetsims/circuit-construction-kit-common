@@ -479,7 +479,7 @@
       "group": {
         "value": "Group"
       },
-      "emptyConstructionAreaMessage": {
+      "constructionArea": {
         "value": "Add Circuit Components as needed. Once added, open connection point options or open component edit panel with Space or Enter. Connected components auto-organize into groups. Remove a selected component or disconnect a selected connection point with Delete key. Check out Keyboard Shortcuts for more details on editing and connecting components."
       }
     },
@@ -809,9 +809,6 @@
       "accessibleHeadingNumbered": {
         "value": "Non-Contact Ammeter { $position } of { $total }"
       },
-      "accessibleHelpText": {
-        "value": "Measure current in the circuit."
-      },
       "body": {
         "accessibleName": {
           "value": "Non-Contact Ammeter: { $reading }"
@@ -835,9 +832,6 @@
       },
       "accessibleHeadingNumbered": {
         "value": "Voltmeter { $position } of { $total }"
-      },
-      "accessibleHelpText": {
-        "value": "Measure voltage between two points in the circuit."
       },
       "body": {
         "accessibleName": {

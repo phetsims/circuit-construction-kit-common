@@ -186,7 +186,7 @@ type StringsType = {
       'disconnectedStringProperty': LocalizedStringProperty;
       'accessibleNameWithSelectedStringProperty': LocalizedStringProperty;
       'groupStringProperty': LocalizedStringProperty;
-      'emptyConstructionAreaMessageStringProperty': LocalizedStringProperty;
+      'constructionAreaStringProperty': LocalizedStringProperty;
     };
     'circuitGroupDescription': {
       'unconnectedSummaryStringProperty': LocalizedStringProperty;
@@ -340,7 +340,6 @@ type StringsType = {
     'ammeterNode': {
       'accessibleHeadingStringProperty': LocalizedStringProperty;
       'accessibleHeadingNumberedStringProperty': LocalizedStringProperty;
-      'accessibleHelpTextStringProperty': LocalizedStringProperty;
       'body': {
         'accessibleNameStringProperty': LocalizedStringProperty;
       };
@@ -353,7 +352,6 @@ type StringsType = {
     'voltmeterNode': {
       'accessibleHeadingStringProperty': LocalizedStringProperty;
       'accessibleHeadingNumberedStringProperty': LocalizedStringProperty;
-      'accessibleHelpTextStringProperty': LocalizedStringProperty;
       'body': {
         'accessibleNameStringProperty': LocalizedStringProperty;
       };

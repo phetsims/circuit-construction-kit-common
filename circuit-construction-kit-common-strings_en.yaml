@@ -84,10 +84,10 @@ extremeResistor:                       Extreme Resistor
 
 # Visible keyboard cues shown on circuit components during interaction
 keyboardCues:
-  toCut:                to <b>Cut</b>
-  toEditComponent:      to <b>Edit Component</b>
-  toChooseConnection:   to <b>Choose Connection</b>
-  toChooseMeasurement:  to <b>Choose Measurement</b>
+  toCut:               to <b>Cut</b>
+  toEditComponent:     to <b>Edit Component</b>
+  toChooseConnection:  to <b>Choose Connection</b>
+  toChooseMeasurement: to <b>Choose Measurement</b>
 
 # Visible labels in keyboard shortcuts dialog
 keyboardHelpDialog:
@@ -176,31 +176,31 @@ a11y:
         bottom:           'Bottom of { $componentName }'
         none:             '{ $componentName }'
     # Brief name for a circuit element (type + position number)
-    briefName:                    '{ $typeLabel } { $position }'
+    briefName:                  '{ $typeLabel } { $position }'
     # Connection description patterns
-    connectionDescription:        '{ $connectionLabel }: { $neighbors }'
+    connectionDescription:      '{ $connectionLabel }: { $neighbors }'
     # For compressed descriptions with 4+ connections
-    compressedSingular:           '{ $count } { $typeLabel }'
-    compressedPlural:             '{ $count } { $pluralLabel }'
+    compressedSingular:         '{ $count } { $typeLabel }'
+    compressedPlural:           '{ $count } { $pluralLabel }'
     # List joining patterns
-    listAnd:                      and
-    listTwoItems:                 '{ $first } and { $second }'
-    listFinalSeparator:           ', and { $last }'
+    listAnd:                    and
+    listTwoItems:               '{ $first } and { $second }'
+    listFinalSeparator:         ', and { $last }'
     # Group patterns
-    groupHeading:                 'Group { $groupIndex } of { $totalGroups }'
-    groupWithConnection:          'Group { $groupIndex }, { $description }'
-    connectionPoint:              Connection Point
-    connection:                   Connection
-    disconnected:                 disconnected
+    groupHeading:               'Group { $groupIndex } of { $totalGroups }'
+    groupWithConnection:        'Group { $groupIndex }, { $description }'
+    connectionPoint:            Connection Point
+    connection:                 Connection
+    disconnected:               disconnected
     # Suffix appended to accessible name when a circuit element is selected
-    accessibleNameWithSelected:   '{ $accessibleName }, selected'
-    group:                        Group
-    emptyConstructionAreaMessage: >-
-                                  Add Circuit Components as needed. Once added, open
-                                  connection point options or open component edit panel with Space or Enter. Connected
-                                  components auto-organize into groups. Remove a selected component or disconnect a
-                                  selected connection point with Delete key. Check out Keyboard Shortcuts for more
-                                  details on editing and connecting components.
+    accessibleNameWithSelected: '{ $accessibleName }, selected'
+    group:                      Group
+    constructionArea:           >-
+                                Add Circuit Components as needed. Once added, open
+                                connection point options or open component edit panel with Space or Enter. Connected
+                                components auto-organize into groups. Remove a selected component or disconnect a
+                                selected connection point with Delete key. Check out Keyboard Shortcuts for more
+                                details on editing and connecting components.
   circuitGroupDescription:
     # Unconnected section summary
     unconnectedSummary:
@@ -484,7 +484,6 @@ a11y:
   ammeterNode:
     accessibleHeading:         Non-Contact Ammeter
     accessibleHeadingNumbered: 'Non-Contact Ammeter { $position } of { $total }'
-    accessibleHelpText:        Measure current in the circuit.
     body:
       accessibleName: 'Non-Contact Ammeter: { $reading }'
     probe:
@@ -494,7 +493,6 @@ a11y:
   voltmeterNode:
     accessibleHeading:         Voltmeter
     accessibleHeadingNumbered: 'Voltmeter { $position } of { $total }'
-    accessibleHelpText:        Measure voltage between two points in the circuit.
     body:
       accessibleName: 'Voltmeter: { $reading }'
     blackProbe:

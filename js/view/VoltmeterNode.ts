@@ -138,7 +138,6 @@ export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
     if ( !isIcon ) {
       options.tagName = 'div';
       options.accessibleHeading = accessibleHeadingProperty;
-      options.accessibleHelpText = CircuitConstructionKitCommonFluent.a11y.voltmeterNode.accessibleHelpTextStringProperty;
       options.accessibleHelpTextBehavior = ParallelDOM.HELP_TEXT_BEFORE_CONTENT;
     }
 

@@ -138,7 +138,6 @@ export default class AmmeterNode extends InteractiveHighlighting( Node ) {
     if ( !isIcon ) {
       options.tagName = 'div';
       options.accessibleHeading = accessibleHeadingProperty;
-      options.accessibleHelpText = CircuitConstructionKitCommonFluent.a11y.ammeterNode.accessibleHelpTextStringProperty;
       options.accessibleHelpTextBehavior = ParallelDOM.HELP_TEXT_BEFORE_CONTENT;
     }
     const tandem = options.tandem;

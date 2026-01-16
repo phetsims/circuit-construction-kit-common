@@ -583,7 +583,7 @@ export default class CircuitDescription {
     const focusedElement = getPDOMFocusedNode();
 
     circuitNode.constructionAreaContainer.accessibleParagraphBehavior = ParallelDOM.HELP_TEXT_BEFORE_CONTENT;
-    circuitNode.constructionAreaContainer.accessibleParagraph = CircuitConstructionKitCommonFluent.a11y.circuitDescription.emptyConstructionAreaMessageStringProperty.value;
+    circuitNode.constructionAreaContainer.accessibleParagraph = CircuitConstructionKitCommonFluent.a11y.circuitDescription.constructionAreaStringProperty;
 
     // Get sensors from sensorLayer (voltmeters before ammeters), sorted by phetioIndex
     // to ensure consistent PDOM order regardless of scenery z-ordering
