@@ -15,6 +15,7 @@
  * @author Denzell Barnett (PhET Interactive Simulations)
  */
 
+import animationFrameTimer from '../../../axon/js/animationFrameTimer.js';
 import Multilink from '../../../axon/js/Multilink.js';
 import Property from '../../../axon/js/Property.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
@@ -185,6 +186,9 @@ export default class CircuitNode extends Node {
 
   // VertexNode shows a cut button ONLY when activated by pointer, not when activated by keyboard, so we must track that.
   public vertexAttachmentListenerCount = 0;
+
+  // Dirty flag to batch multiple updateCircuitDescription calls into a single deferred update
+  private circuitDescriptionDirty = false;
 
   /**
    * @param circuit - the model Circuit
@@ -918,16 +922,26 @@ export default class CircuitNode extends Node {
     this.anyVertexCut = false;
   }
 
+  /**
+   * Marks the circuit description as needing an update. Multiple calls within the same frame are batched
+   * into a single deferred update, which runs on the next animation frame.
+   */
   private updateCircuitDescription(): void {
+    if ( !this.circuitDescriptionDirty ) {
+      this.circuitDescriptionDirty = true;
+      animationFrameTimer.runOnNextTick( () => {
+        this.circuitDescriptionDirty = false;
 
-    // Set the state once after fully reconstructed, not at a partial intermediate state
-    // Skip during drag to avoid PDOM rebuild interrupting smooth drag motion
-    if ( !isSettingPhetioStateProperty.value && !this.circuit.isDragging() ) {
-      CircuitDescription.updateCircuitNode( this );
+        // Set the state once after fully reconstructed, not at a partial intermediate state
+        // Skip during drag to avoid PDOM rebuild interrupting smooth drag motion
+        if ( !isSettingPhetioStateProperty.value ) {
+          CircuitDescription.updateCircuitNode( this );
 
-      // Use surgical update to avoid rebuilding the entire PDOM structure, which would cause focus loss
-      // and reentrancy issues during keyboard drag operations.
-      CircuitDescription.updateEditPanelPosition( this );
+          // Use surgical update to avoid rebuilding the entire PDOM structure, which would cause focus loss
+          // and reentrancy issues during keyboard drag operations.
+          CircuitDescription.updateEditPanelPosition( this );
+        }
+      } );
     }
   }
 
