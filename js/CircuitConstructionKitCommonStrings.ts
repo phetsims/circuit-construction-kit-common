@@ -90,7 +90,7 @@ type StringsType = {
   'extremeBatteryStringProperty': LocalizedStringProperty;
   'extremeBulbStringProperty': LocalizedStringProperty;
   'extremeResistorStringProperty': LocalizedStringProperty;
-  'key': {
+  'keyboardCues': {
     'toCutStringProperty': LocalizedStringProperty;
     'toEditComponentStringProperty': LocalizedStringProperty;
     'toChooseConnectionStringProperty': LocalizedStringProperty;

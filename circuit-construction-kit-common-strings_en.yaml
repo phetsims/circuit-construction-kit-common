@@ -82,12 +82,13 @@ extremeBattery:                        Extreme Battery
 extremeBulb:                           Extreme Bulb
 extremeResistor:                       Extreme Resistor
 
-key:
+# Visible keyboard cues shown on circuit components during interaction
+keyboardCues:
   toCut:              to <b>Cut</b>
   toEditComponent:    to <b>Edit Component</b>
   toChooseConnection: to <b>Choose Connection</b>
 
-# TODO: Some of this text is PDOM only and should not appear in rosetta
+# Visible labels in keyboard shortcuts dialog
 keyboardHelpDialog:
   circuitComponentsAndTools:
     heading:          Circuit Components and Measurement Tools

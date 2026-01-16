@@ -850,11 +850,11 @@ export default class CircuitNode extends Node {
     // Initialize the grab/release cue nodes
     this.vertexGrabReleaseCueNode = new GrabReleaseCueNode( {
       visible: false,
-      stringProperty: CircuitConstructionKitCommonFluent.key.toChooseConnectionStringProperty
+      stringProperty: CircuitConstructionKitCommonFluent.keyboardCues.toChooseConnectionStringProperty
     } );
     this.circuitElementGrabReleaseCueNode = new GrabReleaseCueNode( {
       visible: false,
-      stringProperty: CircuitConstructionKitCommonFluent.key.toEditComponentStringProperty
+      stringProperty: CircuitConstructionKitCommonFluent.keyboardCues.toEditComponentStringProperty
     } );
 
     this.highlightLayer.addChild( this.vertexGrabReleaseCueNode );
@@ -863,7 +863,7 @@ export default class CircuitNode extends Node {
     // Initialize the delete cue node (shown below the cut button when a vertex is selected)
     this.deleteCueNode = new DeleteCueNode( {
       visible: false,
-      stringProperty: CircuitConstructionKitCommonFluent.key.toCutStringProperty
+      stringProperty: CircuitConstructionKitCommonFluent.keyboardCues.toCutStringProperty
     } );
     this.buttonLayer.addChild( this.deleteCueNode );
 

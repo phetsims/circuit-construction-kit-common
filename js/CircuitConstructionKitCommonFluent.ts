@@ -92,9 +92,9 @@ addToMapIfDefined( 'dataOutOfRange', 'dataOutOfRangeStringProperty' );
 addToMapIfDefined( 'extremeBattery', 'extremeBatteryStringProperty' );
 addToMapIfDefined( 'extremeBulb', 'extremeBulbStringProperty' );
 addToMapIfDefined( 'extremeResistor', 'extremeResistorStringProperty' );
-addToMapIfDefined( 'key_toCut', 'key.toCutStringProperty' );
-addToMapIfDefined( 'key_toEditComponent', 'key.toEditComponentStringProperty' );
-addToMapIfDefined( 'key_toChooseConnection', 'key.toChooseConnectionStringProperty' );
+addToMapIfDefined( 'keyboardCues_toCut', 'keyboardCues.toCutStringProperty' );
+addToMapIfDefined( 'keyboardCues_toEditComponent', 'keyboardCues.toEditComponentStringProperty' );
+addToMapIfDefined( 'keyboardCues_toChooseConnection', 'keyboardCues.toChooseConnectionStringProperty' );
 addToMapIfDefined( 'keyboardHelpDialog_circuitComponentsAndTools_heading', 'keyboardHelpDialog.circuitComponentsAndTools.headingStringProperty' );
 addToMapIfDefined( 'keyboardHelpDialog_circuitComponentsAndTools_removeFromToolbox', 'keyboardHelpDialog.circuitComponentsAndTools.removeFromToolboxStringProperty' );
 addToMapIfDefined( 'keyboardHelpDialog_circuitComponentsAndTools_returnToToolbox', 'keyboardHelpDialog.circuitComponentsAndTools.returnToToolboxStringProperty' );
@@ -387,12 +387,13 @@ const CircuitConstructionKitCommonFluent = {
   extremeBatteryStringProperty: _.get( CircuitConstructionKitCommonStrings, 'extremeBatteryStringProperty' ),
   extremeBulbStringProperty: _.get( CircuitConstructionKitCommonStrings, 'extremeBulbStringProperty' ),
   extremeResistorStringProperty: _.get( CircuitConstructionKitCommonStrings, 'extremeResistorStringProperty' ),
-  key: {
-    toCutStringProperty: _.get( CircuitConstructionKitCommonStrings, 'key.toCutStringProperty' ),
-    toEditComponentStringProperty: _.get( CircuitConstructionKitCommonStrings, 'key.toEditComponentStringProperty' ),
-    toChooseConnectionStringProperty: _.get( CircuitConstructionKitCommonStrings, 'key.toChooseConnectionStringProperty' )
+  _comment_5: new FluentComment( {"comment":"Visible keyboard cues shown on circuit components during interaction","associatedKey":"keyboardCues"} ),
+  keyboardCues: {
+    toCutStringProperty: _.get( CircuitConstructionKitCommonStrings, 'keyboardCues.toCutStringProperty' ),
+    toEditComponentStringProperty: _.get( CircuitConstructionKitCommonStrings, 'keyboardCues.toEditComponentStringProperty' ),
+    toChooseConnectionStringProperty: _.get( CircuitConstructionKitCommonStrings, 'keyboardCues.toChooseConnectionStringProperty' )
   },
-  _comment_5: new FluentComment( {"comment":"TODO: Some of this text is PDOM only and should not appear in rosetta","associatedKey":"keyboardHelpDialog"} ),
+  _comment_6: new FluentComment( {"comment":"Visible labels in keyboard shortcuts dialog","associatedKey":"keyboardHelpDialog"} ),
   keyboardHelpDialog: {
     circuitComponentsAndTools: {
       headingStringProperty: _.get( CircuitConstructionKitCommonStrings, 'keyboardHelpDialog.circuitComponentsAndTools.headingStringProperty' ),
@@ -415,7 +416,7 @@ const CircuitConstructionKitCommonFluent = {
     }
   },
   a11y: {
-    _comment_0: new FluentComment( {"comment":"TODO: Some of this text is PDOM only and should not appear in rosetta","associatedKey":"keyboardHelpDialog"} ),
+    _comment_0: new FluentComment( {"comment":"Visible labels in keyboard shortcuts dialog","associatedKey":"keyboardHelpDialog"} ),
     keyboardHelpDialog: {
       circuitComponentsAndTools: {
         removeFromToolboxDescription: new FluentPattern<{ enterOrReturn: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_keyboardHelpDialog_circuitComponentsAndTools_removeFromToolboxDescription', _.get( CircuitConstructionKitCommonStrings, 'a11y.keyboardHelpDialog.circuitComponentsAndTools.removeFromToolboxDescriptionStringProperty' ), [{"name":"enterOrReturn"}] ),
