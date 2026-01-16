@@ -13,6 +13,7 @@ import MagnifyingGlassZoomButtonGroup, { type MagnifyingGlassZoomButtonGroupOpti
 import PhetColorScheme from '../../../scenery-phet/js/PhetColorScheme.js';
 import RectangularButton from '../../../sun/js/buttons/RectangularButton.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 
 // constants
 const BUTTON_SPACING = 20;
@@ -28,6 +29,12 @@ export default class CCKCZoomButtonGroup extends MagnifyingGlassZoomButtonGroup 
         buttonAppearanceStrategy: RectangularButton.ThreeDAppearanceStrategy,
         baseColor: PhetColorScheme.BUTTON_YELLOW,
         phetioReadOnly: true
+      },
+      zoomInButtonOptions: {
+        accessibleName: CircuitConstructionKitCommonFluent.a11y.zoomButtonGroup.zoomIn.accessibleNameStringProperty
+      },
+      zoomOutButtonOptions: {
+        accessibleName: CircuitConstructionKitCommonFluent.a11y.zoomButtonGroup.zoomOut.accessibleNameStringProperty
       },
       magnifyingGlassNodeOptions: {
         scale: 0.7

@@ -292,6 +292,8 @@ addToMapIfDefined( 'a11y_circuitComponent_modifiers_onFire', 'a11y.circuitCompon
 addToMapIfDefined( 'a11y_circuitComponent_modifiers_broken', 'a11y.circuitComponent.modifiers.brokenStringProperty' );
 addToMapIfDefined( 'a11y_circuitComponent_brightness_off', 'a11y.circuitComponent.brightness.offStringProperty' );
 addToMapIfDefined( 'a11y_circuitComponent_brightness_percent', 'a11y.circuitComponent.brightness.percentStringProperty' );
+addToMapIfDefined( 'a11y_zoomButtonGroup_zoomIn_accessibleName', 'a11y.zoomButtonGroup.zoomIn.accessibleNameStringProperty' );
+addToMapIfDefined( 'a11y_zoomButtonGroup_zoomOut_accessibleName', 'a11y.zoomButtonGroup.zoomOut.accessibleNameStringProperty' );
 
 // A function that creates contents for a new Fluent file, which will be needed if any string changes.
 const createFluentFile = (): string => {
@@ -740,6 +742,14 @@ const CircuitConstructionKitCommonFluent = {
       brightness: {
         offStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitComponent_brightness_off', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitComponent.brightness.offStringProperty' ) ),
         percent: new FluentPattern<{ percent: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitComponent_brightness_percent', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitComponent.brightness.percentStringProperty' ), [{"name":"percent"}] )
+      }
+    },
+    zoomButtonGroup: {
+      zoomIn: {
+        accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_zoomButtonGroup_zoomIn_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.zoomButtonGroup.zoomIn.accessibleNameStringProperty' ) )
+      },
+      zoomOut: {
+        accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_zoomButtonGroup_zoomOut_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.zoomButtonGroup.zoomOut.accessibleNameStringProperty' ) )
       }
     }
   }

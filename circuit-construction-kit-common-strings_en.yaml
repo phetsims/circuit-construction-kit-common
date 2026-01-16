@@ -535,3 +535,8 @@ a11y:
     brightness:
       off:     'off'
       percent: 'brightness { $percent }%'
+  zoomButtonGroup:
+    zoomIn:
+      accessibleName: Zoom In
+    zoomOut:
+      accessibleName: Zoom Out

@@ -406,6 +406,14 @@ type StringsType = {
         'offStringProperty': LocalizedStringProperty;
         'percentStringProperty': LocalizedStringProperty;
       }
+    };
+    'zoomButtonGroup': {
+      'zoomIn': {
+        'accessibleNameStringProperty': LocalizedStringProperty;
+      };
+      'zoomOut': {
+        'accessibleNameStringProperty': LocalizedStringProperty;
+      }
     }
   }
 };

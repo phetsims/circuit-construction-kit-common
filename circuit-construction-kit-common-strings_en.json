@@ -943,6 +943,18 @@
           "value": "brightness { $percent }%"
         }
       }
+    },
+    "zoomButtonGroup": {
+      "zoomIn": {
+        "accessibleName": {
+          "value": "Zoom In"
+        }
+      },
+      "zoomOut": {
+        "accessibleName": {
+          "value": "Zoom Out"
+        }
+      }
     }
   }
 }
