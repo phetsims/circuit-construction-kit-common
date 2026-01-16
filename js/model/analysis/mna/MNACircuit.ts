@@ -312,7 +312,7 @@ export default class MNACircuit {
       // Sometimes a fuzz test gives a deficient matrix rank.  It is a rare error and I haven't got one in the
       // debugger yet to understand the cause.  Catch it and provide a solution of zeroes of the correct dimension
       // See https://github.com/phetsims/circuit-construction-kit-dc/issues/113
-      x = new Matrix( A.n, 1 );
+      x = new Matrix( A.getColumnDimension(), 1 );
     }
 
     if ( phet.log ) {
