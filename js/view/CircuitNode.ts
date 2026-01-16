@@ -184,7 +184,11 @@ export default class CircuitNode extends Node {
   // Once the user activates any element, they understand the pattern and we hide cues for all.
   private anyVertexActivated = false;
   private anyCircuitElementActivated = false;
-  private anyProbeActivated = false;
+
+  // Track probe activation separately for each probe class (black voltmeter, red voltmeter, ammeter)
+  private anyBlackVoltmeterProbeActivated = false;
+  private anyRedVoltmeterProbeActivated = false;
+  private anyAmmeterProbeActivated = false;
 
   // Track whether any vertex has been cut. Once the user cuts a vertex, hide the delete cue permanently.
   private anyVertexCut = false;
@@ -900,9 +904,9 @@ export default class CircuitNode extends Node {
           this.circuitElementGrabReleaseCueNode.visible = true;
         }
 
-        // Show the probe cue if no probe has been activated and there are measurement options
+        // Show the probe cue if this probe type hasn't been activated and there are measurement options
         const probeInfo = this.getProbeInfo( focusedNode );
-        if ( probeInfo && !this.anyProbeActivated && probeInfo.hasItems ) {
+        if ( probeInfo && !this.isProbeTypeActivated( probeInfo.probeType ) && probeInfo.hasItems ) {
           this.updateProbeCuePosition( focusedNode );
           this.probeGrabReleaseCueNode.visible = true;
         }
@@ -936,25 +940,61 @@ export default class CircuitNode extends Node {
 
   /**
    * Returns info about a probe node if the focused node is a meter probe, null otherwise.
+   * The probeType indicates which class of probe: 'blackVoltmeter', 'redVoltmeter', or 'ammeter'.
    */
-  private getProbeInfo( focusedNode: Node ): { meter: Meter; hasItems: boolean } | null {
+  private getProbeInfo( focusedNode: Node ): { meter: Meter; hasItems: boolean; probeType: 'blackVoltmeter' | 'redVoltmeter' | 'ammeter' } | null {
 
     // Search sensorLayer for VoltmeterNode/AmmeterNode instances and check their probes
     for ( const child of this.sensorLayer.children ) {
       if ( child instanceof VoltmeterNode ) {
-        if ( focusedNode === child.redProbeNode || focusedNode === child.blackProbeNode ) {
+        if ( focusedNode === child.blackProbeNode ) {
           const hasItems = CircuitDescription.getOrderedVertices( this.circuit ).length > 0;
-          return { meter: child.voltmeter, hasItems: hasItems };
+          return { meter: child.voltmeter, hasItems: hasItems, probeType: 'blackVoltmeter' };
+        }
+        else if ( focusedNode === child.redProbeNode ) {
+          const hasItems = CircuitDescription.getOrderedVertices( this.circuit ).length > 0;
+          return { meter: child.voltmeter, hasItems: hasItems, probeType: 'redVoltmeter' };
         }
       }
       else if ( child instanceof AmmeterNode ) {
         if ( focusedNode === child.probeNode ) {
           const hasItems = CircuitDescription.getOrderedCircuitElements( this.circuit ).length > 0;
-          return { meter: child.ammeter, hasItems: hasItems };
+          return { meter: child.ammeter, hasItems: hasItems, probeType: 'ammeter' };
         }
       }
     }
     return null;
+  }
+
+  /**
+   * Returns whether the cue should be shown for the given probe type based on activation flags.
+   */
+  private isProbeTypeActivated( probeType: 'blackVoltmeter' | 'redVoltmeter' | 'ammeter' ): boolean {
+    switch( probeType ) {
+      case 'blackVoltmeter': return this.anyBlackVoltmeterProbeActivated;
+      case 'redVoltmeter': return this.anyRedVoltmeterProbeActivated;
+      case 'ammeter': return this.anyAmmeterProbeActivated;
+      default: return false;
+    }
+  }
+
+  /**
+   * Marks the given probe type as activated, hiding future cues for that type.
+   */
+  private markProbeTypeActivated( probeType: 'blackVoltmeter' | 'redVoltmeter' | 'ammeter' ): void {
+    switch( probeType ) {
+      case 'blackVoltmeter':
+        this.anyBlackVoltmeterProbeActivated = true;
+        break;
+      case 'redVoltmeter':
+        this.anyRedVoltmeterProbeActivated = true;
+        break;
+      case 'ammeter':
+        this.anyAmmeterProbeActivated = true;
+        break;
+      default:
+        break;
+    }
   }
 
   private updateProbeCuePosition( probeNode: Node ): void {
@@ -966,7 +1006,9 @@ export default class CircuitNode extends Node {
   public reset(): void {
     this.anyVertexActivated = false;
     this.anyCircuitElementActivated = false;
-    this.anyProbeActivated = false;
+    this.anyBlackVoltmeterProbeActivated = false;
+    this.anyRedVoltmeterProbeActivated = false;
+    this.anyAmmeterProbeActivated = false;
     this.anyVertexCut = false;
   }
 
@@ -1121,7 +1163,7 @@ export default class CircuitNode extends Node {
       if ( this.probeGrabReleaseCueNode.visible ) {
         const probeInfo = this.getProbeInfo( focusedNode );
         if ( probeInfo && probeInfo.meter.hasBeenKeyboardActivated ) {
-          this.anyProbeActivated = true;
+          this.markProbeTypeActivated( probeInfo.probeType );
           this.probeGrabReleaseCueNode.visible = false;
         }
         else {
