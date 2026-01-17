@@ -55,6 +55,7 @@ import Fuse from '../model/Fuse.js';
 import Inductor from '../model/Inductor.js';
 import LightBulb from '../model/LightBulb.js';
 import type Meter from '../model/Meter.js';
+import Voltmeter from '../model/Voltmeter.js';
 import Resistor from '../model/Resistor.js';
 import ResistorType from '../model/ResistorType.js';
 import SeriesAmmeter from '../model/SeriesAmmeter.js';
@@ -997,6 +998,25 @@ export default class CircuitNode extends Node {
     }
   }
 
+  /**
+   * Returns whether the specific probe (not just probe type) has been keyboard activated.
+   * For voltmeter probes, checks the per-probe flag. For ammeter, checks the meter's flag.
+   */
+  private hasProbeBeenKeyboardActivated( probeInfo: { meter: Meter; probeType: 'blackVoltmeter' | 'redVoltmeter' | 'ammeter' } ): boolean {
+    if ( probeInfo.meter instanceof Voltmeter ) {
+      if ( probeInfo.probeType === 'blackVoltmeter' ) {
+        return probeInfo.meter.hasBlackProbeBeenKeyboardActivated;
+      }
+      else {
+        return probeInfo.meter.hasRedProbeBeenKeyboardActivated;
+      }
+    }
+    else {
+      // Ammeter uses the base Meter flag
+      return probeInfo.meter.hasBeenKeyboardActivated;
+    }
+  }
+
   private updateProbeCuePosition( probeNode: Node ): void {
     const globalBounds = probeNode.getGlobalBounds();
     const localBounds = this.globalToLocalBounds( globalBounds );
@@ -1162,7 +1182,7 @@ export default class CircuitNode extends Node {
       // Update probe cue position and track activation
       if ( this.probeGrabReleaseCueNode.visible ) {
         const probeInfo = this.getProbeInfo( focusedNode );
-        if ( probeInfo && probeInfo.meter.hasBeenKeyboardActivated ) {
+        if ( probeInfo && this.hasProbeBeenKeyboardActivated( probeInfo ) ) {
           this.markProbeTypeActivated( probeInfo.probeType );
           this.probeGrabReleaseCueNode.visible = false;
         }

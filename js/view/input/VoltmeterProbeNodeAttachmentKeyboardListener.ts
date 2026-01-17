@@ -20,7 +20,7 @@ import AttachmentKeyboardListener from './AttachmentKeyboardListener.js';
 
 export default class VoltmeterProbeNodeAttachmentKeyboardListener extends AttachmentKeyboardListener<Vertex> {
 
-  public constructor( probeNode: Node, circuitNode: CircuitNode, probePositionProperty: Vector2Property, voltmeter: Voltmeter ) {
+  public constructor( probeNode: Node, circuitNode: CircuitNode, probePositionProperty: Vector2Property, voltmeter: Voltmeter, probeColor: 'red' | 'black' ) {
     const circuit = circuitNode.circuit;
 
     const getItems = () => {
@@ -44,7 +44,12 @@ export default class VoltmeterProbeNodeAttachmentKeyboardListener extends Attach
         probePositionProperty.value = targetPosition.copy();
       },
       onOpen: () => {
-        voltmeter.hasBeenKeyboardActivated = true;
+        if ( probeColor === 'red' ) {
+          voltmeter.hasRedProbeBeenKeyboardActivated = true;
+        }
+        else {
+          voltmeter.hasBlackProbeBeenKeyboardActivated = true;
+        }
         circuitNode.showProbeSelectionHighlight( probeNode );
       },
       onClose: () => {

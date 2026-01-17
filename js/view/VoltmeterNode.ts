@@ -369,7 +369,8 @@ export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
         this.redProbeNode,
         circuitNode!,
         voltmeter.redProbePositionProperty,
-        voltmeter
+        voltmeter,
+        'red'
       ) );
 
       this.blackProbeNode.addInputListener( blackProbeDragListener );
@@ -378,7 +379,8 @@ export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
         this.blackProbeNode,
         circuitNode!,
         voltmeter.blackProbePositionProperty,
-        voltmeter
+        voltmeter,
+        'black'
       ) );
 
       const erodedBoundsProperty = new DerivedProperty( [ options.visibleBoundsProperty! ], ( visibleBounds: Bounds2 ) => {

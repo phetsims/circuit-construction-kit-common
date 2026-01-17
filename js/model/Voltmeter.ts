@@ -31,6 +31,10 @@ export default class Voltmeter extends Meter {
   public readonly blackProbeConnectionProperty: Property<VoltageConnection | null>;
   public readonly redProbeConnectionProperty: Property<VoltageConnection | null>;
 
+  // Track keyboard activation separately for each probe (for hiding cues independently)
+  public hasBlackProbeBeenKeyboardActivated = false;
+  public hasRedProbeBeenKeyboardActivated = false;
+
   public constructor( tandem: Tandem, phetioIndex: number ) {
     super( tandem, phetioIndex );
 
@@ -82,6 +86,8 @@ export default class Voltmeter extends Meter {
     this.voltageProperty.reset();
     this.redProbePositionProperty.reset();
     this.blackProbePositionProperty.reset();
+    this.hasBlackProbeBeenKeyboardActivated = false;
+    this.hasRedProbeBeenKeyboardActivated = false;
   }
 }
 
