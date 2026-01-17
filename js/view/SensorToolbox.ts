@@ -166,7 +166,7 @@ export default class SensorToolbox extends CCKCPanel {
       tandem: Tandem.OPT_OUT
     } );
     const allVoltmetersInPlayAreaProperty = DerivedProperty.and( voltmeterNodes.map( voltmeterNode => voltmeterNode.voltmeter.isActiveProperty ) );
-    allVoltmetersInPlayAreaProperty.link( visible => voltmeterToolIcon.setVisible( !visible ) );
+    allVoltmetersInPlayAreaProperty.link( allInPlayArea => voltmeterToolIcon.setVisible( !allInPlayArea ) );
     voltmeterToolIcon.mutate( {
       scale: TOOLBOX_ICON_HEIGHT * VOLTMETER_ICON_SCALE / Math.max( voltmeterToolIcon.width, voltmeterToolIcon.height )
     } );
@@ -189,6 +189,7 @@ export default class SensorToolbox extends CCKCPanel {
       // Simulate becoming visible: false, but without changing the dimensions
       ammeterToolIcon.setOpacity( allInPlayArea ? 0 : 1 );
       ammeterToolIcon.setInputEnabled( !allInPlayArea );
+      ammeterToolIcon.focusable = !allInPlayArea;
     } );
     ammeterToolIcon.mutate( {
       scale: TOOLBOX_ICON_HEIGHT / Math.max( ammeterToolIcon.width, ammeterToolIcon.height )
@@ -292,6 +293,11 @@ export default class SensorToolbox extends CCKCPanel {
       }
     } ) );
 
+    // Make voltmeter tool non-focusable when all voltmeters are in play area
+    allVoltmetersInPlayAreaProperty.link( allInPlayArea => {
+      voltmeterToolNode.focusable = !allInPlayArea;
+    } );
+
     // Alter the visibility of the labels when the labels checkbox is toggled.
     Multilink.multilink( [ circuitNode.model.showLabelsProperty, allVoltmetersInPlayAreaProperty, voltmeterToolNode.visibleProperty ],
       ( showLabels, allVoltmetersInPlayArea, voltmeterToolNodeVisible ) => {
@@ -335,6 +341,13 @@ export default class SensorToolbox extends CCKCPanel {
           createFromKeyboard( ammeterNodes );
         }
       } ) );
+
+      // When ammeterToolNode is the button (no series ammeters), make it non-focusable when all ammeters are in play area
+      if ( !options.showSeriesAmmeters ) {
+        allAmmetersInPlayAreaProperty.link( allInPlayArea => {
+          ammeterToolNode.focusable = !allInPlayArea;
+        } );
+      }
     }
 
     const topBox = alignGroup.createBox( new HBox( {
