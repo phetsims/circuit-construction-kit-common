@@ -480,7 +480,7 @@
         "value": "Group"
       },
       "constructionArea": {
-        "value": "Add Circuit Components as needed. Once added, open connection point options or open component edit panel with Space or Enter. Connected components auto-organize into groups. Remove a selected component or disconnect a selected connection point with Delete key. Check out Keyboard Shortcuts for more details on editing and connecting components."
+        "value": "Add Circuit Components and Measurement Tools as needed. Once added, use Space  or Enter to open connection options, measurement options, or select for editing.  Connected components auto-organize into groups. Remove a selected component or  disconnect a selected connection point with Delete key. Check out Keyboard Shortcuts  for more details."
       }
     },
     "circuitGroupDescription": {
@@ -499,10 +499,10 @@
     },
     "screenSummary": {
       "playArea": {
-        "value": "A Construction Area creates a building space for components added from a Circuit Components toolbox. Build and navigate your circuits there. A Voltmeter and Ammeter can be found in the Measurement Tools toolbox. Display Options provide ways to add and remove visual information from components in the Construction Area."
+        "value": "A Construction Area creates a building space for components added from a Circuit Component Toolbox.  Build and navigate your circuits there. If Voltmeters and Ammeters are out of the toolbox, you can  take measurements."
       },
       "controlArea": {
-        "value": "There's an option to choose between a Lifelike View or a Schematic View for any components and circuits, and you can Reset All to clear everything and start over."
+        "value": "Voltmeters and Ammeters can be found in the Measurement Tools Toolbox. Display Options provide ways  to add or remove information about components in the Construction Area. There's an option to choose  between a Lifelike View or a Schematic View for circuit components, and you can Reset All to clear  everything and start over."
       },
       "currentDetails": {
         "value": "{ $componentCount ->\n  [zero] Currently, Construction Area has no circuit components. Several { $viewType } components are available in Circuit Components carousel.\n  *[other] Currently, Construction Area has { $componentCount } circuit components{ $connectivityPhrase } { $currentFlowingPhrase } Several { $viewType } components are available in Circuit Components carousel.\n}"
@@ -633,10 +633,10 @@
     },
     "sensorToolbox": {
       "accessibleHeading": {
-        "value": "Sensor Toolbox"
+        "value": "Measurement Tools Toolbox"
       },
       "accessibleHelpText": {
-        "value": "Use a voltmeter or ammeter from the toolbox to measure voltage or current in your circuit."
+        "value": "Add Measurement Tools to the Construction Area as needed. Once added, open measurement  options with Space or Enter. Check out Keyboard Shortcuts for more details."
       },
       "nonContactAmmeter": {
         "accessibleName": {
