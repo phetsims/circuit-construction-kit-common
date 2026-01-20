@@ -580,14 +580,22 @@ export default class CCKCScreenView extends ScreenView {
           }
         }
 
-        // Return voltmeter to toolbox when delete/backspace is pressed on the body (not the probes)
-        else if ( nodeToDelete instanceof VoltmeterNode ) {
+          // Return voltmeter to toolbox when delete/backspace is pressed on the body (not the probes)
+          // TODO: Fix types, see https://github.com/phetsims/circuit-construction-kit-common/issues/1203
+        // @ts-expect-error
+        else if ( nodeToDelete.isVoltmeterBodyNode ) {
+          // TODO: Fix types, see https://github.com/phetsims/circuit-construction-kit-common/issues/1203
+          // @ts-expect-error
           nodeToDelete.voltmeter.isActiveProperty.value = false;
           this.sensorToolbox.voltmeterToolNode.focus();
         }
 
-        // Return ammeter to toolbox when delete/backspace is pressed on the body (not the probes)
-        else if ( nodeToDelete instanceof AmmeterNode ) {
+          // Return ammeter to toolbox when delete/backspace is pressed on the body (not the probes)
+          // TODO: Fix types, see https://github.com/phetsims/circuit-construction-kit-common/issues/1203
+        // @ts-expect-error
+        else if ( nodeToDelete.isAmmeterBodyNode ) {
+          // TODO: Fix types, see https://github.com/phetsims/circuit-construction-kit-common/issues/1203
+          // @ts-expect-error
           nodeToDelete.ammeter.isActiveProperty.value = false;
           this.sensorToolbox.ammeterToolNode.focus();
         }

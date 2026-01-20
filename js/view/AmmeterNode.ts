@@ -210,6 +210,14 @@ export default class AmmeterNode extends InteractiveHighlighting( Node ) {
                        focusable: true
                      }, AccessibleDraggableOptions ) );
 
+    // TODO: Fix types, see https://github.com/phetsims/circuit-construction-kit-common/issues/1203
+    // @ts-expect-error
+    bodyNode.isAmmeterBodyNode = true; // for circuit node hit testing
+
+    // TODO: Fix types, see https://github.com/phetsims/circuit-construction-kit-common/issues/1203
+    // @ts-expect-error
+    bodyNode.ammeter = ammeter; // for circuit node hit testing
+
     const baseProbeOptions = {
       cursor: 'pointer',
       sensorTypeFunction: ProbeNode.crosshairs(),

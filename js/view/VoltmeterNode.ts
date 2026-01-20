@@ -231,6 +231,13 @@ export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
                        focusable: true
                      }, AccessibleDraggableOptions ) );
 
+    // TODO: Fix types, see https://github.com/phetsims/circuit-construction-kit-common/issues/1203
+    // @ts-expect-error
+    bodyNode.isVoltmeterBodyNode = true;
+    // TODO: Fix types, see https://github.com/phetsims/circuit-construction-kit-common/issues/1203
+    // @ts-expect-error
+    bodyNode.voltmeter = voltmeter;
+
     /**
      * Creates a Vector2Property with a new Vector2 at the specified position.
      * @param [x]
