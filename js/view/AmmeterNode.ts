@@ -27,6 +27,7 @@ import InteractiveHighlighting from '../../../scenery/js/accessibility/voicing/I
 import DragListener from '../../../scenery/js/listeners/DragListener.js';
 import { type PressListenerEvent } from '../../../scenery/js/listeners/PressListener.js';
 import Image from '../../../scenery/js/nodes/Image.js';
+import { ImageableImage } from '../../../scenery/js/nodes/Imageable.js';
 import Node, { type NodeOptions } from '../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
 import Color from '../../../scenery/js/util/Color.js';
@@ -59,9 +60,22 @@ const SCALE_FACTOR = 0.5;
 const PROBE_CONNECTION_POINT_DY = 8;
 
 // Local classes with InteractiveHighlighting for the draggable components
-class InteractiveHighlightingImage extends InteractiveHighlighting( Image ) {}
+const InteractiveHighlightingImage = InteractiveHighlighting( Image );
 
 class InteractiveHighlightingProbeNode extends InteractiveHighlighting( ProbeNode ) {}
+
+/**
+ * The body node for the ammeter, with typed properties for identification in hit testing.
+ */
+export class AmmeterBodyNode extends InteractiveHighlightingImage {
+  public readonly isAmmeterBodyNode = true;
+  public readonly ammeter: Ammeter;
+
+  public constructor( image: ImageableImage, ammeter: Ammeter, options?: NodeOptions ) {
+    super( image, options );
+    this.ammeter = ammeter;
+  }
+}
 
 type SelfOptions = {
   isIcon?: boolean;
@@ -193,14 +207,14 @@ export default class AmmeterNode extends InteractiveHighlighting( Node ) {
         current === null ? noReading : currentAmpsText
     );
 
-    // Use InteractiveHighlightingImage for non-icons to get hover highlights on the body
+    // Use AmmeterBodyNode for non-icons to get hover highlights on the body and typed properties for hit testing
     const bodyNode = options.isIcon ?
                      new Image( ammeterBody_png, {
                        scale: SCALE_FACTOR,
                        cursor: 'pointer',
                        children: [ probeTextNode ]
                      } ) :
-                     new InteractiveHighlightingImage( ammeterBody_png, combineOptions<NodeOptions>( {
+                     new AmmeterBodyNode( ammeterBody_png, ammeter, combineOptions<NodeOptions>( {
                        scale: SCALE_FACTOR,
                        cursor: 'pointer',
                        children: [ probeTextNode ],
@@ -209,14 +223,6 @@ export default class AmmeterNode extends InteractiveHighlighting( Node ) {
                        accessibleRoleDescription: 'movable',
                        focusable: true
                      }, AccessibleDraggableOptions ) );
-
-    // TODO: Fix types, see https://github.com/phetsims/circuit-construction-kit-common/issues/1203
-    // @ts-expect-error
-    bodyNode.isAmmeterBodyNode = true; // for circuit node hit testing
-
-    // TODO: Fix types, see https://github.com/phetsims/circuit-construction-kit-common/issues/1203
-    // @ts-expect-error
-    bodyNode.ammeter = ammeter; // for circuit node hit testing
 
     const baseProbeOptions = {
       cursor: 'pointer',

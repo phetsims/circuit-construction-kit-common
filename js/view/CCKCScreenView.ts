@@ -42,7 +42,7 @@ import CircuitElement from '../model/CircuitElement.js';
 import SeriesAmmeter from '../model/SeriesAmmeter.js';
 import Vertex from '../model/Vertex.js';
 import AdvancedAccordionBox from './AdvancedAccordionBox.js';
-import AmmeterNode from './AmmeterNode.js';
+import AmmeterNode, { AmmeterBodyNode } from './AmmeterNode.js';
 import CCKCZoomButtonGroup from './CCKCZoomButtonGroup.js';
 import ChargeSpeedThrottlingReadoutNode from './ChargeSpeedThrottlingReadoutNode.js';
 import CircuitElementEditContainerNode from './CircuitElementEditContainerNode.js';
@@ -57,7 +57,7 @@ import SensorToolbox from './SensorToolbox.js';
 import VertexNode from './VertexNode.js';
 import ViewRadioButtonGroup from './ViewRadioButtonGroup.js';
 import VoltageChartNode from './VoltageChartNode.js';
-import VoltmeterNode from './VoltmeterNode.js';
+import VoltmeterNode, { VoltmeterBodyNode } from './VoltmeterNode.js';
 
 const batteryResistanceStringProperty = CircuitConstructionKitCommonFluent.batteryResistanceStringProperty;
 const sourceResistanceStringProperty = CircuitConstructionKitCommonFluent.sourceResistanceStringProperty;
@@ -580,22 +580,14 @@ export default class CCKCScreenView extends ScreenView {
           }
         }
 
-          // Return voltmeter to toolbox when delete/backspace is pressed on the body (not the probes)
-          // TODO: Fix types, see https://github.com/phetsims/circuit-construction-kit-common/issues/1203
-        // @ts-expect-error
-        else if ( nodeToDelete.isVoltmeterBodyNode ) {
-          // TODO: Fix types, see https://github.com/phetsims/circuit-construction-kit-common/issues/1203
-          // @ts-expect-error
+        // Return voltmeter to toolbox when delete/backspace is pressed on the body (not the probes)
+        else if ( nodeToDelete instanceof VoltmeterBodyNode ) {
           nodeToDelete.voltmeter.isActiveProperty.value = false;
           this.sensorToolbox.voltmeterToolNode.focus();
         }
 
-          // Return ammeter to toolbox when delete/backspace is pressed on the body (not the probes)
-          // TODO: Fix types, see https://github.com/phetsims/circuit-construction-kit-common/issues/1203
-        // @ts-expect-error
-        else if ( nodeToDelete.isAmmeterBodyNode ) {
-          // TODO: Fix types, see https://github.com/phetsims/circuit-construction-kit-common/issues/1203
-          // @ts-expect-error
+        // Return ammeter to toolbox when delete/backspace is pressed on the body (not the probes)
+        else if ( nodeToDelete instanceof AmmeterBodyNode ) {
           nodeToDelete.ammeter.isActiveProperty.value = false;
           this.sensorToolbox.ammeterToolNode.focus();
         }

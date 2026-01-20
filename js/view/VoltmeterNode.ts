@@ -68,7 +68,20 @@ const CONTROL_POINT_Y2 = 60;
 // Local classes with InteractiveHighlighting for the draggable components
 class InteractiveHighlightingRectangle extends InteractiveHighlighting( Rectangle ) {}
 
-class InteractiveHighlightingImage extends InteractiveHighlighting( Image ) {}
+const InteractiveHighlightingImage = InteractiveHighlighting( Image );
+
+/**
+ * The body node for the voltmeter, with typed properties for identification in hit testing.
+ */
+export class VoltmeterBodyNode extends InteractiveHighlightingImage {
+  public readonly isVoltmeterBodyNode = true;
+  public readonly voltmeter: Voltmeter;
+
+  public constructor( image: ImageableImage, voltmeter: Voltmeter, options?: NodeOptions ) {
+    super( image, options );
+    this.voltmeter = voltmeter;
+  }
+}
 
 type SelfOptions = {
   visibleBoundsProperty?: ReadOnlyProperty<Bounds2> | null;
@@ -214,14 +227,14 @@ export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
         voltage === null ? noReading : voltageVoltsText
     );
 
-    // Use InteractiveHighlightingImage for non-icons to get hover highlights on the body
+    // Use VoltmeterBodyNode for non-icons to get hover highlights on the body and typed properties for hit testing
     const bodyNode = isIcon ?
                      new Image( voltmeterBody_png, {
                        scale: SCALE,
                        cursor: 'pointer',
                        children: [ probeTextNode ]
                      } ) :
-                     new InteractiveHighlightingImage( voltmeterBody_png, combineOptions<NodeOptions>( {
+                     new VoltmeterBodyNode( voltmeterBody_png, voltmeter, combineOptions<NodeOptions>( {
                        scale: SCALE,
                        cursor: 'pointer',
                        children: [ probeTextNode ],
@@ -230,13 +243,6 @@ export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
                        accessibleRoleDescription: 'movable',
                        focusable: true
                      }, AccessibleDraggableOptions ) );
-
-    // TODO: Fix types, see https://github.com/phetsims/circuit-construction-kit-common/issues/1203
-    // @ts-expect-error
-    bodyNode.isVoltmeterBodyNode = true;
-    // TODO: Fix types, see https://github.com/phetsims/circuit-construction-kit-common/issues/1203
-    // @ts-expect-error
-    bodyNode.voltmeter = voltmeter;
 
     /**
      * Creates a Vector2Property with a new Vector2 at the specified position.
