@@ -272,58 +272,12 @@ a11y:
     interactionHint: Add circuit components and start connecting. Be sure to add at least one Wire.
   constructionArea:
     accessibleHeading: Construction Area
-  constructionAreaStatus:
-    leadingNoCircuit:         'No circuit yet:'
-    leadingCircuitActive:
-      select_currentLevel:
-        low:    'In circuit, electrons flow slowly. Circuit has:'
-        medium: 'In circuit, electrons flow at medium speed. Circuit has:'
-        high:   'In circuit, electrons flow quickly. Circuit has:'
-    wireCount:                >-
-                              { $count ->
-                                [one] { $count } wire
-                               *[other] { $count } wires
-                              }
-    additionalComponentCount: >-
-                              { $count ->
-                                [one] { $count } additional circuit component
-                               *[other] { $count } additional circuit components
-                              }
-    connectionCount:          >-
-                              { $count ->
-                                [zero] { $count } connections
-                                [one] { $count } connection
-                               *[other] { $count } connections
-                              }
   circuitContextResponses:
-    junctionDefaultLabel:       'Junction { $index }'
     selectedForEditing:         Selected for editing, controls visible.
     editControlsHidden:         Edit controls hidden.
     editPanelHeading:           '{ $componentType } Controls'
     editPanelHelpText:          'Use available controls to change, disconnect or remove selected { $componentType }.'
-    connectedComponents:
-      select_inGroup:
-        true:  'Connected: { $components }, in Group { $groupIndex }.'
-        false: 'Connected: { $components }.'
-    junctionSplit:
-      select_connectionCount:
-        one:   '{ $junctionName } split into one new connection.'
-        other: '{ $junctionName } split into { $connectionCount } new connections.'
-    currentChangedSingle:       'Current changed to { $current } amps.'
-    currentMultiple:            'Currents flowing at different speeds.'
-    currentStopped:             'Current stopped flowing.'
     componentRemoved:           Removed.
-    lightBulbState:
-      select_state:
-        off:    '{ $componentName } is now off.'
-        dim:    '{ $componentName } glows dimly.'
-        steady: '{ $componentName } glows steadily.'
-        bright: '{ $componentName } shines brightly.'
-    componentValueChange:
-      select_type:
-        battery:   '{ $componentName } voltage changed from { $oldValue } to { $newValue } volts.'
-        resistor:  '{ $componentName } resistance changed from { $oldValue } to { $newValue } ohms.'
-        lightBulb: '{ $componentName } resistance changed from { $oldValue } to { $newValue } ohms.'
 
     # When connected element changes but no current/brightness changes
     # Note: When showCurrent=false and hasLightBulbs=false, code returns null before calling this
@@ -401,10 +355,10 @@ a11y:
     # Vertex disconnection responses
     vertexDisconnected:         'Disconnected. { $currentPhrase }'
     vertexDisconnectedNoChange: 'Disconnected.'
-  sensorToolbox:
+  measurementToolsToolbox:
     accessibleHeading:  Measurement Tools Toolbox
     accessibleHelpText: >-
-                        Add Measurement Tools to the Construction Area as needed. Once added, open measurement 
+                        Add Measurement Tools to the Construction Area as needed. Once added, open measurement
                         options with Space or Enter. Check out Keyboard Shortcuts for more details.
     nonContactAmmeter:
       accessibleName: Non-Contact Ammeter
@@ -421,10 +375,10 @@ a11y:
                           for connecting.
     toolAccessibleName: 'Add { $componentName }'
   advancedAccordionBox:
-    accessibleName: Advanced Options
+    accessibleName:              Advanced Options
     accessibleHelpTextCollapsed: Experiment with wire resistivity, battery resistance, and real bulbs.
     addRealBulbsCheckbox:
-      accessibleHelpText: Build circuits with or without real light bulbs.
+      accessibleHelpText:                 Build circuits with or without real light bulbs.
       accessibleContextResponseChecked:   Real Bulbs added to end of Circuit Component Toolbox.
       accessibleContextResponseUnchecked: Real Bulbs removed from Circuit Component Toolbox.
   displayOptionsPanel:
@@ -439,18 +393,18 @@ a11y:
           electrons:    Animated electron flow hidden in circuit.
           conventional: Animated conventional current arrows hidden in circuit.
     currentTypeRadioButtonGroup:
-      accessibleName: Current Type
+      accessibleName:     Current Type
       accessibleHelpText: Display animated current flow as electrons or conventional current arrows.
       electronsRadioButton:
-        accessibleContextResponse: Animated current flow shows electrons moving through the circuit. 
+        accessibleContextResponse: Animated current flow shows electrons moving through the circuit.
       conventionalRadioButton:
         accessibleContextResponse: Animated current flow shows conventional current arrows.
     labelsCheckbox:
-      accessibleHelpText: Show or hide names of circuit components and measurement tools in toolboxes.
+      accessibleHelpText:                 Show or hide names of circuit components and measurement tools in toolboxes.
       accessibleContextResponseChecked:   Labels in toolboxes shown.
       accessibleContextResponseUnchecked: Labels in toolboxes hidden.
     valuesCheckbox:
-      accessibleHelpText: Show or hide values associated with each circuit component.
+      accessibleHelpText:                 Show or hide values associated with each circuit component.
       accessibleContextResponseChecked:   Circuit component values displayed in the Construction Area.
       accessibleContextResponseUnchecked: Circuit component values hidden.
   viewRadioButtonGroup:
@@ -480,14 +434,14 @@ a11y:
     accessibleName: Repair Fuse
   sourceResistanceControl:
     accessibleHelpText: Set internal resistance of all batteries, ranging from tiny to 10 ohms.
-    ariaValueText: >-
-                   { $resistance ->
-                     [one] { $resistance } ohm
-                    *[other] { $resistance } ohms
-                   }
+    ariaValueText:      >-
+                        { $resistance ->
+                          [one] { $resistance } ohm
+                         *[other] { $resistance } ohms
+                        }
   wireResistivityControl:
     accessibleHelpText: Set resistivity of all wires, ranging from tiny to lots.
-    ariaValueText: '{ $resistivity } ohm-meters'
+    ariaValueText:      '{ $resistivity } ohm-meters'
   fuseCurrentRatingControl:
     ariaValueText: >-
                    { $currentNumber ->
@@ -538,16 +492,16 @@ a11y:
       percent: 'brightness { $percent }%'
   zoomButtonGroup:
     zoomIn:
-      accessibleName: Zoom In
+      accessibleName:     Zoom In
       accessibleHelpText: Adjust visual scale of circuit components and measurement tools in Construction Area.
     zoomOut:
-      accessibleName: Zoom Out
+      accessibleName:     Zoom Out
       accessibleHelpText: Adjust visual scale of circuit components and measurement tools in Construction Area.
     zoomLevelResponse: 'Zoom level { $level } of { $max }.'
   simulationPreferences:
     schematicStandard:
-      accessibleName: Schematic Standard
+      accessibleName:     Schematic Standard
       accessibleHelpText: Choose standard used to represent circuit components as schematic symbols when in Schematic View.
     ammeterReadout:
-      accessibleName: Ammeter Readout
+      accessibleName:     Ammeter Readout
       accessibleHelpText: Choose to display measured current as a magnitude or signed value.

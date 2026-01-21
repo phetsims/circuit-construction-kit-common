@@ -522,27 +522,7 @@
         "value": "Construction Area"
       }
     },
-    "constructionAreaStatus": {
-      "leadingNoCircuit": {
-        "value": "No circuit yet:"
-      },
-      "leadingCircuitActive": {
-        "value": "{ $currentLevel ->\n  [low] In circuit, electrons flow slowly. Circuit has:\n  [medium] In circuit, electrons flow at medium speed. Circuit has:\n  *[high] In circuit, electrons flow quickly. Circuit has:\n}"
-      },
-      "wireCount": {
-        "value": "{ $count ->\n  [one] { $count } wire\n *[other] { $count } wires\n}"
-      },
-      "additionalComponentCount": {
-        "value": "{ $count ->\n  [one] { $count } additional circuit component\n *[other] { $count } additional circuit components\n}"
-      },
-      "connectionCount": {
-        "value": "{ $count ->\n  [zero] { $count } connections\n  [one] { $count } connection\n *[other] { $count } connections\n}"
-      }
-    },
     "circuitContextResponses": {
-      "junctionDefaultLabel": {
-        "value": "Junction { $index }"
-      },
       "selectedForEditing": {
         "value": "Selected for editing, controls visible."
       },
@@ -555,29 +535,8 @@
       "editPanelHelpText": {
         "value": "Use available controls to change, disconnect or remove selected { $componentType }."
       },
-      "connectedComponents": {
-        "value": "{ $inGroup ->\n  [true] Connected: { $components }, in Group { $groupIndex }.\n  *[false] Connected: { $components }.\n}"
-      },
-      "junctionSplit": {
-        "value": "{ $connectionCount ->\n  [one] { $junctionName } split into one new connection.\n  *[other] { $junctionName } split into { $connectionCount } new connections.\n}"
-      },
-      "currentChangedSingle": {
-        "value": "Current changed to { $current } amps."
-      },
-      "currentMultiple": {
-        "value": "Currents flowing at different speeds."
-      },
-      "currentStopped": {
-        "value": "Current stopped flowing."
-      },
       "componentRemoved": {
         "value": "Removed."
-      },
-      "lightBulbState": {
-        "value": "{ $state ->\n  [off] { $componentName } is now off.\n  [dim] { $componentName } glows dimly.\n  [steady] { $componentName } glows steadily.\n  *[bright] { $componentName } shines brightly.\n}"
-      },
-      "componentValueChange": {
-        "value": "{ $type ->\n  [battery] { $componentName } voltage changed from { $oldValue } to { $newValue } volts.\n  [resistor] { $componentName } resistance changed from { $oldValue } to { $newValue } ohms.\n  *[lightBulb] { $componentName } resistance changed from { $oldValue } to { $newValue } ohms.\n}"
       },
       "noChangesInGroup": {
         "value": "{ $showCurrent ->\n  [true] { $hasLightBulbs ->\n           [true] No changes in current or light bulb brightness in Group { $groupIndex }.\n           *[false] No changes in current in Group { $groupIndex }.\n         }\n  *[false] { $hasLightBulbs ->\n             [true] No changes in light bulb brightness in Group { $groupIndex }.\n             *[false] No changes in Group { $groupIndex }.\n           }\n}"
@@ -631,12 +590,12 @@
         "value": "Disconnected."
       }
     },
-    "sensorToolbox": {
+    "measurementToolsToolbox": {
       "accessibleHeading": {
         "value": "Measurement Tools Toolbox"
       },
       "accessibleHelpText": {
-        "value": "Add Measurement Tools to the Construction Area as needed. Once added, open measurement  options with Space or Enter. Check out Keyboard Shortcuts for more details."
+        "value": "Add Measurement Tools to the Construction Area as needed. Once added, open measurement options with Space or Enter. Check out Keyboard Shortcuts for more details."
       },
       "nonContactAmmeter": {
         "accessibleName": {

@@ -182,24 +182,11 @@ addToMapIfDefined( 'a11y_screenSummary_connectivityPhrase', 'a11y.screenSummary.
 addToMapIfDefined( 'a11y_screenSummary_currentFlowingPhrase', 'a11y.screenSummary.currentFlowingPhraseStringProperty' );
 addToMapIfDefined( 'a11y_screenSummary_interactionHint', 'a11y.screenSummary.interactionHintStringProperty' );
 addToMapIfDefined( 'a11y_constructionArea_accessibleHeading', 'a11y.constructionArea.accessibleHeadingStringProperty' );
-addToMapIfDefined( 'a11y_constructionAreaStatus_leadingNoCircuit', 'a11y.constructionAreaStatus.leadingNoCircuitStringProperty' );
-addToMapIfDefined( 'a11y_constructionAreaStatus_leadingCircuitActive', 'a11y.constructionAreaStatus.leadingCircuitActiveStringProperty' );
-addToMapIfDefined( 'a11y_constructionAreaStatus_wireCount', 'a11y.constructionAreaStatus.wireCountStringProperty' );
-addToMapIfDefined( 'a11y_constructionAreaStatus_additionalComponentCount', 'a11y.constructionAreaStatus.additionalComponentCountStringProperty' );
-addToMapIfDefined( 'a11y_constructionAreaStatus_connectionCount', 'a11y.constructionAreaStatus.connectionCountStringProperty' );
-addToMapIfDefined( 'a11y_circuitContextResponses_junctionDefaultLabel', 'a11y.circuitContextResponses.junctionDefaultLabelStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_selectedForEditing', 'a11y.circuitContextResponses.selectedForEditingStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_editControlsHidden', 'a11y.circuitContextResponses.editControlsHiddenStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_editPanelHeading', 'a11y.circuitContextResponses.editPanelHeadingStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_editPanelHelpText', 'a11y.circuitContextResponses.editPanelHelpTextStringProperty' );
-addToMapIfDefined( 'a11y_circuitContextResponses_connectedComponents', 'a11y.circuitContextResponses.connectedComponentsStringProperty' );
-addToMapIfDefined( 'a11y_circuitContextResponses_junctionSplit', 'a11y.circuitContextResponses.junctionSplitStringProperty' );
-addToMapIfDefined( 'a11y_circuitContextResponses_currentChangedSingle', 'a11y.circuitContextResponses.currentChangedSingleStringProperty' );
-addToMapIfDefined( 'a11y_circuitContextResponses_currentMultiple', 'a11y.circuitContextResponses.currentMultipleStringProperty' );
-addToMapIfDefined( 'a11y_circuitContextResponses_currentStopped', 'a11y.circuitContextResponses.currentStoppedStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_componentRemoved', 'a11y.circuitContextResponses.componentRemovedStringProperty' );
-addToMapIfDefined( 'a11y_circuitContextResponses_lightBulbState', 'a11y.circuitContextResponses.lightBulbStateStringProperty' );
-addToMapIfDefined( 'a11y_circuitContextResponses_componentValueChange', 'a11y.circuitContextResponses.componentValueChangeStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_noChangesInGroup', 'a11y.circuitContextResponses.noChangesInGroupStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_currentChangePhrase', 'a11y.circuitContextResponses.currentChangePhraseStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_lightBulbChangePhrase', 'a11y.circuitContextResponses.lightBulbChangePhraseStringProperty' );
@@ -217,11 +204,11 @@ addToMapIfDefined( 'a11y_circuitContextResponses_batteryReversed', 'a11y.circuit
 addToMapIfDefined( 'a11y_circuitContextResponses_batteryReversedNoChange', 'a11y.circuitContextResponses.batteryReversedNoChangeStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_vertexDisconnected', 'a11y.circuitContextResponses.vertexDisconnectedStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_vertexDisconnectedNoChange', 'a11y.circuitContextResponses.vertexDisconnectedNoChangeStringProperty' );
-addToMapIfDefined( 'a11y_sensorToolbox_accessibleHeading', 'a11y.sensorToolbox.accessibleHeadingStringProperty' );
-addToMapIfDefined( 'a11y_sensorToolbox_accessibleHelpText', 'a11y.sensorToolbox.accessibleHelpTextStringProperty' );
-addToMapIfDefined( 'a11y_sensorToolbox_nonContactAmmeter_accessibleName', 'a11y.sensorToolbox.nonContactAmmeter.accessibleNameStringProperty' );
-addToMapIfDefined( 'a11y_sensorToolbox_voltmeter_accessibleName', 'a11y.sensorToolbox.voltmeter.accessibleNameStringProperty' );
-addToMapIfDefined( 'a11y_sensorToolbox_ammeter_accessibleName', 'a11y.sensorToolbox.ammeter.accessibleNameStringProperty' );
+addToMapIfDefined( 'a11y_measurementToolsToolbox_accessibleHeading', 'a11y.measurementToolsToolbox.accessibleHeadingStringProperty' );
+addToMapIfDefined( 'a11y_measurementToolsToolbox_accessibleHelpText', 'a11y.measurementToolsToolbox.accessibleHelpTextStringProperty' );
+addToMapIfDefined( 'a11y_measurementToolsToolbox_nonContactAmmeter_accessibleName', 'a11y.measurementToolsToolbox.nonContactAmmeter.accessibleNameStringProperty' );
+addToMapIfDefined( 'a11y_measurementToolsToolbox_voltmeter_accessibleName', 'a11y.measurementToolsToolbox.voltmeter.accessibleNameStringProperty' );
+addToMapIfDefined( 'a11y_measurementToolsToolbox_ammeter_accessibleName', 'a11y.measurementToolsToolbox.ammeter.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_circuitComponentToolbox_carousel_accessibleName', 'a11y.circuitComponentToolbox.carousel.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_circuitComponentToolbox_carousel_accessibleHelpText', 'a11y.circuitComponentToolbox.carousel.accessibleHelpTextStringProperty' );
 addToMapIfDefined( 'a11y_circuitComponentToolbox_toolAccessibleName', 'a11y.circuitComponentToolbox.toolAccessibleNameStringProperty' );
@@ -537,27 +524,12 @@ const CircuitConstructionKitCommonFluent = {
     constructionArea: {
       accessibleHeadingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_constructionArea_accessibleHeading', _.get( CircuitConstructionKitCommonStrings, 'a11y.constructionArea.accessibleHeadingStringProperty' ) )
     },
-    constructionAreaStatus: {
-      leadingNoCircuitStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_constructionAreaStatus_leadingNoCircuit', _.get( CircuitConstructionKitCommonStrings, 'a11y.constructionAreaStatus.leadingNoCircuitStringProperty' ) ),
-      leadingCircuitActive: new FluentPattern<{ currentLevel: 'low' | 'medium' | 'high' | TReadOnlyProperty<'low' | 'medium' | 'high'> }>( fluentSupport.bundleProperty, 'a11y_constructionAreaStatus_leadingCircuitActive', _.get( CircuitConstructionKitCommonStrings, 'a11y.constructionAreaStatus.leadingCircuitActiveStringProperty' ), [{"name":"currentLevel","variants":["low","medium","high"]}] ),
-      wireCount: new FluentPattern<{ count: number | 'one' | number | 'other' | TReadOnlyProperty<number | 'one' | number | 'other'> }>( fluentSupport.bundleProperty, 'a11y_constructionAreaStatus_wireCount', _.get( CircuitConstructionKitCommonStrings, 'a11y.constructionAreaStatus.wireCountStringProperty' ), [{"name":"count","variants":[{"type":"number","value":"one"},{"type":"number","value":"other"}]}] ),
-      additionalComponentCount: new FluentPattern<{ count: number | 'one' | number | 'other' | TReadOnlyProperty<number | 'one' | number | 'other'> }>( fluentSupport.bundleProperty, 'a11y_constructionAreaStatus_additionalComponentCount', _.get( CircuitConstructionKitCommonStrings, 'a11y.constructionAreaStatus.additionalComponentCountStringProperty' ), [{"name":"count","variants":[{"type":"number","value":"one"},{"type":"number","value":"other"}]}] ),
-      connectionCount: new FluentPattern<{ count: number | 'zero' | number | 'one' | number | 'other' | TReadOnlyProperty<number | 'zero' | number | 'one' | number | 'other'> }>( fluentSupport.bundleProperty, 'a11y_constructionAreaStatus_connectionCount', _.get( CircuitConstructionKitCommonStrings, 'a11y.constructionAreaStatus.connectionCountStringProperty' ), [{"name":"count","variants":[{"type":"number","value":"zero"},{"type":"number","value":"one"},{"type":"number","value":"other"}]}] )
-    },
     circuitContextResponses: {
-      junctionDefaultLabel: new FluentPattern<{ index: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_junctionDefaultLabel', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.junctionDefaultLabelStringProperty' ), [{"name":"index"}] ),
       selectedForEditingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_selectedForEditing', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.selectedForEditingStringProperty' ) ),
       editControlsHiddenStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_editControlsHidden', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.editControlsHiddenStringProperty' ) ),
       editPanelHeading: new FluentPattern<{ componentType: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_editPanelHeading', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.editPanelHeadingStringProperty' ), [{"name":"componentType"}] ),
       editPanelHelpText: new FluentPattern<{ componentType: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_editPanelHelpText', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.editPanelHelpTextStringProperty' ), [{"name":"componentType"}] ),
-      connectedComponents: new FluentPattern<{ components: FluentVariable, groupIndex: FluentVariable, inGroup: 'true' | 'false' | TReadOnlyProperty<'true' | 'false'> }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_connectedComponents', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.connectedComponentsStringProperty' ), [{"name":"components"},{"name":"groupIndex"},{"name":"inGroup","variants":["true","false"]}] ),
-      junctionSplit: new FluentPattern<{ connectionCount: number | 'one' | number | 'other' | TReadOnlyProperty<number | 'one' | number | 'other'>, junctionName: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_junctionSplit', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.junctionSplitStringProperty' ), [{"name":"connectionCount","variants":[{"type":"number","value":"one"},{"type":"number","value":"other"}]},{"name":"junctionName"}] ),
-      currentChangedSingle: new FluentPattern<{ current: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_currentChangedSingle', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.currentChangedSingleStringProperty' ), [{"name":"current"}] ),
-      currentMultipleStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_currentMultiple', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.currentMultipleStringProperty' ) ),
-      currentStoppedStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_currentStopped', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.currentStoppedStringProperty' ) ),
       componentRemovedStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_componentRemoved', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.componentRemovedStringProperty' ) ),
-      lightBulbState: new FluentPattern<{ componentName: FluentVariable, state: 'off' | 'dim' | 'steady' | 'bright' | TReadOnlyProperty<'off' | 'dim' | 'steady' | 'bright'> }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_lightBulbState', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.lightBulbStateStringProperty' ), [{"name":"componentName"},{"name":"state","variants":["off","dim","steady","bright"]}] ),
-      componentValueChange: new FluentPattern<{ componentName: FluentVariable, newValue: FluentVariable, oldValue: FluentVariable, type: 'battery' | 'resistor' | 'lightBulb' | TReadOnlyProperty<'battery' | 'resistor' | 'lightBulb'> }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_componentValueChange', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.componentValueChangeStringProperty' ), [{"name":"componentName"},{"name":"newValue"},{"name":"oldValue"},{"name":"type","variants":["battery","resistor","lightBulb"]}] ),
       _comment_0: new FluentComment( {"comment":"When connected element changes but no current/brightness changes","associatedKey":"noChangesInGroup"} ),
       _comment_1: new FluentComment( {"comment":"Note: When showCurrent=false and hasLightBulbs=false, code returns null before calling this","associatedKey":"noChangesInGroup"} ),
       noChangesInGroup: new FluentPattern<{ groupIndex: FluentVariable, hasLightBulbs: 'true' | 'false' | TReadOnlyProperty<'true' | 'false'>, showCurrent: 'true' | 'false' | TReadOnlyProperty<'true' | 'false'> }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_noChangesInGroup', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.noChangesInGroupStringProperty' ), [{"name":"groupIndex"},{"name":"hasLightBulbs","variants":["true","false"]},{"name":"showCurrent","variants":["true","false"]}] ),
@@ -588,17 +560,17 @@ const CircuitConstructionKitCommonFluent = {
       vertexDisconnected: new FluentPattern<{ currentPhrase: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_vertexDisconnected', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.vertexDisconnectedStringProperty' ), [{"name":"currentPhrase"}] ),
       vertexDisconnectedNoChangeStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_vertexDisconnectedNoChange', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.vertexDisconnectedNoChangeStringProperty' ) )
     },
-    sensorToolbox: {
-      accessibleHeadingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_sensorToolbox_accessibleHeading', _.get( CircuitConstructionKitCommonStrings, 'a11y.sensorToolbox.accessibleHeadingStringProperty' ) ),
-      accessibleHelpTextStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_sensorToolbox_accessibleHelpText', _.get( CircuitConstructionKitCommonStrings, 'a11y.sensorToolbox.accessibleHelpTextStringProperty' ) ),
+    measurementToolsToolbox: {
+      accessibleHeadingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_measurementToolsToolbox_accessibleHeading', _.get( CircuitConstructionKitCommonStrings, 'a11y.measurementToolsToolbox.accessibleHeadingStringProperty' ) ),
+      accessibleHelpTextStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_measurementToolsToolbox_accessibleHelpText', _.get( CircuitConstructionKitCommonStrings, 'a11y.measurementToolsToolbox.accessibleHelpTextStringProperty' ) ),
       nonContactAmmeter: {
-        accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_sensorToolbox_nonContactAmmeter_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.sensorToolbox.nonContactAmmeter.accessibleNameStringProperty' ) )
+        accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_measurementToolsToolbox_nonContactAmmeter_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.measurementToolsToolbox.nonContactAmmeter.accessibleNameStringProperty' ) )
       },
       voltmeter: {
-        accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_sensorToolbox_voltmeter_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.sensorToolbox.voltmeter.accessibleNameStringProperty' ) )
+        accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_measurementToolsToolbox_voltmeter_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.measurementToolsToolbox.voltmeter.accessibleNameStringProperty' ) )
       },
       ammeter: {
-        accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_sensorToolbox_ammeter_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.sensorToolbox.ammeter.accessibleNameStringProperty' ) )
+        accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_measurementToolsToolbox_ammeter_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.measurementToolsToolbox.ammeter.accessibleNameStringProperty' ) )
       }
     },
     circuitComponentToolbox: {

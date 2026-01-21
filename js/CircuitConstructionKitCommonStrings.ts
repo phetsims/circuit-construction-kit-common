@@ -205,27 +205,12 @@ type StringsType = {
     'constructionArea': {
       'accessibleHeadingStringProperty': LocalizedStringProperty;
     };
-    'constructionAreaStatus': {
-      'leadingNoCircuitStringProperty': LocalizedStringProperty;
-      'leadingCircuitActiveStringProperty': LocalizedStringProperty;
-      'wireCountStringProperty': LocalizedStringProperty;
-      'additionalComponentCountStringProperty': LocalizedStringProperty;
-      'connectionCountStringProperty': LocalizedStringProperty;
-    };
     'circuitContextResponses': {
-      'junctionDefaultLabelStringProperty': LocalizedStringProperty;
       'selectedForEditingStringProperty': LocalizedStringProperty;
       'editControlsHiddenStringProperty': LocalizedStringProperty;
       'editPanelHeadingStringProperty': LocalizedStringProperty;
       'editPanelHelpTextStringProperty': LocalizedStringProperty;
-      'connectedComponentsStringProperty': LocalizedStringProperty;
-      'junctionSplitStringProperty': LocalizedStringProperty;
-      'currentChangedSingleStringProperty': LocalizedStringProperty;
-      'currentMultipleStringProperty': LocalizedStringProperty;
-      'currentStoppedStringProperty': LocalizedStringProperty;
       'componentRemovedStringProperty': LocalizedStringProperty;
-      'lightBulbStateStringProperty': LocalizedStringProperty;
-      'componentValueChangeStringProperty': LocalizedStringProperty;
       'noChangesInGroupStringProperty': LocalizedStringProperty;
       'currentChangePhraseStringProperty': LocalizedStringProperty;
       'lightBulbChangePhraseStringProperty': LocalizedStringProperty;
@@ -244,7 +229,7 @@ type StringsType = {
       'vertexDisconnectedStringProperty': LocalizedStringProperty;
       'vertexDisconnectedNoChangeStringProperty': LocalizedStringProperty;
     };
-    'sensorToolbox': {
+    'measurementToolsToolbox': {
       'accessibleHeadingStringProperty': LocalizedStringProperty;
       'accessibleHelpTextStringProperty': LocalizedStringProperty;
       'nonContactAmmeter': {

@@ -239,7 +239,7 @@ export default class SensorToolbox extends CCKCPanel {
           phetioFeatured: true
         }
       } );
-    seriesAmmeterToolNode.accessibleName = CircuitConstructionKitCommonFluent.a11y.sensorToolbox.ammeter.accessibleNameStringProperty;
+    seriesAmmeterToolNode.accessibleName = CircuitConstructionKitCommonFluent.a11y.measurementToolsToolbox.ammeter.accessibleNameStringProperty;
     const allSeriesAmmetersInPlayAreaProperty = new DerivedProperty( [ circuit.circuitElements.lengthProperty ], ( () => {
       return circuit.circuitElements.count( circuitElement => circuitElement instanceof SeriesAmmeter ) === MAX_SERIES_AMMETERS;
     } ) );
@@ -284,7 +284,7 @@ export default class SensorToolbox extends CCKCPanel {
         phetioFeatured: true
       },
       tagName: 'button',
-      accessibleName: CircuitConstructionKitCommonFluent.a11y.sensorToolbox.voltmeter.accessibleNameStringProperty
+      accessibleName: CircuitConstructionKitCommonFluent.a11y.measurementToolsToolbox.voltmeter.accessibleNameStringProperty
     } );
     voltmeterToolNode.addInputListener( new KeyboardListener( {
       fireOnClick: true,
@@ -334,7 +334,7 @@ export default class SensorToolbox extends CCKCPanel {
 
     if ( options.showNoncontactAmmeters ) {
       const ammeterKeyboardListenerTarget = options.showSeriesAmmeters ? ammeterToolIcon : ammeterToolNode;
-      ammeterKeyboardListenerTarget.accessibleName = CircuitConstructionKitCommonFluent.a11y.sensorToolbox.nonContactAmmeter.accessibleNameStringProperty;
+      ammeterKeyboardListenerTarget.accessibleName = CircuitConstructionKitCommonFluent.a11y.measurementToolsToolbox.nonContactAmmeter.accessibleNameStringProperty;
       ammeterKeyboardListenerTarget.addInputListener( new KeyboardListener( {
         fireOnClick: true,
         fire: () => {
@@ -427,8 +427,8 @@ export default class SensorToolbox extends CCKCPanel {
     }
 
     super( new VBox( {
-      accessibleHeading: CircuitConstructionKitCommonFluent.a11y.sensorToolbox.accessibleHeadingStringProperty,
-      accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.sensorToolbox.accessibleHelpTextStringProperty,
+      accessibleHeading: CircuitConstructionKitCommonFluent.a11y.measurementToolsToolbox.accessibleHeadingStringProperty,
+      accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.measurementToolsToolbox.accessibleHelpTextStringProperty,
       accessibleHelpTextBehavior: ParallelDOM.HELP_TEXT_BEFORE_CONTENT,
       spacing: 5,
       children: rows
