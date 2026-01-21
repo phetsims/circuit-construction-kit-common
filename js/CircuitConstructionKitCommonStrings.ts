@@ -286,7 +286,6 @@ type StringsType = {
       }
     };
     'viewRadioButtonGroup': {
-      'accessibleHeadingStringProperty': LocalizedStringProperty;
       'accessibleNameStringProperty': LocalizedStringProperty;
       'accessibleHelpTextStringProperty': LocalizedStringProperty;
       'lifelikeRadioButton': {

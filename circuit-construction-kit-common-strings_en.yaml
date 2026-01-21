@@ -408,7 +408,6 @@ a11y:
       accessibleContextResponseChecked:   Circuit component values displayed in the Construction Area.
       accessibleContextResponseUnchecked: Circuit component values hidden.
   viewRadioButtonGroup:
-    accessibleHeading:  View Type
     accessibleName:     Circuit Component View
     accessibleHelpText: Choose how to display circuit components.
     lifelikeRadioButton:

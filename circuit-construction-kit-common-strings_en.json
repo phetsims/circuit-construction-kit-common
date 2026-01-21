@@ -699,9 +699,6 @@
       }
     },
     "viewRadioButtonGroup": {
-      "accessibleHeading": {
-        "value": "View Type"
-      },
       "accessibleName": {
         "value": "Circuit Component View"
       },

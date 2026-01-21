@@ -59,7 +59,6 @@ export default class ViewRadioButtonGroup extends RectangularRadioButtonGroup<Ci
       },
       tandem: tandem,
 
-      accessibleHeading: CircuitConstructionKitCommonFluent.a11y.viewRadioButtonGroup.accessibleHeadingStringProperty,
       accessibleName: CircuitConstructionKitCommonFluent.a11y.viewRadioButtonGroup.accessibleNameStringProperty,
       accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.viewRadioButtonGroup.accessibleHelpTextStringProperty
     }, providedOptions );
