@@ -599,17 +599,17 @@
       },
       "nonContactAmmeter": {
         "accessibleName": {
-          "value": "Non-Contact Ammeter"
+          "value": "Add Non-Contact Ammeter"
         }
       },
       "voltmeter": {
         "accessibleName": {
-          "value": "Voltmeter"
+          "value": "Add Voltmeter"
         }
       },
       "ammeter": {
         "accessibleName": {
-          "value": "Ammeter"
+          "value": "Add Ammeter"
         }
       }
     },

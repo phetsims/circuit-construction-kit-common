@@ -361,11 +361,11 @@ a11y:
                         Add Measurement Tools to the Construction Area as needed. Once added, open measurement
                         options with Space or Enter. Check out Keyboard Shortcuts for more details.
     nonContactAmmeter:
-      accessibleName: Non-Contact Ammeter
+      accessibleName: Add Non-Contact Ammeter
     voltmeter:
-      accessibleName: Voltmeter
+      accessibleName: Add Voltmeter
     ammeter:
-      accessibleName: Ammeter
+      accessibleName: Add Ammeter
   circuitComponentToolbox:
     carousel:
       accessibleName:     Circuit Component Toolbox

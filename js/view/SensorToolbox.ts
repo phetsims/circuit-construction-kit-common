@@ -190,6 +190,7 @@ export default class SensorToolbox extends CCKCPanel {
       ammeterToolIcon.setOpacity( allInPlayArea ? 0 : 1 );
       ammeterToolIcon.setInputEnabled( !allInPlayArea );
       ammeterToolIcon.focusable = !allInPlayArea;
+      ammeterToolIcon.setPDOMAttribute( 'aria-disabled', allInPlayArea );
     } );
     ammeterToolIcon.mutate( {
       scale: TOOLBOX_ICON_HEIGHT / Math.max( ammeterToolIcon.width, ammeterToolIcon.height )
@@ -293,9 +294,10 @@ export default class SensorToolbox extends CCKCPanel {
       }
     } ) );
 
-    // Make voltmeter tool non-focusable when all voltmeters are in play area
+    // When all voltmeters are in play area, mark as aria-disabled
     allVoltmetersInPlayAreaProperty.link( allInPlayArea => {
       voltmeterToolNode.focusable = !allInPlayArea;
+      voltmeterToolNode.setPDOMAttribute( 'aria-disabled', allInPlayArea );
     } );
 
     // Alter the visibility of the labels when the labels checkbox is toggled.
@@ -342,10 +344,11 @@ export default class SensorToolbox extends CCKCPanel {
         }
       } ) );
 
-      // When ammeterToolNode is the button (no series ammeters), make it non-focusable when all ammeters are in play area
+      // When ammeterToolNode is the button (no series ammeters), mark as aria-disabled when all ammeters are in play area
       if ( !options.showSeriesAmmeters ) {
         allAmmetersInPlayAreaProperty.link( allInPlayArea => {
           ammeterToolNode.focusable = !allInPlayArea;
+          ammeterToolNode.setPDOMAttribute( 'aria-disabled', allInPlayArea );
         } );
       }
     }
