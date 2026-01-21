@@ -421,43 +421,43 @@ a11y:
                           for connecting.
     toolAccessibleName: 'Add { $componentName }'
   advancedAccordionBox:
-    accessibleName: Advanced Settings
+    accessibleName: Advanced Options
     addRealBulbsCheckbox:
-      accessibleContextResponseChecked:   Real light bulbs added to circuit component toolbox.
-      accessibleContextResponseUnchecked: Real light bulbs removed from circuit component toolbox.
+      accessibleContextResponseChecked:   Real Bulbs added to end of Circuit Component Toolbox.
+      accessibleContextResponseUnchecked: Real Bulbs removed from Circuit Component Toolbox.
   displayOptionsPanel:
     accessibleHeading: Display Options
     showCurrentCheckbox:
       accessibleContextResponseChecked:
         select_currentType:
-          electrons:    Electron flow shown in circuit.
-          conventional: Conventional current arrows shown in circuit.
+          electrons:    Animated electron flow shown in circuit.
+          conventional: Animated conventional current arrows shown in circuit.
       accessibleContextResponseUnchecked:
         select_currentType:
-          electrons:    Electron flow hidden in circuit.
-          conventional: Conventional current arrows hidden in circuit.
+          electrons:    Animated electron flow hidden in circuit.
+          conventional: Animated conventional current arrows hidden in circuit.
     currentTypeRadioButtonGroup:
       electronsRadioButton:
-        accessibleContextResponse: Current animation shows electrons moving through the circuit.
+        accessibleContextResponse: Animated current flow shows electrons moving through the circuit. 
       conventionalRadioButton:
-        accessibleContextResponse: Current animation shows conventional current arrows.
+        accessibleContextResponse: Animated current flow shows conventional current arrows.
     labelsCheckbox:
-      accessibleContextResponseChecked:   Labels shown under circuit components.
-      accessibleContextResponseUnchecked: Labels hidden under circuit components.
+      accessibleContextResponseChecked:   Labels in toolboxes shown.
+      accessibleContextResponseUnchecked: Labels in toolboxes hidden.
     valuesCheckbox:
-      accessibleContextResponseChecked:   Circuit component values shown on each component.
-      accessibleContextResponseUnchecked: Circuit component values hidden on circuit components.
+      accessibleContextResponseChecked:   Circuit component values displayed in the Construction Area.
+      accessibleContextResponseUnchecked: Circuit component values hidden.
   viewRadioButtonGroup:
     accessibleHeading:  View Type
-    accessibleName:     View Type Selection
-    accessibleHelpText: Select the view type for circuit components.
+    accessibleName:     Circuit Component View
+    accessibleHelpText: Choose how to display circuit components.
     lifelikeRadioButton:
       accessibleName:            Lifelike View
-      accessibleHelpText:        Show the circuit components like they would look in real life.
+      accessibleHelpText:        Display circuit components as they appear in real life.
       accessibleContextResponse: Circuit components displayed with lifelike appearance.
     schematicRadioButton:
       accessibleName:            Schematic View
-      accessibleHelpText:        Show the circuit components like they would look in a schematic circuit diagram.
+      accessibleHelpText:        Display circuit components as they appear in schematic circuit diagrams.
       accessibleContextResponse: Circuit components displayed with schematic symbols.
   circuitComponentToolNode:
     accessibleHelpText: Drag this tool to the circuit to create a new { $accessibleName }.
