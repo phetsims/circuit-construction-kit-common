@@ -63,6 +63,7 @@ export default class AdvancedAccordionBox extends CCKCAccordionBox {
           tandem: addRealBulbsCheckboxTandem.createTandem( 'labelText' )
         }, TEXT_OPTIONS ) ), {
           tandem: addRealBulbsCheckboxTandem,
+          accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.advancedAccordionBox.addRealBulbsCheckbox.accessibleHelpTextStringProperty,
           accessibleContextResponseChecked: CircuitConstructionKitCommonFluent.a11y.advancedAccordionBox.addRealBulbsCheckbox.accessibleContextResponseCheckedStringProperty,
           accessibleContextResponseUnchecked: CircuitConstructionKitCommonFluent.a11y.advancedAccordionBox.addRealBulbsCheckbox.accessibleContextResponseUncheckedStringProperty
         } )
@@ -78,7 +79,8 @@ export default class AdvancedAccordionBox extends CCKCAccordionBox {
       titleAlignX: 'left',
       titleXSpacing: 10,
 
-      accessibleName: CircuitConstructionKitCommonFluent.a11y.advancedAccordionBox.accessibleNameStringProperty
+      accessibleName: CircuitConstructionKitCommonFluent.a11y.advancedAccordionBox.accessibleNameStringProperty,
+      accessibleHelpTextCollapsed: CircuitConstructionKitCommonFluent.a11y.advancedAccordionBox.accessibleHelpTextCollapsedStringProperty
     } );
 
     this.mutate( options );

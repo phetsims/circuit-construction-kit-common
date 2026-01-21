@@ -226,6 +226,8 @@ addToMapIfDefined( 'a11y_circuitComponentToolbox_carousel_accessibleName', 'a11y
 addToMapIfDefined( 'a11y_circuitComponentToolbox_carousel_accessibleHelpText', 'a11y.circuitComponentToolbox.carousel.accessibleHelpTextStringProperty' );
 addToMapIfDefined( 'a11y_circuitComponentToolbox_toolAccessibleName', 'a11y.circuitComponentToolbox.toolAccessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_advancedAccordionBox_accessibleName', 'a11y.advancedAccordionBox.accessibleNameStringProperty' );
+addToMapIfDefined( 'a11y_advancedAccordionBox_accessibleHelpTextCollapsed', 'a11y.advancedAccordionBox.accessibleHelpTextCollapsedStringProperty' );
+addToMapIfDefined( 'a11y_advancedAccordionBox_addRealBulbsCheckbox_accessibleHelpText', 'a11y.advancedAccordionBox.addRealBulbsCheckbox.accessibleHelpTextStringProperty' );
 addToMapIfDefined( 'a11y_advancedAccordionBox_addRealBulbsCheckbox_accessibleContextResponseChecked', 'a11y.advancedAccordionBox.addRealBulbsCheckbox.accessibleContextResponseCheckedStringProperty' );
 addToMapIfDefined( 'a11y_advancedAccordionBox_addRealBulbsCheckbox_accessibleContextResponseUnchecked', 'a11y.advancedAccordionBox.addRealBulbsCheckbox.accessibleContextResponseUncheckedStringProperty' );
 addToMapIfDefined( 'a11y_displayOptionsPanel_accessibleHeading', 'a11y.displayOptionsPanel.accessibleHeadingStringProperty' );
@@ -235,8 +237,10 @@ addToMapIfDefined( 'a11y_displayOptionsPanel_currentTypeRadioButtonGroup_accessi
 addToMapIfDefined( 'a11y_displayOptionsPanel_currentTypeRadioButtonGroup_accessibleHelpText', 'a11y.displayOptionsPanel.currentTypeRadioButtonGroup.accessibleHelpTextStringProperty' );
 addToMapIfDefined( 'a11y_displayOptionsPanel_currentTypeRadioButtonGroup_electronsRadioButton_accessibleContextResponse', 'a11y.displayOptionsPanel.currentTypeRadioButtonGroup.electronsRadioButton.accessibleContextResponseStringProperty' );
 addToMapIfDefined( 'a11y_displayOptionsPanel_currentTypeRadioButtonGroup_conventionalRadioButton_accessibleContextResponse', 'a11y.displayOptionsPanel.currentTypeRadioButtonGroup.conventionalRadioButton.accessibleContextResponseStringProperty' );
+addToMapIfDefined( 'a11y_displayOptionsPanel_labelsCheckbox_accessibleHelpText', 'a11y.displayOptionsPanel.labelsCheckbox.accessibleHelpTextStringProperty' );
 addToMapIfDefined( 'a11y_displayOptionsPanel_labelsCheckbox_accessibleContextResponseChecked', 'a11y.displayOptionsPanel.labelsCheckbox.accessibleContextResponseCheckedStringProperty' );
 addToMapIfDefined( 'a11y_displayOptionsPanel_labelsCheckbox_accessibleContextResponseUnchecked', 'a11y.displayOptionsPanel.labelsCheckbox.accessibleContextResponseUncheckedStringProperty' );
+addToMapIfDefined( 'a11y_displayOptionsPanel_valuesCheckbox_accessibleHelpText', 'a11y.displayOptionsPanel.valuesCheckbox.accessibleHelpTextStringProperty' );
 addToMapIfDefined( 'a11y_displayOptionsPanel_valuesCheckbox_accessibleContextResponseChecked', 'a11y.displayOptionsPanel.valuesCheckbox.accessibleContextResponseCheckedStringProperty' );
 addToMapIfDefined( 'a11y_displayOptionsPanel_valuesCheckbox_accessibleContextResponseUnchecked', 'a11y.displayOptionsPanel.valuesCheckbox.accessibleContextResponseUncheckedStringProperty' );
 addToMapIfDefined( 'a11y_viewRadioButtonGroup_accessibleHeading', 'a11y.viewRadioButtonGroup.accessibleHeadingStringProperty' );
@@ -255,7 +259,9 @@ addToMapIfDefined( 'a11y_switchToggleButton_closeSwitch', 'a11y.switchToggleButt
 addToMapIfDefined( 'a11y_disconnectButton_accessibleName', 'a11y.disconnectButton.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_trashButton_accessibleName', 'a11y.trashButton.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_fuseRepairButton_accessibleName', 'a11y.fuseRepairButton.accessibleNameStringProperty' );
+addToMapIfDefined( 'a11y_sourceResistanceControl_accessibleHelpText', 'a11y.sourceResistanceControl.accessibleHelpTextStringProperty' );
 addToMapIfDefined( 'a11y_sourceResistanceControl_ariaValueText', 'a11y.sourceResistanceControl.ariaValueTextStringProperty' );
+addToMapIfDefined( 'a11y_wireResistivityControl_accessibleHelpText', 'a11y.wireResistivityControl.accessibleHelpTextStringProperty' );
 addToMapIfDefined( 'a11y_wireResistivityControl_ariaValueText', 'a11y.wireResistivityControl.ariaValueTextStringProperty' );
 addToMapIfDefined( 'a11y_fuseCurrentRatingControl_ariaValueText', 'a11y.fuseCurrentRatingControl.ariaValueTextStringProperty' );
 addToMapIfDefined( 'a11y_ammeterNode_accessibleHeading', 'a11y.ammeterNode.accessibleHeadingStringProperty' );
@@ -287,7 +293,9 @@ addToMapIfDefined( 'a11y_circuitComponent_modifiers_broken', 'a11y.circuitCompon
 addToMapIfDefined( 'a11y_circuitComponent_brightness_off', 'a11y.circuitComponent.brightness.offStringProperty' );
 addToMapIfDefined( 'a11y_circuitComponent_brightness_percent', 'a11y.circuitComponent.brightness.percentStringProperty' );
 addToMapIfDefined( 'a11y_zoomButtonGroup_zoomIn_accessibleName', 'a11y.zoomButtonGroup.zoomIn.accessibleNameStringProperty' );
+addToMapIfDefined( 'a11y_zoomButtonGroup_zoomIn_accessibleHelpText', 'a11y.zoomButtonGroup.zoomIn.accessibleHelpTextStringProperty' );
 addToMapIfDefined( 'a11y_zoomButtonGroup_zoomOut_accessibleName', 'a11y.zoomButtonGroup.zoomOut.accessibleNameStringProperty' );
+addToMapIfDefined( 'a11y_zoomButtonGroup_zoomOut_accessibleHelpText', 'a11y.zoomButtonGroup.zoomOut.accessibleHelpTextStringProperty' );
 addToMapIfDefined( 'a11y_zoomButtonGroup_zoomLevelResponse', 'a11y.zoomButtonGroup.zoomLevelResponseStringProperty' );
 
 // A function that creates contents for a new Fluent file, which will be needed if any string changes.
@@ -598,7 +606,9 @@ const CircuitConstructionKitCommonFluent = {
     },
     advancedAccordionBox: {
       accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_advancedAccordionBox_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.advancedAccordionBox.accessibleNameStringProperty' ) ),
+      accessibleHelpTextCollapsedStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_advancedAccordionBox_accessibleHelpTextCollapsed', _.get( CircuitConstructionKitCommonStrings, 'a11y.advancedAccordionBox.accessibleHelpTextCollapsedStringProperty' ) ),
       addRealBulbsCheckbox: {
+        accessibleHelpTextStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_advancedAccordionBox_addRealBulbsCheckbox_accessibleHelpText', _.get( CircuitConstructionKitCommonStrings, 'a11y.advancedAccordionBox.addRealBulbsCheckbox.accessibleHelpTextStringProperty' ) ),
         accessibleContextResponseCheckedStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_advancedAccordionBox_addRealBulbsCheckbox_accessibleContextResponseChecked', _.get( CircuitConstructionKitCommonStrings, 'a11y.advancedAccordionBox.addRealBulbsCheckbox.accessibleContextResponseCheckedStringProperty' ) ),
         accessibleContextResponseUncheckedStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_advancedAccordionBox_addRealBulbsCheckbox_accessibleContextResponseUnchecked', _.get( CircuitConstructionKitCommonStrings, 'a11y.advancedAccordionBox.addRealBulbsCheckbox.accessibleContextResponseUncheckedStringProperty' ) )
       }
@@ -620,10 +630,12 @@ const CircuitConstructionKitCommonFluent = {
         }
       },
       labelsCheckbox: {
+        accessibleHelpTextStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_displayOptionsPanel_labelsCheckbox_accessibleHelpText', _.get( CircuitConstructionKitCommonStrings, 'a11y.displayOptionsPanel.labelsCheckbox.accessibleHelpTextStringProperty' ) ),
         accessibleContextResponseCheckedStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_displayOptionsPanel_labelsCheckbox_accessibleContextResponseChecked', _.get( CircuitConstructionKitCommonStrings, 'a11y.displayOptionsPanel.labelsCheckbox.accessibleContextResponseCheckedStringProperty' ) ),
         accessibleContextResponseUncheckedStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_displayOptionsPanel_labelsCheckbox_accessibleContextResponseUnchecked', _.get( CircuitConstructionKitCommonStrings, 'a11y.displayOptionsPanel.labelsCheckbox.accessibleContextResponseUncheckedStringProperty' ) )
       },
       valuesCheckbox: {
+        accessibleHelpTextStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_displayOptionsPanel_valuesCheckbox_accessibleHelpText', _.get( CircuitConstructionKitCommonStrings, 'a11y.displayOptionsPanel.valuesCheckbox.accessibleHelpTextStringProperty' ) ),
         accessibleContextResponseCheckedStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_displayOptionsPanel_valuesCheckbox_accessibleContextResponseChecked', _.get( CircuitConstructionKitCommonStrings, 'a11y.displayOptionsPanel.valuesCheckbox.accessibleContextResponseCheckedStringProperty' ) ),
         accessibleContextResponseUncheckedStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_displayOptionsPanel_valuesCheckbox_accessibleContextResponseUnchecked', _.get( CircuitConstructionKitCommonStrings, 'a11y.displayOptionsPanel.valuesCheckbox.accessibleContextResponseUncheckedStringProperty' ) )
       }
@@ -663,9 +675,11 @@ const CircuitConstructionKitCommonFluent = {
       accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_fuseRepairButton_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.fuseRepairButton.accessibleNameStringProperty' ) )
     },
     sourceResistanceControl: {
+      accessibleHelpTextStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_sourceResistanceControl_accessibleHelpText', _.get( CircuitConstructionKitCommonStrings, 'a11y.sourceResistanceControl.accessibleHelpTextStringProperty' ) ),
       ariaValueText: new FluentPattern<{ resistance: number | 'one' | number | 'other' | TReadOnlyProperty<number | 'one' | number | 'other'> }>( fluentSupport.bundleProperty, 'a11y_sourceResistanceControl_ariaValueText', _.get( CircuitConstructionKitCommonStrings, 'a11y.sourceResistanceControl.ariaValueTextStringProperty' ), [{"name":"resistance","variants":[{"type":"number","value":"one"},{"type":"number","value":"other"}]}] )
     },
     wireResistivityControl: {
+      accessibleHelpTextStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_wireResistivityControl_accessibleHelpText', _.get( CircuitConstructionKitCommonStrings, 'a11y.wireResistivityControl.accessibleHelpTextStringProperty' ) ),
       ariaValueText: new FluentPattern<{ resistivity: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_wireResistivityControl_ariaValueText', _.get( CircuitConstructionKitCommonStrings, 'a11y.wireResistivityControl.ariaValueTextStringProperty' ), [{"name":"resistivity"}] )
     },
     fuseCurrentRatingControl: {
@@ -727,10 +741,12 @@ const CircuitConstructionKitCommonFluent = {
     },
     zoomButtonGroup: {
       zoomIn: {
-        accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_zoomButtonGroup_zoomIn_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.zoomButtonGroup.zoomIn.accessibleNameStringProperty' ) )
+        accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_zoomButtonGroup_zoomIn_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.zoomButtonGroup.zoomIn.accessibleNameStringProperty' ) ),
+        accessibleHelpTextStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_zoomButtonGroup_zoomIn_accessibleHelpText', _.get( CircuitConstructionKitCommonStrings, 'a11y.zoomButtonGroup.zoomIn.accessibleHelpTextStringProperty' ) )
       },
       zoomOut: {
-        accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_zoomButtonGroup_zoomOut_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.zoomButtonGroup.zoomOut.accessibleNameStringProperty' ) )
+        accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_zoomButtonGroup_zoomOut_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.zoomButtonGroup.zoomOut.accessibleNameStringProperty' ) ),
+        accessibleHelpTextStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_zoomButtonGroup_zoomOut_accessibleHelpText', _.get( CircuitConstructionKitCommonStrings, 'a11y.zoomButtonGroup.zoomOut.accessibleHelpTextStringProperty' ) )
       },
       zoomLevelResponse: new FluentPattern<{ level: FluentVariable, max: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_zoomButtonGroup_zoomLevelResponse', _.get( CircuitConstructionKitCommonStrings, 'a11y.zoomButtonGroup.zoomLevelResponseStringProperty' ), [{"name":"level"},{"name":"max"}] )
     }

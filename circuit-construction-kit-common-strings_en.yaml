@@ -422,7 +422,9 @@ a11y:
     toolAccessibleName: 'Add { $componentName }'
   advancedAccordionBox:
     accessibleName: Advanced Options
+    accessibleHelpTextCollapsed: Experiment with wire resistivity, battery resistance, and real bulbs.
     addRealBulbsCheckbox:
+      accessibleHelpText: Build circuits with or without real light bulbs.
       accessibleContextResponseChecked:   Real Bulbs added to end of Circuit Component Toolbox.
       accessibleContextResponseUnchecked: Real Bulbs removed from Circuit Component Toolbox.
   displayOptionsPanel:
@@ -444,9 +446,11 @@ a11y:
       conventionalRadioButton:
         accessibleContextResponse: Animated current flow shows conventional current arrows.
     labelsCheckbox:
+      accessibleHelpText: Show or hide names of circuit components and measurement tools in toolboxes.
       accessibleContextResponseChecked:   Labels in toolboxes shown.
       accessibleContextResponseUnchecked: Labels in toolboxes hidden.
     valuesCheckbox:
+      accessibleHelpText: Show or hide values associated with each circuit component.
       accessibleContextResponseChecked:   Circuit component values displayed in the Construction Area.
       accessibleContextResponseUnchecked: Circuit component values hidden.
   viewRadioButtonGroup:
@@ -475,12 +479,14 @@ a11y:
   fuseRepairButton:
     accessibleName: Repair Fuse
   sourceResistanceControl:
+    accessibleHelpText: Set internal resistance of all batteries, ranging from tiny to 10 ohms.
     ariaValueText: >-
                    { $resistance ->
                      [one] { $resistance } ohm
                     *[other] { $resistance } ohms
                    }
   wireResistivityControl:
+    accessibleHelpText: Set resistivity of all wires, ranging from tiny to lots.
     ariaValueText: '{ $resistivity } ohm-meters'
   fuseCurrentRatingControl:
     ariaValueText: >-
@@ -533,6 +539,8 @@ a11y:
   zoomButtonGroup:
     zoomIn:
       accessibleName: Zoom In
+      accessibleHelpText: Adjust visual scale of circuit components and measurement tools in Construction Area.
     zoomOut:
       accessibleName: Zoom Out
+      accessibleHelpText: Adjust visual scale of circuit components and measurement tools in Construction Area.
     zoomLevelResponse: 'Zoom level { $level } of { $max }.'

@@ -266,7 +266,9 @@ type StringsType = {
     };
     'advancedAccordionBox': {
       'accessibleNameStringProperty': LocalizedStringProperty;
+      'accessibleHelpTextCollapsedStringProperty': LocalizedStringProperty;
       'addRealBulbsCheckbox': {
+        'accessibleHelpTextStringProperty': LocalizedStringProperty;
         'accessibleContextResponseCheckedStringProperty': LocalizedStringProperty;
         'accessibleContextResponseUncheckedStringProperty': LocalizedStringProperty;
       }
@@ -288,10 +290,12 @@ type StringsType = {
         }
       };
       'labelsCheckbox': {
+        'accessibleHelpTextStringProperty': LocalizedStringProperty;
         'accessibleContextResponseCheckedStringProperty': LocalizedStringProperty;
         'accessibleContextResponseUncheckedStringProperty': LocalizedStringProperty;
       };
       'valuesCheckbox': {
+        'accessibleHelpTextStringProperty': LocalizedStringProperty;
         'accessibleContextResponseCheckedStringProperty': LocalizedStringProperty;
         'accessibleContextResponseUncheckedStringProperty': LocalizedStringProperty;
       }
@@ -331,9 +335,11 @@ type StringsType = {
       'accessibleNameStringProperty': LocalizedStringProperty;
     };
     'sourceResistanceControl': {
+      'accessibleHelpTextStringProperty': LocalizedStringProperty;
       'ariaValueTextStringProperty': LocalizedStringProperty;
     };
     'wireResistivityControl': {
+      'accessibleHelpTextStringProperty': LocalizedStringProperty;
       'ariaValueTextStringProperty': LocalizedStringProperty;
     };
     'fuseCurrentRatingControl': {
@@ -394,9 +400,11 @@ type StringsType = {
     'zoomButtonGroup': {
       'zoomIn': {
         'accessibleNameStringProperty': LocalizedStringProperty;
+        'accessibleHelpTextStringProperty': LocalizedStringProperty;
       };
       'zoomOut': {
         'accessibleNameStringProperty': LocalizedStringProperty;
+        'accessibleHelpTextStringProperty': LocalizedStringProperty;
       };
       'zoomLevelResponseStringProperty': LocalizedStringProperty;
     }

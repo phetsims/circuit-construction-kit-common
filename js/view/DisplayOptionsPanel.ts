@@ -131,12 +131,14 @@ export default class DisplayOptionsPanel extends CCKCPanel {
     const labelsCheckboxTandem = tandem.createTandem( 'labelsCheckbox' );
     const showLabelsCheckbox = new CCKCCheckbox( showLabelsProperty, createLabel( labelsStringProperty, labelsCheckboxTandem ), {
       tandem: labelsCheckboxTandem,
+      accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.displayOptionsPanel.labelsCheckbox.accessibleHelpTextStringProperty,
       accessibleContextResponseChecked: CircuitConstructionKitCommonFluent.a11y.displayOptionsPanel.labelsCheckbox.accessibleContextResponseCheckedStringProperty,
       accessibleContextResponseUnchecked: CircuitConstructionKitCommonFluent.a11y.displayOptionsPanel.labelsCheckbox.accessibleContextResponseUncheckedStringProperty
     } );
     const valuesCheckboxTandem = tandem.createTandem( 'valuesCheckbox' );
     const showValuesCheckbox = new CCKCCheckbox( showValuesProperty, createLabel( valuesStringProperty, valuesCheckboxTandem ), {
       tandem: valuesCheckboxTandem,
+      accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.displayOptionsPanel.valuesCheckbox.accessibleHelpTextStringProperty,
       accessibleContextResponseChecked: CircuitConstructionKitCommonFluent.a11y.displayOptionsPanel.valuesCheckbox.accessibleContextResponseCheckedStringProperty,
       accessibleContextResponseUnchecked: CircuitConstructionKitCommonFluent.a11y.displayOptionsPanel.valuesCheckbox.accessibleContextResponseUncheckedStringProperty
     } );

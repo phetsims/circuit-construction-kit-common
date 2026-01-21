@@ -69,6 +69,7 @@ export default class SourceResistanceControl extends VBox {
       tandem: tandem.createTandem( 'slider' ),
 
       accessibleName: batteryResistanceControlString,
+      accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.sourceResistanceControl.accessibleHelpTextStringProperty,
 
       createAriaValueText: ( value: number ) => CircuitConstructionKitCommonFluent.a11y.sourceResistanceControl.ariaValueText.format( { resistance: value } ),
 

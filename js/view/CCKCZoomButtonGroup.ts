@@ -46,10 +46,12 @@ export default class CCKCZoomButtonGroup extends MagnifyingGlassZoomButtonGroup 
       },
       zoomInButtonOptions: {
         accessibleName: CircuitConstructionKitCommonFluent.a11y.zoomButtonGroup.zoomIn.accessibleNameStringProperty,
+        accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.zoomButtonGroup.zoomIn.accessibleHelpTextStringProperty,
         accessibleContextResponse: zoomLevelResponseProperty
       },
       zoomOutButtonOptions: {
         accessibleName: CircuitConstructionKitCommonFluent.a11y.zoomButtonGroup.zoomOut.accessibleNameStringProperty,
+        accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.zoomButtonGroup.zoomOut.accessibleHelpTextStringProperty,
         accessibleContextResponse: zoomLevelResponseProperty
       },
       magnifyingGlassNodeOptions: {

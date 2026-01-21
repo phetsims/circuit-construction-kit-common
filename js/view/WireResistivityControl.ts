@@ -49,6 +49,7 @@ export default class WireResistivityControl extends VBox {
       phetioVisiblePropertyInstrumented: false,
       tandem: tandem.createTandem( 'slider' ),
       accessibleName: wireResistivityStringProperty,
+      accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.wireResistivityControl.accessibleHelpTextStringProperty,
       createAriaValueText: value => ariaValueTextPattern.format( {
         resistivity: value < 1E-4 ? value.toString() : toFixed( value, 4 )
       } )

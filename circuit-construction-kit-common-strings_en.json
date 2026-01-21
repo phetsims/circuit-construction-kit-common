@@ -669,14 +669,20 @@
     },
     "advancedAccordionBox": {
       "accessibleName": {
-        "value": "Advanced Settings"
+        "value": "Advanced Options"
+      },
+      "accessibleHelpTextCollapsed": {
+        "value": "Experiment with wire resistivity, battery resistance, and real bulbs."
       },
       "addRealBulbsCheckbox": {
+        "accessibleHelpText": {
+          "value": "Build circuits with or without real light bulbs."
+        },
         "accessibleContextResponseChecked": {
-          "value": "Real light bulbs added to circuit component toolbox."
+          "value": "Real Bulbs added to end of Circuit Component Toolbox."
         },
         "accessibleContextResponseUnchecked": {
-          "value": "Real light bulbs removed from circuit component toolbox."
+          "value": "Real Bulbs removed from Circuit Component Toolbox."
         }
       }
     },
@@ -686,10 +692,10 @@
       },
       "showCurrentCheckbox": {
         "accessibleContextResponseChecked": {
-          "value": "{ $currentType ->\n  [electrons] Electron flow shown in circuit.\n  *[conventional] Conventional current arrows shown in circuit.\n}"
+          "value": "{ $currentType ->\n  [electrons] Animated electron flow shown in circuit.\n  *[conventional] Animated conventional current arrows shown in circuit.\n}"
         },
         "accessibleContextResponseUnchecked": {
-          "value": "{ $currentType ->\n  [electrons] Electron flow hidden in circuit.\n  *[conventional] Conventional current arrows hidden in circuit.\n}"
+          "value": "{ $currentType ->\n  [electrons] Animated electron flow hidden in circuit.\n  *[conventional] Animated conventional current arrows hidden in circuit.\n}"
         }
       },
       "currentTypeRadioButtonGroup": {
@@ -701,29 +707,35 @@
         },
         "electronsRadioButton": {
           "accessibleContextResponse": {
-            "value": "Current animation shows electrons moving through the circuit."
+            "value": "Animated current flow shows electrons moving through the circuit."
           }
         },
         "conventionalRadioButton": {
           "accessibleContextResponse": {
-            "value": "Current animation shows conventional current arrows."
+            "value": "Animated current flow shows conventional current arrows."
           }
         }
       },
       "labelsCheckbox": {
+        "accessibleHelpText": {
+          "value": "Show or hide names of circuit components and measurement tools in toolboxes."
+        },
         "accessibleContextResponseChecked": {
-          "value": "Labels shown under circuit components."
+          "value": "Labels in toolboxes shown."
         },
         "accessibleContextResponseUnchecked": {
-          "value": "Labels hidden under circuit components."
+          "value": "Labels in toolboxes hidden."
         }
       },
       "valuesCheckbox": {
+        "accessibleHelpText": {
+          "value": "Show or hide values associated with each circuit component."
+        },
         "accessibleContextResponseChecked": {
-          "value": "Circuit component values shown on each component."
+          "value": "Circuit component values displayed in the Construction Area."
         },
         "accessibleContextResponseUnchecked": {
-          "value": "Circuit component values hidden on circuit components."
+          "value": "Circuit component values hidden."
         }
       }
     },
@@ -732,17 +744,17 @@
         "value": "View Type"
       },
       "accessibleName": {
-        "value": "View Type Selection"
+        "value": "Circuit Component View"
       },
       "accessibleHelpText": {
-        "value": "Select the view type for circuit components."
+        "value": "Choose how to display circuit components."
       },
       "lifelikeRadioButton": {
         "accessibleName": {
           "value": "Lifelike View"
         },
         "accessibleHelpText": {
-          "value": "Show the circuit components like they would look in real life."
+          "value": "Display circuit components as they appear in real life."
         },
         "accessibleContextResponse": {
           "value": "Circuit components displayed with lifelike appearance."
@@ -753,7 +765,7 @@
           "value": "Schematic View"
         },
         "accessibleHelpText": {
-          "value": "Show the circuit components like they would look in a schematic circuit diagram."
+          "value": "Display circuit components as they appear in schematic circuit diagrams."
         },
         "accessibleContextResponse": {
           "value": "Circuit components displayed with schematic symbols."
@@ -794,11 +806,17 @@
       }
     },
     "sourceResistanceControl": {
+      "accessibleHelpText": {
+        "value": "Set internal resistance of all batteries, ranging from tiny to 10 ohms."
+      },
       "ariaValueText": {
         "value": "{ $resistance ->\n  [one] { $resistance } ohm\n *[other] { $resistance } ohms\n}"
       }
     },
     "wireResistivityControl": {
+      "accessibleHelpText": {
+        "value": "Set resistivity of all wires, ranging from tiny to lots."
+      },
       "ariaValueText": {
         "value": "{ $resistivity } ohm-meters"
       }
@@ -920,11 +938,17 @@
       "zoomIn": {
         "accessibleName": {
           "value": "Zoom In"
+        },
+        "accessibleHelpText": {
+          "value": "Adjust visual scale of circuit components and measurement tools in Construction Area."
         }
       },
       "zoomOut": {
         "accessibleName": {
           "value": "Zoom Out"
+        },
+        "accessibleHelpText": {
+          "value": "Adjust visual scale of circuit components and measurement tools in Construction Area."
         }
       },
       "zoomLevelResponse": {
