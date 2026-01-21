@@ -297,6 +297,10 @@ addToMapIfDefined( 'a11y_zoomButtonGroup_zoomIn_accessibleHelpText', 'a11y.zoomB
 addToMapIfDefined( 'a11y_zoomButtonGroup_zoomOut_accessibleName', 'a11y.zoomButtonGroup.zoomOut.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_zoomButtonGroup_zoomOut_accessibleHelpText', 'a11y.zoomButtonGroup.zoomOut.accessibleHelpTextStringProperty' );
 addToMapIfDefined( 'a11y_zoomButtonGroup_zoomLevelResponse', 'a11y.zoomButtonGroup.zoomLevelResponseStringProperty' );
+addToMapIfDefined( 'a11y_simulationPreferences_schematicStandard_accessibleName', 'a11y.simulationPreferences.schematicStandard.accessibleNameStringProperty' );
+addToMapIfDefined( 'a11y_simulationPreferences_schematicStandard_accessibleHelpText', 'a11y.simulationPreferences.schematicStandard.accessibleHelpTextStringProperty' );
+addToMapIfDefined( 'a11y_simulationPreferences_ammeterReadout_accessibleName', 'a11y.simulationPreferences.ammeterReadout.accessibleNameStringProperty' );
+addToMapIfDefined( 'a11y_simulationPreferences_ammeterReadout_accessibleHelpText', 'a11y.simulationPreferences.ammeterReadout.accessibleHelpTextStringProperty' );
 
 // A function that creates contents for a new Fluent file, which will be needed if any string changes.
 const createFluentFile = (): string => {
@@ -749,6 +753,16 @@ const CircuitConstructionKitCommonFluent = {
         accessibleHelpTextStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_zoomButtonGroup_zoomOut_accessibleHelpText', _.get( CircuitConstructionKitCommonStrings, 'a11y.zoomButtonGroup.zoomOut.accessibleHelpTextStringProperty' ) )
       },
       zoomLevelResponse: new FluentPattern<{ level: FluentVariable, max: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_zoomButtonGroup_zoomLevelResponse', _.get( CircuitConstructionKitCommonStrings, 'a11y.zoomButtonGroup.zoomLevelResponseStringProperty' ), [{"name":"level"},{"name":"max"}] )
+    },
+    simulationPreferences: {
+      schematicStandard: {
+        accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_simulationPreferences_schematicStandard_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.simulationPreferences.schematicStandard.accessibleNameStringProperty' ) ),
+        accessibleHelpTextStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_simulationPreferences_schematicStandard_accessibleHelpText', _.get( CircuitConstructionKitCommonStrings, 'a11y.simulationPreferences.schematicStandard.accessibleHelpTextStringProperty' ) )
+      },
+      ammeterReadout: {
+        accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_simulationPreferences_ammeterReadout_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.simulationPreferences.ammeterReadout.accessibleNameStringProperty' ) ),
+        accessibleHelpTextStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_simulationPreferences_ammeterReadout_accessibleHelpText', _.get( CircuitConstructionKitCommonStrings, 'a11y.simulationPreferences.ammeterReadout.accessibleHelpTextStringProperty' ) )
+      }
     }
   }
 };

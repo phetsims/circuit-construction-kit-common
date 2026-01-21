@@ -44,7 +44,9 @@ export default class CCKCSimulationPreferencesContentNode extends VBox {
       phetioVisiblePropertyInstrumented: false,
       radioButtonOptions: {
         radius: 8
-      }
+      },
+      accessibleName: CircuitConstructionKitCommonFluent.a11y.simulationPreferences.schematicStandard.accessibleNameStringProperty,
+      accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.simulationPreferences.schematicStandard.accessibleHelpTextStringProperty
     } );
 
     const ammeterReadoutRadioButtonGroup = new VerticalAquaRadioButtonGroup<AmmeterReadoutType>( ammeterReadoutTypeProperty, [ {
@@ -60,7 +62,9 @@ export default class CCKCSimulationPreferencesContentNode extends VBox {
       phetioVisiblePropertyInstrumented: false,
       radioButtonOptions: {
         radius: 8
-      }
+      },
+      accessibleName: CircuitConstructionKitCommonFluent.a11y.simulationPreferences.ammeterReadout.accessibleNameStringProperty,
+      accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.simulationPreferences.ammeterReadout.accessibleHelpTextStringProperty
     } );
 
     super( {

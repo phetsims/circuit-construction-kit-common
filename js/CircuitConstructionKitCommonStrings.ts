@@ -407,6 +407,16 @@ type StringsType = {
         'accessibleHelpTextStringProperty': LocalizedStringProperty;
       };
       'zoomLevelResponseStringProperty': LocalizedStringProperty;
+    };
+    'simulationPreferences': {
+      'schematicStandard': {
+        'accessibleNameStringProperty': LocalizedStringProperty;
+        'accessibleHelpTextStringProperty': LocalizedStringProperty;
+      };
+      'ammeterReadout': {
+        'accessibleNameStringProperty': LocalizedStringProperty;
+        'accessibleHelpTextStringProperty': LocalizedStringProperty;
+      }
     }
   }
 };

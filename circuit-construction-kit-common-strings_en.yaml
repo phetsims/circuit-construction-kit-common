@@ -544,3 +544,10 @@ a11y:
       accessibleName: Zoom Out
       accessibleHelpText: Adjust visual scale of circuit components and measurement tools in Construction Area.
     zoomLevelResponse: 'Zoom level { $level } of { $max }.'
+  simulationPreferences:
+    schematicStandard:
+      accessibleName: Schematic Standard
+      accessibleHelpText: Choose standard used to represent circuit components as schematic symbols when in Schematic View.
+    ammeterReadout:
+      accessibleName: Ammeter Readout
+      accessibleHelpText: Choose to display measured current as a magnitude or signed value.
