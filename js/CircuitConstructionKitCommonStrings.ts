@@ -300,9 +300,6 @@ type StringsType = {
         'accessibleContextResponseStringProperty': LocalizedStringProperty;
       }
     };
-    'circuitComponentToolNode': {
-      'accessibleHelpTextStringProperty': LocalizedStringProperty;
-    };
     'reverseBatteryButton': {
       'accessibleNameStringProperty': LocalizedStringProperty;
     };

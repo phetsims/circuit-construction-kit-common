@@ -419,8 +419,6 @@ a11y:
       accessibleName:            Schematic View
       accessibleHelpText:        Display circuit components as they appear in schematic circuit diagrams.
       accessibleContextResponse: Circuit components displayed with schematic symbols.
-  circuitComponentToolNode:
-    accessibleHelpText: Drag this tool to the circuit to create a new { $accessibleName }.
   reverseBatteryButton:
     accessibleName: Reverse Battery Direction
   switchToggleButton:

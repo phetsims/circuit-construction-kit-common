@@ -239,7 +239,6 @@ addToMapIfDefined( 'a11y_viewRadioButtonGroup_lifelikeRadioButton_accessibleCont
 addToMapIfDefined( 'a11y_viewRadioButtonGroup_schematicRadioButton_accessibleName', 'a11y.viewRadioButtonGroup.schematicRadioButton.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_viewRadioButtonGroup_schematicRadioButton_accessibleHelpText', 'a11y.viewRadioButtonGroup.schematicRadioButton.accessibleHelpTextStringProperty' );
 addToMapIfDefined( 'a11y_viewRadioButtonGroup_schematicRadioButton_accessibleContextResponse', 'a11y.viewRadioButtonGroup.schematicRadioButton.accessibleContextResponseStringProperty' );
-addToMapIfDefined( 'a11y_circuitComponentToolNode_accessibleHelpText', 'a11y.circuitComponentToolNode.accessibleHelpTextStringProperty' );
 addToMapIfDefined( 'a11y_reverseBatteryButton_accessibleName', 'a11y.reverseBatteryButton.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_switchToggleButton_openSwitch', 'a11y.switchToggleButton.openSwitchStringProperty' );
 addToMapIfDefined( 'a11y_switchToggleButton_closeSwitch', 'a11y.switchToggleButton.closeSwitchStringProperty' );
@@ -630,9 +629,6 @@ const CircuitConstructionKitCommonFluent = {
         accessibleHelpTextStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_viewRadioButtonGroup_schematicRadioButton_accessibleHelpText', _.get( CircuitConstructionKitCommonStrings, 'a11y.viewRadioButtonGroup.schematicRadioButton.accessibleHelpTextStringProperty' ) ),
         accessibleContextResponseStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_viewRadioButtonGroup_schematicRadioButton_accessibleContextResponse', _.get( CircuitConstructionKitCommonStrings, 'a11y.viewRadioButtonGroup.schematicRadioButton.accessibleContextResponseStringProperty' ) )
       }
-    },
-    circuitComponentToolNode: {
-      accessibleHelpText: new FluentPattern<{ accessibleName: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitComponentToolNode_accessibleHelpText', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitComponentToolNode.accessibleHelpTextStringProperty' ), [{"name":"accessibleName"}] )
     },
     reverseBatteryButton: {
       accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_reverseBatteryButton_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.reverseBatteryButton.accessibleNameStringProperty' ) )

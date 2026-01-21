@@ -731,11 +731,6 @@
         }
       }
     },
-    "circuitComponentToolNode": {
-      "accessibleHelpText": {
-        "value": "Drag this tool to the circuit to create a new { $accessibleName }."
-      }
-    },
     "reverseBatteryButton": {
       "accessibleName": {
         "value": "Reverse Battery Direction"
