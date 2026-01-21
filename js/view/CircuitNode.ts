@@ -35,7 +35,6 @@ import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
 import isSettingPhetioStateProperty from '../../../tandem/js/isSettingPhetioStateProperty.js';
 import PhetioGroup from '../../../tandem/js/PhetioGroup.js';
 import Tandem from '../../../tandem/js/Tandem.js';
-import Utterance from '../../../utterance-queue/js/Utterance.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -620,11 +619,6 @@ export default class CircuitNode extends Node {
     // that may occur before the circuit solves (e.g., repair then immediate re-break).
     const pendingFuseStateChanges: { fuseElement: Fuse; isTripped: boolean }[] = [];
 
-    // Use separate Utterances for fuse repaired vs broken so both can be queued without
-    // one replacing the other. See https://github.com/phetsims/scenery/issues/1729
-    const fuseRepairedUtterance = new Utterance();
-    const fuseBrokenUtterance = new Utterance();
-
     // Listen for fuse state changes on any fuse
     const fuseStateChangeListener = ( isTripped: boolean, fuseElement: Fuse ) => {
       if ( !isResettingAllProperty.value && !isSettingPhetioStateProperty.value ) {
@@ -720,9 +714,10 @@ export default class CircuitNode extends Node {
           pendingChange.isTripped
         );
         if ( response ) {
-          const utterance = pendingChange.isTripped ? fuseBrokenUtterance : fuseRepairedUtterance;
-          utterance.alert = response;
-          this.addAccessibleContextResponse( utterance, { alertBehavior: 'queue' } );
+
+          // This utterance is not interruptible so that the user can hear both 'fuse repaired' and 'fuse broken'
+          // if they happen in quick succession.
+          this.addAccessibleContextResponse( response );
         }
       }
 
