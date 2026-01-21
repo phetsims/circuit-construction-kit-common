@@ -693,6 +693,12 @@
         }
       },
       "currentTypeRadioButtonGroup": {
+        "accessibleName": {
+          "value": "Current Type"
+        },
+        "accessibleHelpText": {
+          "value": "Display animated current flow as electrons or conventional current arrows."
+        },
         "electronsRadioButton": {
           "accessibleContextResponse": {
             "value": "Current animation shows electrons moving through the circuit."

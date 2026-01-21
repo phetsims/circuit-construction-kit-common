@@ -278,6 +278,8 @@ type StringsType = {
         'accessibleContextResponseUncheckedStringProperty': LocalizedStringProperty;
       };
       'currentTypeRadioButtonGroup': {
+        'accessibleNameStringProperty': LocalizedStringProperty;
+        'accessibleHelpTextStringProperty': LocalizedStringProperty;
         'electronsRadioButton': {
           'accessibleContextResponseStringProperty': LocalizedStringProperty;
         };

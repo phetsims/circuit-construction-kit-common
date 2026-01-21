@@ -111,7 +111,9 @@ export default class DisplayOptionsPanel extends CCKCPanel {
     }
     ], {
       tandem: currentTypeRadioButtonGroupTandem,
-      spacing: 6
+      spacing: 6,
+      accessibleName: CircuitConstructionKitCommonFluent.a11y.displayOptionsPanel.currentTypeRadioButtonGroup.accessibleNameStringProperty,
+      accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.displayOptionsPanel.currentTypeRadioButtonGroup.accessibleHelpTextStringProperty
     } );
 
     // AlignBox necessary to indent the children radio buttons

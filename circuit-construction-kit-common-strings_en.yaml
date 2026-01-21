@@ -437,6 +437,8 @@ a11y:
           electrons:    Animated electron flow hidden in circuit.
           conventional: Animated conventional current arrows hidden in circuit.
     currentTypeRadioButtonGroup:
+      accessibleName: Current Type
+      accessibleHelpText: Display animated current flow as electrons or conventional current arrows.
       electronsRadioButton:
         accessibleContextResponse: Animated current flow shows electrons moving through the circuit. 
       conventionalRadioButton:

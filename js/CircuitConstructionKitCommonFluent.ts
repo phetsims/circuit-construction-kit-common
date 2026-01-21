@@ -231,6 +231,8 @@ addToMapIfDefined( 'a11y_advancedAccordionBox_addRealBulbsCheckbox_accessibleCon
 addToMapIfDefined( 'a11y_displayOptionsPanel_accessibleHeading', 'a11y.displayOptionsPanel.accessibleHeadingStringProperty' );
 addToMapIfDefined( 'a11y_displayOptionsPanel_showCurrentCheckbox_accessibleContextResponseChecked', 'a11y.displayOptionsPanel.showCurrentCheckbox.accessibleContextResponseCheckedStringProperty' );
 addToMapIfDefined( 'a11y_displayOptionsPanel_showCurrentCheckbox_accessibleContextResponseUnchecked', 'a11y.displayOptionsPanel.showCurrentCheckbox.accessibleContextResponseUncheckedStringProperty' );
+addToMapIfDefined( 'a11y_displayOptionsPanel_currentTypeRadioButtonGroup_accessibleName', 'a11y.displayOptionsPanel.currentTypeRadioButtonGroup.accessibleNameStringProperty' );
+addToMapIfDefined( 'a11y_displayOptionsPanel_currentTypeRadioButtonGroup_accessibleHelpText', 'a11y.displayOptionsPanel.currentTypeRadioButtonGroup.accessibleHelpTextStringProperty' );
 addToMapIfDefined( 'a11y_displayOptionsPanel_currentTypeRadioButtonGroup_electronsRadioButton_accessibleContextResponse', 'a11y.displayOptionsPanel.currentTypeRadioButtonGroup.electronsRadioButton.accessibleContextResponseStringProperty' );
 addToMapIfDefined( 'a11y_displayOptionsPanel_currentTypeRadioButtonGroup_conventionalRadioButton_accessibleContextResponse', 'a11y.displayOptionsPanel.currentTypeRadioButtonGroup.conventionalRadioButton.accessibleContextResponseStringProperty' );
 addToMapIfDefined( 'a11y_displayOptionsPanel_labelsCheckbox_accessibleContextResponseChecked', 'a11y.displayOptionsPanel.labelsCheckbox.accessibleContextResponseCheckedStringProperty' );
@@ -608,6 +610,8 @@ const CircuitConstructionKitCommonFluent = {
         accessibleContextResponseUnchecked: new FluentPattern<{ currentType: 'electrons' | 'conventional' | TReadOnlyProperty<'electrons' | 'conventional'> }>( fluentSupport.bundleProperty, 'a11y_displayOptionsPanel_showCurrentCheckbox_accessibleContextResponseUnchecked', _.get( CircuitConstructionKitCommonStrings, 'a11y.displayOptionsPanel.showCurrentCheckbox.accessibleContextResponseUncheckedStringProperty' ), [{"name":"currentType","variants":["electrons","conventional"]}] )
       },
       currentTypeRadioButtonGroup: {
+        accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_displayOptionsPanel_currentTypeRadioButtonGroup_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.displayOptionsPanel.currentTypeRadioButtonGroup.accessibleNameStringProperty' ) ),
+        accessibleHelpTextStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_displayOptionsPanel_currentTypeRadioButtonGroup_accessibleHelpText', _.get( CircuitConstructionKitCommonStrings, 'a11y.displayOptionsPanel.currentTypeRadioButtonGroup.accessibleHelpTextStringProperty' ) ),
         electronsRadioButton: {
           accessibleContextResponseStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_displayOptionsPanel_currentTypeRadioButtonGroup_electronsRadioButton_accessibleContextResponse', _.get( CircuitConstructionKitCommonStrings, 'a11y.displayOptionsPanel.currentTypeRadioButtonGroup.electronsRadioButton.accessibleContextResponseStringProperty' ) )
         },
