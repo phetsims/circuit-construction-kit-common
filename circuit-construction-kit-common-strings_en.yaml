@@ -153,6 +153,7 @@ a11y:
       switch:           Switches
       voltmeter:        Voltmeters
       ammeter:          Ammeters
+      nonContactAmmeter: Non-Contact Ammeters
       stopwatch:        Stopwatches
       # Extreme variants
       extremeBattery:   Extreme Batteries
@@ -360,6 +361,7 @@ a11y:
     accessibleHelpText: >-
                         Add Measurement Tools to the Construction Area as needed. Once added, open measurement
                         options with Space or Enter. Check out Keyboard Shortcuts for more details.
+    toolDisabledHelpText: 'Disabled when no { $componentType } remain in the toolbox.'
     nonContactAmmeter:
       accessibleName: Add Non-Contact Ammeter
     voltmeter:
@@ -373,7 +375,8 @@ a11y:
                           Look for components in carousel and add them to Construction Area. Once added, return to 
                           Construction Area and look for components and their connection points to edit or choose options 
                           for connecting.
-    toolAccessibleName: 'Add { $componentName }'
+    toolAccessibleName:        'Add { $componentName }'
+    toolDisabledHelpText:      'Disabled when no { $componentType } remain in the toolbox.'
   advancedAccordionBox:
     accessibleName:              Advanced Options
     accessibleHelpTextCollapsed: Experiment with wire resistivity, battery resistance, and real bulbs.

@@ -158,6 +158,7 @@ type StringsType = {
         'switchStringProperty': LocalizedStringProperty;
         'voltmeterStringProperty': LocalizedStringProperty;
         'ammeterStringProperty': LocalizedStringProperty;
+        'nonContactAmmeterStringProperty': LocalizedStringProperty;
         'stopwatchStringProperty': LocalizedStringProperty;
         'extremeBatteryStringProperty': LocalizedStringProperty;
         'extremeResistorStringProperty': LocalizedStringProperty;
@@ -232,6 +233,7 @@ type StringsType = {
     'measurementToolsToolbox': {
       'accessibleHeadingStringProperty': LocalizedStringProperty;
       'accessibleHelpTextStringProperty': LocalizedStringProperty;
+      'toolDisabledHelpTextStringProperty': LocalizedStringProperty;
       'nonContactAmmeter': {
         'accessibleNameStringProperty': LocalizedStringProperty;
       };
@@ -248,6 +250,7 @@ type StringsType = {
         'accessibleHelpTextStringProperty': LocalizedStringProperty;
       };
       'toolAccessibleNameStringProperty': LocalizedStringProperty;
+      'toolDisabledHelpTextStringProperty': LocalizedStringProperty;
     };
     'advancedAccordionBox': {
       'accessibleNameStringProperty': LocalizedStringProperty;

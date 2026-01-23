@@ -22,6 +22,7 @@ import DragListener from '../../../scenery/js/listeners/DragListener.js';
 import KeyboardListener from '../../../scenery/js/listeners/KeyboardListener.js';
 import { type PressListenerEvent } from '../../../scenery/js/listeners/PressListener.js';
 import type Node from '../../../scenery/js/nodes/Node.js';
+import ParallelDOM from '../../../scenery/js/accessibility/pdom/ParallelDOM.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -55,6 +56,7 @@ export default class CircuitElementToolNode extends InteractiveHighlighting( VBo
   /**
    * @param circuitElementType - the type of circuit element this tool creates
    * @param labelStringProperty
+   * @param pluralLabelStringProperty - plural form of the label for disabled help text (e.g., "Coins" instead of "Coin")
    * @param showLabelsProperty
    * @param viewTypeProperty
    * @param circuit
@@ -68,7 +70,7 @@ export default class CircuitElementToolNode extends InteractiveHighlighting( VBo
    *                                 - in the center of the socket
    * @param [providedOptions]
    */
-  public constructor( circuitElementType: CircuitElementType, labelStringProperty: TReadOnlyProperty<string>, showLabelsProperty: Property<boolean>, viewTypeProperty: Property<CircuitElementViewType>,
+  public constructor( circuitElementType: CircuitElementType, labelStringProperty: TReadOnlyProperty<string>, pluralLabelStringProperty: TReadOnlyProperty<string>, showLabelsProperty: Property<boolean>, viewTypeProperty: Property<CircuitElementViewType>,
                       circuit: Circuit, globalToCircuitNodePoint: ( v: Vector2 ) => Vector2, iconNode: Node, maxNumber: number,
                       count: () => number, createElement: ( v: Vector2 ) => CircuitElement, providedOptions: CircuitElementToolNodeOptions ) {
 
@@ -108,8 +110,14 @@ export default class CircuitElementToolNode extends InteractiveHighlighting( VBo
       tagName: 'button',
       accessibleName: CircuitConstructionKitCommonFluent.a11y.circuitComponentToolbox.toolAccessibleName.createProperty( {
         componentName: labelStringProperty
-      } )
+      } ),
+      accessibleHelpTextBehavior: ParallelDOM.HELP_TEXT_AFTER_CONTENT
     }, providedOptions );
+
+    // Create disabled help text that explains why the button is disabled (all components have been added)
+    const disabledHelpTextProperty = CircuitConstructionKitCommonFluent.a11y.circuitComponentToolbox.toolDisabledHelpText.createProperty( {
+      componentType: pluralLabelStringProperty
+    } );
 
     super( options );
 
@@ -207,6 +215,9 @@ export default class CircuitElementToolNode extends InteractiveHighlighting( VBo
         this.setOpacity( hasMoreAvailable ? 1 : options.ghostOpacity );
         this.filters = hasMoreAvailable ? [] : [ Grayscale.FULL ];
         this.inputEnabled = hasMoreAvailable;
+
+        // Show help text explaining why the button is disabled when no more components are available
+        this.accessibleHelpText = hasMoreAvailable ? null : disabledHelpTextProperty.value;
 
         // For the non-ohmic real bulb, when it is not selected in the advanced control panel, the icon should not appear at all
         this.visible = existsAtAll;

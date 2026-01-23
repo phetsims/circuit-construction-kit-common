@@ -184,6 +184,11 @@ export default class SensorToolbox extends CCKCPanel {
       tagName: options.showNoncontactAmmeters && options.showSeriesAmmeters ? 'button' : undefined
     } );
     const allAmmetersInPlayAreaProperty = DerivedProperty.and( ammeterNodes.map( ammeterNode => ammeterNode.ammeter.isActiveProperty ) );
+    // Create shared disabled help text property for non-contact ammeters
+    const ammeterDisabledHelpTextProperty = CircuitConstructionKitCommonFluent.a11y.measurementToolsToolbox.toolDisabledHelpText.createProperty( {
+      componentType: CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypePlurals.nonContactAmmeterStringProperty
+    } );
+
     allAmmetersInPlayAreaProperty.link( allInPlayArea => {
 
       // Simulate becoming visible: false, but without changing the dimensions
@@ -191,6 +196,7 @@ export default class SensorToolbox extends CCKCPanel {
       ammeterToolIcon.setInputEnabled( !allInPlayArea );
       ammeterToolIcon.focusable = !allInPlayArea;
       ammeterToolIcon.setPDOMAttribute( 'aria-disabled', allInPlayArea );
+      ammeterToolIcon.accessibleHelpText = allInPlayArea ? ammeterDisabledHelpTextProperty.value : null;
     } );
     ammeterToolIcon.mutate( {
       scale: TOOLBOX_ICON_HEIGHT / Math.max( ammeterToolIcon.width, ammeterToolIcon.height )
@@ -221,10 +227,11 @@ export default class SensorToolbox extends CCKCPanel {
     const seriesAmmeterToolNode = new CircuitElementToolNode(
       'ammeter',
       new Property( '' ),
+      CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypePlurals.ammeterStringProperty,
       new BooleanProperty( false ),
       new EnumerationProperty( CircuitElementViewType.SCHEMATIC ),
       circuit,
-      point => circuitNode.globalToLocalPoint( point ),
+      ( point: Vector2 ) => circuitNode.globalToLocalPoint( point ),
       seriesAmmeterNodeIcon,
       MAX_SERIES_AMMETERS,
       () => circuit.circuitElements.count( circuitElement => circuitElement instanceof SeriesAmmeter ),
@@ -285,7 +292,8 @@ export default class SensorToolbox extends CCKCPanel {
         phetioFeatured: true
       },
       tagName: 'button',
-      accessibleName: CircuitConstructionKitCommonFluent.a11y.measurementToolsToolbox.voltmeter.accessibleNameStringProperty
+      accessibleName: CircuitConstructionKitCommonFluent.a11y.measurementToolsToolbox.voltmeter.accessibleNameStringProperty,
+      accessibleHelpTextBehavior: ParallelDOM.HELP_TEXT_AFTER_CONTENT
     } );
     voltmeterToolNode.addInputListener( new KeyboardListener( {
       fireOnClick: true,
@@ -294,10 +302,16 @@ export default class SensorToolbox extends CCKCPanel {
       }
     } ) );
 
-    // When all voltmeters are in play area, mark as aria-disabled
+    // Create shared disabled help text property for voltmeters
+    const voltmeterDisabledHelpTextProperty = CircuitConstructionKitCommonFluent.a11y.measurementToolsToolbox.toolDisabledHelpText.createProperty( {
+      componentType: CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypePlurals.voltmeterStringProperty
+    } );
+
+    // When all voltmeters are in play area, mark as aria-disabled and show help text
     allVoltmetersInPlayAreaProperty.link( allInPlayArea => {
       voltmeterToolNode.focusable = !allInPlayArea;
       voltmeterToolNode.setPDOMAttribute( 'aria-disabled', allInPlayArea );
+      voltmeterToolNode.accessibleHelpText = allInPlayArea ? voltmeterDisabledHelpTextProperty.value : null;
     } );
 
     // Alter the visibility of the labels when the labels checkbox is toggled.

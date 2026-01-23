@@ -397,6 +397,9 @@
         "ammeter": {
           "value": "Ammeters"
         },
+        "nonContactAmmeter": {
+          "value": "Non-Contact Ammeters"
+        },
         "stopwatch": {
           "value": "Stopwatches"
         },
@@ -597,6 +600,9 @@
       "accessibleHelpText": {
         "value": "Add Measurement Tools to the Construction Area as needed. Once added, open measurement options with Space or Enter. Check out Keyboard Shortcuts for more details."
       },
+      "toolDisabledHelpText": {
+        "value": "Disabled when no { $componentType } remain in the toolbox."
+      },
       "nonContactAmmeter": {
         "accessibleName": {
           "value": "Add Non-Contact Ammeter"
@@ -624,6 +630,9 @@
       },
       "toolAccessibleName": {
         "value": "Add { $componentName }"
+      },
+      "toolDisabledHelpText": {
+        "value": "Disabled when no { $componentType } remain in the toolbox."
       }
     },
     "advancedAccordionBox": {

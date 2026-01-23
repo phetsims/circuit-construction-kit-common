@@ -143,6 +143,7 @@ addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypePlurals_fuse', '
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypePlurals_switch', 'a11y.circuitDescription.circuitComponentTypePlurals.switchStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypePlurals_voltmeter', 'a11y.circuitDescription.circuitComponentTypePlurals.voltmeterStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypePlurals_ammeter', 'a11y.circuitDescription.circuitComponentTypePlurals.ammeterStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypePlurals_nonContactAmmeter', 'a11y.circuitDescription.circuitComponentTypePlurals.nonContactAmmeterStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypePlurals_stopwatch', 'a11y.circuitDescription.circuitComponentTypePlurals.stopwatchStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypePlurals_extremeBattery', 'a11y.circuitDescription.circuitComponentTypePlurals.extremeBatteryStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_circuitComponentTypePlurals_extremeResistor', 'a11y.circuitDescription.circuitComponentTypePlurals.extremeResistorStringProperty' );
@@ -206,12 +207,14 @@ addToMapIfDefined( 'a11y_circuitContextResponses_vertexDisconnected', 'a11y.circ
 addToMapIfDefined( 'a11y_circuitContextResponses_vertexDisconnectedNoChange', 'a11y.circuitContextResponses.vertexDisconnectedNoChangeStringProperty' );
 addToMapIfDefined( 'a11y_measurementToolsToolbox_accessibleHeading', 'a11y.measurementToolsToolbox.accessibleHeadingStringProperty' );
 addToMapIfDefined( 'a11y_measurementToolsToolbox_accessibleHelpText', 'a11y.measurementToolsToolbox.accessibleHelpTextStringProperty' );
+addToMapIfDefined( 'a11y_measurementToolsToolbox_toolDisabledHelpText', 'a11y.measurementToolsToolbox.toolDisabledHelpTextStringProperty' );
 addToMapIfDefined( 'a11y_measurementToolsToolbox_nonContactAmmeter_accessibleName', 'a11y.measurementToolsToolbox.nonContactAmmeter.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_measurementToolsToolbox_voltmeter_accessibleName', 'a11y.measurementToolsToolbox.voltmeter.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_measurementToolsToolbox_ammeter_accessibleName', 'a11y.measurementToolsToolbox.ammeter.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_circuitComponentToolbox_carousel_accessibleName', 'a11y.circuitComponentToolbox.carousel.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_circuitComponentToolbox_carousel_accessibleHelpText', 'a11y.circuitComponentToolbox.carousel.accessibleHelpTextStringProperty' );
 addToMapIfDefined( 'a11y_circuitComponentToolbox_toolAccessibleName', 'a11y.circuitComponentToolbox.toolAccessibleNameStringProperty' );
+addToMapIfDefined( 'a11y_circuitComponentToolbox_toolDisabledHelpText', 'a11y.circuitComponentToolbox.toolDisabledHelpTextStringProperty' );
 addToMapIfDefined( 'a11y_advancedAccordionBox_accessibleName', 'a11y.advancedAccordionBox.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_advancedAccordionBox_accessibleHelpTextCollapsed', 'a11y.advancedAccordionBox.accessibleHelpTextCollapsedStringProperty' );
 addToMapIfDefined( 'a11y_advancedAccordionBox_addRealBulbsCheckbox_accessibleHelpText', 'a11y.advancedAccordionBox.addRealBulbsCheckbox.accessibleHelpTextStringProperty' );
@@ -460,6 +463,7 @@ const CircuitConstructionKitCommonFluent = {
         switchStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypePlurals_switch', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypePlurals.switchStringProperty' ) ),
         voltmeterStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypePlurals_voltmeter', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypePlurals.voltmeterStringProperty' ) ),
         ammeterStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypePlurals_ammeter', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypePlurals.ammeterStringProperty' ) ),
+        nonContactAmmeterStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypePlurals_nonContactAmmeter', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypePlurals.nonContactAmmeterStringProperty' ) ),
         stopwatchStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_circuitComponentTypePlurals_stopwatch', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.circuitComponentTypePlurals.stopwatchStringProperty' ) ),
         _comment_0: new FluentComment( {"comment":"Extreme variants","associatedKey":"extremeBattery"} ),
         _comment_1: new FluentComment( {"comment":"Extreme variants","associatedKey":"extremeBattery"} ),
@@ -561,6 +565,7 @@ const CircuitConstructionKitCommonFluent = {
     measurementToolsToolbox: {
       accessibleHeadingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_measurementToolsToolbox_accessibleHeading', _.get( CircuitConstructionKitCommonStrings, 'a11y.measurementToolsToolbox.accessibleHeadingStringProperty' ) ),
       accessibleHelpTextStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_measurementToolsToolbox_accessibleHelpText', _.get( CircuitConstructionKitCommonStrings, 'a11y.measurementToolsToolbox.accessibleHelpTextStringProperty' ) ),
+      toolDisabledHelpText: new FluentPattern<{ componentType: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_measurementToolsToolbox_toolDisabledHelpText', _.get( CircuitConstructionKitCommonStrings, 'a11y.measurementToolsToolbox.toolDisabledHelpTextStringProperty' ), [{"name":"componentType"}] ),
       nonContactAmmeter: {
         accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_measurementToolsToolbox_nonContactAmmeter_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.measurementToolsToolbox.nonContactAmmeter.accessibleNameStringProperty' ) )
       },
@@ -576,7 +581,8 @@ const CircuitConstructionKitCommonFluent = {
         accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitComponentToolbox_carousel_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitComponentToolbox.carousel.accessibleNameStringProperty' ) ),
         accessibleHelpTextStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitComponentToolbox_carousel_accessibleHelpText', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitComponentToolbox.carousel.accessibleHelpTextStringProperty' ) )
       },
-      toolAccessibleName: new FluentPattern<{ componentName: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitComponentToolbox_toolAccessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitComponentToolbox.toolAccessibleNameStringProperty' ), [{"name":"componentName"}] )
+      toolAccessibleName: new FluentPattern<{ componentName: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitComponentToolbox_toolAccessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitComponentToolbox.toolAccessibleNameStringProperty' ), [{"name":"componentName"}] ),
+      toolDisabledHelpText: new FluentPattern<{ componentType: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitComponentToolbox_toolDisabledHelpText', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitComponentToolbox.toolDisabledHelpTextStringProperty' ), [{"name":"componentType"}] )
     },
     advancedAccordionBox: {
       accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_advancedAccordionBox_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.advancedAccordionBox.accessibleNameStringProperty' ) ),
