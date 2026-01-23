@@ -636,10 +636,10 @@ const CircuitConstructionKitCommonFluent = {
       closeSwitchStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_switchToggleButton_closeSwitch', _.get( CircuitConstructionKitCommonStrings, 'a11y.switchToggleButton.closeSwitchStringProperty' ) )
     },
     disconnectButton: {
-      accessibleName: new FluentPattern<{ accessibleName: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_disconnectButton_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.disconnectButton.accessibleNameStringProperty' ), [{"name":"accessibleName"}] )
+      accessibleName: new FluentPattern<{ componentType: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_disconnectButton_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.disconnectButton.accessibleNameStringProperty' ), [{"name":"componentType"}] )
     },
     trashButton: {
-      accessibleName: new FluentPattern<{ accessibleName: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_trashButton_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.trashButton.accessibleNameStringProperty' ), [{"name":"accessibleName"}] )
+      accessibleName: new FluentPattern<{ componentType: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_trashButton_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.trashButton.accessibleNameStringProperty' ), [{"name":"componentType"}] )
     },
     fuseRepairButton: {
       accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_fuseRepairButton_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.fuseRepairButton.accessibleNameStringProperty' ) )

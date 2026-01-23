@@ -743,12 +743,12 @@
     },
     "disconnectButton": {
       "accessibleName": {
-        "value": "Disconnect { $accessibleName }"
+        "value": "Disconnect { $componentType }"
       }
     },
     "trashButton": {
       "accessibleName": {
-        "value": "Delete { $accessibleName }"
+        "value": "Delete { $componentType }"
       }
     },
     "fuseRepairButton": {

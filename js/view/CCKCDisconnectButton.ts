@@ -18,10 +18,10 @@ import type Tandem from '../../../tandem/js/Tandem.js';
 import cut_mp3 from '../../sounds/cut_mp3.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
+import CircuitDescriptionUtils from '../CircuitDescriptionUtils.js';
 import CircuitElement from '../model/CircuitElement.js';
 import CCKCRoundPushButton from './CCKCRoundPushButton.js';
 import type CircuitNode from './CircuitNode.js';
-import CircuitDescription from './description/CircuitDescription.js';
 
 // Offset to move the disconnected element (in view coordinates)
 const DISCONNECT_OFFSET = new Vector2( 50, 50 );
@@ -68,12 +68,13 @@ export default class CCKCDisconnectButton extends CCKCRoundPushButton {
     // Recompute when circuit topology changes (elements connected/disconnected)
     circuit.circuitChangedEmitter.addListener( () => enabledProperty.recomputeDerivation() );
 
-    // Build accessible name reactively from selection (showValues=false for disconnect button)
-    const accessibleNameProperty = new DerivedProperty(
+    // Build component type reactively from selection (just the type label, no state details)
+    const componentTypeProperty = new DerivedProperty(
       [ circuit.selectionProperty ],
       selection => {
         if ( selection instanceof CircuitElement ) {
-          return CircuitDescription.buildAccessibleName( selection, false, 0, 0, false );
+          const descriptionType = CircuitDescriptionUtils.getDescriptionType( selection );
+          return CircuitDescriptionUtils.getCircuitElementTypeLabel( descriptionType );
         }
         return '';
       }
@@ -81,7 +82,7 @@ export default class CCKCDisconnectButton extends CCKCRoundPushButton {
 
     super( {
       accessibleName: CircuitConstructionKitCommonFluent.a11y.disconnectButton.accessibleName.createProperty( {
-        accessibleName: accessibleNameProperty
+        componentType: componentTypeProperty
       } ),
       touchAreaDilation: 5,
       content: scissorsIcon,

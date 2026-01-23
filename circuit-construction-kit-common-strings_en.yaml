@@ -424,9 +424,9 @@ a11y:
     openSwitch:  Open Switch
     closeSwitch: Close Switch
   disconnectButton:
-    accessibleName: Disconnect { $accessibleName }
+    accessibleName: Disconnect { $componentType }
   trashButton:
-    accessibleName: Delete { $accessibleName }
+    accessibleName: Delete { $componentType }
   fuseRepairButton:
     accessibleName: Repair Fuse
   sourceResistanceControl:

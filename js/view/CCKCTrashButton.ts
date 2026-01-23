@@ -14,10 +14,10 @@ import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
+import CircuitDescriptionUtils from '../CircuitDescriptionUtils.js';
 import CircuitElement from '../model/CircuitElement.js';
 import CCKCRoundPushButton from './CCKCRoundPushButton.js';
 import CircuitNode from './CircuitNode.js';
-import CircuitDescription from './description/CircuitDescription.js';
 
 export default class CCKCTrashButton extends CCKCRoundPushButton {
 
@@ -25,12 +25,13 @@ export default class CCKCTrashButton extends CCKCRoundPushButton {
 
     const circuit = circuitNode.circuit;
 
-    // Build accessible name reactively from selection and showValues
-    const accessibleNameProperty = new DerivedProperty(
-      [ circuit.selectionProperty, circuitNode.model.showValuesProperty ],
-      ( selection, showValues ) => {
+    // Build component type reactively from selection (just the type label, no state details)
+    const componentTypeProperty = new DerivedProperty(
+      [ circuit.selectionProperty ],
+      selection => {
         if ( selection instanceof CircuitElement ) {
-          return CircuitDescription.buildAccessibleName( selection, showValues, 0, 0, false );
+          const descriptionType = CircuitDescriptionUtils.getDescriptionType( selection );
+          return CircuitDescriptionUtils.getCircuitElementTypeLabel( descriptionType );
         }
         return '';
       }
@@ -38,7 +39,7 @@ export default class CCKCTrashButton extends CCKCRoundPushButton {
 
     super( {
       accessibleName: CircuitConstructionKitCommonFluent.a11y.trashButton.accessibleName.createProperty( {
-        accessibleName: accessibleNameProperty
+        componentType: componentTypeProperty
       } ),
       touchAreaDilation: 5, // radius dilation for touch area
       content: new Path( trashAltRegularShape, {
