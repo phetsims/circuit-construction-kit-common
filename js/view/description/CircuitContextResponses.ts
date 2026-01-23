@@ -156,7 +156,7 @@ export default class CircuitContextResponses {
   private analyzeCurrentChange(
     oldCurrents: number[],
     newCurrents: number[]
-  ): { hasChange: boolean; scope: 'some' | 'all'; direction: 'increased' | 'decreased' | 'changed' | 'stopped' | 'reversed' } {
+  ): { hasChange: boolean; scope: 'some' | 'all'; direction: 'increased' | 'decreased' | 'changed' | 'stopped' | 'reversed' | 'started' } {
 
     // Count how many elements had current changes
     let increasedCount = 0;
@@ -203,9 +203,16 @@ export default class CircuitContextResponses {
     const wasFlowing = oldCurrents.some( current => Math.abs( current ) > CURRENT_THRESHOLD );
     const nowStopped = newCurrents.every( current => Math.abs( current ) <= CURRENT_THRESHOLD );
 
+    // Check if current has started: was not flowing before, now some flowing
+    const wasNotFlowing = oldCurrents.every( current => Math.abs( current ) <= CURRENT_THRESHOLD );
+    const nowFlowing = newCurrents.some( current => Math.abs( current ) > CURRENT_THRESHOLD );
+
     // Determine direction
-    let direction: 'increased' | 'decreased' | 'changed' | 'stopped' | 'reversed';
-    if ( wasFlowing && nowStopped ) {
+    let direction: 'increased' | 'decreased' | 'changed' | 'stopped' | 'reversed' | 'started';
+    if ( wasNotFlowing && nowFlowing ) {
+      direction = 'started';
+    }
+    else if ( wasFlowing && nowStopped ) {
       direction = 'stopped';
     }
     else if ( reversedCount === count && count > 0 ) {
@@ -232,7 +239,7 @@ export default class CircuitContextResponses {
   private analyzeBrightnessChange(
     oldValues: number[],
     newValues: number[]
-  ): { hasChange: boolean; scope: 'some' | 'all'; direction: 'brighter' | 'dimmer' | 'off' | 'changed' } {
+  ): { hasChange: boolean; scope: 'some' | 'all'; direction: 'brighter' | 'dimmer' | 'on' | 'off' | 'changed' } {
 
     if ( oldValues.length === 0 || newValues.length === 0 ) {
       return { hasChange: false, scope: 'all', direction: 'changed' };
@@ -240,6 +247,7 @@ export default class CircuitContextResponses {
 
     let brighterCount = 0;
     let dimmerCount = 0;
+    let turnedOnCount = 0;
     let turnedOffCount = 0;
     let changedCount = 0;
 
@@ -252,6 +260,10 @@ export default class CircuitContextResponses {
         changedCount++;
         if ( diff > 0 ) {
           brighterCount++;
+          // Check if bulb turned on: was off (<= tolerance) and now lit (> tolerance)
+          if ( oldValue <= VALUE_EQUALITY_TOLERANCE && newValue > VALUE_EQUALITY_TOLERANCE ) {
+            turnedOnCount++;
+          }
         }
         else {
           dimmerCount++;
@@ -270,9 +282,15 @@ export default class CircuitContextResponses {
     const scope: 'some' | 'all' = changedCount === count ? 'all' : 'some';
 
     // Determine direction
-    let direction: 'brighter' | 'dimmer' | 'off' | 'changed';
+    let direction: 'brighter' | 'dimmer' | 'on' | 'off' | 'changed';
     if ( brighterCount > 0 && dimmerCount === 0 ) {
-      direction = 'brighter';
+      // If all brighter bulbs turned on, use 'on' instead of 'brighter'
+      if ( turnedOnCount === brighterCount ) {
+        direction = 'on';
+      }
+      else {
+        direction = 'brighter';
+      }
     }
     else if ( dimmerCount > 0 && brighterCount === 0 ) {
       // If all dimmed bulbs turned off, use 'off' instead of 'dimmer'
@@ -296,8 +314,8 @@ export default class CircuitContextResponses {
    */
   private buildGroupChangePhrase(
     groupIndex: number,
-    currentChange: { hasChange: boolean; scope: 'some' | 'all'; direction: 'increased' | 'decreased' | 'changed' | 'stopped' | 'reversed' },
-    brightnessChange: { hasChange: boolean; scope: 'some' | 'all'; direction: 'brighter' | 'dimmer' | 'off' | 'changed' },
+    currentChange: { hasChange: boolean; scope: 'some' | 'all'; direction: 'increased' | 'decreased' | 'changed' | 'stopped' | 'reversed' | 'started' },
+    brightnessChange: { hasChange: boolean; scope: 'some' | 'all'; direction: 'brighter' | 'dimmer' | 'on' | 'off' | 'changed' },
     includeCurrentChange: boolean
   ): string | null {
     const parts: string[] = [];

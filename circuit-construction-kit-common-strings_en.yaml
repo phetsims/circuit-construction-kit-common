@@ -306,6 +306,7 @@ a11y:
             decreased: 'Current through some Group { $groupIndex } circuit elements decreased.'
             stopped:   'Current through some Group { $groupIndex } circuit elements stopped.'
             reversed:  'Current through some Group { $groupIndex } circuit elements reversed.'
+            started:   'Current through some Group { $groupIndex } circuit elements started.'
         all:
           select_direction:
             changed:   'Current through all Group { $groupIndex } circuit elements changed.'
@@ -313,20 +314,23 @@ a11y:
             decreased: 'Current through all Group { $groupIndex } circuit elements decreased.'
             stopped:   'Current through Group { $groupIndex } stopped.'
             reversed:  'Current through all Group { $groupIndex } circuit elements reversed.'
+            started:   'Current through all Group { $groupIndex } circuit elements started.'
 
     # Light bulb brightness change patterns
     lightBulbChangePhrase:
       select_scope:
         some:
           select_direction:
-            brighter: 'Some Group { $groupIndex } light bulbs got brighter.'
-            dimmer:   'Some Group { $groupIndex } light bulbs got dimmer.'
+            brighter: 'Some Group { $groupIndex } light bulbs are brighter.'
+            dimmer:   'Some Group { $groupIndex } light bulbs are dimmer.'
+            on:       'Some Group { $groupIndex } light bulbs turned on.'
             off:      'Some Group { $groupIndex } light bulbs turned off.'
             changed:  'Some Group { $groupIndex } light bulbs changed brightness.'
         all:
           select_direction:
-            brighter: 'All Group { $groupIndex } light bulbs got brighter.'
-            dimmer:   'All Group { $groupIndex } light bulbs got dimmer.'
+            brighter: 'All Group { $groupIndex } light bulbs are brighter.'
+            dimmer:   'All Group { $groupIndex } light bulbs are dimmer.'
+            on:       'All Group { $groupIndex } light bulbs turned on.'
             off:      'All Group { $groupIndex } light bulbs turned off.'
             changed:  'All Group { $groupIndex } light bulbs changed brightness.'
 
