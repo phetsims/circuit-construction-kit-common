@@ -91,7 +91,7 @@ type CircuitOptions = {
 type Pair = { v1: Vertex; v2: Vertex };
 
 export default class Circuit extends PhetioObject {
-  private readonly viewTypeProperty: Property<CircuitElementViewType>;
+  public readonly viewTypeProperty: Property<CircuitElementViewType>;
   public readonly addRealBulbsProperty: Property<boolean>;
   private readonly blackBoxStudy: boolean;
 

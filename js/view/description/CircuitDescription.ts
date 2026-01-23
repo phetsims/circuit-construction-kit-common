@@ -20,6 +20,7 @@ import Capacitor from '../../model/Capacitor.js';
 import Circuit from '../../model/Circuit.js';
 import CircuitElement from '../../model/CircuitElement.js';
 import CircuitElementType from '../../model/CircuitElementType.js';
+import CircuitElementViewType from '../../model/CircuitElementViewType.js';
 import Fuse from '../../model/Fuse.js';
 import Inductor from '../../model/Inductor.js';
 import LightBulb from '../../model/LightBulb.js';
@@ -63,7 +64,8 @@ export default class CircuitDescription {
     showValues: boolean,
     position: number,
     total: number,
-    shouldShowPosition: boolean
+    shouldShowPosition: boolean,
+    isSchematic: boolean
   ): string {
     const separator = CircuitConstructionKitCommonFluent.a11y.circuitComponent.separatorStringProperty.value;
     const parts: string[] = [];
@@ -79,7 +81,8 @@ export default class CircuitDescription {
     }
 
     // 2. Brightness (light bulbs only, always shown regardless of showValues)
-    if ( circuitElement instanceof LightBulb ) {
+    // Skip brightness in schematic mode since schematic light bulbs don't glow
+    if ( circuitElement instanceof LightBulb && !isSchematic ) {
       const brightness = LightBulb.computeBrightness( circuitElement );
       if ( brightness <= LightBulb.BRIGHTNESS_OFF_THRESHOLD ) {
         parts.push( CircuitConstructionKitCommonFluent.a11y.circuitComponent.brightness.offStringProperty.value );
@@ -251,12 +254,14 @@ export default class CircuitDescription {
 
       // Build the accessible name using composable parts
       const showValuesProperty = circuitNode.model.showValuesProperty;
+      const isSchematic = circuitNode.model.viewTypeProperty.value === CircuitElementViewType.SCHEMATIC;
       const accessibleName = CircuitDescription.buildAccessibleName(
         circuitElement,
         showValuesProperty.value,
         indexForType,
         totalForType,
-        shouldShowPosition
+        shouldShowPosition,
+        isSchematic
       );
 
       // Create a property that adds ", selected" suffix when this element is selected

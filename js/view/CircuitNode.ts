@@ -810,6 +810,9 @@ export default class CircuitNode extends Node {
     // Update PDOM when show values property changes (link is called eagerly, so no need for separate initial call)
     this.model.showValuesProperty.link( () => this.updateCircuitDescription() );
 
+    // Update PDOM when view type changes (schematic mode suppresses light bulb brightness)
+    this.model.viewTypeProperty.link( () => this.updateCircuitDescription() );
+
     // Update PDOM when current-related properties change for group summaries
     circuit.showCurrentProperty.link( () => this.updateCircuitDescription() );
     circuit.hasCurrentFlowingProperty.link( () => this.updateCircuitDescription() );

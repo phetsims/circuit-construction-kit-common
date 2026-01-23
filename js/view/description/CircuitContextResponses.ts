@@ -13,6 +13,7 @@ import CircuitConstructionKitCommonFluent from '../../CircuitConstructionKitComm
 import CircuitDescriptionUtils from '../../CircuitDescriptionUtils.js';
 import type Circuit from '../../model/Circuit.js';
 import CircuitElement from '../../model/CircuitElement.js';
+import CircuitElementViewType from '../../model/CircuitElementViewType.js';
 import type CircuitGroup from '../../model/CircuitGroup.js';
 import LightBulb from '../../model/LightBulb.js';
 import type Vertex from '../../model/Vertex.js';
@@ -71,8 +72,18 @@ export default class CircuitContextResponses {
   private getGroupState( group: CircuitGroup ): GroupState {
     const currentValues = group.circuitElements.map( element => element.currentProperty.value );
 
-    const lightBulbs = group.circuitElements.filter( ( element ): element is LightBulb => element instanceof LightBulb );
-    const brightnessValues = lightBulbs.map( bulb => LightBulb.computeBrightness( bulb ) );
+    // In schematic mode, treat as if there are no light bulbs (don't track/announce brightness)
+    // since schematic light bulbs don't visually glow
+    const isSchematic = this.circuit.viewTypeProperty.value === CircuitElementViewType.SCHEMATIC;
+
+    let brightnessValues: number[];
+    if ( isSchematic ) {
+      brightnessValues = [];
+    }
+    else {
+      const lightBulbs = group.circuitElements.filter( ( element ): element is LightBulb => element instanceof LightBulb );
+      brightnessValues = lightBulbs.map( bulb => LightBulb.computeBrightness( bulb ) );
+    }
 
     return {
       currentValues: currentValues,
