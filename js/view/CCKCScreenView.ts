@@ -7,6 +7,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import animationFrameTimer from '../../../axon/js/animationFrameTimer.js';
 import Multilink from '../../../axon/js/Multilink.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import type Bounds2 from '../../../dot/js/Bounds2.js';
@@ -569,16 +570,18 @@ export default class CCKCScreenView extends ScreenView {
               // Play the "whoosh" eraser sound when using the keyboard to delete a Circuit Element, like we do in the CCKCTrashButton
               sharedSoundPlayers.get( 'erase' ).play();
 
-              // Move focus to another circuit element
-              if ( this.circuitNode.circuit.circuitElements.length > 0 ) {
-                const anotherCircuitElementNode = this.circuitNode.getCircuitElementNode( this.circuitNode.circuit.circuitElements[ 0 ] );
-                anotherCircuitElementNode.focus();
-              }
-              else {
+              // Move focus to another circuit element (deferred to let DOM settle after disposal)
+              animationFrameTimer.runOnNextTick( () => {
+                if ( this.circuitNode.circuit.circuitElements.length > 0 ) {
+                  const anotherCircuitElementNode = this.circuitNode.getCircuitElementNode( this.circuitNode.circuit.circuitElements[ 0 ] );
+                  anotherCircuitElementNode.focus();
+                }
+                else {
 
-                // If there are no more circuit elements, move focus to the 1st item in the circuit element toolbox, if there is one
-                this.circuitElementToolbox.carousel.focus();
-              }
+                  // If there are no more circuit elements, move focus to the 1st item in the circuit element toolbox, if there is one
+                  this.circuitElementToolbox.carousel.focus();
+                }
+              } );
             }
           }
         }
