@@ -170,6 +170,8 @@ addToMapIfDefined( 'a11y_circuitDescription_connectionPoint', 'a11y.circuitDescr
 addToMapIfDefined( 'a11y_circuitDescription_connection', 'a11y.circuitDescription.connectionStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_disconnected', 'a11y.circuitDescription.disconnectedStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_accessibleNameWithSelected', 'a11y.circuitDescription.accessibleNameWithSelectedStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_groupSuffixFirst', 'a11y.circuitDescription.groupSuffixFirstStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_groupSuffixLast', 'a11y.circuitDescription.groupSuffixLastStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_group', 'a11y.circuitDescription.groupStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_constructionArea', 'a11y.circuitDescription.constructionAreaStringProperty' );
 addToMapIfDefined( 'a11y_circuitGroupDescription_unconnectedSummary', 'a11y.circuitGroupDescription.unconnectedSummaryStringProperty' );
@@ -502,6 +504,9 @@ const CircuitConstructionKitCommonFluent = {
       disconnectedStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_disconnected', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.disconnectedStringProperty' ) ),
       _comment_8: new FluentComment( {"comment":"Suffix appended to accessible name when a circuit element is selected","associatedKey":"accessibleNameWithSelected"} ),
       accessibleNameWithSelected: new FluentPattern<{ accessibleName: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitDescription_accessibleNameWithSelected', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.accessibleNameWithSelectedStringProperty' ), [{"name":"accessibleName"}] ),
+      _comment_9: new FluentComment( {"comment":"Suffix appended to accessible name for first/last items in a group","associatedKey":"groupSuffixFirst"} ),
+      groupSuffixFirst: new FluentPattern<{ groupIndex: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitDescription_groupSuffixFirst', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.groupSuffixFirstStringProperty' ), [{"name":"groupIndex"}] ),
+      groupSuffixLast: new FluentPattern<{ groupIndex: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitDescription_groupSuffixLast', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.groupSuffixLastStringProperty' ), [{"name":"groupIndex"}] ),
       groupStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_group', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.groupStringProperty' ) ),
       constructionAreaStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_constructionArea', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.constructionAreaStringProperty' ) )
     },

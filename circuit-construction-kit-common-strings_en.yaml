@@ -195,6 +195,9 @@ a11y:
     disconnected:               disconnected
     # Suffix appended to accessible name when a circuit element is selected
     accessibleNameWithSelected: '{ $accessibleName }, selected'
+    # Suffix appended to accessible name for first/last items in a group
+    groupSuffixFirst: ', first item in Group { $groupIndex }'
+    groupSuffixLast: ', last item in Group { $groupIndex }'
     group:                      Group
     constructionArea:           >-
                                 Add Circuit Components and Measurement Tools as needed. Once added, use Space 

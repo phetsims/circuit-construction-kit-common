@@ -479,6 +479,12 @@
       "accessibleNameWithSelected": {
         "value": "{ $accessibleName }, selected"
       },
+      "groupSuffixFirst": {
+        "value": ", first item in Group { $groupIndex }"
+      },
+      "groupSuffixLast": {
+        "value": ", last item in Group { $groupIndex }"
+      },
       "group": {
         "value": "Group"
       },

@@ -186,6 +186,8 @@ type StringsType = {
       'connectionStringProperty': LocalizedStringProperty;
       'disconnectedStringProperty': LocalizedStringProperty;
       'accessibleNameWithSelectedStringProperty': LocalizedStringProperty;
+      'groupSuffixFirstStringProperty': LocalizedStringProperty;
+      'groupSuffixLastStringProperty': LocalizedStringProperty;
       'groupStringProperty': LocalizedStringProperty;
       'constructionAreaStringProperty': LocalizedStringProperty;
     };

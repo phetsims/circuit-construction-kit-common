@@ -218,10 +218,14 @@ export default class CircuitDescription {
   /**
    * Assigns accessible names to circuit elements based on their type and position among elements of the same type.
    * Returns a Map from CircuitElement to its brief name for use in descriptions.
+   * @param circuitElements - the circuit elements to assign names to
+   * @param circuitNode - the circuit node
+   * @param groupIndex - optional 1-based group index; if provided, appends ", Group X" to accessible names
    */
   private static assignAccessibleNamesToElements(
     circuitElements: CircuitElement[],
-    circuitNode: CircuitNode
+    circuitNode: CircuitNode,
+    groupIndex?: number
   ): Map<CircuitElement, string> {
     // First pass: count how many of each description type (uses specific names for household items)
     const typeCounts = new Map<string, number>();
@@ -234,6 +238,7 @@ export default class CircuitDescription {
     // Second pass: assign names with position info
     const typeIndices = new Map<string, number>();
     const briefNames = new Map<CircuitElement, string>();
+    let elementIndex = 0; // Track position for group suffix (only first element gets it)
 
     circuitElements.forEach( circuitElement => {
       const circuitElementNode = circuitNode.getCircuitElementNode( circuitElement );
@@ -264,6 +269,13 @@ export default class CircuitDescription {
         isSchematic
       );
 
+      // Add group suffix ONLY to first element in group (to reduce verbosity)
+      let accessibleNameWithGroup = accessibleName;
+      if ( groupIndex !== undefined && elementIndex === 0 ) {
+        accessibleNameWithGroup += CircuitConstructionKitCommonFluent.a11y.circuitDescription.groupSuffixFirst.format( { groupIndex: groupIndex } );
+      }
+      elementIndex++;
+
       // Create a property that adds ", selected" suffix when this element is selected
       const selectionProperty = circuitNode.circuit.selectionProperty;
       const accessibleNameWithSelectionProperty = new DerivedProperty(
@@ -272,9 +284,9 @@ export default class CircuitDescription {
           const isSelected = selection === circuitElement;
           return isSelected ?
                  CircuitConstructionKitCommonFluent.a11y.circuitDescription.accessibleNameWithSelected.format( {
-                   accessibleName: accessibleName
+                   accessibleName: accessibleNameWithGroup
                  } ) :
-                 accessibleName;
+                 accessibleNameWithGroup;
         }
       );
 
@@ -482,8 +494,8 @@ export default class CircuitDescription {
       // Sort circuit elements by preferred type order
       const sortedCircuitElements = this.sortCircuitElementsByType( group.circuitElements );
 
-      // Assign accessible names and get brief names for this group
-      const groupBriefNames = this.assignAccessibleNamesToElements( sortedCircuitElements, circuitNode );
+      // Assign accessible names and get brief names for this group (pass 1-based group index)
+      const groupBriefNames = this.assignAccessibleNamesToElements( sortedCircuitElements, circuitNode, groupIndex + 1 );
 
       // Merge group brief names into the overall brief names map
       groupBriefNames.forEach( ( briefName, circuitElement ) => {
@@ -491,6 +503,10 @@ export default class CircuitDescription {
       } );
 
       // Assign accessible names to vertices using brief names
+      // Only the LAST vertex gets the group suffix (to reduce verbosity)
+      const groupSuffix = CircuitConstructionKitCommonFluent.a11y.circuitDescription.groupSuffixLast.format( { groupIndex: groupIndex + 1 } );
+      const lastVertexIndex = group.vertices.length - 1;
+
       group.vertices.forEach( ( vertex, vertexIndex ) => {
         const neighbors = circuit.getNeighborCircuitElements( vertex );
 
@@ -516,7 +532,11 @@ export default class CircuitDescription {
           true // forAttachmentName = true, use short format
         );
 
-        circuitNode.getVertexNode( vertex ).accessibleName = accessibleNameDescription;
+        // Only add group suffix to LAST vertex
+        const isLastVertex = vertexIndex === lastVertexIndex;
+        circuitNode.getVertexNode( vertex ).accessibleName = isLastVertex
+          ? accessibleNameDescription + groupSuffix
+          : accessibleNameDescription;
         circuitNode.getVertexNode( vertex ).attachmentName = CircuitConstructionKitCommonFluent.a11y.circuitDescription.groupWithConnection.format( {
           groupIndex: groupIndex + 1,
           description: attachmentNameDescription
