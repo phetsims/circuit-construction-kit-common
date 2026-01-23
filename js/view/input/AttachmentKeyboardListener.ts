@@ -60,6 +60,10 @@ export type AttachmentKeyboardListenerOptions<T> = {
   // If provided and returns a non-null value, it will be used as the initial selection
   // when there's no prior interaction position match.
   getPreferredInitialValue?: ( availableItems: AttachmentItem<T>[] ) => T | null;
+
+  // Optional callback to sort items before displaying in the combo box.
+  // Items are sorted after filtering but before display.
+  sortItems?: ( items: AttachmentItem<T>[] ) => AttachmentItem<T>[];
 };
 
 export default class AttachmentKeyboardListener<T> extends KeyboardListener<OneKeyStroke[]> {
@@ -81,7 +85,10 @@ export default class AttachmentKeyboardListener<T> extends KeyboardListener<OneK
 
         const initialPosition = options.getInitialPosition();
 
-        const items: AttachmentItem<T>[] = [ ...availableItems ];
+        let items: AttachmentItem<T>[] = [ ...availableItems ];
+        if ( options.sortItems ) {
+          items = options.sortItems( items );
+        }
 
         // Check if the current position matches any available item (from prior discrete interaction)
         let initialSelection = options.getPreferredInitialValue?.( availableItems ) ?? availableItems[ 0 ].value;

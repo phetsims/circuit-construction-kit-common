@@ -71,6 +71,11 @@ export default class VertexNode extends InteractiveHighlighting( Node ) {
 
   public attachmentName = '';
 
+  // Numeric indices for sorting in attachment combo boxes (set by CircuitDescription.ts)
+  // These are 1-indexed to match the display. A value of 0 means not assigned to a group.
+  public attachmentGroupIndex = 0;
+  public attachmentConnectionIndex = 0;
+
   /**
    * @param circuitNode - the entire CircuitNode
    * @param vertex - the Vertex that will be displayed

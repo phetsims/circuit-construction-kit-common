@@ -74,10 +74,6 @@ export default class Wire extends CircuitElement {
 
     this.resistanceProperty = new NumberProperty( CCKCConstants.MINIMUM_WIRE_RESISTANCE );
 
-    if ( phet.chipper.queryParameters.dev ) {
-      this.resistanceProperty.link( console.log );
-    }
-
     this.resistivityProperty = resistivityProperty;
     this.lengthProperty = new NumberProperty( 0 );
     this.updateListener = () => this.update( null );

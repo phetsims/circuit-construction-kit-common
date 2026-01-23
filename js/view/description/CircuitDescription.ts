@@ -470,6 +470,12 @@ export default class CircuitDescription {
       startVertexNode.attachmentName = CircuitDescription.createVertexDescription( startVertex, 1, 2, [ circuitElement ], briefNames, true, true );
       endVertexNode.attachmentName = CircuitDescription.createVertexDescription( endVertex, 2, 2, [ circuitElement ], briefNames, true, true );
 
+      // Disconnected elements have no group (groupIndex = 0)
+      startVertexNode.attachmentGroupIndex = 0;
+      startVertexNode.attachmentConnectionIndex = 0;
+      endVertexNode.attachmentGroupIndex = 0;
+      endVertexNode.attachmentConnectionIndex = 0;
+
       pdomOrder.push( circuitElementNode );
       pdomOrder.push( startVertexNode, endVertexNode );
     } );
@@ -537,10 +543,15 @@ export default class CircuitDescription {
         circuitNode.getVertexNode( vertex ).accessibleName = isLastVertex
           ? accessibleNameDescription + groupSuffix
           : accessibleNameDescription;
-        circuitNode.getVertexNode( vertex ).attachmentName = CircuitConstructionKitCommonFluent.a11y.circuitDescription.groupWithConnection.format( {
+        const vertexNode = circuitNode.getVertexNode( vertex );
+        vertexNode.attachmentName = CircuitConstructionKitCommonFluent.a11y.circuitDescription.groupWithConnection.format( {
           groupIndex: groupIndex + 1,
           description: attachmentNameDescription
         } );
+
+        // Store numeric indices for sorting in attachment combo boxes
+        vertexNode.attachmentGroupIndex = groupIndex + 1;
+        vertexNode.attachmentConnectionIndex = vertexIndex + 1;
       } );
 
       // Build PDOM order for this group

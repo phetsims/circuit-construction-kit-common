@@ -68,6 +68,30 @@ export default class VertexAttachmentKeyboardListener extends AttachmentKeyboard
         const sameGroupVertices = circuit.findAllConnectedVertices( vertex );
         const sameGroupItem = availableItems.find( item => item.value && sameGroupVertices.includes( item.value ) );
         return sameGroupItem?.value ?? null;
+      },
+
+      // Sort items by group number, then by connection number within each group
+      sortItems: items => {
+        return items.slice().sort( ( a, b ) => {
+          const aNode = a.value ? circuitNode.getVertexNode( a.value ) : null;
+          const bNode = b.value ? circuitNode.getVertexNode( b.value ) : null;
+
+          const aGroup = aNode?.attachmentGroupIndex ?? 0;
+          const bGroup = bNode?.attachmentGroupIndex ?? 0;
+          const aConnection = aNode?.attachmentConnectionIndex ?? 0;
+          const bConnection = bNode?.attachmentConnectionIndex ?? 0;
+
+          // Items without group (groupIndex = 0) come first (disconnected terminals)
+          if ( aGroup === 0 && bGroup === 0 ) { return 0; }
+          if ( aGroup === 0 ) { return -1; }
+          if ( bGroup === 0 ) { return 1; }
+
+          // Sort by group number first
+          if ( aGroup !== bGroup ) { return aGroup - bGroup; }
+
+          // Then by connection number within group
+          return aConnection - bConnection;
+        } );
       }
     } );
 
