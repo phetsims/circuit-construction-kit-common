@@ -561,6 +561,9 @@ export default class CCKCScreenView extends ScreenView {
 
             // Only permit deletion if the circuit element is marked as disposable
             if ( circuitElement.isDisposableProperty.value ) {
+
+              // Capture context before removal so the group index is available for announcements
+              this.circuitNode.prepareForElementRemoval( circuitElement );
               this.circuitNode.circuit.disposeCircuitElement( circuitElement );
 
               // Play the "whoosh" eraser sound when using the keyboard to delete a Circuit Element, like we do in the CCKCTrashButton
