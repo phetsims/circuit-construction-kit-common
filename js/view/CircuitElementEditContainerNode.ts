@@ -14,7 +14,6 @@ import type Bounds2 from '../../../dot/js/Bounds2.js';
 import { roundToInterval } from '../../../dot/js/util/roundToInterval.js';
 import { toFixed } from '../../../dot/js/util/toFixed.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
-import AccessibleInteractiveOptions from '../../../scenery-phet/js/accessibility/AccessibleInteractiveOptions.js';
 import ParallelDOM from '../../../scenery/js/accessibility/pdom/ParallelDOM.js';
 import Node, { type NodeOptions } from '../../../scenery/js/nodes/Node.js';
 import Text from '../../../scenery/js/nodes/Text.js';
@@ -78,7 +77,7 @@ export default class CircuitElementEditContainerNode extends Node {
     const circuit = circuitNode.circuit;
     const circuitContextResponses = new CircuitContextResponses( circuit );
 
-    super( AccessibleInteractiveOptions );
+    super();
 
     this.focusable = false;
 
