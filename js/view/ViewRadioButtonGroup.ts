@@ -1,4 +1,4 @@
-// Copyright 2017-2025, University of Colorado Boulder
+// Copyright 2017-2026, University of Colorado Boulder
 
 /**
  * Radio buttons that allow the user to choose between Schematic and Lifelike views. Exists for the life of the sim and

@@ -1,4 +1,4 @@
-// Copyright 2016-2025, University of Colorado Boulder
+// Copyright 2016-2026, University of Colorado Boulder
 
 /**
  * This control panel shows checkboxes for "Show Electrons", etc.  Exists for the life of the sim and hence does not
