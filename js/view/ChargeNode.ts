@@ -13,6 +13,7 @@ import { clamp } from '../../../dot/js/util/clamp.js';
 import { linear } from '../../../dot/js/util/linear.js';
 import Shape from '../../../kite/js/Shape.js';
 import ElectronChargeNode from '../../../scenery-phet/js/ElectronChargeNode.js';
+import Circle from '../../../scenery/js/nodes/Circle.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -25,16 +26,35 @@ import type CircuitNode from './CircuitNode.js';
 import ConventionalCurrentArrowNode from './ConventionalCurrentArrowNode.js';
 
 // constants
-const ELECTRON_CHARGE_NODE = new Node( {
-  children: [ new ElectronChargeNode( {
 
-    // Electrons are transparent to convey they are a representation rather than physical objects
-    // Workaround for https://github.com/phetsims/circuit-construction-kit-dc/issues/160
-    sphereOpacity: 0.75,
-    minusSignOpacity: 0.75,
+// Line width for the white stroke outline around electrons
+const ELECTRON_STROKE_LINE_WIDTH = 1;
+
+// ElectronChargeNode has a default radius of 10. Position the stroke circle so its inner edge
+// is at the electron's outer edge (radius + half the lineWidth).
+const ELECTRON_STROKE_RADIUS = 10 + ELECTRON_STROKE_LINE_WIDTH / 2;
+
+const ELECTRON_CHARGE_NODE = new Node( {
+  children: [ new Node( {
 
     // selected so an electron will exactly fit the width of a wire
-    scale: 0.78
+    scale: 0.78,
+
+    children: [
+
+      // White stroke outline behind the electron sphere
+      new Circle( ELECTRON_STROKE_RADIUS, {
+        stroke: 'white',
+        lineWidth: ELECTRON_STROKE_LINE_WIDTH
+      } ),
+      new ElectronChargeNode( {
+
+        // Electrons are transparent to convey they are a representation rather than physical objects
+        // Workaround for https://github.com/phetsims/circuit-construction-kit-dc/issues/160
+        sphereOpacity: 0.75,
+        minusSignOpacity: 0.75
+      } )
+    ]
   } ) ]
 } );
 
