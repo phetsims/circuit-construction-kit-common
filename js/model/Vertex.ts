@@ -86,7 +86,7 @@ export default class Vertex extends PhetioObject {
   // for black box study
   public outerWireStub: boolean;
   public readonly isCuttableProperty: BooleanProperty;
-  public readonly labelStringProperty: TProperty<string>;
+  public readonly labelStringProperty: StringProperty;
 
   // Complete description for accessibility when compressed form is used (4+ connections)
   public completeDescription: string | null = null;

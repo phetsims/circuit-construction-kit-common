@@ -152,15 +152,15 @@ export default class VertexNode extends InteractiveHighlighting( Node ) {
         const voltageText = `${toFixed( voltage, 3 )}V`;
         voltageReadout.setString( `${vertex.index} @ ${voltageText}` );
         affirm( this.updateReadoutTextPosition );
-        if ( this.updateReadoutTextPosition ) {
-          this.updateReadoutTextPosition();
-        }
+        this.updateReadoutTextPosition();
       } );
     }
 
     vertex.labelStringProperty.link( labelText => {
       customLabelText.string = labelText;
       this.updateReadoutTextPosition();
+    }, {
+      disposer: vertex
     } );
 
     this.vertex = vertex;
@@ -257,6 +257,8 @@ export default class VertexNode extends InteractiveHighlighting( Node ) {
     vertex.isDraggableProperty.unlink( this.interruptionListener );
 
     this.vertexCutButtonContainer.dispose();
+
+    this.vertexLabelNode.dispose();
 
     super.dispose();
   }
