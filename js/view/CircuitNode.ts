@@ -969,6 +969,9 @@ export default class CircuitNode extends Node {
     this.anyCircuitElementActivated = false;
     this.anyProbeActivated = false;
     this.anyVertexCut = false;
+
+    this.circuitDescriptionDirty = true;
+    this.updateCircuitDescription();
   }
 
   /**

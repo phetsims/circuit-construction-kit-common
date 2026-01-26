@@ -151,6 +151,30 @@ export default class CircuitDescription {
   }
 
   /**
+   * Cleans up old group nodes by disposing them and removing from groupsContainer.
+   * Should be called at the start of updateCircuitNode to ensure stale PDOM elements are removed.
+   */
+  private static cleanupGroupNodes( circuitNode: CircuitNode ): void {
+    // Clear pdomOrder arrays first to prevent PDOM elements from being referenced in multiple places
+    if ( this.myGroupNodes ) {
+      this.myGroupNodes.forEach( group => {
+        group.pdomOrder = [];
+      } );
+    }
+
+    // Remove all children from groupsContainer
+    circuitNode.groupsContainer.removeAllChildren();
+
+    // Dispose old group nodes (removes their PDOM elements)
+    if ( this.myGroupNodes ) {
+      this.myGroupNodes.forEach( group => {
+        group.dispose();
+      } );
+      this.myGroupNodes = null;
+    }
+  }
+
+  /**
    * Sorts circuit elements by the preferred type order, with unlisted types at the end.
    */
   private static sortCircuitElementsByType( circuitElements: CircuitElement[] ): CircuitElement[] {
@@ -631,6 +655,9 @@ export default class CircuitDescription {
       .filter( child => child instanceof AmmeterNode )
       .sort( ( a, b ) => a.ammeter.phetioIndex - b.ammeter.phetioIndex );
 
+    // Clean up old group nodes before rebuilding
+    this.cleanupGroupNodes( circuitNode );
+
     if ( !hasElements ) {
 
       circuitNode.unconnectedCircuitElementsSection.visible = false;
@@ -646,11 +673,6 @@ export default class CircuitDescription {
       // Avoid having the old PDOM element appearing twice as we rebuild things.
       circuitNode.unconnectedCircuitElementsSection.pdomOrder = [];
       circuitNode.constructionAreaContainer.pdomOrder = [];
-      if ( this.myGroupNodes ) {
-        this.myGroupNodes.forEach( group => {
-          group.pdomOrder = [];
-        } );
-      }
 
       // Update single circuit elements section and collect brief names
       const singleElementsResult = this.updateSingleCircuitElements( singleElementCircuits, circuitNode );
@@ -683,9 +705,6 @@ export default class CircuitDescription {
         constructionAreaPDOMOrder.push( circuitNode.unconnectedCircuitElementsSection );
       }
       constructionAreaPDOMOrder.push( ...groupNodes );
-      this.myGroupNodes?.forEach( group => {
-        group.dispose();
-      } );
       this.myGroupNodes = groupNodes;
 
       // Add sensors to PDOM order (voltmeters before ammeters)
