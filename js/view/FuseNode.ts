@@ -8,7 +8,8 @@
 
 import type Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
-import Utils from '../../../dot/js/Utils.js';
+import { linear } from '../../../dot/js/util/linear.js';
+import { roundSymmetric } from '../../../dot/js/util/roundSymmetric.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Shape from '../../../kite/js/Shape.js';
 import optionize, { type EmptySelfOptions } from '../../../phet-core/js/optionize.js';
@@ -48,11 +49,6 @@ export default class FuseNode extends FixedCircuitElementNode {
   private readonly fuse: Fuse;
   private readonly disposeFuseNode: () => void;
 
-  // Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
-  public static override readonly webglSpriteNodes = [
-    new Image( fuse_png )
-  ];
-
   /**
    * @param screenView - main screen view, null for isIcon
    * @param circuitNode, null for isIcon
@@ -76,13 +72,13 @@ export default class FuseNode extends FixedCircuitElementNode {
     const startPoint = new Vector2( CAP_WIDTH, 0 );
     const endPoint = new Vector2( fuseImageNode.width - CAP_WIDTH, 0 );
     const filamentShape = new Shape().moveToPoint( startPoint )
-      .zigZagToPoint( endPoint, VERTICAL_ZIG_ZAG_HEIGHT, Utils.roundSymmetric( numberOfZigZags ), false );
+      .zigZagToPoint( endPoint, VERTICAL_ZIG_ZAG_HEIGHT, roundSymmetric( numberOfZigZags ), false );
 
     const brokenFilamentShape = new Shape().moveToPoint( startPoint )
-      .zigZagToPoint( new Vector2( fuseImageNode.width / 2 - SPLIT_DX, SPLIT_DY ), VERTICAL_ZIG_ZAG_HEIGHT, Utils.roundSymmetric( numberOfZigZags / 2 ) - 1, false );
+      .zigZagToPoint( new Vector2( fuseImageNode.width / 2 - SPLIT_DX, SPLIT_DY ), VERTICAL_ZIG_ZAG_HEIGHT, roundSymmetric( numberOfZigZags / 2 ) - 1, false );
     brokenFilamentShape.moveToPoint( endPoint );
     brokenFilamentShape
-      .zigZagToPoint( new Vector2( fuseImageNode.width / 2 + SPLIT_DX, -SPLIT_DY ), VERTICAL_ZIG_ZAG_HEIGHT, Utils.roundSymmetric( numberOfZigZags / 2 ) - 1, false );
+      .zigZagToPoint( new Vector2( fuseImageNode.width / 2 + SPLIT_DX, -SPLIT_DY ), VERTICAL_ZIG_ZAG_HEIGHT, roundSymmetric( numberOfZigZags / 2 ) - 1, false );
 
     const filamentPath = new Path( filamentShape, {
       stroke: '#302b2b',
@@ -91,7 +87,7 @@ export default class FuseNode extends FixedCircuitElementNode {
     } );
 
     // Fuse filament thickness is proportional to its current rating
-    const updateFilamentPathLineWidth = ( currentRating: number ) => filamentPath.setLineWidth( Utils.linear(
+    const updateFilamentPathLineWidth = ( currentRating: number ) => filamentPath.setLineWidth( linear(
       fuse.currentRatingProperty.range.min, fuse.currentRatingProperty.range.max, 1, 4, currentRating
     ) );
     fuse.currentRatingProperty.link( updateFilamentPathLineWidth );
