@@ -91,12 +91,13 @@ export default class VertexAttachmentKeyboardListener extends AttachmentKeyboard
       },
       targetDisposeEmitter: vertex.disposeEmitter,
 
-      // Prefer vertices in the same group as the selected vertex (using sorted order)
+      // Prefer vertices in the same group as the selected vertex (using sorted order).
+      // If no item in the same group, fall back to the first item in the sorted list.
       getPreferredInitialValue: availableItems => {
         const sortedItems = sortAttachmentItems( availableItems );
         const sameGroupVertices = circuit.findAllConnectedVertices( vertex );
         const sameGroupItem = sortedItems.find( item => item.value && sameGroupVertices.includes( item.value ) );
-        return sameGroupItem?.value ?? null;
+        return sameGroupItem?.value ?? sortedItems[ 0 ]?.value ?? null;
       },
 
       // Sort items by group number, then by connection number within each group
