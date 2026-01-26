@@ -65,7 +65,10 @@ export default class VoltmeterProbeNodeAttachmentKeyboardListener extends Attach
         probeNode.addAccessibleContextResponse( contextResponse );
       },
 
-      // Sort items by group number, then by connection number within each group
+      // Sort items by group number, then by connection number within each group.
+      // NOTE: This is similar to sortAttachmentItems in VertexAttachmentKeyboardListener.ts, but we decided not to
+      // factor it out because there are only 2 usages, the function requires circuitNode context, and the sorting
+      // logic is stable and unlikely to change.
       sortItems: items => {
         return items.slice().sort( ( a, b ) => {
           const aNode = a.value ? circuitNode.getVertexNode( a.value ) : null;

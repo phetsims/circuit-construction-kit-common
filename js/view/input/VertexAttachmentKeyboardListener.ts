@@ -37,7 +37,10 @@ export default class VertexAttachmentKeyboardListener extends AttachmentKeyboard
       } );
     };
 
-    // Shared sort function for attachment items - sorts by group number, then connection index
+    // Shared sort function for attachment items - sorts by group number, then connection index.
+    // NOTE: This is similar to sortItems in VoltmeterProbeNodeAttachmentKeyboardListener.ts, but we decided not to
+    // factor it out because there are only 2 usages, the function requires circuitNode context, and the sorting
+    // logic is stable and unlikely to change.
     const sortAttachmentItems = <T extends { value: Vertex | null }>( items: T[] ): T[] => {
       return items.slice().sort( ( a, b ) => {
         const aNode = a.value ? circuitNode.getVertexNode( a.value ) : null;
