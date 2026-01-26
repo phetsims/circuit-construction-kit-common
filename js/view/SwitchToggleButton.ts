@@ -112,7 +112,13 @@ export default class SwitchToggleButton extends CCKCRoundPushButton {
       }
     };
 
-    const isClosedListener = ( isClosed: boolean ) => updateIcon( isClosed );
+    // Combined listener for both icon update and accessible name update
+    const isClosedListener = ( isClosed: boolean ) => {
+      updateIcon( isClosed );
+      this.accessibleName = isClosed ?
+                            CircuitConstructionKitCommonFluent.a11y.switchToggleButton.openSwitchStringProperty :
+                            CircuitConstructionKitCommonFluent.a11y.switchToggleButton.closeSwitchStringProperty;
+    };
 
     // Dynamically link to the selected switch's isClosedProperty
     circuit.selectionProperty.link( ( newCircuitElement: CircuitElement | Vertex | null, oldCircuitElement: CircuitElement | Vertex | null ) => {
@@ -121,22 +127,6 @@ export default class SwitchToggleButton extends CCKCRoundPushButton {
       }
       if ( newCircuitElement instanceof Switch ) {
         newCircuitElement.isClosedProperty.link( isClosedListener );
-      }
-    } );
-
-    // Update accessible name based on switch state
-    const accessibleNameListener = ( isClosed: boolean ) => {
-      this.accessibleName = isClosed ?
-                            CircuitConstructionKitCommonFluent.a11y.switchToggleButton.openSwitchStringProperty :
-                            CircuitConstructionKitCommonFluent.a11y.switchToggleButton.closeSwitchStringProperty;
-    };
-
-    circuit.selectionProperty.link( ( newCircuitElement: CircuitElement | Vertex | null, oldCircuitElement: CircuitElement | Vertex | null ) => {
-      if ( oldCircuitElement instanceof Switch ) {
-        oldCircuitElement.isClosedProperty.unlink( accessibleNameListener );
-      }
-      if ( newCircuitElement instanceof Switch ) {
-        newCircuitElement.isClosedProperty.link( accessibleNameListener );
       }
     } );
   }
