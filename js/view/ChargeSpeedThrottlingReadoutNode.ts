@@ -9,13 +9,13 @@
 
 import Multilink from '../../../axon/js/Multilink.js';
 import type Property from '../../../axon/js/Property.js';
-import Utils from '../../../dot/js/Utils.js';
+import { toFixed } from '../../../dot/js/util/toFixed.js';
 import StringUtils from '../../../phetcommon/js/util/StringUtils.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 
-const animationSpeedLimitReachedStringProperty = CircuitConstructionKitCommonStrings.animationSpeedLimitReachedStringProperty;
+const animationSpeedLimitReachedStringProperty = CircuitConstructionKitCommonFluent.animationSpeedLimitReachedStringProperty;
 
 export default class ChargeSpeedThrottlingReadoutNode extends Text {
 
@@ -37,7 +37,7 @@ export default class ChargeSpeedThrottlingReadoutNode extends Text {
       ( timeScale, showCurrent, isValueDepictionEnabled ) => {
         const percent = timeScale * 100;
         const isThrottled = percent < 99.5;
-        const fixed = timeScale < 0.01 ? '< 1' : Utils.toFixed( percent, 0 );
+        const fixed = timeScale < 0.01 ? '< 1' : toFixed( percent, 0 );
         this.setString( StringUtils.fillIn( animationSpeedLimitReachedStringProperty, { percent: fixed } ) );
 
         // Only show the throttling message if the speed is less than 100% and charges are visible

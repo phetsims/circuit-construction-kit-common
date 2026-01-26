@@ -6,6 +6,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import affirm from '../../../../../perennial-alias/js/browser-and-node/affirm.js';
 /* global Assert */
 import circuitConstructionKitCommon from '../../../circuitConstructionKitCommon.js';
 import type MNACircuitElement from './MNACircuitElement.js';
@@ -23,7 +24,7 @@ export default class MNASolution {
   }
 
   public getSolvedCurrent( circuitElement: MNACircuitElement ): number {
-    assert && assert( this.elements.has( circuitElement ) );
+    affirm( this.elements.has( circuitElement ) );
     return this.elements.get( circuitElement )!;
   }
 
@@ -32,7 +33,7 @@ export default class MNASolution {
     const keys = Array.from( this.nodeVoltages.keys() );
     const otherKeys = Array.from( modifiedNodalAnalysisSolution.nodeVoltages.keys() );
     const keyDifference = _.difference( keys, otherKeys );
-    assert && assert( keyDifference.length === 0, 'wrong keys in compared solution' );
+    affirm( keyDifference.length === 0, 'wrong keys in compared solution' );
     for ( let i = 0; i < keys.length; i++ ) {
       const key = keys[ i ];
       const closeEnough = approximatelyEquals(
@@ -91,7 +92,7 @@ export default class MNASolution {
    * Use Ohm's law to compute the current for a resistor with resistance>0
    */
   public getCurrentForResistor( resistor: MNAResistor ): number {
-    assert && assert( resistor.resistance > 0, 'resistor must have resistance to use Ohms Law' );
+    affirm( resistor.resistance > 0, 'resistor must have resistance to use Ohms Law' );
 
     // To help understand the minus sign here:
     // Imagine a resistor that goes from node r0 to r1, with a conventional current flowing from r0 to r1.  Then
@@ -117,7 +118,7 @@ export default class MNASolution {
    */
   private getVoltage( element: MNACircuitElement ): number {
     const voltage = this.nodeVoltages.get( element.nodeId1 )! - this.nodeVoltages.get( element.nodeId0 )!;
-    assert && assert( !isNaN( voltage ) );
+    affirm( !isNaN( voltage ) );
     return voltage;
   }
 }

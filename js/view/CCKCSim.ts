@@ -6,7 +6,7 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
-import type TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import type { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import type { AnyScreen } from '../../../joist/js/Screen.js';
 import Sim, { SimOptions } from '../../../joist/js/Sim.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';

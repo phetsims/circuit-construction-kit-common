@@ -6,7 +6,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import type TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import type { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import type Bounds2 from '../../../dot/js/Bounds2.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import type StrictOmit from '../../../phet-core/js/types/StrictOmit.js';

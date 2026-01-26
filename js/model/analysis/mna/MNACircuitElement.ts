@@ -1,4 +1,4 @@
-// Copyright 2017-2022, University of Colorado Boulder
+// Copyright 2017-2025, University of Colorado Boulder
 
 /**
  * Circuit element used for Modified Nodal Analysis.  The same type represents batteries and resistors--what matters
@@ -7,6 +7,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import affirm from '../../../../../perennial-alias/js/browser-and-node/affirm.js';
 import circuitConstructionKitCommon from '../../../circuitConstructionKitCommon.js';
 
 export default class MNACircuitElement {
@@ -29,7 +30,7 @@ export default class MNACircuitElement {
    * Find the node across from the specified node.
    */
   public getOppositeNode( nodeId: string ): string {
-    assert && assert( this.nodeId0 === nodeId || this.nodeId1 === nodeId );
+    affirm( this.nodeId0 === nodeId || this.nodeId1 === nodeId );
     return this.nodeId0 === nodeId ? this.nodeId1 : this.nodeId0;
   }
 

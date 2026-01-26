@@ -8,7 +8,7 @@
  */
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
-import type TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import type { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import { combineOptions, EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import type Node from '../../../scenery/js/nodes/Node.js';
 import Text from '../../../scenery/js/nodes/Text.js';

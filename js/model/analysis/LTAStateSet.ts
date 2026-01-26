@@ -8,6 +8,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import affirm from '../../../../perennial-alias/js/browser-and-node/affirm.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import type CoreModel from './CoreModel.js';
 import type LTAState from './LTAState.js';
@@ -38,7 +39,7 @@ export default class LTAStateSet {
       totalTime += resultElement.dt;
     } );
     const number = weightedSum / totalTime;
-    assert && assert( !isNaN( number ) );
+    affirm( !isNaN( number ) );
     return number;
   }
 
@@ -50,7 +51,7 @@ export default class LTAStateSet {
       totalTime += stateObject.dt;
     } );
     const number = weightedSum / totalTime;
-    assert && assert( !isNaN( number ) );
+    affirm( !isNaN( number ) );
     return number;
   }
 

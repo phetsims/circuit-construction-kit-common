@@ -8,6 +8,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import affirm from '../../../../perennial-alias/js/browser-and-node/affirm.js';
 import CCKCQueryParameters from '../../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import type CoreModel from './CoreModel.js';
@@ -80,7 +81,7 @@ export default class LTACircuit {
     // Veq = V + dt*I/2/C;
     // Req = dt/2/C
     this.ltaCapacitors.forEach( ltaCapacitor => {
-      assert && assert( dt >= 0, 'dt should be non-negative' );
+      affirm( dt >= 0, 'dt should be non-negative' );
 
       const newNode1 = 'syntheticNode' + ( syntheticNodeIndex++ );
       const newNode2 = 'syntheticNode' + ( syntheticNodeIndex++ );
@@ -207,7 +208,7 @@ export default class LTACircuit {
 }
 
 const euclideanDistance = ( x: number[], y: number[] ) => {
-  assert && assert( x.length === y.length, 'Vector length mismatch' );
+  affirm( x.length === y.length, 'Vector length mismatch' );
   let sumSqDiffs = 0;
   for ( let i = 0; i < x.length; i++ ) {
     sumSqDiffs += Math.pow( x[ i ] - y[ i ], 2 );

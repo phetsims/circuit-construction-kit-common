@@ -10,15 +10,16 @@ import createObservableArray from '../../../axon/js/createObservableArray.js';
 import type Property from '../../../axon/js/Property.js';
 import type Bounds2 from '../../../dot/js/Bounds2.js';
 import Vector2 from '../../../dot/js/Vector2.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import optionize, { type EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import CCKCChartNode, { type CCKCChartNodeOptions } from './CCKCChartNode.js';
 import type CCKCProbeNode from './CCKCProbeNode.js';
 import type CircuitNode from './CircuitNode.js';
 
-const currentWithUnitsStringProperty = CircuitConstructionKitCommonStrings.currentWithUnitsStringProperty;
+const currentWithUnitsStringProperty = CircuitConstructionKitCommonFluent.currentWithUnitsStringProperty;
 
 export default class CurrentChartNode extends CCKCChartNode {
   private readonly probeNode1: CCKCProbeNode;
@@ -78,7 +79,7 @@ export default class CurrentChartNode extends CCKCChartNode {
 
     const ammeterConnection = this.circuitNode.getCurrent( this.probeNode1 );
     const current = ammeterConnection === null ? null : ammeterConnection.current;
-    assert && assert( typeof this.lastStepTime === 'number' );
+    affirm( typeof this.lastStepTime === 'number' );
     if ( typeof this.lastStepTime === 'number' ) {
       this.series.push( current === null ? null : new Vector2( this.lastStepTime, current || 0 ) );
     }

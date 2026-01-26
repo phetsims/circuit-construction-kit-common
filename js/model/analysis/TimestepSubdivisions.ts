@@ -1,4 +1,4 @@
-// Copyright 2019-2024, University of Colorado Boulder
+// Copyright 2019-2025, University of Colorado Boulder
 
 /**
  * TimestepSubdivisions updates a state over an interval dt by (potentially) subdividing it into smaller regions,
@@ -9,6 +9,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import affirm from '../../../../perennial-alias/js/browser-and-node/affirm.js';
 import CCKCConstants from '../../CCKCConstants.js';
 import CCKCQueryParameters from '../../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
@@ -87,7 +88,7 @@ export default class TimestepSubdivisions<T> {
         const b1 = halfStepState || steppable.update( state, dt / 2 );
         const b2 = steppable.update( b1, dt / 2 );
         const distance = steppable.distance( a, b2 );
-        assert && assert( !isNaN( distance ), 'distance should be numeric' );
+        affirm( !isNaN( distance ), 'distance should be numeric' );
         const errorAcceptable = distance < ERROR_THRESHOLD;
         if ( errorAcceptable ) {
           return { dt: dt, state: b2 }; // Use the more precise estimate
