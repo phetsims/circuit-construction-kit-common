@@ -1,4 +1,4 @@
-// Copyright 2015-2025, University of Colorado Boulder
+// Copyright 2015-2026, University of Colorado Boulder
 
 /**
  * Base class for ACVoltage and Battery, which both supply a voltage across the Vertex instances.
@@ -9,14 +9,21 @@
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import type Property from '../../../axon/js/Property.js';
-import type TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import type { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import type Range from '../../../dot/js/Range.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import type PickOptional from '../../../phet-core/js/types/PickOptional.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
+import BooleanIO from '../../../tandem/js/types/BooleanIO.js';
 import NumberIO from '../../../tandem/js/types/NumberIO.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+
+// Constants for fire display
+const FIRE_THRESHOLD = 15; // Beyond this number of amps, flammable CircuitElements catch on fire
+const FIRE_RESISTANCE_THRESHOLD = 1E-8; // Minimum resistance required for fire to display
+import type CircuitElementType from './CircuitElementType.js';
 import FixedCircuitElement, { type FixedCircuitElementOptions } from './FixedCircuitElement.js';
 import PowerDissipatedProperty from './PowerDissipatedProperty.js';
 import type Vertex from './Vertex.js';
@@ -45,7 +52,11 @@ export default abstract class VoltageSource extends FixedCircuitElement {
   private powerDissipatedProperty: PowerDissipatedProperty;
   private powerGeneratedProperty: TReadOnlyProperty<number>;
 
+  // Whether this voltage source is on fire (high current with sufficient resistance)
+  public readonly isOnFireProperty: TReadOnlyProperty<boolean>;
+
   /**
+   * @param type
    * @param startVertex - one of the battery vertices
    * @param endVertex - the other battery vertex
    * @param internalResistanceProperty - the resistance of the battery
@@ -53,8 +64,8 @@ export default abstract class VoltageSource extends FixedCircuitElement {
    * @param tandem
    * @param [providedOptions]
    */
-  public constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, length: number, tandem: Tandem, providedOptions?: VoltageSourceOptions ) {
-    assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );
+  protected constructor( type: CircuitElementType, startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, length: number, tandem: Tandem, providedOptions?: VoltageSourceOptions ) {
+    affirm( internalResistanceProperty, 'internalResistanceProperty should be defined' );
     const options = optionize<VoltageSourceOptions, SelfOptions, FixedCircuitElementOptions>()( {
       initialOrientation: 'right',
       voltage: 9.0,
@@ -65,7 +76,7 @@ export default abstract class VoltageSource extends FixedCircuitElement {
         phetioFeatured: true
       }
     }, providedOptions );
-    super( startVertex, endVertex, length, tandem, options );
+    super( type, startVertex, endVertex, length, tandem, options );
 
     this.voltageProperty = new NumberProperty( options.voltage, options.voltagePropertyOptions );
 
@@ -81,6 +92,15 @@ export default abstract class VoltageSource extends FixedCircuitElement {
         phetioFeatured: true
       } );
 
+    // Fire shows when |current| >= FIRE_THRESHOLD and the element has resistance >= FIRE_RESISTANCE_THRESHOLD
+    this.isOnFireProperty = new DerivedProperty(
+      [ this.currentProperty, this.internalResistanceProperty ],
+      ( current, resistance ) => Math.abs( current ) >= FIRE_THRESHOLD && resistance >= FIRE_RESISTANCE_THRESHOLD, {
+        tandem: tandem.createTandem( 'isOnFireProperty' ),
+        phetioValueType: BooleanIO,
+        phetioFeatured: true
+      } );
+
     this.initialOrientation = options.initialOrientation;
   }
 
@@ -91,6 +111,7 @@ export default abstract class VoltageSource extends FixedCircuitElement {
     this.voltageProperty.dispose();
     this.powerDissipatedProperty.dispose();
     this.powerGeneratedProperty.dispose();
+    this.isOnFireProperty.dispose();
     super.dispose();
   }
 

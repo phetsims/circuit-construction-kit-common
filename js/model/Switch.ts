@@ -9,9 +9,9 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import type Property from '../../../axon/js/Property.js';
-import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import type Matrix3 from '../../../dot/js/Matrix3.js';
-import Utils from '../../../dot/js/Utils.js';
+import { linear } from '../../../dot/js/util/linear.js';
 import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -33,11 +33,11 @@ export default class Switch extends FixedCircuitElement {
   // whether the switch is closed (and current can flow through it)
   public readonly isClosedProperty: Property<boolean>;
 
-  public readonly isTraversibleProperty: TReadOnlyProperty<boolean>;
+  public readonly isTraversableProperty: TReadOnlyProperty<boolean>;
 
   public constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, circuit: Circuit | null ) {
 
-    super( startVertex, endVertex, SWITCH_LENGTH, tandem, {
+    super( 'switch', startVertex, endVertex, SWITCH_LENGTH, tandem, {
 
       // Do not instrument isEditableProperty for switches as there is nothing to edit
       isEditablePropertyOptions: {
@@ -56,7 +56,7 @@ export default class Switch extends FixedCircuitElement {
       phetioFeatured: true
     } );
 
-    this.isTraversibleProperty = this.isClosedProperty;
+    this.isTraversableProperty = this.isClosedProperty;
 
     this.isClosedProperty.link( closed => {
       this.resistanceProperty.value = closed ? 0 : CCKCConstants.MAX_RESISTANCE;
@@ -90,7 +90,7 @@ export default class Switch extends FixedCircuitElement {
       const twoThirdsPoint = startPosition.blend( endPosition, SWITCH_END );
       const rotatedPoint = twoThirdsPoint.rotatedAboutPoint( pivot, -Math.PI / 4 );
 
-      const distanceAlongSegment = Utils.linear( SWITCH_START, SWITCH_END, 0, 1, fractionAlongWire );
+      const distanceAlongSegment = linear( SWITCH_START, SWITCH_END, 0, 1, fractionAlongWire );
       const translation = pivot.blend( rotatedPoint, distanceAlongSegment );
       matrix.setToTranslationRotationPoint( translation, endPosition.minus( startPosition ).angle );
     }

@@ -1,4 +1,4 @@
-// Copyright 2015-2025, University of Colorado Boulder
+// Copyright 2015-2026, University of Colorado Boulder
 
 /**
  * This node shows a resistor.
@@ -10,6 +10,7 @@ import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import type Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import Shape from '../../../kite/js/Shape.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
 import Image from '../../../scenery/js/nodes/Image.js';
 import Node from '../../../scenery/js/nodes/Node.js';
@@ -18,12 +19,12 @@ import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
 import Color from '../../../scenery/js/util/Color.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import coin_png from '../../images/coin_png.js';
-import dog_png from '../../images/dog_png.js';
 import dollar_png from '../../images/dollar_png.js';
 import eraser_png from '../../images/eraser_png.js';
 import hand_png from '../../images/hand_png.js';
 import paperClip_png from '../../images/paperClip_png.js';
 import pencil_png from '../../images/pencil_png.js';
+import thinPencil_png from '../../images/thinPencil_png.js';
 import resistor_png from '../../images/resistor_png.js';
 import resistorHigh_png from '../../images/resistorHigh_png.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -64,30 +65,17 @@ const RESISTOR_IMAGE_MAP = new Map<ResistorType, HTMLImageElement>();
 RESISTOR_IMAGE_MAP.set( ResistorType.COIN, coin_png );
 RESISTOR_IMAGE_MAP.set( ResistorType.PAPER_CLIP, paperClip_png );
 RESISTOR_IMAGE_MAP.set( ResistorType.PENCIL, pencil_png );
+RESISTOR_IMAGE_MAP.set( ResistorType.THIN_PENCIL, thinPencil_png );
 RESISTOR_IMAGE_MAP.set( ResistorType.ERASER, eraser_png );
 RESISTOR_IMAGE_MAP.set( ResistorType.HAND, hand_png );
 RESISTOR_IMAGE_MAP.set( ResistorType.EXTREME_RESISTOR, resistorHigh_png );
 RESISTOR_IMAGE_MAP.set( ResistorType.RESISTOR, resistor_png );
-RESISTOR_IMAGE_MAP.set( ResistorType.DOG, dog_png );
 RESISTOR_IMAGE_MAP.set( ResistorType.DOLLAR_BILL, dollar_png );
 
 export default class ResistorNode extends FixedCircuitElementNode {
   private readonly resistor: Resistor;
   private readonly lifelikeResistorImageNode: Node;
   private readonly disposeResistorNode: () => void;
-
-  // Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
-  public static override readonly webglSpriteNodes = [
-    new Image( resistor_png ),
-    new Image( paperClip_png ),
-    new Image( coin_png ),
-    new Image( pencil_png ),
-    new Image( eraser_png ),
-    new Image( hand_png ),
-    new Image( resistorHigh_png ),
-    new Image( dog_png ),
-    new Image( dollar_png )
-  ];
 
   /**
    * @param screenView - main screen view, null for isIcon
@@ -136,7 +124,7 @@ export default class ResistorNode extends FixedCircuitElementNode {
 
         if ( colors.length === 1 ) {
           singleColorBand.fill = colors[ 0 ];
-          assert && assert( colors[ 0 ] !== null && colors[ 0 ].equals( Color.BLACK ), 'single band should be black' );
+          affirm( colors[ 0 ] !== null && colors[ 0 ].equals( Color.BLACK ), 'single band should be black' );
           colorBands.forEach( colorBand => { colorBand.fill = null; } );
         }
         else {
@@ -156,7 +144,7 @@ export default class ResistorNode extends FixedCircuitElementNode {
       } );
       resistor.isColorCodeVisibleProperty.link( isColorCodeVisible => {
         colorBandsNode!.visible = isColorCodeVisible;
-      } );
+      }, { disposer: colorBandsNode } );
       lifelikeResistorImageNode.addChild( colorBandsNode );
     }
 

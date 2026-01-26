@@ -9,8 +9,8 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
-import { type PropertyOptions } from '../../../axon/js/Property.js';
 import type Property from '../../../axon/js/Property.js';
+import { type PropertyOptions } from '../../../axon/js/Property.js';
 import StringProperty from '../../../axon/js/StringProperty.js';
 import type TEmitter from '../../../axon/js/TEmitter.js';
 import type TProperty from '../../../axon/js/TProperty.js';
@@ -78,10 +78,18 @@ export default class Vertex extends PhetioObject {
   // Whether the vertex is being actively dragged.
   public isDragged: boolean;
 
+  public isKeyboardDragging = false;
+
+  // Track whether the user has activated the vertex via keyboard (space/enter), to hide the grab cue after first use
+  public hasBeenKeyboardActivated = false;
+
   // for black box study
   public outerWireStub: boolean;
-  public isCuttableProperty: BooleanProperty;
-  public labelStringProperty: TProperty<string>;
+  public readonly isCuttableProperty: BooleanProperty;
+  public readonly labelStringProperty: StringProperty;
+
+  // Complete description for accessibility when compressed form is used (4+ connections)
+  public completeDescription: string | null = null;
 
   public static readonly VertexIO = new IOType<Vertex, VertexState>( 'VertexIO', {
     valueType: Vertex,
@@ -184,6 +192,12 @@ export default class Vertex extends PhetioObject {
     this.isDraggableProperty.dispose();
     this.isCuttableProperty.dispose();
     this.labelStringProperty.dispose();
+    this.unsnappedPositionProperty.dispose();
+    this.interactiveProperty.dispose();
+    this.attachableProperty.dispose();
+    this.blackBoxInterfaceProperty.dispose();
+    this.insideTrueBlackBoxProperty.dispose();
+    this.relayerEmitter.dispose();
 
     super.dispose();
   }

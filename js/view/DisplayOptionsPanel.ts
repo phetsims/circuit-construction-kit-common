@@ -1,4 +1,4 @@
-// Copyright 2016-2025, University of Colorado Boulder
+// Copyright 2016-2026, University of Colorado Boulder
 
 /**
  * This control panel shows checkboxes for "Show Electrons", etc.  Exists for the life of the sim and hence does not
@@ -8,7 +8,7 @@
  */
 
 import type Property from '../../../axon/js/Property.js';
-import type TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import type { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import ElectronChargeNode from '../../../scenery-phet/js/ElectronChargeNode.js';
 import type Stopwatch from '../../../scenery-phet/js/Stopwatch.js';
 import AlignGroup from '../../../scenery/js/layout/constraints/AlignGroup.js';
@@ -21,19 +21,19 @@ import VerticalAquaRadioButtonGroup from '../../../sun/js/VerticalAquaRadioButto
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import CurrentType from '../model/CurrentType.js';
 import CCKCCheckbox from './CCKCCheckbox.js';
 import CCKCColors from './CCKCColors.js';
 import CCKCPanel from './CCKCPanel.js';
 import ConventionalCurrentArrowNode from './ConventionalCurrentArrowNode.js';
 
-const conventionalStringProperty = CircuitConstructionKitCommonStrings.conventionalStringProperty;
-const electronsStringProperty = CircuitConstructionKitCommonStrings.electronsStringProperty;
-const labelsStringProperty = CircuitConstructionKitCommonStrings.labelsStringProperty;
-const showCurrentStringProperty = CircuitConstructionKitCommonStrings.showCurrentStringProperty;
-const stopwatchStringProperty = CircuitConstructionKitCommonStrings.stopwatchStringProperty;
-const valuesStringProperty = CircuitConstructionKitCommonStrings.valuesStringProperty;
+const conventionalStringProperty = CircuitConstructionKitCommonFluent.conventionalStringProperty;
+const electronsStringProperty = CircuitConstructionKitCommonFluent.electronsStringProperty;
+const labelsStringProperty = CircuitConstructionKitCommonFluent.labelsStringProperty;
+const showCurrentStringProperty = CircuitConstructionKitCommonFluent.showCurrentStringProperty;
+const stopwatchStringProperty = CircuitConstructionKitCommonFluent.stopwatchStringProperty;
+const valuesStringProperty = CircuitConstructionKitCommonFluent.valuesStringProperty;
 
 // constants
 const BOX_ALIGNMENT = { xAlign: 'left' as const };
@@ -97,15 +97,23 @@ export default class DisplayOptionsPanel extends CCKCPanel {
     const currentTypeRadioButtonGroup = new VerticalAquaRadioButtonGroup<CurrentType>( currentTypeProperty, [ {
       value: CurrentType.ELECTRONS,
       createNode: () => electronsBox,
-      tandemName: ELECTRONS_RADIO_BUTTON_TANDEM
+      tandemName: ELECTRONS_RADIO_BUTTON_TANDEM,
+      options: {
+        accessibleContextResponse: CircuitConstructionKitCommonFluent.a11y.displayOptionsPanel.currentTypeRadioButtonGroup.electronsRadioButton.accessibleContextResponseStringProperty
+      }
     }, {
       value: CurrentType.CONVENTIONAL,
       createNode: () => conventionalBox,
-      tandemName: CONVENTIONAL_RADIO_BUTTON_TANDEM
+      tandemName: CONVENTIONAL_RADIO_BUTTON_TANDEM,
+      options: {
+        accessibleContextResponse: CircuitConstructionKitCommonFluent.a11y.displayOptionsPanel.currentTypeRadioButtonGroup.conventionalRadioButton.accessibleContextResponseStringProperty
+      }
     }
     ], {
       tandem: currentTypeRadioButtonGroupTandem,
-      spacing: 6
+      spacing: 6,
+      accessibleName: CircuitConstructionKitCommonFluent.a11y.displayOptionsPanel.currentTypeRadioButtonGroup.accessibleNameStringProperty,
+      accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.displayOptionsPanel.currentTypeRadioButtonGroup.accessibleHelpTextStringProperty
     } );
 
     // AlignBox necessary to indent the children radio buttons
@@ -122,11 +130,17 @@ export default class DisplayOptionsPanel extends CCKCPanel {
 
     const labelsCheckboxTandem = tandem.createTandem( 'labelsCheckbox' );
     const showLabelsCheckbox = new CCKCCheckbox( showLabelsProperty, createLabel( labelsStringProperty, labelsCheckboxTandem ), {
-      tandem: labelsCheckboxTandem
+      tandem: labelsCheckboxTandem,
+      accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.displayOptionsPanel.labelsCheckbox.accessibleHelpTextStringProperty,
+      accessibleContextResponseChecked: CircuitConstructionKitCommonFluent.a11y.displayOptionsPanel.labelsCheckbox.accessibleContextResponseCheckedStringProperty,
+      accessibleContextResponseUnchecked: CircuitConstructionKitCommonFluent.a11y.displayOptionsPanel.labelsCheckbox.accessibleContextResponseUncheckedStringProperty
     } );
     const valuesCheckboxTandem = tandem.createTandem( 'valuesCheckbox' );
     const showValuesCheckbox = new CCKCCheckbox( showValuesProperty, createLabel( valuesStringProperty, valuesCheckboxTandem ), {
-      tandem: valuesCheckboxTandem
+      tandem: valuesCheckboxTandem,
+      accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.displayOptionsPanel.valuesCheckbox.accessibleHelpTextStringProperty,
+      accessibleContextResponseChecked: CircuitConstructionKitCommonFluent.a11y.displayOptionsPanel.valuesCheckbox.accessibleContextResponseCheckedStringProperty,
+      accessibleContextResponseUnchecked: CircuitConstructionKitCommonFluent.a11y.displayOptionsPanel.valuesCheckbox.accessibleContextResponseUncheckedStringProperty
     } );
 
     let stopwatchCheckbox: CCKCCheckbox | null = null;
@@ -146,7 +160,13 @@ export default class DisplayOptionsPanel extends CCKCPanel {
         spacing: 8,
         children: [
           new CCKCCheckbox( showCurrentProperty, createLabel( showCurrentStringProperty, showCurrentCheckboxTandem ), {
-            tandem: showCurrentCheckboxTandem
+            tandem: showCurrentCheckboxTandem,
+            accessibleContextResponseChecked: CircuitConstructionKitCommonFluent.a11y.displayOptionsPanel.showCurrentCheckbox.accessibleContextResponseChecked.createProperty( {
+              currentType: currentTypeProperty.derived( currentType => currentType.value )
+            } ),
+            accessibleContextResponseUnchecked: CircuitConstructionKitCommonFluent.a11y.displayOptionsPanel.showCurrentCheckbox.accessibleContextResponseUnchecked.createProperty( {
+              currentType: currentTypeProperty.derived( currentType => currentType.value )
+            } )
           } ),
           currentTypeRadioButtonGroupContainer
         ]
@@ -167,6 +187,7 @@ export default class DisplayOptionsPanel extends CCKCPanel {
     vBox.boundsProperty.link( bounds => content.setChildren( bounds.isValid() ? [ alignBox ] : [] ) );
 
     super( content, tandem, {
+      accessibleHeading: CircuitConstructionKitCommonFluent.a11y.displayOptionsPanel.accessibleHeadingStringProperty,
       yMargin: 10,
       visiblePropertyOptions: {
         phetioFeatured: true

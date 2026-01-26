@@ -1,4 +1,4 @@
-// Copyright 2016-2025, University of Colorado Boulder
+// Copyright 2016-2026, University of Colorado Boulder
 
 /**
  * Toolbox from which CircuitElements can be dragged or returned.  Exists for the life of the sim and hence does not
@@ -8,13 +8,14 @@
  */
 
 import type Property from '../../../axon/js/Property.js';
-import optionize from '../../../phet-core/js/optionize.js';
+import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import HBox, { type HBoxOptions } from '../../../scenery/js/layout/nodes/HBox.js';
 import Color from '../../../scenery/js/util/Color.js';
 import Carousel, { type CarouselItem, type CarouselOptions } from '../../../sun/js/Carousel.js';
 import PageControl from '../../../sun/js/PageControl.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import type CircuitElementViewType from '../model/CircuitElementViewType.js';
 import CCKCColors from './CCKCColors.js';
 
@@ -58,7 +59,10 @@ export default class CircuitElementToolbox extends HBox {
     }, providedOptions );
 
     // create the carousel
-    const carousel = new Carousel( circuitElementToolItems, providedOptions.carouselOptions );
+    const carousel = new Carousel( circuitElementToolItems, combineOptions<CarouselOptions>( {}, providedOptions.carouselOptions, {
+      accessibleName: CircuitConstructionKitCommonFluent.a11y.circuitComponentToolbox.carousel.accessibleNameStringProperty,
+      accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.circuitComponentToolbox.carousel.accessibleHelpTextStringProperty
+    } ) );
     carousel.mutate( { scale: providedOptions.carouselScale } );
 
     const pageControl = new PageControl( carousel.pageNumberProperty, carousel.numberOfPagesProperty, {
@@ -69,6 +73,8 @@ export default class CircuitElementToolbox extends HBox {
       interactive: true,
       tandem: tandem.createTandem( 'pageControl' )
     } );
+
+    carousel.insertPageControl( pageControl );
 
     super( {
       spacing: 5,

@@ -1,4 +1,4 @@
-// Copyright 2015-2025, University of Colorado Boulder
+// Copyright 2015-2026, University of Colorado Boulder
 
 /**
  * A wire whose length can change.
@@ -9,6 +9,7 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import type Property from '../../../axon/js/Property.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -45,12 +46,12 @@ export default class Wire extends CircuitElement {
   public override readonly lengthProperty: NumberProperty;
   private updateListener: () => void;
 
-  public readonly isTraversibleProperty = new BooleanProperty( true );
+  public readonly isTraversableProperty = new BooleanProperty( true );
 
   public constructor( startVertex: Vertex, endVertex: Vertex, resistivityProperty: NumberProperty, tandem: Tandem, providedOptions?: WireOptions ) {
-    assert && assert( typeof resistivityProperty !== 'number', 'property should not be a number' );
-    assert && assert( !startVertex.isDisposed, 'vertex should not be disposed' );
-    assert && assert( !endVertex.isDisposed, 'vertex should not be disposed' );
+    affirm( typeof resistivityProperty !== 'number', 'property should not be a number' );
+    affirm( !startVertex.isDisposed, 'vertex should not be disposed' );
+    affirm( !endVertex.isDisposed, 'vertex should not be disposed' );
     const options = optionize<WireOptions, SelfOptions, CircuitElementOptions>()( {
       wireStub: false,
       isMetallic: true,
@@ -67,25 +68,21 @@ export default class Wire extends CircuitElement {
       }
     }, providedOptions );
     const chargePathLength = startVertex.positionProperty.get().distance( endVertex.positionProperty.get() );
-    super( startVertex, endVertex, chargePathLength, tandem, options );
+    super( 'wire', startVertex, endVertex, chargePathLength, tandem, options );
 
     this.wireStub = options.wireStub;
 
     this.resistanceProperty = new NumberProperty( CCKCConstants.MINIMUM_WIRE_RESISTANCE );
 
-    if ( phet.chipper.queryParameters.dev ) {
-      this.resistanceProperty.link( console.log );
-    }
-
     this.resistivityProperty = resistivityProperty;
     this.lengthProperty = new NumberProperty( 0 );
-    this.updateListener = () => this.update();
+    this.updateListener = () => this.update( null );
     this.vertexMovedEmitter.addListener( this.updateListener );
 
     // When resistivity changes, update the resistance
     this.resistivityProperty.link( this.updateListener );
 
-    this.update(); // initialize state
+    this.update( null ); // initialize state
   }
 
   /**
@@ -94,26 +91,30 @@ export default class Wire extends CircuitElement {
    * @param dt - seconds since last step
    * @param circuit
    */
-  public override step( time: number, dt: number, circuit: Circuit ): void {
-    super.step( time, dt, circuit );
-    this.update();
+  public step( time: number, dt: number, circuit: Circuit ): void {
+    this.update( circuit );
   }
 
   /**
    * Batch changes so that the length doesn't change incrementally when both vertices move one at a time.
    */
-  private update(): void {
+  private update( circuit: Circuit | null ): void {
     const startPosition = this.startPositionProperty.get();
     const endPosition = this.endPositionProperty.get();
     const distanceBetweenVertices = startPosition.distance( endPosition ); // same as view coordinates
     const modelLength = distanceBetweenVertices * METERS_PER_VIEW_COORDINATE;
     this.lengthProperty.set( modelLength );
 
-    // R = rho * L / A.  Resistance = resistivity * Length / cross sectional area.
+    // R = rho * L / A.  Resistance = resistivity * Length / cross-sectional area.
     const resistance = this.resistivityProperty.get() * modelLength / CCKCConstants.WIRE_CROSS_SECTIONAL_AREA;
 
     const clampedResistance = Math.max( CCKCConstants.MINIMUM_WIRE_RESISTANCE, resistance );
-    assert && assert( !isNaN( clampedResistance ), 'wire resistance should not be NaN' );
+    affirm( !isNaN( clampedResistance ), 'wire resistance should not be NaN' );
+    if ( this.resistanceProperty.value !== clampedResistance ) {
+      if ( circuit ) {
+        circuit.dirty = true;
+      }
+    }
     this.resistanceProperty.set( clampedResistance );
 
     // Update the charge path length, but don't let it go less than a threshold, see https://github.com/phetsims/circuit-construction-kit-common/issues/405

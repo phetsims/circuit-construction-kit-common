@@ -1,4 +1,4 @@
-// Copyright 2015-2025, University of Colorado Boulder
+// Copyright 2015-2026, University of Colorado Boulder
 
 /**
  * The LightBulb is a CircuitElement that shines when current flows through it.
@@ -11,8 +11,10 @@ import NumberProperty from '../../../axon/js/NumberProperty.js';
 import type Property from '../../../axon/js/Property.js';
 import type Matrix3 from '../../../dot/js/Matrix3.js';
 import Range from '../../../dot/js/Range.js';
-import Utils from '../../../dot/js/Utils.js';
+import { clamp } from '../../../dot/js/util/clamp.js';
+import { linear } from '../../../dot/js/util/linear.js';
 import Vector2 from '../../../dot/js/Vector2.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
@@ -73,7 +75,7 @@ export default class LightBulb extends FixedCircuitElement {
   public readonly resistanceProperty: NumberProperty;
   private readonly viewTypeProperty: Property<CircuitElementViewType>;
 
-  public readonly isTraversibleProperty = new BooleanProperty( true );
+  public readonly isTraversableProperty = new BooleanProperty( true );
 
   public static createAtPosition( startVertex: Vertex,
                                   endVertex: Vertex,
@@ -110,8 +112,8 @@ export default class LightBulb extends FixedCircuitElement {
   private readonly powerDissipatedProperty: PowerDissipatedProperty;
 
   public constructor(
-    startVertex: Vertex, // side
-    endVertex: Vertex, // bottom
+    startVertex: Vertex, // bottom
+    endVertex: Vertex, // side
     resistance: number,
     viewTypeProperty: Property<CircuitElementViewType>,
     tandem: Tandem,
@@ -120,11 +122,11 @@ export default class LightBulb extends FixedCircuitElement {
       isExtreme: false,
       isReal: false
     }, providedOptions );
-    assert && assert( !options.hasOwnProperty( 'numberOfDecimalPlaces' ), 'supplied by LightBulb' );
+    affirm( !options.hasOwnProperty( 'numberOfDecimalPlaces' ), 'supplied by LightBulb' );
     options.numberOfDecimalPlaces = options.isExtreme ? 0 : 1;
 
     // getPathLength not available yet, so use a nonzero charge path length then override.
-    super( startVertex, endVertex, 1, tandem, options );
+    super( 'lightBulb', startVertex, endVertex, 1, tandem, options );
 
     this.isReal = options.isReal;
     this.isExtreme = options.isExtreme;
@@ -190,8 +192,8 @@ export default class LightBulb extends FixedCircuitElement {
     const startPoint = samplePoints[ 0 ];
     const endPoint = samplePoints[ samplePoints.length - 1 ];
 
-    const x = Utils.linear( startPoint.x, endPoint.x, origin.x, origin.x + LightBulb.vertexDelta.x, point.x );
-    const y = Utils.linear( startPoint.y, endPoint.y, origin.y, origin.y + LightBulb.vertexDelta.y, point.y );
+    const x = linear( startPoint.x, endPoint.x, origin.x, origin.x + LightBulb.vertexDelta.x, point.x );
+    const y = linear( startPoint.y, endPoint.y, origin.y, origin.y + LightBulb.vertexDelta.y, point.y );
 
     return new Vector2( x, y );
   }
@@ -225,7 +227,7 @@ export default class LightBulb extends FixedCircuitElement {
       if ( distanceAlongWire <= accumulatedDistance ) {
 
         // Choose the right point along the segment
-        const fractionAlongSegment = Utils.linear( previousAccumulatedDistance, accumulatedDistance, 0, 1, distanceAlongWire );
+        const fractionAlongSegment = linear( previousAccumulatedDistance, accumulatedDistance, 0, 1, distanceAlongWire );
         const positionAlongSegment = currentPoint.blend( nextPoint, fractionAlongSegment );
 
         // rotate the point about the start vertex

@@ -1,4 +1,4 @@
-// Copyright 2016-2025, University of Colorado Boulder
+// Copyright 2016-2026, University of Colorado Boulder
 
 /**
  * Base class for Ammeter and Voltmeter.  Meters for the life of the sim and hence do not need a dispose implementation.
@@ -18,7 +18,6 @@ import type Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 export default class Meter extends PhetioObject {
-  public phetioIndex: number;
 
   // indicates whether the meter is in the play area
   public readonly isActiveProperty: Property<boolean>;
@@ -36,7 +35,7 @@ export default class Meter extends PhetioObject {
    * @param tandem
    * @param phetioIndex - for assigning corresponding tandems
    */
-  public constructor( tandem: Tandem, phetioIndex: number ) {
+  public constructor( tandem: Tandem, public readonly phetioIndex: number ) {
 
     super( {
       tandem: tandem,
@@ -44,7 +43,6 @@ export default class Meter extends PhetioObject {
       phetioFeatured: true
     } );
 
-    this.phetioIndex = phetioIndex;
     this.isActiveProperty = new BooleanProperty( false, {
       tandem: tandem.createTandem( 'isActiveProperty' ),
       phetioFeatured: true
@@ -69,6 +67,7 @@ export default class Meter extends PhetioObject {
     this.isActiveProperty.reset();
     this.bodyPositionProperty.reset();
     this.isDraggingProbesWithBodyProperty.reset();
+    this.hasBeenKeyboardActivated = false;
   }
 }
 

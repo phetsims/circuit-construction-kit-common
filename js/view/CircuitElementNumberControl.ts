@@ -1,4 +1,4 @@
-// Copyright 2016-2025, University of Colorado Boulder
+// Copyright 2016-2026, University of Colorado Boulder
 
 /**
  * Shows controls for a single CircuitElement at the bottom of the screen and contained in a CircuitElementEditContainerNode.
@@ -9,11 +9,14 @@
 import Multilink, { type UnknownMultilink } from '../../../axon/js/Multilink.js';
 import type Property from '../../../axon/js/Property.js';
 import type ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
-import type TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import type { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import type Range from '../../../dot/js/Range.js';
-import optionize from '../../../phet-core/js/optionize.js';
-import NumberControl, { type LayoutFunction } from '../../../scenery-phet/js/NumberControl.js';
+import { roundSymmetric } from '../../../dot/js/util/roundSymmetric.js';
+import { roundToInterval } from '../../../dot/js/util/roundToInterval.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
+import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
+import NumberControl, { type LayoutFunction, NumberControlOptions } from '../../../scenery-phet/js/NumberControl.js';
 import { type NumberDisplayOptions } from '../../../scenery-phet/js/NumberDisplay.js';
 import HBox, { type HBoxOptions } from '../../../scenery/js/layout/nodes/HBox.js';
 import { type TextOptions } from '../../../scenery/js/nodes/Text.js';
@@ -34,6 +37,7 @@ type SelfOptions = {
   sliderOptions?: SliderOptions;
   getAdditionalVisibilityProperties?: ( circuitElement: CircuitElement ) => ReadOnlyProperty<boolean>[];
   delta?: number;
+  pointerRoundingInterval: number;
 };
 type CircuitElementNumberControlOptions = SelfOptions & HBoxOptions;
 
@@ -77,7 +81,27 @@ export default class CircuitElementNumberControl extends HBox {
       isDisposable: false,
       getAdditionalVisibilityProperties: ( c: CircuitElement ) => {return [];}
     }, providedOptions );
-    const numberControl = new NumberControl( title, valueProperty, range, options );
+
+    affirm( options.sliderOptions.drag === undefined, 'expected undefined options.sliderOptions.drag' );
+
+    options.sliderOptions.drag = event => {
+
+      // when from mouse, round. HACK ALERT, see https://github.com/phetsims/circuit-construction-kit-common/issues/1103#issuecomment-3661150577
+      if ( !event.isFromPDOM() ) {
+
+        valueProperty.value = range.constrainValue( roundToInterval( valueProperty.value, options.pointerRoundingInterval ) );
+      }
+    };
+
+    // Calculate numberOfMiddleThresholds based on range and keyboardStep for continuous slider sounds.
+    const keyboardStep = options.sliderOptions.keyboardStep;
+    const numberOfMiddleThresholds = keyboardStep ? roundSymmetric( range.getLength() / keyboardStep ) : 5;
+
+    const numberControl = new NumberControl( title, valueProperty, range, combineOptions<NumberControlOptions>( {
+      valueChangeSoundGeneratorOptions: {
+        numberOfMiddleThresholds: numberOfMiddleThresholds
+      }
+    }, options ) );
 
     super( { children: [ numberControl ] } );
 
@@ -85,7 +109,7 @@ export default class CircuitElementNumberControl extends HBox {
     // can be made invisible by phet-io customization (to hide all instances), and individual circuit elements
     // change the visibility of the parent.
 
-    // Combine all proprty gates via AND
+    // Combine all property gates via AND.
     const listener = ( ...isEditable: boolean[] ) => this.setVisible( !isEditable.includes( false ) );
 
     let multilink: UnknownMultilink | null = null;

@@ -9,6 +9,7 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import type Property from '../../../axon/js/Property.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -45,7 +46,7 @@ export default class Resistor extends FixedCircuitElement {
   public static readonly RESISTANCE_DECIMAL_PLACES = 1;
   public static readonly HIGH_RESISTANCE_DECIMAL_PLACES = 0;
 
-  public readonly isTraversibleProperty = new BooleanProperty( true );
+  public readonly isTraversableProperty = new BooleanProperty( true );
 
   /**
    * @param startVertex
@@ -56,13 +57,15 @@ export default class Resistor extends FixedCircuitElement {
    */
   public constructor( startVertex: Vertex, endVertex: Vertex, resistorType: ResistorType, tandem: Tandem, providedOptions?: ResistorOptions ) {
     const options = optionize<ResistorOptions, SelfOptions, FixedCircuitElementOptions>()( {
-      isFlammable: true, // All resistors are flammable except for the dog, which automatically disconnects at high current.
+
+      // TODO: Remove isFlammable since everything except the resistor dog is flammable. See https://github.com/phetsims/circuit-construction-kit-common/issues/882
+      isFlammable: true,
       phetioType: Resistor.ResistorIO,
       numberOfDecimalPlaces: resistorType === ResistorType.RESISTOR ? 1 : 0
     }, providedOptions );
 
-    assert && assert( !options.hasOwnProperty( 'resistance' ), 'Resistance should be passed through resistorType' );
-    assert && assert( !options.hasOwnProperty( 'isMetallic' ), 'isMetallic is given by the resistorType' );
+    affirm( !options.hasOwnProperty( 'resistance' ), 'Resistance should be passed through resistorType' );
+    affirm( !options.hasOwnProperty( 'isMetallic' ), 'isMetallic is given by the resistorType' );
 
     options.isMetallic = resistorType.isMetallic;
 
@@ -74,11 +77,11 @@ export default class Resistor extends FixedCircuitElement {
       };
     }
 
-    super( startVertex, endVertex, resistorType.length, tandem, options );
+    super( 'resistor', startVertex, endVertex, resistorType.length, tandem, options );
 
     this.resistorType = resistorType;
 
-    assert && assert( typeof this.resistorType.isMetallic === 'boolean' );
+    affirm( typeof this.resistorType.isMetallic === 'boolean' );
 
     this.resistanceProperty = new NumberProperty( resistorType.defaultResistance, {
       tandem: tandem.createTandem( 'resistanceProperty' ),

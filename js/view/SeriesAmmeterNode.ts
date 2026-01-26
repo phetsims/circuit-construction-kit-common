@@ -8,20 +8,19 @@
 
 import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import StringProperty from '../../../axon/js/StringProperty.js';
-import type TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import type { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Rectangle, { type RectangleOptions } from '../../../scenery/js/nodes/Rectangle.js';
 import Text from '../../../scenery/js/nodes/Text.js';
-import { rasterizeNode } from '../../../scenery/js/util/rasterizeNode.js';
 import Panel from '../../../sun/js/Panel.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCUtils from '../CCKCUtils.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
-import CurrentSense from '../model/CurrentSense.js';
 import type SeriesAmmeter from '../model/SeriesAmmeter.js';
 import ammeterReadoutTypeProperty from './ammeterReadoutTypeProperty.js';
 import type CCKCScreenView from './CCKCScreenView.js';
@@ -29,7 +28,7 @@ import type CircuitNode from './CircuitNode.js';
 import FixedCircuitElementNode, { type FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
 import ProbeTextNode from './ProbeTextNode.js';
 
-const currentStringProperty = CircuitConstructionKitCommonStrings.currentStringProperty;
+const currentStringProperty = CircuitConstructionKitCommonFluent.currentStringProperty;
 
 // constants
 const PANEL_HEIGHT = 40;
@@ -40,10 +39,13 @@ const CORNER_RADIUS = 4;
 
 /**
  * Utility function for creating a panel for the sensor body
- * Rasterize so it can be rendered in WebGL, see https://github.com/phetsims/circuit-construction-kit-dc/issues/67
  * @param [providedOptions]
  */
-const createPanel = ( providedOptions?: RectangleOptions ) => rasterizeNode( new Rectangle( 0, 0, PANEL_WIDTH, PANEL_HEIGHT, providedOptions ), { wrap: false } );
+const createPanel = ( providedOptions?: RectangleOptions ) => new Node( {
+  children: [
+    new Rectangle( 0, 0, PANEL_WIDTH, PANEL_HEIGHT, providedOptions )
+  ]
+} );
 
 const orangeBackgroundPanel = createPanel( { cornerRadius: CORNER_RADIUS, fill: ORANGE } );
 const blackBorder = createPanel( {
@@ -74,37 +76,16 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
       } );
 
     /**
-     * Update the text in the numeric readout text box.  Shows '?' if disconnected.
+     * Update the text in the numeric readout text box. Shows '?' if not fully connected.
+     * The currentReadoutProperty is computed by the model (Circuit) and includes connection status and sign.
      */
     const updateText = () => {
-      let readout: string = MathSymbols.NO_VALUE;
-
-      // If it is not an icon and connected at both sides, show the current, otherwise show '-'
-      if ( screenView ) {
-
-        const circuit = screenView.model.circuit;
-        const startConnection = circuit.getNeighboringVertices( seriesAmmeter.startVertexProperty.get() ).length > 1;
-        const endConnection = circuit.getNeighboringVertices( seriesAmmeter.endVertexProperty.get() ).length > 1;
-
-        if ( startConnection && endConnection ) {
-
-          const sign = seriesAmmeter.currentSenseProperty.value === CurrentSense.BACKWARD ? -1 : +1;
-          readout = CCKCUtils.createCurrentReadout( seriesAmmeter.currentProperty.get() * sign, false );
-        }
-      }
-
-      stringProperty.value = readout;
+      stringProperty.value = CCKCUtils.createCurrentReadout( seriesAmmeter.currentReadoutProperty.value, false );
     };
 
-    seriesAmmeter.currentProperty.link( updateText );
-    seriesAmmeter.startVertexProperty.lazyLink( updateText );
-    seriesAmmeter.endVertexProperty.lazyLink( updateText );
-    seriesAmmeter.currentSenseProperty.lazyLink( updateText );
+    seriesAmmeter.currentReadoutProperty.link( updateText );
     ammeterReadoutTypeProperty.lazyLink( updateText );
-    CircuitConstructionKitCommonStrings.currentUnitsStringProperty.lazyLink( updateText );
-
-    // NOTE: This is called every frame
-    circuitNode && circuitNode.circuit.circuitChangedEmitter.addListener( updateText );
+    CircuitConstructionKitCommonFluent.currentUnitsStringProperty.lazyLink( updateText );
 
     // This node only has a lifelike representation because it is a sensor
     const lifelikeNode = new Node( {
@@ -159,7 +140,7 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
       } ) );
     }
     else {
-      assert && assert( !!circuitNode );
+      affirm( !!circuitNode );
       if ( circuitNode && !seriesAmmeter.phetioIsArchetype && seriesAmmeter.tandem.supplied ) {
         circuitNode.seriesAmmeterNodeReadoutPanelLayer.addChild( this.frontPanelContainer );
       }
@@ -170,15 +151,12 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
 
     this.disposeSeriesAmmeterNode = () => {
 
-      seriesAmmeter.currentSenseProperty.unlink( updateText );
-      CircuitConstructionKitCommonStrings.currentUnitsStringProperty.unlink( updateText );
-
-      seriesAmmeter.currentProperty.unlink( updateText );
-      seriesAmmeter.startVertexProperty.unlink( updateText );
-      seriesAmmeter.endVertexProperty.unlink( updateText );
+      seriesAmmeter.currentReadoutProperty.unlink( updateText );
       ammeterReadoutTypeProperty.unlink( updateText );
+      CircuitConstructionKitCommonFluent.currentUnitsStringProperty.unlink( updateText );
+
       if ( !this.isIcon ) {
-        assert && assert( !!circuitNode );
+        affirm( !!circuitNode );
         if ( circuitNode ) {
           circuitNode.seriesAmmeterNodeReadoutPanelLayer.removeChild( this.frontPanelContainer );
         }
@@ -186,7 +164,6 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
       lifelikeNode.dispose();
       this.frontPanelContainer.dispose();
       probeTextNode.dispose();
-      circuitNode && circuitNode.circuit.circuitChangedEmitter.removeListener( updateText );
       stringProperty.dispose();
     };
   }

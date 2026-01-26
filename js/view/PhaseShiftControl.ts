@@ -1,4 +1,4 @@
-// Copyright 2019-2025, University of Colorado Boulder
+// Copyright 2019-2026, University of Colorado Boulder
 
 /**
  * Control that allows the user to change the phase of the ac voltage source on the AC Lab Screen.
@@ -10,6 +10,7 @@ import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Multilink, { type UnknownMultilink } from '../../../axon/js/Multilink.js';
 import Property from '../../../axon/js/Property.js';
 import Range from '../../../dot/js/Range.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
 import type PickRequired from '../../../phet-core/js/types/PickRequired.js';
 import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
@@ -18,7 +19,7 @@ import Text from '../../../scenery/js/nodes/Text.js';
 import NumberSpinner, { type NumberSpinnerOptions } from '../../../sun/js/NumberSpinner.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import ACVoltage from '../model/ACVoltage.js';
 import type Circuit from '../model/Circuit.js';
 import type CircuitElement from '../model/CircuitElement.js';
@@ -27,13 +28,14 @@ import CCKCColors from './CCKCColors.js';
 import CircuitElementNumberControl from './CircuitElementNumberControl.js';
 
 type PhaseShiftControlOptions = VBoxOptions & PickRequired<VBoxOptions, 'tandem'>;
+
 export default class PhaseShiftControl extends VBox {
 
   public constructor( phaseProperty: Property<number>, circuit: Circuit, providedOptions?: PhaseShiftControlOptions ) {
     providedOptions = combineOptions<PhaseShiftControlOptions>( {
       spacing: 7
     }, providedOptions );
-    assert && assert( !providedOptions.children, 'children not supported' );
+    affirm( !providedOptions.children, 'children not supported' );
 
     const valueRangeProperty = new Property( new Range( -180, 180 ) );
     const enabledProperty = new BooleanProperty( true );
@@ -45,9 +47,9 @@ export default class PhaseShiftControl extends VBox {
       numberDisplayOptions: {
         align: 'center',
         decimalPlaces: 0,
-        xMargin: 10,
+        xMargin: 0,
         yMargin: 3,
-        minBackgroundWidth: 60,
+        minBackgroundWidth: 45,
         textOptions: {
           font: CCKCConstants.DEFAULT_FONT
         },
@@ -58,7 +60,7 @@ export default class PhaseShiftControl extends VBox {
       tandem: providedOptions.tandem.createTandem( 'numberSpinner' )
     };
 
-    const title = new Text( CircuitConstructionKitCommonStrings.phaseShiftStringProperty, {
+    const title = new Text( CircuitConstructionKitCommonFluent.phaseShiftStringProperty, {
       font: CCKCConstants.DEFAULT_FONT,
       maxWidth: CircuitElementNumberControl.NUMBER_CONTROL_ELEMENT_MAX_WIDTH,
       fill: CCKCColors.textFillProperty

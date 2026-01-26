@@ -1,4 +1,4 @@
-// Copyright 2016-2025, University of Colorado Boulder
+// Copyright 2016-2026, University of Colorado Boulder
 
 /**
  * CircuitElement is the base class for all elements that can be part of a circuit, including:
@@ -14,10 +14,11 @@ import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Property, { type PropertyOptions } from '../../../axon/js/Property.js';
 import StringProperty from '../../../axon/js/StringProperty.js';
 import type TEmitter from '../../../axon/js/TEmitter.js';
-import type TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import type { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import { type PropertyLinkListener } from '../../../axon/js/TReadOnlyProperty.js';
 import type Matrix3 from '../../../dot/js/Matrix3.js';
 import Vector2 from '../../../dot/js/Vector2.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import SceneryEvent from '../../../scenery/js/input/SceneryEvent.js';
@@ -27,7 +28,7 @@ import type Tandem from '../../../tandem/js/Tandem.js';
 import IOType from '../../../tandem/js/types/IOType.js';
 import ReferenceIO, { ReferenceIOState } from '../../../tandem/js/types/ReferenceIO.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import type Circuit from './Circuit.js';
+import type CircuitElementType from './CircuitElementType.js';
 import CurrentSense from './CurrentSense.js';
 import Vertex from './Vertex.js';
 
@@ -60,6 +61,9 @@ export default abstract class CircuitElement extends PhetioObject {
 
   // unique identifier for looking up corresponding views
   public readonly id: number;
+
+  // the type of circuit element for i18n and accessibility
+  public readonly type: CircuitElementType;
 
   // track the time of creation so it can't be dropped in the toolbox for 0.5 seconds see https://github.com/phetsims/circuit-construction-kit-common/issues/244
   private readonly creationTime: number;
@@ -165,6 +169,7 @@ export default abstract class CircuitElement extends PhetioObject {
     super( options );
 
     this.id = index++;
+    this.type = type;
     this.creationTime = phet.joist.elapsedTime;
     this.isFlammable = options.isFlammable;
     this.isMetallic = options.isMetallic;
@@ -194,7 +199,7 @@ export default abstract class CircuitElement extends PhetioObject {
       phetioFeatured: true
     } );
     this.currentProperty.link( current => {
-      assert && assert( !isNaN( current ) );
+      affirm( !isNaN( current ) );
     } );
 
     // we assign the directionality based on the initial current direction, so the initial current is always positive.
@@ -296,13 +301,6 @@ export default abstract class CircuitElement extends PhetioObject {
   }
 
   /**
-   * Steps forward in time
-   */
-  public step( time: number, dt: number, circuit: Circuit ): void {
-    // See subclass for implementation
-  }
-
-  /**
    * Convenience method to get the start vertex position Property
    */
   public get startPositionProperty(): Property<Vector2> {
@@ -326,7 +324,7 @@ export default abstract class CircuitElement extends PhetioObject {
     // See https://github.com/phetsims/circuit-construction-kit-common/issues/413
     // if ( assert && this.isFixedCircuitElement && this.startPositionProperty.value.equals( this.endPositionProperty.value ) ) {
     //   assert && stepTimer.setTimeout( function() {
-    //     assert && assert( !this.startPositionProperty.value.equals( this.endPositionProperty.value ), 'vertices cannot be in the same spot' );
+    //     affirm( !this.startPositionProperty.value.equals( this.endPositionProperty.value ), 'vertices cannot be in the same spot' );
     //   }, 0 );
     // }
     this.vertexMovedEmitter.emit();
@@ -336,7 +334,7 @@ export default abstract class CircuitElement extends PhetioObject {
    * Release resources associated with this CircuitElement, called when it will no longer be used.
    */
   public override dispose(): void {
-    assert && assert( !this.circuitElementDisposed, 'circuit element was already disposed' );
+    affirm( !this.circuitElementDisposed, 'circuit element was already disposed' );
     this.circuitElementDisposed = true;
 
     // Notify about intent to dispose first because dispose listeners may need to access state
@@ -368,6 +366,9 @@ export default abstract class CircuitElement extends PhetioObject {
     this.labelStringProperty.dispose();
     this.currentSenseProperty.dispose();
     this.currentProperty.dispose();
+    this.voltageDifferenceProperty.dispose();
+    this.interactiveProperty.dispose();
+    this.insideTrueBlackBoxProperty.dispose();
 
     super.dispose();
   }
@@ -381,10 +382,10 @@ export default abstract class CircuitElement extends PhetioObject {
     const startVertex = this.startVertexProperty.get();
     const endVertex = this.endVertexProperty.get();
 
-    assert && assert( oldVertex !== newVertex, 'Cannot replace with the same vertex' );
-    assert && assert( oldVertex === startVertex || oldVertex === endVertex, 'Cannot replace a nonexistent vertex' );
-    assert && assert( newVertex !== startVertex && newVertex !== endVertex, 'The new vertex shouldn\'t already be ' +
-                                                                            'in the circuit element.' );
+    affirm( oldVertex !== newVertex, 'Cannot replace with the same vertex' );
+    affirm( oldVertex === startVertex || oldVertex === endVertex, 'Cannot replace a nonexistent vertex' );
+    affirm( newVertex !== startVertex && newVertex !== endVertex, 'The new vertex shouldn\'t already be ' +
+                                                                  'in the circuit element.' );
 
     if ( oldVertex === startVertex ) {
       this.startVertexProperty.set( newVertex );
@@ -398,7 +399,7 @@ export default abstract class CircuitElement extends PhetioObject {
    * Gets the Vertex on the opposite side of the specified Vertex
    */
   public getOppositeVertex( vertex: Vertex ): Vertex {
-    assert && assert( this.containsVertex( vertex ), 'Missing vertex' );
+    affirm( this.containsVertex( vertex ), 'Missing vertex' );
     if ( this.startVertexProperty.get() === vertex ) {
       return this.endVertexProperty.get();
     }
@@ -430,10 +431,10 @@ export default abstract class CircuitElement extends PhetioObject {
     const startPosition = this.startPositionProperty.get();
     const endPosition = this.endPositionProperty.get();
     const translation = startPosition.blend( endPosition, distanceAlongWire / this.chargePathLength );
-    assert && assert( !isNaN( translation.x ), 'x should be a number' );
-    assert && assert( !isNaN( translation.y ), 'y should be a number' );
+    affirm( !isNaN( translation.x ), 'x should be a number' );
+    affirm( !isNaN( translation.y ), 'y should be a number' );
     const angle = Vector2.getAngleBetweenVectors( startPosition, endPosition );
-    assert && assert( !isNaN( angle ), 'angle should be a number' );
+    affirm( !isNaN( angle ), 'angle should be a number' );
     matrix.setToTranslationRotationPoint( translation, angle );
   }
 

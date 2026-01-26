@@ -7,19 +7,20 @@
  */
 
 import type Bounds2 from '../../dot/js/Bounds2.js';
-import Utils from '../../dot/js/Utils.js';
+import { toFixed } from '../../dot/js/util/toFixed.js';
+import affirm from '../../perennial-alias/js/browser-and-node/affirm.js';
 import StringUtils from '../../phetcommon/js/util/StringUtils.js';
 import MathSymbols from '../../scenery-phet/js/MathSymbols.js';
 import type Node from '../../scenery/js/nodes/Node.js';
 import CCKCConstants from './CCKCConstants.js';
 import CCKCQueryParameters from './CCKCQueryParameters.js';
 import circuitConstructionKitCommon from './circuitConstructionKitCommon.js';
-import CircuitConstructionKitCommonStrings from './CircuitConstructionKitCommonStrings.js';
+import CircuitConstructionKitCommonFluent from './CircuitConstructionKitCommonFluent.js';
 import AmmeterReadoutType from './model/AmmeterReadoutType.js';
 import ammeterReadoutTypeProperty from './view/ammeterReadoutTypeProperty.js';
 
-const currentUnitsStringProperty = CircuitConstructionKitCommonStrings.currentUnitsStringProperty;
-const voltageUnitsStringProperty = CircuitConstructionKitCommonStrings.voltageUnitsStringProperty;
+const currentUnitsStringProperty = CircuitConstructionKitCommonFluent.currentUnitsStringProperty;
+const voltageUnitsStringProperty = CircuitConstructionKitCommonFluent.voltageUnitsStringProperty;
 
 // Number of accumulated solve steps within a single frame.  We use high precision for the first
 // several steps, then go to high performance for remaining steps.
@@ -54,7 +55,7 @@ const CCKCUtils = {
       }
       else {
         const signedCurrent = ammeterReadoutTypeProperty.value === AmmeterReadoutType.MAGNITUDE ? Math.abs( current ) : current;
-        return StringUtils.fillIn( currentUnitsStringProperty, { current: Utils.toFixed( signedCurrent, CCKCConstants.METER_PRECISION ) } );
+        return StringUtils.fillIn( currentUnitsStringProperty, { current: toFixed( signedCurrent, CCKCConstants.METER_PRECISION ) } );
       }
     }
   },
@@ -64,7 +65,7 @@ const CCKCUtils = {
    * @param value - voltage value in Volts
    */
   createVoltageReadout: function( value: number ): string {
-    return StringUtils.fillIn( voltageUnitsStringProperty, { voltage: Utils.toFixed( value, CCKCConstants.METER_PRECISION ) } );
+    return StringUtils.fillIn( voltageUnitsStringProperty, { voltage: toFixed( value, CCKCConstants.METER_PRECISION ) } );
   },
 
   /**
@@ -87,7 +88,7 @@ const CCKCUtils = {
    * Clamp the magnitude of a signed number to keep it in range.
    */
   clampMagnitude( value: number, magnitude = 1E20 ): number {
-    assert && assert( magnitude >= 0, 'magnitude should be non-negative' );
+    affirm( magnitude >= 0, 'magnitude should be non-negative' );
     if ( Math.abs( value ) > magnitude ) {
       return Math.sign( value ) * magnitude;
     }

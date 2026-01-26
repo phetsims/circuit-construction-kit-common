@@ -9,9 +9,11 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
 import type TEmitter from '../../../axon/js/TEmitter.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import { type EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import type CircuitElementType from './CircuitElementType.js';
 import FixedCircuitElement, { type FixedCircuitElementOptions } from './FixedCircuitElement.js';
 import type Vertex from './Vertex.js';
 
@@ -34,8 +36,8 @@ export default abstract class DynamicCircuitElement extends FixedCircuitElement 
   public readonly clearEmitter: TEmitter;
   public isClearableProperty: BooleanProperty;
 
-  public constructor( startVertex: Vertex, endVertex: Vertex, length: number, tandem: Tandem, providedOptions?: DynamicCircuitElementOptions ) {
-    super( startVertex, endVertex, length, tandem, providedOptions );
+  protected constructor( type: CircuitElementType, startVertex: Vertex, endVertex: Vertex, length: number, tandem: Tandem, providedOptions?: DynamicCircuitElementOptions ) {
+    super( type, startVertex, endVertex, length, tandem, providedOptions );
     this.mnaVoltageDrop = 0;
     this.mnaCurrent = 0;
     this.clearEmitter = new Emitter();
@@ -51,7 +53,7 @@ export default abstract class DynamicCircuitElement extends FixedCircuitElement 
    * electric field (capacitor) or clearing the magnetic field (inductor)
    */
   public clear(): void {
-    assert && assert( this.isClearableProperty.value, 'isClearable must be true when clear() is called' );
+    affirm( this.isClearableProperty.value, 'isClearable must be true when clear() is called' );
     this.mnaVoltageDrop = 0;
     this.mnaCurrent = 0;
     this.clearEmitter.emit();

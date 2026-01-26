@@ -9,11 +9,11 @@
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Multilink from '../../../axon/js/Multilink.js';
-import Utils from '../../../dot/js/Utils.js';
+import { clamp } from '../../../dot/js/util/clamp.js';
+import { linear } from '../../../dot/js/util/linear.js';
 import Shape from '../../../kite/js/Shape.js';
 import ElectronChargeNode from '../../../scenery-phet/js/ElectronChargeNode.js';
 import Node from '../../../scenery/js/nodes/Node.js';
-import { rasterizeNode } from '../../../scenery/js/util/rasterizeNode.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Capacitor from '../model/Capacitor.js';
@@ -25,24 +25,34 @@ import type CircuitNode from './CircuitNode.js';
 import ConventionalCurrentArrowNode from './ConventionalCurrentArrowNode.js';
 
 // constants
-const ELECTRON_CHARGE_NODE = rasterizeNode( new ElectronChargeNode( {
+const ELECTRON_CHARGE_NODE = new Node( {
+  children: [ new ElectronChargeNode( {
 
-  // Electrons are transparent to convey they are a representation rather than physical objects
-  // Workaround for https://github.com/phetsims/circuit-construction-kit-dc/issues/160
-  sphereOpacity: 0.75,
-  minusSignOpacity: 0.75,
+    // Electrons are transparent to convey they are a representation rather than physical objects
+    // Workaround for https://github.com/phetsims/circuit-construction-kit-dc/issues/160
+    sphereOpacity: 0.75,
+    minusSignOpacity: 0.75,
 
-  // selected so an electron will exactly fit the width of a wire
-  scale: 0.78
-} ), { wrap: false } );
+    // selected so an electron will exactly fit the width of a wire
+    scale: 0.78
+  } ) ]
+} );
 
-const INITIAL_ARROW_NODE = rasterizeNode( new ConventionalCurrentArrowNode( Tandem.OPT_OUT ), { wrap: false } );
+const INITIAL_ARROW_NODE = new Node( {
+  children: [
+    new ConventionalCurrentArrowNode( Tandem.OPT_OUT )
+  ]
+} );
 
 const arrowNode = new Node( { children: [ INITIAL_ARROW_NODE ] } );
 
 Multilink.multilink( [ CCKCColors.conventionalCurrentArrowFillProperty, CCKCColors.conventionalCurrentArrowStrokeProperty ],
-  ( arrowFill, arrowStroke ) => {
-    arrowNode.children = [ rasterizeNode( new ConventionalCurrentArrowNode( Tandem.OPT_OUT ), { wrap: false } ) ];
+  () => {
+    arrowNode.children = [ new Node( {
+      children: [
+        new ConventionalCurrentArrowNode( Tandem.OPT_OUT )
+      ]
+    } ) ];
   } );
 
 // Below this amperage, no conventional current will be rendered.
@@ -56,9 +66,6 @@ export default class ChargeNode extends Node {
   private readonly outsideOfBlackBoxProperty: BooleanProperty;
   private readonly updateVisibleListener: () => void;
   private readonly updateTransformListener: () => void;
-
-  // Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
-  public static readonly webglSpriteNodes = [ ELECTRON_CHARGE_NODE, arrowNode ];
 
   /**
    * @param charge - the model element
@@ -113,8 +120,8 @@ export default class ChargeNode extends Node {
       this.translation = charge.matrix.getTranslation();
       this.rotation = charge.matrix.getRotation() + ( current > 0 ? Math.PI : 0 );
 
-      const opacity = Utils.linear( 0.015, CONVENTIONAL_CHARGE_THRESHOLD, 1, 0, Math.abs( charge.circuitElement.currentProperty.get() ) );
-      const clampedOpacity = Utils.clamp( opacity, 0, 1 );
+      const opacity = linear( 0.015, CONVENTIONAL_CHARGE_THRESHOLD, 1, 0, Math.abs( charge.circuitElement.currentProperty.get() ) );
+      const clampedOpacity = clamp( opacity, 0, 1 );
       this.setOpacity( clampedOpacity );
     }
     else {

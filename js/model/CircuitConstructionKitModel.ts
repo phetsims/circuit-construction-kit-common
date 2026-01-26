@@ -14,11 +14,12 @@ import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import type Property from '../../../axon/js/Property.js';
 import type TEmitter from '../../../axon/js/TEmitter.js';
-import type TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import type { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import type Bounds2 from '../../../dot/js/Bounds2.js';
 import Range from '../../../dot/js/Range.js';
-import Utils from '../../../dot/js/Utils.js';
+import { clamp } from '../../../dot/js/util/clamp.js';
 import type TModel from '../../../joist/js/TModel.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import Stopwatch from '../../../scenery-phet/js/Stopwatch.js';
 import isSettingPhetioStateProperty from '../../../tandem/js/isSettingPhetioStateProperty.js';
@@ -94,7 +95,7 @@ export default class CircuitConstructionKitModel implements TModel {
   // Indicates when the model has updated, some views need to update accordingly
   public readonly stepEmitter: TEmitter<[ number ]>;
 
-  protected constructor( includeACElements: boolean, includeLabElements: boolean, tandem: Tandem, providedOptions?: CircuitConstructionKitModelOptions ) {
+  public constructor( includeACElements: boolean, includeLabElements: boolean, tandem: Tandem, providedOptions?: CircuitConstructionKitModelOptions ) {
 
     const options = optionize<CircuitConstructionKitModelOptions>()( {
 
@@ -117,7 +118,7 @@ export default class CircuitConstructionKitModel implements TModel {
     this.addRealBulbsProperty = new BooleanProperty( CCKCQueryParameters.addRealBulbs, {
       tandem: includeLabElements ? tandem.createTandem( 'addRealBulbsProperty' ) : Tandem.OPT_OUT,
       phetioFeatured: true,
-      hasListenerOrderDependencies: true // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/989
+      hasListenerOrderDependencies: true
     } );
 
     this.isShowNoncontactAmmeters = options.showNoncontactAmmeters;
@@ -167,7 +168,7 @@ export default class CircuitConstructionKitModel implements TModel {
       phetioFeatured: true
     } );
 
-    assert && assert( CCKCConstants.ZOOM_SCALES.includes( 1 ), 'Zoom scales must include 1 as an option' );
+    affirm( CCKCConstants.ZOOM_SCALES.includes( 1 ), 'Zoom scales must include 1 as an option' );
 
     // Zoom level for scenes
     this.zoomLevelProperty = new NumberProperty( CCKCConstants.ZOOM_SCALES.indexOf( 1 ), {
@@ -203,7 +204,7 @@ export default class CircuitConstructionKitModel implements TModel {
           const proposedZoomValue = this.animatedZoomScaleProperty.value + delta;
           const minZoomScale = Math.min( ...CCKCConstants.ZOOM_SCALES );
           const maxZoomScale = Math.max( ...CCKCConstants.ZOOM_SCALES );
-          const boundedValue = Utils.clamp( proposedZoomValue, minZoomScale, maxZoomScale );
+          const boundedValue = clamp( proposedZoomValue, minZoomScale, maxZoomScale );
           this.animatedZoomScaleProperty.value = boundedValue;
         } );
       }

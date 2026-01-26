@@ -1,4 +1,4 @@
-// Copyright 2015-2025, University of Colorado Boulder
+// Copyright 2015-2026, University of Colorado Boulder
 
 /**
  * The Battery is a circuit element that provides a fixed voltage difference.
@@ -9,12 +9,12 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import type Property from '../../../axon/js/Property.js';
 import Range from '../../../dot/js/Range.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import optionize, { type EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import type BatteryType from './BatteryType.js';
-import type Circuit from './Circuit.js';
 import type Vertex from './Vertex.js';
 import VoltageSource, { type VoltageSourceOptions } from './VoltageSource.js';
 
@@ -33,11 +33,11 @@ export default class Battery extends VoltageSource {
   public static readonly HIGH_VOLTAGE_DECIMAL_PLACES = 0;
   public readonly isReversibleProperty: BooleanProperty;
 
-  public readonly isTraversibleProperty = new BooleanProperty( true );
+  public readonly isTraversableProperty = new BooleanProperty( true );
 
   public constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, batteryType: BatteryType,
                       tandem: Tandem, providedOptions?: BatteryOptions ) {
-    assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );
+    affirm( internalResistanceProperty, 'internalResistanceProperty should be defined' );
     const options = optionize<BatteryOptions, EmptySelfOptions, VoltageSourceOptions>()( {
       initialOrientation: 'right',
       voltage: Battery.VOLTAGE_DEFAULT,
@@ -47,7 +47,7 @@ export default class Battery extends VoltageSource {
         range: batteryType === 'normal' ? Battery.VOLTAGE_RANGE : Battery.HIGH_VOLTAGE_RANGE
       }
     }, providedOptions );
-    super( startVertex, endVertex, internalResistanceProperty, BATTERY_LENGTH, tandem, options );
+    super( 'battery', startVertex, endVertex, internalResistanceProperty, BATTERY_LENGTH, tandem, options );
 
     this.initialOrientation = options.initialOrientation;
     this.batteryType = batteryType;
@@ -55,10 +55,6 @@ export default class Battery extends VoltageSource {
       tandem: tandem.createTandem( 'isReversibleProperty' ),
       phetioFeatured: true
     } );
-  }
-
-  public override step( time: number, dt: number, circuit: Circuit ): void {
-    // nothing to do
   }
 
   public override dispose(): void {

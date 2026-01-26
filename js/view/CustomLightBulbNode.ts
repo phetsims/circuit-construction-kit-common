@@ -8,8 +8,10 @@
  */
 
 import type Property from '../../../axon/js/Property.js';
-import Utils from '../../../dot/js/Utils.js';
+import { clamp } from '../../../dot/js/util/clamp.js';
+import { linear } from '../../../dot/js/util/linear.js';
 import Shape from '../../../kite/js/Shape.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import LightRaysNode from '../../../scenery-phet/js/LightRaysNode.js';
 import Image from '../../../scenery/js/nodes/Image.js';
@@ -42,19 +44,12 @@ export default class CustomLightBulbNode extends Node {
   private readonly brightnessObserver: ( ( brightness: number ) => void ) | null;
   private readonly disposeCustomLightBulbNode: () => void;
 
-  // Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
-  public static readonly webglSpriteNodes = [
-    new Image( lightBulbBack_png ),
-    new Image( lightBulbMiddle_png ),
-    new Image( lightBulbFront_png ),
-    new Image( lightBulbFrontHigh_png ) ];
-
   /**
    * @param brightnessProperty 0 (off) to 1 (full brightness)
    * @param [providedOptions]
    */
   public constructor( brightnessProperty: Property<number>, providedOptions?: CustomLightBulbNodeOptions ) {
-    assert && assert( brightnessProperty, 'brightness property should exist' );
+    affirm( brightnessProperty, 'brightness property should exist' );
 
     const options = optionize<CustomLightBulbNodeOptions, SelfOptions, NodeOptions>()( {
       baseOnly: false,
@@ -176,13 +171,13 @@ export default class CustomLightBulbNode extends Node {
   private update(): void {
     if ( this.visible && !this.baseOnly ) {
       const brightness = this.brightnessProperty.value;
-      assert && assert( brightness >= 0 && brightness <= 1 );
+      affirm( brightness >= 0 && brightness <= 1 );
       this.backNode.visible = ( brightness > 0 );
       if ( this.backNode.visible ) {
-        this.backNode.imageOpacity = Utils.clamp( Utils.linear( 0, 0.5, 0, 1, brightness ), 0, 1 );
+        this.backNode.imageOpacity = clamp( linear( 0, 0.5, 0, 1, brightness ), 0, 1 );
       }
 
-      assert && assert( this.raysNode );
+      affirm( this.raysNode );
       if ( this.raysNode ) {
         this.raysNode.setBrightness( brightness );
       }

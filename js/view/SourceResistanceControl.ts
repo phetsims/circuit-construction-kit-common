@@ -1,4 +1,4 @@
-// Copyright 2020-2025, University of Colorado Boulder
+// Copyright 2020-2026, University of Colorado Boulder
 
 /**
  * Controls for showing and changing the battery internal resistance.  Exists for the life of the sim and hence does not
@@ -10,8 +10,9 @@
 
 import PatternStringProperty from '../../../axon/js/PatternStringProperty.js';
 import type Property from '../../../axon/js/Property.js';
-import type TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
-import Utils from '../../../dot/js/Utils.js';
+import type { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
+import { roundSymmetric } from '../../../dot/js/util/roundSymmetric.js';
+import { toFixed } from '../../../dot/js/util/toFixed.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
 import type AlignGroup from '../../../scenery/js/layout/constraints/AlignGroup.js';
 import VBox from '../../../scenery/js/layout/nodes/VBox.js';
@@ -20,10 +21,10 @@ import HSlider from '../../../sun/js/HSlider.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import CCKCColors from './CCKCColors.js';
 
-const resistanceOhmsSymbolStringProperty = CircuitConstructionKitCommonStrings.resistanceOhmsSymbolStringProperty;
+const resistanceOhmsSymbolStringProperty = CircuitConstructionKitCommonFluent.resistanceOhmsSymbolStringProperty;
 
 export default class SourceResistanceControl extends VBox {
 
@@ -49,21 +50,38 @@ export default class SourceResistanceControl extends VBox {
 
     const range = CCKCConstants.BATTERY_RESISTANCE_RANGE;
     const midpoint = ( range.max + range.min ) / 2;
+    const sliderSteps = CCKCConstants.SLIDER_STEPS.sourceResistanceControl;
+
+    // Tick marks are at every integer from min (~0) to max (10).
+    // Use interThresholdDelta: 1 with constrainValue that rounds to integers,
+    // so sounds align with tick marks despite range.min being 0.0001.
     const slider = new HSlider( sourceResistanceProperty, range, {
       trackSize: CCKCConstants.SLIDER_TRACK_SIZE,
       thumbSize: CCKCConstants.THUMB_SIZE,
       majorTickLength: CCKCConstants.MAJOR_TICK_LENGTH,
       minorTickLength: CCKCConstants.MINOR_TICK_LENGTH,
+      keyboardStep: sliderSteps.step,
+      pageKeyboardStep: sliderSteps.pageKeyboardStep,
 
       // Snap to the nearest whole number.
-      constrainValue: ( value: number ) => range.constrainValue( Utils.roundSymmetric( value ) ),
+      constrainValue: ( value: number ) => range.constrainValue( roundSymmetric( value ) ),
       phetioVisiblePropertyInstrumented: false,
-      tandem: tandem.createTandem( 'slider' )
+      tandem: tandem.createTandem( 'slider' ),
+
+      accessibleName: batteryResistanceControlString,
+      accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.sourceResistanceControl.accessibleHelpTextStringProperty,
+
+      createAriaValueText: ( value: number ) => CircuitConstructionKitCommonFluent.a11y.sourceResistanceControl.ariaValueText.format( { resistance: value } ),
+
+      valueChangeSoundGeneratorOptions: {
+        interThresholdDelta: 1,
+        constrainValue: value => roundSymmetric( value )
+      }
     } );
-    slider.addMajorTick( range.min, createLabel( CircuitConstructionKitCommonStrings.tinyStringProperty, tandem.createTandem( 'tinyLabelText' ) ) );
+    slider.addMajorTick( range.min, createLabel( CircuitConstructionKitCommonFluent.tinyStringProperty, tandem.createTandem( 'tinyLabelText' ) ) );
     slider.addMajorTick( midpoint );
     slider.addMajorTick( range.max, createLabel( new PatternStringProperty( resistanceOhmsSymbolStringProperty, {
-      resistance: Utils.toFixed( range.max, 0 )
+      resistance: toFixed( range.max, 0 )
     }, {
       tandem: tandem.createTandem( 'maxLabelText' ).createTandem( Text.STRING_PROPERTY_TANDEM_NAME )
     } ), tandem.createTandem( 'maxLabelText' ) ) );

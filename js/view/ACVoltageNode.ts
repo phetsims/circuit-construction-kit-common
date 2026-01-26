@@ -15,7 +15,6 @@ import PlusNode from '../../../scenery-phet/js/PlusNode.js';
 import Circle from '../../../scenery/js/nodes/Circle.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Path from '../../../scenery/js/nodes/Path.js';
-import { rasterizeNode } from '../../../scenery/js/util/rasterizeNode.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -78,8 +77,8 @@ const createNode = ( schematic: boolean ) => new Node( {
         } ) ]
   ]
 } );
-const schematicNode = rasterizeNode( createNode( true ), { wrap: false, resolution: 2 } );
-const lifelikeNode = rasterizeNode( createNode( false ), { wrap: false, resolution: 2 } );
+const schematicNode = createNode( true );
+const lifelikeNode = createNode( false );
 
 // Expand the pointer areas with a defensive copy, see https://github.com/phetsims/circuit-construction-kit-common/issues/310
 schematicNode.mouseArea = Shape.circle(
@@ -92,12 +91,6 @@ type SelfOptions = EmptySelfOptions;
 type ACVoltageNodeOptions = FixedCircuitElementNodeOptions;
 
 export default class ACVoltageNode extends FixedCircuitElementNode {
-
-  // the ACVoltage rendered by this Node
-  private readonly acSource: ACVoltage;
-
-  // Identifies the images used to render this node so they can be pre-populated in the WebGL sprite sheet.
-  public static override readonly webglSpriteNodes = [ schematicNode, lifelikeNode ];
 
   /**
    * @param screenView - main screen view, null for isIcon
@@ -126,8 +119,6 @@ export default class ACVoltageNode extends FixedCircuitElementNode {
       tandem,
       options
     );
-
-    this.acSource = acSource;
   }
 }
 

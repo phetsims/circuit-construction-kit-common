@@ -7,9 +7,9 @@
  */
 
 import type Vector2 from '../../../dot/js/Vector2.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import Circle from '../../../scenery/js/nodes/Circle.js';
 import Node from '../../../scenery/js/nodes/Node.js';
-import { rasterizeNode } from '../../../scenery/js/util/rasterizeNode.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import type Vertex from '../model/Vertex.js';
 import type CircuitNode from './CircuitNode.js';
@@ -20,8 +20,11 @@ const SOLDER_COLOR = '#ae9f9e';
 // for hit testing with probes, in view coordinates
 const SOLDER_RADIUS = 11.2;
 
-// {Image} raster created by init() for WebGL usage
-const CIRCLE_NODE = rasterizeNode( new Circle( SOLDER_RADIUS, { fill: SOLDER_COLOR } ), { wrap: false } );
+const CIRCLE_NODE = new Node( {
+  children: [
+    new Circle( SOLDER_RADIUS, { fill: SOLDER_COLOR } )
+  ]
+} );
 
 export default class SolderNode extends Node {
   public readonly vertex: Vertex;
@@ -30,14 +33,11 @@ export default class SolderNode extends Node {
   private readonly startOffset: Vector2 | null;
   private readonly disposeSolderNode: () => void;
 
-  // Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
-  public static readonly webglSpriteNodes = [ CIRCLE_NODE ];
-
   // radius of solder in model=view coordinates, for hit testing with probes
   public static readonly SOLDER_RADIUS = SOLDER_RADIUS;
 
   public constructor( circuitNode: CircuitNode, vertex: Vertex ) {
-    assert && assert( CIRCLE_NODE, 'solder image should exist before creating SolderNode' );
+    affirm( CIRCLE_NODE, 'solder image should exist before creating SolderNode' );
 
     const circuit = circuitNode.circuit;
 
@@ -68,6 +68,9 @@ export default class SolderNode extends Node {
     circuit.circuitElements.addItemAddedListener( updateFill );
     circuit.circuitElements.addItemRemovedListener( updateFill );
 
+    // When circuit topology changes (e.g., disconnect button reassigns vertex references), update solder visibility
+    circuit.circuitChangedEmitter.addListener( updateFill );
+
     const updateSolderNodePosition = this.setTranslation.bind( this );
 
     vertex.positionProperty.link( updateSolderNodePosition );
@@ -82,6 +85,8 @@ export default class SolderNode extends Node {
       // In Black Box, other wires can be detached from a vertex and this should also update the solder
       circuit.circuitElements.removeItemAddedListener( updateFill );
       circuit.circuitElements.removeItemRemovedListener( updateFill );
+
+      circuit.circuitChangedEmitter.removeListener( updateFill );
     };
 
     updateFill();

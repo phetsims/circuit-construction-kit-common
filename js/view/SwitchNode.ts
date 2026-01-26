@@ -1,4 +1,4 @@
-// Copyright 2015-2025, University of Colorado Boulder
+// Copyright 2015-2026, University of Colorado Boulder
 
 /**
  * Renders the lifelike/schematic view for a Switch.
@@ -17,7 +17,6 @@ import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
 import Color from '../../../scenery/js/util/Color.js';
 import type Gradient from '../../../scenery/js/util/Gradient.js';
 import LinearGradient from '../../../scenery/js/util/LinearGradient.js';
-import { rasterizeNode } from '../../../scenery/js/util/rasterizeNode.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -114,8 +113,16 @@ const createNode = function( viewType: CircuitElementViewType, fill: Gradient | 
     x: SWITCH_LENGTH * SWITCH_START
   } );
 
+  // Invisible hit area that covers the full switch bounds including the gap when open.
+  // This ensures clicking in the gap area when the switch is open will still toggle it.
+  const hitAreaRectangle = new Rectangle( 0, -10, SWITCH_LENGTH, 20, {
+    fill: null,
+    stroke: null,
+    pickable: true
+  } );
+
   const node = new Node( {
-    children: [ leftSegmentNode, rotatingSegmentNode, rightSegmentNode, lifelikeHinge ]
+    children: [ hitAreaRectangle, leftSegmentNode, rotatingSegmentNode, rightSegmentNode, lifelikeHinge ]
   } ) as SegmentedNode;
 
   if ( viewType === CircuitElementViewType.SCHEMATIC ) {
@@ -138,20 +145,20 @@ const createNode = function( viewType: CircuitElementViewType, fill: Gradient | 
 const lifelikeOpenNode = createNode(
   CircuitElementViewType.LIFELIKE, lifelikeGradient, LIFELIKE_DIAMETER, 6, false
 );
-const lifelikeOpenImage = rasterizeNode( lifelikeOpenNode, { wrap: false } );
+const lifelikeOpenImage = lifelikeOpenNode;
 
 const lifelikeClosedNode = createNode(
   CircuitElementViewType.LIFELIKE, lifelikeGradient, LIFELIKE_DIAMETER, 6, true
 );
-const lifelikeClosedImage = rasterizeNode( lifelikeClosedNode, { wrap: false } );
+const lifelikeClosedImage = lifelikeClosedNode;
 
-const schematicOpenImage = rasterizeNode( createNode(
+const schematicOpenImage = createNode(
   CircuitElementViewType.SCHEMATIC, Color.BLACK, CCKCConstants.SCHEMATIC_LINE_WIDTH, 0, false
-), { wrap: false } );
+);
 
-const schematicClosedImage = rasterizeNode( createNode(
+const schematicClosedImage = createNode(
   CircuitElementViewType.SCHEMATIC, Color.BLACK, CCKCConstants.SCHEMATIC_LINE_WIDTH, 0, true
-), { wrap: false } );
+);
 
 export default class SwitchNode extends FixedCircuitElementNode {
 

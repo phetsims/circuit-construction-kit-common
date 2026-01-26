@@ -32,7 +32,7 @@ export default class Capacitor extends DynamicCircuitElement {
   public static readonly NUMBER_OF_DECIMAL_PLACES = CCKCQueryParameters.capacitorNumberDecimalPlaces;
   public static readonly CAPACITANCE_DEFAULT = CCKCQueryParameters.capacitanceDefault;
 
-  public readonly isTraversibleProperty = new BooleanProperty( true );
+  public readonly isTraversableProperty = new BooleanProperty( true );
 
   public constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, providedOptions?: CapacitorOptions ) {
     const options = optionize<CapacitorOptions, SelfOptions, DynamicCircuitElementOptions>()( {
@@ -43,7 +43,7 @@ export default class Capacitor extends DynamicCircuitElement {
       numberOfDecimalPlaces: Capacitor.NUMBER_OF_DECIMAL_PLACES
     }, providedOptions );
 
-    super( startVertex, endVertex, CCKCConstants.CAPACITOR_LENGTH, tandem, options );
+    super( 'capacitor', startVertex, endVertex, CCKCConstants.CAPACITOR_LENGTH, tandem, options );
 
     this.capacitanceProperty = new NumberProperty( options.capacitance, {
       range: Capacitor.CAPACITANCE_RANGE,
@@ -73,7 +73,7 @@ export default class Capacitor extends DynamicCircuitElement {
 
       this.startVertexProperty.value.voltageProperty.value -= adjustment;
       this.endVertexProperty.value.voltageProperty.value += adjustment;
-      // this.voltageDiffereneProperty is computed based on those changed values.
+      // this.voltageDifferenceProperty is computed based on those changed values.
 
       // For debugging
       // console.log( v2, this.endVertexProperty.value.voltageProperty.value - this.startVertexProperty.value.voltageProperty.value, this.voltageDifferenceProperty.value );

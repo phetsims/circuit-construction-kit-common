@@ -1,4 +1,4 @@
-// Copyright 2020-2025, University of Colorado Boulder
+// Copyright 2020-2026, University of Colorado Boulder
 
 /**
  * Advanced control panel that appears in "Lab" screens which allows the user to adjust the resistivity of wires
@@ -7,7 +7,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import type TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import type { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import type AlignGroup from '../../../scenery/js/layout/constraints/AlignGroup.js';
 import VBox from '../../../scenery/js/layout/nodes/VBox.js';
@@ -17,7 +17,7 @@ import { type CheckboxOptions } from '../../../sun/js/Checkbox.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import type Circuit from '../model/Circuit.js';
 import CCKCAccordionBox, { type CCKCAccordionBoxOptions } from './CCKCAccordionBox.js';
 import CCKCCheckbox from './CCKCCheckbox.js';
@@ -59,10 +59,13 @@ export default class AdvancedAccordionBox extends CCKCAccordionBox {
     if ( options.showRealBulbsCheckbox ) {
       const addRealBulbsCheckboxTandem = tandem.createTandem( 'addRealBulbsCheckbox' );
       children.push(
-        new CCKCCheckbox( circuit.addRealBulbsProperty, new Text( CircuitConstructionKitCommonStrings.addRealBulbsStringProperty, combineOptions<CheckboxOptions>( {
+        new CCKCCheckbox( circuit.addRealBulbsProperty, new Text( CircuitConstructionKitCommonFluent.addRealBulbsStringProperty, combineOptions<CheckboxOptions>( {
           tandem: addRealBulbsCheckboxTandem.createTandem( 'labelText' )
         }, TEXT_OPTIONS ) ), {
-          tandem: addRealBulbsCheckboxTandem
+          tandem: addRealBulbsCheckboxTandem,
+          accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.advancedAccordionBox.addRealBulbsCheckbox.accessibleHelpTextStringProperty,
+          accessibleContextResponseChecked: CircuitConstructionKitCommonFluent.a11y.advancedAccordionBox.addRealBulbsCheckbox.accessibleContextResponseCheckedStringProperty,
+          accessibleContextResponseUnchecked: CircuitConstructionKitCommonFluent.a11y.advancedAccordionBox.addRealBulbsCheckbox.accessibleContextResponseUncheckedStringProperty
         } )
       );
     }
@@ -70,11 +73,14 @@ export default class AdvancedAccordionBox extends CCKCAccordionBox {
       align: 'left',
       spacing: 15,
       children: children
-    } ) ), CircuitConstructionKitCommonStrings.advancedStringProperty, tandem, {
+    } ) ), CircuitConstructionKitCommonFluent.advancedStringProperty, tandem, {
 
       // Left align the title, with no padding
       titleAlignX: 'left',
-      titleXSpacing: 10
+      titleXSpacing: 10,
+
+      accessibleName: CircuitConstructionKitCommonFluent.a11y.advancedAccordionBox.accessibleNameStringProperty,
+      accessibleHelpTextCollapsed: CircuitConstructionKitCommonFluent.a11y.advancedAccordionBox.accessibleHelpTextCollapsedStringProperty
     } );
 
     this.mutate( options );

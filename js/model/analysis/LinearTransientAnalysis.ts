@@ -1,4 +1,4 @@
-// Copyright 2019-2025, University of Colorado Boulder
+// Copyright 2019-2026, University of Colorado Boulder
 
 /**
  * Takes a Circuit, creates a corresponding LTACircuit, solves the LTACircuit and applies the results back
@@ -7,6 +7,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import affirm from '../../../../perennial-alias/js/browser-and-node/affirm.js';
 import CCKCConstants from '../../CCKCConstants.js';
 import CCKCUtils from '../../CCKCUtils.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
@@ -42,6 +43,20 @@ export default class LinearTransientAnalysis {
    */
   public static solveModifiedNodalAnalysis( circuit: Circuit, dt: number ): void {
 
+    // Branch based on solver selection
+    // if ( CCKCQueryParameters.solver === 'spice' ) {
+    //   SpiceSolver.solveWithSpice( circuit, dt );
+    // }
+    // else {
+      this.solveWithPhetMNA( circuit, dt );
+    // }
+  }
+
+  /**
+   * Solve using PhET's in-house MNA solver (original implementation).
+   */
+  private static solveWithPhetMNA( circuit: Circuit, dt: number ): void {
+
     const ltaBatteries = [];
     const ltaResistors = [];
     const ltaCapacitors = [];
@@ -64,7 +79,7 @@ export default class LinearTransientAnalysis {
 
       if ( inLoop ) {
         participants.push( circuitElement );
-        if ( !circuitElement.isTraversibleProperty.value ) {
+        if ( !circuitElement.isTraversableProperty.value ) {
 
           // Cannot participate in the MNA
         }
@@ -133,7 +148,7 @@ export default class LinearTransientAnalysis {
           ltaInductors.push( ltaInductor );
         }
         else {
-          assert && assert( false, `Type not found: ${circuitElement.constructor.name}` );
+          affirm( false, `Type not found: ${circuitElement.constructor.name}` );
         }
       }
       else {
@@ -201,8 +216,8 @@ export default class LinearTransientAnalysis {
       capacitor.mnaCurrent = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousCurrentForCoreModel( ltaCapacitor ) );
       capacitor.mnaVoltageDrop = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousVoltageForCoreModel( ltaCapacitor ) );
 
-      assert && assert( Math.abs( capacitor.mnaCurrent ) < 1E100, 'mnaCurrent out of range' );
-      assert && assert( Math.abs( capacitor.mnaVoltageDrop ) < 1E100, 'mnaVoltageDrop out of range' );
+      affirm( Math.abs( capacitor.mnaCurrent ) < 1E100, 'mnaCurrent out of range' );
+      affirm( Math.abs( capacitor.mnaVoltageDrop ) < 1E100, 'mnaVoltageDrop out of range' );
     } );
     ltaInductors.forEach( ltaInductor => {
 
@@ -210,8 +225,8 @@ export default class LinearTransientAnalysis {
       inductor.currentProperty.value = circuitResult.getTimeAverageCurrentForCoreModel( ltaInductor );
       inductor.mnaCurrent = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousCurrentForCoreModel( ltaInductor ) );
       inductor.mnaVoltageDrop = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousVoltageForCoreModel( ltaInductor ) );
-      assert && assert( Math.abs( inductor.mnaCurrent ) < 1E100, 'mnaCurrent out of range' );
-      assert && assert( Math.abs( inductor.mnaVoltageDrop ) < 1E100, 'mnaVoltageDrop out of range' );
+      affirm( Math.abs( inductor.mnaCurrent ) < 1E100, 'mnaCurrent out of range' );
+      affirm( Math.abs( inductor.mnaVoltageDrop ) < 1E100, 'mnaVoltageDrop out of range' );
     } );
 
     // zero out currents on open branches
@@ -251,7 +266,7 @@ export default class LinearTransientAnalysis {
 
         // compute end voltage from start voltage
 
-        if ( !circuitElement.isTraversibleProperty.value ) {
+        if ( !circuitElement.isTraversableProperty.value ) {
 
           // no-op
         }
@@ -277,7 +292,7 @@ export default class LinearTransientAnalysis {
           solvedVertices.push( endVertex );
         }
         else {
-          assert && assert( false, 'unknown circuit element type: ' + circuitElement.constructor.name );
+          affirm( false, 'unknown circuit element type: ' + circuitElement.constructor.name );
         }
       }
     };
@@ -288,7 +303,7 @@ export default class LinearTransientAnalysis {
       circuit.circuitElements.forEach( circuitElement => {
         if ( circuitElement.containsVertex( vertex ) ) {
           const opposite = circuitElement.getOppositeVertex( vertex );
-          if ( !visited.includes( opposite ) && circuitElement.isTraversibleProperty.value ) {
+          if ( !visited.includes( opposite ) && circuitElement.isTraversableProperty.value ) {
             visit( vertex, circuitElement, opposite );
             dfs( opposite, visit );
           }
@@ -314,7 +329,7 @@ export default class LinearTransientAnalysis {
     // circuit.checkCurrentConservation( 'after' );
 
     unsolvedVertices.forEach( v => {
-      assert && assert( visited.includes( v ), 'unsolved vertex ' + v.tandem.phetioID + ' should be visited.' );
+      affirm( visited.includes( v ), 'unsolved vertex ' + v.tandem.phetioID + ' should be visited.' );
     } );
   }
 }

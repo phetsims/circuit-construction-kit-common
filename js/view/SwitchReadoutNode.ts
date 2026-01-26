@@ -6,23 +6,28 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import type TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import type { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
+import HBox from '../../../scenery/js/layout/nodes/HBox.js';
+import Line from '../../../scenery/js/nodes/Line.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import type Circuit from '../model/Circuit.js';
 import type CircuitElement from '../model/CircuitElement.js';
 import Switch from '../model/Switch.js';
 import type Vertex from '../model/Vertex.js';
 import CCKCColors from './CCKCColors.js';
 
-const theSwitchIsClosedStringProperty = CircuitConstructionKitCommonStrings.theSwitchIsClosedStringProperty;
-const theSwitchIsOpenStringProperty = CircuitConstructionKitCommonStrings.theSwitchIsOpenStringProperty;
+const theSwitchIsClosedStringProperty = CircuitConstructionKitCommonFluent.theSwitchIsClosedStringProperty;
+const theSwitchIsOpenStringProperty = CircuitConstructionKitCommonFluent.theSwitchIsOpenStringProperty;
 
 // constants
 const MAX_TEXT_WIDTH = 300;
+
+// Height to match the buttons in the edit panel for vertical centering
+const TARGET_HEIGHT = 46;
 
 export default class SwitchReadoutNode extends Node {
 
@@ -58,8 +63,19 @@ export default class SwitchReadoutNode extends Node {
       children: [ closedText, openText ]
     } );
 
-    super( {
+    // Invisible vertical strut to give the node consistent height for vertical centering in the HBox
+    const strut = new Line( 0, 0, 0, TARGET_HEIGHT, { stroke: null } );
+
+    // Use VBox to center the text vertically within the target height
+    const centeredContent = new HBox( {
+      spacing: 0,
       children: [ messageNode ],
+      minContentHeight: TARGET_HEIGHT,
+      justify: 'center'
+    } );
+
+    super( {
+      children: [ strut, centeredContent ],
       tandem: tandem,
       visiblePropertyOptions: {
         phetioFeatured: true

@@ -1,4 +1,4 @@
-// Copyright 2017-2025, University of Colorado Boulder
+// Copyright 2017-2026, University of Colorado Boulder
 
 /**
  * Radio buttons that allow the user to choose between Schematic and Lifelike views. Exists for the life of the sim and
@@ -15,6 +15,7 @@ import RectangularRadioButtonGroup, { type RectangularRadioButtonGroupOptions } 
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import Battery from '../model/Battery.js';
 import type CircuitElement from '../model/CircuitElement.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
@@ -56,7 +57,10 @@ export default class ViewRadioButtonGroup extends RectangularRadioButtonGroup<Ci
         },
         phetioVisiblePropertyInstrumented: false
       },
-      tandem: tandem
+      tandem: tandem,
+
+      accessibleName: CircuitConstructionKitCommonFluent.a11y.viewRadioButtonGroup.accessibleNameStringProperty,
+      accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.viewRadioButtonGroup.accessibleHelpTextStringProperty
     }, providedOptions );
 
     // Create a battery which can be used in the views
@@ -77,11 +81,23 @@ export default class ViewRadioButtonGroup extends RectangularRadioButtonGroup<Ci
     super( viewTypeProperty, [ {
       value: CircuitElementViewType.LIFELIKE,
       createNode: tandem => createBatteryNode( CircuitElementViewType.LIFELIKE, Tandem.OPT_OUT ),
-      tandemName: 'lifelikeRadioButton'
+      tandemName: 'lifelikeRadioButton',
+
+      options: {
+        accessibleName: CircuitConstructionKitCommonFluent.a11y.viewRadioButtonGroup.lifelikeRadioButton.accessibleNameStringProperty,
+        accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.viewRadioButtonGroup.lifelikeRadioButton.accessibleHelpTextStringProperty,
+        accessibleContextResponse: CircuitConstructionKitCommonFluent.a11y.viewRadioButtonGroup.lifelikeRadioButton.accessibleContextResponseStringProperty
+      }
     }, {
       value: CircuitElementViewType.SCHEMATIC,
       createNode: tandem => createBatteryNode( CircuitElementViewType.SCHEMATIC, Tandem.OPT_OUT ),
-      tandemName: 'schematicRadioButton'
+      tandemName: 'schematicRadioButton',
+
+      options: {
+        accessibleName: CircuitConstructionKitCommonFluent.a11y.viewRadioButtonGroup.schematicRadioButton.accessibleNameStringProperty,
+        accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.viewRadioButtonGroup.schematicRadioButton.accessibleHelpTextStringProperty,
+        accessibleContextResponse: CircuitConstructionKitCommonFluent.a11y.viewRadioButtonGroup.schematicRadioButton.accessibleContextResponseStringProperty
+      }
     } ], options );
   }
 }

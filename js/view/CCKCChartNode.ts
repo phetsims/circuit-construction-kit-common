@@ -1,4 +1,4 @@
-// Copyright 2019-2025, University of Colorado Boulder
+// Copyright 2019-2026, University of Colorado Boulder
 
 /**
  * Provides simulation-specific values and customizations to display time-series data in a chart.
@@ -12,7 +12,7 @@ import Emitter from '../../../axon/js/Emitter.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Property from '../../../axon/js/Property.js';
 import type TEmitter from '../../../axon/js/TEmitter.js';
-import type TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import type { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import CanvasGridLineSet from '../../../bamboo/js/CanvasGridLineSet.js';
 import CanvasLinePlot from '../../../bamboo/js/CanvasLinePlot.js';
 import ChartCanvasNode from '../../../bamboo/js/ChartCanvasNode.js';
@@ -23,7 +23,7 @@ import SpanNode from '../../../bamboo/js/SpanNode.js';
 import TickLabelSet from '../../../bamboo/js/TickLabelSet.js';
 import type Bounds2 from '../../../dot/js/Bounds2.js';
 import Range from '../../../dot/js/Range.js';
-import Utils from '../../../dot/js/Utils.js';
+import { toFixed } from '../../../dot/js/util/toFixed.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
 import optionize from '../../../phet-core/js/optionize.js';
@@ -40,14 +40,14 @@ import ButtonNode from '../../../sun/js/buttons/ButtonNode.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import Meter from '../model/Meter.js';
 import CCKCProbeNode from './CCKCProbeNode.js';
 import type CCKCScreenView from './CCKCScreenView.js';
 import type CircuitNode from './CircuitNode.js';
 
-const oneSecondStringProperty = CircuitConstructionKitCommonStrings.oneSecondStringProperty;
-const timeStringProperty = CircuitConstructionKitCommonStrings.timeStringProperty;
+const oneSecondStringProperty = CircuitConstructionKitCommonFluent.oneSecondStringProperty;
+const timeStringProperty = CircuitConstructionKitCommonFluent.timeStringProperty;
 
 // constants
 const AXIS_LABEL_FILL = 'white';
@@ -82,6 +82,8 @@ export default class CCKCChartNode extends Node {
   protected readonly aboveBottomLeft2Property: TReadOnlyProperty<Vector2>;
   private readonly zoomLevelProperty: NumberProperty;
   protected readonly updatePen: () => void;
+
+  public bodyNode: Node;
 
   /**
    * @param circuitNode
@@ -200,7 +202,7 @@ export default class CCKCChartNode extends Node {
     const verticalLabelSet = new TickLabelSet( chartTransform, Orientation.VERTICAL, 1, {
       edge: 'min',
       extent: 1.5,
-      createLabel: ( value: number ) => new Text( Utils.toFixed( value, this.zoomLevelProperty.value === zoomRanges.length - 1 ? 1 : 0 ), {
+      createLabel: ( value: number ) => new Text( toFixed( value, this.zoomLevelProperty.value === zoomRanges.length - 1 ? 1 : 0 ), {
         fontSize: 10,
         fill: 'white'
       } )
@@ -272,7 +274,7 @@ export default class CCKCChartNode extends Node {
       } ) ] );
 
     // Show a text message when there is data, but none of the data is in range.
-    const dataOutOfRangeMessage = new Text( CircuitConstructionKitCommonStrings.dataOutOfRangeStringProperty, {
+    const dataOutOfRangeMessage = new Text( CircuitConstructionKitCommonFluent.dataOutOfRangeStringProperty, {
       fill: 'red',
       centerX: linePlot.centerX,
       centerY: linePlot.centerY,
@@ -344,6 +346,8 @@ export default class CCKCChartNode extends Node {
         spanNode
       ]
     } );
+
+    this.bodyNode = chartNode;
 
     // Forbid overlap between the horizontal axis label and the span node
     const padding = 5;

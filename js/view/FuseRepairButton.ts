@@ -1,4 +1,4 @@
-// Copyright 2019-2025, University of Colorado Boulder
+// Copyright 2019-2026, University of Colorado Boulder
 
 /**
  * Button that resets a Fuse.
@@ -8,13 +8,18 @@
 
 import Vector2 from '../../../dot/js/Vector2.js';
 import Shape from '../../../kite/js/Shape.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import optionize, { type EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import Circle from '../../../scenery/js/nodes/Circle.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import { type RoundPushButtonOptions } from '../../../sun/js/buttons/RoundPushButton.js';
+import SoundClip from '../../../tambo/js/sound-generators/SoundClip.js';
+import soundManager from '../../../tambo/js/soundManager.js';
 import Tandem from '../../../tandem/js/Tandem.js';
+import repairFuse_mp3 from '../../sounds/repairFuse_mp3.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import type Circuit from '../model/Circuit.js';
 import type CircuitElement from '../model/CircuitElement.js';
 import Fuse from '../model/Fuse.js';
@@ -23,6 +28,9 @@ import CCKCRoundPushButton from './CCKCRoundPushButton.js';
 
 type SelfOptions = EmptySelfOptions;
 type RepairFuseButtonOptions = SelfOptions & RoundPushButtonOptions;
+
+const repairFuseSoundClip = new SoundClip( repairFuse_mp3 );
+soundManager.addSoundGenerator( repairFuseSoundClip );
 
 export default class FuseRepairButton extends CCKCRoundPushButton {
 
@@ -44,17 +52,17 @@ export default class FuseRepairButton extends CCKCRoundPushButton {
       enabledPropertyOptions: { tandem: Tandem.OPT_OUT },
       touchAreaDilation: 5, // radius dilation for touch area
       content: icon,
+      accessibleName: CircuitConstructionKitCommonFluent.a11y.fuseRepairButton.accessibleNameStringProperty,
       listener: () => {
         const fuse = circuit.selectionProperty.value;
 
-        // eslint-disable-next-line phet/no-simple-type-checking-assertions
-        assert && assert( fuse instanceof Fuse );
-        if ( fuse instanceof Fuse ) {
-          fuse.resetFuse();
-          circuit.componentEditedEmitter.emit();
-        }
+
+        affirm( fuse instanceof Fuse );
+        fuse.resetFuse();
+        circuit.componentEditedEmitter.emit();
       },
-      isDisposable: false
+      isDisposable: false,
+      soundPlayer: repairFuseSoundClip
     }, providedOptions );
 
     super( options );

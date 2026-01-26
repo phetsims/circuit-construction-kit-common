@@ -1,4 +1,4 @@
-// Copyright 2015-2025, University of Colorado Boulder
+// Copyright 2015-2026, University of Colorado Boulder
 
 /**
  * The ACVoltage is a circuit element that provides an oscillating voltage difference.
@@ -10,6 +10,7 @@ import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import type Property from '../../../axon/js/Property.js';
 import Range from '../../../dot/js/Range.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import optionize, { type EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
@@ -48,10 +49,10 @@ export default class ACVoltage extends VoltageSource {
   public static readonly FREQUENCY_RANGE = new Range( 0.1, 2.0 );
   public static readonly MAX_VOLTAGE_RANGE = new Range( 0, MAX_VOLTAGE );
 
-  public readonly isTraversibleProperty = new BooleanProperty( true );
+  public readonly isTraversableProperty = new BooleanProperty( true );
 
   public constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, tandem: Tandem, providedOptions?: ACVoltageOptions ) {
-    assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );
+    affirm( internalResistanceProperty, 'internalResistanceProperty should be defined' );
 
     const options = optionize<ACVoltageOptions, SelfOptions, VoltageSourceOptions>()( {
       initialOrientation: 'right',
@@ -62,7 +63,7 @@ export default class ACVoltage extends VoltageSource {
         range: ACVoltage.VOLTAGE_RANGE
       }
     }, providedOptions );
-    super( startVertex, endVertex, internalResistanceProperty, CCKCConstants.BATTERY_LENGTH, tandem, options );
+    super( 'acSource', startVertex, endVertex, internalResistanceProperty, CCKCConstants.BATTERY_LENGTH, tandem, options );
 
     this.maximumVoltageProperty = new NumberProperty( options.voltage, {
       tandem: tandem.createTandem( 'maximumVoltageProperty' ),
@@ -117,10 +118,10 @@ export default class ACVoltage extends VoltageSource {
    * @param time - total elapsed time
    * @param dt - delta between last frame and current frame
    */
-  public override step( time: number, dt: number, circuit: Circuit ): void {
-    super.step( time, dt, circuit );
+  public step( time: number, dt: number, circuit: Circuit ): void {
     this.time = time;
     this.voltageProperty.value = -this.maximumVoltageProperty.value * Math.sin( 2 * Math.PI * this.frequencyProperty.value * time + this.phaseProperty.value * Math.PI / 180 );
+    circuit.dirty = true;
   }
 }
 

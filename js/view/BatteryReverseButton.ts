@@ -1,4 +1,4 @@
-// Copyright 2017-2025, University of Colorado Boulder
+// Copyright 2017-2026, University of Colorado Boulder
 
 /**
  * Button that reverses a battery.
@@ -6,16 +6,20 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import optionize, { type EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import VBox from '../../../scenery/js/layout/nodes/VBox.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import Color from '../../../scenery/js/util/Color.js';
 import syncAltSolidString from '../../../sherpa/js/fontawesome-5/syncAltSolidString.js';
 import { type RoundPushButtonOptions } from '../../../sun/js/buttons/RoundPushButton.js';
+import isSettingPhetioStateProperty from '../../../tandem/js/isSettingPhetioStateProperty.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import Battery from '../model/Battery.js';
 import type Circuit from '../model/Circuit.js';
 import CCKCRoundPushButton from './CCKCRoundPushButton.js';
+import CircuitContextResponses from './description/CircuitContextResponses.js';
 
 // constants
 const ARROW_ICON_SCALE = 0.035;
@@ -25,11 +29,9 @@ type ReverseBatteryButtonOptions = SelfOptions & RoundPushButtonOptions;
 
 export default class BatteryReverseButton extends CCKCRoundPushButton {
 
-  /**
-   * @param circuit - the circuit that contains the battery
-   * @param tandem
-   */
   public constructor( circuit: Circuit, providedOptions?: ReverseBatteryButtonOptions ) {
+
+    const circuitContextResponses = new CircuitContextResponses( circuit );
 
     // This SVG data was exported from assets/flip_battery_icon.ai, which was created by @arouinfar.  Using illustrator,
     // save the AI file as SVG, then inspect the file to get the path declaration.
@@ -48,6 +50,7 @@ export default class BatteryReverseButton extends CCKCRoundPushButton {
     const bottomShapeString = `M${syncAltSolidStringParts[ 2 ]}`;
 
     const options = optionize<ReverseBatteryButtonOptions, SelfOptions, RoundPushButtonOptions>()( {
+      accessibleName: CircuitConstructionKitCommonFluent.a11y.reverseBatteryButton.accessibleNameStringProperty,
       touchAreaDilation: 5, // radius dilation for touch area
       content: new VBox( {
         spacing: 3,
@@ -69,11 +72,28 @@ export default class BatteryReverseButton extends CCKCRoundPushButton {
         const battery = circuit.selectionProperty.value;
 
         if ( battery instanceof Battery ) {
+
+          // Capture state before flipping
+          circuitContextResponses.captureState();
+
           circuit.flip( battery );
           circuit.componentEditedEmitter.emit();
+          circuit.descriptionChangeEmitter.emit();
+
+          // Announce context response after circuit solves
+          if ( !isSettingPhetioStateProperty.value ) {
+            const announceOnceAfterSolve = () => {
+              circuit.circuitChangedEmitter.removeListener( announceOnceAfterSolve );
+              const response = circuitContextResponses.createBatteryReversedResponse( battery );
+              if ( response ) {
+                circuit.circuitContextAnnouncementEmitter.emit( response );
+              }
+            };
+            circuit.circuitChangedEmitter.addListener( announceOnceAfterSolve );
+          }
         }
         else {
-          assert && assert( false, 'selected circuit element should have been a battery' );
+          affirm( false, 'selected circuit element should have been a battery' );
         }
       },
       isDisposable: false

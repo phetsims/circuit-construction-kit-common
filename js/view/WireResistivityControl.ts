@@ -1,4 +1,4 @@
-// Copyright 2017-2025, University of Colorado Boulder
+// Copyright 2017-2026, University of Colorado Boulder
 
 /**
  * Controls for showing and changing the wire resistivity.  Exists for the life of the sim and hence does not require a
@@ -8,6 +8,7 @@
  */
 
 import type Property from '../../../axon/js/Property.js';
+import { toFixed } from '../../../dot/js/util/toFixed.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
 import type AlignGroup from '../../../scenery/js/layout/constraints/AlignGroup.js';
 import VBox from '../../../scenery/js/layout/nodes/VBox.js';
@@ -16,12 +17,13 @@ import HSlider from '../../../sun/js/HSlider.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import CCKCColors from './CCKCColors.js';
 
-const lotsStringProperty = CircuitConstructionKitCommonStrings.lotsStringProperty;
-const tinyStringProperty = CircuitConstructionKitCommonStrings.tinyStringProperty;
-const wireResistivityStringProperty = CircuitConstructionKitCommonStrings.wireResistivityStringProperty;
+const lotsStringProperty = CircuitConstructionKitCommonFluent.lotsStringProperty;
+const tinyStringProperty = CircuitConstructionKitCommonFluent.tinyStringProperty;
+const wireResistivityStringProperty = CircuitConstructionKitCommonFluent.wireResistivityStringProperty;
+const ariaValueTextPattern = CircuitConstructionKitCommonFluent.a11y.wireResistivityControl.ariaValueText;
 
 // constants
 const TICK_LABEL_TEXT_OPTIONS = { fontSize: 12, maxWidth: 45, fill: CCKCColors.textFillProperty };
@@ -43,8 +45,14 @@ export default class WireResistivityControl extends VBox {
       trackSize: CCKCConstants.SLIDER_TRACK_SIZE,
       thumbSize: CCKCConstants.THUMB_SIZE,
       majorTickLength: CCKCConstants.MAJOR_TICK_LENGTH,
+      shiftKeyboardStep: CCKCConstants.WIRE_RESISTIVITY_RANGE.getLength() / 100,
       phetioVisiblePropertyInstrumented: false,
-      tandem: tandem.createTandem( 'slider' )
+      tandem: tandem.createTandem( 'slider' ),
+      accessibleName: wireResistivityStringProperty,
+      accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.wireResistivityControl.accessibleHelpTextStringProperty,
+      createAriaValueText: value => ariaValueTextPattern.format( {
+        resistivity: value < 1E-4 ? value.toString() : toFixed( value, 4 )
+      } )
     } );
 
     slider.addMajorTick( 0, new Text( tinyStringProperty, TICK_LABEL_TEXT_OPTIONS ) );

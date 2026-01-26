@@ -1,4 +1,4 @@
-// Copyright 2017-2025, University of Colorado Boulder
+// Copyright 2017-2026, University of Colorado Boulder
 
 /**
  * When enabled, shows the readout above circuit elements, such as "9.0 V" for a 9 volt battery.
@@ -9,8 +9,9 @@
 import Multilink from '../../../axon/js/Multilink.js';
 import type Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
-import Utils from '../../../dot/js/Utils.js';
+import { toFixed } from '../../../dot/js/util/toFixed.js';
 import Vector2 from '../../../dot/js/Vector2.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
 import StringUtils from '../../../phetcommon/js/util/StringUtils.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
@@ -24,7 +25,7 @@ import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitConstructionKitCommonStrings from '../CircuitConstructionKitCommonStrings.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import Capacitor from '../model/Capacitor.js';
 import type CircuitElement from '../model/CircuitElement.js';
 import type CircuitElementViewType from '../model/CircuitElementViewType.js';
@@ -36,11 +37,11 @@ import Switch from '../model/Switch.js';
 import VoltageSource from '../model/VoltageSource.js';
 import CCKCColors from './CCKCColors.js';
 
-const capacitanceFaradsSymbolStringProperty = CircuitConstructionKitCommonStrings.capacitanceFaradsSymbolStringProperty;
-const fuseValueStringProperty = CircuitConstructionKitCommonStrings.fuseValueStringProperty;
-const inductanceHenriesSymbolStringProperty = CircuitConstructionKitCommonStrings.inductanceHenriesSymbolStringProperty;
-const resistanceOhmsSymbolStringProperty = CircuitConstructionKitCommonStrings.resistanceOhmsSymbolStringProperty;
-const voltageUnitsStringProperty = CircuitConstructionKitCommonStrings.voltageUnitsStringProperty;
+const capacitanceFaradsSymbolStringProperty = CircuitConstructionKitCommonFluent.capacitanceFaradsSymbolStringProperty;
+const fuseValueStringProperty = CircuitConstructionKitCommonFluent.fuseValueStringProperty;
+const inductanceHenriesSymbolStringProperty = CircuitConstructionKitCommonFluent.inductanceHenriesSymbolStringProperty;
+const resistanceOhmsSymbolStringProperty = CircuitConstructionKitCommonFluent.resistanceOhmsSymbolStringProperty;
+const voltageUnitsStringProperty = CircuitConstructionKitCommonFluent.voltageUnitsStringProperty;
 
 // constants
 const VERTICAL_OFFSET = 24;
@@ -84,7 +85,7 @@ export default class ValueNode extends Panel {
   public constructor( sourceResistanceProperty: Property<number>, circuitElement: CircuitElement, showValuesProperty: Property<boolean>, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem ) {
 
     const contentNode = new VBox( {
-      maxWidth: 130
+      maxWidth: 95
     } );
 
     let readoutValueNode: Node | null;
@@ -95,7 +96,7 @@ export default class ValueNode extends Panel {
 
       const voltageMultilink = Multilink.multilink( [ circuitElement.voltageProperty, voltageUnitsStringProperty ], ( voltage, voltageString ) => {
         voltageText.string = StringUtils.fillIn( voltageString, {
-          voltage: Utils.toFixed( voltage, circuitElement.numberOfDecimalPlaces )
+          voltage: toFixed( voltage, circuitElement.numberOfDecimalPlaces )
         } );
         update && update();
       } );
@@ -110,7 +111,7 @@ export default class ValueNode extends Panel {
 
       const sourceResistanceMultilink = Multilink.multilink( [ sourceResistanceProperty, resistanceOhmsSymbolStringProperty ], ( sourceResistance, sourceResistanceString ) => {
         resistanceNode.string = StringUtils.fillIn( sourceResistanceString, {
-          resistance: Utils.toFixed( sourceResistance, 1 )
+          resistance: toFixed( sourceResistance, 1 )
         } );
 
         // If the children should change, update them here
@@ -133,11 +134,11 @@ export default class ValueNode extends Panel {
               circuitElement instanceof LightBulb ) {
       readoutValueNode = createText( tandem.createTandem( 'resistanceText' ) );
 
-      // Items like the hand and dog and high resistance resistor shouldn't show ".0"
+      // Items like the hand and high resistance resistor shouldn't show ".0"
 
       const resistanceMultilink = Multilink.multilink( [ circuitElement.resistanceProperty, resistanceOhmsSymbolStringProperty ], ( resistance, resistanceString ) => {
         ( readoutValueNode as Text ).string = StringUtils.fillIn( resistanceString, {
-          resistance: Utils.toFixed( resistance, circuitElement.numberOfDecimalPlaces )
+          resistance: toFixed( resistance, circuitElement.numberOfDecimalPlaces )
         } );
         update && update();
       } );
@@ -147,11 +148,11 @@ export default class ValueNode extends Panel {
     else if ( circuitElement instanceof Capacitor ) {
       readoutValueNode = createText( tandem.createTandem( 'capacitorText' ) );
 
-      // Items like the hand and dog and high resistance resistor shouldn't show ".0"
+      // Items like the hand and high resistance resistor shouldn't show ".0"
 
       const capacitanceMultilink = Multilink.multilink( [ circuitElement.capacitanceProperty, capacitanceFaradsSymbolStringProperty ], ( capacitance, capacitanceString ) => {
         ( readoutValueNode as Text ).string = StringUtils.fillIn( capacitanceString, {
-          resistance: Utils.toFixed( capacitance, circuitElement.numberOfDecimalPlaces )
+          resistance: toFixed( capacitance, circuitElement.numberOfDecimalPlaces )
         } );
         update && update();
       } );
@@ -163,7 +164,7 @@ export default class ValueNode extends Panel {
 
       const inductanceMultilink = Multilink.multilink( [ circuitElement.inductanceProperty, inductanceHenriesSymbolStringProperty ], ( inductance, inductanceString ) => {
         ( readoutValueNode as Text ).string = StringUtils.fillIn( inductanceString, {
-          resistance: Utils.toFixed( inductance, circuitElement.numberOfDecimalPlaces )
+          resistance: toFixed( inductance, circuitElement.numberOfDecimalPlaces )
         } );
         update && update();
       } );
@@ -197,12 +198,12 @@ export default class ValueNode extends Panel {
       const multilink = Multilink.multilink( [ circuitElement.resistanceProperty, circuitElement.currentRatingProperty, fuseValueStringProperty ],
         ( resistance, currentRating, fuseValueString ) => {
           const milliOhmString = resistance === CCKCConstants.MAX_RESISTANCE ? infinitySpan :
-                                 Utils.toFixed( resistance * 1000, circuitElement.numberOfDecimalPlaces );
+                                 toFixed( resistance * 1000, circuitElement.numberOfDecimalPlaces );
           ( readoutValueNode as RichText ).string = StringUtils.fillIn( fuseValueString, {
 
             // Convert to milli
             resistance: milliOhmString,
-            currentRating: Utils.toFixed( currentRating, circuitElement.numberOfDecimalPlaces )
+            currentRating: toFixed( currentRating, circuitElement.numberOfDecimalPlaces )
           } );
           update && update();
         }
@@ -213,7 +214,7 @@ export default class ValueNode extends Panel {
       throw new Error( `ValueNode cannot be shown for ${circuitElement.constructor.name}` );
     }
 
-    assert && assert( readoutValueNode, 'Content node should be defined' );
+    affirm( readoutValueNode, 'Content node should be defined' );
 
     if ( CCKCQueryParameters.showCurrents ) {
       const text = new Text( '', { fill: CCKCColors.textFillProperty } );
@@ -269,7 +270,7 @@ export default class ValueNode extends Panel {
     };
 
     circuitElement.vertexMovedEmitter.addListener( update );
-    circuitElement.isValueDisplayableProperty.link( update );
+    circuitElement.isValueDisplayableProperty.link( update, { disposer: contentNode } );
 
     update();
     showValuesProperty.link( update );
