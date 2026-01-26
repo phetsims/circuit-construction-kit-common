@@ -192,6 +192,12 @@ export default class Vertex extends PhetioObject {
     this.isDraggableProperty.dispose();
     this.isCuttableProperty.dispose();
     this.labelStringProperty.dispose();
+    this.unsnappedPositionProperty.dispose();
+    this.interactiveProperty.dispose();
+    this.attachableProperty.dispose();
+    this.blackBoxInterfaceProperty.dispose();
+    this.insideTrueBlackBoxProperty.dispose();
+    this.relayerEmitter.dispose();
 
     super.dispose();
   }

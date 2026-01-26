@@ -270,7 +270,7 @@ export default class ValueNode extends Panel {
     };
 
     circuitElement.vertexMovedEmitter.addListener( update );
-    circuitElement.isValueDisplayableProperty.link( update );
+    circuitElement.isValueDisplayableProperty.link( update, { disposer: contentNode } );
 
     update();
     showValuesProperty.link( update );

@@ -144,7 +144,7 @@ export default class ResistorNode extends FixedCircuitElementNode {
       } );
       resistor.isColorCodeVisibleProperty.link( isColorCodeVisible => {
         colorBandsNode!.visible = isColorCodeVisible;
-      } );
+      }, { disposer: colorBandsNode } );
       lifelikeResistorImageNode.addChild( colorBandsNode );
     }
 

@@ -66,6 +66,8 @@ export default class VertexNode extends InteractiveHighlighting( Node ) {
   protected readonly updateMoveToFront: () => Node;
   protected readonly updatePickableListener: ( pickable: boolean | null ) => Node;
   private readonly dragListener: CircuitNodeDragListener;
+  private readonly vertexKeyboardListener: VertexKeyboardListener;
+  private readonly vertexAttachmentKeyboardListener: VertexAttachmentKeyboardListener;
   private readonly interruptionListener: ( draggable: boolean ) => void;
   private readonly updateVertexNodePositionListener: () => void;
 
@@ -153,7 +155,7 @@ export default class VertexNode extends InteractiveHighlighting( Node ) {
         voltageReadout.setString( `${vertex.index} @ ${voltageText}` );
         affirm( this.updateReadoutTextPosition );
         this.updateReadoutTextPosition();
-      } );
+      }, { disposer: this } );
     }
 
     vertex.labelStringProperty.link( labelText => {
@@ -208,12 +210,20 @@ export default class VertexNode extends InteractiveHighlighting( Node ) {
     vertex.isDraggableProperty.lazyLink( this.interruptionListener );
 
     // Don't permit dragging by the scissors or highlight
-    this.addInputListener( this.dragListener );
+    this.addInputListener( this.dragListener, {
+      disposer: this
+    } );
 
-    this.addInputListener( new VertexKeyboardListener( this, circuitNode ) );
+    this.vertexKeyboardListener = new VertexKeyboardListener( this, circuitNode );
+    this.addInputListener( this.vertexKeyboardListener, {
+      disposer: this
+    } );
 
     // alt-input for attaching vertices, see https://github.com/phetsims/circuit-construction-kit-common/issues/1049
-    this.addInputListener( new VertexAttachmentKeyboardListener( this, circuitNode, vertex ) );
+    this.vertexAttachmentKeyboardListener = new VertexAttachmentKeyboardListener( this, circuitNode, vertex );
+    this.addInputListener( this.vertexAttachmentKeyboardListener, {
+      disposer: this
+    } );
 
     // Make sure the cut button remains in the visible screen bounds.
     this.updateVertexNodePositionListener = this.updateVertexNodePosition.bind( this );
@@ -253,6 +263,9 @@ export default class VertexNode extends InteractiveHighlighting( Node ) {
 
     this.dragListener.dispose();
     this.removeInputListener( this.dragListener );
+
+    this.vertexKeyboardListener.dispose();
+    this.vertexAttachmentKeyboardListener.dispose();
 
     vertex.isDraggableProperty.unlink( this.interruptionListener );
 

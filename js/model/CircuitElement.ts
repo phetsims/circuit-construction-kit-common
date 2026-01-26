@@ -378,6 +378,9 @@ export default abstract class CircuitElement extends PhetioObject {
     this.labelStringProperty.dispose();
     this.currentSenseProperty.dispose();
     this.currentProperty.dispose();
+    this.voltageDifferenceProperty.dispose();
+    this.interactiveProperty.dispose();
+    this.insideTrueBlackBoxProperty.dispose();
 
     super.dispose();
   }
