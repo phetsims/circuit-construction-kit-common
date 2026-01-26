@@ -113,7 +113,10 @@ a11y:
     cancelWithEscape: Cancel with Escape key.
   circuitDescription:
 
-    # TODO: Reuse same labels as outside a11y key?
+    # These labels are intentionally separate from the top-level visual strings because:
+    # 1. Some differ intentionally (e.g., visual "AC Voltage" vs a11y "AC Source")
+    # 2. a11y strings may need different phrasing optimized for screen readers
+    # 3. Keeping them separate allows independent translation and future customization
     circuitComponentTypeLabels:
       wire:             Wire
       battery:          Battery
