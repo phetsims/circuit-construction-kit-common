@@ -1,4 +1,4 @@
-// Copyright 2015-2025, University of Colorado Boulder
+// Copyright 2015-2026, University of Colorado Boulder
 
 /**
  * Renders the lifelike/schematic view for a Capacitor.
@@ -80,9 +80,6 @@ export default class CapacitorCircuitElementNode extends FixedCircuitElementNode
   private readonly rightSchematicHitAreaPath: Path;
   private readonly disposeCapacitorCircuitElementNode: () => void;
 
-  // Identifies the images used to render this node so they can be pre-populated in the WebGL sprite sheet.
-  public static override readonly webglSpriteNodes = [ new Image( wireIcon_png ) ];
-
   /**
    * @param screenView - main screen view, null for isIcon
    * @param circuitNode, null for icon
@@ -107,9 +104,6 @@ export default class CapacitorCircuitElementNode extends FixedCircuitElementNode
     const plateBounds = new Bounds3( 0, 0, 0, thickness, CapacitorConstants.PLATE_HEIGHT, thickness );
     const plateSeparationProperty = new NumberProperty( 0.004 );
 
-    // TODO (AC): See https://github.com/phetsims/circuit-construction-kit-common/issues/632 Can we instead create a Capacitor?
-    // This is definitely a case where Typescript would be unhappy, and if this is needed, then it should be explicitly
-    // documented in CapacitorNode.
     const circuit = {
       maxPlateCharge: 2.6562e-12,
       capacitor: {

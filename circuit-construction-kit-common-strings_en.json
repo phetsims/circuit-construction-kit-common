@@ -77,6 +77,9 @@
   "pencil": {
     "value": "Pencil"
   },
+  "thinPencil": {
+    "value": "Thin Pencil"
+  },
   "hand": {
     "value": "Hand"
   },
@@ -214,5 +217,727 @@
   },
   "dataOutOfRange": {
     "value": "Data out of range"
+  },
+  "extremeBattery": {
+    "value": "Extreme Battery"
+  },
+  "extremeBulb": {
+    "value": "Extreme Bulb"
+  },
+  "extremeResistor": {
+    "value": "Extreme Resistor"
+  },
+  "keyboardCues": {
+    "toCut": {
+      "value": "to <b>Cut</b>"
+    },
+    "toEditComponent": {
+      "value": "to <b>Edit Component</b>"
+    },
+    "toChooseConnection": {
+      "value": "to <b>Choose Connection</b>"
+    },
+    "toChooseMeasurement": {
+      "value": "to <b>Choose Measurement</b>"
+    }
+  },
+  "keyboardHelpDialog": {
+    "circuitComponentsAndTools": {
+      "heading": {
+        "value": "Circuit Components and Measurement Tools"
+      },
+      "removeFromToolbox": {
+        "value": "Remove from toolbox"
+      },
+      "returnToToolbox": {
+        "value": "Return to toolbox"
+      },
+      "editComponent": {
+        "value": "Edit component"
+      },
+      "cutConnections": {
+        "value": "Cut connections"
+      }
+    },
+    "focus": {
+      "heading": {
+        "value": "From Anywhere in Screen"
+      },
+      "focusToolbox": {
+        "value": "Jump to Circuit Component Toolbox"
+      },
+      "focusConstructionArea": {
+        "value": "Jump to Construction Area"
+      }
+    },
+    "chooseConnection": {
+      "heading": {
+        "value": "Choose Connection or Measurement"
+      },
+      "thingSingular": {
+        "value": "option"
+      },
+      "thingPlural": {
+        "value": "options"
+      },
+      "cancelConnection": {
+        "value": "4. Cancel"
+      }
+    }
+  },
+  "a11y": {
+    "keyboardHelpDialog": {
+      "cancelWithEscape": {
+        "value": "Cancel with Escape key."
+      }
+    },
+    "circuitDescription": {
+      "circuitComponentTypeLabels": {
+        "wire": {
+          "value": "Wire"
+        },
+        "battery": {
+          "value": "Battery"
+        },
+        "resistor": {
+          "value": "Resistor"
+        },
+        "capacitor": {
+          "value": "Capacitor"
+        },
+        "inductor": {
+          "value": "Inductor"
+        },
+        "lightBulb": {
+          "value": "Light Bulb"
+        },
+        "acSource": {
+          "value": "AC Source"
+        },
+        "fuse": {
+          "value": "Fuse"
+        },
+        "switch": {
+          "value": "Switch"
+        },
+        "voltmeter": {
+          "value": "Voltmeter"
+        },
+        "ammeter": {
+          "value": "Ammeter"
+        },
+        "stopwatch": {
+          "value": "Stopwatch"
+        },
+        "extremeBattery": {
+          "value": "Extreme Battery"
+        },
+        "extremeResistor": {
+          "value": "Extreme Resistor"
+        },
+        "extremeLightBulb": {
+          "value": "Extreme Bulb"
+        },
+        "realLightBulb": {
+          "value": "Real Bulb"
+        },
+        "coin": {
+          "value": "Coin"
+        },
+        "paperClip": {
+          "value": "Paper Clip"
+        },
+        "pencil": {
+          "value": "Pencil"
+        },
+        "thinPencil": {
+          "value": "Thin Pencil"
+        },
+        "eraser": {
+          "value": "Eraser"
+        },
+        "hand": {
+          "value": "Hand"
+        },
+        "dollarBill": {
+          "value": "Dollar Bill"
+        }
+      },
+      "circuitComponentTypePlurals": {
+        "wire": {
+          "value": "Wires"
+        },
+        "battery": {
+          "value": "Batteries"
+        },
+        "resistor": {
+          "value": "Resistors"
+        },
+        "capacitor": {
+          "value": "Capacitors"
+        },
+        "inductor": {
+          "value": "Inductors"
+        },
+        "lightBulb": {
+          "value": "Light Bulbs"
+        },
+        "acSource": {
+          "value": "AC Sources"
+        },
+        "fuse": {
+          "value": "Fuses"
+        },
+        "switch": {
+          "value": "Switches"
+        },
+        "voltmeter": {
+          "value": "Voltmeters"
+        },
+        "ammeter": {
+          "value": "Ammeters"
+        },
+        "nonContactAmmeter": {
+          "value": "Non-Contact Ammeters"
+        },
+        "stopwatch": {
+          "value": "Stopwatches"
+        },
+        "extremeBattery": {
+          "value": "Extreme Batteries"
+        },
+        "extremeResistor": {
+          "value": "Extreme Resistors"
+        },
+        "extremeLightBulb": {
+          "value": "Extreme Bulbs"
+        },
+        "realLightBulb": {
+          "value": "Real Bulbs"
+        },
+        "coin": {
+          "value": "Coins"
+        },
+        "paperClip": {
+          "value": "Paper Clips"
+        },
+        "pencil": {
+          "value": "Pencils"
+        },
+        "thinPencil": {
+          "value": "Thin Pencils"
+        },
+        "eraser": {
+          "value": "Erasers"
+        },
+        "hand": {
+          "value": "Hands"
+        },
+        "dollarBill": {
+          "value": "Dollar Bills"
+        }
+      },
+      "terminalPrefix": {
+        "value": "{ $terminalType ->\n  [positiveTerminal] Positive Terminal of { $componentName }\n  [negativeTerminal] Negative Terminal of { $componentName }\n  [side] Side of { $componentName }\n  [bottom] Bottom of { $componentName }\n  *[none] { $componentName }\n}"
+      },
+      "briefName": {
+        "value": "{ $typeLabel } { $position }"
+      },
+      "connectionDescription": {
+        "value": "{ $connectionLabel }: { $neighbors }"
+      },
+      "compressedSingular": {
+        "value": "{ $count } { $typeLabel }"
+      },
+      "compressedPlural": {
+        "value": "{ $count } { $pluralLabel }"
+      },
+      "listAnd": {
+        "value": "and"
+      },
+      "listTwoItems": {
+        "value": "{ $first } and { $second }"
+      },
+      "listFinalSeparator": {
+        "value": ", and { $last }"
+      },
+      "groupHeading": {
+        "value": "Group { $groupIndex } of { $totalGroups }"
+      },
+      "groupWithConnection": {
+        "value": "Group { $groupIndex }, { $description }"
+      },
+      "connectionPoint": {
+        "value": "Connection Point"
+      },
+      "connection": {
+        "value": "Connection"
+      },
+      "disconnected": {
+        "value": "disconnected"
+      },
+      "accessibleNameWithSelected": {
+        "value": "{ $accessibleName }, selected"
+      },
+      "groupSuffixFirst": {
+        "value": ", first item in Group { $groupIndex }"
+      },
+      "groupSuffixLast": {
+        "value": ", last item in Group { $groupIndex }"
+      },
+      "group": {
+        "value": "Group"
+      },
+      "constructionArea": {
+        "value": "Add Circuit Components and Measurement Tools as needed. Once added, use Space  or Enter to open connection options, measurement options, or select for editing.  Connected components auto-organize into groups. Remove a selected component or  disconnect a selected connection point with Delete key. Check out Keyboard Shortcuts  for more details."
+      }
+    },
+    "circuitGroupDescription": {
+      "unconnectedSummary": {
+        "value": "{ $count ->\n  [one] 1 unconnected circuit component. { $componentList }.\n  *[other] { $count } unconnected circuit components. { $componentList }.\n}"
+      },
+      "groupSummary": {
+        "value": "{ $count } connected components: { $componentList }."
+      },
+      "connectionStatus": {
+        "value": "{ $allConnected ->\n  [true] All connection points connected.\n  *[false] Some connection points not connected.\n}"
+      },
+      "currentFlowStatus": {
+        "value": "{ $flowLevel ->\n  [all] { $rateCount ->\n          [one] Current is flowing through all circuit components at the same rate.\n          *[other] Current is flowing through all circuit components at { $rateCount } different rates.\n        }\n  [some] { $rateCount ->\n           [one] Current is flowing through some circuit components at the same rate.\n           *[other] Current is flowing through some circuit components at { $rateCount } different rates.\n         }\n  [none] Current is not flowing.\n  *[notShown] Current is not shown.\n}"
+      }
+    },
+    "screenSummary": {
+      "playArea": {
+        "value": "A Construction Area creates a building space for components added from a Circuit Component Toolbox.  Build and navigate your circuits there. If Voltmeters and Ammeters are out of the toolbox, you can  take measurements."
+      },
+      "controlArea": {
+        "value": "Voltmeters and Ammeters can be found in the Measurement Tools Toolbox. Display Options provide ways  to add or remove information about components in the Construction Area. There's an option to choose  between a Lifelike View or a Schematic View for circuit components, and you can Reset All to clear  everything and start over."
+      },
+      "currentDetails": {
+        "value": "{ $componentCount ->\n  [zero] Currently, Construction Area has no circuit components. Several { $viewType } components are available in Circuit Components carousel.\n  *[other] Currently, Construction Area has { $componentCount } circuit components{ $connectivityPhrase } { $currentFlowingPhrase } Several { $viewType } components are available in Circuit Components carousel.\n}"
+      },
+      "connectivityPhrase": {
+        "value": "{ $disconnectedCount ->\n  [zero] { $groupCount ->\n           [zero] .\n           [one] , connected in 1 group.\n           *[other] , connected in { $groupCountNumber } separate groups.\n         }\n  [one] { $groupCount ->\n          [zero] . One is disconnected.\n          [one] . One is disconnected. The remaining { $connectedCount } are connected in 1 group.\n          *[other] . One is disconnected. The remaining { $connectedCount } are connected in { $groupCountNumber } separate groups.\n        }\n  *[other] { $groupCount ->\n             [zero] . { $disconnectedCountNumber } are disconnected.\n             [one] . { $disconnectedCountNumber } are disconnected. The remaining { $connectedCount } are connected in 1 group.\n             *[other] . { $disconnectedCountNumber } are disconnected. The remaining { $connectedCount } are connected in { $groupCountNumber } separate groups.\n           }\n}"
+      },
+      "currentFlowingPhrase": {
+        "value": "{ $hasCurrentFlowing ->\n  [flowing] Current is flowing in { $groupsWithCurrent } of { $groupCountNumber } groups.\n  *[notFlowing] There is no current flowing.\n}"
+      },
+      "interactionHint": {
+        "value": "Add circuit components and start connecting. Be sure to add at least one Wire."
+      }
+    },
+    "constructionArea": {
+      "accessibleHeading": {
+        "value": "Construction Area"
+      }
+    },
+    "circuitContextResponses": {
+      "selectedForEditing": {
+        "value": "Selected for editing, controls visible."
+      },
+      "editControlsHidden": {
+        "value": "Edit controls hidden."
+      },
+      "editPanelHeading": {
+        "value": "{ $componentType } Controls"
+      },
+      "editPanelHelpText": {
+        "value": "Use available controls to change, disconnect or remove selected { $componentType }."
+      },
+      "componentRemoved": {
+        "value": "Removed."
+      },
+      "noChangesInGroup": {
+        "value": "{ $showCurrent ->\n  [true] { $hasLightBulbs ->\n           [true] No changes in current or light bulb brightness in Group { $groupIndex }.\n           *[false] No changes in current in Group { $groupIndex }.\n         }\n  *[false] { $hasLightBulbs ->\n             [true] No changes in light bulb brightness in Group { $groupIndex }.\n             *[false] No changes in Group { $groupIndex }.\n           }\n}"
+      },
+      "currentChangePhrase": {
+        "value": "{ $scope ->\n  [some] { $direction ->\n           [changed] Current through some Group { $groupIndex } circuit elements changed.\n           [increased] Current through some Group { $groupIndex } circuit elements increased.\n           [decreased] Current through some Group { $groupIndex } circuit elements decreased.\n           [stopped] Current through some Group { $groupIndex } circuit elements stopped.\n           [reversed] Current through some Group { $groupIndex } circuit elements reversed.\n           *[started] Current through some Group { $groupIndex } circuit elements started.\n         }\n  *[all] { $direction ->\n           [changed] Current through all Group { $groupIndex } circuit elements changed.\n           [increased] Current through all Group { $groupIndex } circuit elements increased.\n           [decreased] Current through all Group { $groupIndex } circuit elements decreased.\n           [stopped] Current through Group { $groupIndex } stopped.\n           [reversed] Current through all Group { $groupIndex } circuit elements reversed.\n           *[started] Current through all Group { $groupIndex } circuit elements started.\n         }\n}"
+      },
+      "lightBulbChangePhrase": {
+        "value": "{ $scope ->\n  [some] { $direction ->\n           [brighter] Some Group { $groupIndex } light bulbs are brighter.\n           [dimmer] Some Group { $groupIndex } light bulbs are dimmer.\n           [on] Some Group { $groupIndex } light bulbs turned on.\n           [off] Some Group { $groupIndex } light bulbs turned off.\n           *[changed] Some Group { $groupIndex } light bulbs changed brightness.\n         }\n  *[all] { $direction ->\n           [brighter] All Group { $groupIndex } light bulbs are brighter.\n           [dimmer] All Group { $groupIndex } light bulbs are dimmer.\n           [on] All Group { $groupIndex } light bulbs turned on.\n           [off] All Group { $groupIndex } light bulbs turned off.\n           *[changed] All Group { $groupIndex } light bulbs changed brightness.\n         }\n}"
+      },
+      "vertexConnectedWithCurrent": {
+        "value": "Connected. { $currentPhrase }"
+      },
+      "vertexConnectedSimple": {
+        "value": "Connected"
+      },
+      "switchOpened": {
+        "value": "Switch opened. { $currentPhrase }"
+      },
+      "switchClosed": {
+        "value": "Switch closed. { $currentPhrase }"
+      },
+      "switchOpenedNoChange": {
+        "value": "Switch opened."
+      },
+      "switchClosedNoChange": {
+        "value": "Switch closed."
+      },
+      "fuseBroken": {
+        "value": "Fuse broken. { $currentPhrase }"
+      },
+      "fuseBrokenNoChange": {
+        "value": "Fuse broken."
+      },
+      "fuseRepaired": {
+        "value": "Fuse repaired. { $currentPhrase }"
+      },
+      "fuseRepairedNoChange": {
+        "value": "Fuse repaired."
+      },
+      "batteryReversed": {
+        "value": "Battery reversed. { $currentPhrase }"
+      },
+      "batteryReversedNoChange": {
+        "value": "Battery reversed."
+      },
+      "vertexDisconnected": {
+        "value": "Disconnected. { $currentPhrase }"
+      },
+      "vertexDisconnectedNoChange": {
+        "value": "Disconnected."
+      }
+    },
+    "measurementToolsToolbox": {
+      "accessibleHeading": {
+        "value": "Measurement Tools Toolbox"
+      },
+      "accessibleHelpText": {
+        "value": "Add Measurement Tools to the Construction Area as needed. Once added, open measurement options with Space or Enter. Check out Keyboard Shortcuts for more details."
+      },
+      "toolDisabledHelpText": {
+        "value": "Disabled when no { $componentType } remain in the toolbox."
+      },
+      "nonContactAmmeter": {
+        "accessibleName": {
+          "value": "Add Non-Contact Ammeter"
+        }
+      },
+      "voltmeter": {
+        "accessibleName": {
+          "value": "Add Voltmeter"
+        }
+      },
+      "ammeter": {
+        "accessibleName": {
+          "value": "Add Ammeter"
+        }
+      }
+    },
+    "circuitComponentToolbox": {
+      "carousel": {
+        "accessibleName": {
+          "value": "Circuit Component Toolbox"
+        },
+        "accessibleHelpText": {
+          "value": "Look for components in carousel and add them to Construction Area. Once added, return to  Construction Area and look for components and their connection points to edit or choose options  for connecting."
+        }
+      },
+      "toolAccessibleName": {
+        "value": "Add { $componentName }"
+      },
+      "toolDisabledHelpText": {
+        "value": "Disabled when no { $componentType } remain in the toolbox."
+      }
+    },
+    "advancedAccordionBox": {
+      "accessibleName": {
+        "value": "Advanced Options"
+      },
+      "accessibleHelpTextCollapsed": {
+        "value": "Experiment with wire resistivity, battery resistance, and real bulbs."
+      },
+      "addRealBulbsCheckbox": {
+        "accessibleHelpText": {
+          "value": "Build circuits with or without real light bulbs."
+        },
+        "accessibleContextResponseChecked": {
+          "value": "Real Bulbs added to end of Circuit Component Toolbox."
+        },
+        "accessibleContextResponseUnchecked": {
+          "value": "Real Bulbs removed from Circuit Component Toolbox."
+        }
+      }
+    },
+    "displayOptionsPanel": {
+      "accessibleHeading": {
+        "value": "Display Options"
+      },
+      "showCurrentCheckbox": {
+        "accessibleContextResponseChecked": {
+          "value": "{ $currentType ->\n  [electrons] Animated electron flow shown in circuit.\n  *[conventional] Animated conventional current arrows shown in circuit.\n}"
+        },
+        "accessibleContextResponseUnchecked": {
+          "value": "{ $currentType ->\n  [electrons] Animated electron flow hidden in circuit.\n  *[conventional] Animated conventional current arrows hidden in circuit.\n}"
+        }
+      },
+      "currentTypeRadioButtonGroup": {
+        "accessibleName": {
+          "value": "Current Type"
+        },
+        "accessibleHelpText": {
+          "value": "Display animated current flow as electrons or conventional current arrows."
+        },
+        "electronsRadioButton": {
+          "accessibleContextResponse": {
+            "value": "Animated current flow shows electrons moving through the circuit."
+          }
+        },
+        "conventionalRadioButton": {
+          "accessibleContextResponse": {
+            "value": "Animated current flow shows conventional current arrows."
+          }
+        }
+      },
+      "labelsCheckbox": {
+        "accessibleHelpText": {
+          "value": "Show or hide names of circuit components and measurement tools in toolboxes."
+        },
+        "accessibleContextResponseChecked": {
+          "value": "Labels in toolboxes shown."
+        },
+        "accessibleContextResponseUnchecked": {
+          "value": "Labels in toolboxes hidden."
+        }
+      },
+      "valuesCheckbox": {
+        "accessibleHelpText": {
+          "value": "Show or hide values associated with each circuit component."
+        },
+        "accessibleContextResponseChecked": {
+          "value": "Circuit component values displayed in the Construction Area."
+        },
+        "accessibleContextResponseUnchecked": {
+          "value": "Circuit component values hidden."
+        }
+      }
+    },
+    "viewRadioButtonGroup": {
+      "accessibleName": {
+        "value": "Circuit Component View"
+      },
+      "accessibleHelpText": {
+        "value": "Choose how to display circuit components."
+      },
+      "lifelikeRadioButton": {
+        "accessibleName": {
+          "value": "Lifelike View"
+        },
+        "accessibleHelpText": {
+          "value": "Display circuit components as they appear in real life."
+        },
+        "accessibleContextResponse": {
+          "value": "Circuit components displayed with lifelike appearance."
+        }
+      },
+      "schematicRadioButton": {
+        "accessibleName": {
+          "value": "Schematic View"
+        },
+        "accessibleHelpText": {
+          "value": "Display circuit components as they appear in schematic circuit diagrams."
+        },
+        "accessibleContextResponse": {
+          "value": "Circuit components displayed with schematic symbols."
+        }
+      }
+    },
+    "reverseBatteryButton": {
+      "accessibleName": {
+        "value": "Reverse Battery Direction"
+      }
+    },
+    "switchToggleButton": {
+      "openSwitch": {
+        "value": "Open Switch"
+      },
+      "closeSwitch": {
+        "value": "Close Switch"
+      }
+    },
+    "disconnectButton": {
+      "accessibleName": {
+        "value": "Disconnect { $componentType }"
+      }
+    },
+    "trashButton": {
+      "accessibleName": {
+        "value": "Delete { $componentType }"
+      }
+    },
+    "fuseRepairButton": {
+      "accessibleName": {
+        "value": "Repair Fuse"
+      }
+    },
+    "sourceResistanceControl": {
+      "accessibleHelpText": {
+        "value": "Set internal resistance of all batteries, ranging from tiny to 10 ohms."
+      },
+      "ariaValueText": {
+        "value": "{ $resistance ->\n  [one] { $resistance } ohm\n *[other] { $resistance } ohms\n}"
+      }
+    },
+    "wireResistivityControl": {
+      "accessibleHelpText": {
+        "value": "Set resistivity of all wires, ranging from tiny to lots."
+      },
+      "ariaValueText": {
+        "value": "{ $resistivity } ohm-meters"
+      }
+    },
+    "fuseCurrentRatingControl": {
+      "ariaValueText": {
+        "value": "{ $currentNumber ->\n  [one] { $currentFormatted } amp\n *[other] { $currentFormatted } amps\n}"
+      }
+    },
+    "ammeterNode": {
+      "accessibleHeading": {
+        "value": "Non-Contact Ammeter"
+      },
+      "accessibleHeadingNumbered": {
+        "value": "Non-Contact Ammeter { $position } of { $total }"
+      },
+      "body": {
+        "accessibleName": {
+          "value": "Non-Contact Ammeter: { $reading }"
+        }
+      },
+      "probe": {
+        "accessibleName": {
+          "value": "Ammeter Probe"
+        }
+      },
+      "noReading": {
+        "value": "no reading"
+      },
+      "currentAmps": {
+        "value": "{ $current } amps"
+      }
+    },
+    "voltmeterNode": {
+      "accessibleHeading": {
+        "value": "Voltmeter"
+      },
+      "accessibleHeadingNumbered": {
+        "value": "Voltmeter { $position } of { $total }"
+      },
+      "body": {
+        "accessibleName": {
+          "value": "Voltmeter: { $reading }"
+        }
+      },
+      "blackProbe": {
+        "accessibleName": {
+          "value": "Black Probe"
+        }
+      },
+      "redProbe": {
+        "accessibleName": {
+          "value": "Red Probe"
+        }
+      },
+      "noReading": {
+        "value": "no reading"
+      },
+      "voltageVolts": {
+        "value": "{ $voltage } volts"
+      }
+    },
+    "circuitComponent": {
+      "separator": {
+        "value": ", "
+      },
+      "nameWithPosition": {
+        "value": "{ $typeName } { $position } of { $total }"
+      },
+      "values": {
+        "resistanceOhms": {
+          "value": "{ $resistance } ohms"
+        },
+        "resistanceMilliohms": {
+          "value": "{ $resistance } milliohms"
+        },
+        "voltageVolts": {
+          "value": "{ $voltage } volts"
+        },
+        "capacitanceFarads": {
+          "value": "{ $capacitance } farads"
+        },
+        "inductanceHenries": {
+          "value": "{ $inductance } henries"
+        },
+        "currentRatingAmps": {
+          "value": "≤ { $currentRating } amps"
+        },
+        "infiniteOhms": {
+          "value": "infinite ohms"
+        }
+      },
+      "switchStates": {
+        "closed": {
+          "value": "closed"
+        },
+        "open": {
+          "value": "open"
+        }
+      },
+      "modifiers": {
+        "onFire": {
+          "value": "on fire"
+        },
+        "broken": {
+          "value": "broken"
+        }
+      },
+      "brightness": {
+        "off": {
+          "value": "off"
+        },
+        "percent": {
+          "value": "brightness { $percent }%"
+        }
+      }
+    },
+    "zoomButtonGroup": {
+      "zoomIn": {
+        "accessibleName": {
+          "value": "Zoom In"
+        },
+        "accessibleHelpText": {
+          "value": "Adjust visual scale of circuit components and measurement tools in Construction Area."
+        }
+      },
+      "zoomOut": {
+        "accessibleName": {
+          "value": "Zoom Out"
+        },
+        "accessibleHelpText": {
+          "value": "Adjust visual scale of circuit components and measurement tools in Construction Area."
+        }
+      },
+      "zoomLevelResponse": {
+        "value": "Zoom level { $level } of { $max }."
+      }
+    },
+    "simulationPreferences": {
+      "schematicStandard": {
+        "accessibleName": {
+          "value": "Schematic Standard"
+        },
+        "accessibleHelpText": {
+          "value": "Choose standard used to represent circuit components as schematic symbols when in Schematic View."
+        }
+      },
+      "ammeterReadout": {
+        "accessibleName": {
+          "value": "Ammeter Readout"
+        },
+        "accessibleHelpText": {
+          "value": "Choose to display measured current as a magnitude or signed value."
+        }
+      }
+    }
   }
 }

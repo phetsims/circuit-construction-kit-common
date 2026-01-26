@@ -13,7 +13,6 @@ import { combineOptions } from '../../../phet-core/js/optionize.js';
 import Image from '../../../scenery/js/nodes/Image.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import Color from '../../../scenery/js/util/Color.js';
-import { rasterizeNode } from '../../../scenery/js/util/rasterizeNode.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import battery_png from '../../images/battery_png.js';
 import batteryHigh_png from '../../images/batteryHigh_png.js';
@@ -51,10 +50,10 @@ const schematicScale = desiredWidth / schematicWidth;
 
 // Scale to fit the correct width
 schematicShape = schematicShape.transformed( Matrix3.scale( schematicScale, schematicScale ) );
-const schematicNode = rasterizeNode( new Path( schematicShape, {
+const schematicNode = new Path( schematicShape, {
   stroke: Color.BLACK,
   lineWidth: CCKCConstants.SCHEMATIC_LINE_WIDTH
-} ), { wrap: false } );
+} );
 
 schematicNode.centerY = 0;
 
@@ -63,13 +62,6 @@ schematicNode.mouseArea = schematicNode.bounds.shiftedY( schematicNode.height / 
 schematicNode.touchArea = schematicNode.bounds.shiftedY( schematicNode.height / 2 );
 
 export default class BatteryNode extends FixedCircuitElementNode {
-  private readonly battery: Battery;
-
-  // Identifies the images used to render this node so they can be pre-populated in the WebGL sprite sheet.
-  public static override readonly webglSpriteNodes = [
-    new Image( battery_png ),
-    new Image( batteryHigh_png )
-  ];
 
   /**
    * @param screenView - main screen view, null for isIcon
@@ -102,8 +94,6 @@ export default class BatteryNode extends FixedCircuitElementNode {
       tandem,
       providedOptions
     );
-
-    this.battery = battery;
   }
 }
 

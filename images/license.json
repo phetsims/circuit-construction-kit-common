@@ -39,14 +39,6 @@
     "license": "contact phethelp@colorado.edu",
     "notes": "Created by Cheryl McCutchan"
   },
-  "dog.png": {
-    "text": [
-      "Copyright 2017 University of Colorado Boulder"
-    ],
-    "projectURL": "https://phet.colorado.edu",
-    "license": "contact phethelp@colorado.edu",
-    "notes": "Created by Cheryl McCutchan"
-  },
   "eraser.png": {
     "text": [
       "Copyright 2017 University of Colorado Boulder"
@@ -138,6 +130,14 @@
   "resistorHigh.png": {
     "text": [
       "Copyright 2016 University of Colorado Boulder"
+    ],
+    "projectURL": "https://phet.colorado.edu",
+    "license": "contact phethelp@colorado.edu",
+    "notes": "Created by Amy Rouinfar"
+  },
+  "thinPencil.png": {
+    "text": [
+      "Copyright 2025 University of Colorado Boulder"
     ],
     "projectURL": "https://phet.colorado.edu",
     "license": "contact phethelp@colorado.edu",

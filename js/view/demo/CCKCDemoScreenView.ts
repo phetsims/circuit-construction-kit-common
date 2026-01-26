@@ -10,7 +10,6 @@ import ScreenView, { type ScreenViewOptions } from '../../../../joist/js/ScreenV
 import Shape from '../../../../kite/js/Shape.js';
 import Path from '../../../../scenery/js/nodes/Path.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
-import BarkNode from '../BarkNode.js';
 
 // Constants for the resistor
 const SCHEMATIC_SCALE = 0.54;
@@ -24,7 +23,7 @@ const LEAD_Y = -73;
 
 export default class CCKCDemoScreenView extends ScreenView {
 
-  private constructor( providedOptions: ScreenViewOptions ) {
+  public constructor( providedOptions?: ScreenViewOptions ) {
     super( providedOptions );
 
     // Classical zig-zag shape
@@ -222,12 +221,6 @@ export default class CCKCDemoScreenView extends ScreenView {
       centerX: resistorPath.centerX
     } );
     this.addChild( bulbPathIEC );
-
-    const barkNode = new BarkNode( {
-      center: this.layoutBounds.center.plusXY( 200, 0 ),
-      maxWidth: 70
-    } );
-    this.addChild( barkNode );
   }
 }
 
