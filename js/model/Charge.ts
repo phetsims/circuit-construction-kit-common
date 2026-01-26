@@ -11,6 +11,7 @@ import Emitter from '../../../axon/js/Emitter.js';
 import type Property from '../../../axon/js/Property.js';
 import type TEmitter from '../../../axon/js/TEmitter.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import type CircuitElement from './CircuitElement.js';
 
@@ -44,14 +45,14 @@ export default class Charge extends Disposable {
 
     super();
 
-    assert && assert( charge === 1 || charge === -1, 'charge should be 1 or -1' );
+    affirm( charge === 1 || charge === -1, 'charge should be 1 or -1' );
 
     this.charge = charge;
 
     // Validate inputs
-    assert && assert( _.isNumber( distance ), 'distance should be a number' );
-    assert && assert( distance >= 0, 'charge was below the origin of the circuit element' );
-    assert && assert( circuitElement.containsScalarPosition( distance ), 'charge was not within the circuit element' );
+    affirm( _.isNumber( distance ), 'distance should be a number' );
+    affirm( distance >= 0, 'charge was below the origin of the circuit element' );
+    affirm( circuitElement.containsScalarPosition( distance ), 'charge was not within the circuit element' );
 
     this.circuitElement = circuitElement;
     this.distance = distance;
@@ -66,7 +67,7 @@ export default class Charge extends Disposable {
    * After updating the circuit element and/or distance traveled, update the 2d position and direction.
    */
   public updatePositionAndAngle(): void {
-    assert && assert( !isNaN( this.distance ), 'charge position was not a number' );
+    affirm( !isNaN( this.distance ), 'charge position was not a number' );
     this.circuitElement.updateMatrixForPoint( this.distance, this.matrix );
 
     // Notify listeners that the position and angle have changed.

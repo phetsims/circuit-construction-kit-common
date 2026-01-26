@@ -1,4 +1,4 @@
-// Copyright 2015-2025, University of Colorado Boulder
+// Copyright 2015-2026, University of Colorado Boulder
 
 /**
  * Modified Nodal Analysis for a circuit.  An Equation is a sum of Terms equal to a numeric value.  A Term is composed
@@ -12,7 +12,8 @@
  */
 
 import Matrix, { QRDecomposition } from '../../../../../dot/js/Matrix.js';
-import Utils from '../../../../../dot/js/Utils.js';
+import { toFixed } from '../../../../../dot/js/util/toFixed.js';
+import affirm from '../../../../../perennial-alias/js/browser-and-node/affirm.js';
 import arrayRemove from '../../../../../phet-core/js/arrayRemove.js';
 import type IntentionalAny from '../../../../../phet-core/js/types/IntentionalAny.js';
 import circuitConstructionKitCommon from '../../../circuitConstructionKitCommon.js';
@@ -38,9 +39,9 @@ export default class MNACircuit {
   private readonly nodes: string[];
 
   public constructor( batteries: MNABattery[], resistors: MNAResistor[], currentSources: MNACurrent[] ) {
-    assert && assert( batteries, 'batteries should be defined' );
-    assert && assert( resistors, 'resistors should be defined' );
-    assert && assert( currentSources, 'currentSources should be defined' );
+    affirm( batteries, 'batteries should be defined' );
+    affirm( resistors, 'resistors should be defined' );
+    affirm( currentSources, 'currentSources should be defined' );
 
     this.batteries = batteries;
     this.resistors = resistors;
@@ -288,7 +289,7 @@ export default class MNACircuit {
     // Gets the index of the specified unknown.
     const getIndex = ( unknown: UnknownCurrent | UnknownVoltage ) => {
       const index = getIndexByEquals( unknowns, unknown );
-      assert && assert( index >= 0, 'unknown was missing' );
+      affirm( index >= 0, 'unknown was missing' );
       return index;
     };
 
@@ -311,7 +312,7 @@ export default class MNACircuit {
       // Sometimes a fuzz test gives a deficient matrix rank.  It is a rare error and I haven't got one in the
       // debugger yet to understand the cause.  Catch it and provide a solution of zeroes of the correct dimension
       // See https://github.com/phetsims/circuit-construction-kit-dc/issues/113
-      x = new Matrix( A.n, 1 );
+      x = new Matrix( A.getColumnDimension(), 1 );
     }
 
     if ( phet.log ) {
@@ -325,7 +326,7 @@ export default class MNACircuit {
 
       // Guard assertion because it is expensive to compute the debug info.
       if ( assert && isNaN( rhs ) ) {
-        assert && assert( !isNaN( rhs ), `the right-hand-side-value must be a number. Instead it was ${rhs}. debug info=${getDebugInfo( this, A, z, equations, unknowns, x )}` );
+        affirm( !isNaN( rhs ), `the right-hand-side-value must be a number. Instead it was ${rhs}. debug info=${getDebugInfo( this, A, z, equations, unknowns, x )}` );
       }
 
       voltageMap.set( unknownVoltage.node, rhs );
@@ -387,7 +388,7 @@ class Term {
    */
   public constructor( coefficient: number, variable: UnknownCurrent | UnknownVoltage ) {
 
-    assert && assert( !isNaN( coefficient ), 'coefficient cannot be NaN' );
+    affirm( !isNaN( coefficient ), 'coefficient cannot be NaN' );
 
     this.coefficient = coefficient;
     this.variable = variable;
@@ -460,7 +461,7 @@ class Equation {
    */
   public constructor( value: number, terms: Term[] ) {
 
-    assert && assert( !isNaN( value ) );
+    affirm( !isNaN( value ) );
 
     // the value of the equation.  For instance in x+3y=12, the value is 12
     this.value = value;
@@ -488,7 +489,7 @@ class Equation {
     for ( let i = 0; i < this.terms.length; i++ ) {
       const term = this.terms[ i ];
       const column = getColumn( term.variable );
-      assert && assert( !isNaN( term.coefficient ), 'coefficient should be a number' );
+      affirm( !isNaN( term.coefficient ), 'coefficient should be a number' );
       a.set( row, column, term.coefficient + a.get( row, column ) );
     }
   }
@@ -514,7 +515,7 @@ const getDebugInfo = ( modifiedNodalAnalysisCircuit: MNACircuit, A: Matrix, z: M
     equations:
 ${equations.join( '\n' )}
 
-A.cond=1E${Utils.toFixed( Math.log10( conditionNumber ), 4 )} = ${Utils.toFixed( conditionNumber, 4 )}  
+A.cond=1E${toFixed( Math.log10( conditionNumber ), 4 )} = ${toFixed( conditionNumber, 4 )}  
 A=\n${A.transpose().toString()}
 z=\n${z.transpose().toString()}
 unknowns=\n${unknowns.map( u => u.toTermName() ).join( ', ' )}

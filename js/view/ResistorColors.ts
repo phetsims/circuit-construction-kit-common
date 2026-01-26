@@ -6,7 +6,8 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import Utils from '../../../dot/js/Utils.js';
+import { roundSymmetric } from '../../../dot/js/util/roundSymmetric.js';
+import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import Color from '../../../scenery/js/util/Color.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
@@ -55,7 +56,7 @@ const ResistorColors = {
    * @returns entries from the color table
    */
   getEntries: function( resistance: number ): Entry[] {
-    assert && assert( resistance >= 0, 'resistance should be non-negative' );
+    affirm( resistance >= 0, 'resistance should be non-negative' );
 
     // 0 resistance has a single black band centered on the resistor
     if ( resistance === 0 ) {
@@ -63,7 +64,7 @@ const ResistorColors = {
     }
 
     // Estimate the exponent
-    let exponent = Utils.roundSymmetric( Math.log( resistance ) / Math.log( 10 ) );
+    let exponent = roundSymmetric( Math.log( resistance ) / Math.log( 10 ) );
 
     // Divide out to normalize
     let reduced = resistance / Math.pow( 10, exponent );
@@ -79,7 +80,7 @@ const ResistorColors = {
 
     // Chop off first significant digit, then bump up >1 and take first digit
     const x = ( reduced - firstSignificantDigit ) * 10;
-    let secondSignificantDigit = Utils.roundSymmetric( x ); //round to prevent cases like resistance=4700 = x2 = 6.99999
+    let secondSignificantDigit = roundSymmetric( x ); //round to prevent cases like resistance=4700 = x2 = 6.99999
 
     // prevent rounding up from 9.5 to 10.0
     if ( secondSignificantDigit === 10 ) {
@@ -100,7 +101,7 @@ const ResistorColors = {
         break;
       }
     }
-    assert && assert( percentError < color!.tolerance!, 'no tolerance high enough to accommodate error' );
+    affirm( percentError < color!.tolerance!, 'no tolerance high enough to accommodate error' );
     return [
       getEntry( 'significantFigure', firstSignificantDigit ),
       getEntry( 'significantFigure', secondSignificantDigit ),
