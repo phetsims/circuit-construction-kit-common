@@ -12,6 +12,7 @@ import type Vector2 from '../../../dot/js/Vector2.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import AccessibleDraggableOptions from '../../../scenery-phet/js/accessibility/grab-drag/AccessibleDraggableOptions.js';
 import InteractiveHighlighting from '../../../scenery/js/accessibility/voicing/InteractiveHighlighting.js';
+import { type OneKeyStroke } from '../../../scenery/js/input/KeyDescriptor.js';
 import KeyboardListener from '../../../scenery/js/listeners/KeyboardListener.js';
 import { type PressListenerEvent } from '../../../scenery/js/listeners/PressListener.js';
 import Node, { type NodeOptions } from '../../../scenery/js/nodes/Node.js';
@@ -36,6 +37,7 @@ export default abstract class CircuitElementNode extends InteractiveHighlighting
   public readonly circuitElement: CircuitElement;
   private dirty: boolean;
   public readonly abstract dragListener: CircuitNodeDragListener | null;
+  private readonly selectionKeyboardListener: KeyboardListener<OneKeyStroke[]> | null;
 
   /**
    * @param circuitElement - the CircuitElement to be rendered
@@ -75,7 +77,7 @@ export default abstract class CircuitElementNode extends InteractiveHighlighting
     super( providedOptions );
 
     if ( selectionProperty ) {
-      this.addInputListener( new KeyboardListener( {
+      this.selectionKeyboardListener = new KeyboardListener( {
         keys: [ 'space', 'enter' ], // cannot use fireOnClick since this is also draggable
         press: () => {
           circuitElement.hasBeenKeyboardActivated = true;
@@ -87,7 +89,11 @@ export default abstract class CircuitElementNode extends InteractiveHighlighting
             selectionProperty.value = this.circuitElement;
           }
         }
-      } ) );
+      } );
+      this.addInputListener( this.selectionKeyboardListener );
+    }
+    else {
+      this.selectionKeyboardListener = null;
     }
 
     this.useHitTestForSensors = !!providedOptions.useHitTestForSensors;
@@ -120,6 +126,12 @@ export default abstract class CircuitElementNode extends InteractiveHighlighting
     // Flag to indicate when updating view is necessary, in order to avoid duplicate work when both vertices move
     this.dirty = true;
     this.disposeEmitter.addListener( () => circuitElement.startDragEmitter.removeListener( startDragListener ) );
+    this.disposeEmitter.addListener( () => {
+      if ( this.selectionKeyboardListener ) {
+        this.removeInputListener( this.selectionKeyboardListener );
+        this.selectionKeyboardListener.dispose();
+      }
+    } );
 
     // The LightBulbSocketNode is a full-blown FixedCircuitElementNode, but it is not pickable, so it should not be focusable.
     // Instead, the CCKCLightBulbNode handles focus for that circuitElement

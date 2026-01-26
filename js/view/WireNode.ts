@@ -170,6 +170,7 @@ export default class WireNode extends CircuitElementNode {
   private readonly focusHighlightPath: Path | null;
   private readonly interactiveHighlightPath: HighlightPath | null;
   public readonly dragListener: CircuitNodeDragListener | null;
+  private readonly wireKeyboardListener: WireKeyboardListener | null;
   private readonly disposeWireNode: () => void;
 
   /**
@@ -286,7 +287,8 @@ export default class WireNode extends CircuitElementNode {
       this.dragListener = new WireDragListener( this, circuitNode, screenView, tandem.createTandem( 'dragListener' ) );
       this.addInputListener( this.dragListener );
 
-      this.addInputListener( new WireKeyboardListener( this, circuitNode, screenView, Tandem.OPT_OUT ) );
+      this.wireKeyboardListener = new WireKeyboardListener( this, circuitNode, screenView, Tandem.OPT_OUT );
+      this.addInputListener( this.wireKeyboardListener );
 
       circuitNode.circuit.selectionProperty.link( markAsDirty );
       this.focusHighlight = focusHighlightPath;
@@ -294,6 +296,7 @@ export default class WireNode extends CircuitElementNode {
     }
     else {
       this.dragListener = null;
+      this.wireKeyboardListener = null;
     }
 
     /**
@@ -314,6 +317,11 @@ export default class WireNode extends CircuitElementNode {
       affirm( this.dragListener );
       this.dragListener.interrupt();
       this.dragListener.dispose();
+
+      if ( this.wireKeyboardListener ) {
+        this.removeInputListener( this.wireKeyboardListener );
+        this.wireKeyboardListener.dispose();
+      }
 
       wire.startVertexProperty.unlink( doUpdateTransform );
       wire.endVertexProperty.unlink( doUpdateTransform );
