@@ -113,6 +113,14 @@ export default class AttachmentKeyboardListener<T> extends KeyboardListener<OneK
         // We must make the button non-focusable, otherwise when a selection is locked in, we will trigger a re-entrant focus property issue. See https://github.com/phetsims/circuit-construction-kit-common/issues/1078
         comboBox.button.focusable = false;
 
+        // ComboBoxes are disposed on the next animation frame and multiple calls to dispose may be
+        // queued up. This makes sure that we only try to dispose once.
+        const cleanComboBoxDispose = () => {
+          if ( !comboBox.isDisposed ) {
+            comboBox.dispose();
+          }
+        };
+
         let cancelled = false;
 
         comboBox.listBox.visibleProperty.lazyLink( visible => {
@@ -131,7 +139,7 @@ export default class AttachmentKeyboardListener<T> extends KeyboardListener<OneK
             options.onSelectionApplied?.( selectionProperty.value );
 
             animationFrameTimer.runOnNextTick( () => {
-              comboBox.dispose();
+              cleanComboBoxDispose();
               options.triggerNode.focus();
             } );
           }
@@ -162,7 +170,7 @@ export default class AttachmentKeyboardListener<T> extends KeyboardListener<OneK
           options.onCancel?.();
 
           animationFrameTimer.runOnNextTick( () => {
-            comboBox.dispose();
+            cleanComboBoxDispose();
             options.triggerNode.focus();
           } );
 
@@ -176,7 +184,7 @@ export default class AttachmentKeyboardListener<T> extends KeyboardListener<OneK
             options.circuitNode.hideAttachmentHighlight();
 
             animationFrameTimer.runOnNextTick( () => {
-              comboBox.dispose();
+              cleanComboBoxDispose();
             } );
           };
           options.targetDisposeEmitter.addListener( disposeListener );
