@@ -1,4 +1,4 @@
-// Copyright 2016-2025, University of Colorado Boulder
+// Copyright 2016-2026, University of Colorado Boulder
 
 /**
  * A Vertex indicates the end of one or more CircuitElements, or an open connection for the Black Box.
