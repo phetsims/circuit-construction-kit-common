@@ -40,7 +40,7 @@ const CAP_WIDTH = 15; // horizontal size of each cap in the image
 const SPLIT_DY = 13; // in view coordinates, amplitude of the zig-zag pattern when the fuse is tripped
 const SPLIT_DX = 8; // in view coordinates, half the distance of the split part of the fuse when tripped
 const VERTICAL_GLASS_MARGIN = 3;
-const DEFAULT_GLASS_FILL = '#c3dbfd';
+const DEFAULT_GLASS_FILL = '#ffffff';
 
 type SelfOptions = EmptySelfOptions;
 type FuseNodeOptions = SelfOptions & FixedCircuitElementNodeOptions;
@@ -184,7 +184,7 @@ export default class FuseNode extends FixedCircuitElementNode {
       if ( isTripped && !isSettingPhetioStateProperty.value ) {
         circuitNode!.addChild( new FuseTripAnimation( { center: this.center } ) );
       }
-      glassNode.fill = isTripped ? '#4e4e4e' : DEFAULT_GLASS_FILL;
+      glassNode.fill = isTripped ? '#1c1c1c' : DEFAULT_GLASS_FILL;
       filamentPath.shape = isTripped ? brokenFilamentShape : filamentShape;
     };
     if ( !options.isIcon ) {
