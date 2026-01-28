@@ -1,4 +1,4 @@
-// Copyright 2016-2025, University of Colorado Boulder
+// Copyright 2016-2026, University of Colorado Boulder
 
 /**
  * Query parameters supported by this simulation.
@@ -159,8 +159,10 @@ const CCKCQueryParameters = QueryStringMachine.getAll( {
     defaultValue: true
   },
 
-  codap: {
-    type: 'flag'
+  solver: {
+    type: 'string',
+    defaultValue: 'phet',
+    validValues: [ 'spice', 'phet' ]
   }
 } );
 

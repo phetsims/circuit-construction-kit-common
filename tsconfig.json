@@ -4,7 +4,9 @@
     "js/**/*",
     "images/**/*",
     "mipmaps/**/*",
-    "sounds/**/*"
+    "sounds/**/*",
+    "../sherpa/lib/ngspice-wasm-2025.js",
+    "../sherpa/lib/ngspice-emscripten-glue-2025.js"
   ],
   "references": [
     {
@@ -12,6 +14,9 @@
     },
     {
       "path": "../griddle/tsconfig.json"
+    },
+    {
+      "path": "../sherpa/tsconfig.json"
     },
     {
       "path": "../perennial-alias/tsconfig/buildjson/tsconfig.json"
