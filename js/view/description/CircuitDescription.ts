@@ -15,7 +15,7 @@ import Node from '../../../../scenery/js/nodes/Node.js';
 import CCKCQueryParameters from '../../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../../CircuitConstructionKitCommonFluent.js';
-import CircuitDescriptionUtils from '../../CircuitDescriptionUtils.js';
+import CircuitDescriptionUtils from './CircuitDescriptionUtils.js';
 import Capacitor from '../../model/Capacitor.js';
 import Circuit from '../../model/Circuit.js';
 import CircuitElement from '../../model/CircuitElement.js';

@@ -24,7 +24,7 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
-import CircuitDescriptionUtils from '../CircuitDescriptionUtils.js';
+import CircuitDescriptionUtils from './description/CircuitDescriptionUtils.js';
 import ACVoltage from '../model/ACVoltage.js';
 import Battery from '../model/Battery.js';
 import Capacitor from '../model/Capacitor.js';

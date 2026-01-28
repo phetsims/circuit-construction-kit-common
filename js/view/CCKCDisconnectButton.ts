@@ -18,7 +18,7 @@ import type Tandem from '../../../tandem/js/Tandem.js';
 import cut_mp3 from '../../sounds/cut_mp3.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
-import CircuitDescriptionUtils from '../CircuitDescriptionUtils.js';
+import CircuitDescriptionUtils from './description/CircuitDescriptionUtils.js';
 import CircuitElement from '../model/CircuitElement.js';
 import CCKCRoundPushButton from './CCKCRoundPushButton.js';
 import type CircuitNode from './CircuitNode.js';

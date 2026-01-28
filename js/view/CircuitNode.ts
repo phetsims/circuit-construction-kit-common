@@ -39,7 +39,7 @@ import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
-import CircuitDescriptionUtils from '../CircuitDescriptionUtils.js';
+import CircuitDescriptionUtils from './description/CircuitDescriptionUtils.js';
 import ACVoltage from '../model/ACVoltage.js';
 import AmmeterConnection from '../model/AmmeterConnection.js';
 import Battery from '../model/Battery.js';

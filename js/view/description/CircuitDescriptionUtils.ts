@@ -6,16 +6,16 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import circuitConstructionKitCommon from './circuitConstructionKitCommon.js';
-import CircuitConstructionKitCommonFluent from './CircuitConstructionKitCommonFluent.js';
-import Battery from './model/Battery.js';
-import type Circuit from './model/Circuit.js';
-import CircuitElement from './model/CircuitElement.js';
-import type CircuitElementType from './model/CircuitElementType.js';
-import LightBulb from './model/LightBulb.js';
-import Resistor from './model/Resistor.js';
-import ResistorType from './model/ResistorType.js';
-import Vertex from './model/Vertex.js';
+import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
+import CircuitConstructionKitCommonFluent from '../../CircuitConstructionKitCommonFluent.js';
+import Battery from '../../model/Battery.js';
+import type Circuit from '../../model/Circuit.js';
+import CircuitElement from '../../model/CircuitElement.js';
+import type CircuitElementType from '../../model/CircuitElementType.js';
+import LightBulb from '../../model/LightBulb.js';
+import Resistor from '../../model/Resistor.js';
+import ResistorType from '../../model/ResistorType.js';
+import Vertex from '../../model/Vertex.js';
 
 // Household item ResistorTypes that have a max of 1 in the circuit
 const HOUSEHOLD_RESISTOR_TYPES = [

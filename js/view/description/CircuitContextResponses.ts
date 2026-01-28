@@ -10,7 +10,7 @@
 
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../../CircuitConstructionKitCommonFluent.js';
-import CircuitDescriptionUtils from '../../CircuitDescriptionUtils.js';
+import CircuitDescriptionUtils from './CircuitDescriptionUtils.js';
 import type Circuit from '../../model/Circuit.js';
 import CircuitElement from '../../model/CircuitElement.js';
 import CircuitElementViewType from '../../model/CircuitElementViewType.js';
