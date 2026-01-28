@@ -20,6 +20,8 @@ import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import PhetioObject, { type PhetioObjectOptions } from '../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import IOType from '../../../tandem/js/types/IOType.js';
+import NullableIO from '../../../tandem/js/types/NullableIO.js';
+import NumberIO from '../../../tandem/js/types/NumberIO.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import type CircuitElement from './CircuitElement.js';
 
@@ -88,15 +90,25 @@ export default class Vertex extends PhetioObject {
   public readonly isCuttableProperty: BooleanProperty;
   public readonly labelStringProperty: StringProperty;
 
+  // Track when this vertex became part of a multi-element group (for group ordering by connection order)
+  public groupFormationTime: number | null = null;
+
   // Complete description for accessibility when compressed form is used (4+ connections)
   public completeDescription: string | null = null;
 
   public static readonly VertexIO = new IOType<Vertex, VertexState>( 'VertexIO', {
     valueType: Vertex,
-    toStateObject: ( vertex: Vertex ) => ( { position: Vector2.Vector2IO.toStateObject( vertex.positionProperty.value ) } ),
+    toStateObject: ( vertex: Vertex ) => ( {
+      position: Vector2.Vector2IO.toStateObject( vertex.positionProperty.value ),
+      groupFormationTime: vertex.groupFormationTime
+    } ),
     stateObjectToCreateElementArguments: ( stateObject: VertexState ) => [ Vector2.Vector2IO.fromStateObject( stateObject.position ) ],
+    applyState: ( vertex: Vertex, stateObject: VertexState ) => {
+      vertex.groupFormationTime = stateObject.groupFormationTime;
+    },
     stateSchema: {
-      position: Vector2.Vector2IO
+      position: Vector2.Vector2IO,
+      groupFormationTime: NullableIO( NumberIO )
     }
   } );
   public readonly selectionProperty: TProperty<Vertex | CircuitElement | null>;
@@ -209,6 +221,7 @@ export default class Vertex extends PhetioObject {
 
 type VertexState = {
   position: Vector2;
+  groupFormationTime: number | null;
 };
 
 circuitConstructionKitCommon.register( 'Vertex', Vertex );

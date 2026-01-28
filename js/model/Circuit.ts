@@ -141,6 +141,9 @@ export default class Circuit extends PhetioObject {
   // whether physical characteristics have changed and warrant solving for currents and voltages
   public dirty: boolean;
 
+  // Counter for tracking when groups are formed (for ordering groups by connection order)
+  private groupFormationCounter = 0;
+
   // Actions that will be invoked during the step function
   private readonly stepActions: ( () => void )[];
   public readonly wireGroup: PhetioGroup<Wire, [ Vertex, Vertex ]>;
@@ -377,6 +380,11 @@ export default class Circuit extends PhetioObject {
       if ( this.disconnecting === 0 ) {
 
         this.selectionProperty.value = null;
+      }
+
+      // When restoring PhET-iO state, update the counter to avoid collisions with restored formation times
+      if ( vertex.groupFormationTime !== null && vertex.groupFormationTime >= this.groupFormationCounter ) {
+        this.groupFormationCounter = vertex.groupFormationTime;
       }
     } );
 
@@ -726,6 +734,7 @@ export default class Circuit extends PhetioObject {
 
     this.selectionProperty.reset();
     this.circuitElementsInPDOMOrder.length = 0;
+    this.groupFormationCounter = 0;
 
     // Vertices must be cleared from the black box screen--it's not handled by clearing the circuit elements
     if ( this.blackBoxStudy ) {
@@ -836,6 +845,11 @@ export default class Circuit extends PhetioObject {
 
       // Bump the vertices away from the original vertex
       this.translateVertexGroup( newVertex, results[ i ] );
+    } );
+
+    // Clear formation time for newly disconnected single-element vertices
+    newVertices.forEach( newVertex => {
+      newVertex.groupFormationTime = null;
     } );
 
     // Emit before disposing the vertex so listeners can use vertex information
@@ -1025,6 +1039,25 @@ export default class Circuit extends PhetioObject {
 
       this.vertexConnectedEmitter.emit( targetVertex, oldVertex, oldVertexElements );
 
+      // Assign formation time if this creates/joins a multi-element group
+      const connectedVertices = this.findAllConnectedVertices( targetVertex );
+      if ( connectedVertices.length > 1 ) {
+        // Check if any vertex in the connected group already has a formation time
+        const existingTimes = connectedVertices
+          .map( v => v.groupFormationTime )
+          .filter( t => t !== null );
+
+        if ( existingTimes.length === 0 ) {
+          // New multi-element group formed - assign new formation time
+          const formationTime = ++this.groupFormationCounter;
+          connectedVertices.forEach( v => { v.groupFormationTime = formationTime; } );
+        }
+        else {
+          // Joining existing group(s) - use oldest formation time
+          const oldestTime = Math.min( ...existingTimes );
+          connectedVertices.forEach( v => { v.groupFormationTime = oldestTime; } );
+        }
+      }
     }
   }
 
@@ -1210,7 +1243,34 @@ export default class Circuit extends PhetioObject {
         }
       } );
     }
+
+    // Sort groups by formation time (single-element groups with null time come first)
+    groups.sort( ( a, b ) => {
+      const aTime = this.getGroupFormationTime( a );
+      const bTime = this.getGroupFormationTime( b );
+
+      if ( aTime === null && bTime === null ) { return 0; }
+      if ( aTime === null ) { return -1; }
+      if ( bTime === null ) { return 1; }
+
+      return aTime - bTime;
+    } );
+
     return groups;
+  }
+
+  /**
+   * Get the formation time of a group based on its vertices.
+   * Single-element groups return null (they aren't "formed" as multi-element groups).
+   */
+  private getGroupFormationTime( group: CircuitGroup ): number | null {
+    if ( group.circuitElements.length === 1 ) {
+      return null;
+    }
+    const times = group.vertices
+      .map( v => v.groupFormationTime )
+      .filter( t => t !== null );
+    return times.length > 0 ? Math.min( ...times ) : null;
   }
 
   // Identify current senses for CurrentSense.UNSPECIFIED CircuitElements with a nonzero current
