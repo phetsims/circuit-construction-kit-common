@@ -41,7 +41,7 @@ const CIRCLE_OPTIONS = {
 };
 const RED_CIRCLE_NODE = new Node( {
   children: [ new Circle( VERTEX_RADIUS, combineOptions<CircleOptions>( {
-    stroke: Color.RED
+    stroke: '#D10000'
   }, CIRCLE_OPTIONS ) ) ]
 } );
 const BLACK_CIRCLE_NODE = new Node( {

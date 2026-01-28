@@ -215,7 +215,7 @@ export default class CircuitNode extends Node {
 
     this.highlightLayer = new Node();
     this.attachmentHighlightNode = new Circle( 30, {
-      stroke: 'red',
+      stroke: '#D10000',
       lineWidth: 2.5,
       pickable: false,
       visible: false
