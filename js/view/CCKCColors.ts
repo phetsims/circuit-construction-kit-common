@@ -36,7 +36,7 @@ const CCKCColors = {
 
   // Color for selected objects (CircuitElement and Vertex)
   highlightStrokeProperty: new ProfileColorProperty( circuitConstructionKitCommon, 'highlightStroke', {
-    default: 'black'
+    default: '#000070'
   } ),
 
   editPanelFillProperty: new ProfileColorProperty( circuitConstructionKitCommon, 'editPanelFill', {
