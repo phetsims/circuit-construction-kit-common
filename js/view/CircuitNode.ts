@@ -676,7 +676,6 @@ export default class CircuitNode extends Node {
       if ( !isResettingAllProperty.value && !isSettingPhetioStateProperty.value ) {
         circuitContextResponses.captureState();
         const groupIndex = CircuitDescriptionUtils.getGroupIndex( circuit, circuitElement );
-        console.log( 'prepareForDisconnection: groupIndex =', groupIndex );
         pendingDisconnectButton = { groupIndex: groupIndex };
       }
     };
