@@ -45,13 +45,6 @@ export default class CircuitContextResponses {
   }
 
   /**
-   * Clear the captured state after processing.
-   */
-  public clearState(): void {
-    this.previousGroupStates = null;
-  }
-
-  /**
    * Get current state for all groups.
    */
   private getCurrentGroupStates(): Map<number, GroupState> {
@@ -785,22 +778,10 @@ export default class CircuitContextResponses {
   /**
    * Create a response for when vertices are disconnected (split).
    * @param disconnectedElements - The circuit elements that were connected to the split vertex
-   * @param splitVertex - The vertex that was split
    */
-  public createDisconnectionResponse( disconnectedElements: CircuitElement[], splitVertex: Vertex ): string | null {
+  public createDisconnectionResponse( disconnectedElements: CircuitElement[] ): string | null {
     if ( disconnectedElements.length === 0 ) {
       return null;
-    }
-
-    // Build descriptions for each disconnected element
-    const elementDescriptions: string[] = [];
-    for ( const element of disconnectedElements ) {
-      const position = CircuitDescriptionUtils.getElementPosition( this.circuit, element );
-      const briefName = CircuitDescriptionUtils.formatCircuitElementBriefName( element, position );
-
-      // Determine which terminal was at the split vertex
-      const terminalDescription = CircuitDescriptionUtils.formatTerminalDescription( splitVertex, element, briefName );
-      elementDescriptions.push( terminalDescription );
     }
 
     // Check if any of the disconnected elements were in a multi-element group

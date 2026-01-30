@@ -14,11 +14,10 @@ import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js'
 import CircuitConstructionKitCommonFluent from '../../CircuitConstructionKitCommonFluent.js';
 import CircuitConstructionKitModel from '../../model/CircuitConstructionKitModel.js';
 import CircuitElementViewType from '../../model/CircuitElementViewType.js';
-import CCKCScreenView from '../CCKCScreenView.js';
 
 export default class CCKCScreenSummaryContent extends ScreenSummaryContent {
 
-  public constructor( model: CircuitConstructionKitModel, screenView: CCKCScreenView ) {
+  public constructor( model: CircuitConstructionKitModel ) {
 
     const circuit = model.circuit;
 

@@ -50,9 +50,7 @@ export default class CircuitDescription {
   public static getCircuitElementTypeLabel = CircuitDescriptionUtils.getCircuitElementTypeLabel;
   public static getPluralTypeLabel = CircuitDescriptionUtils.getPluralTypeLabel;
   public static formatCircuitElementBriefName = CircuitDescriptionUtils.formatCircuitElementBriefName;
-  public static getElementPosition = CircuitDescriptionUtils.getElementPosition;
   public static getGroupIndex = CircuitDescriptionUtils.getGroupIndex;
-  public static getTerminalType = CircuitDescriptionUtils.getTerminalType;
   public static formatTerminalDescription = CircuitDescriptionUtils.formatTerminalDescription;
 
   /**
@@ -284,7 +282,9 @@ export default class CircuitDescription {
       // Build the accessible name using composable parts
       const showValuesProperty = circuitNode.model.showValuesProperty;
       const isSchematic = circuitNode.model.viewTypeProperty.value === CircuitElementViewType.SCHEMATIC;
-      const accessibleName = CircuitDescription.buildAccessibleName(
+
+      // Add group suffix ONLY to first element in group (to reduce verbosity)
+      let accessibleNameWithGroup = CircuitDescription.buildAccessibleName(
         circuitElement,
         showValuesProperty.value,
         indexForType,
@@ -292,9 +292,6 @@ export default class CircuitDescription {
         shouldShowPosition,
         isSchematic
       );
-
-      // Add group suffix ONLY to first element in group (to reduce verbosity)
-      let accessibleNameWithGroup = accessibleName;
       if ( groupIndex !== undefined && elementIndex === 0 ) {
         accessibleNameWithGroup += CircuitConstructionKitCommonFluent.a11y.circuitDescription.groupSuffixFirst.format( { groupIndex: groupIndex } );
       }

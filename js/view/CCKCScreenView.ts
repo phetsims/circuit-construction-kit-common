@@ -613,7 +613,7 @@ export default class CCKCScreenView extends ScreenView {
     ];
 
     this.showAdvancedControls = options.showAdvancedControls;
-    this.screenSummaryContent = new CCKCScreenSummaryContent( model, this );
+    this.screenSummaryContent = new CCKCScreenSummaryContent( model );
 
     KeyboardListener.createGlobal( this, {
       keyStringProperties: CCKCScreenView.FOCUS_TOOLBOX_HOTKEY_DATA.keyStringProperties,

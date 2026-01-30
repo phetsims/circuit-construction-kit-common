@@ -39,7 +39,6 @@ import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
-import CircuitDescriptionUtils from './description/CircuitDescriptionUtils.js';
 import ACVoltage from '../model/ACVoltage.js';
 import AmmeterConnection from '../model/AmmeterConnection.js';
 import Battery from '../model/Battery.js';
@@ -76,6 +75,7 @@ import CutButton from './CutButton.js';
 import DeleteCueNode from './DeleteCueNode.js';
 import CircuitContextResponses from './description/CircuitContextResponses.js';
 import CircuitDescription from './description/CircuitDescription.js';
+import CircuitDescriptionUtils from './description/CircuitDescriptionUtils.js';
 import FuseNode from './FuseNode.js';
 import InductorNode from './InductorNode.js';
 import ResistorNode from './ResistorNode.js';
@@ -721,10 +721,7 @@ export default class CircuitNode extends Node {
       }
 
       if ( pendingDisconnection && !isResettingAllProperty.value && !isSettingPhetioStateProperty.value ) {
-        const response = circuitContextResponses.createDisconnectionResponse(
-          pendingDisconnection.elements,
-          pendingDisconnection.splitVertex
-        );
+        const response = circuitContextResponses.createDisconnectionResponse( pendingDisconnection.elements );
         if ( response ) {
           this.addAccessibleContextResponse( response );
         }
