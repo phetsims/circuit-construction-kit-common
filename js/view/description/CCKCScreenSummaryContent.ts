@@ -1,4 +1,4 @@
-// Copyright 2025, University of Colorado Boulder
+// Copyright 2025-2026, University of Colorado Boulder
 
 /**
  * CCKCScreenSummaryContent describes the play and control areas, current state, and interaction hint for every
