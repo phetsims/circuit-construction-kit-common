@@ -113,6 +113,9 @@ export default class AttachmentKeyboardListener<T> extends KeyboardListener<OneK
         // We must make the button non-focusable, otherwise when a selection is locked in, we will trigger a re-entrant focus property issue. See https://github.com/phetsims/circuit-construction-kit-common/issues/1078
         comboBox.button.focusable = false;
 
+        // Clear out the ariaLabelledby associations, since they cause duplicate reading of the 1st item, once as list and again as item, see https://github.com/phetsims/circuit-construction-kit-dc/issues/232
+        comboBox.listBox.ariaLabelledbyAssociations = [];
+
         // ComboBoxes are disposed on the next animation frame and multiple calls to dispose may be
         // queued up. This makes sure that we only try to dispose once.
         const cleanComboBoxDispose = () => {
