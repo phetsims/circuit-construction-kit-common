@@ -110,7 +110,7 @@ keyboardHelpDialog:
 
 a11y:
   keyboardHelpDialog:
-    cancelWithEscape: Cancel with Escape key.
+    cancelWithEscape: Cancel
   circuitDescription:
 
     # These labels are intentionally separate from the top-level visual strings because:

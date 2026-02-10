@@ -288,7 +288,7 @@
   "a11y": {
     "keyboardHelpDialog": {
       "cancelWithEscape": {
-        "value": "Cancel with Escape key."
+        "value": "Cancel"
       }
     },
     "circuitDescription": {

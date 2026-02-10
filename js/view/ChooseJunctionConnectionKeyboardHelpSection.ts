@@ -8,11 +8,13 @@
  */
 
 import PatternStringProperty from '../../../axon/js/PatternStringProperty.js';
-import KeyboardHelpIconFactory from '../../../scenery-phet/js/keyboard/help/KeyboardHelpIconFactory.js';
+import { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
+import HotkeyDescriptionBuilder from '../../../scenery-phet/js/keyboard/help/HotkeyDescriptionBuilder.js';
 import KeyboardHelpSection from '../../../scenery-phet/js/keyboard/help/KeyboardHelpSection.js';
 import KeyboardHelpSectionRow from '../../../scenery-phet/js/keyboard/help/KeyboardHelpSectionRow.js';
-import TextKeyNode from '../../../scenery-phet/js/keyboard/TextKeyNode.js';
 import SceneryPhetFluent from '../../../scenery-phet/js/SceneryPhetFluent.js';
+import HotkeyData from '../../../scenery/js/input/HotkeyData.js';
+import { OneKeyStroke } from '../../../scenery/js/input/KeyDescriptor.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
@@ -33,40 +35,54 @@ export default class ChooseJunctionConnectionKeyboardHelpSection extends Keyboar
         }, { tandem: Tandem.OPT_OUT } );
     };
 
-    const spaceKeyNode = TextKeyNode.space();
-    const enterKeyNode = TextKeyNode.enter();
-    const spaceOrEnterIcon = KeyboardHelpIconFactory.iconOrIcon( spaceKeyNode, enterKeyNode );
+    // Creates content for a row of help content for this section. The content uses HotkeyData, but
+    // it is more complicated than usual. The visual label uses one string that includes a number
+    // to indicate the order of steps. But the accessible label should not include that number because
+    // it is implicit in the accessible markup ('ol'). The icons and accessible labels are still
+    // created using HotkeyData.
+    const createSectionRow = (
+      keys: OneKeyStroke[],
+      visualLabelStringProperty: TReadOnlyProperty<string>,
+      accessibleLabelStringProperty: TReadOnlyProperty<string>
+    ) => {
 
-    const popUpList = KeyboardHelpSectionRow.labelWithIcon(
+      const hotkeyData = new HotkeyData( {
+        keys: keys,
+        repoName: circuitConstructionKitCommon.name,
+        keyboardHelpDialogLabelStringProperty: visualLabelStringProperty
+      } );
+
+      return KeyboardHelpSectionRow.fromHotkeyData( hotkeyData, {
+        pdomLabelStringProperty: HotkeyDescriptionBuilder.createDescriptionProperty(
+          accessibleLabelStringProperty,
+          hotkeyData.keyDescriptorsProperty
+        )
+      } );
+    };
+
+    const popUpList = createSectionRow(
+      [ 'space', 'enter' ],
       createPatternStringProperty( SceneryPhetFluent.keyboardHelpDialog.comboBox.popUpListPatternStringProperty ),
-      spaceOrEnterIcon, {
-        labelInnerContent: new PatternStringProperty( SceneryPhetFluent.a11y.keyboardHelpDialog.comboBox.popUpListPatternDescriptionStringProperty, {
-          thingPlural: thingAsLowerCasePluralStringProperty,
-          enterOrReturn: TextKeyNode.getEnterKeyString()
-        } )
-      } );
+      createPatternStringProperty( SceneryPhetFluent.a11y.keyboardHelpDialog.comboBox.popUpListPatternStringProperty )
+    );
 
-    const moveThrough = KeyboardHelpSectionRow.labelWithIcon(
+    const moveThrough = createSectionRow(
+      [ 'arrowUp', 'arrowDown' ],
       createPatternStringProperty( SceneryPhetFluent.keyboardHelpDialog.comboBox.moveThroughPatternStringProperty ),
-      KeyboardHelpIconFactory.upDownArrowKeysRowIcon(), {
-        labelInnerContent: createPatternStringProperty( SceneryPhetFluent.a11y.keyboardHelpDialog.comboBox.moveThroughPatternDescriptionStringProperty )
-      } );
+      createPatternStringProperty( SceneryPhetFluent.a11y.keyboardHelpDialog.comboBox.moveThroughPatternStringProperty )
+    );
 
-    const chooseNew = KeyboardHelpSectionRow.labelWithIcon(
+    const chooseNew = createSectionRow(
+      [ 'enter' ],
       createPatternStringProperty( SceneryPhetFluent.keyboardHelpDialog.comboBox.chooseNewPatternStringProperty ),
-      enterKeyNode, {
-        labelInnerContent: new PatternStringProperty( SceneryPhetFluent.a11y.keyboardHelpDialog.comboBox.chooseNewPatternDescriptionStringProperty, {
-          thingSingular: thingAsLowerCaseSingularStringProperty,
-          enterOrReturn: TextKeyNode.getEnterKeyString()
-        } )
-      } );
+      createPatternStringProperty( SceneryPhetFluent.a11y.keyboardHelpDialog.comboBox.chooseNewPatternStringProperty )
+    );
 
-    const escapeKeyNode = TextKeyNode.esc();
-    const cancelConnection = KeyboardHelpSectionRow.labelWithIcon(
+    const cancelConnection = createSectionRow(
+      [ 'escape' ],
       CircuitConstructionKitCommonFluent.keyboardHelpDialog.chooseConnection.cancelConnectionStringProperty,
-      escapeKeyNode, {
-        labelInnerContent: CircuitConstructionKitCommonFluent.a11y.keyboardHelpDialog.cancelWithEscapeStringProperty
-      } );
+      CircuitConstructionKitCommonFluent.a11y.keyboardHelpDialog.cancelWithEscapeStringProperty
+    );
 
     const rows = [ popUpList, moveThrough, chooseNew, cancelConnection ];
 
