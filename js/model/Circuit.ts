@@ -91,6 +91,8 @@ type CircuitOptions = {
 type Pair = { v1: Vertex; v2: Vertex };
 
 export default class Circuit extends PhetioObject {
+
+  //REVIEW: Add docs for these properties similar to other fields below
   public readonly viewTypeProperty: Property<CircuitElementViewType>;
   public readonly addRealBulbsProperty: Property<boolean>;
   private readonly blackBoxStudy: boolean;
@@ -758,7 +760,7 @@ export default class Circuit extends PhetioObject {
 
   /**
    * Split the Vertex into separate vertices.
-   * @param vertex - the vertex to be cut.
+   * @param vertex - the vertex to be cut
    */
   public cutVertex( vertex: Vertex ): Vertex[] {
 
@@ -775,7 +777,6 @@ export default class Circuit extends PhetioObject {
 
     // Only move interactive circuit elements
     neighborCircuitElements = neighborCircuitElements.filter( circuitElement => circuitElement.interactiveProperty.get() );
-
 
     /**
      * Function that identifies where vertices would go if pulled toward their neighbors
@@ -1105,6 +1106,7 @@ export default class Circuit extends PhetioObject {
     this.updateSeriesAmmeterReadouts();
 
     // Update whether current is flowing in any circuit element
+    //REVIEW: My (jbphet's) IDE is flagging this const as redundant.
     const hasCurrentFlowing = this.circuitElements.some(
       element => Math.abs( element.currentProperty.value ) > 1e-10
     );
@@ -1554,6 +1556,7 @@ export default class Circuit extends PhetioObject {
     }
   }
 
+  //REVIEW: This header comment doesn't seem quite right based on what the code does.
   /**
    * If anything is keyboard dragging, connectivity is disabled.
    */

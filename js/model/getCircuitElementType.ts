@@ -13,6 +13,8 @@ import type CircuitElementType from './CircuitElementType.js';
  * Returns the CircuitElementType for a given CircuitElement instance.
  */
 const getCircuitElementType = ( circuitElement: CircuitElement | null ): CircuitElementType => {
+
+  //REVIEW: Why does a parameter of 'null' return null?  Seems odd, so should be documented.
   return circuitElement ? circuitElement.type : 'wire';
 };
 
