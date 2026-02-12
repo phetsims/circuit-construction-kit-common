@@ -68,11 +68,14 @@ export default class CircuitDescription {
     const separator = CircuitConstructionKitCommonFluent.a11y.circuitComponent.separatorStringProperty.value;
     const parts: string[] = [];
 
+    //REVIEW: This comment omits the 'total' part.
     // 1. Type name + position (e.g., "Battery 1 of 2") or just type name
     const descriptionType = CircuitDescription.getDescriptionType( circuitElement );
     const typeName = CircuitDescription.getCircuitElementTypeLabel( descriptionType );
     if ( shouldShowPosition ) {
-      parts.push( CircuitConstructionKitCommonFluent.a11y.circuitComponent.nameWithPosition.format( { typeName: typeName, position: position, total: total } ) );
+      parts.push( CircuitConstructionKitCommonFluent.a11y.circuitComponent.nameWithPosition.format(
+        { typeName: typeName, position: position, total: total }
+      ) );
     }
     else {
       parts.push( typeName );
@@ -126,14 +129,17 @@ export default class CircuitDescription {
     // Switch always shows state (regardless of showValues)
     if ( circuitElement instanceof Switch ) {
       const state = circuitElement.isClosedProperty.value ? 'closed' : 'open';
-      parts.push( state === 'closed' ? CircuitConstructionKitCommonFluent.a11y.circuitComponent.switchStates.closedStringProperty.value : CircuitConstructionKitCommonFluent.a11y.circuitComponent.switchStates.openStringProperty.value );
+      parts.push( state === 'closed' ? CircuitConstructionKitCommonFluent.a11y.circuitComponent.switchStates.closedStringProperty.value
+                                     : CircuitConstructionKitCommonFluent.a11y.circuitComponent.switchStates.openStringProperty.value );
     }
 
     // 4. Internal resistance (voltage sources only, if above threshold)
     if ( showValues && circuitElement instanceof VoltageSource ) {
       const internalResistance = circuitElement.internalResistanceProperty.value;
       if ( internalResistance > CCKCQueryParameters.batteryMinimumResistance ) {
-        parts.push( CircuitConstructionKitCommonFluent.a11y.circuitComponent.values.resistanceOhms.format( { resistance: internalResistance } ) );
+        parts.push( CircuitConstructionKitCommonFluent.a11y.circuitComponent.values.resistanceOhms.format(
+          { resistance: internalResistance }
+        ) );
       }
     }
 
@@ -562,8 +568,8 @@ export default class CircuitDescription {
         // Only add group suffix to LAST vertex
         const isLastVertex = vertexIndex === lastVertexIndex;
         circuitNode.getVertexNode( vertex ).accessibleName = isLastVertex
-          ? accessibleNameDescription + groupSuffix
-          : accessibleNameDescription;
+                                                             ? accessibleNameDescription + groupSuffix
+                                                             : accessibleNameDescription;
         const vertexNode = circuitNode.getVertexNode( vertex );
         vertexNode.attachmentName = CircuitConstructionKitCommonFluent.a11y.circuitDescription.groupWithConnection.format( {
           groupIndex: groupIndex + 1,

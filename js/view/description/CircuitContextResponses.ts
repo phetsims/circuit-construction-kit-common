@@ -149,6 +149,7 @@ export default class CircuitContextResponses {
   private analyzeCurrentChange(
     oldCurrents: number[],
     newCurrents: number[]
+    //REVIEW: This is quite an elaborate composite type definition.  Consider defining a type and subtypes for easier maintenance.
   ): { hasChange: boolean; scope: 'some' | 'all'; direction: 'increased' | 'decreased' | 'changed' | 'stopped' | 'reversed' | 'started' } {
 
     // Count how many elements had current changes
@@ -232,6 +233,7 @@ export default class CircuitContextResponses {
   private analyzeBrightnessChange(
     oldValues: number[],
     newValues: number[]
+    //REVIEW: This is quite an elaborate composite type definition.  Consider defining a type and subtypes for easier maintenance.
   ): { hasChange: boolean; scope: 'some' | 'all'; direction: 'brighter' | 'dimmer' | 'on' | 'off' | 'changed' } {
 
     if ( oldValues.length === 0 || newValues.length === 0 ) {
