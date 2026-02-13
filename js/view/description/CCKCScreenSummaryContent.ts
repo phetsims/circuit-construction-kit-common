@@ -21,10 +21,8 @@ export default class CCKCScreenSummaryContent extends ScreenSummaryContent {
 
     const circuit = model.circuit;
 
-    //REVIEW: Shouldn't this be translatable?
-    // Derive the view type string from the viewTypeProperty
-    const viewTypeStringProperty = new DerivedProperty(
-      [ model.viewTypeProperty ],
+    // This is the value that gets passed in to the fluent selector, 'lifelike' or 'schematic', so it needs to be stable and not translatable.
+    const viewTypeProperty = new DerivedProperty( [ model.viewTypeProperty ],
       viewType => viewType === CircuitElementViewType.LIFELIKE ? 'lifelike' : 'schematic'
     );
 
@@ -119,9 +117,10 @@ export default class CCKCScreenSummaryContent extends ScreenSummaryContent {
       controlAreaContent: CircuitConstructionKitCommonFluent.a11y.screenSummary.controlAreaStringProperty,
       currentDetailsContent: CircuitConstructionKitCommonFluent.a11y.screenSummary.currentDetails.createProperty( {
 
-        //REVIEW: Shouldn't 'zero' be translatable?
+        // There is a fluent selector for the 'zero' case, so zero should not be translated.
         componentCount: circuit.circuitElements.lengthProperty.derived( length => length === 0 ? 'zero' : length ),
-        viewType: viewTypeStringProperty,
+
+        viewType: viewTypeProperty,
         connectivityPhrase: connectivityPhraseProperty,
         currentFlowingPhrase: currentFlowingPhraseProperty
       } ),
