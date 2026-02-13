@@ -152,6 +152,7 @@ export default class Circuit extends PhetioObject {
 
   // Actions that will be invoked during the step function
   private readonly stepActions: ( () => void )[];
+
   public readonly wireGroup: PhetioGroup<Wire, [ Vertex, Vertex ]>;
   public readonly batteryGroup: PhetioGroup<Battery, [ Vertex, Vertex ]>;
   public readonly extremeBatteryGroup: PhetioGroup<Battery, [ Vertex, Vertex ]> | null;

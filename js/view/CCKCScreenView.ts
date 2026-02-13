@@ -544,9 +544,10 @@ export default class CCKCScreenView extends ScreenView {
         if ( nodeToDelete instanceof VertexNode ) {
           if ( nodeToDelete.vertex.isCuttableProperty.value ) {
             const newVertices = this.circuitNode.circuit.cutVertex( nodeToDelete.vertex );
-            cutSoundPlayer.play(); // Same sound as CutButton
 
             if ( newVertices.length > 0 ) {
+
+              cutSoundPlayer.play(); // Same sound as CutButton
 
               // Focus the first new vertex that was created by the cut operation
               const newVertexNode = this.circuitNode.getVertexNode( newVertices[ 0 ] );
