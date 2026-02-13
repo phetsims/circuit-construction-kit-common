@@ -68,8 +68,7 @@ export default class CircuitDescription {
     const separator = CircuitConstructionKitCommonFluent.a11y.circuitComponent.separatorStringProperty.value;
     const parts: string[] = [];
 
-    //REVIEW: This comment omits the 'total' part.
-    // 1. Type name + position (e.g., "Battery 1 of 2") or just type name
+    // 1. Type name + position out of total (e.g., "Battery 1 of 2") or just type name
     const descriptionType = CircuitDescription.getDescriptionType( circuitElement );
     const typeName = CircuitDescription.getCircuitElementTypeLabel( descriptionType );
     if ( shouldShowPosition ) {
