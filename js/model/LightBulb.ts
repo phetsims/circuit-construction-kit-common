@@ -248,7 +248,7 @@ export default class LightBulb extends FixedCircuitElement {
     throw new Error( 'exceeded charge path bounds' );
   }
 
-  //REVIEW: It would be nice to note the SI units for these constants if possible, e.g. watts, ohms, etc.
+  // Resistance in ohms
   public static readonly REAL_BULB_COLD_RESISTANCE = 10;
 
   // Constants for brightness calculation

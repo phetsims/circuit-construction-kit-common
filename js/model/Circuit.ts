@@ -92,9 +92,13 @@ type Pair = { v1: Vertex; v2: Vertex };
 
 export default class Circuit extends PhetioObject {
 
-  //REVIEW: Add docs for these properties similar to other fields below
+  // Whether the circuit is shown as schematic or lifelike
   public readonly viewTypeProperty: Property<CircuitElementViewType>;
+
+  // Whether to include the "real" light bulbs that have a non-linear resistance curve, in the circuit toolbox carousel
   public readonly addRealBulbsProperty: Property<boolean>;
+
+  // Whether in the "black box study" mode, which is not well-maintained.
   private readonly blackBoxStudy: boolean;
 
   // All wires share the same resistivity, which is defined by resistance = resistivity * length. On the Lab Screen,
@@ -1106,11 +1110,7 @@ export default class Circuit extends PhetioObject {
     this.updateSeriesAmmeterReadouts();
 
     // Update whether current is flowing in any circuit element
-    //REVIEW: My (jbphet's) IDE is flagging this const as redundant.
-    const hasCurrentFlowing = this.circuitElements.some(
-      element => Math.abs( element.currentProperty.value ) > 1e-10
-    );
-    this.hasCurrentFlowingProperty.value = hasCurrentFlowing;
+    this.hasCurrentFlowingProperty.value = this.circuitElements.some( element => Math.abs( element.currentProperty.value ) > 1e-10 );
 
     // Move the charges.  Do this after the circuit has been solved so the conventional current will have the correct
     // current values.
@@ -1556,9 +1556,8 @@ export default class Circuit extends PhetioObject {
     }
   }
 
-  //REVIEW: This header comment doesn't seem quite right based on what the code does.
   /**
-   * If anything is keyboard dragging, connectivity is disabled.
+   * Indicate whether any circuit element or vertex is being dragged by the keyboard.
    */
   public isKeyboardDragging(): boolean {
 

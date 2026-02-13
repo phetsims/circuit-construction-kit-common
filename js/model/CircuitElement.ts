@@ -65,10 +65,6 @@ export default abstract class CircuitElement extends PhetioObject {
   // the type of circuit element for i18n and accessibility
   public readonly type: CircuitElementType;
 
-  //REVIEW: This doesn't seem to be read.  Can it be removed?
-  // track the time of creation so it can't be dropped in the toolbox for 0.5 seconds see https://github.com/phetsims/circuit-construction-kit-common/issues/244
-  private readonly creationTime: number;
-
   // flammable circuit elements can catch on fire
   public readonly isFlammable: boolean;
 
@@ -183,7 +179,6 @@ export default abstract class CircuitElement extends PhetioObject {
 
     this.id = index++;
     this.type = type;
-    this.creationTime = phet.joist.elapsedTime;
     this.isFlammable = options.isFlammable;
     this.isMetallic = options.isMetallic;
     this.isSizeChangedOnViewChange = options.isSizeChangedOnViewChange;
