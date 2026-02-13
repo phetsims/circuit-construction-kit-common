@@ -10,19 +10,25 @@
 
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../../CircuitConstructionKitCommonFluent.js';
-import CircuitDescriptionUtils from './CircuitDescriptionUtils.js';
 import type Circuit from '../../model/Circuit.js';
 import CircuitElement from '../../model/CircuitElement.js';
 import CircuitElementViewType from '../../model/CircuitElementViewType.js';
 import type CircuitGroup from '../../model/CircuitGroup.js';
 import LightBulb from '../../model/LightBulb.js';
 import type Vertex from '../../model/Vertex.js';
+import CircuitDescriptionUtils from './CircuitDescriptionUtils.js';
 
 // Current threshold for considering current as "flowing" (for vertex connection responses)
 const CURRENT_THRESHOLD = 1e-4;
 
 // Tolerance for comparing values - avoids announcing floating-point noise
 const VALUE_EQUALITY_TOLERANCE = 1e-4;
+
+type CurrentChangeDirection = 'increased' | 'decreased' | 'changed' | 'stopped' | 'reversed' | 'started';
+type CurrentChangeResult = { hasChange: boolean; scope: 'some' | 'all'; direction: CurrentChangeDirection };
+
+type BrightnessChangeDirection = 'brighter' | 'dimmer' | 'on' | 'off' | 'changed';
+type BrightnessChangeResult = { hasChange: boolean; scope: 'some' | 'all'; direction: BrightnessChangeDirection };
 
 type GroupState = {
   currentValues: number[]; // Signed current for each circuit element in the group
@@ -149,8 +155,7 @@ export default class CircuitContextResponses {
   private analyzeCurrentChange(
     oldCurrents: number[],
     newCurrents: number[]
-    //REVIEW: This is quite an elaborate composite type definition.  Consider defining a type and subtypes for easier maintenance.
-  ): { hasChange: boolean; scope: 'some' | 'all'; direction: 'increased' | 'decreased' | 'changed' | 'stopped' | 'reversed' | 'started' } {
+  ): CurrentChangeResult {
 
     // Count how many elements had current changes
     let increasedCount = 0;
@@ -202,7 +207,7 @@ export default class CircuitContextResponses {
     const nowFlowing = newCurrents.some( current => Math.abs( current ) > CURRENT_THRESHOLD );
 
     // Determine direction
-    let direction: 'increased' | 'decreased' | 'changed' | 'stopped' | 'reversed' | 'started';
+    let direction: CurrentChangeDirection;
     if ( wasNotFlowing && nowFlowing ) {
       direction = 'started';
     }
@@ -233,8 +238,7 @@ export default class CircuitContextResponses {
   private analyzeBrightnessChange(
     oldValues: number[],
     newValues: number[]
-    //REVIEW: This is quite an elaborate composite type definition.  Consider defining a type and subtypes for easier maintenance.
-  ): { hasChange: boolean; scope: 'some' | 'all'; direction: 'brighter' | 'dimmer' | 'on' | 'off' | 'changed' } {
+  ): BrightnessChangeResult {
 
     if ( oldValues.length === 0 || newValues.length === 0 ) {
       return { hasChange: false, scope: 'all', direction: 'changed' };
@@ -277,7 +281,7 @@ export default class CircuitContextResponses {
     const scope: 'some' | 'all' = changedCount === count ? 'all' : 'some';
 
     // Determine direction
-    let direction: 'brighter' | 'dimmer' | 'on' | 'off' | 'changed';
+    let direction: BrightnessChangeDirection;
     if ( brighterCount > 0 && dimmerCount === 0 ) {
       // If all brighter bulbs turned on, use 'on' instead of 'brighter'
       if ( turnedOnCount === brighterCount ) {
@@ -309,8 +313,8 @@ export default class CircuitContextResponses {
    */
   private buildGroupChangePhrase(
     groupIndex: number,
-    currentChange: { hasChange: boolean; scope: 'some' | 'all'; direction: 'increased' | 'decreased' | 'changed' | 'stopped' | 'reversed' | 'started' },
-    brightnessChange: { hasChange: boolean; scope: 'some' | 'all'; direction: 'brighter' | 'dimmer' | 'on' | 'off' | 'changed' },
+    currentChange: { hasChange: boolean; scope: 'some' | 'all'; direction: CurrentChangeDirection },
+    brightnessChange: BrightnessChangeResult,
     includeCurrentChange: boolean
   ): string | null {
     const parts: string[] = [];
