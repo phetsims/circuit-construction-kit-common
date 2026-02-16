@@ -258,6 +258,7 @@ export default class LightBulb extends FixedCircuitElement {
   // Brightness thresholds for categorizing light bulb state - less than 1% rounded down
   public static readonly BRIGHTNESS_OFF_THRESHOLD = 0.006;
 
+  //REVIEW: Why is this a static method on LightBulb instead of a method on the instance?  Suggest changing or at least documenting.
   /**
    * Computes the brightness of a light bulb from its current and resistance.
    * Returns a value from 0 to 1.
