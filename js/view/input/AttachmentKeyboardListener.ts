@@ -56,11 +56,6 @@ export type AttachmentKeyboardListenerOptions<T> = {
   // If the target being attached is disposed while the combo box is open, cancel the combo box
   targetDisposeEmitter?: TReadOnlyEmitter;
 
-  // Optional callback to get a preferred initial value from the available items.
-  // If provided and returns a non-null value, it will be used as the initial selection
-  // when there's no prior interaction position match.
-  getPreferredInitialValue?: ( availableItems: AttachmentItem<T>[] ) => T | null;
-
   // Optional callback to sort items before displaying in the combo box.
   // Items are sorted after filtering but before display.
   sortItems?: ( items: AttachmentItem<T>[] ) => AttachmentItem<T>[];
@@ -91,7 +86,7 @@ export default class AttachmentKeyboardListener<T> extends KeyboardListener<OneK
         }
 
         // Check if the current position matches any available item (from prior discrete interaction)
-        let initialSelection = options.getPreferredInitialValue?.( availableItems ) ?? availableItems[ 0 ].value;
+        let initialSelection = availableItems[ 0 ].value;
         if ( this.lastConnectionHighlightPosition ) {
           for ( const item of availableItems ) {
             const itemPosition = options.getHighlightPosition( item.value );
