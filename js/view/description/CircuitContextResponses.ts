@@ -81,7 +81,7 @@ export default class CircuitContextResponses {
     }
     else {
       const lightBulbs = group.circuitElements.filter( ( element ): element is LightBulb => element instanceof LightBulb );
-      brightnessValues = lightBulbs.map( bulb => LightBulb.computeBrightness( bulb ) );
+      brightnessValues = lightBulbs.map( bulb => bulb.computeBrightness() );
     }
 
     return {

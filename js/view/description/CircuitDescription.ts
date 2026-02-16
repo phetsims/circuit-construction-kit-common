@@ -15,7 +15,6 @@ import Node from '../../../../scenery/js/nodes/Node.js';
 import CCKCQueryParameters from '../../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../../CircuitConstructionKitCommonFluent.js';
-import CircuitDescriptionUtils from './CircuitDescriptionUtils.js';
 import Capacitor from '../../model/Capacitor.js';
 import Circuit from '../../model/Circuit.js';
 import CircuitElement from '../../model/CircuitElement.js';
@@ -31,6 +30,7 @@ import VoltageSource from '../../model/VoltageSource.js';
 import AmmeterNode from '../AmmeterNode.js';
 import CircuitNode from '../CircuitNode.js';
 import VoltmeterNode from '../VoltmeterNode.js';
+import CircuitDescriptionUtils from './CircuitDescriptionUtils.js';
 import CircuitGroupDescription from './CircuitGroupDescription.js';
 
 // Track properties for each circuit element so we can dispose them when updating
@@ -83,7 +83,7 @@ export default class CircuitDescription {
     // 2. Brightness (light bulbs only, always shown regardless of showValues)
     // Skip brightness in schematic mode since schematic light bulbs don't glow
     if ( circuitElement instanceof LightBulb && !isSchematic ) {
-      const brightness = LightBulb.computeBrightness( circuitElement );
+      const brightness = circuitElement.computeBrightness();
       if ( brightness <= LightBulb.BRIGHTNESS_OFF_THRESHOLD ) {
         parts.push( CircuitConstructionKitCommonFluent.a11y.circuitComponent.brightness.offStringProperty.value );
       }

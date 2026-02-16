@@ -248,6 +248,19 @@ export default class LightBulb extends FixedCircuitElement {
     throw new Error( 'exceeded charge path bounds' );
   }
 
+  /**
+   * Computes the brightness of a light bulb from its current and resistance.
+   * Returns a value from 0 to 1.
+   */
+  public computeBrightness(): number {
+    const current = this.currentProperty.value;
+    const resistance = this.resistanceProperty.value;
+    const power = Math.abs( current * current * resistance );
+    const numerator = Math.log( 1 + power * LightBulb.BRIGHTNESS_MULTIPLIER );
+    const denominator = Math.log( 1 + LightBulb.BRIGHTNESS_MAXIMUM_POWER * LightBulb.BRIGHTNESS_MULTIPLIER );
+    return clamp( denominator === 0 ? 0 : numerator / denominator, 0, 1 );
+  }
+
   // Resistance in ohms
   public static readonly REAL_BULB_COLD_RESISTANCE = 10;
 
@@ -257,20 +270,6 @@ export default class LightBulb extends FixedCircuitElement {
 
   // Brightness thresholds for categorizing light bulb state - less than 1% rounded down
   public static readonly BRIGHTNESS_OFF_THRESHOLD = 0.006;
-
-  //REVIEW: Why is this a static method on LightBulb instead of a method on the instance?  Suggest changing or at least documenting.
-  /**
-   * Computes the brightness of a light bulb from its current and resistance.
-   * Returns a value from 0 to 1.
-   */
-  public static computeBrightness( lightBulb: LightBulb ): number {
-    const current = lightBulb.currentProperty.value;
-    const resistance = lightBulb.resistanceProperty.value;
-    const power = Math.abs( current * current * resistance );
-    const numerator = Math.log( 1 + power * LightBulb.BRIGHTNESS_MULTIPLIER );
-    const denominator = Math.log( 1 + LightBulb.BRIGHTNESS_MAXIMUM_POWER * LightBulb.BRIGHTNESS_MULTIPLIER );
-    return clamp( denominator === 0 ? 0 : numerator / denominator, 0, 1 );
-  }
 }
 
 const samplePoints = LightBulb.createSamplePoints( Vector2.ZERO );

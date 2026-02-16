@@ -71,7 +71,7 @@ export default class CCKCLightBulbNode extends FixedCircuitElementNode {
     const updateBrightness = Multilink.multilink(
       [ lightBulb.currentProperty, showResultsProperty, lightBulb.resistanceProperty ],
       () => {
-        let brightness = LightBulb.computeBrightness( lightBulb );
+        let brightness = lightBulb.computeBrightness();
 
         // Workaround for SCENERY_PHET/LightBulbNode which shows highlight even for current = 1E-16, so clamp it off
         // see https://github.com/phetsims/scenery-phet/issues/225
