@@ -53,7 +53,7 @@ export default class ChooseJunctionConnectionKeyboardHelpSection extends Keyboar
       } );
 
       return KeyboardHelpSectionRow.fromHotkeyData( hotkeyData, {
-        pdomLabelStringProperty: HotkeyDescriptionBuilder.createDescriptionProperty(
+        accessibleRowDescriptionProperty: HotkeyDescriptionBuilder.createDescriptionProperty(
           accessibleLabelStringProperty,
           hotkeyData.keyDescriptorsProperty
         )
