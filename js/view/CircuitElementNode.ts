@@ -10,7 +10,7 @@ import TProperty from '../../../axon/js/TProperty.js';
 import { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import type Vector2 from '../../../dot/js/Vector2.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
-import AccessibleDraggableOptions from '../../../scenery-phet/js/accessibility/grab-drag/AccessibleDraggableOptions.js';
+import AccessibleInteractiveOptions from '../../../scenery-phet/js/accessibility/AccessibleInteractiveOptions.js';
 import InteractiveHighlighting from '../../../scenery/js/accessibility/voicing/InteractiveHighlighting.js';
 import { type OneKeyStroke } from '../../../scenery/js/input/KeyDescriptor.js';
 import KeyboardListener from '../../../scenery/js/listeners/KeyboardListener.js';
@@ -70,8 +70,8 @@ export default abstract class CircuitElementNode extends InteractiveHighlighting
         phetioInputEnabledPropertyInstrumented: true,
         useHitTestForSensors: false,
         ariaRole: 'application',
-        accessibleRoleDescription: 'edit component button'
-      }, combineOptions<CircuitElementNodeOptions>( {}, AccessibleDraggableOptions, providedOptions ) );
+        accessibleRoleDescription: 'edit options button'
+      }, combineOptions<CircuitElementNodeOptions>( {}, AccessibleInteractiveOptions, providedOptions ) );
     }
 
     super( providedOptions );

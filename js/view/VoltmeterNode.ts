@@ -17,6 +17,7 @@ import { toFixed } from '../../../dot/js/util/toFixed.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
+import AccessibleInteractiveOptions from '../../../scenery-phet/js/accessibility/AccessibleInteractiveOptions.js';
 import AccessibleDraggableOptions from '../../../scenery-phet/js/accessibility/grab-drag/AccessibleDraggableOptions.js';
 import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
 import SoundKeyboardDragListener from '../../../scenery-phet/js/SoundKeyboardDragListener.js';
@@ -163,6 +164,7 @@ export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
         fill: CCKCQueryParameters.showVoltmeterSamplePoints ? color : null,
         cursor: 'pointer',
         accessibleName: accessibleName,
+        accessibleRoleDescription: 'measurement options button',
         children: [ new Image( image, {
           scale: PROBE_SCALE,
           rotation: rotation,
@@ -174,7 +176,7 @@ export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
         } ) ]
       };
 
-      const probeNodeOptions = isIcon ? baseProbeOptions : combineOptions<NodeOptions>( baseProbeOptions, AccessibleDraggableOptions );
+      const probeNodeOptions = isIcon ? baseProbeOptions : combineOptions<NodeOptions>( baseProbeOptions, AccessibleInteractiveOptions );
 
       // Use InteractiveHighlightingRectangle for non-icons to get hover highlights
       if ( isIcon ) {
@@ -240,7 +242,6 @@ export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
                        children: [ probeTextNode ],
 
                        accessibleName: CircuitConstructionKitCommonFluent.a11y.voltmeterNode.body.accessibleName.createProperty( { reading: readingTextProperty } ),
-                       accessibleRoleDescription: 'movable',
                        focusable: true
                      }, AccessibleDraggableOptions ) );
 

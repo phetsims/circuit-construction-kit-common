@@ -17,6 +17,7 @@ import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
 import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
+import AccessibleInteractiveOptions from '../../../scenery-phet/js/accessibility/AccessibleInteractiveOptions.js';
 import AccessibleDraggableOptions from '../../../scenery-phet/js/accessibility/grab-drag/AccessibleDraggableOptions.js';
 import ProbeNode from '../../../scenery-phet/js/ProbeNode.js';
 import SoundKeyboardDragListener from '../../../scenery-phet/js/SoundKeyboardDragListener.js';
@@ -220,7 +221,6 @@ export default class AmmeterNode extends InteractiveHighlighting( Node ) {
                        children: [ probeTextNode ],
 
                        accessibleName: CircuitConstructionKitCommonFluent.a11y.ammeterNode.body.accessibleName.createProperty( { reading: readingTextProperty } ),
-                       accessibleRoleDescription: 'movable',
                        focusable: true
                      }, AccessibleDraggableOptions ) );
 
@@ -242,8 +242,9 @@ export default class AmmeterNode extends InteractiveHighlighting( Node ) {
       ]
     };
 
-    const probeOptions = options.isIcon ? baseProbeOptions : combineOptions<NodeOptions>( baseProbeOptions, AccessibleDraggableOptions, {
-      accessibleName: CircuitConstructionKitCommonFluent.a11y.ammeterNode.probe.accessibleNameStringProperty
+    const probeOptions = options.isIcon ? baseProbeOptions : combineOptions<NodeOptions>( baseProbeOptions, AccessibleInteractiveOptions, {
+      accessibleName: CircuitConstructionKitCommonFluent.a11y.ammeterNode.probe.accessibleNameStringProperty,
+      accessibleRoleDescription: 'measurement options button'
     } );
 
     // Use InteractiveHighlightingProbeNode for non-icons to get hover highlights on the probe

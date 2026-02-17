@@ -99,6 +99,7 @@ export default class VertexNode extends InteractiveHighlighting( Node ) {
 
       // see https://github.com/phetsims/circuit-construction-kit-common/issues/1079#issue-3649808690
       // and https://github.com/phetsims/circuit-construction-kit-common/issues/1083
+      // and https://github.com/phetsims/circuit-construction-kit-common/issues/1237
       accessibleRoleDescription: 'connection options button'
     } ) );
 
