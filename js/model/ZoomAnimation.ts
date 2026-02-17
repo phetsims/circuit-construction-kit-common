@@ -4,7 +4,7 @@
  * Uses a cubic easing to interpolate the zoom. Forked and pruned from EaseAnimation.js which was unstable
  *
  * @author Sam Reid (PhET Interactive Simulations)
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Easing from '../../../twixt/js/Easing.js';
