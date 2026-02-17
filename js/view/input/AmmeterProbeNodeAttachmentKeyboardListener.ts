@@ -37,8 +37,10 @@ export default class AmmeterProbeNodeAttachmentKeyboardListener extends Attachme
             // Add group prefix if the element is in a multi-element group
             const groupIndex = CircuitDescription.getGroupIndex( circuit, circuitElement );
             if ( groupIndex !== null ) {
-              const groupLabel = CircuitConstructionKitCommonFluent.a11y.circuitDescription.groupStringProperty.value;
-              displayText = `${groupLabel} ${groupIndex}, ${displayText}`;
+              displayText = CircuitConstructionKitCommonFluent.a11y.circuitDescription.groupWithConnection.format( {
+                groupIndex: groupIndex,
+                description: displayText
+              } );
             }
 
             return new Text( displayText );
