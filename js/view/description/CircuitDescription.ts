@@ -334,7 +334,11 @@ export default class CircuitDescription {
       circuitElementNode.accessibleName = accessibleNameWithSelectionProperty;
 
       // Store brief name for junction descriptions (type + number, no values)
-      briefNames.set( circuitElement, CircuitDescription.formatCircuitElementBriefName( circuitElement, indexForType ) );
+      const briefName = CircuitDescription.formatCircuitElementBriefName( circuitElement, indexForType );
+      briefNames.set( circuitElement, briefName );
+
+      // Store brief name on the node for ammeter measurement lists
+      circuitElementNode.measurementName = briefName;
     } );
 
     return briefNames;

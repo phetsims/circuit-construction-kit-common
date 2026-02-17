@@ -7,7 +7,6 @@
  */
 
 import type TProperty from '../../../../axon/js/TProperty.js';
-import type { TReadOnlyProperty } from '../../../../axon/js/TReadOnlyProperty.js';
 import { toFixed } from '../../../../dot/js/util/toFixed.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import type Node from '../../../../scenery/js/nodes/Node.js';
@@ -31,22 +30,9 @@ export default class AmmeterProbeNodeAttachmentKeyboardListener extends Attachme
         return {
           value: circuitElement as CircuitElement | null,
           createNode: () => {
-            const accessibleNameOrProperty = circuitNode.getCircuitElementNode( circuitElement ).accessibleName;
 
-            // Get the string value from either the property or directly
-            let displayText: string;
-            if ( typeof accessibleNameOrProperty === 'string' ) {
-              displayText = accessibleNameOrProperty;
-            }
-            else if ( accessibleNameOrProperty && typeof ( accessibleNameOrProperty as TReadOnlyProperty<string> ).value === 'string' ) {
-              displayText = ( accessibleNameOrProperty as TReadOnlyProperty<string> ).value;
-            }
-            else {
-              displayText = circuitElement.type;
-            }
-
-            // Remove "of N" pattern (e.g., "Battery 1 of 2" -> "Battery 1")
-            displayText = displayText.replace( / of \d+/g, '' );
+            // Use the brief measurement name (e.g., "Battery 1", "Wire 2") set by CircuitDescription
+            let displayText = circuitNode.getCircuitElementNode( circuitElement ).measurementName;
 
             // Add group prefix if the element is in a multi-element group
             const groupIndex = CircuitDescription.getGroupIndex( circuit, circuitElement );

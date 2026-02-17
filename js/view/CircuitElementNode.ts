@@ -39,6 +39,9 @@ export default abstract class CircuitElementNode extends InteractiveHighlighting
   public readonly abstract dragListener: CircuitNodeDragListener | null;
   private readonly selectionKeyboardListener: KeyboardListener<OneKeyStroke[]> | null;
 
+  // Brief name for ammeter measurement lists (e.g., "Battery 1", "Wire 2"). Set by CircuitDescription.
+  public measurementName = '';
+
   /**
    * @param circuitElement - the CircuitElement to be rendered
    * @param circuit - the circuit which the element can be removed from or null for icons
