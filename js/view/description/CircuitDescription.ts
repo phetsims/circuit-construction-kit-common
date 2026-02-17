@@ -519,10 +519,13 @@ export default class CircuitDescription {
       const startVertexNode = circuitNode.getVertexNode( startVertex );
       const endVertexNode = circuitNode.getVertexNode( endVertex );
 
-      // For fully disconnected elements, both formats are the same (just terminal description)
-      // since isFullyDisconnected=true skips the connection label
-      startVertexNode.accessibleName = CircuitDescription.createVertexDescription( startVertex, 1, 2, [ circuitElement ], briefNames, false, false );
-      endVertexNode.accessibleName = CircuitDescription.createVertexDescription( endVertex, 2, 2, [ circuitElement ], briefNames, false, false );
+      // For fully disconnected elements, both vertices have only 1 neighbor so both are "not connected"
+      startVertexNode.accessibleName = CircuitConstructionKitCommonFluent.a11y.circuitDescription.notConnected.format( {
+        description: CircuitDescription.createVertexDescription( startVertex, 1, 2, [ circuitElement ], briefNames, false, false )
+      } );
+      endVertexNode.accessibleName = CircuitConstructionKitCommonFluent.a11y.circuitDescription.notConnected.format( {
+        description: CircuitDescription.createVertexDescription( endVertex, 2, 2, [ circuitElement ], briefNames, false, false )
+      } );
 
       startVertexNode.attachmentName = CircuitConstructionKitCommonFluent.a11y.circuitDescription.notConnected.format( {
         description: CircuitDescription.createVertexDescription( startVertex, 1, 2, [ circuitElement ], briefNames, true, true )
@@ -588,11 +591,19 @@ export default class CircuitDescription {
           false // forAttachmentName = false, use full format
         );
 
-        // Only add group suffix to LAST vertex
+        // Add ", not connected" for vertices with only 1 neighbor, then group suffix for last vertex.
+        // Order: "Connection Point 3 of 3: ..., not connected, last item in Group 1"
         const isLastVertex = vertexIndex === lastVertexIndex;
-        circuitNode.getVertexNode( vertex ).accessibleName = isLastVertex
-                                                             ? accessibleNameDescription + groupSuffix
-                                                             : accessibleNameDescription;
+        const isNotConnected = neighbors.length === 1;
+        let accessibleName = isNotConnected ?
+                             CircuitConstructionKitCommonFluent.a11y.circuitDescription.notConnected.format( {
+                               description: accessibleNameDescription
+                             } ) :
+                             accessibleNameDescription;
+        if ( isLastVertex ) {
+          accessibleName += groupSuffix;
+        }
+        circuitNode.getVertexNode( vertex ).accessibleName = accessibleName;
         const vertexNode = circuitNode.getVertexNode( vertex );
 
         // Build attachment name as "Group X: neighbors[, not connected]"
