@@ -166,7 +166,7 @@ addToMapIfDefined( 'a11y_circuitDescription_listTwoItems', 'a11y.circuitDescript
 addToMapIfDefined( 'a11y_circuitDescription_listFinalSeparator', 'a11y.circuitDescription.listFinalSeparatorStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_groupHeading', 'a11y.circuitDescription.groupHeadingStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_groupWithConnection', 'a11y.circuitDescription.groupWithConnectionStringProperty' );
-addToMapIfDefined( 'a11y_circuitDescription_notConnectedSuffix', 'a11y.circuitDescription.notConnectedSuffixStringProperty' );
+addToMapIfDefined( 'a11y_circuitDescription_notConnected', 'a11y.circuitDescription.notConnectedStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_connectionPoint', 'a11y.circuitDescription.connectionPointStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_connection', 'a11y.circuitDescription.connectionStringProperty' );
 addToMapIfDefined( 'a11y_circuitDescription_disconnected', 'a11y.circuitDescription.disconnectedStringProperty' );
@@ -503,7 +503,7 @@ const CircuitConstructionKitCommonFluent = {
       _comment_10: new FluentComment( {"comment":"Group patterns","associatedKey":"groupHeading"} ),
       groupHeading: new FluentPattern<{ groupIndex: FluentVariable, totalGroups: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitDescription_groupHeading', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.groupHeadingStringProperty' ), [{"name":"groupIndex"},{"name":"totalGroups"}] ),
       groupWithConnection: new FluentPattern<{ description: FluentVariable, groupIndex: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitDescription_groupWithConnection', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.groupWithConnectionStringProperty' ), [{"name":"description"},{"name":"groupIndex"}] ),
-      notConnectedSuffixStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_notConnectedSuffix', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.notConnectedSuffixStringProperty' ) ),
+      notConnected: new FluentPattern<{ description: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitDescription_notConnected', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.notConnectedStringProperty' ), [{"name":"description"}] ),
       connectionPointStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_connectionPoint', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.connectionPointStringProperty' ) ),
       connectionStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_connection', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.connectionStringProperty' ) ),
       disconnectedStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitDescription_disconnected', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitDescription.disconnectedStringProperty' ) ),

@@ -524,9 +524,12 @@ export default class CircuitDescription {
       startVertexNode.accessibleName = CircuitDescription.createVertexDescription( startVertex, 1, 2, [ circuitElement ], briefNames, false, false );
       endVertexNode.accessibleName = CircuitDescription.createVertexDescription( endVertex, 2, 2, [ circuitElement ], briefNames, false, false );
 
-      const notConnectedSuffix = CircuitConstructionKitCommonFluent.a11y.circuitDescription.notConnectedSuffixStringProperty.value;
-      startVertexNode.attachmentName = CircuitDescription.createVertexDescription( startVertex, 1, 2, [ circuitElement ], briefNames, true, true ) + notConnectedSuffix;
-      endVertexNode.attachmentName = CircuitDescription.createVertexDescription( endVertex, 2, 2, [ circuitElement ], briefNames, true, true ) + notConnectedSuffix;
+      startVertexNode.attachmentName = CircuitConstructionKitCommonFluent.a11y.circuitDescription.notConnected.format( {
+        description: CircuitDescription.createVertexDescription( startVertex, 1, 2, [ circuitElement ], briefNames, true, true )
+      } );
+      endVertexNode.attachmentName = CircuitConstructionKitCommonFluent.a11y.circuitDescription.notConnected.format( {
+        description: CircuitDescription.createVertexDescription( endVertex, 2, 2, [ circuitElement ], briefNames, true, true )
+      } );
 
       // Disconnected elements have no group (groupIndex = 0)
       startVertexNode.attachmentGroupIndex = 0;
@@ -594,12 +597,15 @@ export default class CircuitDescription {
 
         // Build attachment name as "Group X: neighbors[, not connected]"
         const neighborsDescription = CircuitDescription.getVertexNeighborsDescription( vertex, neighbors, allBriefNames );
-        const notConnectedSuffix = neighbors.length === 1 ?
-                                   CircuitConstructionKitCommonFluent.a11y.circuitDescription.notConnectedSuffixStringProperty.value : '';
-        vertexNode.attachmentName = CircuitConstructionKitCommonFluent.a11y.circuitDescription.groupWithConnection.format( {
+        const groupAttachmentName = CircuitConstructionKitCommonFluent.a11y.circuitDescription.groupWithConnection.format( {
           groupIndex: groupIndex + 1,
           description: neighborsDescription
-        } ) + notConnectedSuffix;
+        } );
+        vertexNode.attachmentName = neighbors.length === 1 ?
+                                    CircuitConstructionKitCommonFluent.a11y.circuitDescription.notConnected.format( {
+                                      description: groupAttachmentName
+                                    } ) :
+                                    groupAttachmentName;
 
         // Store numeric indices for sorting in attachment combo boxes
         vertexNode.attachmentGroupIndex = groupIndex + 1;

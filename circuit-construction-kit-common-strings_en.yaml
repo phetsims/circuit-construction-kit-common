@@ -193,7 +193,7 @@ a11y:
     # Group patterns
     groupHeading:               'Group { $groupIndex } of { $totalGroups }'
     groupWithConnection:        'Group { $groupIndex }: { $description }'
-    notConnectedSuffix:         ', not connected'
+    notConnected:               '{ $description }, not connected'
     connectionPoint:            Connection Point
     connection:                 Connection
     disconnected:               disconnected

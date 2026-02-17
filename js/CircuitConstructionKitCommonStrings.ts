@@ -182,7 +182,7 @@ type StringsType = {
       'listFinalSeparatorStringProperty': LocalizedStringProperty;
       'groupHeadingStringProperty': LocalizedStringProperty;
       'groupWithConnectionStringProperty': LocalizedStringProperty;
-      'notConnectedSuffixStringProperty': LocalizedStringProperty;
+      'notConnectedStringProperty': LocalizedStringProperty;
       'connectionPointStringProperty': LocalizedStringProperty;
       'connectionStringProperty': LocalizedStringProperty;
       'disconnectedStringProperty': LocalizedStringProperty;

@@ -467,8 +467,8 @@
       "groupWithConnection": {
         "value": "Group { $groupIndex }: { $description }"
       },
-      "notConnectedSuffix": {
-        "value": ", not connected"
+      "notConnected": {
+        "value": "{ $description }, not connected"
       },
       "connectionPoint": {
         "value": "Connection Point"
