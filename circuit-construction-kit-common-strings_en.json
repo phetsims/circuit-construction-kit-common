@@ -465,7 +465,10 @@
         "value": "Group { $groupIndex } of { $totalGroups }"
       },
       "groupWithConnection": {
-        "value": "Group { $groupIndex }, { $description }"
+        "value": "Group { $groupIndex }: { $description }"
+      },
+      "notConnectedSuffix": {
+        "value": ", not connected"
       },
       "connectionPoint": {
         "value": "Connection Point"

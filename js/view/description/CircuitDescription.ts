@@ -345,58 +345,22 @@ export default class CircuitDescription {
   }
 
   /**
-   * Creates an accessible description for a vertex based on its connections.
-   * Uses brief names for circuit elements to keep descriptions concise.
-   * For vertices with 4+ connections, uses a compressed form grouping by type.
-   * @param vertex
-   * @param vertexIndex
-   * @param totalVertices
-   * @param neighbors
-   * @param briefNames
-   * @param isFullyDisconnected - true if this vertex belongs to a circuit element with both ends disconnected
-   * @param forAttachmentName - true to use short format "Connection X" for popup, false to use full format "Connection Point X of Y" for accessibleName
+   * Returns just the neighbors description for a vertex — the part that describes what's connected,
+   * without any "Connection X:" or "Connection Point X of Y:" prefix.
+   * For 1 neighbor: returns terminal description (e.g., "Bottom of Light Bulb 1")
+   * For 2-3 neighbors: comma-separated terminal descriptions
+   * For 4+ neighbors: compressed form grouping by type (e.g., "2 Wires and 1 Battery")
    */
-  private static createVertexDescription(
+  private static getVertexNeighborsDescription(
     vertex: Vertex,
-    vertexIndex: number,
-    totalVertices: number,
     neighbors: CircuitElement[],
-    briefNames: Map<CircuitElement, string>,
-    isFullyDisconnected: boolean,
-    forAttachmentName: boolean
+    briefNames: Map<CircuitElement, string>
   ): string {
-    // Use short format for attachment names in popup, full format for accessibleName
-    const connectionLabel = forAttachmentName ?
-                            `${CircuitConstructionKitCommonFluent.a11y.circuitDescription.connectionStringProperty.value} ${vertexIndex}` :
-                            `${CircuitConstructionKitCommonFluent.a11y.circuitDescription.connectionPointStringProperty.value} ${vertexIndex} of ${totalVertices}`;
-
     if ( neighbors.length === 1 ) {
       const componentName = briefNames.get( neighbors[ 0 ] ) || '';
-      const terminalDescription = this.formatTerminalDescription( vertex, neighbors[ 0 ], componentName );
-      vertex.completeDescription = null;
-
-      // Skip "Connection Point" prefix only if element is fully disconnected.
-      // Battery and light bulb terminals still get the prefix (e.g., "Connection Point 1 of 2: Negative Terminal of Battery 1")
-      if ( isFullyDisconnected ) {
-        return terminalDescription;
-      }
-      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.connectionDescription.format( {
-        connectionLabel: connectionLabel,
-        neighbors: terminalDescription
-      } );
+      return this.formatTerminalDescription( vertex, neighbors[ 0 ], componentName );
     }
     else if ( neighbors.length >= 4 ) {
-      // Compute the full description with all details
-      const neighborNames = neighbors.map( neighbor => {
-        const componentName = briefNames.get( neighbor ) || '';
-        return this.formatTerminalDescription( vertex, neighbor, componentName );
-      } ).join( ', ' );
-
-      // Store complete description on vertex for accessibility
-      vertex.completeDescription = CircuitConstructionKitCommonFluent.a11y.circuitDescription.connectionDescription.format( {
-        connectionLabel: connectionLabel,
-        neighbors: neighborNames
-      } );
 
       // Create compressed form by counting description types (uses specific names for household items)
       const typeCounts = new Map<string, number>();
@@ -455,20 +419,83 @@ export default class CircuitDescription {
         } );
       }
 
-      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.connectionDescription.format( {
-        connectionLabel: connectionLabel,
-        neighbors: joinedTypes
-      } );
+      return joinedTypes;
     }
     else {
-      const neighborNames = neighbors.map( neighbor => {
+
+      // 2-3 neighbors: comma-separated terminal descriptions
+      return neighbors.map( neighbor => {
         const componentName = briefNames.get( neighbor ) || '';
         return this.formatTerminalDescription( vertex, neighbor, componentName );
       } ).join( ', ' );
+    }
+  }
+
+  /**
+   * Creates an accessible description for a vertex based on its connections.
+   * Uses brief names for circuit elements to keep descriptions concise.
+   * For vertices with 4+ connections, uses a compressed form grouping by type.
+   * @param vertex
+   * @param vertexIndex
+   * @param totalVertices
+   * @param neighbors
+   * @param briefNames
+   * @param isFullyDisconnected - true if this vertex belongs to a circuit element with both ends disconnected
+   * @param forAttachmentName - true to use short format "Connection X" for popup, false to use full format "Connection Point X of Y" for accessibleName
+   */
+  private static createVertexDescription(
+    vertex: Vertex,
+    vertexIndex: number,
+    totalVertices: number,
+    neighbors: CircuitElement[],
+    briefNames: Map<CircuitElement, string>,
+    isFullyDisconnected: boolean,
+    forAttachmentName: boolean
+  ): string {
+    // Use short format for attachment names in popup, full format for accessibleName
+    const connectionLabel = forAttachmentName ?
+                            `${CircuitConstructionKitCommonFluent.a11y.circuitDescription.connectionStringProperty.value} ${vertexIndex}` :
+                            `${CircuitConstructionKitCommonFluent.a11y.circuitDescription.connectionPointStringProperty.value} ${vertexIndex} of ${totalVertices}`;
+
+    const neighborsDescription = this.getVertexNeighborsDescription( vertex, neighbors, briefNames );
+
+    if ( neighbors.length === 1 ) {
+      vertex.completeDescription = null;
+
+      // Skip "Connection Point" prefix only if element is fully disconnected.
+      // Battery and light bulb terminals still get the prefix (e.g., "Connection Point 1 of 2: Negative Terminal of Battery 1")
+      if ( isFullyDisconnected ) {
+        return neighborsDescription;
+      }
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.connectionDescription.format( {
+        connectionLabel: connectionLabel,
+        neighbors: neighborsDescription
+      } );
+    }
+    else if ( neighbors.length >= 4 ) {
+
+      // Compute the full description with all details for completeDescription
+      const fullNeighborNames = neighbors.map( neighbor => {
+        const componentName = briefNames.get( neighbor ) || '';
+        return this.formatTerminalDescription( vertex, neighbor, componentName );
+      } ).join( ', ' );
+
+      // Store complete description on vertex for accessibility
+      vertex.completeDescription = CircuitConstructionKitCommonFluent.a11y.circuitDescription.connectionDescription.format( {
+        connectionLabel: connectionLabel,
+        neighbors: fullNeighborNames
+      } );
+
+      return CircuitConstructionKitCommonFluent.a11y.circuitDescription.connectionDescription.format( {
+        connectionLabel: connectionLabel,
+        neighbors: neighborsDescription
+      } );
+    }
+    else {
       vertex.completeDescription = null;
       return CircuitConstructionKitCommonFluent.a11y.circuitDescription.connectionDescription.format( {
         connectionLabel: connectionLabel,
-        neighbors: neighborNames
+        neighbors: neighborsDescription
       } );
     }
   }
@@ -497,8 +524,9 @@ export default class CircuitDescription {
       startVertexNode.accessibleName = CircuitDescription.createVertexDescription( startVertex, 1, 2, [ circuitElement ], briefNames, false, false );
       endVertexNode.accessibleName = CircuitDescription.createVertexDescription( endVertex, 2, 2, [ circuitElement ], briefNames, false, false );
 
-      startVertexNode.attachmentName = CircuitDescription.createVertexDescription( startVertex, 1, 2, [ circuitElement ], briefNames, true, true );
-      endVertexNode.attachmentName = CircuitDescription.createVertexDescription( endVertex, 2, 2, [ circuitElement ], briefNames, true, true );
+      const notConnectedSuffix = CircuitConstructionKitCommonFluent.a11y.circuitDescription.notConnectedSuffixStringProperty.value;
+      startVertexNode.attachmentName = CircuitDescription.createVertexDescription( startVertex, 1, 2, [ circuitElement ], briefNames, true, true ) + notConnectedSuffix;
+      endVertexNode.attachmentName = CircuitDescription.createVertexDescription( endVertex, 2, 2, [ circuitElement ], briefNames, true, true ) + notConnectedSuffix;
 
       // Disconnected elements have no group (groupIndex = 0)
       startVertexNode.attachmentGroupIndex = 0;
@@ -557,27 +585,21 @@ export default class CircuitDescription {
           false // forAttachmentName = false, use full format
         );
 
-        // Short format for attachmentName in popup: "Connection X: ..."
-        const attachmentNameDescription = CircuitDescription.createVertexDescription(
-          vertex,
-          vertexIndex + 1,
-          group.vertices.length,
-          neighbors,
-          allBriefNames,
-          false,
-          true // forAttachmentName = true, use short format
-        );
-
         // Only add group suffix to LAST vertex
         const isLastVertex = vertexIndex === lastVertexIndex;
         circuitNode.getVertexNode( vertex ).accessibleName = isLastVertex
                                                              ? accessibleNameDescription + groupSuffix
                                                              : accessibleNameDescription;
         const vertexNode = circuitNode.getVertexNode( vertex );
+
+        // Build attachment name as "Group X: neighbors[, not connected]"
+        const neighborsDescription = CircuitDescription.getVertexNeighborsDescription( vertex, neighbors, allBriefNames );
+        const notConnectedSuffix = neighbors.length === 1 ?
+                                   CircuitConstructionKitCommonFluent.a11y.circuitDescription.notConnectedSuffixStringProperty.value : '';
         vertexNode.attachmentName = CircuitConstructionKitCommonFluent.a11y.circuitDescription.groupWithConnection.format( {
           groupIndex: groupIndex + 1,
-          description: attachmentNameDescription
-        } );
+          description: neighborsDescription
+        } ) + notConnectedSuffix;
 
         // Store numeric indices for sorting in attachment combo boxes
         vertexNode.attachmentGroupIndex = groupIndex + 1;

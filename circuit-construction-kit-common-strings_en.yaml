@@ -192,7 +192,8 @@ a11y:
     listFinalSeparator:         ', and { $last }'
     # Group patterns
     groupHeading:               'Group { $groupIndex } of { $totalGroups }'
-    groupWithConnection:        'Group { $groupIndex }, { $description }'
+    groupWithConnection:        'Group { $groupIndex }: { $description }'
+    notConnectedSuffix:         ', not connected'
     connectionPoint:            Connection Point
     connection:                 Connection
     disconnected:               disconnected
