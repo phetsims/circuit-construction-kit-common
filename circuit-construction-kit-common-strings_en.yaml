@@ -92,7 +92,7 @@ keyboardCues:
 # Visible labels in keyboard shortcuts dialog
 keyboardHelpDialog:
   circuitComponentsAndTools:
-    heading:           Circuit Components and Measurement Tools
+    heading:           Circuit Components and Sensors
     removeFromToolbox: Remove from toolbox
     returnToToolbox:   Return to toolbox
     editComponent:     Edit component
@@ -204,7 +204,7 @@ a11y:
     groupSuffixLast: ', last item in Group { $groupIndex }'
     group:                      Group
     constructionArea:           >-
-                                Add Circuit Components and Measurement Tools as needed. Once added, use Space 
+                                Add Circuit Components and Sensors as needed. Once added, use Space 
                                 or Enter to open connection options, measurement options, or select for editing. 
                                 Connected components auto-organize into groups. Remove a selected component or 
                                 disconnect a selected connection point with Delete key. Check out Keyboard Shortcuts 
@@ -242,7 +242,7 @@ a11y:
                      Build and navigate your circuits there. If Voltmeters and Ammeters are out of the toolbox, you can 
                      take measurements.
     controlArea:     >-
-                     Voltmeters and Ammeters can be found in the Measurement Tools Toolbox. Display Options provide ways 
+                     Voltmeters and Ammeters can be found in the Sensor Toolbox. Display Options provide ways 
                      to add or remove information about components in the Construction Area. There's an option to choose 
                      between a Lifelike View or a Schematic View for circuit components, and you can Reset All to clear 
                      everything and start over.
@@ -368,9 +368,9 @@ a11y:
     vertexDisconnected:         'Disconnected. { $currentPhrase }'
     vertexDisconnectedNoChange: 'Disconnected.'
   measurementToolsToolbox:
-    accessibleHeading:  Measurement Tools Toolbox
+    accessibleHeading:  Sensor Toolbox
     accessibleHelpText: >-
-                        Add Measurement Tools to the Construction Area as needed. Once added, open measurement
+                        Add sensors to the Construction Area as needed. Once added, open measurement
                         options with Space or Enter. Check out Keyboard Shortcuts for more details.
     toolDisabledHelpText: 'Disabled when no { $componentType } remain in the toolbox.'
     nonContactAmmeter:
@@ -414,7 +414,7 @@ a11y:
       conventionalRadioButton:
         accessibleContextResponse: Animated current flow shows conventional current arrows.
     labelsCheckbox:
-      accessibleHelpText:                 Show or hide names of circuit components and measurement tools in toolboxes.
+      accessibleHelpText:                 Show or hide names of circuit components and sensors in toolboxes.
       accessibleContextResponseChecked:   Labels in toolboxes shown.
       accessibleContextResponseUnchecked: Labels in toolboxes hidden.
     valuesCheckbox:
@@ -504,10 +504,10 @@ a11y:
   zoomButtonGroup:
     zoomIn:
       accessibleName:     Zoom In
-      accessibleHelpText: Adjust visual scale of circuit components and measurement tools in Construction Area.
+      accessibleHelpText: Adjust visual scale of circuit components and sensors in Construction Area.
     zoomOut:
       accessibleName:     Zoom Out
-      accessibleHelpText: Adjust visual scale of circuit components and measurement tools in Construction Area.
+      accessibleHelpText: Adjust visual scale of circuit components and sensors in Construction Area.
     zoomLevelResponse: 'Zoom level { $level } of { $max }.'
   simulationPreferences:
     schematicStandard:
