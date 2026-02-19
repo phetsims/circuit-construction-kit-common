@@ -747,14 +747,14 @@ export default class CCKCScreenView extends ScreenView {
   } );
 
   public static readonly FOCUS_TOOLBOX_HOTKEY_DATA = new HotkeyData( {
-    keys: [ 'alt+t' ],
+    keys: [ 'j+t' ],
     repoName: circuitConstructionKitCommon.name,
     keyboardHelpDialogLabelStringProperty: CircuitConstructionKitCommonFluent.keyboardHelpDialog.focus.focusToolboxStringProperty,
     global: true
   } );
 
   public static readonly FOCUS_CONSTRUCTION_AREA_HOTKEY_DATA = new HotkeyData( {
-    keys: [ 'alt+p' ],
+    keys: [ 'j+p' ],
     repoName: circuitConstructionKitCommon.name,
     keyboardHelpDialogLabelStringProperty: CircuitConstructionKitCommonFluent.keyboardHelpDialog.focus.focusConstructionAreaStringProperty,
     global: true
