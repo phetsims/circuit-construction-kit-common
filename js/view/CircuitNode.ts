@@ -843,7 +843,9 @@ export default class CircuitNode extends Node {
       }
     } );
 
-    circuit.circuitContextAnnouncementEmitter.addListener( message => this.addAccessibleContextResponse( message ) );
+    circuit.circuitContextAnnouncementEmitter.addListener( message => this.addAccessibleContextResponse( message, {
+      responseGroup: 'circuit-value-change'
+    } ) );
 
     // The sensor descriptions are nested under the construction area, so when they become enabled and disabled, we must update that pdomOrder
     screenView.model.voltmeters.forEach( voltmeter => voltmeter.isActiveProperty.link( () => this.updateCircuitDescription() ) );
