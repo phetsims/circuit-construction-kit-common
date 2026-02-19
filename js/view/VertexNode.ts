@@ -87,23 +87,25 @@ export default class VertexNode extends InteractiveHighlighting( Node ) {
   public constructor( circuitNode: CircuitNode, vertex: Vertex, tandem: Tandem ) {
 
     super( combineOptions<NodeOptions>( {
-      tandem: tandem,
-      cursor: 'pointer',
+        tandem: tandem,
+        cursor: 'pointer',
 
-      // keyboard navigation
-      tagName: 'div', // HTML tag name for representative element in the document, see ParallelDOM.js
-      focusable: true,
-      phetioDynamicElement: true,
-      phetioVisiblePropertyInstrumented: false,
-      accessibleName: null // Set by CircuitDescription.ts
-    }, AccessibleDraggableOptions, {
+        // keyboard navigation
+        tagName: 'div', // HTML tag name for representative element in the document, see ParallelDOM.js
+        focusable: true,
+        phetioDynamicElement: true,
+        phetioVisiblePropertyInstrumented: false,
+        accessibleName: null // Set by CircuitDescription.ts
+      },
 
       // see https://github.com/phetsims/circuit-construction-kit-common/issues/1079#issue-3649808690
-      // and https://github.com/phetsims/circuit-construction-kit-common/issues/1083
-      // and https://github.com/phetsims/circuit-construction-kit-common/issues/1237
-      // and https://github.com/phetsims/circuit-construction-kit-common/issues/1242
-      accessibleRoleDescription: CircuitConstructionKitCommonFluent.a11y.vertexNode.accessibleRoleDescriptionStringProperty
-    } ) );
+      AccessibleDraggableOptions, {
+
+        // and https://github.com/phetsims/circuit-construction-kit-common/issues/1083
+        // and https://github.com/phetsims/circuit-construction-kit-common/issues/1237
+        // and https://github.com/phetsims/circuit-construction-kit-common/issues/1242
+        accessibleRoleDescription: CircuitConstructionKitCommonFluent.a11y.vertexNode.accessibleRoleDescriptionStringProperty
+      } ) );
 
     const circuit = circuitNode.circuit;
 
