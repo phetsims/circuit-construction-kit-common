@@ -498,7 +498,7 @@
         "value": "Group"
       },
       "constructionArea": {
-        "value": "Add Circuit Components and Sensors as needed. Once added, use Space  or Enter to open connection options, measurement options, or select for editing.  Connected components auto-organize into groups. Remove a selected component or  disconnect a selected connection point with Delete key. Check out Keyboard Shortcuts  for more details."
+        "value": "Add circuit components and sensors as needed. Then, use connection  options to build circuits, measurement options to take measurements, and edit options  to adjust component specifications. Use Delete key to snip connections or  remove components and sensors. Connected components auto-organize into groups and  everything is movable with the Arrow keys. Checkout Keyboard Shortcuts for more handy shortcuts."
       }
     },
     "circuitGroupDescription": {
