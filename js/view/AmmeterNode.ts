@@ -244,7 +244,7 @@ export default class AmmeterNode extends InteractiveHighlighting( Node ) {
 
     const probeOptions = options.isIcon ? baseProbeOptions : combineOptions<NodeOptions>( baseProbeOptions, AccessibleInteractiveOptions, {
       accessibleName: CircuitConstructionKitCommonFluent.a11y.ammeterNode.probe.accessibleNameStringProperty,
-      accessibleRoleDescription: 'measurement options button'
+      accessibleRoleDescription: CircuitConstructionKitCommonFluent.a11y.measurementProbe.accessibleRoleDescriptionStringProperty
     } );
 
     // Use InteractiveHighlightingProbeNode for non-icons to get hover highlights on the probe

@@ -23,6 +23,7 @@ import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import CCKCUtils from '../CCKCUtils.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import type Circuit from '../model/Circuit.js';
 import Vertex from '../model/Vertex.js';
 import CCKCColors from './CCKCColors.js';
@@ -100,7 +101,8 @@ export default class VertexNode extends InteractiveHighlighting( Node ) {
       // see https://github.com/phetsims/circuit-construction-kit-common/issues/1079#issue-3649808690
       // and https://github.com/phetsims/circuit-construction-kit-common/issues/1083
       // and https://github.com/phetsims/circuit-construction-kit-common/issues/1237
-      accessibleRoleDescription: 'connection options button'
+      // and https://github.com/phetsims/circuit-construction-kit-common/issues/1242
+      accessibleRoleDescription: CircuitConstructionKitCommonFluent.a11y.vertexNode.accessibleRoleDescriptionStringProperty
     } ) );
 
     const circuit = circuitNode.circuit;

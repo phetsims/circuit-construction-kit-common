@@ -164,7 +164,7 @@ export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
         fill: CCKCQueryParameters.showVoltmeterSamplePoints ? color : null,
         cursor: 'pointer',
         accessibleName: accessibleName,
-        accessibleRoleDescription: 'measurement options button',
+        accessibleRoleDescription: CircuitConstructionKitCommonFluent.a11y.measurementProbe.accessibleRoleDescriptionStringProperty,
         children: [ new Image( image, {
           scale: PROBE_SCALE,
           rotation: rotation,

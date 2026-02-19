@@ -270,6 +270,9 @@ addToMapIfDefined( 'a11y_voltmeterNode_blackProbe_accessibleName', 'a11y.voltmet
 addToMapIfDefined( 'a11y_voltmeterNode_redProbe_accessibleName', 'a11y.voltmeterNode.redProbe.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_voltmeterNode_noReading', 'a11y.voltmeterNode.noReadingStringProperty' );
 addToMapIfDefined( 'a11y_voltmeterNode_voltageVolts', 'a11y.voltmeterNode.voltageVoltsStringProperty' );
+addToMapIfDefined( 'a11y_vertexNode_accessibleRoleDescription', 'a11y.vertexNode.accessibleRoleDescriptionStringProperty' );
+addToMapIfDefined( 'a11y_measurementProbe_accessibleRoleDescription', 'a11y.measurementProbe.accessibleRoleDescriptionStringProperty' );
+addToMapIfDefined( 'a11y_circuitComponent_accessibleRoleDescription', 'a11y.circuitComponent.accessibleRoleDescriptionStringProperty' );
 addToMapIfDefined( 'a11y_circuitComponent_separator', 'a11y.circuitComponent.separatorStringProperty' );
 addToMapIfDefined( 'a11y_circuitComponent_nameWithPosition', 'a11y.circuitComponent.nameWithPositionStringProperty' );
 addToMapIfDefined( 'a11y_circuitComponent_values_resistanceOhms', 'a11y.circuitComponent.values.resistanceOhmsStringProperty' );
@@ -702,7 +705,14 @@ const CircuitConstructionKitCommonFluent = {
       noReadingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_voltmeterNode_noReading', _.get( CircuitConstructionKitCommonStrings, 'a11y.voltmeterNode.noReadingStringProperty' ) ),
       voltageVolts: new FluentPattern<{ voltage: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_voltmeterNode_voltageVolts', _.get( CircuitConstructionKitCommonStrings, 'a11y.voltmeterNode.voltageVoltsStringProperty' ), [{"name":"voltage"}] )
     },
+    vertexNode: {
+      accessibleRoleDescriptionStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_vertexNode_accessibleRoleDescription', _.get( CircuitConstructionKitCommonStrings, 'a11y.vertexNode.accessibleRoleDescriptionStringProperty' ) )
+    },
+    measurementProbe: {
+      accessibleRoleDescriptionStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_measurementProbe_accessibleRoleDescription', _.get( CircuitConstructionKitCommonStrings, 'a11y.measurementProbe.accessibleRoleDescriptionStringProperty' ) )
+    },
     circuitComponent: {
+      accessibleRoleDescriptionStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitComponent_accessibleRoleDescription', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitComponent.accessibleRoleDescriptionStringProperty' ) ),
       _comment_0: new FluentComment( {"comment":"Composable parts for building accessible names (DRY pattern)","associatedKey":"separator"} ),
       _comment_1: new FluentComment( {"comment":"These are assembled in CircuitDescription.ts","associatedKey":"separator"} ),
       separatorStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitComponent_separator', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitComponent.separatorStringProperty' ) ),

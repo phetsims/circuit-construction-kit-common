@@ -481,7 +481,12 @@ a11y:
       accessibleName: Red Probe
     noReading:                 no reading
     voltageVolts:              '{ $voltage } volts'
+  vertexNode:
+    accessibleRoleDescription: connection options button
+  measurementProbe:
+    accessibleRoleDescription: measurement options button
   circuitComponent:
+    accessibleRoleDescription: edit options button
     # Composable parts for building accessible names (DRY pattern)
     # These are assembled in CircuitDescription.ts
     separator:        ', '

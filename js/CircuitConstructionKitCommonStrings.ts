@@ -361,7 +361,14 @@ type StringsType = {
       'noReadingStringProperty': LocalizedStringProperty;
       'voltageVoltsStringProperty': LocalizedStringProperty;
     };
+    'vertexNode': {
+      'accessibleRoleDescriptionStringProperty': LocalizedStringProperty;
+    };
+    'measurementProbe': {
+      'accessibleRoleDescriptionStringProperty': LocalizedStringProperty;
+    };
     'circuitComponent': {
+      'accessibleRoleDescriptionStringProperty': LocalizedStringProperty;
       'separatorStringProperty': LocalizedStringProperty;
       'nameWithPositionStringProperty': LocalizedStringProperty;
       'values': {

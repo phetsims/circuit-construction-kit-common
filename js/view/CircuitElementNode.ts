@@ -18,6 +18,7 @@ import { type PressListenerEvent } from '../../../scenery/js/listeners/PressList
 import Node, { type NodeOptions } from '../../../scenery/js/nodes/Node.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import type Circuit from '../model/Circuit.js';
 import type CircuitElement from '../model/CircuitElement.js';
 import type Vertex from '../model/Vertex.js';
@@ -73,7 +74,7 @@ export default abstract class CircuitElementNode extends InteractiveHighlighting
         phetioInputEnabledPropertyInstrumented: true,
         useHitTestForSensors: false,
         ariaRole: 'application',
-        accessibleRoleDescription: 'edit options button'
+        accessibleRoleDescription: CircuitConstructionKitCommonFluent.a11y.circuitComponent.accessibleRoleDescriptionStringProperty
       }, combineOptions<CircuitElementNodeOptions>( {}, AccessibleInteractiveOptions, providedOptions ) );
     }
 

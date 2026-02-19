@@ -854,7 +854,20 @@
         "value": "{ $voltage } volts"
       }
     },
+    "vertexNode": {
+      "accessibleRoleDescription": {
+        "value": "connection options button"
+      }
+    },
+    "measurementProbe": {
+      "accessibleRoleDescription": {
+        "value": "measurement options button"
+      }
+    },
     "circuitComponent": {
+      "accessibleRoleDescription": {
+        "value": "edit options button"
+      },
       "separator": {
         "value": ", "
       },
