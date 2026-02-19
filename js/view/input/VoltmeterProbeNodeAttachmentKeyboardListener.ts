@@ -90,7 +90,9 @@ export default class VoltmeterProbeNodeAttachmentKeyboardListener extends Attach
           // Then by connection number within group
           return aConnection - bConnection;
         } );
-      }
+      },
+
+      noItemsContextResponse: CircuitConstructionKitCommonFluent.a11y.attachmentKeyboardListener.nothingToMeasureStringProperty
     } );
   }
 }

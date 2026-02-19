@@ -282,6 +282,9 @@ a11y:
     interactionHint: Add circuit components and start connecting. Be sure to add at least one Wire.
   constructionArea:
     accessibleHeading: Construction Area
+  attachmentKeyboardListener:
+    noConnections: No possible connections. Add circuit components from toolbox.
+    nothingToMeasure: Nothing to measure. Add circuit components from toolbox.
   circuitContextResponses:
     selectedForEditing:         Selected for editing, controls visible.
     editControlsHidden:         Edit controls hidden.

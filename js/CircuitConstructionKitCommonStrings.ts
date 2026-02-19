@@ -211,6 +211,10 @@ type StringsType = {
     'constructionArea': {
       'accessibleHeadingStringProperty': LocalizedStringProperty;
     };
+    'attachmentKeyboardListener': {
+      'noConnectionsStringProperty': LocalizedStringProperty;
+      'nothingToMeasureStringProperty': LocalizedStringProperty;
+    };
     'circuitContextResponses': {
       'selectedForEditingStringProperty': LocalizedStringProperty;
       'editControlsHiddenStringProperty': LocalizedStringProperty;

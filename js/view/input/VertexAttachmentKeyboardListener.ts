@@ -8,6 +8,7 @@
 
 import Text from '../../../../scenery/js/nodes/Text.js';
 import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
+import CircuitConstructionKitCommonFluent from '../../CircuitConstructionKitCommonFluent.js';
 import Vertex from '../../model/Vertex.js';
 import type CircuitNode from '../CircuitNode.js';
 import CircuitDescription from '../description/CircuitDescription.js';
@@ -92,7 +93,9 @@ export default class VertexAttachmentKeyboardListener extends AttachmentKeyboard
       targetDisposeEmitter: vertex.disposeEmitter,
 
       // Sort items by group number, then by connection number within each group
-      sortItems: sortAttachmentItems
+      sortItems: sortAttachmentItems,
+
+      noItemsContextResponse: CircuitConstructionKitCommonFluent.a11y.attachmentKeyboardListener.noConnectionsStringProperty
     } );
   }
 }

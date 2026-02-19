@@ -540,6 +540,14 @@
         "value": "Construction Area"
       }
     },
+    "attachmentKeyboardListener": {
+      "noConnections": {
+        "value": "No possible connections. Add circuit components from toolbox."
+      },
+      "nothingToMeasure": {
+        "value": "Nothing to measure. Add circuit components from toolbox."
+      }
+    },
     "circuitContextResponses": {
       "selectedForEditing": {
         "value": "Selected for editing, controls visible."

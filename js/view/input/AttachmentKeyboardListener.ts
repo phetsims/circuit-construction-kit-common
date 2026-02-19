@@ -9,6 +9,7 @@
 import animationFrameTimer from '../../../../axon/js/animationFrameTimer.js';
 import Property from '../../../../axon/js/Property.js';
 import type { TReadOnlyEmitter } from '../../../../axon/js/TEmitter.js';
+import type { TReadOnlyProperty } from '../../../../axon/js/TReadOnlyProperty.js';
 import type Vector2 from '../../../../dot/js/Vector2.js';
 import { pdomFocusProperty } from '../../../../scenery/js/accessibility/pdomFocusProperty.js';
 import { OneKeyStroke } from '../../../../scenery/js/input/KeyDescriptor.js';
@@ -59,6 +60,9 @@ export type AttachmentKeyboardListenerOptions<T> = {
   // Optional callback to sort items before displaying in the combo box.
   // Items are sorted after filtering but before display.
   sortItems?: ( items: AttachmentItem<T>[] ) => AttachmentItem<T>[];
+
+  // Context response announced when there are no available items (e.g., empty circuit)
+  noItemsContextResponse: TReadOnlyProperty<string> | string;
 };
 
 export default class AttachmentKeyboardListener<T> extends KeyboardListener<OneKeyStroke[]> {
@@ -72,6 +76,7 @@ export default class AttachmentKeyboardListener<T> extends KeyboardListener<OneK
 
         if ( availableItems.length === 0 ) {
           options.circuitNode.hideAttachmentHighlight();
+          options.triggerNode.addAccessibleContextResponse( options.noItemsContextResponse );
           return;
         }
 

@@ -188,6 +188,8 @@ addToMapIfDefined( 'a11y_screenSummary_connectivityPhrase', 'a11y.screenSummary.
 addToMapIfDefined( 'a11y_screenSummary_currentFlowingPhrase', 'a11y.screenSummary.currentFlowingPhraseStringProperty' );
 addToMapIfDefined( 'a11y_screenSummary_interactionHint', 'a11y.screenSummary.interactionHintStringProperty' );
 addToMapIfDefined( 'a11y_constructionArea_accessibleHeading', 'a11y.constructionArea.accessibleHeadingStringProperty' );
+addToMapIfDefined( 'a11y_attachmentKeyboardListener_noConnections', 'a11y.attachmentKeyboardListener.noConnectionsStringProperty' );
+addToMapIfDefined( 'a11y_attachmentKeyboardListener_nothingToMeasure', 'a11y.attachmentKeyboardListener.nothingToMeasureStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_selectedForEditing', 'a11y.circuitContextResponses.selectedForEditingStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_editControlsHidden', 'a11y.circuitContextResponses.editControlsHiddenStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_editPanelHeading', 'a11y.circuitContextResponses.editPanelHeadingStringProperty' );
@@ -542,6 +544,10 @@ const CircuitConstructionKitCommonFluent = {
     },
     constructionArea: {
       accessibleHeadingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_constructionArea_accessibleHeading', _.get( CircuitConstructionKitCommonStrings, 'a11y.constructionArea.accessibleHeadingStringProperty' ) )
+    },
+    attachmentKeyboardListener: {
+      noConnectionsStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_attachmentKeyboardListener_noConnections', _.get( CircuitConstructionKitCommonStrings, 'a11y.attachmentKeyboardListener.noConnectionsStringProperty' ) ),
+      nothingToMeasureStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_attachmentKeyboardListener_nothingToMeasure', _.get( CircuitConstructionKitCommonStrings, 'a11y.attachmentKeyboardListener.nothingToMeasureStringProperty' ) )
     },
     circuitContextResponses: {
       selectedForEditingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_selectedForEditing', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.selectedForEditingStringProperty' ) ),

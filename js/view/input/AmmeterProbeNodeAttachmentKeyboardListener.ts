@@ -86,7 +86,9 @@ export default class AmmeterProbeNodeAttachmentKeyboardListener extends Attachme
                                   current: toFixed( Math.abs( current ), 2 )
                                 } );
         probeNode.addAccessibleContextResponse( contextResponse );
-      }
+      },
+
+      noItemsContextResponse: CircuitConstructionKitCommonFluent.a11y.attachmentKeyboardListener.nothingToMeasureStringProperty
     } );
   }
 }
