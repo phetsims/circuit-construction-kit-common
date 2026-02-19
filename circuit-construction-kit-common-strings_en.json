@@ -461,6 +461,12 @@
       "listFinalSeparator": {
         "value": ", and { $last }"
       },
+      "componentsHeading": {
+        "value": "Components"
+      },
+      "connectionsHeading": {
+        "value": "Connections"
+      },
       "groupHeading": {
         "value": "Group { $groupIndex } of { $totalGroups }"
       },

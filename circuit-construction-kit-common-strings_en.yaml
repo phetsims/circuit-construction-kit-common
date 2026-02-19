@@ -191,6 +191,8 @@ a11y:
     listTwoItems:               '{ $first } and { $second }'
     listFinalSeparator:         ', and { $last }'
     # Group patterns
+    componentsHeading: Components
+    connectionsHeading: Connections
     groupHeading:               'Group { $groupIndex } of { $totalGroups }'
     groupWithConnection:        'Group { $groupIndex }: { $description }'
     notConnected:               '{ $description }, not connected'

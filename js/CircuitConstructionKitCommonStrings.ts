@@ -180,6 +180,8 @@ type StringsType = {
       'listAndStringProperty': LocalizedStringProperty;
       'listTwoItemsStringProperty': LocalizedStringProperty;
       'listFinalSeparatorStringProperty': LocalizedStringProperty;
+      'componentsHeadingStringProperty': LocalizedStringProperty;
+      'connectionsHeadingStringProperty': LocalizedStringProperty;
       'groupHeadingStringProperty': LocalizedStringProperty;
       'groupWithConnectionStringProperty': LocalizedStringProperty;
       'notConnectedStringProperty': LocalizedStringProperty;

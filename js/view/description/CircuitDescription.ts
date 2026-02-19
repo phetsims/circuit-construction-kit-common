@@ -44,6 +44,10 @@ const GROUPED_CIRCUIT_ELEMENT_TYPE_ORDER: CircuitElementType[] = [ 'battery', 'r
 export default class CircuitDescription {
   private static myGroupNodes: Node[] | null = null;
 
+  // Track subsection nodes for connected groups
+  private static groupComponentsSections = new Map<Node, Node>();
+  private static groupConnectionsSections = new Map<Node, Node>();
+
   // Delegate to CircuitDescriptionUtils for shared functionality
   public static getDescriptionType = CircuitDescriptionUtils.getDescriptionType;
   public static isSingleMaxItem = CircuitDescriptionUtils.isSingleMaxItem;
@@ -175,6 +179,13 @@ export default class CircuitDescription {
       } );
       this.myGroupNodes = null;
     }
+
+    // Clear old subsection pdomOrders to release circuit element/vertex nodes,
+    // then clear the references. A node can only be in one pdomOrder at a time.
+    this.groupComponentsSections.forEach( section => { section.pdomOrder = []; } );
+    this.groupConnectionsSections.forEach( section => { section.pdomOrder = []; } );
+    this.groupComponentsSections.clear();
+    this.groupConnectionsSections.clear();
   }
 
   /**
@@ -623,18 +634,9 @@ export default class CircuitDescription {
         vertexNode.attachmentConnectionIndex = vertexIndex + 1;
       } );
 
-      // Build PDOM order for this group
-      const groupPDOMOrder: Node[] = [];
-      sortedCircuitElements.forEach( circuitElement => {
-        const circuitElementNode = circuitNode.getCircuitElementNode( circuitElement );
-        groupPDOMOrder.push( circuitElementNode );
-      } );
-      group.vertices.forEach( vertex => {
-        groupPDOMOrder.push( circuitNode.getVertexNode( vertex ) );
-      } );
-
-      // Remove duplicates from PDOM order using native Set
-      const uniquePDOMOrder = Array.from( new Set( groupPDOMOrder ) );
+      // Build separate component and connection node arrays for this group
+      const groupComponentNodes = sortedCircuitElements.map( circuitElement => circuitNode.getCircuitElementNode( circuitElement ) );
+      const groupConnectionNodes = group.vertices.map( vertex => circuitNode.getVertexNode( vertex ) );
 
       // Create a summary paragraph node to appear right after the heading
       const groupSummary = CircuitGroupDescription.getGroupSummary( group, circuit );
@@ -643,16 +645,23 @@ export default class CircuitDescription {
         innerContent: groupSummary
       } );
 
-      // Create group node with summary node first in pdomOrder
+      // Create subsection nodes for components and connections
+      const componentsSection = new Node( { tagName: 'div', accessibleHeading: CircuitConstructionKitCommonFluent.a11y.circuitDescription.componentsHeadingStringProperty, pdomOrder: groupComponentNodes } );
+      const connectionsSection = new Node( { tagName: 'div', accessibleHeading: CircuitConstructionKitCommonFluent.a11y.circuitDescription.connectionsHeadingStringProperty, pdomOrder: groupConnectionNodes } );
+
+      // Create group node with summary, components section, and connections section
       const groupNode = new Node( {
         tagName: 'div',
         accessibleHeading: CircuitConstructionKitCommonFluent.a11y.circuitDescription.groupHeading.format( {
           groupIndex: groupIndex + 1,
           totalGroups: multiElementGroups.length
         } ),
-        children: [ summaryNode ],
-        pdomOrder: [ summaryNode, ...uniquePDOMOrder ]
+        children: [ summaryNode, componentsSection, connectionsSection ]
       } );
+
+      // Store subsection references for updateEditPanelPosition
+      this.groupComponentsSections.set( groupNode, componentsSection );
+      this.groupConnectionsSections.set( groupNode, connectionsSection );
 
       circuitNode.groupsContainer.addChild( groupNode );
       groupNodes.push( groupNode );
@@ -803,15 +812,13 @@ export default class CircuitDescription {
       circuitNode.unconnectedCircuitElementsSection.pdomOrder = unconnectedOrder;
     }
 
-    // Remove edit panel from any group nodes if present
-    if ( this.myGroupNodes ) {
-      this.myGroupNodes.forEach( groupNode => {
-        const groupOrder = removeFromPdomOrder( groupNode.pdomOrder );
-        if ( groupOrder ) {
-          groupNode.pdomOrder = groupOrder;
-        }
-      } );
-    }
+    // Remove edit panel from any group components sections if present
+    this.groupComponentsSections.forEach( componentsSection => {
+      const sectionOrder = removeFromPdomOrder( componentsSection.pdomOrder );
+      if ( sectionOrder ) {
+        componentsSection.pdomOrder = sectionOrder;
+      }
+    } );
 
     // If a circuit element is selected, insert the edit panel after it
     if ( selection instanceof CircuitElement ) {
@@ -829,18 +836,16 @@ export default class CircuitDescription {
         }
       }
 
-      // Check if it's in one of the group nodes
-      if ( this.myGroupNodes ) {
-        for ( const groupNode of this.myGroupNodes ) {
-          const groupPdomOrder = groupNode.pdomOrder;
-          if ( groupPdomOrder ) {
-            const elementIndex = groupPdomOrder.indexOf( circuitElementNode );
-            if ( elementIndex !== -1 ) {
-              const newOrder = groupPdomOrder.slice();
-              newOrder.splice( elementIndex + 1, 0, editPanel );
-              groupNode.pdomOrder = newOrder;
-              return;
-            }
+      // Check if it's in one of the group components sections
+      for ( const componentsSection of this.groupComponentsSections.values() ) {
+        const sectionPdomOrder = componentsSection.pdomOrder;
+        if ( sectionPdomOrder ) {
+          const elementIndex = sectionPdomOrder.indexOf( circuitElementNode );
+          if ( elementIndex !== -1 ) {
+            const newOrder = sectionPdomOrder.slice();
+            newOrder.splice( elementIndex + 1, 0, editPanel );
+            componentsSection.pdomOrder = newOrder;
+            return;
           }
         }
       }
