@@ -468,7 +468,7 @@
         "value": "Connections"
       },
       "groupHeading": {
-        "value": "Group { $groupIndex } of { $totalGroups }"
+        "value": "Group { $groupIndex } of { $totalGroups }: Connected Components"
       },
       "groupWithConnection": {
         "value": "Group { $groupIndex }: { $description }"

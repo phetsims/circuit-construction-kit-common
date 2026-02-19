@@ -193,7 +193,7 @@ a11y:
     # Group patterns
     componentsHeading:          Components
     connectionsHeading:         Connections
-    groupHeading:               'Group { $groupIndex } of { $totalGroups }'
+    groupHeading:               'Group { $groupIndex } of { $totalGroups }: Connected Components'
     groupWithConnection:        'Group { $groupIndex }: { $description }'
     notConnected:               '{ $description }, not connected'
     connectionPoint:            Connection Point
