@@ -210,12 +210,12 @@ addToMapIfDefined( 'a11y_circuitContextResponses_batteryReversed', 'a11y.circuit
 addToMapIfDefined( 'a11y_circuitContextResponses_batteryReversedNoChange', 'a11y.circuitContextResponses.batteryReversedNoChangeStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_vertexDisconnected', 'a11y.circuitContextResponses.vertexDisconnectedStringProperty' );
 addToMapIfDefined( 'a11y_circuitContextResponses_vertexDisconnectedNoChange', 'a11y.circuitContextResponses.vertexDisconnectedNoChangeStringProperty' );
-addToMapIfDefined( 'a11y_measurementToolsToolbox_accessibleHeading', 'a11y.measurementToolsToolbox.accessibleHeadingStringProperty' );
-addToMapIfDefined( 'a11y_measurementToolsToolbox_accessibleHelpText', 'a11y.measurementToolsToolbox.accessibleHelpTextStringProperty' );
-addToMapIfDefined( 'a11y_measurementToolsToolbox_toolDisabledHelpText', 'a11y.measurementToolsToolbox.toolDisabledHelpTextStringProperty' );
-addToMapIfDefined( 'a11y_measurementToolsToolbox_nonContactAmmeter_accessibleName', 'a11y.measurementToolsToolbox.nonContactAmmeter.accessibleNameStringProperty' );
-addToMapIfDefined( 'a11y_measurementToolsToolbox_voltmeter_accessibleName', 'a11y.measurementToolsToolbox.voltmeter.accessibleNameStringProperty' );
-addToMapIfDefined( 'a11y_measurementToolsToolbox_ammeter_accessibleName', 'a11y.measurementToolsToolbox.ammeter.accessibleNameStringProperty' );
+addToMapIfDefined( 'a11y_sensorToolbox_accessibleHeading', 'a11y.sensorToolbox.accessibleHeadingStringProperty' );
+addToMapIfDefined( 'a11y_sensorToolbox_accessibleHelpText', 'a11y.sensorToolbox.accessibleHelpTextStringProperty' );
+addToMapIfDefined( 'a11y_sensorToolbox_toolDisabledHelpText', 'a11y.sensorToolbox.toolDisabledHelpTextStringProperty' );
+addToMapIfDefined( 'a11y_sensorToolbox_nonContactAmmeter_accessibleName', 'a11y.sensorToolbox.nonContactAmmeter.accessibleNameStringProperty' );
+addToMapIfDefined( 'a11y_sensorToolbox_voltmeter_accessibleName', 'a11y.sensorToolbox.voltmeter.accessibleNameStringProperty' );
+addToMapIfDefined( 'a11y_sensorToolbox_ammeter_accessibleName', 'a11y.sensorToolbox.ammeter.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_circuitComponentToolbox_carousel_accessibleName', 'a11y.circuitComponentToolbox.carousel.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_circuitComponentToolbox_carousel_accessibleHelpText', 'a11y.circuitComponentToolbox.carousel.accessibleHelpTextStringProperty' );
 addToMapIfDefined( 'a11y_circuitComponentToolbox_toolAccessibleName', 'a11y.circuitComponentToolbox.toolAccessibleNameStringProperty' );
@@ -579,18 +579,18 @@ const CircuitConstructionKitCommonFluent = {
       vertexDisconnected: new FluentPattern<{ currentPhrase: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_vertexDisconnected', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.vertexDisconnectedStringProperty' ), [{"name":"currentPhrase"}] ),
       vertexDisconnectedNoChangeStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitContextResponses_vertexDisconnectedNoChange', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitContextResponses.vertexDisconnectedNoChangeStringProperty' ) )
     },
-    measurementToolsToolbox: {
-      accessibleHeadingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_measurementToolsToolbox_accessibleHeading', _.get( CircuitConstructionKitCommonStrings, 'a11y.measurementToolsToolbox.accessibleHeadingStringProperty' ) ),
-      accessibleHelpTextStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_measurementToolsToolbox_accessibleHelpText', _.get( CircuitConstructionKitCommonStrings, 'a11y.measurementToolsToolbox.accessibleHelpTextStringProperty' ) ),
-      toolDisabledHelpText: new FluentPattern<{ componentType: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_measurementToolsToolbox_toolDisabledHelpText', _.get( CircuitConstructionKitCommonStrings, 'a11y.measurementToolsToolbox.toolDisabledHelpTextStringProperty' ), [{"name":"componentType"}] ),
+    sensorToolbox: {
+      accessibleHeadingStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_sensorToolbox_accessibleHeading', _.get( CircuitConstructionKitCommonStrings, 'a11y.sensorToolbox.accessibleHeadingStringProperty' ) ),
+      accessibleHelpTextStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_sensorToolbox_accessibleHelpText', _.get( CircuitConstructionKitCommonStrings, 'a11y.sensorToolbox.accessibleHelpTextStringProperty' ) ),
+      toolDisabledHelpText: new FluentPattern<{ componentType: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_sensorToolbox_toolDisabledHelpText', _.get( CircuitConstructionKitCommonStrings, 'a11y.sensorToolbox.toolDisabledHelpTextStringProperty' ), [{"name":"componentType"}] ),
       nonContactAmmeter: {
-        accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_measurementToolsToolbox_nonContactAmmeter_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.measurementToolsToolbox.nonContactAmmeter.accessibleNameStringProperty' ) )
+        accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_sensorToolbox_nonContactAmmeter_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.sensorToolbox.nonContactAmmeter.accessibleNameStringProperty' ) )
       },
       voltmeter: {
-        accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_measurementToolsToolbox_voltmeter_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.measurementToolsToolbox.voltmeter.accessibleNameStringProperty' ) )
+        accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_sensorToolbox_voltmeter_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.sensorToolbox.voltmeter.accessibleNameStringProperty' ) )
       },
       ammeter: {
-        accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_measurementToolsToolbox_ammeter_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.measurementToolsToolbox.ammeter.accessibleNameStringProperty' ) )
+        accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_sensorToolbox_ammeter_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.sensorToolbox.ammeter.accessibleNameStringProperty' ) )
       }
     },
     circuitComponentToolbox: {

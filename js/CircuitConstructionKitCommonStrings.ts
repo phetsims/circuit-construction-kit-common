@@ -235,7 +235,7 @@ type StringsType = {
       'vertexDisconnectedStringProperty': LocalizedStringProperty;
       'vertexDisconnectedNoChangeStringProperty': LocalizedStringProperty;
     };
-    'measurementToolsToolbox': {
+    'sensorToolbox': {
       'accessibleHeadingStringProperty': LocalizedStringProperty;
       'accessibleHelpTextStringProperty': LocalizedStringProperty;
       'toolDisabledHelpTextStringProperty': LocalizedStringProperty;

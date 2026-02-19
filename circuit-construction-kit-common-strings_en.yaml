@@ -145,32 +145,32 @@ a11y:
       dollarBill:       Dollar Bill
     # Plural forms for circuit component types (used in compressed connection descriptions)
     circuitComponentTypePlurals:
-      wire:             Wires
-      battery:          Batteries
-      resistor:         Resistors
-      capacitor:        Capacitors
-      inductor:         Inductors
-      lightBulb:        Light Bulbs
-      acSource:         AC Sources
-      fuse:             Fuses
-      switch:           Switches
-      voltmeter:        Voltmeters
-      ammeter:          Ammeters
+      wire:              Wires
+      battery:           Batteries
+      resistor:          Resistors
+      capacitor:         Capacitors
+      inductor:          Inductors
+      lightBulb:         Light Bulbs
+      acSource:          AC Sources
+      fuse:              Fuses
+      switch:            Switches
+      voltmeter:         Voltmeters
+      ammeter:           Ammeters
       nonContactAmmeter: Non-Contact Ammeters
-      stopwatch:        Stopwatches
+      stopwatch:         Stopwatches
       # Extreme variants
-      extremeBattery:   Extreme Batteries
-      extremeResistor:  Extreme Resistors
-      extremeLightBulb: Extreme Bulbs
-      realLightBulb:    Real Bulbs
+      extremeBattery:    Extreme Batteries
+      extremeResistor:   Extreme Resistors
+      extremeLightBulb:  Extreme Bulbs
+      realLightBulb:     Real Bulbs
       # Household items (max 1 each, plurals unlikely but included for completeness)
-      coin:             Coins
-      paperClip:        Paper Clips
-      pencil:           Pencils
-      thinPencil:       Thin Pencils
-      eraser:           Erasers
-      hand:             Hands
-      dollarBill:       Dollar Bills
+      coin:              Coins
+      paperClip:         Paper Clips
+      pencil:            Pencils
+      thinPencil:        Thin Pencils
+      eraser:            Erasers
+      hand:              Hands
+      dollarBill:        Dollar Bills
     # Terminal and connection prefixes for vertex descriptions
     terminalPrefix:
       select_terminalType:
@@ -191,8 +191,8 @@ a11y:
     listTwoItems:               '{ $first } and { $second }'
     listFinalSeparator:         ', and { $last }'
     # Group patterns
-    componentsHeading: Components
-    connectionsHeading: Connections
+    componentsHeading:          Components
+    connectionsHeading:         Connections
     groupHeading:               'Group { $groupIndex } of { $totalGroups }'
     groupWithConnection:        'Group { $groupIndex }: { $description }'
     notConnected:               '{ $description }, not connected'
@@ -202,8 +202,8 @@ a11y:
     # Suffix appended to accessible name when a circuit element is selected
     accessibleNameWithSelected: '{ $accessibleName }, selected'
     # Suffix appended to accessible name for first/last items in a group
-    groupSuffixFirst: ', first item in Group { $groupIndex }'
-    groupSuffixLast: ', last item in Group { $groupIndex }'
+    groupSuffixFirst:           ', first item in Group { $groupIndex }'
+    groupSuffixLast:            ', last item in Group { $groupIndex }'
     group:                      Group
     constructionArea:           >-
                                 Add Circuit Components and Sensors as needed. Once added, use Space 
@@ -369,11 +369,11 @@ a11y:
     # Vertex disconnection responses
     vertexDisconnected:         'Disconnected. { $currentPhrase }'
     vertexDisconnectedNoChange: 'Disconnected.'
-  measurementToolsToolbox:
-    accessibleHeading:  Sensor Toolbox
-    accessibleHelpText: >-
-                        Add sensors to the Construction Area as needed. Once added, open measurement
-                        options with Space or Enter. Check out Keyboard Shortcuts for more details.
+  sensorToolbox:
+    accessibleHeading:    Sensor Toolbox
+    accessibleHelpText:   >-
+                          Add sensors to the Construction Area as needed. Once added, open measurement
+                          options with Space or Enter. Check out Keyboard Shortcuts for more details.
     toolDisabledHelpText: 'Disabled when no { $componentType } remain in the toolbox.'
     nonContactAmmeter:
       accessibleName: Add Non-Contact Ammeter
@@ -388,8 +388,8 @@ a11y:
                           Look for components in carousel and add them to Construction Area. Once added, return to 
                           Construction Area and look for components and their connection points to edit or choose options 
                           for connecting.
-    toolAccessibleName:        'Add { $componentName }'
-    toolDisabledHelpText:      'Disabled when no { $componentType } remain in the toolbox.'
+    toolAccessibleName:   'Add { $componentName }'
+    toolDisabledHelpText: 'Disabled when no { $componentType } remain in the toolbox.'
   advancedAccordionBox:
     accessibleName:              Advanced Options
     accessibleHelpTextCollapsed: Experiment with wire resistivity, battery resistance, and real bulbs.
@@ -489,8 +489,8 @@ a11y:
     accessibleRoleDescription: edit options button
     # Composable parts for building accessible names (DRY pattern)
     # These are assembled in CircuitDescription.ts
-    separator:        ', '
-    nameWithPosition: '{ $typeName } { $position } of { $total }'
+    separator:                 ', '
+    nameWithPosition:          '{ $typeName } { $position } of { $total }'
     values:
       resistanceOhms:      '{ $resistance } ohms'
       resistanceMilliohms: '{ $resistance } milliohms'

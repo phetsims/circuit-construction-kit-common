@@ -185,7 +185,7 @@ export default class SensorToolbox extends CCKCPanel {
     } );
     const allAmmetersInPlayAreaProperty = DerivedProperty.and( ammeterNodes.map( ammeterNode => ammeterNode.ammeter.isActiveProperty ) );
     // Create shared disabled help text property for non-contact ammeters
-    const ammeterDisabledHelpTextProperty = CircuitConstructionKitCommonFluent.a11y.measurementToolsToolbox.toolDisabledHelpText.createProperty( {
+    const ammeterDisabledHelpTextProperty = CircuitConstructionKitCommonFluent.a11y.sensorToolbox.toolDisabledHelpText.createProperty( {
       componentType: CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypePlurals.nonContactAmmeterStringProperty
     } );
 
@@ -247,7 +247,7 @@ export default class SensorToolbox extends CCKCPanel {
           phetioFeatured: true
         }
       } );
-    seriesAmmeterToolNode.accessibleName = CircuitConstructionKitCommonFluent.a11y.measurementToolsToolbox.ammeter.accessibleNameStringProperty;
+    seriesAmmeterToolNode.accessibleName = CircuitConstructionKitCommonFluent.a11y.sensorToolbox.ammeter.accessibleNameStringProperty;
     const allSeriesAmmetersInPlayAreaProperty = new DerivedProperty( [ circuit.circuitElements.lengthProperty ], ( () => {
       return circuit.circuitElements.count( circuitElement => circuitElement instanceof SeriesAmmeter ) === MAX_SERIES_AMMETERS;
     } ) );
@@ -292,7 +292,7 @@ export default class SensorToolbox extends CCKCPanel {
         phetioFeatured: true
       },
       tagName: 'button',
-      accessibleName: CircuitConstructionKitCommonFluent.a11y.measurementToolsToolbox.voltmeter.accessibleNameStringProperty,
+      accessibleName: CircuitConstructionKitCommonFluent.a11y.sensorToolbox.voltmeter.accessibleNameStringProperty,
       accessibleHelpTextBehavior: ParallelDOM.HELP_TEXT_AFTER_CONTENT
     } );
     voltmeterToolNode.addInputListener( new KeyboardListener( {
@@ -303,7 +303,7 @@ export default class SensorToolbox extends CCKCPanel {
     } ) );
 
     // Create shared disabled help text property for voltmeters
-    const voltmeterDisabledHelpTextProperty = CircuitConstructionKitCommonFluent.a11y.measurementToolsToolbox.toolDisabledHelpText.createProperty( {
+    const voltmeterDisabledHelpTextProperty = CircuitConstructionKitCommonFluent.a11y.sensorToolbox.toolDisabledHelpText.createProperty( {
       componentType: CircuitConstructionKitCommonFluent.a11y.circuitDescription.circuitComponentTypePlurals.voltmeterStringProperty
     } );
 
@@ -350,7 +350,7 @@ export default class SensorToolbox extends CCKCPanel {
 
     if ( options.showNoncontactAmmeters ) {
       const ammeterKeyboardListenerTarget = options.showSeriesAmmeters ? ammeterToolIcon : ammeterToolNode;
-      ammeterKeyboardListenerTarget.accessibleName = CircuitConstructionKitCommonFluent.a11y.measurementToolsToolbox.nonContactAmmeter.accessibleNameStringProperty;
+      ammeterKeyboardListenerTarget.accessibleName = CircuitConstructionKitCommonFluent.a11y.sensorToolbox.nonContactAmmeter.accessibleNameStringProperty;
       ammeterKeyboardListenerTarget.addInputListener( new KeyboardListener( {
         fireOnClick: true,
         fire: () => {
@@ -444,8 +444,8 @@ export default class SensorToolbox extends CCKCPanel {
     }
 
     super( new VBox( {
-      accessibleHeading: CircuitConstructionKitCommonFluent.a11y.measurementToolsToolbox.accessibleHeadingStringProperty,
-      accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.measurementToolsToolbox.accessibleHelpTextStringProperty,
+      accessibleHeading: CircuitConstructionKitCommonFluent.a11y.sensorToolbox.accessibleHeadingStringProperty,
+      accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.sensorToolbox.accessibleHelpTextStringProperty,
       accessibleHelpTextBehavior: ParallelDOM.HELP_TEXT_BEFORE_CONTENT,
       spacing: 5,
       children: rows

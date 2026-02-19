@@ -608,7 +608,7 @@
         "value": "Disconnected."
       }
     },
-    "measurementToolsToolbox": {
+    "sensorToolbox": {
       "accessibleHeading": {
         "value": "Sensor Toolbox"
       },
