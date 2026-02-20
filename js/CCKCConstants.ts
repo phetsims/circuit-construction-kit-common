@@ -8,6 +8,7 @@
 
 import Dimension2 from '../../dot/js/Dimension2.js';
 import Range from '../../dot/js/Range.js';
+import { type CreditsData } from '../../joist/js/CreditsNode.js';
 import PhetFont from '../../scenery-phet/js/PhetFont.js';
 import CCKCQueryParameters from './CCKCQueryParameters.js';
 import circuitConstructionKitCommon from './circuitConstructionKitCommon.js';
@@ -165,6 +166,15 @@ export default class CCKCConstants {
   public static readonly DC_CAROUSEL_SCALE = 1.2;
 
   public static readonly AC_CAROUSEL_SCALE = 0.85;
+
+  // Shared credits for all Circuit Construction Kit flavors (DC, DC-VL, AC, AC-VL)
+  public static readonly CREDITS: CreditsData = {
+    leadDesign: 'Amy Rouinfar',
+    softwareDevelopment: 'Sam Reid, Denzell Barnett, Matthew Blackman',
+    team: 'Wendy Adams, Matthew Blackman, Michael Dubson, Noah Finkelstein, Chris Keller, Ariel Paul, Kathy Perkins, Taliesin Smith, Carl Wieman',
+    qualityAssurance: 'Jaspe Arias, Steele Dalton, Amanda Davis, Alex Dornan, Jaron Droder, Bryce Griebenow, Clifford Hardin, Ethan Johnson, Megan Lai, Brooklyn Lash, Emily Miller, Matthew Moore, Ashton Morris, Liam Mulhall, Devon Quispe, Ben Roberts, Jacob Romero, Nancy Salpepi, Marla Schulz, Ethan Ward, Kathryn Woessner',
+    graphicArts: 'Bryce Gruneich, Mariah Hermsmeyer, Cheryl McCutchan'
+  };
 
   public static readonly MAX_DT = 0.5; // see https://github.com/phetsims/circuit-construction-kit-common/issues/476 and https://github.com/phetsims/joist/issues/130
 
