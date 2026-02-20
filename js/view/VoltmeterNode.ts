@@ -524,6 +524,11 @@ export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
    */
   public startDrag( event: PressListenerEvent ): void {
     this.dragHandler!.press( event );
+
+    // Explicitly forward the interactive highlight to this Node's InteractiveHighlighting descendants
+    // (e.g. VoltmeterBodyNode) so it transfers immediately from the toolbox icon. Without this, touch
+    // interactions can leave the highlight on the source icon because the pointer trail hasn't updated yet.
+    InteractiveHighlighting.forwardInteractiveHighlightFromPress( this, event );
   }
 }
 

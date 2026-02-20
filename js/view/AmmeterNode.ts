@@ -415,7 +415,14 @@ export default class AmmeterNode extends InteractiveHighlighting( Node ) {
    * Forward a drag from the toolbox to the play area node.
    */
   public startDrag( event: PressListenerEvent ): void {
-    this.dragHandler && this.dragHandler.press( event );
+    if ( this.dragHandler ) {
+      this.dragHandler.press( event );
+
+      // Explicitly forward the interactive highlight to this Node's InteractiveHighlighting descendants
+      // (e.g. AmmeterBodyNode) so it transfers immediately from the toolbox icon. Without this, touch
+      // interactions can leave the highlight on the source icon because the pointer trail hasn't updated yet.
+      InteractiveHighlighting.forwardInteractiveHighlightFromPress( this, event );
+    }
   }
 }
 
