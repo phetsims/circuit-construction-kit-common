@@ -9,7 +9,6 @@
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import type { TReadOnlyProperty } from '../../../../axon/js/TReadOnlyProperty.js';
 import { toFixed } from '../../../../dot/js/util/toFixed.js';
-import ParallelDOM from '../../../../scenery/js/accessibility/pdom/ParallelDOM.js';
 import { getPDOMFocusedNode } from '../../../../scenery/js/accessibility/pdomFocusProperty.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import CCKCQueryParameters from '../../CCKCQueryParameters.js';
@@ -696,7 +695,6 @@ export default class CircuitDescription {
 
     const focusedElement = getPDOMFocusedNode();
 
-    circuitNode.constructionAreaContainer.accessibleParagraphBehavior = ParallelDOM.HELP_TEXT_BEFORE_CONTENT;
     circuitNode.constructionAreaContainer.accessibleParagraph = CircuitConstructionKitCommonFluent.a11y.circuitDescription.constructionAreaStringProperty;
 
     // Get sensors from sensorLayer (voltmeters before ammeters), sorted by phetioIndex
