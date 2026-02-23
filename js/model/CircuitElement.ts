@@ -204,7 +204,9 @@ export default abstract class CircuitElement extends PhetioObject {
       tandem: tandem.createTandem( 'currentProperty' ),
       phetioReadOnly: true,
       phetioHighFrequency: true,
-      phetioFeatured: true
+      phetioFeatured: true,
+      phetioDocumentation: 'The current flowing through the circuit element. The view prioritizes displaying positive values, so the sign may not match the model value.',
+      units: 'A'
     } );
     this.currentProperty.link( current => {
       affirm( !isNaN( current ) );
