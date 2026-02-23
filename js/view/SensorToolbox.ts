@@ -17,6 +17,7 @@ import type ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import optionize from '../../../phet-core/js/optionize.js';
+import ParallelDOM from '../../../scenery/js/accessibility/pdom/ParallelDOM.js';
 import type AlignGroup from '../../../scenery/js/layout/constraints/AlignGroup.js';
 import HBox from '../../../scenery/js/layout/nodes/HBox.js';
 import HSeparator from '../../../scenery/js/layout/nodes/HSeparator.js';
@@ -27,7 +28,6 @@ import { type PressListenerEvent } from '../../../scenery/js/listeners/PressList
 import Node from '../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
 import Text from '../../../scenery/js/nodes/Text.js';
-import ParallelDOM from '../../../scenery/js/accessibility/pdom/ParallelDOM.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -181,7 +181,7 @@ export default class SensorToolbox extends CCKCPanel {
       visiblePropertyOptions: {
         phetioFeatured: true
       },
-      tagName: options.showNoncontactAmmeters && options.showSeriesAmmeters ? 'button' : undefined
+      tagName: 'button'
     } );
     const allAmmetersInPlayAreaProperty = DerivedProperty.and( ammeterNodes.map( ammeterNode => ammeterNode.ammeter.isActiveProperty ) );
     // Create shared disabled help text property for non-contact ammeters
@@ -244,13 +244,18 @@ export default class SensorToolbox extends CCKCPanel {
         ghostOpacity: 0,
         keyboardCreateToLeft: true, // Sensor toolbox is on the right side of the screen
         visiblePropertyOptions: {
-          phetioFeatured: true
-        }
+          phetioFeatured: true,
+          phetioReadOnly: true
+        },
+        accessibleName: CircuitConstructionKitCommonFluent.a11y.sensorToolbox.ammeter.accessibleNameStringProperty
       } );
-    seriesAmmeterToolNode.accessibleName = CircuitConstructionKitCommonFluent.a11y.sensorToolbox.ammeter.accessibleNameStringProperty;
     const allSeriesAmmetersInPlayAreaProperty = new DerivedProperty( [ circuit.circuitElements.lengthProperty ], ( () => {
       return circuit.circuitElements.count( circuitElement => circuitElement instanceof SeriesAmmeter ) === MAX_SERIES_AMMETERS;
     } ) );
+
+    allSeriesAmmetersInPlayAreaProperty.link( allInPlayArea => {
+      seriesAmmeterToolNode.focusable = !allInPlayArea;
+    } );
 
     // Labels underneath the sensor tool nodes
     const voltmeterText = new Text( voltmeterStringProperty, {
@@ -344,8 +349,7 @@ export default class SensorToolbox extends CCKCPanel {
         } ),
         ammeterText
       ],
-      excludeInvisibleChildrenFromBounds: false,
-      tagName: ( options.showNoncontactAmmeters && options.showSeriesAmmeters ) ? undefined : 'button'
+      excludeInvisibleChildrenFromBounds: false
     } );
 
     if ( options.showNoncontactAmmeters ) {
