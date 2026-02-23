@@ -283,7 +283,7 @@ a11y:
   constructionArea:
     accessibleHeading: Construction Area
   attachmentKeyboardListener:
-    noConnections: No possible connections. Add circuit components from toolbox.
+    noConnections:    No possible connections. Add circuit components from toolbox.
     nothingToMeasure: Nothing to measure. Add circuit components from toolbox.
   circuitContextResponses:
     selectedForEditing:         Selected for editing, controls visible.
@@ -428,14 +428,12 @@ a11y:
       accessibleContextResponseUnchecked: Circuit component values hidden.
   viewRadioButtonGroup:
     accessibleName:     Circuit Component View
-    accessibleHelpText: Choose how to display circuit components.
+    accessibleHelpText: Choose to display circuit components as they appear in real life or as they appear in schematic circuit diagrams.
     lifelikeRadioButton:
       accessibleName:            Lifelike View
-      accessibleHelpText:        Display circuit components as they appear in real life.
       accessibleContextResponse: Circuit components displayed with lifelike appearance.
     schematicRadioButton:
       accessibleName:            Schematic View
-      accessibleHelpText:        Display circuit components as they appear in schematic circuit diagrams.
       accessibleContextResponse: Circuit components displayed with schematic symbols.
   reverseBatteryButton:
     accessibleName: Reverse Battery Direction

@@ -735,14 +735,11 @@
         "value": "Circuit Component View"
       },
       "accessibleHelpText": {
-        "value": "Choose how to display circuit components."
+        "value": "Choose to display circuit components as they appear in real life or as they appear in schematic circuit diagrams."
       },
       "lifelikeRadioButton": {
         "accessibleName": {
           "value": "Lifelike View"
-        },
-        "accessibleHelpText": {
-          "value": "Display circuit components as they appear in real life."
         },
         "accessibleContextResponse": {
           "value": "Circuit components displayed with lifelike appearance."
@@ -751,9 +748,6 @@
       "schematicRadioButton": {
         "accessibleName": {
           "value": "Schematic View"
-        },
-        "accessibleHelpText": {
-          "value": "Display circuit components as they appear in schematic circuit diagrams."
         },
         "accessibleContextResponse": {
           "value": "Circuit components displayed with schematic symbols."

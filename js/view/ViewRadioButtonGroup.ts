@@ -85,7 +85,6 @@ export default class ViewRadioButtonGroup extends RectangularRadioButtonGroup<Ci
 
       options: {
         accessibleName: CircuitConstructionKitCommonFluent.a11y.viewRadioButtonGroup.lifelikeRadioButton.accessibleNameStringProperty,
-        accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.viewRadioButtonGroup.lifelikeRadioButton.accessibleHelpTextStringProperty,
         accessibleContextResponse: CircuitConstructionKitCommonFluent.a11y.viewRadioButtonGroup.lifelikeRadioButton.accessibleContextResponseStringProperty
       }
     }, {
@@ -95,7 +94,6 @@ export default class ViewRadioButtonGroup extends RectangularRadioButtonGroup<Ci
 
       options: {
         accessibleName: CircuitConstructionKitCommonFluent.a11y.viewRadioButtonGroup.schematicRadioButton.accessibleNameStringProperty,
-        accessibleHelpText: CircuitConstructionKitCommonFluent.a11y.viewRadioButtonGroup.schematicRadioButton.accessibleHelpTextStringProperty,
         accessibleContextResponse: CircuitConstructionKitCommonFluent.a11y.viewRadioButtonGroup.schematicRadioButton.accessibleContextResponseStringProperty
       }
     } ], options );

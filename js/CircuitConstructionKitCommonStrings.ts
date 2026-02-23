@@ -302,12 +302,10 @@ type StringsType = {
       'accessibleHelpTextStringProperty': LocalizedStringProperty;
       'lifelikeRadioButton': {
         'accessibleNameStringProperty': LocalizedStringProperty;
-        'accessibleHelpTextStringProperty': LocalizedStringProperty;
         'accessibleContextResponseStringProperty': LocalizedStringProperty;
       };
       'schematicRadioButton': {
         'accessibleNameStringProperty': LocalizedStringProperty;
-        'accessibleHelpTextStringProperty': LocalizedStringProperty;
         'accessibleContextResponseStringProperty': LocalizedStringProperty;
       }
     };
