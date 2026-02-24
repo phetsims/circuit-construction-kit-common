@@ -180,9 +180,17 @@ export default class CircuitDescription {
     }
 
     // Clear old subsection pdomOrders to release circuit element/vertex nodes,
-    // then clear the references. A node can only be in one pdomOrder at a time.
-    this.groupComponentsSections.forEach( section => { section.pdomOrder = []; } );
-    this.groupConnectionsSections.forEach( section => { section.pdomOrder = []; } );
+    // then dispose and clear the references. A node can only be in one pdomOrder at a time.
+    // Disposing is necessary to unlink listeners on shared StringProperties (e.g., componentsHeadingStringProperty)
+    // that were registered via accessibleHeading. Node.dispose() does not dispose children automatically.
+    this.groupComponentsSections.forEach( section => {
+      section.pdomOrder = [];
+      section.dispose();
+    } );
+    this.groupConnectionsSections.forEach( section => {
+      section.pdomOrder = [];
+      section.dispose();
+    } );
     this.groupComponentsSections.clear();
     this.groupConnectionsSections.clear();
   }
