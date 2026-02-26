@@ -11,6 +11,7 @@ import animationFrameTimer from '../../../axon/js/animationFrameTimer.js';
 import Multilink from '../../../axon/js/Multilink.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import type Bounds2 from '../../../dot/js/Bounds2.js';
+import dotRandom from '../../../dot/js/dotRandom.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import ScreenView, { type ScreenViewOptions } from '../../../joist/js/ScreenView.js';
 import optionize from '../../../phet-core/js/optionize.js';
@@ -49,6 +50,7 @@ import ChargeSpeedThrottlingReadoutNode from './ChargeSpeedThrottlingReadoutNode
 import CircuitElementEditContainerNode from './CircuitElementEditContainerNode.js';
 import CircuitElementNode from './CircuitElementNode.js';
 import CircuitElementToolbox, { type CircuitElementToolboxOptions } from './CircuitElementToolbox.js';
+import CircuitElementToolNode from './CircuitElementToolNode.js';
 import CircuitNode from './CircuitNode.js';
 import CurrentChartNode from './CurrentChartNode.js';
 import CCKCScreenSummaryContent from './description/CCKCScreenSummaryContent.js';
@@ -113,6 +115,7 @@ export default class CCKCScreenView extends ScreenView {
   private stopwatchNodePositionDirty: boolean;
   public readonly circuitElementEditContainerNode: CircuitElementEditContainerNode;
   public readonly showAdvancedControls: boolean;
+  private stepFrameCount = 0;
 
   /**
    * @param model
@@ -684,6 +687,20 @@ export default class CCKCScreenView extends ScreenView {
     // for updating the pen location
     if ( !this.model.isPlayingProperty.value ) {
       this.chartNodes.forEach( chartNode => chartNode.sampleLatestValue() );
+    }
+
+    // Automated component creation for testing. Set window.createComponentTest to a positive number N
+    // from the browser console to create a component every N frames. Set to 0 to stop.
+    this.stepFrameCount++;
+    const interval = ( window as unknown as Record<string, number> ).createComponentTest;
+    if ( interval > 0 && this.stepFrameCount % interval === 0 ) {
+      const toolNodes = this.circuitElementToolbox.carousel.carouselItemNodes.filter(
+        node => node instanceof CircuitElementToolNode && node.inputEnabled
+      );
+      if ( toolNodes.length > 0 ) {
+        const toolNode = toolNodes[ Math.floor( dotRandom.nextDouble() * toolNodes.length ) ] as CircuitElementToolNode;
+        toolNode.createAtAvailablePosition();
+      }
     }
   }
 

@@ -12,9 +12,11 @@ import Multilink from '../../../axon/js/Multilink.js';
 import type Property from '../../../axon/js/Property.js';
 import type ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
 import type { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
+import Bounds2 from '../../../dot/js/Bounds2.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import optionize from '../../../phet-core/js/optionize.js';
+import ParallelDOM from '../../../scenery/js/accessibility/pdom/ParallelDOM.js';
 import InteractiveHighlighting from '../../../scenery/js/accessibility/voicing/InteractiveHighlighting.js';
 import Grayscale from '../../../scenery/js/filters/Grayscale.js';
 import VBox, { type VBoxOptions } from '../../../scenery/js/layout/nodes/VBox.js';
@@ -22,7 +24,6 @@ import DragListener from '../../../scenery/js/listeners/DragListener.js';
 import KeyboardListener from '../../../scenery/js/listeners/KeyboardListener.js';
 import { type PressListenerEvent } from '../../../scenery/js/listeners/PressListener.js';
 import type Node from '../../../scenery/js/nodes/Node.js';
-import ParallelDOM from '../../../scenery/js/accessibility/pdom/ParallelDOM.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -45,13 +46,18 @@ type SelfOptions = {
   additionalProperty?: ReadOnlyProperty<boolean>;
   ghostOpacity?: number;
 
-  // When true, keyboard-created elements appear to the left of the tool icon instead of the right.
-  // Useful for toolboxes on the right side of the screen.
+  // When true, row-based placement fills to the left of the tool icon instead of the right.
+  // Used for the series ammeter toolbox on the right side of the screen.
   keyboardCreateToLeft?: boolean;
 };
 export type CircuitElementToolNodeOptions = SelfOptions & VBoxOptions;
 
 export default class CircuitElementToolNode extends InteractiveHighlighting( VBox ) {
+
+  private readonly circuit: Circuit;
+  private readonly globalToCircuitNodePoint: ( v: Vector2 ) => Vector2;
+  private readonly createElement: ( v: Vector2 ) => CircuitElement;
+  private readonly keyboardCreateToLeft: boolean;
 
   /**
    * @param circuitElementType - the type of circuit element this tool creates
@@ -121,6 +127,11 @@ export default class CircuitElementToolNode extends InteractiveHighlighting( VBo
 
     super( options );
 
+    this.circuit = circuit;
+    this.globalToCircuitNodePoint = globalToCircuitNodePoint;
+    this.createElement = createElement;
+    this.keyboardCreateToLeft = options.keyboardCreateToLeft;
+
     this.addInputListener( DragListener.createForwardingListener( ( event: PressListenerEvent ) => {
 
       // initial position of the pointer in the coordinate frame of the CircuitNode
@@ -145,59 +156,7 @@ export default class CircuitElementToolNode extends InteractiveHighlighting( VBo
 
     const keyboardListener = new KeyboardListener( {
       fireOnClick: true,
-      fire: () => {
-
-        // Position the element to the left or right of the tool icon depending on the option.
-        // Toolboxes on the right side of the screen should create elements to the left.
-        let center = options.keyboardCreateToLeft ?
-                     globalToCircuitNodePoint( this.globalBounds.leftCenter ).plusXY( -300, 0 ) : // tool is far from edge of panel
-                     globalToCircuitNodePoint( this.globalBounds.rightCenter ).plusXY( 100, 0 ); // tool is close to edge of panel
-
-        // Bounds for random positioning if nearby search fails
-        const minX = -512;
-        const maxX = 512;
-        const minY = -326;
-        const maxY = 326;
-
-        // Keep trying to find a position that doesn't overlap with existing elements
-        let hasCollision = true;
-        let count = 0;
-        const NEARBY_SEARCH_ATTEMPTS = 20; // Try nearby positions first
-
-        while ( hasCollision && count < 100 ) { // safety to prevent infinite loop
-          hasCollision = false;
-          count++;
-
-          for ( const element of circuit.circuitElements ) {
-            const otherCenter = element.startPositionProperty.value.average( element.endPositionProperty.value );
-
-            if ( center.distance( otherCenter ) < 150 ) {
-              hasCollision = true;
-
-              // For the first several attempts, try shifting in the preferred direction (nearby search)
-              const shiftDirection = options.keyboardCreateToLeft ? -150 : 150;
-              const inBounds = options.keyboardCreateToLeft ? center.x - 150 >= minX : center.x + 150 <= maxX;
-              if ( count <= NEARBY_SEARCH_ATTEMPTS && inBounds ) {
-                center = center.plusXY( shiftDirection, 0 );
-              }
-              else {
-                // After nearby search fails or goes out of bounds, try random positions within bounds
-                center = new Vector2(
-                  minX + dotRandom.nextDouble() * ( maxX - minX ),
-                  minY + dotRandom.nextDouble() * ( maxY - minY )
-                );
-              }
-              break; // Restart collision check from the beginning with new position
-            }
-          }
-        }
-
-        const circuitElement = createElement( center );
-        circuit.circuitElements.add( circuitElement );
-
-        // Speaks its newly assigned accessibleName name on focus
-        circuitElement.focusEmitter.emit();
-      }
+      fire: () => this.createAtAvailablePosition()
     } );
     this.addInputListener( keyboardListener );
 
@@ -241,6 +200,128 @@ export default class CircuitElementToolNode extends InteractiveHighlighting( VBo
     viewTypeProperty.link( updatePointerAreas );
 
     this.localBoundsProperty.link( updatePointerAreas );
+  }
+
+  /**
+   * Check whether a candidate center position has vertex proximity conflicts with existing vertices.
+   * Returns the minimum distance from either candidate vertex to any existing vertex.
+   */
+  private getMinVertexDistance( center: Vector2, halfLength: number ): number {
+    const candidateStart = new Vector2( center.x - halfLength, center.y );
+    const candidateEnd = new Vector2( center.x + halfLength, center.y );
+
+    let minDistance = Number.POSITIVE_INFINITY;
+    for ( let i = 0; i < this.circuit.vertexGroup.count; i++ ) {
+      const existingPos = this.circuit.vertexGroup.getElement( i ).positionProperty.value;
+      minDistance = Math.min(
+        minDistance,
+        existingPos.distance( candidateStart ),
+        existingPos.distance( candidateEnd )
+      );
+    }
+    return minDistance;
+  }
+
+  /**
+   * Create a circuit element at the next available position. Used by both the keyboard listener
+   * and the automated test facility (window.createComponentTest).
+   *
+   * First attempts row-based placement near the tool icon (filling horizontally, then wrapping to
+   * subsequent rows). Once the row-based area is exhausted, falls back to random placement within
+   * the visible area, checking that vertices don't land on top of existing vertices.
+   */
+  public createAtAvailablePosition(): void {
+
+    const HALF_LENGTH = 55; // Half the length of a placed element (~110px for resistors)
+    const MIN_VERTEX_DISTANCE = 50; // Must exceed SNAP_RADIUS (30) to prevent unintended snapping
+    const HORIZONTAL_SPACING = 150;
+    const VERTICAL_SPACING = 100;
+
+    // Phase 1: Row-based placement near the tool icon.
+    // Determine start position and available bounds based on toolbox side.
+    const leftmostPoint = this.globalToCircuitNodePoint( this.globalBounds.leftCenter ).plusXY( -300, 0 );
+    const rightmostPoint = this.globalToCircuitNodePoint( this.globalBounds.rightCenter ).plusXY( 100, 0 );
+
+    const startCenter = this.keyboardCreateToLeft ? leftmostPoint : rightmostPoint;
+    const availableBounds = new Bounds2( leftmostPoint.x, -309, rightmostPoint.x, 309 ).eroded( 100 );
+    const horizontalStep = this.keyboardCreateToLeft ? -HORIZONTAL_SPACING : HORIZONTAL_SPACING;
+    const startX = startCenter.x;
+    let center = startCenter.copy();
+
+    let foundRowPosition = false;
+    let iterations = 0;
+
+    while ( iterations < 200 ) {
+      iterations++;
+
+      // Check vertex proximity at this row position
+      if ( this.getMinVertexDistance( center, HALF_LENGTH ) >= MIN_VERTEX_DISTANCE ) {
+        foundRowPosition = true;
+        break;
+      }
+
+      // Try the next position in the current horizontal row
+      const nextX = center.x + horizontalStep;
+
+      if ( availableBounds.containsCoordinates( nextX, center.y ) ) {
+        center = new Vector2( nextX, center.y );
+      }
+      else {
+        // Row is full, move to a new row below and reset X to starting position
+        center = new Vector2( startX, center.y + VERTICAL_SPACING );
+
+        // If we've gone below the available bounds, the row-based area is exhausted
+        if ( !availableBounds.containsCoordinates( center.x, center.y ) ) {
+          break;
+        }
+      }
+    }
+
+    // Phase 2: If row-based placement failed, fall back to random placement.
+    if ( !foundRowPosition ) {
+
+      // Safe area in circuit-node coordinates. The layout is 1024x618 centered at origin.
+      // Eroded to avoid the toolbox (left), control panels (right), and top/bottom margins.
+      const SAFE_MIN_X = -300;
+      const SAFE_MAX_X = 200;
+      const SAFE_MIN_Y = -230;
+      const SAFE_MAX_Y = 230;
+      const MAX_RANDOM_ATTEMPTS = 50;
+
+      let bestCenter: Vector2 | null = null;
+      let bestMinDistance = 0;
+
+      for ( let attempt = 0; attempt < MAX_RANDOM_ATTEMPTS; attempt++ ) {
+
+        // Pick a random center within the safe area, inset by HALF_LENGTH so endpoints stay in bounds
+        const x = dotRandom.nextDoubleBetween( SAFE_MIN_X + HALF_LENGTH, SAFE_MAX_X - HALF_LENGTH );
+        const y = dotRandom.nextDoubleBetween( SAFE_MIN_Y, SAFE_MAX_Y );
+        const candidate = new Vector2( x, y );
+
+        const minDist = this.getMinVertexDistance( candidate, HALF_LENGTH );
+
+        // Track the best candidate in case all attempts have conflicts
+        if ( minDist > bestMinDistance ) {
+          bestMinDistance = minDist;
+          bestCenter = candidate;
+        }
+
+        // Accept this position if no existing vertex is too close
+        if ( minDist >= MIN_VERTEX_DISTANCE ) {
+          bestCenter = candidate;
+          break;
+        }
+      }
+
+      // Use the best random candidate, or center of safe area as final fallback
+      center = bestCenter || new Vector2( ( SAFE_MIN_X + SAFE_MAX_X ) / 2, ( SAFE_MIN_Y + SAFE_MAX_Y ) / 2 );
+    }
+
+    const circuitElement = this.createElement( center );
+    this.circuit.circuitElements.add( circuitElement );
+
+    // Speaks its newly assigned accessibleName name on focus
+    circuitElement.focusEmitter.emit();
   }
 }
 
