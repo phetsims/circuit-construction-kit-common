@@ -12,7 +12,6 @@ import Multilink from '../../../axon/js/Multilink.js';
 import type Property from '../../../axon/js/Property.js';
 import type ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
 import type { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
-import Bounds2 from '../../../dot/js/Bounds2.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import optionize from '../../../phet-core/js/optionize.js';
@@ -234,19 +233,28 @@ export default class CircuitElementToolNode extends InteractiveHighlighting( VBo
 
     const HALF_LENGTH = 55; // Half the length of a placed element (~110px for resistors)
     const MIN_VERTEX_DISTANCE = 50; // Must exceed SNAP_RADIUS (30) to prevent unintended snapping
-    const HORIZONTAL_SPACING = 150;
+    const HORIZONTAL_SPACING = 2 * HALF_LENGTH + MIN_VERTEX_DISTANCE; // Center-to-center so adjacent vertices are MIN_VERTEX_DISTANCE apart
     const VERTICAL_SPACING = 100;
 
-    // Phase 1: Row-based placement near the tool icon.
-    // Determine start position and available bounds based on toolbox side.
-    const leftmostPoint = this.globalToCircuitNodePoint( this.globalBounds.leftCenter ).plusXY( -300, 0 );
-    const rightmostPoint = this.globalToCircuitNodePoint( this.globalBounds.rightCenter ).plusXY( 100, 0 );
+    // Hard-coded bounds in circuit-node coordinates. leftBound/rightBound are the limits for the
+    // left and right vertices respectively, so the element center must be inset by HALF_LENGTH.
+    const leftBound = -360;
+    const rightBound = 253;
+    const topBound = -288;
+    const bottomBound = 288;
 
-    const startCenter = this.keyboardCreateToLeft ? leftmostPoint : rightmostPoint;
-    const availableBounds = new Bounds2( leftmostPoint.x, -309, rightmostPoint.x, 309 ).eroded( 100 );
+    // The center x must keep both vertices within bounds
+    const minCenterX = leftBound + HALF_LENGTH;
+    const maxCenterX = rightBound - HALF_LENGTH;
+
+    // Use the tool icon's global position only for the starting y coordinate
+    const startY = this.globalToCircuitNodePoint( this.globalBounds.center ).y;
+
+    // Phase 1: Row-based placement near the tool icon.
+    // Start from the side nearest the toolbox and fill horizontally.
     const horizontalStep = this.keyboardCreateToLeft ? -HORIZONTAL_SPACING : HORIZONTAL_SPACING;
-    const startX = startCenter.x;
-    let center = startCenter.copy();
+    const startX = this.keyboardCreateToLeft ? maxCenterX : minCenterX;
+    let center = new Vector2( startX, startY );
 
     let foundRowPosition = false;
     let iterations = 0;
@@ -263,39 +271,31 @@ export default class CircuitElementToolNode extends InteractiveHighlighting( VBo
       // Try the next position in the current horizontal row
       const nextX = center.x + horizontalStep;
 
-      if ( availableBounds.containsCoordinates( nextX, center.y ) ) {
+      if ( nextX >= minCenterX && nextX <= maxCenterX ) {
         center = new Vector2( nextX, center.y );
       }
       else {
         // Row is full, move to a new row below and reset X to starting position
-        center = new Vector2( startX, center.y + VERTICAL_SPACING );
+        const nextY = center.y + VERTICAL_SPACING;
 
         // If we've gone below the available bounds, the row-based area is exhausted
-        if ( !availableBounds.containsCoordinates( center.x, center.y ) ) {
+        if ( nextY > bottomBound ) {
           break;
         }
+        center = new Vector2( startX, nextY );
       }
     }
 
     // Phase 2: If row-based placement failed, fall back to random placement.
     if ( !foundRowPosition ) {
-
-      // Safe area in circuit-node coordinates. The layout is 1024x618 centered at origin.
-      // Eroded to avoid the toolbox (left), control panels (right), and top/bottom margins.
-      const SAFE_MIN_X = -300;
-      const SAFE_MAX_X = 200;
-      const SAFE_MIN_Y = -230;
-      const SAFE_MAX_Y = 230;
       const MAX_RANDOM_ATTEMPTS = 50;
 
       let bestCenter: Vector2 | null = null;
       let bestMinDistance = 0;
 
       for ( let attempt = 0; attempt < MAX_RANDOM_ATTEMPTS; attempt++ ) {
-
-        // Pick a random center within the safe area, inset by HALF_LENGTH so endpoints stay in bounds
-        const x = dotRandom.nextDoubleBetween( SAFE_MIN_X + HALF_LENGTH, SAFE_MAX_X - HALF_LENGTH );
-        const y = dotRandom.nextDoubleBetween( SAFE_MIN_Y, SAFE_MAX_Y );
+        const x = dotRandom.nextDoubleBetween( minCenterX, maxCenterX );
+        const y = dotRandom.nextDoubleBetween( topBound, bottomBound );
         const candidate = new Vector2( x, y );
 
         const minDist = this.getMinVertexDistance( candidate, HALF_LENGTH );
@@ -313,8 +313,8 @@ export default class CircuitElementToolNode extends InteractiveHighlighting( VBo
         }
       }
 
-      // Use the best random candidate, or center of safe area as final fallback
-      center = bestCenter || new Vector2( ( SAFE_MIN_X + SAFE_MAX_X ) / 2, ( SAFE_MIN_Y + SAFE_MAX_Y ) / 2 );
+      // Use the best random candidate, or center of bounds as final fallback
+      center = bestCenter || new Vector2( ( minCenterX + maxCenterX ) / 2, ( topBound + bottomBound ) / 2 );
     }
 
     const circuitElement = this.createElement( center );
