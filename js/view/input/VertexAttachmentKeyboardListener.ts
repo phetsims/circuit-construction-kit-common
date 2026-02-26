@@ -11,7 +11,6 @@ import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js'
 import CircuitConstructionKitCommonFluent from '../../CircuitConstructionKitCommonFluent.js';
 import Vertex from '../../model/Vertex.js';
 import type CircuitNode from '../CircuitNode.js';
-import CircuitDescription from '../description/CircuitDescription.js';
 import VertexNode from '../VertexNode.js';
 import AttachmentKeyboardListener from './AttachmentKeyboardListener.js';
 
@@ -20,15 +19,7 @@ export default class VertexAttachmentKeyboardListener extends AttachmentKeyboard
     const circuit = circuitNode.circuit;
 
     const getItems = () => {
-      const orderedVertices = CircuitDescription.getOrderedVertices( circuit );
-      const neighborVertices = circuit.getNeighboringVertices( vertex );
-      const attachableVertices = orderedVertices.filter( v => v.attachableProperty.get() &&
-                                                              v !== vertex &&
-                                                              !neighborVertices.includes( v ) &&
-                                                              !circuit.findAllFixedVertices( vertex ).includes( v ) &&
-
-                                                              // A wire vertex cannot double connect to an object, creating a tiny short circuit
-                                                              _.intersection( circuit.getNeighboringVertices( v ), neighborVertices ).length === 0 );
+      const attachableVertices = circuit.getAttachableVertices( vertex );
 
       return attachableVertices.map( attachableVertex => {
         return {

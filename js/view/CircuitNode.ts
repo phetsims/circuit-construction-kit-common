@@ -878,6 +878,7 @@ export default class CircuitNode extends Node {
 
     // Listen to focus changes to show/hide and position the cue nodes
     pdomFocusProperty.link( ( focus: Focus | null ) => {
+
       // Hide all cues first
       this.vertexGrabReleaseCueNode.visible = false;
       this.circuitElementGrabReleaseCueNode.visible = false;

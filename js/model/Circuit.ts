@@ -1167,23 +1167,34 @@ export default class Circuit extends PhetioObject {
   }
 
   /**
-   * Returns true if there are any vertices that the given vertex could be attached to.
-   * Used to determine whether to show the grab/release cue for vertices.
+   * Returns the vertices that the given vertex could be attached to.
    */
-  public hasAttachableVertices( vertex: Vertex ): boolean {
+  public getAttachableVertices( vertex: Vertex ): Vertex[] {
     const neighboringVertices = this.getNeighboringVertices( vertex );
     const fixedVertices = this.findAllFixedVertices( vertex );
 
+    const attachableVertices: Vertex[] = [];
     for ( let i = 0; i < this.vertexGroup.count; i++ ) {
       const v = this.vertexGroup.getElement( i );
       if ( v.attachableProperty.get() &&
            v !== vertex &&
            !neighboringVertices.includes( v ) &&
-           !fixedVertices.includes( v ) ) {
-        return true;
+           !fixedVertices.includes( v ) &&
+
+           // A wire vertex cannot double connect to an object, creating a tiny short circuit
+           _.intersection( this.getNeighboringVertices( v ), neighboringVertices ).length === 0 ) {
+        attachableVertices.push( v );
       }
     }
-    return false;
+    return attachableVertices;
+  }
+
+  /**
+   * Returns true if there are any vertices that the given vertex could be attached to.
+   * Used to determine whether to show the grab/release cue for vertices.
+   */
+  public hasAttachableVertices( vertex: Vertex ): boolean {
+    return this.getAttachableVertices( vertex ).length > 0;
   }
 
   /**
