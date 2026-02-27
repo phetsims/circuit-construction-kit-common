@@ -163,14 +163,25 @@ export default class SensorToolbox extends CCKCPanel {
     // Draggable isIcon for the voltmeter
     const voltmeter = new Voltmeter( Tandem.OPT_OUT, 0 );
     const voltmeterToolIcon = new VoltmeterNode( voltmeter, null, null, true, {
-      tandem: Tandem.OPT_OUT
+      tandem: Tandem.OPT_OUT,
+      tagName: 'button',
+      accessibleName: CircuitConstructionKitCommonFluent.a11y.sensorToolbox.voltmeter.accessibleNameStringProperty,
+      accessibleHelpTextBehavior: ParallelDOM.HELP_TEXT_AFTER_CONTENT,
+      inputListeners: [
+        createListenerMulti( voltmeterNodes ),
+        new KeyboardListener( {
+          fireOnClick: true,
+          fire: () => {
+            createFromKeyboard( voltmeterNodes );
+          }
+        } )
+      ]
     } );
     const allVoltmetersInPlayAreaProperty = DerivedProperty.and( voltmeterNodes.map( voltmeterNode => voltmeterNode.voltmeter.isActiveProperty ) );
     allVoltmetersInPlayAreaProperty.link( allInPlayArea => voltmeterToolIcon.setVisible( !allInPlayArea ) );
     voltmeterToolIcon.mutate( {
       scale: TOOLBOX_ICON_HEIGHT * VOLTMETER_ICON_SCALE / Math.max( voltmeterToolIcon.width, voltmeterToolIcon.height )
     } );
-    voltmeterToolIcon.addInputListener( createListenerMulti( voltmeterNodes ) );
 
     // Icon for the ammeter
     const ammeter = new Ammeter( Tandem.OPT_OUT, 0 );
@@ -295,17 +306,8 @@ export default class SensorToolbox extends CCKCPanel {
       excludeInvisibleChildrenFromBounds: false,
       visiblePropertyOptions: {
         phetioFeatured: true
-      },
-      tagName: 'button',
-      accessibleName: CircuitConstructionKitCommonFluent.a11y.sensorToolbox.voltmeter.accessibleNameStringProperty,
-      accessibleHelpTextBehavior: ParallelDOM.HELP_TEXT_AFTER_CONTENT
-    } );
-    voltmeterToolNode.addInputListener( new KeyboardListener( {
-      fireOnClick: true,
-      fire: () => {
-        createFromKeyboard( voltmeterNodes );
       }
-    } ) );
+    } );
 
     // Create shared disabled help text property for voltmeters
     const voltmeterDisabledHelpTextProperty = CircuitConstructionKitCommonFluent.a11y.sensorToolbox.toolDisabledHelpText.createProperty( {
@@ -314,9 +316,9 @@ export default class SensorToolbox extends CCKCPanel {
 
     // When all voltmeters are in play area, mark as aria-disabled and show help text
     allVoltmetersInPlayAreaProperty.link( allInPlayArea => {
-      voltmeterToolNode.focusable = !allInPlayArea;
-      voltmeterToolNode.setPDOMAttribute( 'aria-disabled', allInPlayArea );
-      voltmeterToolNode.accessibleHelpText = allInPlayArea ? voltmeterDisabledHelpTextProperty.value : null;
+      voltmeterToolIcon.focusable = !allInPlayArea;
+      voltmeterToolIcon.setPDOMAttribute( 'aria-disabled', allInPlayArea );
+      voltmeterToolIcon.accessibleHelpText = allInPlayArea ? voltmeterDisabledHelpTextProperty.value : null;
     } );
 
     // Alter the visibility of the labels when the labels checkbox is toggled.
@@ -461,7 +463,7 @@ export default class SensorToolbox extends CCKCPanel {
     } );
 
     // Restore focus to the appropriate tool when the meter is deleted from the circuit construction area
-    this.voltmeterToolNode = voltmeterToolNode;
+    this.voltmeterToolNode = voltmeterToolIcon;
     this.ammeterToolNode = ( options.showNoncontactAmmeters && options.showSeriesAmmeters ) ? ammeterToolIcon : ammeterToolNode;
   }
 }
