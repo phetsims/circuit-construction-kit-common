@@ -373,6 +373,7 @@ type StringsType = {
       'accessibleRoleDescriptionStringProperty': LocalizedStringProperty;
       'separatorStringProperty': LocalizedStringProperty;
       'nameWithPositionStringProperty': LocalizedStringProperty;
+      'ammeterWithReadingStringProperty': LocalizedStringProperty;
       'values': {
         'resistanceOhmsStringProperty': LocalizedStringProperty;
         'resistanceMilliohmsStringProperty': LocalizedStringProperty;

@@ -275,6 +275,7 @@ addToMapIfDefined( 'a11y_measurementProbe_accessibleRoleDescription', 'a11y.meas
 addToMapIfDefined( 'a11y_circuitComponent_accessibleRoleDescription', 'a11y.circuitComponent.accessibleRoleDescriptionStringProperty' );
 addToMapIfDefined( 'a11y_circuitComponent_separator', 'a11y.circuitComponent.separatorStringProperty' );
 addToMapIfDefined( 'a11y_circuitComponent_nameWithPosition', 'a11y.circuitComponent.nameWithPositionStringProperty' );
+addToMapIfDefined( 'a11y_circuitComponent_ammeterWithReading', 'a11y.circuitComponent.ammeterWithReadingStringProperty' );
 addToMapIfDefined( 'a11y_circuitComponent_values_resistanceOhms', 'a11y.circuitComponent.values.resistanceOhmsStringProperty' );
 addToMapIfDefined( 'a11y_circuitComponent_values_resistanceMilliohms', 'a11y.circuitComponent.values.resistanceMilliohmsStringProperty' );
 addToMapIfDefined( 'a11y_circuitComponent_values_voltageVolts', 'a11y.circuitComponent.values.voltageVoltsStringProperty' );
@@ -719,6 +720,7 @@ const CircuitConstructionKitCommonFluent = {
       _comment_1: new FluentComment( {"comment":"These are assembled in CircuitDescription.ts","associatedKey":"separator"} ),
       separatorStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitComponent_separator', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitComponent.separatorStringProperty' ) ),
       nameWithPosition: new FluentPattern<{ position: FluentVariable, total: FluentVariable, typeName: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitComponent_nameWithPosition', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitComponent.nameWithPositionStringProperty' ), [{"name":"position"},{"name":"total"},{"name":"typeName"}] ),
+      ammeterWithReading: new FluentPattern<{ name: FluentVariable, reading: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitComponent_ammeterWithReading', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitComponent.ammeterWithReadingStringProperty' ), [{"name":"name"},{"name":"reading"}] ),
       values: {
         resistanceOhms: new FluentPattern<{ resistance: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitComponent_values_resistanceOhms', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitComponent.values.resistanceOhmsStringProperty' ), [{"name":"resistance"}] ),
         resistanceMilliohms: new FluentPattern<{ resistance: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitComponent_values_resistanceMilliohms', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitComponent.values.resistanceMilliohmsStringProperty' ), [{"name":"resistance"}] ),

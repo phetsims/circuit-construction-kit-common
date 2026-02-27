@@ -876,6 +876,9 @@
       "nameWithPosition": {
         "value": "{ $typeName } { $position } of { $total }"
       },
+      "ammeterWithReading": {
+        "value": "{ $name }: { $reading }"
+      },
       "values": {
         "resistanceOhms": {
           "value": "{ $resistance } ohms"

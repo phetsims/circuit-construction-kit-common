@@ -492,6 +492,7 @@ a11y:
     # These are assembled in CircuitDescription.ts
     separator:                 ', '
     nameWithPosition:          '{ $typeName } { $position } of { $total }'
+    ammeterWithReading:        '{ $name }: { $reading }'
     values:
       resistanceOhms:      '{ $resistance } ohms'
       resistanceMilliohms: '{ $resistance } milliohms'

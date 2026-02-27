@@ -23,6 +23,7 @@ import Fuse from '../../model/Fuse.js';
 import Inductor from '../../model/Inductor.js';
 import LightBulb from '../../model/LightBulb.js';
 import Resistor from '../../model/Resistor.js';
+import SeriesAmmeter from '../../model/SeriesAmmeter.js';
 import Switch from '../../model/Switch.js';
 import Vertex from '../../model/Vertex.js';
 import VoltageSource from '../../model/VoltageSource.js';
@@ -81,6 +82,20 @@ export default class CircuitDescription {
     }
     else {
       parts.push( typeName );
+    }
+
+    // Series ammeters always show current reading: "Ammeter 1 of 1: 0.90 amps" or "Ammeter 1 of 1: no reading"
+    if ( circuitElement instanceof SeriesAmmeter ) {
+      const current = circuitElement.currentReadoutProperty.value;
+      const readingText = current === null
+                          ? CircuitConstructionKitCommonFluent.a11y.ammeterNode.noReadingStringProperty.value
+                          : CircuitConstructionKitCommonFluent.a11y.ammeterNode.currentAmps.format( {
+          current: toFixed( Math.abs( current ), 2 )
+        } );
+      return CircuitConstructionKitCommonFluent.a11y.circuitComponent.ammeterWithReading.format( {
+        name: parts[ 0 ],
+        reading: readingText
+      } );
     }
 
     // 2. Brightness (light bulbs only, always shown regardless of showValues)
