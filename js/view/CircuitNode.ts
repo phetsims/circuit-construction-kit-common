@@ -172,21 +172,21 @@ export default class CircuitNode extends Node {
   public readonly constructionAreaContainer: Node;
 
   // Cue nodes to show the user how to grab vertices and circuit elements
-  private readonly vertexGrabReleaseCueNode: GrabReleaseCueNode;
-  private readonly circuitElementGrabReleaseCueNode: GrabReleaseCueNode;
-  private readonly probeGrabReleaseCueNode: GrabReleaseCueNode;
+  public readonly vertexGrabReleaseCueNode: GrabReleaseCueNode;
+  public readonly circuitElementGrabReleaseCueNode: GrabReleaseCueNode;
+  public readonly probeGrabReleaseCueNode: GrabReleaseCueNode;
 
   // Cue node to show the user how to cut a vertex with the delete key
   public readonly deleteCueNode: DeleteCueNode;
 
   // Track whether any vertex or circuit element has been keyboard activated.
   // Once the user activates any element, they understand the pattern and we hide cues for all.
-  private anyVertexActivated = false;
-  private anyCircuitElementActivated = false;
+  public anyVertexActivated = false;
+  public anyCircuitElementActivated = false;
 
   // Track whether any probe (voltmeter or ammeter) has been keyboard activated.
   // Once the user activates any probe, they understand the pattern and we hide cues for all probes.
-  private anyProbeActivated = false;
+  public anyProbeActivated = false;
 
   // Track whether any vertex has been cut. Once the user cuts a vertex, hide the delete cue permanently.
   private anyVertexCut = false;
@@ -1095,44 +1095,20 @@ export default class CircuitNode extends Node {
 
     this.circuitDebugLayer && this.circuitDebugLayer.step();
 
-    // Update grab/release cue node positions and visibility.
-    // This is checked in step() rather than via an Emitter for simplicity, since the 1-frame delay is imperceptible.
-    // Updating positions here keeps cues properly positioned when elements are dragged.
+    // Update grab/release cue node positions. Activation flags (anyVertexActivated, etc.) are set eagerly
+    // at the activation sites, so step() only needs to keep cue positions in sync as elements are dragged.
     const focus = pdomFocusProperty.value;
     if ( focus ) {
       const focusedNode = focus.trail.lastNode();
       if ( this.vertexGrabReleaseCueNode.visible && focusedNode instanceof VertexNode ) {
-        if ( focusedNode.vertex.hasBeenKeyboardActivated ) {
-          this.anyVertexActivated = true;
-          this.vertexGrabReleaseCueNode.visible = false;
-        }
-        else {
-          this.updateVertexCuePosition( focusedNode );
-        }
+        this.updateVertexCuePosition( focusedNode );
       }
       if ( this.circuitElementGrabReleaseCueNode.visible && focusedNode instanceof CircuitElementNode ) {
-        if ( focusedNode.circuitElement.hasBeenKeyboardActivated ) {
-          this.anyCircuitElementActivated = true;
-          this.circuitElementGrabReleaseCueNode.visible = false;
-        }
-        else {
-          this.updateCircuitElementCuePosition( focusedNode );
-        }
+        this.updateCircuitElementCuePosition( focusedNode );
       }
-
-      // Update probe cue position and track activation
       if ( this.probeGrabReleaseCueNode.visible ) {
-        const probeInfo = this.getProbeInfo( focusedNode );
-        if ( probeInfo && probeInfo.meter.hasBeenKeyboardActivated ) {
-          this.anyProbeActivated = true;
-          this.probeGrabReleaseCueNode.visible = false;
-        }
-        else {
-          this.updateProbeCuePosition( focusedNode );
-        }
+        this.updateProbeCuePosition( focusedNode );
       }
-
-      // Update delete cue position (visibility is handled by pdomFocusProperty.link and vertexDisconnectedEmitter)
       if ( this.deleteCueNode.visible && focusedNode instanceof VertexNode ) {
         this.updateDeleteCuePosition( focusedNode );
       }

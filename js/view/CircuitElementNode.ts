@@ -53,6 +53,7 @@ export default abstract class CircuitElementNode extends InteractiveHighlighting
   protected constructor(
     circuitElement: CircuitElement,
     circuit: Circuit | null,
+    circuitNode: CircuitNode | null,
     showValuesProperty: TReadOnlyProperty<boolean> | undefined,
     selectionProperty: TProperty<CircuitElement | Vertex | null> | undefined,
     providedOptions?: CircuitElementNodeOptions ) {
@@ -84,7 +85,8 @@ export default abstract class CircuitElementNode extends InteractiveHighlighting
       this.selectionKeyboardListener = new KeyboardListener( {
         keys: [ 'space', 'enter' ], // cannot use fireOnClick since this is also draggable
         press: () => {
-          circuitElement.hasBeenKeyboardActivated = true;
+          circuitNode!.anyCircuitElementActivated = true;
+          circuitNode!.circuitElementGrabReleaseCueNode.visible = false;
 
           if ( selectionProperty.value === this.circuitElement ) {
             selectionProperty.value = null;

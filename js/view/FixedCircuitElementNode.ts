@@ -110,7 +110,7 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
       showHighlight: true
     }, providedOptions );
 
-    super( circuitElement, circuit, circuitNode?.model.showValuesProperty, circuitNode?.circuit.selectionProperty, options );
+    super( circuitElement, circuit, circuitNode, circuitNode?.model.showValuesProperty, circuitNode?.circuit.selectionProperty, options );
 
     // shows the lifelike view
     this.lifelikeNode = lifelikeNode;

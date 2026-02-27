@@ -31,9 +31,6 @@ export default class Meter extends PhetioObject {
   // Fires an event when the meter is dropped
   public readonly droppedEmitter: TEmitter<[ Bounds2 ]>;
 
-  // Track if any probe has been keyboard-activated for hiding cues (once learned, hide for all probes)
-  public hasBeenKeyboardActivated = false;
-
   /**
    * @param tandem
    * @param phetioIndex - for assigning corresponding tandems
@@ -70,7 +67,6 @@ export default class Meter extends PhetioObject {
     this.isActiveProperty.reset();
     this.bodyPositionProperty.reset();
     this.isDraggingProbesWithBodyProperty.reset();
-    this.hasBeenKeyboardActivated = false;
   }
 }
 

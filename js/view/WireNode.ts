@@ -222,7 +222,7 @@ export default class WireNode extends CircuitElementNode {
     circuitNode && circuitNode.highlightLayer.addChild( highlightNodeParent );
 
     const circuit = circuitNode && circuitNode.circuit;
-    super( wire, circuit, circuitNode?.model.showValuesProperty, circuitNode?.circuit.selectionProperty, {
+    super( wire, circuit, circuitNode, circuitNode?.model.showValuesProperty, circuitNode?.circuit.selectionProperty, {
       children: [
         startCapParent,
         endCapParent,

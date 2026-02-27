@@ -44,7 +44,8 @@ export default class VoltmeterProbeNodeAttachmentKeyboardListener extends Attach
         probePositionProperty.value = targetPosition.copy();
       },
       onOpen: () => {
-        voltmeter.hasBeenKeyboardActivated = true;
+        circuitNode.anyProbeActivated = true;
+        circuitNode.probeGrabReleaseCueNode.visible = false;
         circuitNode.showProbeSelectionHighlight( probeNode );
       },
       onClose: () => {

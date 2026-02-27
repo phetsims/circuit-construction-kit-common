@@ -152,9 +152,6 @@ export default abstract class CircuitElement extends PhetioObject {
    */
   public isKeyboardDragging = false;
 
-  // Track whether the user has activated the circuit element via keyboard (space/enter), to hide the grab cue after first use
-  public hasBeenKeyboardActivated = false;
-
   protected constructor( type: CircuitElementType, startVertex: Vertex, endVertex: Vertex, chargePathLength: number, tandem: Tandem, providedOptions?: CircuitElementOptions ) {
     affirm( startVertex !== endVertex, 'startVertex cannot be the same as endVertex' );
     affirm( chargePathLength > 0, 'charge path length must be positive' );

@@ -82,9 +82,6 @@ export default class Vertex extends PhetioObject {
 
   public isKeyboardDragging = false;
 
-  // Track whether the user has activated the vertex via keyboard (space/enter), to hide the grab cue after first use
-  public hasBeenKeyboardActivated = false;
-
   // for black box study
   public outerWireStub: boolean;
   public readonly isCuttableProperty: BooleanProperty;

@@ -74,7 +74,8 @@ export default class VertexAttachmentKeyboardListener extends AttachmentKeyboard
         }
       },
       onOpen: () => {
-        vertex.hasBeenKeyboardActivated = true;
+        circuitNode.anyVertexActivated = true;
+        circuitNode.vertexGrabReleaseCueNode.visible = false;
 
         circuitNode.vertexAttachmentListenerCount++;
         circuitNode.circuit.selectionProperty.value = vertexNode.vertex;
