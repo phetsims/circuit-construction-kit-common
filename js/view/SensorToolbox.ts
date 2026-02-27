@@ -356,7 +356,9 @@ export default class SensorToolbox extends CCKCPanel {
 
     if ( options.showNoncontactAmmeters ) {
       const ammeterKeyboardListenerTarget = options.showSeriesAmmeters ? ammeterToolIcon : ammeterToolNode;
-      ammeterKeyboardListenerTarget.accessibleName = CircuitConstructionKitCommonFluent.a11y.sensorToolbox.nonContactAmmeter.accessibleNameStringProperty;
+
+      // Always set the accessible name on the icon button itself (it has tagName: 'button')
+      ammeterToolIcon.accessibleName = CircuitConstructionKitCommonFluent.a11y.sensorToolbox.nonContactAmmeter.accessibleNameStringProperty;
       ammeterKeyboardListenerTarget.addInputListener( new KeyboardListener( {
         fireOnClick: true,
         fire: () => {
