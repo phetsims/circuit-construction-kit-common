@@ -895,7 +895,10 @@ export default class CircuitNode extends Node {
           this.updateVertexCuePosition( focusedNode );
           this.vertexGrabReleaseCueNode.visible = true;
         }
-        else if ( focusedNode instanceof CircuitElementNode && !this.anyCircuitElementActivated ) {
+        else if ( focusedNode instanceof CircuitElementNode &&
+                  focusedNode.circuitElement.isEditableProperty.value &&
+                  focusedNode.isInputEnabled() &&
+                  !this.anyCircuitElementActivated ) {
           this.updateCircuitElementCuePosition( focusedNode );
           this.circuitElementGrabReleaseCueNode.visible = true;
         }
