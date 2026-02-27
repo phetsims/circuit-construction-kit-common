@@ -831,6 +831,15 @@ export default class CircuitNode extends Node {
 
     circuit.descriptionChangeEmitter.addListener( () => this.updateCircuitDescription() );
 
+    // Re-render PDOM descriptions when any string changes (locale change, phet-io edit).
+    // bundleProperty fires once per locale change (batched) and once per string edit.
+    // The dirty flag in updateCircuitDescription() coalesces multiple triggers into one deferred update.
+    // workaround to access the bundle property, which changes when *any* string changes, so we don't have to list all strings
+    Multilink.multilinkAny(
+      CircuitConstructionKitCommonFluent.a11y.circuitDescription.briefName.getDependentProperties(),
+      () => this.updateCircuitDescription()
+    );
+
     circuit.selectionProperty.link( ( selection, oldSelection ) => {
 
       if ( !isResettingAllProperty.value && !isSettingPhetioStateProperty.value ) {
