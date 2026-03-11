@@ -593,12 +593,14 @@ export default class CCKCScreenView extends ScreenView {
         // Return voltmeter to toolbox when delete/backspace is pressed on the body (not the probes)
         else if ( nodeToDelete instanceof VoltmeterBodyNode ) {
           nodeToDelete.voltmeter.isActiveProperty.value = false;
+          sharedSoundPlayers.get( 'erase' ).play();
           this.sensorToolbox.voltmeterToolNode.focus();
         }
 
         // Return ammeter to toolbox when delete/backspace is pressed on the body (not the probes)
         else if ( nodeToDelete instanceof AmmeterBodyNode ) {
           nodeToDelete.ammeter.isActiveProperty.value = false;
+          sharedSoundPlayers.get( 'erase' ).play();
           this.sensorToolbox.ammeterToolNode.focus();
         }
       }
