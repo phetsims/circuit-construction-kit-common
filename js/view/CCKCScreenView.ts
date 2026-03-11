@@ -352,7 +352,8 @@ export default class CCKCScreenView extends ScreenView {
       model.modeProperty,
       zoomButtonGroupRightProperty,
       timeControlLeftProperty,
-      tandem.createTandem( 'circuitElementEditContainerNode' ), {
+      tandem.createTandem( 'circuitElementEditContainerNode' ),
+      circuitElement => this.isToolboxVisibleForCircuitElement( circuitElement ), {
         showPhaseShiftControl: options.showPhaseShiftControl
       }
     );
@@ -565,8 +566,8 @@ export default class CCKCScreenView extends ScreenView {
           // Only permit deletion when not being dragged, see https://github.com/phetsims/circuit-construction-kit-common/issues/414
           if ( !circuitElement.startVertexProperty.value.isDragged && !circuitElement.endVertexProperty.value.isDragged ) {
 
-            // Only permit deletion if the circuit element is marked as disposable
-            if ( circuitElement.isDisposableProperty.value ) {
+            // Only permit deletion if the circuit element is marked as disposable and its toolbox is visible
+            if ( circuitElement.isDisposableProperty.value && this.isToolboxVisibleForCircuitElement( circuitElement ) ) {
 
               // Capture context before removal so the group index is available for announcements
               this.circuitNode.prepareForElementRemoval( circuitElement );
@@ -592,14 +593,14 @@ export default class CCKCScreenView extends ScreenView {
         }
 
         // Return voltmeter to toolbox when delete/backspace is pressed on the body (not the probes)
-        else if ( nodeToDelete instanceof VoltmeterBodyNode ) {
+        else if ( nodeToDelete instanceof VoltmeterBodyNode && this.isSensorToolboxVisible() ) {
           nodeToDelete.voltmeter.isActiveProperty.value = false;
           sharedSoundPlayers.get( 'erase' ).play();
           this.sensorToolbox.voltmeterToolNode.focus();
         }
 
         // Return ammeter to toolbox when delete/backspace is pressed on the body (not the probes)
-        else if ( nodeToDelete instanceof AmmeterBodyNode ) {
+        else if ( nodeToDelete instanceof AmmeterBodyNode && this.isSensorToolboxVisible() ) {
           nodeToDelete.ammeter.isActiveProperty.value = false;
           sharedSoundPlayers.get( 'erase' ).play();
           this.sensorToolbox.ammeterToolNode.focus();
@@ -743,6 +744,22 @@ export default class CCKCScreenView extends ScreenView {
     const isToolboxVisible = !!toolbox.getTrails().find( trail => trail.isVisible() );
 
     return isSingle && overToolbox && isToolboxVisible && circuitElement.isDisposableProperty.value;
+  }
+
+  /**
+   * Returns whether the toolbox that a circuit element would return to is currently visible.
+   * SeriesAmmeters return to the sensor toolbox; all other circuit elements return to the circuit element toolbox carousel.
+   */
+  public isToolboxVisibleForCircuitElement( circuitElement: CircuitElement ): boolean {
+    const toolbox = circuitElement instanceof SeriesAmmeter ? this.sensorToolbox : this.circuitElementToolbox.carousel;
+    return !!toolbox.getTrails().find( trail => trail.isVisible() );
+  }
+
+  /**
+   * Returns whether the sensor toolbox is currently visible (used for voltmeter/ammeter deletion checks).
+   */
+  public isSensorToolboxVisible(): boolean {
+    return !!this.sensorToolbox.getTrails().find( trail => trail.isVisible() );
   }
 
   public static readonly DELETE_HOTKEY_DATA = new HotkeyData( {
