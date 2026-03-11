@@ -534,7 +534,8 @@ export default class CCKCScreenView extends ScreenView {
         let nodeToDelete = getPDOMFocusedNode();
 
         // However, if no node is focused, but a node is selected, then it should be deleted instead (this is the case for mouse/touch)
-        if ( !( nodeToDelete instanceof VertexNode ) && !( nodeToDelete instanceof CircuitElementNode ) ) {
+        if ( !( nodeToDelete instanceof VertexNode ) && !( nodeToDelete instanceof CircuitElementNode ) &&
+             !( nodeToDelete instanceof VoltmeterBodyNode ) && !( nodeToDelete instanceof AmmeterBodyNode ) ) {
           const selected = this.circuitNode.circuit.selectionProperty.value;
           if ( selected instanceof Vertex ) {
             nodeToDelete = this.circuitNode.getVertexNode( selected );
