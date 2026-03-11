@@ -246,7 +246,8 @@ export default class SensorToolbox extends CCKCPanel {
       seriesAmmeterNodeIcon,
       MAX_SERIES_AMMETERS,
       () => circuit.circuitElements.count( circuitElement => circuitElement instanceof SeriesAmmeter ),
-      createSeriesAmmeter, {
+      createSeriesAmmeter,
+      () => circuitNode.visibleBoundsInCircuitCoordinateFrameProperty.value, {
         touchAreaExpansionLeft: 3,
         touchAreaExpansionTop: 15,
         touchAreaExpansionRight: 3,
