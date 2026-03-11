@@ -12,6 +12,7 @@ import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import type Property from '../../../axon/js/Property.js';
 import type { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
+import Bounds2 from '../../../dot/js/Bounds2.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import optionize from '../../../phet-core/js/optionize.js';
@@ -127,6 +128,7 @@ export default class CircuitElementToolFactory {
   private readonly showLabelsProperty: Property<boolean>;
   private readonly viewTypeProperty: Property<CircuitElementViewType>;
   private readonly globalToCircuitNodePoint: ( v: Vector2 ) => Vector2;
+  private readonly getVisibleBoundsInCircuitCoordinateFrame: () => Bounds2;
   private readonly parentTandem: Tandem;
   private wireToolNode: CircuitElementToolNode | null;
 
@@ -137,11 +139,13 @@ export default class CircuitElementToolFactory {
    * @param globalToCircuitNodePoint Vector2=>Vector2 global point to coordinate frame of circuitNode
    * @param parentTandem - parent tandem for the created tool nodes
    */
-  public constructor( circuit: Circuit, showLabelsProperty: Property<boolean>, viewTypeProperty: Property<CircuitElementViewType>, globalToCircuitNodePoint: ( v: Vector2 ) => Vector2, parentTandem: Tandem ) {
+  public constructor( circuit: Circuit, showLabelsProperty: Property<boolean>, viewTypeProperty: Property<CircuitElementViewType>, globalToCircuitNodePoint: ( v: Vector2 ) => Vector2,
+                      getVisibleBoundsInCircuitCoordinateFrame: () => Bounds2, parentTandem: Tandem ) {
     this.circuit = circuit;
     this.showLabelsProperty = showLabelsProperty;
     this.viewTypeProperty = viewTypeProperty;
     this.globalToCircuitNodePoint = globalToCircuitNodePoint;
+    this.getVisibleBoundsInCircuitCoordinateFrame = getVisibleBoundsInCircuitCoordinateFrame;
     this.parentTandem = parentTandem;
     this.wireToolNode = null;
   }
@@ -209,7 +213,8 @@ export default class CircuitElementToolFactory {
       iconAlignGroup.createBox( toggleNode, { yAlign: 'bottom' } ),
       count,
       this.createCounter( predicate ),
-      createElement, {
+      createElement,
+      this.getVisibleBoundsInCircuitCoordinateFrame, {
         tandem: options.tandem,
         additionalProperty: options.additionalProperty
       }

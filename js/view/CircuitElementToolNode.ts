@@ -12,6 +12,7 @@ import Multilink from '../../../axon/js/Multilink.js';
 import type Property from '../../../axon/js/Property.js';
 import type ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
 import type { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
+import Bounds2 from '../../../dot/js/Bounds2.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import optionize from '../../../phet-core/js/optionize.js';
@@ -57,6 +58,7 @@ export default class CircuitElementToolNode extends InteractiveHighlighting( VBo
   private readonly globalToCircuitNodePoint: ( v: Vector2 ) => Vector2;
   private readonly createElement: ( v: Vector2 ) => CircuitElement;
   private readonly keyboardCreateToLeft: boolean;
+  private readonly getVisibleBoundsInCircuitCoordinateFrame: () => Bounds2;
 
   /**
    * @param circuitElementType - the type of circuit element this tool creates
@@ -77,7 +79,9 @@ export default class CircuitElementToolNode extends InteractiveHighlighting( VBo
    */
   public constructor( circuitElementType: CircuitElementType, labelStringProperty: TReadOnlyProperty<string>, pluralLabelStringProperty: TReadOnlyProperty<string>, showLabelsProperty: Property<boolean>, viewTypeProperty: Property<CircuitElementViewType>,
                       circuit: Circuit, globalToCircuitNodePoint: ( v: Vector2 ) => Vector2, iconNode: Node, maxNumber: number,
-                      count: () => number, createElement: ( v: Vector2 ) => CircuitElement, providedOptions: CircuitElementToolNodeOptions ) {
+                      count: () => number, createElement: ( v: Vector2 ) => CircuitElement,
+                      getVisibleBoundsInCircuitCoordinateFrame: () => Bounds2,
+                      providedOptions: CircuitElementToolNodeOptions ) {
 
     let labelText: Node | null = null;
     if ( labelStringProperty.value.length > 0 && providedOptions && providedOptions.tandem ) {
@@ -130,6 +134,7 @@ export default class CircuitElementToolNode extends InteractiveHighlighting( VBo
     this.globalToCircuitNodePoint = globalToCircuitNodePoint;
     this.createElement = createElement;
     this.keyboardCreateToLeft = options.keyboardCreateToLeft;
+    this.getVisibleBoundsInCircuitCoordinateFrame = getVisibleBoundsInCircuitCoordinateFrame;
 
     this.addInputListener( DragListener.createForwardingListener( ( event: PressListenerEvent ) => {
 
@@ -236,12 +241,15 @@ export default class CircuitElementToolNode extends InteractiveHighlighting( VBo
     const HORIZONTAL_SPACING = 2 * HALF_LENGTH + MIN_VERTEX_DISTANCE; // Center-to-center so adjacent vertices are MIN_VERTEX_DISTANCE apart
     const VERTICAL_SPACING = 100;
 
-    // Hard-coded bounds in circuit-node coordinates. leftBound/rightBound are the limits for the
-    // left and right vertices respectively, so the element center must be inset by HALF_LENGTH.
-    const leftBound = -360;
-    const rightBound = 253;
-    const topBound = -288;
-    const bottomBound = 288;
+    // Compute placement bounds from the visible area in circuit-node coordinates, eroded by
+    // proportional margins to avoid UI overlays (toolbox on left, control panels on right).
+    const visibleBounds = this.getVisibleBoundsInCircuitCoordinateFrame();
+    const width = visibleBounds.width;
+    const height = visibleBounds.height;
+    const leftBound = visibleBounds.minX + width * 0.148;
+    const rightBound = visibleBounds.maxX - width * 0.253;
+    const topBound = visibleBounds.minY + height * 0.034;
+    const bottomBound = visibleBounds.maxY - height * 0.034;
 
     // The center x must keep both vertices within bounds
     const minCenterX = leftBound + HALF_LENGTH;
