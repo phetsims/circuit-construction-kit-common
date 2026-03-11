@@ -72,6 +72,7 @@ export default class CircuitElementEditContainerNode extends Node {
 
   public constructor( circuitNode: CircuitNode, visibleBoundsProperty: Property<Bounds2>, modeProperty: EnumerationProperty<InteractionMode>,
                       zoomButtonGroupRightProperty: Property<number>, timeControlLeftProperty: Property<number>, tandem: Tandem,
+                      isToolboxVisibleForElement: ( element: CircuitElement ) => boolean,
                       providedOptions?: CircuitElementEditContainerNodeOptions ) {
 
     const circuit = circuitNode.circuit;
@@ -103,7 +104,7 @@ export default class CircuitElementEditContainerNode extends Node {
     // Reusable buttons
     //------------------------------------------------------------------------------------------------------------------
 
-    const trashButton = new CCKCTrashButton( circuitNode, tandem.createTandem( 'trashButton' ) );
+    const trashButton = new CCKCTrashButton( circuitNode, tandem.createTandem( 'trashButton' ), isToolboxVisibleForElement );
 
     // Use the "nested node" pattern for gated visibility
     const trashButtonContainer = new Node( {
@@ -170,7 +171,11 @@ export default class CircuitElementEditContainerNode extends Node {
       maxWidth: trashButton.width
     } );
 
-    const listener = ( isDisposable: boolean ) => trashButtonContainer.setVisible( isDisposable );
+    const listener = ( isDisposable: boolean ) => {
+      const selection = circuit.selectionProperty.value;
+      const toolboxVisible = selection instanceof CircuitElement ? isToolboxVisibleForElement( selection ) : true;
+      trashButtonContainer.setVisible( isDisposable && toolboxVisible );
+    };
 
     // Connect the listener dynamically to the selected circuit element
     circuit.selectionProperty.link( ( newCircuitElement, oldCircuitElement ) => {

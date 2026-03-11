@@ -21,7 +21,7 @@ import CircuitNode from './CircuitNode.js';
 
 export default class CCKCTrashButton extends CCKCRoundPushButton {
 
-  public constructor( circuitNode: CircuitNode, tandem: Tandem ) {
+  public constructor( circuitNode: CircuitNode, tandem: Tandem, canDelete: ( circuitElement: CircuitElement ) => boolean = () => true ) {
 
     const circuit = circuitNode.circuit;
 
@@ -52,7 +52,7 @@ export default class CCKCTrashButton extends CCKCRoundPushButton {
         if ( circuitElement instanceof CircuitElement ) {
 
           // Only permit deletion when not being dragged, see https://github.com/phetsims/circuit-construction-kit-common/issues/414
-          if ( !circuitElement.startVertexProperty.value.isDragged && !circuitElement.endVertexProperty.value.isDragged ) {
+          if ( !circuitElement.startVertexProperty.value.isDragged && !circuitElement.endVertexProperty.value.isDragged && canDelete( circuitElement ) ) {
 
             // Capture context before removal so the group index is available for announcements
             circuitNode.prepareForElementRemoval( circuitElement );
