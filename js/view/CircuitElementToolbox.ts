@@ -54,7 +54,8 @@ export default class CircuitElementToolbox extends HBox {
 
         stroke: CCKCColors.panelStrokeProperty,
 
-        tandem: tandem.createTandem( 'carousel' )
+        tandem: tandem.createTandem( 'carousel' ),
+        phetioVisiblePropertyInstrumented: false
       }
     }, providedOptions );
 
