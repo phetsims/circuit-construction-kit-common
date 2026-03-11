@@ -255,8 +255,7 @@ export default class SensorToolbox extends CCKCPanel {
         ghostOpacity: 0,
         keyboardCreateToLeft: true, // Sensor toolbox is on the right side of the screen
         visiblePropertyOptions: {
-          phetioFeatured: true,
-          phetioReadOnly: true
+          phetioFeatured: true
         },
         accessibleName: CircuitConstructionKitCommonFluent.a11y.sensorToolbox.ammeter.accessibleNameStringProperty
       } );
