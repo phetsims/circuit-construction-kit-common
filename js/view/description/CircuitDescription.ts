@@ -64,6 +64,7 @@ export default class CircuitDescription {
   public static buildAccessibleName(
     circuitElement: CircuitElement,
     showValues: boolean,
+    isValueDisplayable: boolean,
     position: number,
     total: number,
     shouldShowPosition: boolean,
@@ -114,7 +115,7 @@ export default class CircuitDescription {
     }
 
     // 3. Value (depends on type)
-    if ( showValues ) {
+    if ( showValues && isValueDisplayable ) {
       if ( circuitElement instanceof Resistor || circuitElement instanceof LightBulb ) {
         // Resistors, light bulbs (including extreme variants) show resistance in ohms
         parts.push( CircuitConstructionKitCommonFluent.a11y.circuitComponent.values.resistanceOhms.format( { resistance: circuitElement.resistanceProperty.value } ) );
@@ -151,7 +152,7 @@ export default class CircuitDescription {
     }
 
     // 4. Internal resistance (voltage sources only, if above threshold)
-    if ( showValues && circuitElement instanceof VoltageSource ) {
+    if ( showValues && isValueDisplayable && circuitElement instanceof VoltageSource ) {
       const internalResistance = circuitElement.internalResistanceProperty.value;
       if ( internalResistance > CCKCQueryParameters.batteryMinimumResistance ) {
         parts.push( CircuitConstructionKitCommonFluent.a11y.circuitComponent.values.resistanceOhms.format(
@@ -325,6 +326,7 @@ export default class CircuitDescription {
       let accessibleNameWithGroup = CircuitDescription.buildAccessibleName(
         circuitElement,
         showValuesProperty.value,
+        circuitElement.isValueDisplayableProperty.value,
         indexForType,
         totalForType,
         shouldShowPosition,

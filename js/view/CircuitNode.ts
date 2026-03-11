@@ -803,6 +803,17 @@ export default class CircuitNode extends Node {
     // When two elements combine, it deletes a vertex. In this case, update the description
     circuit.vertexGroup.elementDisposedEmitter.addListener( () => this.updateCircuitDescription() );
 
+    // Update PDOM when isValueDisplayableProperty changes (e.g., toggled via PhET-iO Studio)
+    circuit.circuitElements.addItemAddedListener( circuitElement => {
+      const listener = () => this.updateCircuitDescription();
+      circuitElement.isValueDisplayableProperty.lazyLink( listener );
+      circuitElement.disposeEmitterCircuitElement.addListener( () => {
+        if ( circuitElement.isValueDisplayableProperty.hasListener( listener ) ) {
+          circuitElement.isValueDisplayableProperty.unlink( listener );
+        }
+      } );
+    } );
+
     // Update PDOM when show values property changes (link is called eagerly, so no need for separate initial call)
     this.model.showValuesProperty.link( () => this.updateCircuitDescription() );
 
