@@ -933,6 +933,7 @@ export default class CircuitNode extends Node {
         // Show the delete cue for cuttable vertices (vertices with multiple connections)
         if ( focusedNode instanceof VertexNode &&
              !this.anyVertexCut &&
+             focusedNode.vertex.isCuttableProperty.value &&
              circuit.getNeighborCircuitElements( focusedNode.vertex ).length > 1 ) {
           this.updateDeleteCuePosition( focusedNode );
           this.deleteCueNode.visible = true;
