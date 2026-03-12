@@ -1043,9 +1043,8 @@ export default class Circuit extends PhetioObject {
       // Make sure the solder is displayed in the correct z-order
       targetVertex.relayerEmitter.emit();
 
-      this.vertexConnectedEmitter.emit( targetVertex, oldVertex, oldVertexElements );
-
-      // Assign formation time if this creates/joins a multi-element group
+      // Assign formation time BEFORE emitting vertexConnectedEmitter so that group indices are
+      // stable when listeners call captureState(). See https://github.com/phetsims/circuit-construction-kit-common/issues/1287
       const connectedVertices = this.findAllConnectedVertices( targetVertex );
       if ( connectedVertices.length > 1 ) {
         // Check if any vertex in the connected group already has a formation time
@@ -1064,6 +1063,8 @@ export default class Circuit extends PhetioObject {
           connectedVertices.forEach( v => { v.groupFormationTime = oldestTime; } );
         }
       }
+
+      this.vertexConnectedEmitter.emit( targetVertex, oldVertex, oldVertexElements );
     }
   }
 
