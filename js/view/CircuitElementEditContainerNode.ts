@@ -590,6 +590,13 @@ export default class CircuitElementEditContainerNode extends Node {
         } );
         this.accessibleHelpTextBehavior = ParallelDOM.HELP_TEXT_BEFORE_CONTENT;
       }
+      else {
+
+        // Clear the heading and help text so the edit panel section doesn't persist in the PDOM
+        // when no circuit element is selected. See https://github.com/phetsims/circuit-construction-kit-common/issues/1291
+        this.accessibleHeading = null;
+        this.accessibleHelpText = null;
+      }
     } );
 
     visibleBoundsProperty.link( updatePosition );
