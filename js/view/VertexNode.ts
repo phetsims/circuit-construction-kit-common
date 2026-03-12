@@ -132,17 +132,14 @@ export default class VertexNode extends InteractiveHighlighting( Node ) {
       fill: CCKCColors.textFillProperty,
       pickable: false
     } );
-    const children = [
-      // This throws off the focus rectangle for the vertex
-      // customLabelText
-    ];
+    const vboxChildren: Node[] = [];
 
     if ( CCKCQueryParameters.vertexDisplay ) {
-      children.push( voltageReadout );
+      vboxChildren.push( voltageReadout );
     }
 
     this.vertexLabelNode = new VBox( {
-      children: children,
+      children: vboxChildren,
       maxWidth: 50
     } );
 
@@ -163,8 +160,18 @@ export default class VertexNode extends InteractiveHighlighting( Node ) {
       }, { disposer: this } );
     }
 
+    // Dynamically add/remove the custom label so that the focus highlight naturally surrounds just the vertex
+    // circle when there is no label, and surrounds both the vertex and label when there is one.
     vertex.labelStringProperty.link( labelText => {
       customLabelText.string = labelText;
+      if ( labelText.length > 0 && !vboxChildren.includes( customLabelText ) ) {
+        vboxChildren.unshift( customLabelText );
+        this.vertexLabelNode.children = vboxChildren;
+      }
+      else if ( labelText.length === 0 && vboxChildren.includes( customLabelText ) ) {
+        vboxChildren.splice( vboxChildren.indexOf( customLabelText ), 1 );
+        this.vertexLabelNode.children = vboxChildren;
+      }
       this.updateReadoutTextPosition();
     }, {
       disposer: vertex
