@@ -908,9 +908,10 @@ export default class CircuitNode extends Node {
       if ( focus ) {
         const focusedNode = focus.trail.lastNode();
 
-        // Show the vertex cue if no vertex has been activated and there are attachable vertices
+        // Show the vertex cue if no vertex has been activated, the vertex is draggable, and there are attachable vertices
         if ( focusedNode instanceof VertexNode &&
              !this.anyVertexActivated &&
+             focusedNode.vertex.isDraggableProperty.value &&
              circuit.hasAttachableVertices( focusedNode.vertex ) ) {
           this.updateVertexCuePosition( focusedNode );
           this.vertexGrabReleaseCueNode.visible = true;
