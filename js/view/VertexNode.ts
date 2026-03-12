@@ -237,6 +237,14 @@ export default class VertexNode extends InteractiveHighlighting( Node ) {
       disposer: this
     } );
 
+    // Disable the attachment listener when the vertex is not draggable, since a non-draggable vertex cannot move to
+    // make a connection.
+    vertex.isDraggableProperty.link( isDraggable => {
+      this.vertexAttachmentKeyboardListener.enabledProperty.value = isDraggable;
+    }, {
+      disposer: this
+    } );
+
     // Make sure the cut button remains in the visible screen bounds.
     this.updateVertexNodePositionListener = this.updateVertexNodePosition.bind( this );
     vertex.positionProperty.link( this.updateVertexNodePositionListener );
