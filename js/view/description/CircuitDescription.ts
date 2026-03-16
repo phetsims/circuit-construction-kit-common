@@ -38,6 +38,9 @@ const positionedPropertiesMap = new WeakMap<CircuitElement, {
   accessibleNameWithSelectionProperty: TReadOnlyProperty<string>;
 }>();
 
+// Track which elements already have a dispose listener registered to avoid accumulating duplicate listeners
+const hasDisposeListenerSet = new WeakSet<CircuitElement>();
+
 // Constants for preferred ordering of circuit elements in groups
 const GROUPED_CIRCUIT_ELEMENT_TYPE_ORDER: CircuitElementType[] = [ 'battery', 'resistor', 'lightBulb', 'wire' ];
 
@@ -299,6 +302,9 @@ export default class CircuitDescription {
     // Second pass: assign names with position info
     const typeIndices = new Map<string, number>();
     const briefNames = new Map<CircuitElement, string>();
+    const showValuesProperty = circuitNode.model.showValuesProperty;
+    const viewTypeProperty = circuitNode.model.viewTypeProperty;
+    const selectionProperty = circuitNode.circuit.selectionProperty;
     let elementIndex = 0; // Track position for group suffix (only first element gets it)
 
     circuitElements.forEach( circuitElement => {
@@ -318,52 +324,64 @@ export default class CircuitDescription {
       // For single-max items (household items), don't show position info
       const shouldShowPosition = !CircuitDescription.isSingleMaxItem( circuitElement );
 
-      // Build the accessible name using composable parts
-      const showValuesProperty = circuitNode.model.showValuesProperty;
-      const isSchematic = circuitNode.model.viewTypeProperty.value === CircuitElementViewType.SCHEMATIC;
-
-      // Add group suffix ONLY to first element in group (to reduce verbosity)
-      let accessibleNameWithGroup = CircuitDescription.buildAccessibleName(
-        circuitElement,
-        showValuesProperty.value,
-        circuitElement.isValueDisplayableProperty.value,
-        indexForType,
-        totalForType,
-        shouldShowPosition,
-        isSchematic
-      );
-      if ( groupIndex !== undefined && elementIndex === 0 ) {
-        accessibleNameWithGroup += CircuitConstructionKitCommonFluent.a11y.circuitDescription.groupSuffixFirst.format( { groupIndex: groupIndex } );
-      }
+      // Build a reactive accessible name that auto-updates when values change (e.g., brightness,
+      // voltage, resistance). This avoids needing an imperative update path and keeps descriptions
+      // current even when structural PDOM rebuilds are deferred during slider interaction.
+      // See https://github.com/phetsims/circuit-construction-kit-common/issues/1289
+      const isFirstInGroup = groupIndex !== undefined && elementIndex === 0;
       elementIndex++;
 
-      // Create a property that adds ", selected" suffix when this element is selected
-      const selectionProperty = circuitNode.circuit.selectionProperty;
-      const accessibleNameWithSelectionProperty = new DerivedProperty(
-        [ selectionProperty ],
-        ( selection ): string => {
-          const isSelected = selection === circuitElement;
-          return isSelected ?
-                 CircuitConstructionKitCommonFluent.a11y.circuitDescription.accessibleNameWithSelected.format( {
-                   accessibleName: accessibleNameWithGroup
-                 } ) :
-                 accessibleNameWithGroup;
+      // Gather properties that affect the accessible name. Circuit properties (voltage, resistance,
+      // etc.) are inputs to the solver — when they change, outputs like current and brightness also
+      // change, so subscribing to inputs is sufficient.
+      const valueDependencies: TReadOnlyProperty<unknown>[] = [
+        showValuesProperty, circuitElement.isValueDisplayableProperty, viewTypeProperty, selectionProperty,
+        ...circuitElement.getCircuitProperties()
+      ];
+
+      // Use value comparison so notifications only fire when the string content actually changes,
+      // avoiding unnecessary DOM updates on every frame (e.g., when currentProperty updates but
+      // the rounded brightness percentage is unchanged).
+      const accessibleNameWithSelectionProperty = DerivedProperty.deriveAny( valueDependencies, () => {
+        const isSchematic = viewTypeProperty.value === CircuitElementViewType.SCHEMATIC;
+        let name = CircuitDescription.buildAccessibleName(
+          circuitElement,
+          showValuesProperty.value,
+          circuitElement.isValueDisplayableProperty.value,
+          indexForType,
+          totalForType,
+          shouldShowPosition,
+          isSchematic
+        );
+        if ( isFirstInGroup ) {
+          name += CircuitConstructionKitCommonFluent.a11y.circuitDescription.groupSuffixFirst.format( { groupIndex: groupIndex } );
         }
-      );
+        const isSelected = selectionProperty.value === circuitElement;
+        return isSelected ?
+               CircuitConstructionKitCommonFluent.a11y.circuitDescription.accessibleNameWithSelected.format( {
+                 accessibleName: name
+               } ) :
+               name;
+      }, {
+        valueComparisonStrategy: ( a, b ) => a === b
+      } );
 
       // Store for disposal on next update
       positionedPropertiesMap.set( circuitElement, {
         accessibleNameWithSelectionProperty: accessibleNameWithSelectionProperty
       } );
 
-      // Dispose the properties when the circuit element is disposed
-      circuitElement.disposeEmitterCircuitElement.addListener( () => {
-        const props = positionedPropertiesMap.get( circuitElement );
-        if ( props ) {
-          props.accessibleNameWithSelectionProperty.dispose();
-          positionedPropertiesMap.delete( circuitElement );
-        }
-      } );
+      // Dispose the properties when the circuit element is disposed (register only once per element)
+      if ( !hasDisposeListenerSet.has( circuitElement ) ) {
+        hasDisposeListenerSet.add( circuitElement );
+        circuitElement.disposeEmitterCircuitElement.addListener( () => {
+          const props = positionedPropertiesMap.get( circuitElement );
+          if ( props ) {
+            props.accessibleNameWithSelectionProperty.dispose();
+            positionedPropertiesMap.delete( circuitElement );
+          }
+        } );
+      }
 
       // Set the new property as the accessible name (includes ", selected" suffix when selected)
       circuitElementNode.accessibleName = accessibleNameWithSelectionProperty;
