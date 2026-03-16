@@ -163,7 +163,7 @@ export default class Fuse extends FixedCircuitElement {
    * Get the properties that, when changed, require the circuit to be re-solved.
    */
   public getCircuitProperties(): Property<IntentionalAny>[] {
-    return [ this.resistanceProperty, this.isTrippedProperty ];
+    return [ this.resistanceProperty, this.isTrippedProperty, this.currentRatingProperty ];
   }
 
   public static readonly RANGE = new Range( 0.5, 20 );

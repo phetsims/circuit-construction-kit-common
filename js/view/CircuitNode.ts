@@ -71,6 +71,7 @@ import ChargeNode from './ChargeNode.js';
 import CircuitDebugLayer from './CircuitDebugLayer.js';
 import CircuitElementEditContainerNode from './CircuitElementEditContainerNode.js';
 import CircuitElementNode from './CircuitElementNode.js';
+import CircuitElementNumberControl from './CircuitElementNumberControl.js';
 import CutButton from './CutButton.js';
 import DeleteCueNode from './DeleteCueNode.js';
 import CircuitContextResponses from './description/CircuitContextResponses.js';
@@ -941,6 +942,18 @@ export default class CircuitNode extends Node {
         }
       }
     } );
+
+    // When focus leaves a slider, trigger a full PDOM rebuild to catch up on any structural
+    // changes that were deferred during slider interaction.
+    // See https://github.com/phetsims/circuit-construction-kit-common/issues/1289
+    let wasFocusInSlider = false;
+    pdomFocusProperty.link( ( focus: Focus | null ) => {
+      const isFocusInSlider = CircuitNode.isFocusInNumberControl( focus );
+      if ( wasFocusInSlider && !isFocusInSlider ) {
+        this.updateCircuitDescription();
+      }
+      wasFocusInSlider = isFocusInSlider;
+    } );
   }
 
   private updateVertexCuePosition( vertexNode: VertexNode ): void {
@@ -1010,15 +1023,24 @@ export default class CircuitNode extends Node {
 
         // Set the state once after fully reconstructed, not at a partial intermediate state
         // Skip during keyboard drag to avoid PDOM rebuild interrupting smooth drag motion
-        if ( !isSettingPhetioStateProperty.value && !this.circuit.isKeyboardDragging() ) {
+        // Skip when focus is in a slider (NumberControl) to avoid interrupting VO value announcements.
+        // Circuit element accessible names are reactive DerivedProperties, so they stay current
+        // without a full rebuild. Buttons (reverse battery, fuse repair, etc.) are not
+        // NumberControls, so they still get the full rebuild.
+        // See https://github.com/phetsims/circuit-construction-kit-common/issues/1289
+        if ( !isSettingPhetioStateProperty.value && !this.circuit.isKeyboardDragging() && !CircuitNode.isFocusInNumberControl( pdomFocusProperty.value ) ) {
           CircuitDescription.updateCircuitNode( this );
-
-          // Use surgical update to avoid rebuilding the entire PDOM structure, which would cause focus loss
-          // and reentrancy issues during keyboard drag operations.
           CircuitDescription.updateEditPanelPosition( this );
         }
       } );
     }
+  }
+
+  /**
+   * Returns whether the current PDOM focus is inside a CircuitElementNumberControl (slider).
+   */
+  private static isFocusInNumberControl( focus: Focus | null ): boolean {
+    return focus !== null && focus.trail.nodes.some( node => node instanceof CircuitElementNumberControl );
   }
 
   /**
