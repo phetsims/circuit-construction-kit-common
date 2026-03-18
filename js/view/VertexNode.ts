@@ -18,6 +18,7 @@ import Circle, { type CircleOptions } from '../../../scenery/js/nodes/Circle.js'
 import Node, { type NodeOptions } from '../../../scenery/js/nodes/Node.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import Color from '../../../scenery/js/util/Color.js';
+import Panel from '../../../sun/js/Panel.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
@@ -55,7 +56,7 @@ export default class VertexNode extends InteractiveHighlighting( Node ) {
   private readonly circuit: Circuit;
   private readonly vertexCutButtonContainer: Node;
   private readonly circuitNode: CircuitNode;
-  private readonly vertexLabelNode: VBox;
+  private readonly vertexLabelNode: Panel;
   private readonly updateReadoutTextPosition: ( () => void );
   public readonly vertex: Vertex;
 
@@ -138,9 +139,18 @@ export default class VertexNode extends InteractiveHighlighting( Node ) {
       vboxChildren.push( voltageReadout );
     }
 
-    this.vertexLabelNode = new VBox( {
+    const vertexLabelVBox = new VBox( {
       children: vboxChildren,
       maxWidth: 50
+    } );
+
+    this.vertexLabelNode = new Panel( vertexLabelVBox, {
+      stroke: null,
+      fill: new Color( 255, 255, 255, 0.6 ),
+      cornerRadius: 3,
+      xMargin: 3,
+      yMargin: 1,
+      pickable: false
     } );
 
     circuitNode.vertexLabelLayer.addChild( this.vertexLabelNode );
@@ -163,17 +173,16 @@ export default class VertexNode extends InteractiveHighlighting( Node ) {
       }, { disposer: this } );
     }
 
-    // Dynamically add/remove the custom label so that the focus highlight naturally surrounds just the vertex
-    // circle when there is no label, and surrounds both the vertex and label when there is one.
+    // Dynamically add/remove the custom label so that the Panel is visible only when there is content.
     vertex.labelStringProperty.link( labelText => {
       customLabelText.string = labelText;
       if ( labelText.length > 0 && !vboxChildren.includes( customLabelText ) ) {
         vboxChildren.unshift( customLabelText );
-        this.vertexLabelNode.children = vboxChildren;
+        vertexLabelVBox.children = vboxChildren;
       }
       else if ( labelText.length === 0 && vboxChildren.includes( customLabelText ) ) {
         vboxChildren.splice( vboxChildren.indexOf( customLabelText ), 1 );
-        this.vertexLabelNode.children = vboxChildren;
+        vertexLabelVBox.children = vboxChildren;
       }
       this.updateReadoutTextPosition();
     }, {
