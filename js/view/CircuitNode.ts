@@ -116,6 +116,9 @@ export default class CircuitNode extends Node {
   // layer for vertex buttons
   public readonly buttonLayer: Node;
 
+  // layer for vertex labels (voltage readouts and custom labels)
+  public readonly vertexLabelLayer: Node;
+
   // layer for "show values"
   private readonly valueLayer: Node;
 
@@ -238,6 +241,7 @@ export default class CircuitNode extends Node {
 
     this.seriesAmmeterNodeReadoutPanelLayer = new Node();
     this.buttonLayer = new Node();
+    this.vertexLabelLayer = new Node();
     this.valueLayer = new Node();
     this.lightRaysLayer = new Node();
     this.wireLayer = new Node();
@@ -278,6 +282,7 @@ export default class CircuitNode extends Node {
       this.sensorLayer,
       this.highlightLayer, // highlights go in front of everything else
       this.valueLayer, // values
+      this.vertexLabelLayer, // vertex labels (voltage readouts and custom labels)
       this.buttonLayer // vertex buttons
     ];
 
@@ -297,6 +302,7 @@ export default class CircuitNode extends Node {
       this.sensorLayer,
       this.highlightLayer,
       this.valueLayer,
+      this.vertexLabelLayer,
       this.buttonLayer
     ];
 
