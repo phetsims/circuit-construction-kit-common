@@ -143,10 +143,13 @@ export default class VertexNode extends InteractiveHighlighting( Node ) {
       maxWidth: 50
     } );
 
-    // for debugging
+    circuitNode.vertexLabelLayer.addChild( this.vertexLabelNode );
+
+    // Position the label in circuit coordinates (since it's in a separate layer)
     this.updateReadoutTextPosition = () => {
-      this.vertexLabelNode.centerX = 0;
-      this.vertexLabelNode.bottom = -30;
+      const position = vertex.positionProperty.get();
+      this.vertexLabelNode.centerX = position.x;
+      this.vertexLabelNode.bottom = position.y - 30;
     };
 
     if ( CCKCQueryParameters.vertexDisplay ) {
@@ -291,6 +294,7 @@ export default class VertexNode extends InteractiveHighlighting( Node ) {
 
     this.vertexCutButtonContainer.dispose();
 
+    circuitNode.vertexLabelLayer.removeChild( this.vertexLabelNode );
     this.vertexLabelNode.dispose();
 
     super.dispose();
@@ -339,7 +343,7 @@ export default class VertexNode extends InteractiveHighlighting( Node ) {
 
       const desiredChild = this.circuit.countCircuitElements( this.vertex ) > 1 ? BLACK_CIRCLE_NODE : RED_CIRCLE_NODE;
       if ( this.getChildAt( 0 ) !== desiredChild ) {
-        this.children = this.vertexLabelNode ? [ desiredChild, this.vertexLabelNode ] : [ desiredChild ];
+        this.children = [ desiredChild ];
       }
       this.visible = this.vertex.attachableProperty.get();
     }
