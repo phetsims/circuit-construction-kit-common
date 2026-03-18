@@ -172,6 +172,11 @@ export default class CircuitNode extends Node {
   public readonly groupsContainer: Node;
   public readonly constructionAreaContainer: Node;
 
+  // Per-screen description state used by CircuitDescription (prevents cross-screen interference)
+  public descriptionGroupNodes: Node[] | null = null;
+  public descriptionGroupComponentsSections = new Map<Node, Node>();
+  public descriptionGroupConnectionsSections = new Map<Node, Node>();
+
   // Cue nodes to show the user how to grab vertices and circuit elements
   public readonly vertexGrabReleaseCueNode: GrabReleaseCueNode;
   public readonly circuitElementGrabReleaseCueNode: GrabReleaseCueNode;

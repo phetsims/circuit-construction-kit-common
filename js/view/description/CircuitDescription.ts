@@ -45,12 +45,6 @@ const hasDisposeListenerSet = new WeakSet<CircuitElement>();
 const GROUPED_CIRCUIT_ELEMENT_TYPE_ORDER: CircuitElementType[] = [ 'battery', 'resistor', 'lightBulb', 'wire' ];
 
 export default class CircuitDescription {
-  private static myGroupNodes: Node[] | null = null;
-
-  // Track subsection nodes for connected groups
-  private static groupComponentsSections = new Map<Node, Node>();
-  private static groupConnectionsSections = new Map<Node, Node>();
-
   // Delegate to CircuitDescriptionUtils for shared functionality
   public static getDescriptionType = CircuitDescriptionUtils.getDescriptionType;
   public static isSingleMaxItem = CircuitDescriptionUtils.isSingleMaxItem;
@@ -181,8 +175,8 @@ export default class CircuitDescription {
    */
   private static cleanupGroupNodes( circuitNode: CircuitNode ): void {
     // Clear pdomOrder arrays first to prevent PDOM elements from being referenced in multiple places
-    if ( this.myGroupNodes ) {
-      this.myGroupNodes.forEach( group => {
+    if ( circuitNode.descriptionGroupNodes ) {
+      circuitNode.descriptionGroupNodes.forEach( group => {
         group.pdomOrder = [];
       } );
     }
@@ -191,27 +185,27 @@ export default class CircuitDescription {
     circuitNode.groupsContainer.removeAllChildren();
 
     // Dispose old group nodes (removes their PDOM elements)
-    if ( this.myGroupNodes ) {
-      this.myGroupNodes.forEach( group => {
+    if ( circuitNode.descriptionGroupNodes ) {
+      circuitNode.descriptionGroupNodes.forEach( group => {
         group.dispose();
       } );
-      this.myGroupNodes = null;
+      circuitNode.descriptionGroupNodes = null;
     }
 
     // Clear old subsection pdomOrders to release circuit element/vertex nodes,
     // then dispose and clear the references. A node can only be in one pdomOrder at a time.
     // Disposing is necessary to unlink listeners on shared StringProperties (e.g., componentsHeadingStringProperty)
     // that were registered via accessibleHeading. Node.dispose() does not dispose children automatically.
-    this.groupComponentsSections.forEach( section => {
+    circuitNode.descriptionGroupComponentsSections.forEach( section => {
       section.pdomOrder = [];
       section.dispose();
     } );
-    this.groupConnectionsSections.forEach( section => {
+    circuitNode.descriptionGroupConnectionsSections.forEach( section => {
       section.pdomOrder = [];
       section.dispose();
     } );
-    this.groupComponentsSections.clear();
-    this.groupConnectionsSections.clear();
+    circuitNode.descriptionGroupComponentsSections.clear();
+    circuitNode.descriptionGroupConnectionsSections.clear();
   }
 
   /**
@@ -702,8 +696,8 @@ export default class CircuitDescription {
       } );
 
       // Store subsection references for updateEditPanelPosition
-      this.groupComponentsSections.set( groupNode, componentsSection );
-      this.groupConnectionsSections.set( groupNode, connectionsSection );
+      circuitNode.descriptionGroupComponentsSections.set( groupNode, componentsSection );
+      circuitNode.descriptionGroupConnectionsSections.set( groupNode, connectionsSection );
 
       circuitNode.groupsContainer.addChild( groupNode );
       groupNodes.push( groupNode );
@@ -800,7 +794,7 @@ export default class CircuitDescription {
         constructionAreaPDOMOrder.push( circuitNode.unconnectedCircuitElementsSection );
       }
       constructionAreaPDOMOrder.push( ...groupNodes );
-      this.myGroupNodes = groupNodes;
+      circuitNode.descriptionGroupNodes = groupNodes;
 
       // Add sensors to PDOM order (voltmeters before ammeters)
       constructionAreaPDOMOrder.push( ...voltmeterNodes, ...ammeterNodes );
@@ -854,7 +848,7 @@ export default class CircuitDescription {
     }
 
     // Remove edit panel from any group components sections if present
-    this.groupComponentsSections.forEach( componentsSection => {
+    circuitNode.descriptionGroupComponentsSections.forEach( componentsSection => {
       const sectionOrder = removeFromPdomOrder( componentsSection.pdomOrder );
       if ( sectionOrder ) {
         componentsSection.pdomOrder = sectionOrder;
@@ -878,7 +872,7 @@ export default class CircuitDescription {
       }
 
       // Check if it's in one of the group components sections
-      for ( const componentsSection of this.groupComponentsSections.values() ) {
+      for ( const componentsSection of circuitNode.descriptionGroupComponentsSections.values() ) {
         const sectionPdomOrder = componentsSection.pdomOrder;
         if ( sectionPdomOrder ) {
           const elementIndex = sectionPdomOrder.indexOf( circuitElementNode );
