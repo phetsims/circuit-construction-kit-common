@@ -325,11 +325,7 @@ export default class VertexNode extends InteractiveHighlighting( Node ) {
       CCKCUtils.setInSceneGraph( selected && this.circuitNode.vertexAttachmentListenerCount === 0 && this.vertex.isCuttableProperty.value, this.circuitNode.buttonLayer, this.vertexCutButtonContainer );
       selected && this.updateVertexCutButtonPosition();
 
-      // Show a disabled button as a cue that the vertex could be cuttable, but it isn't right now.
-      const isConnectedBlackBoxVertex = numberConnections === 1 && !this.vertex.isDraggableProperty.get();
-
-      const cutButtonVisible = numberConnections > 1 || isConnectedBlackBoxVertex;
-      this.vertexCutButtonContainer.visible = cutButtonVisible;
+      this.vertexCutButtonContainer.visible = numberConnections > 1;
     }
   }
 
