@@ -6,7 +6,6 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../../CircuitConstructionKitCommonFluent.js';
 import Battery from '../../model/Battery.js';
 import type Circuit from '../../model/Circuit.js';
@@ -269,7 +268,5 @@ const CircuitDescriptionUtils = {
     return null; // Disconnected element
   }
 };
-
-circuitConstructionKitCommon.register( 'CircuitDescriptionUtils', CircuitDescriptionUtils );
 
 export default CircuitDescriptionUtils;

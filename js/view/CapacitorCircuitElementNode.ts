@@ -27,7 +27,6 @@ import Color from '../../../scenery/js/util/Color.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import wireIcon_png from '../../images/wireIcon_png.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import type Capacitor from '../model/Capacitor.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import type CCKCScreenView from './CCKCScreenView.js';
@@ -285,5 +284,3 @@ export default class CapacitorCircuitElementNode extends FixedCircuitElementNode
            this.contentNode.localBounds.dilatedX( 10 ).dilatedY( 10 );
   }
 }
-
-circuitConstructionKitCommon.register( 'CapacitorCircuitElementNode', CapacitorCircuitElementNode );

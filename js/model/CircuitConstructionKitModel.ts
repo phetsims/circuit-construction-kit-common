@@ -27,7 +27,6 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import NumberIO from '../../../tandem/js/types/NumberIO.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Ammeter from './Ammeter.js';
 import Circuit from './Circuit.js';
 import CircuitElementViewType from './CircuitElementViewType.js';
@@ -367,5 +366,3 @@ export default class CircuitConstructionKitModel implements TModel {
     this.zoomAnimation = null;
   }
 }
-
-circuitConstructionKitCommon.register( 'CircuitConstructionKitModel', CircuitConstructionKitModel );

@@ -9,7 +9,6 @@
  */
 
 import affirm from '../../../../perennial-alias/js/browser-and-node/affirm.js';
-import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import type CoreModel from './CoreModel.js';
 import type LTAState from './LTAState.js';
 import type MNACircuitElement from './mna/MNACircuitElement.js';
@@ -78,5 +77,3 @@ export default class LTAStateSet {
     return _.last( this.resultSet )!.state;
   }
 }
-
-circuitConstructionKitCommon.register( 'LTAStateSet', LTAStateSet );

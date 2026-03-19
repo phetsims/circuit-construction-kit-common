@@ -8,7 +8,6 @@
 
 import affirm from '../../../../../perennial-alias/js/browser-and-node/affirm.js';
 /* global Assert */
-import circuitConstructionKitCommon from '../../../circuitConstructionKitCommon.js';
 import type MNACircuitElement from './MNACircuitElement.js';
 import type MNAResistor from './MNAResistor.js';
 
@@ -131,5 +130,3 @@ export default class MNASolution {
  * @returns true if the numbers are approximately equal
  */
 const approximatelyEquals = ( a: number, b: number ) => Math.abs( a - b ) < 1E-4;
-
-circuitConstructionKitCommon.register( 'MNASolution', MNASolution );

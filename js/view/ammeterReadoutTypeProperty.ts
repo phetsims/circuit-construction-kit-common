@@ -8,7 +8,6 @@
 import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import AmmeterReadoutType from '../model/AmmeterReadoutType.js';
 
 const ammeterReadoutTypeProperty = new EnumerationProperty( CCKCQueryParameters.ammeterReadout === 'magnitude' ? AmmeterReadoutType.MAGNITUDE : AmmeterReadoutType.SIGNED, {
@@ -16,5 +15,4 @@ const ammeterReadoutTypeProperty = new EnumerationProperty( CCKCQueryParameters.
   phetioFeatured: true
 } );
 
-circuitConstructionKitCommon.register( 'ammeterReadoutTypeProperty', ammeterReadoutTypeProperty );
 export default ammeterReadoutTypeProperty;

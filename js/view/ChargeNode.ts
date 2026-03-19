@@ -16,7 +16,6 @@ import ElectronChargeNode from '../../../scenery-phet/js/ElectronChargeNode.js';
 import Circle from '../../../scenery/js/nodes/Circle.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Tandem from '../../../tandem/js/Tandem.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Capacitor from '../model/Capacitor.js';
 import type Charge from '../model/Charge.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
@@ -194,5 +193,3 @@ export default class ChargeNode extends Node {
                    this.outsideOfBlackBoxProperty.get();
   }
 }
-
-circuitConstructionKitCommon.register( 'ChargeNode', ChargeNode );

@@ -10,7 +10,6 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import circuitConstructionKitCommon from '../../../circuitConstructionKitCommon.js';
 import SpiceAdapter from './SpiceAdapter.js';
 import type MNABattery from '../mna/MNABattery.js';
 import type MNACapacitor from '../mna/MNACapacitor.js';
@@ -237,5 +236,3 @@ export default class SpiceSolverManager {
     return adapter.parseResult( result as Parameters<typeof adapter.parseResult>[0] );
   }
 }
-
-circuitConstructionKitCommon.register( 'SpiceSolverManager', SpiceSolverManager );

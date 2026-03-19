@@ -12,7 +12,6 @@ import type Property from '../../../axon/js/Property.js';
 import type TEmitter from '../../../axon/js/TEmitter.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import type CircuitElement from './CircuitElement.js';
 
 export default class Charge extends Disposable {
@@ -80,5 +79,3 @@ export default class Charge extends Disposable {
     super.dispose();
   }
 }
-
-circuitConstructionKitCommon.register( 'Charge', Charge );

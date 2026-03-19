@@ -22,7 +22,6 @@ import SunConstants from '../../../sun/js/SunConstants.js';
 import isSettingPhetioStateProperty from '../../../tandem/js/isSettingPhetioStateProperty.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import CircuitDescriptionUtils from './description/CircuitDescriptionUtils.js';
 import ACVoltage from '../model/ACVoltage.js';
@@ -605,5 +604,3 @@ export default class CircuitElementEditContainerNode extends Node {
     this.localBoundsProperty.link( updatePosition );
   }
 }
-
-circuitConstructionKitCommon.register( 'CircuitElementEditContainerNode', CircuitElementEditContainerNode );

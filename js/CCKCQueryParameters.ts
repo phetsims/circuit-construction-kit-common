@@ -7,7 +7,6 @@
  */
 
 import { QueryStringMachine } from '../../query-string-machine/js/QueryStringMachineModule.js';
-import circuitConstructionKitCommon from './circuitConstructionKitCommon.js';
 
 const CCKCQueryParameters = QueryStringMachine.getAll( {
 
@@ -165,7 +164,5 @@ const CCKCQueryParameters = QueryStringMachine.getAll( {
     validValues: [ 'spice', 'phet' ]
   }
 } );
-
-circuitConstructionKitCommon.register( 'CCKCQueryParameters', CCKCQueryParameters );
 
 export default CCKCQueryParameters;

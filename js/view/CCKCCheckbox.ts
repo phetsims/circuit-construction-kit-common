@@ -9,7 +9,6 @@ import type Property from '../../../axon/js/Property.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
 import type Node from '../../../scenery/js/nodes/Node.js';
 import Checkbox, { type CheckboxOptions } from '../../../sun/js/Checkbox.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 // constants
 const BOX_WIDTH = 16;
@@ -22,5 +21,3 @@ export default class CCKCCheckbox extends Checkbox {
     super( property, content, providedOptions );
   }
 }
-
-circuitConstructionKitCommon.register( 'CCKCCheckbox', CCKCCheckbox );

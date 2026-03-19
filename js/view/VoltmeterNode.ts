@@ -40,7 +40,6 @@ import voltmeterBody_png from '../../mipmaps/voltmeterBody_png.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import CCKCUtils from '../CCKCUtils.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import type CircuitConstructionKitModel from '../model/CircuitConstructionKitModel.js';
 import type Voltmeter from '../model/Voltmeter.js';
@@ -531,5 +530,3 @@ export default class VoltmeterNode extends InteractiveHighlighting( Node ) {
     InteractiveHighlighting.forwardInteractiveHighlightFromPress( this, event );
   }
 }
-
-circuitConstructionKitCommon.register( 'VoltmeterNode', VoltmeterNode );

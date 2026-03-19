@@ -20,7 +20,6 @@ import soundManager from '../../../tambo/js/soundManager.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import breakFuse_mp3 from '../../sounds/breakFuse_mp3.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import type Circuit from './Circuit.js';
 import FixedCircuitElement, { type FixedCircuitElementOptions } from './FixedCircuitElement.js';
 import type Vertex from './Vertex.js';
@@ -169,5 +168,3 @@ export default class Fuse extends FixedCircuitElement {
   public static readonly RANGE = new Range( 0.5, 20 );
   public static readonly DEFAULT_CURRENT_RATING = 4;
 }
-
-circuitConstructionKitCommon.register( 'Fuse', Fuse );

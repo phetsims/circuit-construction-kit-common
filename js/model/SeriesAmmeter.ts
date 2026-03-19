@@ -13,7 +13,6 @@ import optionize, { type EmptySelfOptions } from '../../../phet-core/js/optioniz
 import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import FixedCircuitElement, { type FixedCircuitElementOptions } from './FixedCircuitElement.js';
 import type Vertex from './Vertex.js';
 
@@ -60,5 +59,3 @@ export default class SeriesAmmeter extends FixedCircuitElement {
     return [];
   }
 }
-
-circuitConstructionKitCommon.register( 'SeriesAmmeter', SeriesAmmeter );

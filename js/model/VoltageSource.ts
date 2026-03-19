@@ -18,7 +18,6 @@ import type PickOptional from '../../../phet-core/js/types/PickOptional.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import BooleanIO from '../../../tandem/js/types/BooleanIO.js';
 import NumberIO from '../../../tandem/js/types/NumberIO.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 // Constants for fire display
 const FIRE_THRESHOLD = 15; // Beyond this number of amps, flammable CircuitElements catch on fire
@@ -122,5 +121,3 @@ export default abstract class VoltageSource extends FixedCircuitElement {
     return [ this.voltageProperty ];
   }
 }
-
-circuitConstructionKitCommon.register( 'VoltageSource', VoltageSource );

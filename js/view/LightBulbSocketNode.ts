@@ -12,7 +12,6 @@ import Matrix3 from '../../../dot/js/Matrix3.js';
 import { combineOptions } from '../../../phet-core/js/optionize.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import type CircuitElementViewType from '../model/CircuitElementViewType.js';
 import type LightBulb from '../model/LightBulb.js';
 import type CCKCScreenView from './CCKCScreenView.js';
@@ -79,5 +78,3 @@ export default class LightBulbSocketNode extends FixedCircuitElementNode {
     // TODO (black-box-study): Make the light bulb images look faded out. https://github.com/phetsims/tasks/issues/1129
   }
 }
-
-circuitConstructionKitCommon.register( 'LightBulbSocketNode', LightBulbSocketNode );

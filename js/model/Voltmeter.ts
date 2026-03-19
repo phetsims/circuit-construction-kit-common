@@ -13,7 +13,6 @@ import Vector2Property from '../../../dot/js/Vector2Property.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import NullableIO from '../../../tandem/js/types/NullableIO.js';
 import NumberIO from '../../../tandem/js/types/NumberIO.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Meter from './Meter.js';
 import VoltageConnection from './VoltageConnection.js';
 
@@ -84,5 +83,3 @@ export default class Voltmeter extends Meter {
     this.blackProbePositionProperty.reset();
   }
 }
-
-circuitConstructionKitCommon.register( 'Voltmeter', Voltmeter );

@@ -37,7 +37,6 @@ import PhetioGroup from '../../../tandem/js/PhetioGroup.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import ACVoltage from '../model/ACVoltage.js';
 import AmmeterConnection from '../model/AmmeterConnection.js';
@@ -1611,5 +1610,3 @@ export default class CircuitNode extends Node {
     }
   }
 }
-
-circuitConstructionKitCommon.register( 'CircuitNode', CircuitNode );

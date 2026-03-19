@@ -27,7 +27,6 @@ import PhetioObject, { type PhetioObjectOptions } from '../../../tandem/js/Pheti
 import type Tandem from '../../../tandem/js/Tandem.js';
 import IOType from '../../../tandem/js/types/IOType.js';
 import ReferenceIO, { ReferenceIOState } from '../../../tandem/js/types/ReferenceIO.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import type CircuitElementType from './CircuitElementType.js';
 import CurrentSense from './CurrentSense.js';
 import Vertex from './Vertex.js';
@@ -481,5 +480,3 @@ export default abstract class CircuitElement extends PhetioObject {
     }
   } );
 }
-
-circuitConstructionKitCommon.register( 'CircuitElement', CircuitElement );

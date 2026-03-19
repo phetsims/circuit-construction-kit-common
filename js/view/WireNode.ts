@@ -21,7 +21,6 @@ import Color from '../../../scenery/js/util/Color.js';
 import LinearGradient from '../../../scenery/js/util/LinearGradient.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import type Vertex from '../model/Vertex.js';
 import type Wire from '../model/Wire.js';
@@ -417,5 +416,3 @@ export default class WireNode extends CircuitElementNode {
     super.dispose();
   }
 }
-
-circuitConstructionKitCommon.register( 'WireNode', WireNode );

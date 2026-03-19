@@ -8,7 +8,6 @@
 
 import Enumeration from '../../../phet-core/js/Enumeration.js';
 import EnumerationValue from '../../../phet-core/js/EnumerationValue.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 export default class CircuitElementViewType extends EnumerationValue {
   public static readonly LIFELIKE = new CircuitElementViewType();
@@ -18,5 +17,3 @@ export default class CircuitElementViewType extends EnumerationValue {
     phetioDocumentation: 'Enumeration that determines how the circuit elements are rendered: lifelike or schematic'
   } );
 }
-
-circuitConstructionKitCommon.register( 'CircuitElementViewType', CircuitElementViewType );

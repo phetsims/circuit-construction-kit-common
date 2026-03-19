@@ -10,7 +10,6 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import SoundKeyboardDragListener from '../../../../scenery-phet/js/SoundKeyboardDragListener.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import CCKCConstants from '../../CCKCConstants.js';
-import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import CircuitNode from '../CircuitNode.js';
 import VertexNode from '../VertexNode.js';
 
@@ -67,5 +66,3 @@ export default class VertexKeyboardListener extends SoundKeyboardDragListener {
     } );
   }
 }
-
-circuitConstructionKitCommon.register( 'VertexKeyboardListener', VertexKeyboardListener );

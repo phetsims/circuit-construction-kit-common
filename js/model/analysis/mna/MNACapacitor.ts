@@ -7,7 +7,6 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import circuitConstructionKitCommon from '../../../circuitConstructionKitCommon.js';
 import MNACircuitElement from './MNACircuitElement.js';
 
 export default class MNACapacitor extends MNACircuitElement {
@@ -20,5 +19,3 @@ export default class MNACapacitor extends MNACircuitElement {
     this.initialVoltage = initialVoltage;
   }
 }
-
-circuitConstructionKitCommon.register( 'MNACapacitor', MNACapacitor );

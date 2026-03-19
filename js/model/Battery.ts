@@ -13,7 +13,6 @@ import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import optionize, { type EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import type BatteryType from './BatteryType.js';
 import type Vertex from './Vertex.js';
 import VoltageSource, { type VoltageSourceOptions } from './VoltageSource.js';
@@ -62,5 +61,3 @@ export default class Battery extends VoltageSource {
     super.dispose();
   }
 }
-
-circuitConstructionKitCommon.register( 'Battery', Battery );

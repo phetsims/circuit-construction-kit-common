@@ -14,7 +14,6 @@ import optionize from '../../../phet-core/js/optionize.js';
 import ProbeNode, { type ProbeNodeOptions } from '../../../scenery-phet/js/ProbeNode.js';
 import DragListener from '../../../scenery/js/listeners/DragListener.js';
 import type Node from '../../../scenery/js/nodes/Node.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 type SelfOptions = {
   drag?: () => void;
@@ -57,5 +56,3 @@ export default class CCKCProbeNode extends ProbeNode {
     } ) );
   }
 }
-
-circuitConstructionKitCommon.register( 'CCKCProbeNode', CCKCProbeNode );

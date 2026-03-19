@@ -12,7 +12,6 @@ import trashAltRegularShape from '../../../sherpa/js/fontawesome-5/trashAltRegul
 import sharedSoundPlayers from '../../../tambo/js/sharedSoundPlayers.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import CircuitDescriptionUtils from './description/CircuitDescriptionUtils.js';
 import CircuitElement from '../model/CircuitElement.js';
@@ -69,5 +68,3 @@ export default class CCKCTrashButton extends CCKCRoundPushButton {
     } );
   }
 }
-
-circuitConstructionKitCommon.register( 'CCKCTrashButton', CCKCTrashButton );

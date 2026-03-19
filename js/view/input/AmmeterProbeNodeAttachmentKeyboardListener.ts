@@ -11,7 +11,6 @@ import { toFixed } from '../../../../dot/js/util/toFixed.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import type Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
-import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../../CircuitConstructionKitCommonFluent.js';
 import type Ammeter from '../../model/Ammeter.js';
 import CircuitElement from '../../model/CircuitElement.js';
@@ -94,5 +93,3 @@ export default class AmmeterProbeNodeAttachmentKeyboardListener extends Attachme
     } );
   }
 }
-
-circuitConstructionKitCommon.register( 'AmmeterProbeNodeAttachmentKeyboardListener', AmmeterProbeNodeAttachmentKeyboardListener );

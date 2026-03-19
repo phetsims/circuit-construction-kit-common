@@ -10,7 +10,6 @@
 import DragListener, { type DragListenerOptions } from '../../../../scenery/js/listeners/DragListener.js';
 import { type PressListenerEvent } from '../../../../scenery/js/listeners/PressListener.js';
 import type Node from '../../../../scenery/js/nodes/Node.js';
-import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import type Vertex from '../../model/Vertex.js';
 import type CircuitNode from '../CircuitNode.js';
 
@@ -49,5 +48,3 @@ export default abstract class CircuitNodeDragListener extends DragListener {
     return false;
   }
 }
-
-circuitConstructionKitCommon.register( 'CircuitNodeDragListener', CircuitNodeDragListener );

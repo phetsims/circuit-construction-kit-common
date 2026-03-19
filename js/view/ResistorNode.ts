@@ -28,7 +28,6 @@ import thinPencil_png from '../../images/thinPencil_png.js';
 import resistor_png from '../../images/resistor_png.js';
 import resistorHigh_png from '../../images/resistorHigh_png.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import type CircuitElementViewType from '../model/CircuitElementViewType.js';
 import type Resistor from '../model/Resistor.js';
 import ResistorType from '../model/ResistorType.js';
@@ -249,5 +248,3 @@ export default class ResistorNode extends FixedCircuitElementNode {
     super.dispose();
   }
 }
-
-circuitConstructionKitCommon.register( 'ResistorNode', ResistorNode );

@@ -17,7 +17,6 @@ import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import Color from '../../../scenery/js/util/Color.js';
 import Tandem from '../../../tandem/js/Tandem.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CCKCColors from './CCKCColors.js';
 
 // constants
@@ -123,5 +122,3 @@ export default class ProbeTextNode extends VBox {
     super.dispose();
   }
 }
-
-circuitConstructionKitCommon.register( 'ProbeTextNode', ProbeTextNode );

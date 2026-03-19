@@ -12,7 +12,6 @@
 import affirm from '../../../../perennial-alias/js/browser-and-node/affirm.js';
 import CCKCConstants from '../../CCKCConstants.js';
 import CCKCQueryParameters from '../../CCKCQueryParameters.js';
-import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 
 // smallest possible time
 const MIN_DT = CCKCQueryParameters.minDT;
@@ -103,5 +102,3 @@ export default class TimestepSubdivisions<T> {
     }
   }
 }
-
-circuitConstructionKitCommon.register( 'TimestepSubdivisions', TimestepSubdivisions );

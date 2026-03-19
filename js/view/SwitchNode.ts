@@ -19,7 +19,6 @@ import type Gradient from '../../../scenery/js/util/Gradient.js';
 import LinearGradient from '../../../scenery/js/util/LinearGradient.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import type Switch from '../model/Switch.js';
 import type CCKCScreenView from './CCKCScreenView.js';
@@ -282,5 +281,3 @@ export default class SwitchNode extends FixedCircuitElementNode {
     super.dispose();
   }
 }
-
-circuitConstructionKitCommon.register( 'SwitchNode', SwitchNode );

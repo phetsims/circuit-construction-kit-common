@@ -39,7 +39,6 @@ import Text from '../../../scenery/js/nodes/Text.js';
 import ButtonNode from '../../../sun/js/buttons/ButtonNode.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import Meter from '../model/Meter.js';
 import CCKCProbeNode from './CCKCProbeNode.js';
@@ -493,5 +492,3 @@ export default class CCKCChartNode extends Node {
     this.backgroundNode.addInputListener( dragListener );
   }
 }
-
-circuitConstructionKitCommon.register( 'CCKCChartNode', CCKCChartNode );

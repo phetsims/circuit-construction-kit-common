@@ -25,7 +25,6 @@ import lightBulbMiddle_png from '../../mipmaps/lightBulbMiddle_png.js';
 import lightBulbMiddleHigh_png from '../../mipmaps/lightBulbMiddleHigh_png.js';
 import lightBulbMiddleReal_png from '../../mipmaps/lightBulbMiddleReal_png.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import LightBulb from '../model/LightBulb.js';
 import type CCKCScreenView from './CCKCScreenView.js';
@@ -288,5 +287,3 @@ export default class CCKCLightBulbNode extends FixedCircuitElementNode {
     // TODO (black-box-study): Make the light bulb images look faded out. https://github.com/phetsims/tasks/issues/1129
   }
 }
-
-circuitConstructionKitCommon.register( 'CCKCLightBulbNode', CCKCLightBulbNode );

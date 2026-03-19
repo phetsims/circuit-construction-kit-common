@@ -6,7 +6,6 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import type CircuitElement from './CircuitElement.js';
 
 export default class AmmeterConnection {
@@ -18,5 +17,3 @@ export default class AmmeterConnection {
     this.current = current;
   }
 }
-
-circuitConstructionKitCommon.register( 'AmmeterConnection', AmmeterConnection );

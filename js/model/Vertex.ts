@@ -22,7 +22,6 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import IOType from '../../../tandem/js/types/IOType.js';
 import NullableIO from '../../../tandem/js/types/NullableIO.js';
 import NumberIO from '../../../tandem/js/types/NumberIO.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import type CircuitElement from './CircuitElement.js';
 
 // Index counter for debugging
@@ -220,5 +219,3 @@ type VertexState = {
   position: Vector2;
   groupFormationTime: number | null;
 };
-
-circuitConstructionKitCommon.register( 'Vertex', Vertex );

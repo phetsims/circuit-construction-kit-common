@@ -6,7 +6,6 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 export default class CoreModel {
   public readonly node0: string;
   public readonly node1: string;
@@ -18,4 +17,3 @@ export default class CoreModel {
     this.node1 = node1;
   }
 }
-circuitConstructionKitCommon.register( 'CoreModel', CoreModel );

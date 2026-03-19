@@ -17,7 +17,6 @@ import KeyboardListener from '../../../scenery/js/listeners/KeyboardListener.js'
 import { type PressListenerEvent } from '../../../scenery/js/listeners/PressListener.js';
 import Node, { type NodeOptions } from '../../../scenery/js/nodes/Node.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import type Circuit from '../model/Circuit.js';
 import type CircuitElement from '../model/CircuitElement.js';
@@ -260,5 +259,3 @@ export default abstract class CircuitElementNode extends InteractiveHighlighting
     }
   }
 }
-
-circuitConstructionKitCommon.register( 'CircuitElementNode', CircuitElementNode );

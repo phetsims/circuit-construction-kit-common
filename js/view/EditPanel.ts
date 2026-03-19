@@ -9,7 +9,6 @@
 import HBox from '../../../scenery/js/layout/nodes/HBox.js';
 import type Node from '../../../scenery/js/nodes/Node.js';
 import Panel from '../../../sun/js/Panel.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CCKCColors from './CCKCColors.js';
 
 export default class EditPanel extends Panel {
@@ -37,5 +36,3 @@ export default class EditPanel extends Panel {
     super.dispose();
   }
 }
-
-circuitConstructionKitCommon.register( 'EditPanel', EditPanel );

@@ -56,5 +56,4 @@ const CCKCColors = {
   } )
 };
 
-circuitConstructionKitCommon.register( 'CCKCColors', CCKCColors );
 export default CCKCColors;

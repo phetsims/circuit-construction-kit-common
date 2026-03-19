@@ -10,7 +10,6 @@
 
 import affirm from '../../../../perennial-alias/js/browser-and-node/affirm.js';
 import CCKCQueryParameters from '../../CCKCQueryParameters.js';
-import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import type CoreModel from './CoreModel.js';
 import LTACapacitor from './LTACapacitor.js';
 import LTAInductor from './LTAInductor.js';
@@ -215,5 +214,3 @@ const euclideanDistance = ( x: number[], y: number[] ) => {
   }
   return Math.sqrt( sumSqDiffs );
 };
-
-circuitConstructionKitCommon.register( 'LTACircuit', LTACircuit );

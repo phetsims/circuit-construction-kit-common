@@ -21,7 +21,6 @@ import Node from '../../../scenery/js/nodes/Node.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import fire_png from '../../images/fire_png.js';
 import CCKCUtils from '../CCKCUtils.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import type CircuitElement from '../model/CircuitElement.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import type FixedCircuitElement from '../model/FixedCircuitElement.js';
@@ -361,5 +360,3 @@ export default class FixedCircuitElementNode extends CircuitElementNode {
     return this.contentNode.localBounds.dilated( HIGHLIGHT_PADDING );
   }
 }
-
-circuitConstructionKitCommon.register( 'FixedCircuitElementNode', FixedCircuitElementNode );

@@ -20,7 +20,6 @@ import Text from '../../../scenery/js/nodes/Text.js';
 import VerticalAquaRadioButtonGroup from '../../../sun/js/VerticalAquaRadioButtonGroup.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import CurrentType from '../model/CurrentType.js';
 import CCKCCheckbox from './CCKCCheckbox.js';
@@ -209,5 +208,3 @@ export default class DisplayOptionsPanel extends CCKCPanel {
     this.stopwatchCheckbox = stopwatchCheckbox;
   }
 }
-
-circuitConstructionKitCommon.register( 'DisplayOptionsPanel', DisplayOptionsPanel );

@@ -4,7 +4,6 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import circuitConstructionKitCommon from '../../../circuitConstructionKitCommon.js';
 import MNACircuitElement from './MNACircuitElement.js';
 export default class MNACurrent extends MNACircuitElement {
   public readonly current: number;
@@ -18,4 +17,3 @@ export default class MNACurrent extends MNACircuitElement {
     return super.toString() + `, current: ${this.current}`;
   }
 }
-circuitConstructionKitCommon.register( 'MNACurrent', MNACurrent );

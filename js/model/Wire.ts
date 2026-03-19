@@ -14,7 +14,6 @@ import optionize from '../../../phet-core/js/optionize.js';
 import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import type Circuit from './Circuit.js';
 import CircuitElement, { type CircuitElementOptions } from './CircuitElement.js';
 import type Vertex from './Vertex.js';
@@ -137,5 +136,3 @@ export default class Wire extends CircuitElement {
     super.dispose();
   }
 }
-
-circuitConstructionKitCommon.register( 'Wire', Wire );

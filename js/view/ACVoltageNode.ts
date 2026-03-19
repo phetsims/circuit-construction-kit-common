@@ -17,7 +17,6 @@ import Node from '../../../scenery/js/nodes/Node.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import type ACVoltage from '../model/ACVoltage.js';
 import type CircuitElementViewType from '../model/CircuitElementViewType.js';
 import type CCKCScreenView from './CCKCScreenView.js';
@@ -121,5 +120,3 @@ export default class ACVoltageNode extends FixedCircuitElementNode {
     );
   }
 }
-
-circuitConstructionKitCommon.register( 'ACVoltageNode', ACVoltageNode );

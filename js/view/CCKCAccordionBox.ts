@@ -15,7 +15,6 @@ import Text from '../../../scenery/js/nodes/Text.js';
 import AccordionBox, { type AccordionBoxOptions } from '../../../sun/js/AccordionBox.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CCKCColors from './CCKCColors.js';
 
 // constants
@@ -68,5 +67,3 @@ export default class CCKCAccordionBox extends AccordionBox {
     }, options ) );
   }
 }
-
-circuitConstructionKitCommon.register( 'CCKCAccordionBox', CCKCAccordionBox );

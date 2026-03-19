@@ -19,7 +19,6 @@ import Color from '../../../scenery/js/util/Color.js';
 import type TPaint from '../../../scenery/js/util/TPaint.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import type CircuitElementViewType from '../model/CircuitElementViewType.js';
 import type Inductor from '../model/Inductor.js';
 import type CCKCScreenView from './CCKCScreenView.js';
@@ -160,5 +159,3 @@ export default class InductorNode extends FixedCircuitElementNode {
     );
   }
 }
-
-circuitConstructionKitCommon.register( 'InductorNode', InductorNode );

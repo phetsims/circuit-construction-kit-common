@@ -12,7 +12,6 @@ import type TEmitter from '../../../axon/js/TEmitter.js';
 import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import { type EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import type CircuitElementType from './CircuitElementType.js';
 import FixedCircuitElement, { type FixedCircuitElementOptions } from './FixedCircuitElement.js';
 import type Vertex from './Vertex.js';
@@ -65,5 +64,3 @@ export default abstract class DynamicCircuitElement extends FixedCircuitElement 
     super.dispose();
   }
 }
-
-circuitConstructionKitCommon.register( 'DynamicCircuitElement', DynamicCircuitElement );

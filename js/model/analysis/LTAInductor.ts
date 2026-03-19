@@ -5,7 +5,6 @@
  */
 
 import affirm from '../../../../perennial-alias/js/browser-and-node/affirm.js';
-import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import DynamicCoreModel from './DynamicCoreModel.js';
 export default class LTAInductor extends DynamicCoreModel {
   public readonly inductance: number;
@@ -21,5 +20,3 @@ export default class LTAInductor extends DynamicCoreModel {
     this.inductorVoltageNode1 = null;
   }
 }
-
-circuitConstructionKitCommon.register( 'LTAInductor', LTAInductor );

@@ -18,7 +18,6 @@ import Panel from '../../../sun/js/Panel.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCUtils from '../CCKCUtils.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import type SeriesAmmeter from '../model/SeriesAmmeter.js';
@@ -183,5 +182,3 @@ export default class SeriesAmmeterNode extends FixedCircuitElementNode {
     this.frontPanelContainer.center = this.center; // for translation
   }
 }
-
-circuitConstructionKitCommon.register( 'SeriesAmmeterNode', SeriesAmmeterNode );

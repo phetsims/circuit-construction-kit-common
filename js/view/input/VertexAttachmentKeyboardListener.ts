@@ -7,7 +7,6 @@
  */
 
 import Text from '../../../../scenery/js/nodes/Text.js';
-import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../../CircuitConstructionKitCommonFluent.js';
 import Vertex from '../../model/Vertex.js';
 import type CircuitNode from '../CircuitNode.js';
@@ -91,5 +90,3 @@ export default class VertexAttachmentKeyboardListener extends AttachmentKeyboard
     } );
   }
 }
-
-circuitConstructionKitCommon.register( 'VertexAttachmentKeyboardListener', VertexAttachmentKeyboardListener );

@@ -4,7 +4,6 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import DynamicCoreModel from './DynamicCoreModel.js';
 export default class LTACapacitor extends DynamicCoreModel {
   public capacitorVoltageNode1: string | null;
@@ -18,5 +17,3 @@ export default class LTACapacitor extends DynamicCoreModel {
     this.capacitorVoltageNode1 = null;
   }
 }
-
-circuitConstructionKitCommon.register( 'LTACapacitor', LTACapacitor );

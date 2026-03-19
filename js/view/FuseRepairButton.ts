@@ -18,7 +18,6 @@ import SoundClip from '../../../tambo/js/sound-generators/SoundClip.js';
 import soundManager from '../../../tambo/js/soundManager.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import repairFuse_mp3 from '../../sounds/repairFuse_mp3.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import type Circuit from '../model/Circuit.js';
 import type CircuitElement from '../model/CircuitElement.js';
@@ -77,5 +76,3 @@ export default class FuseRepairButton extends CCKCRoundPushButton {
     } );
   }
 }
-
-circuitConstructionKitCommon.register( 'FuseRepairButton', FuseRepairButton );

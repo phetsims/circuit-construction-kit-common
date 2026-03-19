@@ -24,7 +24,6 @@ import Panel from '../../../sun/js/Panel.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import Capacitor from '../model/Capacitor.js';
 import type CircuitElement from '../model/CircuitElement.js';
@@ -291,5 +290,3 @@ export default class ValueNode extends Panel {
     this.disposeValueNode();
   }
 }
-
-circuitConstructionKitCommon.register( 'ValueNode', ValueNode );

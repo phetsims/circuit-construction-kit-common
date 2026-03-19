@@ -17,7 +17,6 @@ import type Tandem from '../../../tandem/js/Tandem.js';
 import battery_png from '../../images/battery_png.js';
 import batteryHigh_png from '../../images/batteryHigh_png.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import type Battery from '../model/Battery.js';
 import type CircuitElementViewType from '../model/CircuitElementViewType.js';
 import type CCKCScreenView from './CCKCScreenView.js';
@@ -96,5 +95,3 @@ export default class BatteryNode extends FixedCircuitElementNode {
     );
   }
 }
-
-circuitConstructionKitCommon.register( 'BatteryNode', BatteryNode );

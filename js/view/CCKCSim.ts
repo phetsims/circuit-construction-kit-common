@@ -9,7 +9,6 @@
 import type { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import type { AnyScreen } from '../../../joist/js/Screen.js';
 import Sim, { SimOptions } from '../../../joist/js/Sim.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 export default class CCKCSim extends Sim {
 
@@ -17,5 +16,3 @@ export default class CCKCSim extends Sim {
     super( simNameProperty, allSimScreens, providedOptions );
   }
 }
-
-circuitConstructionKitCommon.register( 'CCKCSim', CCKCSim );

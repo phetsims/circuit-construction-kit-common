@@ -15,7 +15,6 @@ import { linear } from '../../../dot/js/util/linear.js';
 import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import type Circuit from './Circuit.js';
 import FixedCircuitElement from './FixedCircuitElement.js';
 import type Vertex from './Vertex.js';
@@ -108,5 +107,3 @@ export default class Switch extends FixedCircuitElement {
     return [ this.resistanceProperty, this.isClosedProperty ];
   }
 }
-
-circuitConstructionKitCommon.register( 'Switch', Switch );

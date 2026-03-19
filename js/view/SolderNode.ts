@@ -10,7 +10,6 @@ import type Vector2 from '../../../dot/js/Vector2.js';
 import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import Circle from '../../../scenery/js/nodes/Circle.js';
 import Node from '../../../scenery/js/nodes/Node.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import type Vertex from '../model/Vertex.js';
 import type CircuitNode from './CircuitNode.js';
 
@@ -100,5 +99,3 @@ export default class SolderNode extends Node {
     super.dispose();
   }
 }
-
-circuitConstructionKitCommon.register( 'SolderNode', SolderNode );

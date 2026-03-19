@@ -28,7 +28,6 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import wireIcon_png from '../../images/wireIcon_png.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import ACVoltage from '../model/ACVoltage.js';
 import Battery from '../model/Battery.js';
@@ -579,5 +578,3 @@ export default class CircuitElementToolFactory {
       } );
   }
 }
-
-circuitConstructionKitCommon.register( 'CircuitElementToolFactory', CircuitElementToolFactory );

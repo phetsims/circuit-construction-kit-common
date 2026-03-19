@@ -18,7 +18,6 @@ import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import type Circuit from './Circuit.js';
 import CircuitElementViewType from './CircuitElementViewType.js';
 import FixedCircuitElement, { type FixedCircuitElementOptions } from './FixedCircuitElement.js';
@@ -274,5 +273,3 @@ export default class LightBulb extends FixedCircuitElement {
 
 const samplePoints = LightBulb.createSamplePoints( Vector2.ZERO );
 LightBulb.vertexDelta = samplePoints[ 1 ].minus( samplePoints[ 0 ] );
-
-circuitConstructionKitCommon.register( 'LightBulb', LightBulb );

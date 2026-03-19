@@ -11,7 +11,6 @@ import type SceneryEvent from '../../../../scenery/js/input/SceneryEvent.js';
 import sharedSoundPlayers from '../../../../tambo/js/sharedSoundPlayers.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import CCKCConstants from '../../CCKCConstants.js';
-import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import CircuitNode from '../CircuitNode.js';
 import VertexNode from '../VertexNode.js';
 import CircuitNodeDragListener from './CircuitNodeDragListener.js';
@@ -64,4 +63,3 @@ export default class VertexDragListener extends CircuitNodeDragListener {
     } );
   }
 }
-circuitConstructionKitCommon.register( 'VertexDragListener', VertexDragListener );

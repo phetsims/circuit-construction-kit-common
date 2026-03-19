@@ -14,7 +14,6 @@ import optionize, { type EmptySelfOptions } from '../../../phet-core/js/optioniz
 import RectangularRadioButtonGroup, { type RectangularRadioButtonGroupOptions } from '../../../sun/js/buttons/RectangularRadioButtonGroup.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import Battery from '../model/Battery.js';
 import type CircuitElement from '../model/CircuitElement.js';
@@ -99,5 +98,3 @@ export default class ViewRadioButtonGroup extends RectangularRadioButtonGroup<Ci
     } ], options );
   }
 }
-
-circuitConstructionKitCommon.register( 'ViewRadioButtonGroup', ViewRadioButtonGroup );

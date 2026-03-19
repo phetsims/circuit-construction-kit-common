@@ -15,7 +15,6 @@ import Node from '../../../scenery/js/nodes/Node.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import Color from '../../../scenery/js/util/Color.js';
 import { type RoundPushButtonOptions } from '../../../sun/js/buttons/RoundPushButton.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import type Circuit from '../model/Circuit.js';
 import type CircuitElement from '../model/CircuitElement.js';
 import DynamicCircuitElement from '../model/DynamicCircuitElement.js';
@@ -76,5 +75,3 @@ export default class ClearDynamicsButton extends CCKCRoundPushButton {
     } );
   }
 }
-
-circuitConstructionKitCommon.register( 'ClearDynamicsButton', ClearDynamicsButton );

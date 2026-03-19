@@ -15,7 +15,6 @@ import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
 import PhetioObject from '../../../tandem/js/PhetioObject.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 export default class Meter extends PhetioObject {
 
@@ -69,5 +68,3 @@ export default class Meter extends PhetioObject {
     this.isDraggingProbesWithBodyProperty.reset();
   }
 }
-
-circuitConstructionKitCommon.register( 'Meter', Meter );

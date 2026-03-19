@@ -16,7 +16,6 @@ import { toFixed } from '../../../../../dot/js/util/toFixed.js';
 import affirm from '../../../../../perennial-alias/js/browser-and-node/affirm.js';
 import arrayRemove from '../../../../../phet-core/js/arrayRemove.js';
 import type IntentionalAny from '../../../../../phet-core/js/types/IntentionalAny.js';
-import circuitConstructionKitCommon from '../../../circuitConstructionKitCommon.js';
 import type MNABattery from './MNABattery.js';
 import type MNACircuitElement from './MNACircuitElement.js';
 import type MNACurrent from './MNACurrent.js';
@@ -342,8 +341,6 @@ export default class MNACircuit {
     return new MNASolution( voltageMap, currentMap );
   }
 }
-
-circuitConstructionKitCommon.register( 'MNACircuit', MNACircuit );
 
 /**
  * Find the index of an element in an array comparing with the equals() method.

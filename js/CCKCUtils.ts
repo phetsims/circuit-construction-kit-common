@@ -13,7 +13,6 @@ import MathSymbols from '../../scenery-phet/js/MathSymbols.js';
 import type Node from '../../scenery/js/nodes/Node.js';
 import CCKCConstants from './CCKCConstants.js';
 import CCKCQueryParameters from './CCKCQueryParameters.js';
-import circuitConstructionKitCommon from './circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from './CircuitConstructionKitCommonFluent.js';
 import AmmeterReadoutType from './model/AmmeterReadoutType.js';
 import ammeterReadoutTypeProperty from './view/ammeterReadoutTypeProperty.js';
@@ -105,5 +104,4 @@ const CCKCUtils = {
   }
 };
 
-circuitConstructionKitCommon.register( 'CCKCUtils', CCKCUtils );
 export default CCKCUtils;

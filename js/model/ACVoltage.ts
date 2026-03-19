@@ -16,7 +16,6 @@ import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import type Circuit from './Circuit.js';
 import type Vertex from './Vertex.js';
 import VoltageSource, { type VoltageSourceOptions } from './VoltageSource.js';
@@ -124,5 +123,3 @@ export default class ACVoltage extends VoltageSource {
     circuit.dirty = true;
   }
 }
-
-circuitConstructionKitCommon.register( 'ACVoltage', ACVoltage );

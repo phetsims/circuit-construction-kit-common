@@ -10,7 +10,6 @@
 
 import optionize from '../../../phet-core/js/optionize.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitElement, { type CircuitElementOptions } from './CircuitElement.js';
 import type CircuitElementType from './CircuitElementType.js';
 import type Vertex from './Vertex.js';
@@ -50,5 +49,3 @@ export default abstract class FixedCircuitElement extends CircuitElement {
     this.isFixedCircuitElement = true;
   }
 }
-
-circuitConstructionKitCommon.register( 'FixedCircuitElement', FixedCircuitElement );

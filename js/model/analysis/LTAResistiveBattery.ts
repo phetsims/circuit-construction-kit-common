@@ -4,7 +4,6 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import CoreModel from './CoreModel.js';
 class LTAResistiveBattery extends CoreModel {
   public readonly voltage: number;
@@ -17,5 +16,4 @@ class LTAResistiveBattery extends CoreModel {
   }
 }
 
-circuitConstructionKitCommon.register( 'LTAResistiveBattery', LTAResistiveBattery );
 export default LTAResistiveBattery;

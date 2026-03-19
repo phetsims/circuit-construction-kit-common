@@ -11,7 +11,6 @@ import Range from '../../dot/js/Range.js';
 import { type CreditsData } from '../../joist/js/CreditsNode.js';
 import PhetFont from '../../scenery-phet/js/PhetFont.js';
 import CCKCQueryParameters from './CCKCQueryParameters.js';
-import circuitConstructionKitCommon from './circuitConstructionKitCommon.js';
 
 // constants
 const FONT_SIZE = 14;
@@ -248,5 +247,3 @@ export default class CCKCConstants {
     }
   } as const;
 }
-
-circuitConstructionKitCommon.register( 'CCKCConstants', CCKCConstants );

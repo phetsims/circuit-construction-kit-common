@@ -10,7 +10,6 @@
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import ScreenSummaryContent from '../../../../joist/js/ScreenSummaryContent.js';
-import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../../CircuitConstructionKitCommonFluent.js';
 import CircuitConstructionKitModel from '../../model/CircuitConstructionKitModel.js';
 import CircuitElementViewType from '../../model/CircuitElementViewType.js';
@@ -128,5 +127,3 @@ export default class CCKCScreenSummaryContent extends ScreenSummaryContent {
     } );
   }
 }
-
-circuitConstructionKitCommon.register( 'CCKCScreenSummaryContent', CCKCScreenSummaryContent );

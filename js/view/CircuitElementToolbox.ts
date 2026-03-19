@@ -14,7 +14,6 @@ import Color from '../../../scenery/js/util/Color.js';
 import Carousel, { type CarouselItem, type CarouselOptions } from '../../../sun/js/Carousel.js';
 import PageControl from '../../../sun/js/PageControl.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import type CircuitElementViewType from '../model/CircuitElementViewType.js';
 import CCKCColors from './CCKCColors.js';
@@ -96,5 +95,3 @@ export default class CircuitElementToolbox extends HBox {
     this.carousel.reset();
   }
 }
-
-circuitConstructionKitCommon.register( 'CircuitElementToolbox', CircuitElementToolbox );

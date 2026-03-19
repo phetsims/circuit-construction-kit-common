@@ -15,7 +15,6 @@ import RunningAverage from '../../../dot/js/RunningAverage.js';
 import { clamp } from '../../../dot/js/util/clamp.js';
 import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import type Charge from './Charge.js';
 import type Circuit from './Circuit.js';
 import type CircuitElement from './CircuitElement.js';
@@ -339,5 +338,3 @@ export default class ChargeAnimator {
     return circuitPositions;
   }
 }
-
-circuitConstructionKitCommon.register( 'ChargeAnimator', ChargeAnimator );

@@ -7,7 +7,6 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import type CoreModel from './CoreModel.js';
 import type LTACircuit from './LTACircuit.js';
 import type MNAResistor from './mna/MNAResistor.js';
@@ -49,5 +48,3 @@ export default class LTASolution {
     return this.getNodeVoltage( node1 ) - this.getNodeVoltage( node0 );
   }
 }
-
-circuitConstructionKitCommon.register( 'LTASolution', LTASolution );

@@ -23,7 +23,6 @@ import lightBulbFrontReal_png from '../../images/lightBulbFrontReal_png.js';
 import lightBulbMiddle_png from '../../mipmaps/lightBulbMiddle_png.js';
 import lightBulbMiddleReal_png from '../../mipmaps/lightBulbMiddleReal_png.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 // constants
 const BULB_IMAGE_SCALE = 0.125;
@@ -184,5 +183,3 @@ export default class CustomLightBulbNode extends Node {
     }
   }
 }
-
-circuitConstructionKitCommon.register( 'CustomLightBulbNode', CustomLightBulbNode );

@@ -57,5 +57,3 @@ export default class CircuitComponentsAndToolsKeyboardHelpSection extends Keyboa
     ] );
   }
 }
-
-circuitConstructionKitCommon.register( 'CircuitComponentsAndToolsKeyboardHelpSection', CircuitComponentsAndToolsKeyboardHelpSection );

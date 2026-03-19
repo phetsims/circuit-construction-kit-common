@@ -11,7 +11,6 @@ import type Node from '../../../scenery/js/nodes/Node.js';
 import Panel, { type PanelOptions } from '../../../sun/js/Panel.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CCKCColors from './CCKCColors.js';
 
 export type CCKCPanelOptions = PanelOptions;
@@ -36,5 +35,3 @@ export default class CCKCPanel extends Panel {
     super( content, providedOptions );
   }
 }
-
-circuitConstructionKitCommon.register( 'CCKCPanel', CCKCPanel );

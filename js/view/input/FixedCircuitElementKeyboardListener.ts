@@ -10,7 +10,6 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import SoundKeyboardDragListener from '../../../../scenery-phet/js/SoundKeyboardDragListener.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import CCKCConstants from '../../CCKCConstants.js';
-import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import CircuitElement from '../../model/CircuitElement.js';
 import CCKCScreenView from '../CCKCScreenView.js';
 import CircuitNode from '../CircuitNode.js';
@@ -73,5 +72,3 @@ export default class FixedCircuitElementKeyboardListener extends SoundKeyboardDr
     } );
   }
 }
-
-circuitConstructionKitCommon.register( 'FixedCircuitElementKeyboardListener', FixedCircuitElementKeyboardListener );

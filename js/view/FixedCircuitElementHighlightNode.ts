@@ -9,7 +9,6 @@
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
 import TPaint from '../../../scenery/js/util/TPaint.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import type FixedCircuitElementNode from './FixedCircuitElementNode.js';
 
 // constants
@@ -39,5 +38,3 @@ export default class FixedCircuitElementHighlightNode extends Rectangle {
     this.setRectBounds( fixedCircuitElementNode.getHighlightBounds().dilated( this.dilation ) );
   }
 }
-
-circuitConstructionKitCommon.register( 'FixedCircuitElementHighlightNode', FixedCircuitElementHighlightNode );

@@ -6,7 +6,6 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../../CircuitConstructionKitCommonFluent.js';
 import CircuitDescriptionUtils from './CircuitDescriptionUtils.js';
 import Circuit from '../../model/Circuit.js';
@@ -180,5 +179,3 @@ export default class CircuitGroupDescription {
     return { flowLevel: 'none', rateCount: 0 };
   }
 }
-
-circuitConstructionKitCommon.register( 'CircuitGroupDescription', CircuitGroupDescription );

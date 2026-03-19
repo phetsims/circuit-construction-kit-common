@@ -10,7 +10,6 @@
 
 import Property from '../../../axon/js/Property.js';
 import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import type Circuit from '../model/Circuit.js';
 import CircuitElement from '../model/CircuitElement.js';
 
@@ -49,8 +48,6 @@ const createSingletonAdapterProperty = <T extends CircuitElement, ValueType>(
   } );
   return singletonAdapterProperty;
 };
-
-circuitConstructionKitCommon.register( 'createSingletonAdapterProperty', createSingletonAdapterProperty );
 
 export default createSingletonAdapterProperty;
 export type { GConstructor };

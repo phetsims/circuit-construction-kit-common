@@ -23,7 +23,6 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import CCKCUtils from '../CCKCUtils.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import type Circuit from '../model/Circuit.js';
 import Vertex from '../model/Vertex.js';
@@ -392,5 +391,3 @@ export default class VertexNode extends InteractiveHighlighting( Node ) {
     }
   }
 }
-
-circuitConstructionKitCommon.register( 'VertexNode', VertexNode );

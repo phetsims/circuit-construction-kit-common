@@ -10,7 +10,6 @@ import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import IOType from '../../../tandem/js/types/IOType.js';
 import NumberIO from '../../../tandem/js/types/NumberIO.js';
 import ReferenceIO from '../../../tandem/js/types/ReferenceIO.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import type CircuitElement from './CircuitElement.js';
 import type Vertex from './Vertex.js';
 
@@ -47,5 +46,3 @@ export default class VoltageConnection {
     }
   } );
 }
-
-circuitConstructionKitCommon.register( 'VoltageConnection', VoltageConnection );

@@ -14,7 +14,6 @@ import MagnifyingGlassZoomButtonGroup, { type MagnifyingGlassZoomButtonGroupOpti
 import PhetColorScheme from '../../../scenery-phet/js/PhetColorScheme.js';
 import RectangularButton from '../../../sun/js/buttons/RectangularButton.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 
 // constants
@@ -63,5 +62,3 @@ export default class CCKCZoomButtonGroup extends MagnifyingGlassZoomButtonGroup 
     super( selectedZoomProperty, providedOptions );
   }
 }
-
-circuitConstructionKitCommon.register( 'CCKCZoomButtonGroup', CCKCZoomButtonGroup );

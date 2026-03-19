@@ -18,7 +18,6 @@ import Color from '../../../scenery/js/util/Color.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import CCKCChartNode, { type CCKCChartNodeOptions } from './CCKCChartNode.js';
 import type CCKCProbeNode from './CCKCProbeNode.js';
@@ -106,5 +105,3 @@ export default class VoltageChartNode extends CCKCChartNode {
     this.updatePen();
   }
 }
-
-circuitConstructionKitCommon.register( 'VoltageChartNode', VoltageChartNode );

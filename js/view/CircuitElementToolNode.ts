@@ -26,7 +26,6 @@ import { type PressListenerEvent } from '../../../scenery/js/listeners/PressList
 import type Node from '../../../scenery/js/nodes/Node.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import type Circuit from '../model/Circuit.js';
 import type CircuitElement from '../model/CircuitElement.js';
@@ -332,5 +331,3 @@ export default class CircuitElementToolNode extends InteractiveHighlighting( VBo
     circuitElement.focusEmitter.emit();
   }
 }
-
-circuitConstructionKitCommon.register( 'CircuitElementToolNode', CircuitElementToolNode );

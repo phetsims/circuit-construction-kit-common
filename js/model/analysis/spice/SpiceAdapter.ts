@@ -15,7 +15,6 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import circuitConstructionKitCommon from '../../../circuitConstructionKitCommon.js';
 import type MNABattery from '../mna/MNABattery.js';
 import type MNACapacitor from '../mna/MNACapacitor.js';
 import type MNACircuitElement from '../mna/MNACircuitElement.js';
@@ -551,5 +550,3 @@ export default class SpiceAdapter {
     return adapter.generateTransientNetlist();
   }
 }
-
-circuitConstructionKitCommon.register( 'SpiceAdapter', SpiceAdapter );

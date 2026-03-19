@@ -37,7 +37,6 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import ammeterBody_png from '../../images/ammeterBody_png.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCUtils from '../CCKCUtils.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import type Ammeter from '../model/Ammeter.js';
 import type CircuitConstructionKitModel from '../model/CircuitConstructionKitModel.js';
@@ -425,5 +424,3 @@ export default class AmmeterNode extends InteractiveHighlighting( Node ) {
     }
   }
 }
-
-circuitConstructionKitCommon.register( 'AmmeterNode', AmmeterNode );

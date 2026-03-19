@@ -7,7 +7,6 @@ import { DerivedProperty2 } from '../../../axon/js/DerivedProperty.js';
 import type Property from '../../../axon/js/Property.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import NumberIO from '../../../tandem/js/types/NumberIO.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 export default class PowerDissipatedProperty extends DerivedProperty2<number, number, number> {
   public constructor( currentProperty: Property<number>, resistanceProperty: Property<number>, tandem: Tandem ) {
@@ -23,5 +22,3 @@ export default class PowerDissipatedProperty extends DerivedProperty2<number, nu
       } );
   }
 }
-
-circuitConstructionKitCommon.register( 'PowerDissipatedProperty', PowerDissipatedProperty );

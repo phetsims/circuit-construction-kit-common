@@ -11,7 +11,6 @@ import KeyboardHelpSection from '../../../scenery-phet/js/keyboard/help/Keyboard
 import KeyboardHelpSectionRow from '../../../scenery-phet/js/keyboard/help/KeyboardHelpSectionRow.js';
 import MoveDraggableItemsKeyboardHelpSection from '../../../scenery-phet/js/keyboard/help/MoveDraggableItemsKeyboardHelpSection.js';
 import TwoColumnKeyboardHelpContent from '../../../scenery-phet/js/keyboard/help/TwoColumnKeyboardHelpContent.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import CCKCScreenView from './CCKCScreenView.js';
 import ChooseJunctionConnectionKeyboardHelpSection from './ChooseJunctionConnectionKeyboardHelpSection.js';
@@ -49,5 +48,3 @@ export default class CCKKeyboardHelpNode extends TwoColumnKeyboardHelpContent {
     );
   }
 }
-
-circuitConstructionKitCommon.register( 'CCKKeyboardHelpNode', CCKKeyboardHelpNode );

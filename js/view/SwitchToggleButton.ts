@@ -11,7 +11,6 @@ import Circle from '../../../scenery/js/nodes/Circle.js';
 import Line from '../../../scenery/js/nodes/Line.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import { type RoundPushButtonOptions } from '../../../sun/js/buttons/RoundPushButton.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import type Circuit from '../model/Circuit.js';
 import type CircuitElement from '../model/CircuitElement.js';
@@ -131,5 +130,3 @@ export default class SwitchToggleButton extends CCKCRoundPushButton {
     } );
   }
 }
-
-circuitConstructionKitCommon.register( 'SwitchToggleButton', SwitchToggleButton );

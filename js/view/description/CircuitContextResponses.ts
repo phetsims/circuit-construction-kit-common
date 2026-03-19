@@ -8,7 +8,6 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../../CircuitConstructionKitCommonFluent.js';
 import type Circuit from '../../model/Circuit.js';
 import CircuitElement from '../../model/CircuitElement.js';
@@ -845,5 +844,3 @@ export default class CircuitContextResponses {
     return CircuitConstructionKitCommonFluent.a11y.circuitContextResponses.vertexDisconnectedNoChangeStringProperty.value;
   }
 }
-
-circuitConstructionKitCommon.register( 'CircuitContextResponses', CircuitContextResponses );

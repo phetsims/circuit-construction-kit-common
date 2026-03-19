@@ -13,7 +13,6 @@ import Vector2 from '../../../dot/js/Vector2.js';
 import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import optionize, { type EmptySelfOptions } from '../../../phet-core/js/optionize.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import CCKCChartNode, { type CCKCChartNodeOptions } from './CCKCChartNode.js';
 import type CCKCProbeNode from './CCKCProbeNode.js';
@@ -87,5 +86,3 @@ export default class CurrentChartNode extends CCKCChartNode {
     this.updatePen();
   }
 }
-
-circuitConstructionKitCommon.register( 'CurrentChartNode', CurrentChartNode );

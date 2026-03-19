@@ -15,7 +15,6 @@ import type IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import DynamicCircuitElement, { type DynamicCircuitElementOptions } from './DynamicCircuitElement.js';
 import type Vertex from './Vertex.js';
 
@@ -94,5 +93,3 @@ export default class Capacitor extends DynamicCircuitElement {
     return [ this.capacitanceProperty ];
   }
 }
-
-circuitConstructionKitCommon.register( 'Capacitor', Capacitor );

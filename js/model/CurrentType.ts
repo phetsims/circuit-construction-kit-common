@@ -8,7 +8,6 @@
 
 import Enumeration from '../../../phet-core/js/Enumeration.js';
 import EnumerationValue from '../../../phet-core/js/EnumerationValue.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 export default class CurrentType extends EnumerationValue {
   public static readonly ELECTRONS = new CurrentType( 'electrons' );
@@ -20,5 +19,3 @@ export default class CurrentType extends EnumerationValue {
     super();
   }
 }
-
-circuitConstructionKitCommon.register( 'CurrentType', CurrentType );

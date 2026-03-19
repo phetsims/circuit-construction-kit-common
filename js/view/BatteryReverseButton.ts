@@ -14,7 +14,6 @@ import Color from '../../../scenery/js/util/Color.js';
 import syncAltSolidString from '../../../sherpa/js/fontawesome-5/syncAltSolidString.js';
 import { type RoundPushButtonOptions } from '../../../sun/js/buttons/RoundPushButton.js';
 import isSettingPhetioStateProperty from '../../../tandem/js/isSettingPhetioStateProperty.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import Battery from '../model/Battery.js';
 import type Circuit from '../model/Circuit.js';
@@ -101,5 +100,3 @@ export default class BatteryReverseButton extends CCKCRoundPushButton {
     super( options );
   }
 }
-
-circuitConstructionKitCommon.register( 'BatteryReverseButton', BatteryReverseButton );

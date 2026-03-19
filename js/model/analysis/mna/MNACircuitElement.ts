@@ -8,7 +8,6 @@
  */
 
 import affirm from '../../../../../perennial-alias/js/browser-and-node/affirm.js';
-import circuitConstructionKitCommon from '../../../circuitConstructionKitCommon.js';
 
 export default class MNACircuitElement {
   public readonly nodeId0: string; // index of the start node
@@ -38,5 +37,3 @@ export default class MNACircuitElement {
     return `${this.nodeId0}, ${this.nodeId1}`;
   }
 }
-
-circuitConstructionKitCommon.register( 'MNACircuitElement', MNACircuitElement );

@@ -23,7 +23,6 @@ import { type TextOptions } from '../../../scenery/js/nodes/Text.js';
 import { type SliderOptions } from '../../../sun/js/Slider.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import ACVoltage from '../model/ACVoltage.js';
 import type Circuit from '../model/Circuit.js';
 import CircuitElement from '../model/CircuitElement.js';
@@ -126,5 +125,3 @@ export default class CircuitElementNumberControl extends HBox {
     } );
   }
 }
-
-circuitConstructionKitCommon.register( 'CircuitElementNumberControl', CircuitElementNumberControl );

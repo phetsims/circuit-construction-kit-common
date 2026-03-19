@@ -9,7 +9,6 @@
 import affirm from '../../../../../perennial-alias/js/browser-and-node/affirm.js';
 import CCKCConstants from '../../../CCKCConstants.js';
 import CCKCUtils from '../../../CCKCUtils.js';
-import circuitConstructionKitCommon from '../../../circuitConstructionKitCommon.js';
 import Capacitor from '../../Capacitor.js';
 import type Circuit from '../../Circuit.js';
 import type CircuitElement from '../../CircuitElement.js';
@@ -381,5 +380,3 @@ export default class SpiceSolver {
   }
 
 }
-
-circuitConstructionKitCommon.register( 'SpiceSolver', SpiceSolver );

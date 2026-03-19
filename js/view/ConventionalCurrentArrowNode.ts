@@ -8,7 +8,6 @@
 
 import ArrowNode from '../../../scenery-phet/js/ArrowNode.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CCKCColors from './CCKCColors.js';
 
 // constants
@@ -31,5 +30,3 @@ export default class ConventionalCurrentArrowNode extends ArrowNode {
     this.translate( -center.x, -center.y );
   }
 }
-
-circuitConstructionKitCommon.register( 'ConventionalCurrentArrowNode', ConventionalCurrentArrowNode );

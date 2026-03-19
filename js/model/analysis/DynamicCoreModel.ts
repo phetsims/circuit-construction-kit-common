@@ -7,7 +7,6 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import CoreModel from './CoreModel.js';
 export default class DynamicCoreModel extends CoreModel {
   public readonly voltage: number; // the voltage drop v1-v0
@@ -19,5 +18,3 @@ export default class DynamicCoreModel extends CoreModel {
     this.current = current;
   }
 }
-
-circuitConstructionKitCommon.register( 'DynamicCoreModel', DynamicCoreModel );

@@ -30,7 +30,6 @@ import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import Ammeter from '../model/Ammeter.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
@@ -469,5 +468,3 @@ export default class SensorToolbox extends CCKCPanel {
     this.ammeterToolNode = ( options.showNoncontactAmmeters && options.showSeriesAmmeters ) ? ammeterToolIcon : ammeterToolNode;
   }
 }
-
-circuitConstructionKitCommon.register( 'SensorToolbox', SensorToolbox );

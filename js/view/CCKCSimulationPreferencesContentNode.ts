@@ -12,7 +12,6 @@ import VBox from '../../../scenery/js/layout/nodes/VBox.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import VerticalAquaRadioButtonGroup from '../../../sun/js/VerticalAquaRadioButtonGroup.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import AmmeterReadoutType from '../model/AmmeterReadoutType.js';
 import ammeterReadoutTypeProperty from './ammeterReadoutTypeProperty.js';
@@ -101,5 +100,3 @@ export default class CCKCSimulationPreferencesContentNode extends VBox {
     } );
   }
 }
-
-circuitConstructionKitCommon.register( 'CCKCSimulationPreferencesContentNode', CCKCSimulationPreferencesContentNode );

@@ -35,7 +35,6 @@ import StringIO from '../../../tandem/js/types/StringIO.js';
 import VoidIO from '../../../tandem/js/types/VoidIO.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import ACVoltage from './ACVoltage.js';
 import LinearTransientAnalysis from './analysis/LinearTransientAnalysis.js';
 import Battery from './Battery.js';
@@ -1956,5 +1955,3 @@ const CircuitStateIO = new IOType<IntentionalAny, IntentionalAny>( 'CircuitState
     }
   }
 } );
-
-circuitConstructionKitCommon.register( 'Circuit', Circuit );

@@ -16,7 +16,6 @@ import Text, { type TextOptions } from '../../../scenery/js/nodes/Text.js';
 import HSlider from '../../../sun/js/HSlider.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import CCKCColors from './CCKCColors.js';
 
@@ -67,5 +66,3 @@ export default class WireResistivityControl extends VBox {
     } );
   }
 }
-
-circuitConstructionKitCommon.register( 'WireResistivityControl', WireResistivityControl );

@@ -12,7 +12,6 @@ import { toFixed } from '../../../../dot/js/util/toFixed.js';
 import { getPDOMFocusedNode } from '../../../../scenery/js/accessibility/pdomFocusProperty.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import CCKCQueryParameters from '../../CCKCQueryParameters.js';
-import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../../CircuitConstructionKitCommonFluent.js';
 import Capacitor from '../../model/Capacitor.js';
 import Circuit from '../../model/Circuit.js';
@@ -887,5 +886,3 @@ export default class CircuitDescription {
     }
   }
 }
-
-circuitConstructionKitCommon.register( 'CircuitDescription', CircuitDescription );

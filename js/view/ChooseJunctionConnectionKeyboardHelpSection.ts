@@ -97,5 +97,3 @@ export default class ChooseJunctionConnectionKeyboardHelpSection extends Keyboar
     );
   }
 }
-
-circuitConstructionKitCommon.register( 'ChooseJunctionConnectionKeyboardHelpSection', ChooseJunctionConnectionKeyboardHelpSection );

@@ -804,5 +804,3 @@ export default class CCKCScreenView extends ScreenView {
     global: true
   } );
 }
-
-circuitConstructionKitCommon.register( 'CCKCScreenView', CCKCScreenView );

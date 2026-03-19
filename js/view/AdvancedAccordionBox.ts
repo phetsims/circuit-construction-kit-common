@@ -16,7 +16,6 @@ import Text from '../../../scenery/js/nodes/Text.js';
 import { type CheckboxOptions } from '../../../sun/js/Checkbox.js';
 import type Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import type Circuit from '../model/Circuit.js';
 import CCKCAccordionBox, { type CCKCAccordionBoxOptions } from './CCKCAccordionBox.js';
@@ -86,5 +85,3 @@ export default class AdvancedAccordionBox extends CCKCAccordionBox {
     this.mutate( options );
   }
 }
-
-circuitConstructionKitCommon.register( 'AdvancedAccordionBox', AdvancedAccordionBox );

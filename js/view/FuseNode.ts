@@ -22,7 +22,6 @@ import isSettingPhetioStateProperty from '../../../tandem/js/isSettingPhetioStat
 import type Tandem from '../../../tandem/js/Tandem.js';
 import fuse_png from '../../images/fuse_png.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import type CircuitElementViewType from '../model/CircuitElementViewType.js';
 import type Fuse from '../model/Fuse.js';
 import type CCKCScreenView from './CCKCScreenView.js';
@@ -206,5 +205,3 @@ export default class FuseNode extends FixedCircuitElementNode {
     super.dispose();
   }
 }
-
-circuitConstructionKitCommon.register( 'FuseNode', FuseNode );

@@ -10,7 +10,6 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import type SceneryEvent from '../../../../scenery/js/input/SceneryEvent.js';
 import sharedSoundPlayers from '../../../../tambo/js/sharedSoundPlayers.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import CCKCScreenView from '../CCKCScreenView.js';
 import CircuitNode from '../CircuitNode.js';
 import FixedCircuitElementNode from '../FixedCircuitElementNode.js';
@@ -67,5 +66,3 @@ export default class FixedCircuitElementDragListener extends CircuitNodeDragList
     } );
   }
 }
-
-circuitConstructionKitCommon.register( 'FixedCircuitElementDragListener', FixedCircuitElementDragListener );

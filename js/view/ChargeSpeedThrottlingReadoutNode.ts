@@ -12,7 +12,6 @@ import type Property from '../../../axon/js/Property.js';
 import { toFixed } from '../../../dot/js/util/toFixed.js';
 import StringUtils from '../../../phetcommon/js/util/StringUtils.js';
 import Text from '../../../scenery/js/nodes/Text.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 
 const animationSpeedLimitReachedStringProperty = CircuitConstructionKitCommonFluent.animationSpeedLimitReachedStringProperty;
@@ -45,5 +44,3 @@ export default class ChargeSpeedThrottlingReadoutNode extends Text {
       } );
   }
 }
-
-circuitConstructionKitCommon.register( 'ChargeSpeedThrottlingReadoutNode', ChargeSpeedThrottlingReadoutNode );

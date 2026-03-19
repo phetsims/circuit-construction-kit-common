@@ -4,7 +4,6 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import type LTACircuit from './LTACircuit.js';
 import type LTASolution from './LTASolution.js';
 export default class LTAState {
@@ -41,4 +40,3 @@ export default class LTAState {
     return currents;
   }
 }
-circuitConstructionKitCommon.register( 'LTAState', LTAState );

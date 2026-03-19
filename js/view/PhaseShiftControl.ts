@@ -18,7 +18,6 @@ import VBox, { type VBoxOptions } from '../../../scenery/js/layout/nodes/VBox.js
 import Text from '../../../scenery/js/nodes/Text.js';
 import NumberSpinner, { type NumberSpinnerOptions } from '../../../sun/js/NumberSpinner.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import ACVoltage from '../model/ACVoltage.js';
 import type Circuit from '../model/Circuit.js';
@@ -86,5 +85,3 @@ export default class PhaseShiftControl extends VBox {
     } );
   }
 }
-
-circuitConstructionKitCommon.register( 'PhaseShiftControl', PhaseShiftControl );

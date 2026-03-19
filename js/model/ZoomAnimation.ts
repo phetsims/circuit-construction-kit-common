@@ -8,7 +8,6 @@
  */
 
 import Easing from '../../../twixt/js/Easing.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 // constants
 const ZOOM_ANIMATION_TIME = 0.35; // seconds
@@ -49,5 +48,3 @@ export default class ZoomAnimation {
     }
   }
 }
-
-circuitConstructionKitCommon.register( 'ZoomAnimation', ZoomAnimation );

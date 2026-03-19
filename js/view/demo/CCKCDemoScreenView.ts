@@ -9,7 +9,6 @@
 import ScreenView, { type ScreenViewOptions } from '../../../../joist/js/ScreenView.js';
 import Shape from '../../../../kite/js/Shape.js';
 import Path from '../../../../scenery/js/nodes/Path.js';
-import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 
 // Constants for the resistor
 const SCHEMATIC_SCALE = 0.54;
@@ -223,5 +222,3 @@ export default class CCKCDemoScreenView extends ScreenView {
     this.addChild( bulbPathIEC );
   }
 }
-
-circuitConstructionKitCommon.register( 'CCKCDemoScreenView', CCKCDemoScreenView );

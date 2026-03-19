@@ -18,7 +18,6 @@ import Node from '../../../../scenery/js/nodes/Node.js';
 import ComboBox from '../../../../sun/js/ComboBox.js';
 import ComboBoxListItemNode from '../../../../sun/js/ComboBoxListItemNode.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import circuitConstructionKitCommon from '../../circuitConstructionKitCommon.js';
 import type CircuitNode from '../CircuitNode.js';
 
 type AttachmentItem<T> = {
@@ -200,5 +199,3 @@ export default class AttachmentKeyboardListener<T> extends KeyboardListener<OneK
     } );
   }
 }
-
-circuitConstructionKitCommon.register( 'AttachmentKeyboardListener', AttachmentKeyboardListener );

@@ -9,7 +9,6 @@
 import { roundSymmetric } from '../../../dot/js/util/roundSymmetric.js';
 import affirm from '../../../perennial-alias/js/browser-and-node/affirm.js';
 import Color from '../../../scenery/js/util/Color.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 // See https://en.wikipedia.org/wiki/Electronic_color_code#Resistor_color-coding
 // Tolerances below gold were eliminated to reduce variance in the tolerance band, see
@@ -124,7 +123,5 @@ const ResistorColors = {
     return _.map( this.getEntries( resistance ), 'color' );
   }
 };
-
-circuitConstructionKitCommon.register( 'ResistorColors', ResistorColors );
 
 export default ResistorColors;

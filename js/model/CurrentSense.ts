@@ -10,7 +10,6 @@
 
 import Enumeration from '../../../phet-core/js/Enumeration.js';
 import EnumerationValue from '../../../phet-core/js/EnumerationValue.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 export default class CurrentSense extends EnumerationValue {
   public static readonly FORWARD = new CurrentSense();
   public static readonly BACKWARD = new CurrentSense();
@@ -18,5 +17,3 @@ export default class CurrentSense extends EnumerationValue {
 
   public static readonly enumeration = new Enumeration( CurrentSense );
 }
-
-circuitConstructionKitCommon.register( 'CurrentSense', CurrentSense );

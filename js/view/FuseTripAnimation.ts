@@ -14,7 +14,6 @@ import Node, { type NodeOptions } from '../../../scenery/js/nodes/Node.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import Animation from '../../../twixt/js/Animation.js';
 import Easing from '../../../twixt/js/Easing.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 export default class FuseTripAnimation extends Node {
 
@@ -67,5 +66,3 @@ export default class FuseTripAnimation extends Node {
     animation.start();
   }
 }
-
-circuitConstructionKitCommon.register( 'FuseTripAnimation', FuseTripAnimation );

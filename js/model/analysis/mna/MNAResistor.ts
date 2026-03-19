@@ -4,7 +4,6 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import circuitConstructionKitCommon from '../../../circuitConstructionKitCommon.js';
 import MNACircuitElement from './MNACircuitElement.js';
 export default class MNAResistor extends MNACircuitElement {
   public resistance: number;
@@ -14,5 +13,3 @@ export default class MNAResistor extends MNACircuitElement {
     this.resistance = resistance;
   }
 }
-
-circuitConstructionKitCommon.register( 'MNAResistor', MNAResistor );

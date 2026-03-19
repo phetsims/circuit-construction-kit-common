@@ -8,7 +8,6 @@
 import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import SchematicType from './SchematicType.js';
 
 const schematicTypeProperty = new EnumerationProperty( CCKCQueryParameters.schematicStandard === 'ieee' ? SchematicType.IEEE :
@@ -18,5 +17,4 @@ const schematicTypeProperty = new EnumerationProperty( CCKCQueryParameters.schem
   phetioFeatured: true
 } );
 
-circuitConstructionKitCommon.register( 'schematicTypeProperty', schematicTypeProperty );
 export default schematicTypeProperty;
