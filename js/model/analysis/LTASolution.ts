@@ -1,4 +1,4 @@
-// Copyright 2021-2025, University of Colorado Boulder
+// Copyright 2021-2026, University of Colorado Boulder
 
 /**
  * LTASolution is a class that represents the solution of a linear time-invariant (LTI) circuit. It provides methods for

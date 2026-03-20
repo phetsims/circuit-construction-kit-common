@@ -1,4 +1,4 @@
-// Copyright 2021-2025, University of Colorado Boulder
+// Copyright 2021-2026, University of Colorado Boulder
 
 /**
  * This class represents the solution obtained by a timestep-subdivision-oriented MNA solve with companion models.
