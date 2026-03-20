@@ -768,3 +768,5 @@ const CircuitConstructionKitCommonFluent = {
 };
 
 export default CircuitConstructionKitCommonFluent;
+
+circuitConstructionKitCommon.register('CircuitConstructionKitCommonFluent', CircuitConstructionKitCommonFluent);

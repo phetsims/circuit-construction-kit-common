@@ -422,4 +422,6 @@ type StringsType = {
 
 const CircuitConstructionKitCommonStrings = getStringModule( 'CIRCUIT_CONSTRUCTION_KIT_COMMON' ) as StringsType;
 
+circuitConstructionKitCommon.register( 'CircuitConstructionKitCommonStrings', CircuitConstructionKitCommonStrings );
+
 export default CircuitConstructionKitCommonStrings;
