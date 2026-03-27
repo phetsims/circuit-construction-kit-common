@@ -15,7 +15,7 @@ import Vertex from '../../model/Vertex.js';
 import type Voltmeter from '../../model/Voltmeter.js';
 import type CircuitNode from '../CircuitNode.js';
 import CircuitDescription from '../description/CircuitDescription.js';
-import AttachmentKeyboardListener from './AttachmentKeyboardListener.js';
+import AttachmentKeyboardListener from '../../../../scenery-phet/js/input/AttachmentKeyboardListener.js';
 
 export default class VoltmeterProbeNodeAttachmentKeyboardListener extends AttachmentKeyboardListener<Vertex> {
 
@@ -35,7 +35,10 @@ export default class VoltmeterProbeNodeAttachmentKeyboardListener extends Attach
 
     super( {
       triggerNode: probeNode,
-      circuitNode: circuitNode,
+      listParent: circuitNode.screenView,
+      layoutBounds: circuitNode.screenView.layoutBounds,
+      showHighlight: position => circuitNode.showAttachmentHighlight( position ),
+      hideHighlight: () => circuitNode.hideAttachmentHighlight(),
       getItems: getItems,
       getInitialPosition: () => probePositionProperty.value.copy(),
       getHighlightPosition: selectedVertex => selectedVertex ? selectedVertex.positionProperty.value : probePositionProperty.value,

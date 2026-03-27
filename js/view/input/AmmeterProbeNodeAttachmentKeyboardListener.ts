@@ -16,7 +16,7 @@ import type Ammeter from '../../model/Ammeter.js';
 import CircuitElement from '../../model/CircuitElement.js';
 import type CircuitNode from '../CircuitNode.js';
 import CircuitDescription from '../description/CircuitDescription.js';
-import AttachmentKeyboardListener from './AttachmentKeyboardListener.js';
+import AttachmentKeyboardListener from '../../../../scenery-phet/js/input/AttachmentKeyboardListener.js';
 
 export default class AmmeterProbeNodeAttachmentKeyboardListener extends AttachmentKeyboardListener<CircuitElement> {
   public constructor( probeNode: Node, circuitNode: CircuitNode, probePositionProperty: TProperty<Vector2>, ammeter: Ammeter ) {
@@ -50,7 +50,10 @@ export default class AmmeterProbeNodeAttachmentKeyboardListener extends Attachme
 
     super( {
       triggerNode: probeNode,
-      circuitNode: circuitNode,
+      listParent: circuitNode.screenView,
+      layoutBounds: circuitNode.screenView.layoutBounds,
+      showHighlight: position => circuitNode.showAttachmentHighlight( position ),
+      hideHighlight: () => circuitNode.hideAttachmentHighlight(),
       getItems: getItems,
       getInitialPosition: () => probeNode.center.copy(),
       getHighlightPosition: selectedCircuitElement => selectedCircuitElement ?

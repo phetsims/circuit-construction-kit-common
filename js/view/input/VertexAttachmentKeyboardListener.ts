@@ -11,7 +11,7 @@ import CircuitConstructionKitCommonFluent from '../../CircuitConstructionKitComm
 import Vertex from '../../model/Vertex.js';
 import type CircuitNode from '../CircuitNode.js';
 import VertexNode from '../VertexNode.js';
-import AttachmentKeyboardListener from './AttachmentKeyboardListener.js';
+import AttachmentKeyboardListener from '../../../../scenery-phet/js/input/AttachmentKeyboardListener.js';
 
 export default class VertexAttachmentKeyboardListener extends AttachmentKeyboardListener<Vertex> {
   public constructor( vertexNode: VertexNode, circuitNode: CircuitNode, vertex: Vertex ) {
@@ -57,7 +57,10 @@ export default class VertexAttachmentKeyboardListener extends AttachmentKeyboard
 
     super( {
       triggerNode: vertexNode,
-      circuitNode: circuitNode,
+      listParent: circuitNode.screenView,
+      layoutBounds: circuitNode.screenView.layoutBounds,
+      showHighlight: position => circuitNode.showAttachmentHighlight( position ),
+      hideHighlight: () => circuitNode.hideAttachmentHighlight(),
       getItems: getItems,
       getInitialPosition: () => vertex.positionProperty.value.copy(),
       getHighlightPosition: selectedVertex => selectedVertex ? selectedVertex.positionProperty.value : vertex.positionProperty.value,
