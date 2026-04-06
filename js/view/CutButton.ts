@@ -17,6 +17,7 @@ import SoundClip from '../../../tambo/js/sound-generators/SoundClip.js';
 import soundManager from '../../../tambo/js/soundManager.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import cut_mp3 from '../../sounds/cut_mp3.js';
+import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import type Circuit from '../model/Circuit.js';
 import type Vertex from '../model/Vertex.js';
 
@@ -37,6 +38,7 @@ export default class CutButton extends RoundPushButton {
     } );
 
     super( {
+      accessibleName: CircuitConstructionKitCommonFluent.a11y.cutButton.accessibleNameStringProperty,
       baseColor: 'yellow',
       content: cutIcon,
       xMargin: 10,

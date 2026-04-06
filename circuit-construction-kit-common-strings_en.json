@@ -782,6 +782,11 @@
         "value": "Repair Fuse"
       }
     },
+    "cutButton": {
+      "accessibleName": {
+        "value": "Cut Connections"
+      }
+    },
     "sourceResistanceControl": {
       "accessibleHelpText": {
         "value": "Set internal resistance of all batteries, ranging from tiny to 10 ohms."

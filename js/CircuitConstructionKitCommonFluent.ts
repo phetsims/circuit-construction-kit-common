@@ -252,6 +252,7 @@ addToMapIfDefined( 'a11y_switchToggleButton_closeSwitch', 'a11y.switchToggleButt
 addToMapIfDefined( 'a11y_disconnectButton_accessibleName', 'a11y.disconnectButton.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_trashButton_accessibleName', 'a11y.trashButton.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_fuseRepairButton_accessibleName', 'a11y.fuseRepairButton.accessibleNameStringProperty' );
+addToMapIfDefined( 'a11y_cutButton_accessibleName', 'a11y.cutButton.accessibleNameStringProperty' );
 addToMapIfDefined( 'a11y_sourceResistanceControl_accessibleHelpText', 'a11y.sourceResistanceControl.accessibleHelpTextStringProperty' );
 addToMapIfDefined( 'a11y_sourceResistanceControl_ariaValueText', 'a11y.sourceResistanceControl.ariaValueTextStringProperty' );
 addToMapIfDefined( 'a11y_wireResistivityControl_accessibleHelpText', 'a11y.wireResistivityControl.accessibleHelpTextStringProperty' );
@@ -669,6 +670,9 @@ const CircuitConstructionKitCommonFluent = {
     },
     fuseRepairButton: {
       accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_fuseRepairButton_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.fuseRepairButton.accessibleNameStringProperty' ) )
+    },
+    cutButton: {
+      accessibleNameStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_cutButton_accessibleName', _.get( CircuitConstructionKitCommonStrings, 'a11y.cutButton.accessibleNameStringProperty' ) )
     },
     sourceResistanceControl: {
       accessibleHelpTextStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_sourceResistanceControl_accessibleHelpText', _.get( CircuitConstructionKitCommonStrings, 'a11y.sourceResistanceControl.accessibleHelpTextStringProperty' ) ),

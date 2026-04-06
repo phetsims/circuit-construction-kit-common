@@ -325,6 +325,9 @@ type StringsType = {
     'fuseRepairButton': {
       'accessibleNameStringProperty': LocalizedStringProperty;
     };
+    'cutButton': {
+      'accessibleNameStringProperty': LocalizedStringProperty;
+    };
     'sourceResistanceControl': {
       'accessibleHelpTextStringProperty': LocalizedStringProperty;
       'ariaValueTextStringProperty': LocalizedStringProperty;

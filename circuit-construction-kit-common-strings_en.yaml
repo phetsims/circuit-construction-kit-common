@@ -446,6 +446,8 @@ a11y:
     accessibleName: Delete { $componentType }
   fuseRepairButton:
     accessibleName: Repair Fuse
+  cutButton:
+    accessibleName: Cut Connections
   sourceResistanceControl:
     accessibleHelpText: Set internal resistance of all batteries, ranging from tiny to 10 ohms.
     ariaValueText:      >-
