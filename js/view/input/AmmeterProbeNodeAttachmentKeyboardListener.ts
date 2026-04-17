@@ -55,6 +55,7 @@ export default class AmmeterProbeNodeAttachmentKeyboardListener extends Attachme
       showHighlight: position => circuitNode.showAttachmentHighlight( position ),
       hideHighlight: () => circuitNode.hideAttachmentHighlight(),
       getItems: getItems,
+      getInitialPosition: () => probeNode.center.copy(),
       getHighlightPosition: selectedCircuitElement => selectedCircuitElement ?
                                                       Vector2.average( [
                                                         selectedCircuitElement.startVertexProperty.value.positionProperty.value,

@@ -62,6 +62,7 @@ export default class VertexAttachmentKeyboardListener extends AttachmentKeyboard
       showHighlight: position => circuitNode.showAttachmentHighlight( position ),
       hideHighlight: () => circuitNode.hideAttachmentHighlight(),
       getItems: getItems,
+      getInitialPosition: () => vertex.positionProperty.value.copy(),
       getHighlightPosition: selectedVertex => selectedVertex ? selectedVertex.positionProperty.value : vertex.positionProperty.value,
       applySelection: ( _selection, targetPosition ) => {
         const dropPosition = targetPosition.copy();
@@ -83,7 +84,7 @@ export default class VertexAttachmentKeyboardListener extends AttachmentKeyboard
         circuitNode.vertexAttachmentListenerCount--;
         circuitNode.startDragVertex( vertexNode.parentToGlobalPoint( vertex.positionProperty.value ), vertex, vertex );
       },
-      cancelEmitter: vertex.disposeEmitter,
+      targetDisposeEmitter: vertex.disposeEmitter,
 
       // Sort items by group number, then by connection number within each group
       sortItems: sortAttachmentItems,

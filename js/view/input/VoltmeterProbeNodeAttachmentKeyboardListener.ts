@@ -40,6 +40,7 @@ export default class VoltmeterProbeNodeAttachmentKeyboardListener extends Attach
       showHighlight: position => circuitNode.showAttachmentHighlight( position ),
       hideHighlight: () => circuitNode.hideAttachmentHighlight(),
       getItems: getItems,
+      getInitialPosition: () => probePositionProperty.value.copy(),
       getHighlightPosition: selectedVertex => selectedVertex ? selectedVertex.positionProperty.value : probePositionProperty.value,
       applySelection: ( _selection, targetPosition ) => {
         probePositionProperty.value = targetPosition.copy();
