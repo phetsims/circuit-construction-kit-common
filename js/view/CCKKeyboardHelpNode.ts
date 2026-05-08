@@ -10,10 +10,10 @@ import BasicActionsKeyboardHelpSection from '../../../scenery-phet/js/keyboard/h
 import KeyboardHelpSection from '../../../scenery-phet/js/keyboard/help/KeyboardHelpSection.js';
 import KeyboardHelpSectionRow from '../../../scenery-phet/js/keyboard/help/KeyboardHelpSectionRow.js';
 import MoveDraggableItemsKeyboardHelpSection from '../../../scenery-phet/js/keyboard/help/MoveDraggableItemsKeyboardHelpSection.js';
+import ComboBoxKeyboardHelpSection from '../../../scenery-phet/js/keyboard/help/ComboBoxKeyboardHelpSection.js';
 import TwoColumnKeyboardHelpContent from '../../../scenery-phet/js/keyboard/help/TwoColumnKeyboardHelpContent.js';
 import CircuitConstructionKitCommonFluent from '../CircuitConstructionKitCommonFluent.js';
 import CCKCScreenView from './CCKCScreenView.js';
-import ChooseJunctionConnectionKeyboardHelpSection from './ChooseJunctionConnectionKeyboardHelpSection.js';
 import CircuitComponentsAndToolsKeyboardHelpSection from './CircuitComponentsAndToolsKeyboardHelpSection.js';
 
 export default class CCKKeyboardHelpNode extends TwoColumnKeyboardHelpContent {
@@ -22,7 +22,13 @@ export default class CCKKeyboardHelpNode extends TwoColumnKeyboardHelpContent {
 
     // Left column sections
     const circuitComponentsAndToolsSection = new CircuitComponentsAndToolsKeyboardHelpSection();
-    const chooseConnectionSection = new ChooseJunctionConnectionKeyboardHelpSection();
+    const chooseConnectionSection = new ComboBoxKeyboardHelpSection( {
+      headingString: CircuitConstructionKitCommonFluent.keyboardHelpDialog.chooseConnection.headingStringProperty,
+      thingAsLowerCaseSingular: CircuitConstructionKitCommonFluent.keyboardHelpDialog.chooseConnection.thingSingularStringProperty,
+      thingAsLowerCasePlural: CircuitConstructionKitCommonFluent.keyboardHelpDialog.chooseConnection.thingPluralStringProperty,
+      closeVisualStringProperty: CircuitConstructionKitCommonFluent.keyboardHelpDialog.chooseConnection.cancelConnectionStringProperty,
+      closeAccessibleStringProperty: CircuitConstructionKitCommonFluent.a11y.keyboardHelpDialog.cancelWithEscapeStringProperty
+    } );
     const moveDraggableItemsSection = new MoveDraggableItemsKeyboardHelpSection();
 
     // Align icons in left column

@@ -14,7 +14,7 @@ import { type PropertyOptions } from '../../../axon/js/Property.js';
 import StringProperty from '../../../axon/js/StringProperty.js';
 import type TEmitter from '../../../axon/js/TEmitter.js';
 import type TProperty from '../../../axon/js/TProperty.js';
-import Vector2 from '../../../dot/js/Vector2.js';
+import Vector2, { type Vector2StateObject } from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import PhetioObject, { type PhetioObjectOptions } from '../../../tandem/js/PhetioObject.js';
@@ -216,6 +216,6 @@ export default class Vertex extends PhetioObject {
 }
 
 type VertexState = {
-  position: Vector2;
+  position: Vector2StateObject;
   groupFormationTime: number | null;
 };
