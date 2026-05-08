@@ -492,7 +492,7 @@ a11y:
     accessibleRoleDescription: edit options button
     # Composable parts for building accessible names (DRY pattern)
     # These are assembled in CircuitDescription.ts
-    separator:                 ', '
+    listSeparatorPattern:      '{ $first }, { $second }'
     nameWithPosition:          '{ $typeName } { $position } of { $total }'
     ammeterWithReading:        '{ $name }: { $reading }'
     values:

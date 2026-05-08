@@ -374,7 +374,7 @@ type StringsType = {
     };
     'circuitComponent': {
       'accessibleRoleDescriptionStringProperty': LocalizedStringProperty;
-      'separatorStringProperty': LocalizedStringProperty;
+      'listSeparatorPatternStringProperty': LocalizedStringProperty;
       'nameWithPositionStringProperty': LocalizedStringProperty;
       'ammeterWithReadingStringProperty': LocalizedStringProperty;
       'values': {

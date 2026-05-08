@@ -8,6 +8,7 @@
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import type { TReadOnlyProperty } from '../../../../axon/js/TReadOnlyProperty.js';
+import FluentUtils from '../../../../chipper/js/browser/FluentUtils.js';
 import { toFixed } from '../../../../dot/js/util/toFixed.js';
 import { getPDOMFocusedNode } from '../../../../scenery/js/accessibility/pdomFocusProperty.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
@@ -66,7 +67,6 @@ export default class CircuitDescription {
     shouldShowPosition: boolean,
     isSchematic: boolean
   ): string {
-    const separator = CircuitConstructionKitCommonFluent.a11y.circuitComponent.separatorStringProperty.value;
     const parts: string[] = [];
 
     // 1. Type name + position out of total (e.g., "Battery 1 of 2") or just type name
@@ -165,7 +165,7 @@ export default class CircuitDescription {
       parts.push( CircuitConstructionKitCommonFluent.a11y.circuitComponent.modifiers.brokenStringProperty.value );
     }
 
-    return parts.join( separator );
+    return FluentUtils.joinFirstAndSecond( CircuitConstructionKitCommonFluent.a11y.circuitComponent.listSeparatorPattern, parts );
   }
 
   /**

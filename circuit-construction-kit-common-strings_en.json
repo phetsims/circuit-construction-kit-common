@@ -875,8 +875,8 @@
       "accessibleRoleDescription": {
         "value": "edit options button"
       },
-      "separator": {
-        "value": ", "
+      "listSeparatorPattern": {
+        "value": "{ $first }, { $second }"
       },
       "nameWithPosition": {
         "value": "{ $typeName } { $position } of { $total }"

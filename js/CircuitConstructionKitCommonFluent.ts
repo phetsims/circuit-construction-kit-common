@@ -274,7 +274,7 @@ addToMapIfDefined( 'a11y_voltmeterNode_voltageVolts', 'a11y.voltmeterNode.voltag
 addToMapIfDefined( 'a11y_vertexNode_accessibleRoleDescription', 'a11y.vertexNode.accessibleRoleDescriptionStringProperty' );
 addToMapIfDefined( 'a11y_measurementProbe_accessibleRoleDescription', 'a11y.measurementProbe.accessibleRoleDescriptionStringProperty' );
 addToMapIfDefined( 'a11y_circuitComponent_accessibleRoleDescription', 'a11y.circuitComponent.accessibleRoleDescriptionStringProperty' );
-addToMapIfDefined( 'a11y_circuitComponent_separator', 'a11y.circuitComponent.separatorStringProperty' );
+addToMapIfDefined( 'a11y_circuitComponent_listSeparatorPattern', 'a11y.circuitComponent.listSeparatorPatternStringProperty' );
 addToMapIfDefined( 'a11y_circuitComponent_nameWithPosition', 'a11y.circuitComponent.nameWithPositionStringProperty' );
 addToMapIfDefined( 'a11y_circuitComponent_ammeterWithReading', 'a11y.circuitComponent.ammeterWithReadingStringProperty' );
 addToMapIfDefined( 'a11y_circuitComponent_values_resistanceOhms', 'a11y.circuitComponent.values.resistanceOhmsStringProperty' );
@@ -720,9 +720,9 @@ const CircuitConstructionKitCommonFluent = {
     },
     circuitComponent: {
       accessibleRoleDescriptionStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitComponent_accessibleRoleDescription', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitComponent.accessibleRoleDescriptionStringProperty' ) ),
-      _comment_0: new FluentComment( {"comment":"Composable parts for building accessible names (DRY pattern)","associatedKey":"separator"} ),
-      _comment_1: new FluentComment( {"comment":"These are assembled in CircuitDescription.ts","associatedKey":"separator"} ),
-      separatorStringProperty: new FluentConstant( fluentSupport.bundleProperty, 'a11y_circuitComponent_separator', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitComponent.separatorStringProperty' ) ),
+      _comment_0: new FluentComment( {"comment":"Composable parts for building accessible names (DRY pattern)","associatedKey":"listSeparatorPattern"} ),
+      _comment_1: new FluentComment( {"comment":"These are assembled in CircuitDescription.ts","associatedKey":"listSeparatorPattern"} ),
+      listSeparatorPattern: new FluentPattern<{ first: FluentVariable, second: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitComponent_listSeparatorPattern', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitComponent.listSeparatorPatternStringProperty' ), [{"name":"first"},{"name":"second"}] ),
       nameWithPosition: new FluentPattern<{ position: FluentVariable, total: FluentVariable, typeName: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitComponent_nameWithPosition', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitComponent.nameWithPositionStringProperty' ), [{"name":"position"},{"name":"total"},{"name":"typeName"}] ),
       ammeterWithReading: new FluentPattern<{ name: FluentVariable, reading: FluentVariable }>( fluentSupport.bundleProperty, 'a11y_circuitComponent_ammeterWithReading', _.get( CircuitConstructionKitCommonStrings, 'a11y.circuitComponent.ammeterWithReadingStringProperty' ), [{"name":"name"},{"name":"reading"}] ),
       values: {
