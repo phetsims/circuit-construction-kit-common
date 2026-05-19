@@ -46,7 +46,7 @@ type SelfOptions = {
 
   isEditablePropertyOptions?: Pick<PropertyOptions<boolean>, 'tandem'>;
   isValueDisplayablePropertyOptions?: Pick<PropertyOptions<boolean>, 'tandem'>;
-  labelStringPropertyOptions?: Pick<PropertyOptions<boolean>, 'tandem'>;
+  labelStringPropertyOptions?: Pick<PropertyOptions<string>, 'tandem'>;
 };
 
 export type CircuitElementOptions = SelfOptions & PhetioObjectOptions;
@@ -252,7 +252,7 @@ export default abstract class CircuitElement extends PhetioObject {
 
     this.isDisposableProperty = new BooleanProperty( true, {
       tandem: tandem.createTandem( 'isDisposableProperty' ),
-      phetioDocumentation: 'Whether the CircuitElement can be disposed. Set this to false to make the CircuitElement persisent',
+      phetioDocumentation: 'Whether the CircuitElement can be disposed. Set this to false to make the CircuitElement persistent',
       phetioFeatured: true
     } );
 
