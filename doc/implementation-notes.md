@@ -4,7 +4,7 @@ This document contains miscellaneous notes related to the implementation of circ
 supplements the internal (source code) documentation, and (hopefully) provides insight into "big picture" implementation
 issues. The audience for this document is software developers who are familiar with JavaScript and PhET simulation
 development (as described
-in [PhET Development Overview](https://github.com/phetsims/phet-info/blob/main/doc/phet-development-overview.md)).
+in [PhET Development Overview](../../phet-info/doc/phet-development-overview.md)).
 
 This repo contains code that is used in the following sims:
 
@@ -14,7 +14,7 @@ This repo contains code that is used in the following sims:
 * circuit-construction-kit-ac-virtual-lab
 * circuit-construction-kit-black-box-study
 
-First, read [model.md](https://github.com/phetsims/circuit-construction-kit-common/blob/main/doc/model.md), which
+First, read [model.md](model.md), which
 provides a high-level description of the simulation model.
 
 ## Terminology
@@ -41,7 +41,7 @@ order:
 This section describes how this simulation uses patterns that are common to most PhET simulations.
 
 **Model-view transform**: Many PhET simulations have a model-view transform that maps between model and view coordinate
-frames (see [ModelViewTransform2](https://github.com/phetsims/phetcommon/blob/main/js/view/ModelViewTransform2.js)).
+frames (see [ModelViewTransform2](../../phetcommon/js/view/ModelViewTransform2.ts)).
 While the CircuitElements are treated as physical objects, the dimensions of the objects have no bearing on the physics
 of the circuitry (aside from the resistivity of wires), hence the model and view coordinates are taken as the same, with
 the origin at the center of the screen. (If you don't understand that, don't worry about it.). The layout reflows to
@@ -49,7 +49,7 @@ move control panels to the edges to maximize the available play area.
 
 **Query parameters**: Query parameters are used to enable sim-specific features, mainly for debugging and testing. All
 such query parameters are documented in
-[CCKCQueryParameters](https://github.com/phetsims/circuit-construction-kit-common/blob/main/js/CCKCQueryParameters.js).
+[CCKCQueryParameters](../js/CCKCQueryParameters.ts).
 
 **Memory management**: This simulation dynamically creates and disposes many objects (no CircuitElements are
 preallocated). This helps in modularity of the code and will provide a straightforward interface for PhET-iO. However,
@@ -58,7 +58,7 @@ must be properly implemented in all CircuitElements and CircuitElementNodes, and
 
 ## Model
 
-See [model.md](https://github.com/phetsims/circuit-construction-kit-common/blob/main/doc/model.md)
+See [model.md](model.md)
 
 In Circuit.solve, each CircuitElement is converted to a corresponding model element which can be used in the solver
 which is implemented in ModifedNodalAnalysisCircuit and ModifiedNodalAnalysisSolution. ModifiedNodalAnalysis implements
@@ -89,7 +89,7 @@ ModifiedNodalAnalysisCircuit.js for details.
   need to be updated.
 
 This document was adapted from
-the [Implementation Notes for Function Builder](https://github.com/phetsims/function-builder/blob/main/doc/implementation-notes.md)
+the [Implementation Notes for Function Builder](../../function-builder/doc/implementation-notes.md)
 
 ## Unit Tests
 
